@@ -1,4 +1,4 @@
-# Plan: Famous — an emotional-companion app
+# Plan: Onward — an emotional-companion app
 
 ## Context
 
@@ -8,7 +8,7 @@ The user added a key feature: **author mode**. After the figure is matched, the 
 
 The product purpose is heart-healing, so the frontend has to feel calm, dignified, and beautiful — not like a chatbot.
 
-This directory (`D:\code_save\famous`) is currently empty. Nothing to reuse — building from scratch.
+This directory (`D:\code_save\onward`) is currently empty. Nothing to reuse — building from scratch.
 
 ## Architecture
 
@@ -402,7 +402,7 @@ Regex over LLM-classifier here is deliberate: the safety floor must not depend o
 ## File layout (target)
 
 ```
-famous/
+onward/
 ├─ app/
 │  ├─ page.tsx                       # intake form
 │  ├─ story/[sessionId]/page.tsx     # story player
@@ -476,8 +476,8 @@ A concise, ordered build guide. Each step is a discrete unit of work; do them in
 ## Step 0 — Scaffold
 
 ```powershell
-npx create-next-app@latest famous --typescript --tailwind --app --eslint --src-dir=false --import-alias="@/*"
-cd famous
+npx create-next-app@latest onward --typescript --tailwind --app --eslint --src-dir=false --import-alias="@/*"
+cd onward
 npm i framer-motion zod nanoid clsx @supabase/supabase-js server-only openai
 npm i -D @types/node tsx
 ```
@@ -1295,13 +1295,13 @@ A weak match presented as a definitive mirror corrodes trust faster than a weak 
 **Session recovery:**
 
 - Sessions persist in Supabase, so refresh / new device with the URL just works.
-- On successful match, `app/page.tsx` also writes `{ sessionId, createdAt }` to `localStorage` under key `famous.lastSession` so the user can return without bookmarking the URL.
+- On successful match, `app/page.tsx` also writes `{ sessionId, createdAt }` to `localStorage` under key `onward.lastSession` so the user can return without bookmarking the URL.
 - On revisit to `/`, if a `lastSession` exists, render a quiet "Continue your story?" link above the intake form. (Optional: server-validate the id before showing the link to avoid offering a deleted session.)
 - `app/story/[sessionId]/page.tsx` must still handle 404 (malformed URL, deleted session) by rendering a soft empty state: _"This story has drifted away. Begin a new one →"_. **Do not 500.** Clear the stale `localStorage` entry when this happens.
 
 ### `app/page.tsx`
 
-Renders `<IntakeForm />` centered, with a one-line tagline. If `localStorage.famous.lastSession` exists and is fresh, also renders the "Continue your story?" link above the form.
+Renders `<IntakeForm />` centered, with a one-line tagline. If `localStorage.onward.lastSession` exists and is fresh, also renders the "Continue your story?" link above the form.
 
 ## Step 8 — Visual theme (`app/globals.css`, `tailwind.config.ts`)
 

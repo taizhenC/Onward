@@ -107,7 +107,7 @@ The split is the architectural anti-echo defense: the rerank LLM never sees the 
 | -------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Filter                     | any                         | SQL: `WHERE age_min <= user_age AND age_max >= user_age AND status='published'`                                                                                                                                                                                                                                                                                         | Hard age constraint — the entire premise is "at the same age." Cheap, deterministic.                                                                                                                                                              |
 | Tag & expand               | any                         | Llama 3.1 8B turns raw feeling into `{ tags, expansion, anchors, confidence }`. Hard-failure rules; null result is fine.                                                                                                                                                                                                                                                | The user's surface words may not match the domain vocabulary the figures are written in. Expansion bridges that gap, with `anchors` grounding it to verbatim user phrases.                                                                        |
-| Hybrid retrieval (v2 only) | >20 figures + real embedder | Embed BOTH `raw feeling` AND `expansion` as `RETRIEVAL_QUERY` / `input_type=query`. Search per-sentence document vectors in `figure_shape_embeddings`. Aggregate sentence-level hits to figure-level scores via `score(figure) = max_s sim(q,s) + α·second_max_s sim(q,s)` (defaults α=0.15, tuned on eval set). RRF-fuse the raw lane and the expansion lane → top 10. | Pure expansion-only makes the tagger a single point of failure; pure-raw misses concept-level matches. Per-sentence retrieval keeps distinct sensory anchors discoverable individually. Hybrid degrades gracefully when the tagger misclassifies. |
+| Multi-lane retrieval (v2 only) | >20 figures + real embedder | Tagger emits a `FacetSignal` including per-facet **query projections** (figure-neutral sentences, anchor-substantiated). Each lane runs an age/status-filtered vector search against its own typed corpus: shape (raw user feeling, optionally expansion as ablation), four facet lanes (each typed projection if non-null, else raw user feeling), plus a deterministic theme/antiTheme lane. Stage A — every lane contributes its top-N **post-filter** to a deduped pool unconditionally (per-lane quotas in `match-config.ts`). Stage B — dynamic-weighted RRF over the deduped pool selects top-K (default 12, eval-tunable to 15) for rerank. Aggregation within a lane is max-not-mean (`score = max_s sim(q,s) + α·second_max_s sim(q,s)`, α≈0.15). | Per-lane query/document space alignment beats single-query retrieval on short, metaphor-heavy inputs. Quotas honor the recovery-asymmetry rule: a strong-on-one-lane figure cannot be excluded by elegant weighting; rerank can only correct candidates that reach the pool. The deterministic theme lane is a stable floor under LLM-driven lanes when those wobble. **BM25 is intentionally excluded** — short emotional disclosures are dominated by metaphor tokens, and lexical overlap against literal `biographical_facts` produces metaphor↔literal collisions that RRF cannot down-weight. |
 | Rerank                     | any                         | GPT-OSS 120B reads RAW feeling + candidates' `biographical_facts` + grading scalars (`narrativeDynamism`, `canonExposure`). Returns `{ figureKey, resonance, gap, confidence }`.                                                                                                                                                                                        | Tagger output never reaches this stage. Rerank is grounded on what the user actually said; tags would propagate stage-1 bias into stage 2.                                                                                                        |
 | Miss log + framing         | confidence: low             | Insert into `match_misses`; set `framing: "partial"` so the UI tells the user honestly.                                                                                                                                                                                                                                                                                 | A weak match presented as a definitive mirror corrodes trust faster than no match.                                                                                                                                                                |
 
@@ -150,44 +150,57 @@ trigger_event:     A public failure after others his age seemed to be moving for
 agency_state:      Stuck, exposed, and unsure whether the next attempt would matter.
 ```
 
-**Tagger output schema** (consumed by the dynamic weighter; never reaches the rerank LLM):
+**Tagger output schema** (consumed by the dynamic weighter and the per-lane query encoder; never reaches the rerank LLM):
 
 ```ts
+type FacetType = "emotional_core" | "decision_shape" | "trigger_event" | "agency_state";
+
 type FacetSignal = {
-  confidence: number; // 0..1
-  dominantMode:
-    | "emotional_core"
-    | "decision_shape"
-    | "trigger_event"
-    | "agency_state"
-    | "unclear";
-  facetImportance: {
-    // each 0..1, unconstrained — bounded normalization handles the sum
-    emotional_core: number;
-    decision_shape: number;
-    trigger_event: number;
-    agency_state: number;
-  };
-  anchors: {
-    // verbatim substrings from the raw user input
-    emotional_core: string[];
-    decision_shape: string[];
-    trigger_event: string[];
-    agency_state: string[];
-  };
+  confidence: number;                                  // 0..1
+  dominantMode: FacetType | "unclear";
+  facetImportance: Record<FacetType, number>;          // each 0..1, unconstrained
+  anchors: Record<FacetType, string[]>;                // verbatim substrings
+  facetQueries: Record<FacetType, FacetQuery | null>;  // per-lane query projections; see below
+};
+
+type FacetQuery = {
+  text: string;                                        // figure-neutral projection sentence
+  anchors: string[];                                   // verbatim substrings substantiating `text`
 };
 ```
 
-Validation (any failure → return `null`, fall back to base weights, no retry):
+Validation (any failure on a *signal-level* rule → return `null`, fall back to base weights, no retry; per-projection failures null out *that facet only*):
 
-- `confidence ≥ 0.55`
-- ≥ 2 lanes have `importance ≥ 0.30`
-- Every lane with `importance ≥ 0.30` has at least one anchor
-- Every anchor is an exact substring of the raw user input
-- All `importance` values in `[0, 1]`
-- JSON parses
+- *Signal-level:* JSON parses; `confidence ≥ 0.55`; ≥ 2 lanes with `importance ≥ 0.30`; every lane with `importance ≥ 0.30` has at least one anchor; every anchor is an exact substring of the raw user input; all `importance` values in `[0, 1]`.
+- *Projection-level (per facet):* projection `text` length ≤ 32 words; non-empty `anchors` list; every projection anchor is an exact substring of raw user input; `text` contains no proper-noun tokens, no four-digit years, no first-person pronouns, no controlled-vocabulary diagnosis terms (`depression`, `trauma`, etc.); past tense.
+- A facet whose projection fails any *projection-level* rule has its `facetQueries[facet]` set to `null` — that lane falls back to embedding the raw user feeling. The `FacetSignal` itself remains valid.
 
-`shape` does not appear in `facetImportance`. Shape is the holistic prior — never weighed up or down by the tagger. Its weight only adjusts as a consequence of bounded renormalization after other lanes shift.
+`shape` does not appear in `facetImportance` or `facetQueries`. Shape is the holistic prior — never reweighted by the tagger, and its query is always the raw user feeling (and optionally the expansion text). Shape weight adjusts only as a consequence of bounded renormalization after other lanes shift.
+
+**Facet query projection — per-lane query rewriting.** The retrieval problem this solves: user inputs are short and dominated by metaphor and sensation; documents in each lane are concrete, past-tense, figure-neutral facet sentences. Embedding the raw user feeling against every lane forces a single query vector to bridge a different semantic gap per lane. *Facet query projection* closes that gap by translating the user's input into the same writing-style distribution as the documents in each lane, *per lane*.
+
+This is deliberately **not HyDE.** HyDE invites the model to invent biographical specifics (names, dates, events), which then leak into retrieval as spurious anchors. Projection is constrained to *emotional/decision shape only*:
+
+- One sentence per facet, in the same shape as `figures.facets.<type>` documents (past tense, "he"/"she" or generic "they"/"someone", 12–28 words).
+- Forbidden: proper names; four-digit years; concrete invented events ("after his draft notice", "when her father died" — fabricates fact); first-person pronouns; controlled-vocabulary diagnosis terms; abstract jargon ("trauma", "depression").
+- Required: anchor-substantiated. Every projection carries a list of verbatim user-input substrings that justify it. Empty anchors → projection nulls out for that facet.
+- Nullable per facet. The tagger emits a projection only for facets where the user's input substantiates one. Lanes without a projection fall back to embedding the raw user feeling.
+
+Why these constraints are tight: a fluent but unanchored projection drifts back into HyDE; a projection containing names or dates is a fabricated fact, not a translation of user shape; first-person leaks raw user voice into a representation that's supposed to be figure-neutral. Each constraint is a recoverable failure (null that lane) rather than a tagger-level abort, because retrieval failures are unrecoverable but lane-fallback to raw-feeling is correct behavior.
+
+Example (figure-neutral past tense, anchor-substantiated):
+
+```
+emotional_core: { text: "Someone felt overwhelmed by forces they could not name.",
+                  anchors: ["overwhelmed", "I don't know what's happening"] }
+decision_shape: null
+trigger_event:  { text: "Something public went wrong while peers seemed to be moving forward.",
+                  anchors: ["my friends are all ahead", "messed up in front of everyone"] }
+agency_state:   { text: "They were still present, but felt their control slipping.",
+                  anchors: ["I can't keep up", "barely holding on"] }
+```
+
+The same `RETRIEVAL_QUERY` / `input_type=query` asymmetric encoding applies to projections as to raw-feeling queries. Projections never persist; they are computed once per match call and dropped after retrieval.
 
 **Dynamic weight formula** (lives in `lib/match-config.ts`, version-stamped via `matchConfigVersion`):
 
@@ -239,19 +252,65 @@ Bounded normalization is mandatory: clamp to `[min, max]` → renormalize to sum
 - Emotion-heavy query cannot push `emotional_core` above 0.38.
 - Same input → byte-identical weights (determinism, no float-order drift).
 
-**Retrieval pipeline (what `lib/matching.ts` does once facet retrieval is on):**
+**Retrieval pipeline (two stages, age-filter-aware):**
 
-1. Hard age + status filter.
-2. Embed `raw user feeling` once as `RETRIEVAL_QUERY` — same query vector goes against every lane.
-3. Five vector searches, each against its own partial HNSW: shape (top-30), `emotional_core` (top-30), `decision_shape` (top-30), `trigger_event` (top-30), `agency_state` (top-30).
-4. Aggregate to figure-level: per figure, `denseScore = Σ_lane weight_lane · max_score_in_lane`. Max-not-mean is the same rule as for shape sentences — averaging blurs anchors.
-5. BM25 (`tsvector` + `ts_rank_cd`) over `biographical_facts` for keyword evidence. **BM25 reads `biographical_facts`, not facet text** — facets are for retrieval, biographical_facts is the source-verified truth surface.
-6. RRF-fuse the dense rank with the BM25 rank → top 12.
-7. Rerank reads raw feeling + `biographical_facts` only. Tagger output, facet labels, dynamic weights, expansion text — none of these reach the reranker. The anti-echo rule extends across both stages.
+1. **Tag & project.** Tagger emits a `FacetSignal` including per-facet **query projections** (figure-neutral sentences, anchor-substantiated; see *Facet query projection* below). Projection-validation failure on any facet → that facet's projection is null and that lane falls back to the raw user feeling as its query.
 
-**Wide candidate recall, narrow rerank input.** Top-30 per lane → ~50–80 unique figures after dedup → top-12 to rerank. Cutting per-lane below ~30 risks dropping the correct figure that ranked moderate on the dominant lane. Cost: ~5 HNSW queries × ~50 ms = ~250 ms.
+2. **Stage A — pool entry (per-lane quotas, unconditional).** Each lane runs an **age/status-filter-aware** vector search and contributes its top-N **post-filter** to a deduped pool. Quotas are *post-filter* by definition — implementations either pre-filter inside the HNSW scan (preferred, via pgvector iterative scan) or overfetch by ~3× and post-filter; the constant in `match-config.ts` is the post-filter target.
 
-**Asymmetric encoding + L2 normalization apply to facets identically to shape sentences.** Each facet text is a _document_ at seed time (`task_type=RETRIEVAL_DOCUMENT` for Gemini; `input_type=document` for Voyage), normalized at write. The query is a _query_. No exceptions for facets.
+   | Lane | Query | Quota (post-filter) |
+   |---|---|---|
+   | shape | `embed(raw user feeling)` as `RETRIEVAL_QUERY`; `embed(expansion)` as a second query if expansion is enabled | 20 each |
+   | `emotional_core` | `embed(facetQueries.emotional_core)` if non-null, else raw feeling | 20 |
+   | `decision_shape` | same pattern | 20 |
+   | `trigger_event` | same pattern | 15 |
+   | `agency_state` | same pattern | 15 |
+   | theme | deterministic weighted Jaccard with antiTheme penalty (no embedder) | 20 |
+
+   Each lane aggregates within itself max-not-mean: `score(figure, lane) = max_s sim(q,s) + α·second_max_s sim(q,s)` (α≈0.15, eval-tunable). Pool deduplicates by `figure_key`; expected pool size ~50–80 unique figures.
+
+3. **Stage B — final selection (dynamic-weighted RRF over the deduped pool).** Per-lane importance from `FacetSignal` is blended with `BASE_WEIGHTS` per the bounded λ formula. Final rank = Σ_lane (weight_lane / (k + rank_in_lane)), default k=60. Output top-K to rerank: K=12 by default, eval-test up to K=15 once richer retrieval lands.
+
+4. **Rerank.** GPT-OSS reads raw feeling + candidates' `biographical_facts` + grading scalars only. Tagger output, projections, anchors, theme tags, lane weights, expansion text — none reach the reranker. Anti-echo extends across both stages.
+
+**Why two stages, not one.** Quotas honor recovery-asymmetry: a strong-on-one-lane figure cannot be excluded from the pool by elegant weighting (Stage A is unconditional). Stage B is allowed clever ranking because rerank still recovers candidates within the pool. Compressing this into a single weighted-sum stage re-introduces the failure mode the asymmetry rule was drawn to avoid.
+
+**Wide candidate recall, narrow rerank input.** ~50–80 unique figures pool → top-12 (or top-15) to rerank. Cutting per-lane quotas below the listed values risks dropping the correct figure that ranked moderate on the dominant lane. Cost: ~6 HNSW queries × ~50 ms + ~5 ms theme-Jaccard = ~300 ms.
+
+**Theme lane and antiThemes — deterministic editorial signal.** The theme lane is the only retrieval lane that does not use an embedder. It exists because hand-curated semantic structure (which figures are *about* `worthlessness` vs `creative_dismissal` vs `grief_loss_of_parent`) survives when the LLM-driven lanes wobble: tagger drift, embedder swap, projection failure. Deterministic, fast, debuggable.
+
+- `figures.themes: string[]` — positive: what this figure is about. Drawn from the controlled vocabulary in `lib/themes.ts`.
+- `figures.antiThemes: string[]` (optional) — neighboring themes the editor flagged as confusable-but-distinct. Encodes "this figure looks like X but is actually Y" judgment that no embedder can infer from text.
+- Tagger emits user theme tags from the same controlled vocabulary; tags are derived from anchored user phrases.
+
+Score, capped to prevent editorial tags from overpowering the dense lanes:
+
+```
+themeScore = clamp(
+  weightedJaccard(userThemes, figure.themes)
+    − λ · weightedJaccard(userThemes, figure.antiThemes),
+  -0.25,
+  0.35
+)
+```
+
+`λ` defaults to 1.0 (penalty equal to bonus); both `λ` and the clamp bounds are eval-tunable and version-stamped via `matchConfigVersion`.
+
+**antiThemes never hard-exclude.** They are *only* a Stage-B scoring penalty. A bad antiTheme is recoverable if the figure still reaches rerank via shape or facet lanes; a hard exclusion is not. This is the recovery-asymmetry rule applied to the editorial signal.
+
+**Population discipline.** `antiThemes` is populated only when (a) an editor encountered a confusion case while seeding ("this figure looks like X but is actually Y"), or (b) eval surfaced a confusion *this specific figure* caused. Pre-filling from a "themes commonly confused with this one" matrix is forbidden — it bloats editorial cost and freezes guesses as data. Default empty.
+
+**Expansion as an explicit ablation — eval-pending, not eval-decided.** Once facet query projection is in place, the original `expansion` text (a single holistic paraphrase of the user feeling, embedded as a second shape-lane query) does work that overlaps with the per-lane projections. The plan does not pre-decide whether to keep both, drop expansion, or drop projections — three configs are graded against the eval set:
+
+| Config | Shape lane queries | Facet lanes |
+|---|---|---|
+| A — both | raw + expansion | raw or per-facet projection |
+| B — projections only | raw | raw or per-facet projection |
+| C — expansion only | raw + expansion | raw (no projections) |
+
+A FacetsRAG-positive result requires top-1 accuracy improving AND near-miss confusion rate dropping vs. the prior config. Prior expectation: expansion drops out (B wins). The decision is recorded as `expansionEnabled: bool` in `match-config.ts`, version-stamped via `matchConfigVersion`. No silent toggling between configs in production — every flip is a config-version bump and re-evals.
+
+**Asymmetric encoding + L2 normalization apply to facets identically to shape sentences.** Each facet text is a _document_ at seed time (`task_type=RETRIEVAL_DOCUMENT` for Gemini; `input_type=document` for Voyage), normalized at write. The query is a _query_. No exceptions for facets. The theme lane is exempt because it has no embedder.
 
 **Seed/publish gates** (enforced in `scripts/check-figure.ts` + `scripts/seed-figure.ts`):
 
@@ -262,19 +321,58 @@ Bounded normalization is mandatory: clamp to `[min, max]` → renormalize to sum
 
 Missing any of these → seed fails. No `--force` override. Facet integrity is a publish-time concern, not a runtime one.
 
-**Runtime soft-fail + editorial feedback loop.** If a published figure is somehow missing a facet at match time (publish-gate bypass, partial migration, embedder rollout in progress), the matcher fails soft: upsert a row in `figure_editorial_warnings` (deduplicated on `(figure_key, warning_type, active_model_id)`) and exclude that figure from dynamic facet scoring. It still participates via shape, biographical_facts, and BM25. Serving stays reliable; the bad row surfaces for editorial repair. Schema in Step 3.5; warnings live in their own table so the figures row stays read-only on the hot match path.
+**Runtime soft-fail + editorial feedback loop.** If a published figure is somehow missing a facet at match time (publish-gate bypass, partial migration, embedder rollout in progress), the matcher fails soft: upsert a row in `figure_editorial_warnings` (deduplicated on `(figure_key, warning_type, active_model_id)`) and exclude that figure from the affected facet lane only. It still participates via the shape lane, the theme lane, and any other facet lanes for which a valid embedding exists. Serving stays reliable; the bad row surfaces for editorial repair. Warnings live in their own table so the figures row stays read-only on the hot match path.
 
-**Trace fields on every match** (logged structurally; raw feeling never logged):
+**Production trace fields on every match** — the schema is *string-hostile* (see *Privacy taint model*). Every field is `SafeOperational` or `SafeIdentifier`; nothing user-derived crosses into the trace surface without explicit reduction to counts, booleans, or buckets:
 
 ```
-{ sessionId, modelId, matchConfigVersion, taggerOk, taggerConfidence,
-  dominantMode, lambda, baseWeights, dynamicWeights, denseTop10,
-  bm25Top10, finalTop12, chosenFigure, framing, latencyMs }
+{
+  // identifiers
+  sessionId,                        // SafeIdentifier
+  matchConfigVersion,               // SafeOperational
+  embeddingModelId,                 // SafeOperational
+
+  // tagger / projection — reduced
+  taggerOk: bool,
+  taggerConfidenceBucket,           // "low" | "medium" | "high"
+  dominantModeBucket,               // "emotional" | "decisional" | "situational" | "unclear"
+  lambdaBucket,                     // "off" | "low" | "mid" | "high" — never raw λ
+  projectionGenerated,              // { emotional_core: bool, decision_shape: bool, ... }
+  projectionAnchorCounts,           // { emotional_core: int, ... }
+
+  // theme lane — reduced
+  userThemeTagCount: int,           // count only; specific tag values are SensitiveDerivedTags
+  antiThemeFiredCount: int,
+
+  // retrieval / rerank — counts and outcome only
+  candidateCount, dedupedPoolSize, rerankedCount,
+  scoreStatsBucket,                 // coarsened distribution; raw scores leak
+  chosenFigureKey,                  // SafeIdentifier — the match outcome
+
+  // outcome
+  framing,                          // "definitive" | "partial"
+
+  // timing
+  latencyMs: { tagger, retrieval, rerank, total }
+}
 ```
 
-`matchConfigVersion` is the key field — a string like `"facets-v1-passive-2026-05"`, bumped on every constant change, never reused. Lets you replay any past trace against any new config and answer "would this config have caught it?" Required for principled tuning.
+Forbidden in production trace, on any path including errors: raw user feeling; anchor texts; projection texts; expansion text; provider request bodies; provider response bodies; tagger raw JSON (especially on parse failure); reranker `resonance` / `gap` text; ranked candidate lists beyond `chosenFigureKey`; specific theme/antiTheme/dominantMode enum values; raw scores (only buckets). Full traces live in `logs/match-traces.jsonl` and are written *only* under explicit dev-replay (see *Privacy taint model*).
 
-**FacetsRAG-specific eval hard negatives.** Beyond the existing hard-negative pairs (Step 12), include cases that test each lane independently. Label every test with what it measures, otherwise eval results are uninterpretable:
+`matchConfigVersion` is the key field — a string like `"retrieval-v2-projection-themes-no-bm25-2026-05"`, bumped on every constant change, never reused. It covers the *full retrieval recipe*, not just lane weights:
+
+- lane list and per-lane quotas
+- theme `λ` and clamp bounds
+- projection schema version (forbidden-token list, max-words, anchor rules)
+- `expansionEnabled: bool`
+- rerank top-K
+- retention TTLs (`feeling` NULL-after, log rotation)
+- crisis regex version
+- `BASE_WEIGHTS`, `WEIGHT_BOUNDS`, `DYNAMIC` constants
+
+Combined with `sessions.match_recipe` (which freezes the active versions per session), this is what makes principled replay possible: any past match can be re-run against its original recipe to verify reproducibility, or against a new recipe to ask "would this config have caught it?"
+
+**FacetsRAG-specific eval hard negatives.** Beyond the existing hard-negative pairs in `evals/match.yaml`, include cases that test each lane independently. Label every test with what it measures, otherwise eval results are uninterpretable:
 
 | Hard negative type                                    | Tests                 | What it measures                                                                            |
 | ----------------------------------------------------- | --------------------- | ------------------------------------------------------------------------------------------- |
@@ -289,9 +387,100 @@ A FacetsRAG-positive eval result requires top-1 accuracy improving AND near-miss
 **Out of scope for v1 FacetsRAG (revisit only on eval evidence):**
 
 - Cross-facet multiplicative boosts (additive weighting is more debuggable, less brittle).
-- More than 5 facets.
+- More than 5 facets (`pressure_source`, `relational_context`, `arc_shape` deferred — add only if eval shows they catch a class of failures the existing 5 miss).
 - Per-facet embedders (one embedder serves all lanes — same `model_id`).
-- Failure-mode catalog beyond `missing_facet`, `stale_content_hash`, `missing_embedding`, `dim_mismatch` — write alongside the eval set as failure shapes emerge.
+- BM25 / keyword-overlap retrieval against `biographical_facts` (rejected: short metaphor-heavy user inputs produce metaphor↔literal token collisions; RRF cannot down-weight a poisoned lane; the deterministic theme lane covers the editorial-signal job that BM25 was supposed to catch).
+- Cross-encoder pre-rerank between dense retrieval and GPT-OSS (deferred: GPT-OSS already does cross-encoder-style reasoning on top-12; marginal recall gain doesn't justify another model dependency).
+- Hard exclusion via antiThemes (always penalty-only; hard exclusion violates recovery-asymmetry).
+- Failure-mode catalog beyond `missing_facet`, `stale_content_hash`, `missing_embedding`, `dim_mismatch`, `projection_validation_failed`, `missing_anti_theme_population` — write alongside the eval set as failure shapes emerge.
+
+### Privacy taint model
+
+The product asks people in pain to disclose how they're feeling. Once entered, that text is sensitive — not just to the database row that stores it, but to every artifact derived from it (anchors, projections, expansions, embeddings, LLM outputs, classification tags). The architectural rule:
+
+> User-derived natural language and embeddings are sensitive until explicitly reduced into non-semantic telemetry.
+
+This is a structural invariant alongside *anti-echo* (shape and facet text never reach rerank) and *recovery-asymmetry* (retrieval failures unrecoverable, rerank failures correctable). All three are simple, named, with a load-bearing reason. None loosens on intuition. The privacy invariant is *also* about product trust: users who trust the form enough to type their pain should not have that pain replicated into operational systems they don't know exist.
+
+**Six sensitivity classes (closed set; provenance determines class, not type).**
+
+| Class | Examples | Authorized exits |
+|---|---|---|
+| `SensitiveRaw` | User-entered feeling | DB persistence (`sessions.feeling`, `match_misses.feeling`), LLM prompt input, embedder query input, crisis regex, replay-with-flag |
+| `SensitiveDerivedText` | Anchors, projection texts, expansion text, prompt bodies, tagger raw JSON, reranker `resonance` / `gap`, generated bridge prose | Downstream LLM input, DB if persisted (same TTL as raw), replay-with-flag |
+| `SensitiveDerivedTags` | User theme tags, antiTheme triggers, `dominantMode`, `facetImportance`, crisis reason codes | Reduction step → safe counts/booleans/buckets, replay-with-flag |
+| `SensitiveDerivedVector` | Query embeddings (raw user feeling, expansion, projections) | Vector search only; never persisted, never logged, dropped after retrieval |
+| `SafeOperational` | `matchConfigVersion`, `embeddingModelId`, provider name, `latencyMs`, counts, booleans, `errorClass`, score buckets | Production trace, dashboards |
+| `SafeIdentifier` | `sessionId`, `figureKey`, theme vocab id, model id (curated content / non-derived) | Production trace, dashboards |
+
+`SensitiveDerivedTags` exists because enum values from a controlled vocabulary are not safe just because they're enums. The literal `"worthlessness"` is `SafeOperational` when it's a curated `figures.themes` entry, and `SensitiveDerivedTags` when it's a tagger output classifying a user's disclosure. *Provenance, not surface type.*
+
+Document embeddings (`figure_*_embeddings.embedding` rows) are not sensitive — they are derived from curated editorial content (`shape_sentences`, facet text), not from user input. Same dimensionality, same encoder; different sensitivity class because different provenance.
+
+**Authorized exits and the reduction step.** Sensitive values do not flow into the production trace surface directly. They flow through *reduction* — a deliberate transformation from a sensitive object into a non-semantic safe summary. The mental model: *sensitive object in, safe counters/enums/scores out.* Examples:
+
+- projection object → `{ generated: bool, anchorCount: int, valid: bool }` per facet
+- theme scoring → `{ userThemeTagCount, antiThemeFiredCount, dominantModeBucket }`
+- retrieval results → `{ candidateCount, dedupedPoolSize, scoreStatsBucket, chosenFigureKey }`
+- LLM call → `{ provider, route, latencyMs, errorClass | success }`
+
+The trace writer accepts only the reduced form. Boundary discipline is enforced by *opaque wrappers* with named, greppable unwrap methods — `unwrapForLLM`, `unwrapForEmbedder`, `unwrapForDB`, `unwrapForCrisisRegex`, `unwrapForVectorSearch`, `unwrapForReplayWithFlag` — not by branded primitive types (which remain assignable to their underlying primitive and therefore cannot enforce the boundary). Each `unwrapFor*` is a documented exit; grep across the codebase reveals every authorized boundary in one search. New exits require new methods, not new conventions.
+
+**Production trace surface is string-hostile.** The schema accepts only `SafeOperational` and `SafeIdentifier` values, plus numbers, booleans, and nulls. It rejects arbitrary strings. Every value crosses the boundary through a deliberate classifier (`asEnum`, `asFigureKey`, `asConfigVersion`, etc.) rather than a generic "log this" path.
+
+**Categorical exclusions, even on errors.** No path — success, exception, timeout, JSON parse failure, retry — may emit any of the following to the production trace:
+
+- provider request bodies (Groq, Gemini, Voyage)
+- provider response bodies
+- tagger raw JSON, especially on parse failure (the failed payload contains the disclosure)
+- LLM prompts of any role (system, user, assistant)
+- raw exception objects (request body, parameter values, and stack frames often ride along inside)
+- ranked candidate lists beyond `chosenFigureKey`
+- specific user-tag enum values (only counts and coarsened buckets)
+- reranker `resonance` / `gap` text (the LLM's interpretation of why a figure matches *the user's specific words*)
+
+**Provider-call sanitizing wrappers.** Every LLM, embedder, and DB call is wrapped at the boundary. Thrown errors are converted to a structured shape (`{ provider, route, errorClass, latencyMs }`) *before* propagating. The original error — request body, stack with parameter values, response body — is discarded inside the wrapper. The caller never sees a provider-SDK error directly. This is the most operationally important rule, because most leaks happen through unhandled provider errors, not through deliberate logging.
+
+**Hosted error services are not wired at v1.** Sentry / Datadog / Honeycomb capture request bodies by default; even with scrubbing rules they're a leak vector waiting for misconfiguration. Local logging only until ops need clearly outweighs the surface. If added later, they receive only the same reduced trace shape — never raw provider objects.
+
+**Retention discipline.** Placement is half the privacy story; the other half is duration.
+
+- `sessions.feeling`: NULL'd 60 days after creation. The structural row (figure_key, framing, choice trail, recipe metadata) is preserved for aggregate eval; the disclosure itself is dropped. Session id remains addressable; pain text is gone.
+- `match_misses.feeling`: NULL'd 60 days after creation. Editorial review window is short by design — old misses don't drive curation, they expand the surface.
+- `logs/match-traces.jsonl`, `logs/replay-audit.jsonl`: 90-day local rotation, gitignored, never copied off the dev machine.
+- TTL values live in `match-config.ts`, version-stamped via `matchConfigVersion`, changeable on review — not buried as magic numbers in cron scripts.
+
+Implementation runs as a scheduled Postgres job (`pg_cron` on Supabase or a scheduled Edge Function), executed daily, NULL-deleting feeling fields older than the TTL.
+
+**Recipe metadata pinning — `sessions.match_recipe`.** Replay is only useful if reproduction is *faithful*. A new column on `sessions`, frozen at session creation, stores the active recipe at match time:
+
+```
+sessions.match_recipe JSONB NOT NULL
+-- {
+--   matchConfigVersion, embeddingModelId, taggerModelId, rerankModelId,
+--   projectionSchemaVersion, expansionEnabled, rerankTopK, crisisRegexVersion
+-- }
+```
+
+Replay reads this column and reconstructs the matcher with the *original* versions. Without recipe pinning, every config bump silently invalidates every prior session for replay reproducibility — and we'd never notice we'd lost it until we needed it.
+
+**Replay is the only path that touches sensitive data outside the live match.**
+
+```
+npx tsx scripts/replay-match.ts <sessionId> --include-sensitive-local-trace
+```
+
+Replay fetches `sessions.feeling` (if not yet NULL'd by retention), reads `sessions.match_recipe`, reconstructs the matcher, and writes a full trace to `logs/match-traces.jsonl`. Without the explicit flag, replay produces structured-only output even locally. Each invocation appends a row to `logs/replay-audit.jsonl` (`{ sessionId, purpose, actor, createdAt }`) — append-only, gitignored. This is the *auditable path* that production traces deliberately don't provide: every read of user disclosure is intentional, flagged, and trail-logged.
+
+**Crisis flow is the strictest path of all.** Crisis input *persists nowhere*: when `classifyCrisis` matches, no `sessions` row is written, no embedding is computed, no LLM call is made. This means crisis false positives cannot be debugged via replay — by design. The exhaustive trace shape for crisis:
+
+```
+{ crisisDetected: true, crisisRegexVersion, latencyMs }
+```
+
+No matched-pattern enum, no reason category, no phrase index. The crisis regex is debugged offline against `evals/crisis-regex.yaml` — synthetic inputs treated as a *safety regression* set, separate from `evals/match.yaml`. False positives are acceptable; false negatives are not.
+
+**Privacy regression tests.** The taint invariant is enforced by schema-level CI tests rather than per-call discipline. Tests assert that the production-trace schema *throws or fails type-check* when given any of: a `feeling` field, anchor texts, projection text, expansion text, raw LLM prompt body, raw LLM response body, ranked figure-key array, raw enum tag from user classification, raw vector. One test surface catches regressions across all log call sites. Without these tests, the invariant is whatever the current author remembers it is.
 
 ### Prompt design (per role)
 
@@ -416,26 +605,33 @@ onward/
 │  ├─ embeddings.ts                  # Embedder interface (modelId, dim, embedDocuments, embedQuery) + provider switch
 │  ├─ embeddings-stub.ts             # modelId="stub@v0", returns zero vector → matching skips vector branch
 │  ├─ embeddings-real.ts             # Gemini gemini-embedding-001@1536 (primary) + Voyage voyage-4-lite@1024 (challenger)
-│  ├─ matching.ts                    # hybrid retrieval orchestrator: filter → tag/expand → 5 lanes + BM25 → RRF → rerank → framing
-│  ├─ match-config.ts                # FacetsRAG: BASE_WEIGHTS, WEIGHT_BOUNDS, λ formula, bounded normalization, matchConfigVersion
-│  ├─ match-config.test.ts           # invariant + determinism tests for the weighter (sum=1, no bound violations, etc.)
-│  ├─ rrf.ts                         # reciprocal rank fusion, k=60 default
-│  ├─ themes.ts                      # controlled vocabulary of emotional themes
-│  ├─ db.ts                          # Supabase: sessions + match_misses + figure_editorial_warnings (server-only)
-│  ├─ figures.ts                     # typed accessors: listByAge, getByKey, vectorSearch, facetSearch, toClientOutline
-│  └─ safety.ts                      # crisis keyword check
+│  ├─ matching.ts                    # retrieval orchestrator: filter → tag/project → per-lane quotas → dynamic-weighted RRF → rerank → framing
+│  ├─ match-config.ts                # BASE_WEIGHTS, WEIGHT_BOUNDS, λ formula, lane quotas, theme λ + clamp, projection schema version, expansionEnabled, rerank top-K, retention TTLs, matchConfigVersion
+│  ├─ match-config.test.ts           # invariant + determinism tests for the weighter and the bounded-normalization helper
+│  ├─ rrf.ts                         # reciprocal rank fusion, k=60 default; dynamic-weighted variant for Stage B
+│  ├─ themes.ts                      # controlled vocabulary of emotional themes (positive + antiTheme name space)
+│  ├─ sensitive.ts                   # privacy taint model: opaque wrappers (SensitiveRaw, SensitiveDerivedText, SensitiveDerivedTags, SensitiveDerivedVector) with named unwrap exits
+│  ├─ trace.ts                       # string-hostile production-trace schema + reduction helpers (asEnum, asFigureKey, asConfigVersion, asBucket); writeProdTrace is the only path
+│  ├─ trace.test.ts                  # privacy regression tests: schema rejects feeling, anchors, projection text, raw enum tags, raw vectors, prompt bodies, raw exception objects
+│  ├─ db.ts                          # Supabase: sessions (with match_recipe) + match_misses + figure_editorial_warnings (server-only)
+│  ├─ figures.ts                     # typed accessors: listByAge, getByKey, vectorSearch, facetSearch, themeSearch, toClientOutline
+│  └─ safety.ts                      # crisis regex check (deterministic, non-LLM); never persists; emits only { crisisDetected, crisisRegexVersion, latencyMs }
 ├─ scripts/
 │  ├─ research-figure.ts             # offline: Llama drafts a candidate FigureRow JSON to scripts/drafts/
 │  ├─ check-figure.ts                # offline: structural + style validation (called by seed-figure.ts)
 │  ├─ seed-figure.ts                 # offline: validates, embeds, inserts row with version metadata
 │  ├─ reembed.ts                     # offline: refresh embeddings after provider swap or content edits
-│  ├─ eval-match.ts                  # offline: run evals/match.yaml through matching.match(), report 4 metrics
+│  ├─ eval-match.ts                  # offline: run evals/match.yaml through matching.match(), report metrics across the three expansion configs
+│  ├─ eval-crisis.ts                 # offline: run evals/crisis-regex.yaml through safety.classifyCrisis; safety regression — false-negatives fail the build
+│  ├─ replay-match.ts                # auditable replay: SELECT feeling FROM sessions, reconstruct via match_recipe, --include-sensitive-local-trace gates writes
 │  └─ drafts/                        # uncommitted human-editing workspace (gitignored except .gitkeep)
 ├─ evals/
-│  ├─ match.yaml                     # 30-50 gold (age, feeling) → expected_figure pairs, incl. 5-10 deliberate misses
+│  ├─ match.yaml                     # 30-50 gold (age, feeling) → expected_figure pairs, incl. 5-10 deliberate misses; FacetsRAG hard-negative pairs labeled by what they measure
+│  ├─ crisis-regex.yaml              # synthetic crisis inputs; treated as safety regression, separate from match eval
 │  └─ runs/                          # JSON dumps of past eval runs, for diffing
 ├─ logs/
-│  └─ match-traces.jsonl             # dev-only full traces (gitignored, never ship to hosted log services)
+│  ├─ match-traces.jsonl             # dev-only full traces; written ONLY under replay-match.ts --include-sensitive-local-trace; gitignored, 90-day local rotation
+│  └─ replay-audit.jsonl             # append-only audit log: one row per replay invocation; gitignored
 ├─ components/
 │  ├─ IntakeForm.tsx
 │  ├─ StoryBeat.tsx                  # streams text in
@@ -453,9 +649,14 @@ Acceptance criteria (highlights):
 
 1. `npm run dev`, open `http://localhost:3000`. With `LLM_PROVIDER=stub` and a seeded `figures` table, the full flow should work end-to-end.
 2. "17, no achievements" → match lands on a figure tagged `worthlessness` or `no_achievements`. Walk all 9 beats; 2–3 decision beats appear; opposite-of-real picks open with contrast wording; final beat references the user's words.
-3. Crisis-signal input → `<CrisisCard>` first; no `sessions` row written.
+3. Crisis-signal input → `<CrisisCard>` first; no `sessions` row written. Trace contains only `{ crisisDetected, crisisRegexVersion, latencyMs }`.
 4. Refresh mid-story → resumes from `last_beat_index`. Bad sessionId → "story has drifted away" empty state (404, not 500).
-5. Real-mode anti-echo defense → trace the rerank API call; request body contains `biographicalFacts`, never `shapeSentences`.
+5. **Anti-echo invariant (real mode)** — trace the rerank API call; request body contains `biographicalFacts`, never `shapeSentences`, never facet text, never tagger output.
+6. **Privacy taint invariant** — `lib/trace.test.ts` rejects `feeling`, anchor texts, projection text, expansion text, raw LLM prompt/response bodies, ranked figure-key arrays, raw enum tags from user classification, and raw vectors. Schema-level fail is the test pass.
+7. **Recovery-asymmetry invariant** — eval the multi-lane retrieval against the FacetsRAG hard-negatives in `evals/match.yaml`. Quotas constant in `match-config.ts`; verify a strong-on-one-lane test case stays in the deduped pool even when other lanes score it low.
+8. **Replay reproducibility** — `scripts/replay-match.ts <sessionId>` (without `--include-sensitive-local-trace`) reads `sessions.match_recipe`, runs the matcher, produces a structured-only trace whose `chosenFigureKey` matches the original. Adding the flag produces full local traces; appends one row to `logs/replay-audit.jsonl`.
+9. **Retention enforcement** — manually inserting a row with `created_at` > 60 days into `sessions` and running the retention job NULLs the `feeling` column while preserving structural fields.
+10. **Crisis safety regression** — `npx tsx scripts/eval-crisis.ts` against `evals/crisis-regex.yaml`; zero false negatives required. False positives logged but not failing.
 
 ## Out of scope for v1
 

@@ -2,9 +2,9 @@
 
 ## Context
 
-The user wants an AI web app for people who are feeling down. A user enters their age and a short description of what they're going through. The app finds a real historical figure who, at the same age, faced a genuinely similar emotional situation, and tells that figure's story as a warm narrative — from the dark moment, through the struggle, to the turning point, to who they became — ending with a personal bridge back to the user.
+The user wants an AI web app for people who are feeling down. A user enters their age and a short description of what they're going through. The app finds a real historical figure who, at a similar age, lived through a genuinely similar *emotional episode*, and tells that episode of the figure's life as a warm narrative — from the dark moment, through the struggle, to the turning point, to who they became out of it — ending with a personal bridge back to the user.
 
-The user added a key feature: **author mode**. After the figure is matched, the user is walked through that figure's life as a series of beats. Most beats are narrated. At a few real fork-points in the figure's life, the user is shown 2–3 choices and picks one — making them feel like they are leading the story rather than reading it. The point is momentum: someone hurting should feel like they have agency, even inside someone else's life.
+The user added a key feature: **author mode**. After the figure is matched, the user is walked through that episode as a series of beats. Most beats are narrated. At 1 or 2 real fork-points in the figure's life, the user is shown 2–3 choices and picks one — making them feel like they are leading the story rather than reading it. The point is momentum: someone hurting should feel like they have agency, even inside someone else's life.
 
 The product purpose is heart-healing, so the frontend has to feel calm, dignified, and beautiful — not like a chatbot.
 
@@ -27,7 +27,7 @@ This directory (`D:\code_save\onward`) is currently empty. Nothing to reuse — 
   - **Per-sentence embeddings.** Each `shape_sentence` is its own row in `figure_shape_embeddings`. **Never average** — averaging blurs the distinct sensory anchors that justify the shape-sentence field's existence.
   - **Mixed-dim coexistence.** Single `figure_shape_embeddings` table with an untyped `vector` column; partial HNSW indexes per `(model_id, dim)` route queries to the active embedder, with rollback to inactive embedders preserved. Active model is selected via the `app.embedding_model` Postgres GUC. **Free-tier posture is operational, not architectural** — capping is one env-var flip away from a paid key or the challenger.
   - Stub mode (zero vector, `modelId="stub@v0"`) remains the default until `EMBEDDING_PROVIDER` is set; when stubbed, matching skips vector retrieval and runs filter → rerank only.
-- **Database: Supabase (Postgres + pgvector)** — stores sessions, choices, the curated figures library, and unmet-match logs. Browser never talks to Supabase directly; all reads/writes go through Next.js API routes using the **service role key**. RLS on, default-deny for the anon role. pgvector extension for semantic figure retrieval at v2 scale.
+- **Database: Supabase (Postgres + pgvector)** — stores sessions, choices, the curated library (`figures` for thin identity, `figure_stages` for the actual retrievable unit — see *Stage-based chunking* below), embedding tables, and unmet-match logs. Browser never talks to Supabase directly; all reads/writes go through Next.js API routes using the **service role key**. RLS on, default-deny for the anon role. pgvector extension for semantic stage retrieval at v2 scale.
 
 ### High-level flow
 
@@ -38,27 +38,28 @@ This directory (`D:\code_save\onward`) is currently empty. Nothing to reuse — 
 │    1. Rate-limit by IP (5/hr, 30/day).                     │
 │    2. classifyCrisis(feeling). If crisis → return          │
 │       resources, persist nothing.                          │
-│    3. Hard filter: figures within ±3 years of user_age,    │
-│       status='published'.                                  │
+│    3. Filter: figure_stages with age range overlapping     │
+│       user_age (wide hard gate), status='published'.       │
+│       Soft age penalty applied later in scoring.           │
 │    4. tagAndExpand(feeling) → { tags, expansion, anchors,  │
 │       confidence } | null. Best-effort, hard-fail-fast.    │
 │    5. Retrieval:                                           │
-│       v1 (≤20 figures or stub embedder):                   │
+│       v1 (≤20 stages or stub embedder):                    │
 │         pass filtered candidates straight to rerank.       │
-│       v2 (>20 figures, real embedder):                     │
-│         hybrid — embed(raw feeling) and embed(expansion)   │
-│         as RETRIEVAL_QUERY, search per-sentence document   │
-│         vectors, aggregate sentence-level hits per figure  │
-│         (max + α·second_max), RRF-fuse raw vs expansion    │
-│         lanes, take top 10.                                │
+│       v2 (>20 stages, real embedder):                      │
+│         multi-lane FacetsRAG (shape + 4 facets + theme)    │
+│         over the stages pool, per-lane quotas, dynamic-    │
+│         weighted RRF, age soft penalty after RRF, top-K    │
+│         to rerank.                                         │
 │    6. Rerank (GPT-OSS 120B): reads raw feeling +           │
-│       candidates' biographical_facts. NEVER sees tags,     │
-│       expansion, or shape_sentences. Returns figureKey,    │
-│       resonance, gap, confidence.                          │
+│       candidate stages' biographical_facts. NEVER sees     │
+│       tags, expansion, or shape_sentences. Returns         │
+│       (figureKey, stageId), resonance, gap, confidence.    │
 │    7. If confidence: low → log to match_misses,            │
 │       framing="partial". Else framing="definitive".        │
-│    8. db.createSession() → sessionId.                      │
-│    9. Return { sessionId, figure, outline, framing }.      │
+│    8. db.createSession() → sessionId. (FK to               │
+│       figure_stages.)                                      │
+│    9. Return { sessionId, figure, stage, outline, framing }.│
 │                                                            │
 │  Story player reveals beats one at a time.                 │
 │   - Opening copy diverges by framing:                      │
@@ -68,36 +69,58 @@ This directory (`D:\code_save\onward`) is currently empty. Nothing to reuse — 
 │   - DECISION beat: show 2-3 options, user picks.           │
 │                                                            │
 │  POST /api/beat / /api/choose                              │
-│    → Llama 3.3 70B streams beat prose. Beats 1-8 read      │
-│      deterministic content from figure.beats. Beat 9       │
-│      ("bridge to you") is the only freely-generated beat;  │
-│      weaves the user's intake words back into the lesson.  │
+│    → Llama 3.3 70B streams beat prose. All beats except    │
+│      the final "bridge to you" read deterministic content  │
+│      from figure_stages.beats; bridge is the only freely-  │
+│      generated beat, weaving the user's intake words back  │
+│      into the lesson.                                      │
 │                                                            │
 └────────────────────────────────────────────────────────────┘
 ```
 
-### Beat structure (the canonical arc)
+### Beat structure — `arc_variant` determines count, `role` determines validation
+
+Each `figure_stages` row declares its `arc_variant`: `"double_fork"` (canonical, 9 beats) or `"single_fork"` (integrity fallback, 8 beats). Use `double_fork` only when both forks are historically documented **and** the second fork's outcome is, or directly causes, the turn. Beat 7's reveal-as-turn merge depends on that causal link; without it, the structure feels forced. Use `single_fork` when either condition fails: only one strong historically-documented decision, or the real turn was not a decision (external event, gradual realization, time). **Forbidden:** zero forks (defeats the agency contract that hurting people came for) or three-plus forks (decision fatigue). **Health band:** 10–30% `single_fork` across the published library — below means editors are forcing second forks, above means the library is light on documented agency. Surface this as an eval metric (`pct_single_fork_stages`).
+
+**Canonical (`double_fork`), 9 beats:**
 
 1. **Scene** (narrative) — figure at the user's exact age, the world they're in.
 2. **The dark moment** (narrative) — mirrors the user's intake feeling.
-3. **First fork** (decision) — a real fork-point in the figure's life. User picks.
+3. **First fork** (decision) — a real fork-point. User picks.
 4. **What they actually did** (narrative) — confirms or gently contrasts with the user's pick.
 5. **The struggle** (narrative) — the slog, doubt, setbacks.
 6. **Second fork** (decision) — another pivotal real moment.
-7. **The turning point** (narrative) — what shifted.
-8. **What they became** (narrative) — the legacy in one short paragraph.
+7. **The turning point** (narrative) — what shifted; also the reveal of fork 2 (the figure's last choice IS the turn — that's why this lands at 9 beats, not 10). If the real turn wasn't caused by a decision, this merge cannot happen; use `single_fork` instead.
+8. **What they became** (narrative) — what they became *out of this episode*, in one short paragraph.
 9. **Bridge to you** (narrative, second-person) — personalized closing.
 
+**Integrity fallback (`single_fork`), 8 beats** — used when the biography supports only one strong real decision, or when the real turn was not caused by a decision:
+
+1. **Scene** (narrative)
+2. **The dark moment** (narrative)
+3. **Fork** (decision) — the one real fork-point.
+4. **What they actually did** (narrative) — reveal of the fork.
+5. **The struggle** (narrative)
+6. **The turning point** (narrative) — separate beat (something shifted that wasn't a decision: realization, encounter, time, slow-burn fracture finally breaking).
+7. **What they became** (narrative)
+8. **Bridge to you** (narrative, second-person)
+
+Beats are stored 0-indexed in `beats jsonb`, each carrying both **`kind`** (`narrative | decision | bridge` — drives player rendering) and **`role`** (`scene | dark_moment | fork | reveal | struggle | turning_point | became | bridge` — drives validation). *Role = narrative structure; kind = UI/player behavior.* The player keys on `kind` (does this beat show options or not?); validation keys on `role` (is this beat in the right slot for this `arc_variant`?). Index-based validation alone misses the case where an editor swaps two narrative beats; role-based catches it.
+
 Decision beats use **truthful history**: the user picks; the next beat reveals what really happened. When the user's pick matches reality, that's affirming. When it differs, the narrative says "you would have stopped here — they didn't, and this is why," which is often more powerful than a match. This has to be the design philosophy because the figure is real; we don't fabricate alternate histories.
+
+**Beat count is never exposed to the user** — no progress bar, no "beat 4 of 9." The user presses Continue, the journey is whatever length it is. "What they became" is scoped to *this episode*, not whole-life legacy — the bridge handles connection back to the user. Multi-stage figures (v2) reuse the same arc shape per stage; a 70-year-old figure does not become a single 50-year telescoped beat 8.
 
 ### Matching architecture (RAG, two-stage)
 
 The whole product hinges on matching a user's specific feeling to a real figure. Lazy matches kill the app. The architecture splits the matching problem into stages so each stage uses the right tool.
 
-**Curated figure library (Supabase `figures` table).** Every figure has two distinct text fields, deliberately separated:
+**Stage-based chunking — the retrievable unit.** The retrievable unit is the `figure_stages` row, not the `figures` row. A *stage* is one *emotional episode organized around one down moment* — not an age period or demographic life-phase. `figures` is thin identity (`key`, `display_name`, optional birth/death years); all matching surfaces live on `figure_stages`. Age range is a *consequence* of when the episode happened (`stage.age_min`, `stage.age_max`), not the separator between matchable units. The editorial test for "is this one stage?" is whether you can write one clean through-line sentence at `shape_sentences[0]`; if you can't, it's actually two stages and should be split. v1 ships one stage per figure; v2 expands to multi-stage figures as content expansion (additive — no schema migration, just additional rows). Multi-stage softens the cultural-canon problem at the same time: famous figures stay matchable but on their less-told episodes ("Lincoln in his 30s, when his career stalled" not "Lincoln").
 
-- `shape_sentences[]` — 2–3 short, sensory sentences capturing the figure's emotional shape at the relevant age. _Llama-drafted, human-polished (≈5 min/figure)._ Each sentence is embedded individually (one row per sentence in `figure_shape_embeddings`) with `task_type=RETRIEVAL_DOCUMENT` / `input_type=document`, then L2-normalized at write time. **Used only for retrieval.**
-- `biographical_facts` — a hand-curated factual paragraph from primary sources (dates, quotes from real letters, named events). **Used only for rerank prompting and beat generation.**
+**Curated stage library (Supabase `figure_stages` table).** Every stage has two distinct text fields, deliberately separated:
+
+- `shape_sentences[]` — 2–3 short, sensory sentences capturing the figure's emotional shape during *this episode*. `shape_sentences[0]` is the editorial through-line by convention — the one-sentence summary that decides whether this is one stage or two. _Llama-drafted, human-polished (≈8–10 min/stage)._ Each sentence is embedded individually (one row per sentence in `figure_shape_embeddings`) with `task_type=RETRIEVAL_DOCUMENT` / `input_type=document`, then L2-normalized at write time. **Used only for retrieval.**
+- `biographical_facts` — a hand-curated factual paragraph from primary sources (dates, quotes from real letters, named events), scoped to this episode. **Used only for rerank prompting and beat generation.**
 
 The split is the architectural anti-echo defense: the rerank LLM never sees the same text the embedding step saw. If shapes were both embedded _and_ shown to the rerank LLM, we'd be asking the LLM to confirm what cosine similarity already said — redundant and biased toward Llama's writing style.
 
@@ -105,19 +128,19 @@ The split is the architectural anti-echo defense: the rerank LLM never sees the 
 
 | Stage                      | Library size                | What runs                                                                                                                                                                                                                                                                                                                                                               | Why                                                                                                                                                                                                                                               |
 | -------------------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Filter                     | any                         | SQL: `WHERE age_min <= user_age AND age_max >= user_age AND status='published'`                                                                                                                                                                                                                                                                                         | Hard age constraint — the entire premise is "at the same age." Cheap, deterministic.                                                                                                                                                              |
+| Filter                     | any                         | SQL on `figure_stages`: wide age hard gate (range overlap with user_age, plus tolerance) AND `status='published'`. Soft age penalty applied later in Stage-B scoring (see *Soft age filter*).                                                                                                                                                                            | Wide hard gate prevents biographically-impossible matches; soft penalty inside the gate keeps near-age stages with strong emotional fit reachable. Pure hard filter loses recovery; pure soft filter violates recovery-asymmetry by letting impossible matches through.                                                                                                                                          |
 | Tag & expand               | any                         | Llama 3.1 8B turns raw feeling into `{ tags, expansion, anchors, confidence }`. Hard-failure rules; null result is fine.                                                                                                                                                                                                                                                | The user's surface words may not match the domain vocabulary the figures are written in. Expansion bridges that gap, with `anchors` grounding it to verbatim user phrases.                                                                        |
-| Multi-lane retrieval (v2 only) | >20 figures + real embedder | Tagger emits a `FacetSignal` including per-facet **query projections** (figure-neutral sentences, anchor-substantiated). Each lane runs an age/status-filtered vector search against its own typed corpus: shape (raw user feeling, optionally expansion as ablation), four facet lanes (each typed projection if non-null, else raw user feeling), plus a deterministic theme/antiTheme lane. Stage A — every lane contributes its top-N **post-filter** to a deduped pool unconditionally (per-lane quotas in `match-config.ts`). Stage B — dynamic-weighted RRF over the deduped pool selects top-K (default 12, eval-tunable to 15) for rerank. Aggregation within a lane is max-not-mean (`score = max_s sim(q,s) + α·second_max_s sim(q,s)`, α≈0.15). | Per-lane query/document space alignment beats single-query retrieval on short, metaphor-heavy inputs. Quotas honor the recovery-asymmetry rule: a strong-on-one-lane figure cannot be excluded by elegant weighting; rerank can only correct candidates that reach the pool. The deterministic theme lane is a stable floor under LLM-driven lanes when those wobble. **BM25 is intentionally excluded** — short emotional disclosures are dominated by metaphor tokens, and lexical overlap against literal `biographical_facts` produces metaphor↔literal collisions that RRF cannot down-weight. |
-| Rerank                     | any                         | GPT-OSS 120B reads RAW feeling + candidates' `biographical_facts` + grading scalars (`narrativeDynamism`, `canonExposure`). Returns `{ figureKey, resonance, gap, confidence }`.                                                                                                                                                                                        | Tagger output never reaches this stage. Rerank is grounded on what the user actually said; tags would propagate stage-1 bias into stage 2.                                                                                                        |
+| Multi-lane retrieval (v2 only) | >20 stages + real embedder | Tagger emits a `FacetSignal` including per-facet **query projections** (figure-neutral sentences, anchor-substantiated). Each lane runs an age/status-filtered vector search over `figure_stages` rows against its own typed corpus: shape (raw user feeling, optionally expansion as ablation), four facet lanes (each typed projection if non-null, else raw user feeling), plus a deterministic theme/antiTheme lane. Stage A — every lane contributes its top-N **post-filter** to a deduped pool unconditionally (per-lane quotas in `match-config.ts`). Stage B — dynamic-weighted RRF over the deduped pool, age soft penalty applied to each candidate's blended score, select top-K (default 12, eval-tunable to 15) for rerank. Aggregation within a lane is max-not-mean (`score = max_s sim(q,s) + α·second_max_s sim(q,s)`, α≈0.15). | Per-lane query/document space alignment beats single-query retrieval on short, metaphor-heavy inputs. Quotas honor the recovery-asymmetry rule: a strong-on-one-lane stage cannot be excluded by elegant weighting; rerank can only correct candidates that reach the pool. The deterministic theme lane is a stable floor under LLM-driven lanes when those wobble. **BM25 is intentionally excluded** — short emotional disclosures are dominated by metaphor tokens, and lexical overlap against literal `biographical_facts` produces metaphor↔literal collisions that RRF cannot down-weight. |
+| Rerank                     | any                         | GPT-OSS 120B reads RAW feeling + candidate stages' `biographical_facts` + grading scalars (`narrativeDynamism`, `canonExposure`). Returns `{ figureKey, stageId, resonance, gap, confidence }`.                                                                                                                                                                          | Tagger output never reaches this stage. Rerank is grounded on what the user actually said; tags would propagate stage-1 bias into stage 2.                                                                                                        |
 | Miss log + framing         | confidence: low             | Insert into `match_misses`; set `framing: "partial"` so the UI tells the user honestly.                                                                                                                                                                                                                                                                                 | A weak match presented as a definitive mirror corrodes trust faster than no match.                                                                                                                                                                |
 
-**v1 simplification:** when the library is ≤20 figures or the embedder is the stub, the SQL filter typically returns most of the library anyway. Skip vector retrieval entirely — shape AND facet lanes both stay dormant — and pass all filtered candidates straight to the rerank LLM. `figure_shape_embeddings` and `figure_facet_embeddings` stay empty until library grows past ~20 AND a real embedder is configured, at which point `scripts/reembed.ts` backfills.
+**v1 simplification:** when the library is ≤20 stages or the embedder is the stub, the SQL filter typically returns most of the library anyway. Skip vector retrieval entirely — shape AND facet lanes both stay dormant — and pass all filtered candidates straight to the rerank LLM. The age soft penalty still applies as a final score adjustment so age-near stages outrank age-far ones. `figure_shape_embeddings` and `figure_facet_embeddings` stay empty until library grows past ~20 AND a real embedder is configured, at which point `scripts/reembed.ts` backfills.
 
-### FacetsRAG — typed facet micro-documents per figure
+### FacetsRAG — typed facet micro-documents per stage
 
-Layered onto shape-sentence retrieval. Each figure carries five typed facet rows in addition to its `shape_sentences`; each facet is its own embedding, retrieved on its own lane, then weight-fused into one dense rank. Facets add interpretability and improve retrieval recall on dimensions that pure shape retrieval blurs: same trigger, different emotional core; same emotional core, different decision shape.
+Layered onto shape-sentence retrieval. Each *stage* (the retrievable unit) carries five typed facet rows in addition to its `shape_sentences`; each facet is its own embedding, retrieved on its own lane, then weight-fused into one dense rank. Facets add interpretability and improve retrieval recall on dimensions that pure shape retrieval blurs: same trigger, different emotional core; same emotional core, different decision shape.
 
-**The load-bearing rule (do not loosen without re-deriving everything below):** _retrieval failures are unrecoverable; rerank failures are correctable._ If wrong dynamic weights push the correct figure out of the top-12 shortlist, rerank never sees it — game over. If a missed boost demotes the correct figure from rank 3 to rank 8, rerank still gets it and recovers. This asymmetry is why every v1 number below is conservative: passive λ, tight bounds, strict gates. Future tuning may loosen specific constants if eval data justifies it; the asymmetry rule itself does not loosen.
+**The load-bearing rule (do not loosen without re-deriving everything below):** _retrieval failures are unrecoverable; rerank failures are correctable._ If wrong dynamic weights push the correct stage out of the top-12 shortlist, rerank never sees it — game over. If a missed boost demotes the correct stage from rank 3 to rank 8, rerank still gets it and recovers. This asymmetry is why every v1 number below is conservative: passive λ, tight bounds, strict gates. Future tuning may loosen specific constants if eval data justifies it; the asymmetry rule itself does not loosen.
 
 **Five facets — start small, expand only on eval evidence:**
 
@@ -139,7 +162,7 @@ Layered onto shape-sentence retrieval. Each figure carries five typed facet rows
 - No proper names unless absolutely needed — use "he"/"she" so the facet generalizes.
 - No abstract diagnosis words ("depression", "trauma", "anxiety disorder") unless the term is in `lib/themes.ts`.
 - Concrete but not overloaded — one specific image or one specific tension per facet, not three.
-- **Substantiability:** every facet must be supported by a passage in `biographical_facts`. If a facet says something the source paragraph doesn't establish, either add the fact or rewrite the facet.
+- **Substantiability:** every facet must be supported by a passage in the stage's `biographical_facts`. If a facet says something the source paragraph doesn't establish, either add the fact or rewrite the facet.
 
 Example:
 
@@ -256,7 +279,7 @@ Bounded normalization is mandatory: clamp to `[min, max]` → renormalize to sum
 
 1. **Tag & project.** Tagger emits a `FacetSignal` including per-facet **query projections** (figure-neutral sentences, anchor-substantiated; see *Facet query projection* below). Projection-validation failure on any facet → that facet's projection is null and that lane falls back to the raw user feeling as its query.
 
-2. **Stage A — pool entry (per-lane quotas, unconditional).** Each lane runs an **age/status-filter-aware** vector search and contributes its top-N **post-filter** to a deduped pool. Quotas are *post-filter* by definition — implementations either pre-filter inside the HNSW scan (preferred, via pgvector iterative scan) or overfetch by ~3× and post-filter; the constant in `match-config.ts` is the post-filter target.
+2. **Stage A — pool entry (per-lane quotas, unconditional).** Each lane runs a vector search over `figure_stages` rows pre-filtered by the wide age hard gate and `status='published'`, and contributes its top-N **post-filter** to a deduped pool. Quotas are *post-filter* by definition — implementations either pre-filter inside the HNSW scan (preferred, via pgvector iterative scan) or overfetch by ~3× and post-filter; the constant in `match-config.ts` is the post-filter target.
 
    | Lane | Query | Quota (post-filter) |
    |---|---|---|
@@ -267,28 +290,30 @@ Bounded normalization is mandatory: clamp to `[min, max]` → renormalize to sum
    | `agency_state` | same pattern | 15 |
    | theme | deterministic weighted Jaccard with antiTheme penalty (no embedder) | 20 |
 
-   Each lane aggregates within itself max-not-mean: `score(figure, lane) = max_s sim(q,s) + α·second_max_s sim(q,s)` (α≈0.15, eval-tunable). Pool deduplicates by `figure_key`; expected pool size ~50–80 unique figures.
+   Each lane aggregates within itself max-not-mean: `score(stage, lane) = max_s sim(q,s) + α·second_max_s sim(q,s)` (α≈0.15, eval-tunable). Pool deduplicates by `(figure_key, stage_id)`; expected pool size ~50–80 unique stages.
 
-3. **Stage B — final selection (dynamic-weighted RRF over the deduped pool).** Per-lane importance from `FacetSignal` is blended with `BASE_WEIGHTS` per the bounded λ formula. Final rank = Σ_lane (weight_lane / (k + rank_in_lane)), default k=60. Output top-K to rerank: K=12 by default, eval-test up to K=15 once richer retrieval lands.
+3. **Stage B — final selection (dynamic-weighted RRF over the deduped pool, with age soft adjustment).** Per-lane importance from `FacetSignal` is blended with `BASE_WEIGHTS` per the bounded λ formula. Final rank = Σ_lane (weight_lane / (k + rank_in_lane)), default k=60. The age adjustment (proportional to distance from `stage.age_min`/`age_max`, capped — see *Soft age filter* below) is applied as a score adjustment per candidate, *not* added as a sixth FacetsRAG lane (keeps the lane mix clean and the adjustment independent of FacetsRAG weights). The exact function is scale-calibrated in `lib/match-config.ts` and version-stamped via `matchConfigVersion`. Output top-K to rerank: K=12 by default, eval-test up to K=15 once richer retrieval lands.
 
 4. **Rerank.** GPT-OSS reads raw feeling + candidates' `biographical_facts` + grading scalars only. Tagger output, projections, anchors, theme tags, lane weights, expansion text — none reach the reranker. Anti-echo extends across both stages.
 
 **Why two stages, not one.** Quotas honor recovery-asymmetry: a strong-on-one-lane figure cannot be excluded from the pool by elegant weighting (Stage A is unconditional). Stage B is allowed clever ranking because rerank still recovers candidates within the pool. Compressing this into a single weighted-sum stage re-introduces the failure mode the asymmetry rule was drawn to avoid.
 
-**Wide candidate recall, narrow rerank input.** ~50–80 unique figures pool → top-12 (or top-15) to rerank. Cutting per-lane quotas below the listed values risks dropping the correct figure that ranked moderate on the dominant lane. Cost: ~6 HNSW queries × ~50 ms + ~5 ms theme-Jaccard = ~300 ms.
+**Wide candidate recall, narrow rerank input.** ~50–80 unique stages pool → top-12 (or top-15) to rerank. Cutting per-lane quotas below the listed values risks dropping the correct stage that ranked moderate on the dominant lane. Cost: ~6 HNSW queries × ~50 ms + ~5 ms theme-Jaccard = ~300 ms.
+
+**Soft age filter (post-RRF, pre-rerank).** Each `figure_stages` row carries `age_min`/`age_max` — the documented age range of the episode. Match-time has two layers: a *wide* hard gate (range overlap with user_age plus a tolerance, ≈±10 years from the range edges, eval-tunable) excludes only stages whose mismatch is extreme; inside the gate, age contributes a soft adjustment proportional to distance from the stage's range, capped. The adjustment is applied once per candidate after Stage-B RRF blending and before rerank — *not* added as a sixth FacetsRAG lane and does not affect per-lane quotas (keeps the lane mix clean and the adjustment independent of FacetsRAG weights). The exact function (multiplicative on blended score, rank-additive, or calibrated additive) is scale-calibrated in `lib/match-config.ts` and version-stamped via `matchConfigVersion`. *Why both gate and adjustment:* pure soft filter (no hard gate) violates recovery-asymmetry by letting biographically-impossible matches sneak in; pure hard filter (no soft adjustment) loses near-age stages whose emotional fit is strong. Both together get wide reach without losing discipline. *Why not prescribe the math here:* RRF scores are small and scale-dependent (≈0.005–0.020 per candidate after weighted blending), so a fixed additive constant could dominate or under-influence the retrieval signal depending on lane count and pool size — picking the function before score distributions are visible would freeze a guess as a constraint. A bad adjustment constant is recoverable inside rerank's top-K; a hard age gate that's too tight is not.
 
 **Theme lane and antiThemes — deterministic editorial signal.** The theme lane is the only retrieval lane that does not use an embedder. It exists because hand-curated semantic structure (which figures are *about* `worthlessness` vs `creative_dismissal` vs `grief_loss_of_parent`) survives when the LLM-driven lanes wobble: tagger drift, embedder swap, projection failure. Deterministic, fast, debuggable.
 
-- `figures.themes: string[]` — positive: what this figure is about. Drawn from the controlled vocabulary in `lib/themes.ts`.
-- `figures.antiThemes: string[]` (optional) — neighboring themes the editor flagged as confusable-but-distinct. Encodes "this figure looks like X but is actually Y" judgment that no embedder can infer from text.
+- `figure_stages.themes: string[]` — positive: what this stage is about. Drawn from the controlled vocabulary in `lib/themes.ts`.
+- `figure_stages.antiThemes: string[]` (optional) — neighboring themes the editor flagged as confusable-but-distinct. Encodes "this stage looks like X but is actually Y" judgment that no embedder can infer from text.
 - Tagger emits user theme tags from the same controlled vocabulary; tags are derived from anchored user phrases.
 
 Score, capped to prevent editorial tags from overpowering the dense lanes:
 
 ```
 themeScore = clamp(
-  weightedJaccard(userThemes, figure.themes)
-    − λ · weightedJaccard(userThemes, figure.antiThemes),
+  weightedJaccard(userThemes, stage.themes)
+    − λ · weightedJaccard(userThemes, stage.antiThemes),
   -0.25,
   0.35
 )
@@ -298,7 +323,7 @@ themeScore = clamp(
 
 **antiThemes never hard-exclude.** They are *only* a Stage-B scoring penalty. A bad antiTheme is recoverable if the figure still reaches rerank via shape or facet lanes; a hard exclusion is not. This is the recovery-asymmetry rule applied to the editorial signal.
 
-**Population discipline.** `antiThemes` is populated only when (a) an editor encountered a confusion case while seeding ("this figure looks like X but is actually Y"), or (b) eval surfaced a confusion *this specific figure* caused. Pre-filling from a "themes commonly confused with this one" matrix is forbidden — it bloats editorial cost and freezes guesses as data. Default empty.
+**Population discipline.** `antiThemes` is populated only when (a) an editor encountered a confusion case while seeding ("this stage looks like X but is actually Y"), or (b) eval surfaced a confusion *this specific stage* caused. Pre-filling from a "themes commonly confused with this one" matrix is forbidden — it bloats editorial cost and freezes guesses as data. Default empty.
 
 **Expansion as an explicit ablation — eval-pending, not eval-decided.** Once facet query projection is in place, the original `expansion` text (a single holistic paraphrase of the user feeling, embedded as a second shape-lane query) does work that overlaps with the per-lane projections. The plan does not pre-decide whether to keep both, drop expansion, or drop projections — three configs are graded against the eval set:
 
@@ -314,14 +339,17 @@ A FacetsRAG-positive result requires top-1 accuracy improving AND near-miss conf
 
 **Seed/publish gates** (enforced in `scripts/check-figure.ts` + `scripts/seed-figure.ts`):
 
-- `figure.shapeSentences.length` in `[2, 3]`
-- All four `figures.facets.*` keys present and non-empty (`emotional_core`, `decision_shape`, `trigger_event`, `agency_state`)
-- An embedding row exists for the active `model_id` for shape AND every facet
-- Every embedded row's `content_hash` matches its current source text
+- `stage.shapeSentences.length` in `[2, 3]`; `shape_sentences[0]` is the through-line and must stand alone as one clean sentence (the "is this one stage?" test — failure means split into two stages).
+- All four `figure_stages.facets.*` keys present and non-empty (`emotional_core`, `decision_shape`, `trigger_event`, `agency_state`).
+- Each facet substantiable from the stage's `biographical_facts`.
+- `arc_variant ∈ {single_fork, double_fork}` and `beats.length` matches the variant: 8 for `single_fork`, 9 for `double_fork`.
+- Every beat carries `kind` and `role`; the role at each index matches the expected role for the declared `arc_variant` (role-based, variant-aware validation — catches swapped-narrative-beat editorial errors that index-based validation alone would miss).
+- An embedding row exists for the active `model_id` for shape AND every facet, keyed on `(figure_key, stage_id, ...)`.
+- Every embedded row's `content_hash` matches its current source text.
 
-Missing any of these → seed fails. No `--force` override. Facet integrity is a publish-time concern, not a runtime one.
+Missing any of these → seed fails. No `--force` override. Stage integrity is a publish-time concern, not a runtime one.
 
-**Runtime soft-fail + editorial feedback loop.** If a published figure is somehow missing a facet at match time (publish-gate bypass, partial migration, embedder rollout in progress), the matcher fails soft: upsert a row in `figure_editorial_warnings` (deduplicated on `(figure_key, warning_type, active_model_id)`) and exclude that figure from the affected facet lane only. It still participates via the shape lane, the theme lane, and any other facet lanes for which a valid embedding exists. Serving stays reliable; the bad row surfaces for editorial repair. Warnings live in their own table so the figures row stays read-only on the hot match path.
+**Runtime soft-fail + editorial feedback loop.** If a published stage is somehow missing a facet at match time (publish-gate bypass, partial migration, embedder rollout in progress), the matcher fails soft: upsert a row in `figure_editorial_warnings` (deduplicated on `(figure_key, stage_id, warning_type, active_model_id)`) and exclude that stage from the affected facet lane only. It still participates via the shape lane, the theme lane, and any other facet lanes for which a valid embedding exists. Serving stays reliable; the bad row surfaces for editorial repair. Warnings live in their own table so the `figure_stages` row stays read-only on the hot match path.
 
 **Production trace fields on every match** — the schema is *string-hostile* (see *Privacy taint model*). Every field is `SafeOperational` or `SafeIdentifier`; nothing user-derived crosses into the trace surface without explicit reduction to counts, booleans, or buckets:
 
@@ -500,7 +528,7 @@ Sample system prompt fragment:
 >
 > _Before committing, articulate two things: (1) the strongest reason this match resonates with the user's specific words, and (2) the strongest gap — what's in the user's words that this figure's struggle does NOT cover. Then commit, even if (2) is non-trivial. Do not refuse to pick._
 
-**Role 2 — Narrative beat streaming (Llama 3.3 70B).** Reads the figure's `biographical_facts` + the canonical beat blueprint (title, kind, the deterministic content for narrative beats from `figure.beats`) + the user's choices so far. Streams the beat. Persona-anchor system prompt is non-negotiable — Llama-without-persona produces decent prose; Llama-with-persona produces the prose this app actually needs:
+**Role 2 — Narrative beat streaming (Llama 3.3 70B).** Reads the matched stage's `biographical_facts` + the canonical beat blueprint (`kind`, `role`, the deterministic content for narrative beats from `figure_stages.beats`) + the user's choices so far. Streams the beat. Persona-anchor system prompt is non-negotiable — Llama-without-persona produces decent prose; Llama-with-persona produces the prose this app actually needs:
 
 > _You are a quiet historian writing one short chapter of a printed book. Constraints, all binding:_
 > _— Short sentences. Concrete sensory detail (the cold of the gallery doorknob, the smell of his brother's letter). Internal states shown through small actions, never labeled. Not "he felt ashamed." Yes "he kept his hat on."_
@@ -508,7 +536,7 @@ Sample system prompt fragment:
 > _— Never explain why you're telling this story. Never address the reader directly except in the final beat._
 > _— Treat the page as paper. You have one chance._
 
-**Role 3 — Bridge beat (Llama 3.3 70B, same persona + bridge addendum).** This is the only beat where new prose is generated freely (beats 1–8 use deterministic content from `figure.beats`, polished by the LLM as it streams). The bridge addendum:
+**Role 3 — Bridge beat (Llama 3.3 70B, same persona + bridge addendum).** This is the only beat where new prose is generated freely (other beats use deterministic content from `figure_stages.beats`, polished by the LLM as it streams). The bridge addendum:
 
 > _This final passage speaks directly to the reader, in second person. Weave the reader's own words (provided below verbatim) back into the figure's lesson — not by quoting them, but by echoing their shape. Two short paragraphs. End on a sentence the reader can carry with them, not a moral._
 >
@@ -516,7 +544,7 @@ Sample system prompt fragment:
 
 ### Decision-beat truthful-history rule (unchanged)
 
-Decision beats use **truthful history**: the user picks; the next beat reveals what really happened. When the user's pick matches reality, that's affirming. When it differs, the narrative says "you would have stopped here — they didn't, and this is why," which is often more powerful than a match. We don't fabricate alternate histories. The figure's `decision_continuations` JSONB field stores per-option continuations, with `realChoice` flagging which option matches reality.
+Decision beats use **truthful history**: the user picks; the next beat reveals what really happened. When the user's pick matches reality, that's affirming. When it differs, the narrative says "you would have stopped here — they didn't, and this is why," which is often more powerful than a match. We don't fabricate alternate histories. The stage's `decision_continuations` JSONB field stores per-option continuations, with `realChoice` flagging which option matches reality.
 
 ### LLM stubbing (v1) and the provider toggle
 
@@ -524,13 +552,14 @@ The LLM layer lives behind one interface in `lib/llm.ts`:
 
 ```ts
 export interface LLM {
-  // Role 1: pick the best figure from candidates (GPT-OSS in real mode)
+  // Role 1: pick the best stage from candidates (GPT-OSS in real mode)
   pickFigure(input: {
     age: number;
     feeling: string;
-    candidates: FigureRow[]; // already filtered by age
+    candidates: FigureStageRow[]; // already filtered by wide age hard gate
   }): Promise<{
     figureKey: string;
+    stageId: string;
     resonance: string;
     gap: string;
     confidence: "low" | "medium" | "high";
@@ -539,7 +568,7 @@ export interface LLM {
   // Role 2/3: stream a beat (Llama in real mode). beat.kind === "bridge" triggers the addendum.
   streamBeat(args: {
     session: Session;
-    figure: FigureRow;
+    stage: FigureStageRow;
     beat: BeatBlueprint;
     userChoice?: string;
   }): AsyncIterable<string>;
@@ -561,13 +590,13 @@ The embedding provider switches via `EMBEDDING_PROVIDER=stub | gemini | voyage` 
 
 **Stub mode (`LLM_PROVIDER=stub`, default):**
 
-- `pickFigure` does keyword routing on the candidate set's `themes[]` arrays — `achievement|nothing` → prefer figures tagged `worthlessness`, `art|reject` → `creative_dismissal`, `grief|loss` → `grief_loss_of_parent`. If no theme hits, return the candidate with `age_at_struggle` closest to `user_age`.
-- `streamBeat` reads `figure.beats[beatIndex].text` (or the user-choice continuation from `figure.decision_continuations`) and yields word-by-word with `await sleep(40)`. Real streaming, not fake-after-the-fact.
+- `pickFigure` does keyword routing on the candidate stages' `themes[]` arrays — `achievement|nothing` → prefer stages tagged `worthlessness`, `art|reject` → `creative_dismissal`, `grief|loss` → `grief_loss_of_parent`. If no theme hits, return the candidate stage whose `age_min`/`age_max` center is closest to `user_age`.
+- `streamBeat` reads `stage.beats[beatIndex].text` (or the user-choice continuation from `stage.decision_continuations`) and yields word-by-word with `await sleep(40)`. Real streaming, not fake-after-the-fact.
 - The bridge beat in stub mode uses a templated string with the user's feeling spliced in at one location — enough to test the wiring; the real bridge prose only appears in `LLM_PROVIDER=real`.
 
 **Real mode (`LLM_PROVIDER=real`):**
 
-- `pickFigure` calls Groq's GPT-OSS 120B (`reasoning_effort: low`) with the rerank system prompt + candidate `biographical_facts` (NOT `shape_sentences` — the data echo defense).
+- `pickFigure` calls Groq's GPT-OSS 120B (`reasoning_effort: low`) with the rerank system prompt + candidate stages' `biographical_facts` (NOT `shape_sentences`, NOT facet text — the data echo defense).
 - `streamBeat` calls Groq's Llama 3.3 70B with the persona-anchor system prompt and the figure context.
 
 **Crisis classifier** stays a regex check in `lib/safety.ts` regardless of provider — it's deliberately not LLM-based to avoid latency and false-negative risk.
@@ -647,8 +676,8 @@ onward/
 
 Acceptance criteria (highlights):
 
-1. `npm run dev`, open `http://localhost:3000`. With `LLM_PROVIDER=stub` and a seeded `figures` table, the full flow should work end-to-end.
-2. "17, no achievements" → match lands on a figure tagged `worthlessness` or `no_achievements`. Walk all 9 beats; 2–3 decision beats appear; opposite-of-real picks open with contrast wording; final beat references the user's words.
+1. `npm run dev`, open `http://localhost:3000`. With `LLM_PROVIDER=stub` and seeded `figures` + `figure_stages` tables, the full flow should work end-to-end.
+2. "17, no achievements" → match lands on a stage tagged `worthlessness` or `no_achievements`. Walk all 8 or 9 beats (per the matched stage's `arc_variant`); 1 or 2 decision beats appear; opposite-of-real picks open with contrast wording; final beat references the user's words.
 3. Crisis-signal input → `<CrisisCard>` first; no `sessions` row written. Trace contains only `{ crisisDetected, crisisRegexVersion, latencyMs }`.
 4. Refresh mid-story → resumes from `last_beat_index`. Bad sessionId → "story has drifted away" empty state (404, not 500).
 5. **Anti-echo invariant (real mode)** — trace the rerank API call; request body contains `biographicalFacts`, never `shapeSentences`, never facet text, never tagger output.
@@ -662,9 +691,10 @@ Acceptance criteria (highlights):
 
 - Accounts and authenticated user histories (sessions are anonymous, addressable by id).
 - Sharing, public story pages.
-- Multiple figure suggestions (we commit to one match — indecision dilutes the emotional arc).
+- Multiple stage suggestions (we commit to one match — indecision dilutes the emotional arc).
 - Voice narration.
 - Encryption-at-rest for `feeling` (revisit if accounts are added).
-- An admin UI for figures and `match_misses` (raw Supabase dashboard is fine for a single editor).
+- An admin UI for figures, stages, and `match_misses` (raw Supabase dashboard is fine for a single editor).
 - A second eval set for prose quality (the persona-anchor compliance check). Style regex in `check-figure.ts` covers the cheap detection; deeper "show, don't tell" checking stays manual.
+- **Multi-stage figures** (deferred to v2 as a content-expansion task, not a v1 capability). One figure carrying multiple emotional episodes — e.g., "Lincoln in his 30s, when his career stalled" alongside "Lincoln during the war." v1 ships one stage per figure; v2 lets editors author additional stages over time without schema migration (additive rows). Two- and three-plus-fork variants beyond `single_fork` / `double_fork` (`"ambiguous_turn"` for figures whose turn is gradual, `"compressed_struggle"` for sparse middles, etc.) are also deferred behind eval evidence — a `arc_variant` value is added only when an existing variant demonstrably fails to capture a class of biographies.
 

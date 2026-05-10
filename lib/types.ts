@@ -24,6 +24,7 @@ export type BeatBlueprint =
   | {
       kind: "decision";
       role: BeatRole;
+      text: string;
       decisionContinuations: DecisionContinuation[];
       sourceNotes?: string;
     };

@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #faf7f2;
+  --color-ink: #1f1b16;
+  --color-ink-soft: #5a544c;
+  --color-accent: #9c6b3f;
+}
+
+:root {
+  --font-body-stack: var(--font-body), Georgia, "Times New Roman", serif;
+  --font-ui-stack: var(--font-ui), system-ui, -apple-system, sans-serif;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-body-stack);
+  line-height: 1.7;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea,
+label,
+.font-ui {
+  font-family: var(--font-ui-stack);
+}

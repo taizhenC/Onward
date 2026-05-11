@@ -74,6 +74,7 @@ export type Session = {
 
 export type MatchResponse =
   | { crisis: true; resources: string[] }
+  | { error: string }
   | { sessionId: string };
 
 export type ClientBeat =

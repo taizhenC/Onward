@@ -68,11 +68,24 @@ function scoreKeywords(stage: FigureStageRow, feeling: string): number {
   let score = 0;
 
   for (const [keyword, themes] of Object.entries(STUB_KEYWORD_MAP)) {
-    if (!normalizedFeeling.includes(keyword)) continue;
+    if (!hasKeyword(normalizedFeeling, keyword)) continue;
     score += themes.filter((theme) => stage.themes.includes(theme)).length;
   }
 
   return score;
+}
+
+function hasKeyword(normalizedFeeling: string, keyword: string): boolean {
+  const escapedKeyword = escapeRegExp(keyword.toLowerCase());
+  const pattern = keyword.includes(" ")
+    ? `(?<![a-z0-9])${escapedKeyword}(?![a-z0-9])`
+    : `\\b${escapedKeyword}\\b`;
+
+  return new RegExp(pattern, "i").test(normalizedFeeling);
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function compareScoredStages(a: ScoredStage, b: ScoredStage): number {

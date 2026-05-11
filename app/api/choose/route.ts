@@ -1,5 +1,5 @@
+import { jsonError } from "@/lib/api-utils";
 import { getByKey } from "@/lib/figures";
-import { streamBeat } from "@/lib/llm-stub";
 import { getSession, updateSession } from "@/lib/session";
 
 export const runtime = "nodejs";
@@ -8,10 +8,6 @@ type ChooseRequestBody = {
   sessionId?: unknown;
   beatIndex?: unknown;
   choice?: unknown;
-};
-
-const textHeaders = {
-  "content-type": "text/plain; charset=utf-8",
 };
 
 export async function POST(request: Request): Promise<Response> {
@@ -57,20 +53,11 @@ export async function POST(request: Request): Promise<Response> {
 
   const updated = updateSession(parsed.sessionId, {
     choices: { [parsed.beatIndex]: parsed.choice },
+    nextBeatIndex: parsed.beatIndex + 1,
   });
   if (!updated) return jsonError("Story session not found.", 404);
 
-  return new Response(
-    streamText(
-      streamBeat({ session: updated, beat, userChoice: parsed.choice }),
-      () => {
-        updateSession(parsed.sessionId, {
-          nextBeatIndex: parsed.beatIndex + 2,
-        });
-      },
-    ),
-    { headers: textHeaders },
-  );
+  return Response.json({ nextBeatIndex: parsed.beatIndex + 1 });
 }
 
 function parseChooseRequest(
@@ -101,29 +88,4 @@ function parseChooseRequest(
     beatIndex,
     choice,
   };
-}
-
-function streamText(
-  chunks: AsyncIterable<string>,
-  onComplete: () => void,
-): ReadableStream<Uint8Array> {
-  const encoder = new TextEncoder();
-
-  return new ReadableStream({
-    async start(controller) {
-      try {
-        for await (const chunk of chunks) {
-          controller.enqueue(encoder.encode(chunk));
-        }
-        onComplete();
-        controller.close();
-      } catch (error) {
-        controller.error(error);
-      }
-    },
-  });
-}
-
-function jsonError(message: string, status: number): Response {
-  return Response.json({ error: message }, { status });
 }

@@ -1,3 +1,8 @@
+import {
+  jsonError,
+  streamText,
+  textStreamHeaders,
+} from "@/lib/api-utils";
 import { getByKey } from "@/lib/figures";
 import { streamBeat } from "@/lib/llm-stub";
 import { getSession, updateSession } from "@/lib/session";
@@ -7,10 +12,6 @@ export const runtime = "nodejs";
 type BeatRequestBody = {
   sessionId?: unknown;
   beatIndex?: unknown;
-};
-
-const textHeaders = {
-  "content-type": "text/plain; charset=utf-8",
 };
 
 export async function POST(request: Request): Promise<Response> {
@@ -40,14 +41,25 @@ export async function POST(request: Request): Promise<Response> {
 
   const advanceTo =
     beat.kind === "decision" ? undefined : parsed.beatIndex + 1;
+  const previousBeat = stage.beats[parsed.beatIndex - 1];
+  const previousChoice = session.choices[parsed.beatIndex - 1];
+  const streamInput =
+    beat.role === "reveal" && previousBeat?.kind === "decision" && previousChoice
+      ? {
+          session,
+          beat: previousBeat,
+          userChoice: previousChoice,
+          fallbackText: beat.text,
+        }
+      : { session, beat };
 
   return new Response(
-    streamText(streamBeat({ session, beat }), () => {
+    streamText(streamBeat(streamInput), () => {
       if (advanceTo !== undefined) {
         updateSession(parsed.sessionId, { nextBeatIndex: advanceTo });
       }
     }),
-    { headers: textHeaders },
+    { headers: textStreamHeaders },
   );
 }
 
@@ -70,29 +82,4 @@ function parseBeatRequest(
   }
 
   return { sessionId, beatIndex };
-}
-
-function streamText(
-  chunks: AsyncIterable<string>,
-  onComplete: () => void,
-): ReadableStream<Uint8Array> {
-  const encoder = new TextEncoder();
-
-  return new ReadableStream({
-    async start(controller) {
-      try {
-        for await (const chunk of chunks) {
-          controller.enqueue(encoder.encode(chunk));
-        }
-        onComplete();
-        controller.close();
-      } catch (error) {
-        controller.error(error);
-      }
-    },
-  });
-}
-
-function jsonError(message: string, status: number): Response {
-  return Response.json({ error: message }, { status });
 }

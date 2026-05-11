@@ -7,14 +7,16 @@ export type StreamBeatInput = {
   session: Session;
   beat: BeatBlueprint;
   userChoice?: string;
+  fallbackText?: string;
 };
 
 export async function* streamBeat({
   session,
   beat,
   userChoice,
+  fallbackText,
 }: StreamBeatInput): AsyncIterable<string> {
-  const text = resolveBeatText({ session, beat, userChoice });
+  const text = resolveBeatText({ session, beat, userChoice, fallbackText });
 
   for (const chunk of toWordChunks(text)) {
     await sleep(WORD_DELAY_MS);
@@ -26,6 +28,7 @@ function resolveBeatText({
   session,
   beat,
   userChoice,
+  fallbackText,
 }: StreamBeatInput): string {
   if (beat.kind === "bridge") {
     return beat.text.replaceAll("{feeling}", session.feeling);
@@ -45,6 +48,7 @@ function resolveBeatText({
 
   return (
     continuation?.continuationText ??
+    fallbackText ??
     beat.decisionContinuations.find((candidate) => candidate.realChoice)
       ?.continuationText ??
     beat.text
@@ -52,7 +56,7 @@ function resolveBeatText({
 }
 
 function toWordChunks(text: string): string[] {
-  return text.match(/\S+\s*/g) ?? [];
+  return text.match(/\s*\S+/g) ?? [];
 }
 
 function sleep(ms: number): Promise<void> {

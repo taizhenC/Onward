@@ -12,6 +12,10 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError("Request body must be valid JSON.", 400);
   }
 
+  if (body === null || typeof body !== "object") {
+    return jsonError("Request body must be an object.", 400);
+  }
+
   const result = handleIntake(body);
 
   if ("error" in result) {

@@ -15,10 +15,10 @@ type BeatRequestBody = {
 };
 
 export async function POST(request: Request): Promise<Response> {
-  let body: BeatRequestBody;
+  let body: unknown;
 
   try {
-    body = (await request.json()) as BeatRequestBody;
+    body = await request.json();
   } catch {
     return jsonError("Request body must be valid JSON.", 400);
   }
@@ -64,10 +64,15 @@ export async function POST(request: Request): Promise<Response> {
 }
 
 function parseBeatRequest(
-  body: BeatRequestBody,
+  body: unknown,
 ): { sessionId: string; beatIndex: number } | { error: string } {
-  const sessionId = body.sessionId;
-  const beatIndex = body.beatIndex;
+  if (body === null || typeof body !== "object") {
+    return { error: "Request body must be an object." };
+  }
+
+  const candidate = body as BeatRequestBody;
+  const sessionId = candidate.sessionId;
+  const beatIndex = candidate.beatIndex;
 
   if (typeof sessionId !== "string" || sessionId.length === 0) {
     return { error: "sessionId is required." };

@@ -11,10 +11,10 @@ type ChooseRequestBody = {
 };
 
 export async function POST(request: Request): Promise<Response> {
-  let body: ChooseRequestBody;
+  let body: unknown;
 
   try {
-    body = (await request.json()) as ChooseRequestBody;
+    body = await request.json();
   } catch {
     return jsonError("Request body must be valid JSON.", 400);
   }
@@ -61,11 +61,16 @@ export async function POST(request: Request): Promise<Response> {
 }
 
 function parseChooseRequest(
-  body: ChooseRequestBody,
+  body: unknown,
 ): { sessionId: string; beatIndex: number; choice: string } | { error: string } {
-  const sessionId = body.sessionId;
-  const beatIndex = body.beatIndex;
-  const choice = body.choice;
+  if (body === null || typeof body !== "object") {
+    return { error: "Request body must be an object." };
+  }
+
+  const candidate = body as ChooseRequestBody;
+  const sessionId = candidate.sessionId;
+  const beatIndex = candidate.beatIndex;
+  const choice = candidate.choice;
 
   if (typeof sessionId !== "string" || sessionId.length === 0) {
     return { error: "sessionId is required." };

@@ -56,7 +56,7 @@ function resolveBeatText({
 }
 
 function toWordChunks(text: string): string[] {
-  return text.match(/\s*\S+/g) ?? [];
+  return text.match(/\s*\S+\s*/g) ?? [];
 }
 
 function sleep(ms: number): Promise<void> {

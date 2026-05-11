@@ -63,6 +63,7 @@ export function toClientOutline(stage: FigureStageRow): ClientFigureOutline {
         case "bridge":
           return { kind: "bridge", role: beat.role };
         default: {
+          // Force new server-side beat kinds to be explicitly sanitized here.
           const exhaustive: never = beat;
           return exhaustive;
         }

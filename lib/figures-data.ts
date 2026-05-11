@@ -237,10 +237,10 @@ The Massachusetts Anti-Slavery Society offered him a paid position as a lecturer
         },
       ],
     },
-    // Beat 6 — Turning point / reveal-as-turn
+    // Beat 6 — Reveal-as-turn
     {
       kind: "narrative",
-      role: "turning_point",
+      role: "reveal",
       sourceNotes:
         "Nantucket convention dated Aug 11–12, 1841. Garrison's \"thing, piece of property, or man\" line is from his subsequent Liberator report; widely quoted, though phrasing across sources varies slightly.",
       text: `The pine floor under his boots. The slat of the bench in front of him. The thinness of his own breath as he stood up.

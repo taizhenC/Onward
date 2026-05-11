@@ -51,17 +51,22 @@ export function toClientOutline(stage: FigureStageRow): ClientFigureOutline {
     ageMin: stage.ageMin,
     ageMax: stage.ageMax,
     beats: stage.beats.map((beat): ClientBeat => {
-      if (beat.kind === "decision") {
-        return {
-          kind: "decision",
-          role: beat.role,
-          options: beat.decisionContinuations.map((c) => ({ label: c.label })),
-        };
+      switch (beat.kind) {
+        case "decision":
+          return {
+            kind: "decision",
+            role: beat.role,
+            options: beat.decisionContinuations.map((c) => ({ label: c.label })),
+          };
+        case "narrative":
+          return { kind: "narrative", role: beat.role };
+        case "bridge":
+          return { kind: "bridge", role: beat.role };
+        default: {
+          const exhaustive: never = beat;
+          return exhaustive;
+        }
       }
-      if (beat.kind === "narrative") {
-        return { kind: "narrative", role: beat.role };
-      }
-      return { kind: "bridge", role: beat.role };
     }),
   };
 }

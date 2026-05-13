@@ -41,10 +41,16 @@ export function StoryPlayer({
       throw new Error("network");
     }
     if (!response.ok) {
-      setChooseError("This choice could not be recorded.");
+      setChooseError(`This choice could not be recorded (${response.status}).`);
       throw new Error("response");
     }
-    const data = (await response.json()) as { nextBeatIndex: number };
+    let data: { nextBeatIndex: number };
+    try {
+      data = (await response.json()) as { nextBeatIndex: number };
+    } catch {
+      setChooseError("The server response was unreadable.");
+      throw new Error("parse");
+    }
     setBeatIndex(data.nextBeatIndex);
   }
 

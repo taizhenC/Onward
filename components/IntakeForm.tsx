@@ -32,23 +32,36 @@ export function IntakeForm() {
     setSubmitting(true);
     setError(null);
 
-    let payload: MatchPayload;
+    let response: Response;
     try {
-      const response = await fetch("/api/match", {
+      response = await fetch("/api/match", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ age: ageNum, feeling }),
       });
-      payload = (await response.json()) as MatchPayload;
-      if (!response.ok) {
-        const message =
-          "error" in payload ? payload.error : "Something went wrong.";
-        setError(message);
-        setSubmitting(false);
-        return;
-      }
     } catch {
       setError("The connection dropped. Please try again.");
+      setSubmitting(false);
+      return;
+    }
+
+    let payload: MatchPayload;
+    try {
+      payload = (await response.json()) as MatchPayload;
+    } catch {
+      setError(
+        response.ok
+          ? "Couldn't read the response."
+          : `The server returned an error (${response.status}).`,
+      );
+      setSubmitting(false);
+      return;
+    }
+
+    if (!response.ok) {
+      const message =
+        "error" in payload ? payload.error : "Something went wrong.";
+      setError(message);
       setSubmitting(false);
       return;
     }

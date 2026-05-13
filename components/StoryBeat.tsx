@@ -54,6 +54,10 @@ export function StoryBeat({ sessionId, beatIndex, onComplete, isFinal }: Props) 
             setText((previous) => previous + chunk);
           }
         }
+        const lastChunk = decoder.decode();
+        if (lastChunk.length > 0) {
+          setText((previous) => previous + lastChunk);
+        }
         if (!cancelled) setDone(true);
       } catch (caught) {
         if (cancelled || (caught as Error).name === "AbortError") return;

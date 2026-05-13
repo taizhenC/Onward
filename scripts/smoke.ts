@@ -3,6 +3,7 @@ import { handleIntake } from "../lib/intake";
 import { classifyCrisis } from "../lib/safety";
 import { listAll, toClientOutline } from "../lib/figures";
 import { _sessionMapSize } from "../lib/session";
+import { chunkBeatText } from "../lib/chunks";
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
 
@@ -10,6 +11,10 @@ const FORBIDDEN_OUTLINE_KEYS = new Set([
   "text",
   "realChoice",
   "continuationText",
+  "decisionContinuations",
+  "options",
+  "arcVariant",
+  "choices",
   "biographicalFacts",
   "shapeSentences",
   "facets",
@@ -17,6 +22,16 @@ const FORBIDDEN_OUTLINE_KEYS = new Set([
   "sources",
   "sourceNotes",
 ]);
+
+const EXPECTED_LINEAR_ROLES = [
+  "scene",
+  "dark_moment",
+  "response",
+  "struggle",
+  "turning_point",
+  "became",
+  "bridge",
+] as const;
 
 const CRISIS_OVERTRIGGER_PHRASES = [
   "I don't want to kill myself",
@@ -128,6 +143,52 @@ function runCrisisAssertion(): AssertionResult {
   };
 }
 
+function runArcShapeAssertion(): AssertionResult {
+  const stages = listAll();
+  if (stages.length === 0) {
+    return {
+      name: "arc shape: 7 linear beats per figure",
+      ok: false,
+      detail: "no stages in library",
+    };
+  }
+
+  for (const stage of stages) {
+    if (stage.beats.length !== EXPECTED_LINEAR_ROLES.length) {
+      return {
+        name: "arc shape: 7 linear beats per figure",
+        ok: false,
+        detail: `figure=${stage.figureKey} has ${stage.beats.length} beats, expected ${EXPECTED_LINEAR_ROLES.length}`,
+      };
+    }
+    for (let index = 0; index < EXPECTED_LINEAR_ROLES.length; index += 1) {
+      const expected = EXPECTED_LINEAR_ROLES[index];
+      const actual = stage.beats[index].role;
+      if (actual !== expected) {
+        return {
+          name: "arc shape: 7 linear beats per figure",
+          ok: false,
+          detail: `figure=${stage.figureKey} beat[${index}] role=${actual}, expected ${expected}`,
+        };
+      }
+    }
+    const finalKind = stage.beats[stage.beats.length - 1].kind;
+    if (finalKind !== "bridge") {
+      return {
+        name: "arc shape: 7 linear beats per figure",
+        ok: false,
+        detail: `figure=${stage.figureKey} final beat kind=${finalKind}, expected bridge`,
+      };
+    }
+  }
+
+  return {
+    name: "arc shape: 7 linear beats per figure",
+    ok: true,
+    detail: `${stages.length} figure(s), all 7-beat linear arcs`,
+  };
+}
+
 function runOutlineAssertion(): AssertionResult {
   const stages = listAll();
   if (stages.length === 0) {
@@ -154,6 +215,58 @@ function runOutlineAssertion(): AssertionResult {
     name: "toClientOutline strips server-only fields",
     ok: true,
     detail: `${stages.length} outline(s) audited`,
+  };
+}
+
+function runChunkIntegrityAssertion(): AssertionResult {
+  const stages = listAll();
+  let beatCount = 0;
+  let chunkCount = 0;
+
+  for (const stage of stages) {
+    for (let index = 0; index < stage.beats.length; index += 1) {
+      const beat = stage.beats[index];
+      const chunks = chunkBeatText(beat);
+      beatCount += 1;
+      chunkCount += chunks.length;
+
+      if (chunks.length === 0) {
+        return {
+          name: "chunking: beat text preserved in small chunks",
+          ok: false,
+          detail: `figure=${stage.figureKey} beat[${index}] produced no chunks`,
+        };
+      }
+
+      const overGrouped = chunks.find(
+        (chunk) => chunk.split(/\n\n+/).filter(Boolean).length > 2,
+      );
+      if (overGrouped) {
+        return {
+          name: "chunking: beat text preserved in small chunks",
+          ok: false,
+          detail: `figure=${stage.figureKey} beat[${index}] has a chunk with more than 2 paragraphs`,
+        };
+      }
+
+      // Byte-exact reconstruction. If a beat is authored with \n\n\n between
+      // paragraphs (or any non-\n\n separator), this fires and the editorial
+      // fix is to normalize the beat text to use exactly \n\n.
+      const reassembled = chunks.join("\n\n");
+      if (reassembled !== beat.text) {
+        return {
+          name: "chunking: beat text preserved in small chunks",
+          ok: false,
+          detail: `figure=${stage.figureKey} beat[${index}] did not byte-exact reassemble to original text`,
+        };
+      }
+    }
+  }
+
+  return {
+    name: "chunking: beat text preserved in small chunks",
+    ok: true,
+    detail: `${beatCount} beat(s), ${chunkCount} chunk(s)`,
   };
 }
 
@@ -217,6 +330,8 @@ function main(): void {
     ),
     runCrisisAssertion(),
     runOutlineAssertion(),
+    runArcShapeAssertion(),
+    runChunkIntegrityAssertion(),
   ];
 
   console.log("Onward Phase 0 smoke check");

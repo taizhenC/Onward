@@ -4,13 +4,13 @@ import type { FigureStageRow } from "./types";
 // Phase 0 hand-authored figure stages. Each follows CLAUDE.md's target FigureStageRow
 // shape so Phase 1 migration is a straight INSERT INTO figure_stages, not a rewrite.
 //
+// Linear 7-beat arc (Phase 0): scene → dark_moment → response → struggle →
+// turning_point → became → bridge. Forks were removed before the friend test;
+// Phase 1 reintroduces user agency via prototype + RAG regeneration, not via
+// branching decision beats.
+//
 // Bridge-beat text contains the literal placeholder `{feeling}` which the LLM stub
 // substitutes with `session.feeling` at stream time (see lib/llm-stub.ts).
-//
-// Reveal-beat text holds the realChoice continuation as a graceful fallback. The
-// streamer's actual lookup pattern is:
-//   stage.beats[forkBeatIndex].decisionContinuations.find(c => c.label === userChoice)?.continuationText
-// — see lib/llm-stub.ts. The fallback fires only if userChoice is missing.
 
 const douglass: FigureStageRow = {
   figureKey: "douglass",
@@ -19,7 +19,6 @@ const douglass: FigureStageRow = {
   deathYear: 1895,
   stageId: "1838-1841-nyc-to-nantucket",
   stageLabel: "After the escape: NYC arrival to the Nantucket speech",
-  arcVariant: "double_fork",
   ageMin: 20,
   ageMax: 23,
   themes: ["dispossession", "self_invention", "solitude"],
@@ -101,55 +100,10 @@ He thought of her not coming.
 
 The light moved across the floor. He did not move with it.`,
     },
-    // Beat 2 — First fork (decision)
-    {
-      kind: "decision",
-      role: "fork",
-      text: `Anna's trunk stood near the bed for four days.
-
-Anna had come. She had crossed from Baltimore alone and found him in Ruggles' house, and now the room held two people instead of one. Still, nothing outside the room had changed. Men still came for fugitives in New York. The name on his papers was still not his.
-
-Ruggles could help them leave. New Bedford had a harbor. A harbor meant work, or the rumor of work.
-
-They had to choose before the city chose for them.`,
-      decisionContinuations: [
-        {
-          label: "Marry her today. Leave for New Bedford by week's end.",
-          realChoice: true,
-          continuationText: `They were married before noon. The Reverend James Pennington came up from the back of the house and said the words. There were no rings. Anna had a calico dress and the new bonnet she had bought herself in Baltimore. Ruggles signed the certificate. Anna's name was now Anna Bailey, then Anna Johnson by the end of the week, and later, Anna Douglass.
-
-Before the week was over, they left New York. The steamer to Newport, the stagecoach over the salt marshes, the smell of fish and tar coming up off the wharves of New Bedford. The town did not know him. He took work caulking ships, and the white shipwrights refused to work alongside him, so he took day labor where he could find it — sweeping, hauling, splitting wood for a winter that was already cold.
-
-He had a wife and a name and a port he had never seen.
-
-He had nothing else.`,
-        },
-        {
-          label: "Wait. Find work first. Marry when there is something to marry into.",
-          realChoice: false,
-          continuationText: `You would have stopped here. He did not.
-
-He did not wait. The room was small, and the country to the south of them did not stop being what it was while a man saved his wages. They were married within four days of Anna's arrival. The Reverend Pennington said the words; Ruggles signed.
-
-Within the week they were on a steamer to Newport. He had not yet earned a dollar of his own. He went to a town he had never seen because Ruggles had said New Bedford had a port, and a port needed caulkers, and an open trade meant work that could be taken without papers no one would issue him.
-
-He understood, later, why he had not waited. To wait was to have time to become afraid. He had not had any of that to spare.`,
-        },
-        {
-          label: "Send her to Boston ahead. Follow her in a month.",
-          realChoice: false,
-          continuationText: `You would have sent her ahead. He did not.
-
-They had not been together in the same room as free people before, and another month apart would have been a kind they did not have the strength for.
-
-They married in Ruggles' house and traveled together. They went to New Bedford because Ruggles knew its harbor and a Black man named Nathan Johnson who would receive them. Boston was bigger and louder and full of Garrison's people, but Boston was a city he could be lost in. He had been lost in a city for two weeks. He needed a town small enough to learn.`,
-        },
-      ],
-    },
-    // Beat 3 — Reveal of fork 1 (text falls back to realChoice continuation)
+    // Beat 2 — Response: marriage and the move to New Bedford
     {
       kind: "narrative",
-      role: "reveal",
+      role: "response",
       sourceNotes:
         "Marriage Sept 15, 1838, Pennington officiated, Ruggles witnessed. Anna's calico-dress detail per Life and Times.",
       text: `They were married before noon. The Reverend James Pennington came up from the back of the house and said the words. There were no rings. Anna had a calico dress and the new bonnet she had bought herself in Baltimore. Ruggles signed the certificate. Anna's name was now Anna Bailey, then Anna Johnson by the end of the week, and later, Anna Douglass.
@@ -160,7 +114,7 @@ He had a wife and a name and a port he had never seen.
 
 He had nothing else.`,
     },
-    // Beat 4 — Struggle
+    // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
@@ -182,65 +136,10 @@ Three years passed in this way.
 
 He was twenty-three.`,
     },
-    // Beat 5 — Second fork (decision)
-    {
-      kind: "decision",
-      role: "fork",
-      text: `The hall on Nantucket Island was made of pine boards. He had not been inside it ten minutes when William Coffin came across the floor with a hand outstretched.
-
-Coffin had heard him in the small church on Second Street, and Coffin asked him, now, to speak from this floor. To these people. To a hall that knew slavery as an argument, not as the inside of a room.
-
-He had a few seconds to choose.`,
-      decisionContinuations: [
-        {
-          label: "Stand up. Speak.",
-          realChoice: true,
-          continuationText: `The pine floor under his boots. The slat of the bench in front of him. The thinness of his own breath as he stood up.
-
-He had not spoken to white people about himself before. Not from his own body. Not without permission. The faces in the hall went quiet by rows, the way water goes still at the edges first.
-
-His voice came thin. He said the name of a master. He said what a beating had been. He said what it had been to read in secret while a child watched the door. His hands sweated against the back of the bench in front of him. He spoke for perhaps fifteen minutes. He sat down.
-
-William Lloyd Garrison stood up immediately after. Garrison said: "Have we been listening to a thing, a piece of property, or a man?"
-
-The hall said: "A man! A man!"
-
-Before the evening was over, the Massachusetts Anti-Slavery Society offered him a paid position as a lecturer. The hand that signed the paper was his own.
-
-He had worn the name Douglass for less than three years. He had owned no name before that at all.
-
-When he stepped down, men he had never met reached for his hand. He gave it.`,
-        },
-        {
-          label: "Stay seated. Listen this time. You can speak next year, when you have written it down.",
-          realChoice: false,
-          continuationText: `You would have stayed seated. He did not.
-
-The pine floor under his boots. The slat of the bench in front of him. The thinness of his own breath as he stood up.
-
-His voice came thin. He said the name of a master. He said what a beating had been. He said what it had been to read in secret while a child watched the door. He spoke for perhaps fifteen minutes. He sat down.
-
-Garrison stood up immediately after. Garrison said: "Have we been listening to a thing, a piece of property, or a man?" The hall said: "A man! A man!"
-
-Before the evening was over, the Massachusetts Anti-Slavery Society offered him a paid position as a lecturer. The hand that signed the paper was his own.`,
-        },
-        {
-          label: "Speak briefly. Three minutes. Hold the longer story for when you can write it.",
-          realChoice: false,
-          continuationText: `You would have held the longer story for later. He did not.
-
-The pine floor under his boots. The slat of the bench in front of him. He spoke for perhaps fifteen minutes. He said the name of a master. He said what a beating had been. He said what it had been to read in secret while a child watched the door. He sat down.
-
-Garrison stood up immediately after. Garrison said: "Have we been listening to a thing, a piece of property, or a man?" The hall said: "A man! A man!"
-
-The Massachusetts Anti-Slavery Society offered him a paid position as a lecturer the same evening. The hand that signed the paper was his own.`,
-        },
-      ],
-    },
-    // Beat 6 — Reveal-as-turn
+    // Beat 4 — Turning point: standing up at Nantucket
     {
       kind: "narrative",
-      role: "reveal",
+      role: "turning_point",
       sourceNotes:
         "Nantucket convention dated Aug 11–12, 1841. Garrison's \"thing, piece of property, or man\" line is from his subsequent Liberator report; widely quoted, though phrasing across sources varies slightly.",
       text: `The pine floor under his boots. The slat of the bench in front of him. The thinness of his own breath as he stood up.
@@ -259,7 +158,7 @@ He had worn the name Douglass for less than three years. He had owned no name be
 
 When he stepped down, men he had never met reached for his hand. He gave it.`,
     },
-    // Beat 7 — What he became
+    // Beat 5 — What he became
     {
       kind: "narrative",
       role: "became",
@@ -271,7 +170,7 @@ What he was, by the end of 1841, was a voice. He had not been one before. He had
 
 He kept speaking.`,
     },
-    // Beat 8 — Bridge to you
+    // Beat 6 — Bridge to you
     {
       kind: "bridge",
       role: "bridge",
@@ -293,7 +192,6 @@ const butler: FigureStageRow = {
   deathYear: 2006,
   stageId: "1974-1975-pre-patternmaster",
   stageLabel: "The years before Patternmaster sold",
-  arcVariant: "single_fork",
   ageMin: 26,
   ageMax: 28,
   themes: ["creative_dismissal", "worthlessness", "keep_going"],
@@ -367,67 +265,12 @@ She was twenty-seven, and she had been writing every morning before work for fif
 
 She put her hand on the typewriter.`,
     },
-    // Beat 2 — Fork (decision)
-    {
-      kind: "decision",
-      role: "fork",
-      sourceNotes:
-        "Butler's affirmation practice — writing aspirational future-self sentences in her commonplace books — is well-documented. Pre-1976 work documented; exact 1974–75 phrasing not preserved verbatim, so the prose captures the practice without quoting a reconstructed sentence.",
-      text: `She did the math on the back of the rejection envelope.
-
-Three years of it. Many submissions; some short stories sold, none for much; two finished novels turned down, including the one she had thought was good. An editor who had written back personally and then stopped.
-
-She knew people who had stopped. She knew teachers who had once written. She knew a woman from her writers' group who had gone back to school for nursing and was now happier than anyone Butler had ever met.
-
-She had to make a decision before she went to work that night.`,
-      decisionContinuations: [
-        {
-          label: "Keep writing. Buy more paper. Buy more postage.",
-          realChoice: true,
-          continuationText: `She kept writing.
-
-She walked to the corner store and bought a pack of typewriter paper. She walked back. She sat at the kitchen table.
-
-Some weeks later she opened a notebook and wrote a future in capital letters, the kind of sentence she could not yet believe.
-
-She did not need to believe it. She needed only to be the kind of person who wrote it down.
-
-She kept the day job. She kept the morning hour. She kept opening the brown envelopes when she had the room for them.
-
-The third novel was almost finished.`,
-        },
-        {
-          label: "Stop for now. Get a teaching certificate. Come back to writing later, when there is space.",
-          realChoice: false,
-          continuationText: `You would have stopped here. She did not.
-
-She did not get the teaching certificate. She had thought about it for a long time, but the idea of standing in front of a classroom for forty years and having to swallow the novels back into her body was a thing she could not see herself surviving.
-
-She kept writing instead. She walked to the corner store and bought a pack of typewriter paper. She sat at the kitchen table.
-
-Some weeks later she opened a notebook and wrote a future in capital letters, the kind of sentence she could not yet believe.
-
-She did not need to believe it. She needed only to be the kind of person who wrote it down.`,
-        },
-        {
-          label: "Quit fiction. Try non-fiction or journalism — they pay.",
-          realChoice: false,
-          continuationText: `You would have moved to non-fiction. She did not.
-
-She had thought about it. She had even tried, for a few weeks, to write essays. The essays came out as fiction with the names changed. The fiction was what was actually in her, and she could not push it through her hands as anything else.
-
-She kept writing what she had been writing. She walked to the corner store for typewriter paper. She sat at the kitchen table.
-
-Some weeks later she opened a notebook and wrote a future in capital letters, the kind of sentence she could not yet believe.
-
-She did not need to believe it. She needed only to be the kind of person who wrote it down.`,
-        },
-      ],
-    },
-    // Beat 3 — Reveal of fork (text falls back to realChoice continuation)
+    // Beat 2 — Response: she kept writing
     {
       kind: "narrative",
-      role: "reveal",
+      role: "response",
+      sourceNotes:
+        "Butler's affirmation practice — writing aspirational future-self sentences in her commonplace books — is well-documented. Pre-1976 work documented; exact 1974–75 phrasing not preserved verbatim, so the prose captures the practice without quoting a reconstructed sentence.",
       text: `She kept writing.
 
 She walked to the corner store and bought a pack of typewriter paper. She walked back. She sat at the kitchen table.
@@ -440,7 +283,7 @@ She kept the day job. She kept the morning hour. She kept opening the brown enve
 
 The third novel was almost finished.`,
     },
-    // Beat 4 — Struggle
+    // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
@@ -458,7 +301,7 @@ Four months passed. She heard nothing.
 
 She kept writing the new thing in the morning. The new thing was not very good yet. She kept writing.`,
     },
-    // Beat 5 — Turning point
+    // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
@@ -476,7 +319,7 @@ It was the first money anyone had paid her for a novel.
 
 She picked up a notebook and wrote the fact of the sale down as if the page needed to learn it before she did.`,
     },
-    // Beat 6 — What she became
+    // Beat 5 — What she became
     {
       kind: "narrative",
       role: "became",
@@ -490,7 +333,7 @@ The future she had written toward did not arrive all at once. The bestseller did
 
 She kept writing in the morning.`,
     },
-    // Beat 7 — Bridge to you
+    // Beat 6 — Bridge to you
     {
       kind: "bridge",
       role: "bridge",
@@ -510,7 +353,6 @@ const lee: FigureStageRow = {
   deathYear: 1962,
   stageId: "1929-1931-harvard-pivot",
   stageLabel: "After her brother's death: the inheritance and the Harvard pivot",
-  arcVariant: "single_fork",
   ageMin: 50,
   ageMax: 54,
   themes: ["late_start", "social_constraint", "quiet_defiance"],
@@ -583,67 +425,10 @@ She was fifty-one.
 
 She was running out of decades.`,
     },
-    // Beat 2 — Fork (decision)
-    {
-      kind: "decision",
-      role: "fork",
-      text: `The lawyer's office in the Loop had a window that looked out at the river.
-
-She sat across from the man who had handled her brother's estate. He explained the figures. The figures were larger than she had asked. The figures were more than she would need for the rest of her life if she lived to a hundred and three.
-
-She listened. She nodded. She thanked him. She walked out into the street and stood for a moment watching the river move.
-
-She had three children, all grown. She had a town house and a summer estate. She had a name people in Chicago knew. There were decades of conventional charity she could perform with the new money — boards she could sit on, museums she could endow, scholarships she could put her own name on.
-
-She had also a letter from Magrath in a drawer.
-
-She had to choose, before the lawyer asked her to sign the next set of papers, what kind of woman the second half of her life was going to be spent by.`,
-      decisionContinuations: [
-        {
-          label: "Endow a chair at Harvard for what Magrath does. Build the field.",
-          realChoice: true,
-          continuationText: `She wrote back to Magrath that night.
-
-The letter was brief. It said she would like to come to Boston when he had a free week. It said she had been thinking about what they had spoken of, years before, and what it would take to make it real. It said she would pay for whatever it took.
-
-She traveled to Boston in October. She and Magrath met at his office at the Suffolk County morgue. She wore a dark wool coat. She watched him work for an afternoon. She asked him questions about chains of custody and tissue preservation and the difference between a coroner and a medical examiner. He answered all of them.
-
-Before she left Boston, she had committed to funding a Department of Legal Medicine at Harvard, the first of its kind in the United States, with a chair to be named for him.
-
-The papers were drawn up over the next two years.
-
-She was fifty-one when she made the decision and fifty-three when the chair was first filled.`,
-        },
-        {
-          label: "Endow the conventional things — a museum wing, scholarships in your father's name.",
-          realChoice: false,
-          continuationText: `You would have endowed the museum wing. She did not.
-
-She wrote to Magrath instead. The letter was brief. It said she would like to come to Boston when he had a free week, and would like to talk about the work they had spoken of years before. It said she would pay for whatever it took.
-
-She traveled to Boston in October. Before she left, she had committed to funding a Department of Legal Medicine at Harvard, the first of its kind in the United States, with a chair to be named for him.
-
-The museum wing she had thought of endowing she let alone. There would be other women, she decided, who could do that work, and who had not been waiting their whole lives to do something else.`,
-        },
-        {
-          label: "Take it quietly. Live well. Read what you want in private. You have done enough.",
-          realChoice: false,
-          continuationText: `You would have taken it quietly. She did not.
-
-She had thought about it. She had thought about it for several days. She had been told that she had earned the right to a quiet life, and the people telling her had not been wrong about the earning of it.
-
-She wrote to Magrath anyway. The letter was brief. It said she would like to come to Boston when he had a free week, to talk about the work they had spoken of years before, and that she would pay for whatever it took to begin it.
-
-She traveled to Boston in October. Before she left, she had committed to funding a Department of Legal Medicine at Harvard, the first of its kind in the United States, with a chair to be named for him.
-
-The quiet life had been there for the taking. She had spent fifty-one years quiet enough.`,
-        },
-      ],
-    },
-    // Beat 3 — Reveal of fork (text falls back to realChoice continuation)
+    // Beat 2 — Response: she wrote back to Magrath
     {
       kind: "narrative",
-      role: "reveal",
+      role: "response",
       sourceNotes:
         "Boston visit ~Oct 1929. Lee did travel to Boston multiple times beginning shortly after George's death. Magrath as first chair holder of the new department — verifiable.",
       text: `She wrote back to Magrath that night.
@@ -658,7 +443,7 @@ The papers were drawn up over the next two years.
 
 She was fifty-one when she made the decision and fifty-three when the chair was first filled.`,
     },
-    // Beat 4 — Struggle
+    // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
@@ -678,7 +463,7 @@ By the spring of 1931 the Department of Legal Medicine at Harvard had been forma
 
 She did not attend the opening. She had insisted that the chair be named for Magrath rather than for herself. The library carried his name and not hers.`,
     },
-    // Beat 5 — Turning point
+    // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
@@ -694,7 +479,7 @@ She had been seventeen when her father had told her, in another library, that sh
 
 She took off her gloves and opened the first crate.`,
     },
-    // Beat 6 — What she became
+    // Beat 5 — What she became
     {
       kind: "narrative",
       role: "became",
@@ -708,7 +493,7 @@ In 1943 the New Hampshire State Police appointed her an honorary captain. She wa
 
 The library at Harvard, the police rank, the rooms in the workshop — none of them had her name on them. She had insisted on this. The work was the thing.`,
     },
-    // Beat 7 — Bridge to you
+    // Beat 6 — Bridge to you
     {
       kind: "bridge",
       role: "bridge",

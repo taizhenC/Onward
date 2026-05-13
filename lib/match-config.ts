@@ -1,4 +1,4 @@
-export const matchConfigVersion = "phase0-stub-2026-05";
+export const matchConfigVersion = "phase0-stub-linear-2026-05";
 
 export const AGE_TOLERANCE_YEARS = 10;
 

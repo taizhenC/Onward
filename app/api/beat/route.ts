@@ -6,17 +6,13 @@ import {
 import { chunkBeatText } from "@/lib/chunks";
 import { getByKey } from "@/lib/figures";
 import { streamBeat } from "@/lib/llm-stub";
-import { getSession, updateSession } from "@/lib/session";
+import {
+  getNextStoryAdvance,
+  parseBeatPositionRequest,
+} from "@/lib/story-progress";
+import { getSession } from "@/lib/session";
 
 export const runtime = "nodejs";
-
-type BeatRequestBody = {
-  sessionId?: unknown;
-  beatIndex?: unknown;
-  chunkIndex?: unknown;
-};
-
-type NextPosition = "chunk" | "beat" | "end";
 
 export async function POST(request: Request): Promise<Response> {
   let body: unknown;
@@ -27,7 +23,7 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError("Request body must be valid JSON.", 400);
   }
 
-  const parsed = parseBeatRequest(body);
+  const parsed = parseBeatPositionRequest(body);
   if ("error" in parsed) return jsonError(parsed.error, 400);
 
   const session = getSession(parsed.sessionId);
@@ -50,7 +46,7 @@ export async function POST(request: Request): Promise<Response> {
   const chunk = chunks[parsed.chunkIndex];
   if (!chunk) return jsonError("Chunk index is out of range.", 400);
 
-  const nextPosition = getNextPosition({
+  const nextPosition = getNextStoryAdvance({
     beatIndex: parsed.beatIndex,
     chunkIndex: parsed.chunkIndex,
     chunkCount: chunks.length,
@@ -58,9 +54,7 @@ export async function POST(request: Request): Promise<Response> {
   });
 
   return new Response(
-    streamText(streamBeat({ session, beat, textOverride: chunk }), () => {
-      updateSession(parsed.sessionId, nextSessionPosition(parsed, nextPosition));
-    }),
+    streamText(streamBeat({ session, beat, textOverride: chunk })),
     {
       headers: {
         ...textStreamHeaders,
@@ -68,78 +62,4 @@ export async function POST(request: Request): Promise<Response> {
       },
     },
   );
-}
-
-function parseBeatRequest(
-  body: unknown,
-): { sessionId: string; beatIndex: number; chunkIndex: number } | { error: string } {
-  if (body === null || typeof body !== "object") {
-    return { error: "Request body must be an object." };
-  }
-
-  const candidate = body as BeatRequestBody;
-  const sessionId = candidate.sessionId;
-  const beatIndex = candidate.beatIndex;
-  const chunkIndex = candidate.chunkIndex;
-
-  if (typeof sessionId !== "string" || sessionId.length === 0) {
-    return { error: "sessionId is required." };
-  }
-
-  if (
-    typeof beatIndex !== "number" ||
-    !Number.isInteger(beatIndex) ||
-    beatIndex < 0
-  ) {
-    return { error: "beatIndex must be a non-negative integer." };
-  }
-
-  if (
-    typeof chunkIndex !== "number" ||
-    !Number.isInteger(chunkIndex) ||
-    chunkIndex < 0
-  ) {
-    return { error: "chunkIndex must be a non-negative integer." };
-  }
-
-  return { sessionId, beatIndex, chunkIndex };
-}
-
-function getNextPosition({
-  beatIndex,
-  chunkIndex,
-  chunkCount,
-  beatCount,
-}: {
-  beatIndex: number;
-  chunkIndex: number;
-  chunkCount: number;
-  beatCount: number;
-}): NextPosition {
-  if (chunkIndex < chunkCount - 1) return "chunk";
-  if (beatIndex < beatCount - 1) return "beat";
-  return "end";
-}
-
-function nextSessionPosition(
-  parsed: { beatIndex: number; chunkIndex: number },
-  nextPosition: NextPosition,
-): { nextBeatIndex: number; nextChunkIndex: number } {
-  switch (nextPosition) {
-    case "chunk":
-      return {
-        nextBeatIndex: parsed.beatIndex,
-        nextChunkIndex: parsed.chunkIndex + 1,
-      };
-    case "beat":
-    case "end":
-      return {
-        nextBeatIndex: parsed.beatIndex + 1,
-        nextChunkIndex: 0,
-      };
-    default: {
-      const exhaustive: never = nextPosition;
-      return exhaustive;
-    }
-  }
 }

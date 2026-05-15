@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export type StoryAdvance = "chunk" | "beat" | "end";
+import type { StoryAdvance } from "@/lib/types";
 
 type Props = {
   sessionId: string;
@@ -51,11 +51,7 @@ export function StoryBeat({
         return;
       }
 
-      const next = parseNextStep(response.headers.get("x-onward-next"));
-      if (next === null) {
-        if (!cancelled) setError("This beat could not be loaded.");
-        return;
-      }
+      const headerNext = parseNextStep(response.headers.get("x-onward-next"));
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       try {
@@ -71,6 +67,18 @@ export function StoryBeat({
         const lastChunk = decoder.decode();
         if (lastChunk.length > 0) {
           setText((previous) => previous + lastChunk);
+        }
+        const next = await acknowledgeBeat({
+          sessionId,
+          beatIndex,
+          chunkIndex,
+          fallbackNext: headerNext,
+          signal: controller.signal,
+        });
+        if (cancelled) return;
+        if (next === null) {
+          setError("Progress could not be saved. Refresh to continue.");
+          return;
         }
         if (!cancelled) {
           setNextStep(next);
@@ -114,9 +122,52 @@ export function StoryBeat({
   );
 }
 
-function parseNextStep(value: string | null): StoryAdvance | null {
+type AcknowledgeBeatInput = {
+  sessionId: string;
+  beatIndex: number;
+  chunkIndex: number;
+  fallbackNext: StoryAdvance;
+  signal: AbortSignal;
+};
+
+async function acknowledgeBeat({
+  sessionId,
+  beatIndex,
+  chunkIndex,
+  fallbackNext,
+  signal,
+}: AcknowledgeBeatInput): Promise<StoryAdvance | null> {
+  let response: Response;
+  try {
+    response = await fetch("/api/beat/ack", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ sessionId, beatIndex, chunkIndex }),
+      signal,
+    });
+  } catch {
+    return null;
+  }
+
+  if (!response.ok) return null;
+
+  let body: unknown;
+  try {
+    body = await response.json();
+  } catch {
+    return fallbackNext;
+  }
+
+  if (body !== null && typeof body === "object" && "next" in body) {
+    return parseNextStep((body as { next: unknown }).next, fallbackNext);
+  }
+
+  return fallbackNext;
+}
+
+function parseNextStep(value: unknown, fallback: StoryAdvance = "end"): StoryAdvance {
   if (value === "chunk" || value === "beat" || value === "end") {
     return value;
   }
-  return null;
+  return fallback;
 }

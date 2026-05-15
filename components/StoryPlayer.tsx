@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { ClientFigureOutline, Framing } from "@/lib/types";
+import type { ClientFigureOutline, Framing, StoryAdvance } from "@/lib/types";
 import { PrefaceCard } from "./PrefaceCard";
-import { StoryBeat, type StoryAdvance } from "./StoryBeat";
+import { StoryBeat } from "./StoryBeat";
 
 type Props = {
   sessionId: string;
@@ -59,9 +59,13 @@ export function StoryPlayer({
     }
   }
 
+  const revealName = currentBeat?.kind === "bridge";
+
   return (
     <div className="space-y-12">
-      {phase !== "preface" ? <Header outline={outline} framing={framing} /> : null}
+      {phase !== "preface" ? (
+        <Header outline={outline} framing={framing} revealName={revealName} />
+      ) : null}
 
       <AnimatePresence mode="wait">
         {phase === "preface" ? (
@@ -100,18 +104,31 @@ export function StoryPlayer({
 function Header({
   outline,
   framing,
+  revealName,
 }: {
   outline: ClientFigureOutline;
   framing: Framing;
+  revealName: boolean;
 }) {
-  const lifespan =
-    outline.birthYear && outline.deathYear
-      ? ` (${outline.birthYear}–${outline.deathYear})`
-      : "";
   const framingLine =
     framing === "definitive"
       ? "Someone who felt this"
       : "A fragment that rhymes";
+
+  if (!revealName) {
+    return (
+      <header className="space-y-3 pb-6 border-b border-[var(--color-ink-soft)]/30">
+        <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
+          {framingLine}
+        </p>
+      </header>
+    );
+  }
+
+  const lifespan =
+    outline.birthYear && outline.deathYear
+      ? ` (${outline.birthYear}–${outline.deathYear})`
+      : "";
 
   return (
     <header className="space-y-3 pb-6 border-b border-[var(--color-ink-soft)]/30">

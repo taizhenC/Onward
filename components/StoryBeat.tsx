@@ -52,10 +52,6 @@ export function StoryBeat({
       }
 
       const next = parseNextStep(response.headers.get("x-onward-next"));
-      if (next === null) {
-        if (!cancelled) setError("This beat could not be loaded.");
-        return;
-      }
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       try {
@@ -114,9 +110,9 @@ export function StoryBeat({
   );
 }
 
-function parseNextStep(value: string | null): StoryAdvance | null {
+function parseNextStep(value: string | null): StoryAdvance {
   if (value === "chunk" || value === "beat" || value === "end") {
     return value;
   }
-  return null;
+  return "end";
 }

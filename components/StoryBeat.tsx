@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export type StoryAdvance = "chunk" | "beat" | "end";
+import type { StoryAdvance } from "@/lib/types";
 
 type Props = {
   sessionId: string;

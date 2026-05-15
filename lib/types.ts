@@ -43,6 +43,8 @@ export type FigureStageRow = FigureRow & {
 
 export type Framing = "definitive" | "partial";
 
+export type StoryAdvance = "chunk" | "beat" | "end";
+
 export type Session = {
   sessionId: string;
   figureKey: string;

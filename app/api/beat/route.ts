@@ -7,6 +7,7 @@ import { chunkBeatText } from "@/lib/chunks";
 import { getByKey } from "@/lib/figures";
 import { streamBeat } from "@/lib/llm-stub";
 import { getSession, updateSession } from "@/lib/session";
+import type { StoryAdvance } from "@/lib/types";
 
 export const runtime = "nodejs";
 
@@ -15,8 +16,6 @@ type BeatRequestBody = {
   beatIndex?: unknown;
   chunkIndex?: unknown;
 };
-
-type NextPosition = "chunk" | "beat" | "end";
 
 export async function POST(request: Request): Promise<Response> {
   let body: unknown;
@@ -115,7 +114,7 @@ function getNextPosition({
   chunkIndex: number;
   chunkCount: number;
   beatCount: number;
-}): NextPosition {
+}): StoryAdvance {
   if (chunkIndex < chunkCount - 1) return "chunk";
   if (beatIndex < beatCount - 1) return "beat";
   return "end";
@@ -123,7 +122,7 @@ function getNextPosition({
 
 function nextSessionPosition(
   parsed: { beatIndex: number; chunkIndex: number },
-  nextPosition: NextPosition,
+  nextPosition: StoryAdvance,
 ): { nextBeatIndex: number; nextChunkIndex: number } {
   switch (nextPosition) {
     case "chunk":

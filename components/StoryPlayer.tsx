@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { ClientFigureOutline, Framing } from "@/lib/types";
+import type { ClientFigureOutline, Framing, StoryAdvance } from "@/lib/types";
 import { PrefaceCard } from "./PrefaceCard";
-import { StoryBeat, type StoryAdvance } from "./StoryBeat";
+import { StoryBeat } from "./StoryBeat";
 
 type Props = {
   sessionId: string;

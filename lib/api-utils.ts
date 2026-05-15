@@ -10,7 +10,7 @@ export function jsonError(message: string, status: number): Response {
 
 export function streamText(
   chunks: AsyncIterable<string>,
-  onComplete: () => void,
+  onComplete?: () => void,
 ): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder();
 
@@ -20,7 +20,7 @@ export function streamText(
         for await (const chunk of chunks) {
           controller.enqueue(encoder.encode(chunk));
         }
-        onComplete();
+        onComplete?.();
         controller.close();
       } catch (error) {
         controller.error(error);

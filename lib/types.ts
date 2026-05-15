@@ -1,33 +1,17 @@
 export type BeatRole =
   | "scene"
   | "dark_moment"
-  | "fork"
-  | "reveal"
+  | "response"
   | "struggle"
   | "turning_point"
   | "became"
   | "bridge";
 
-export type BeatKind = "narrative" | "decision" | "bridge";
-
-export type ArcVariant = "single_fork" | "double_fork";
-
-export type DecisionContinuation = {
-  label: string;
-  continuationText: string;
-  realChoice: boolean;
-};
+export type BeatKind = "narrative" | "bridge";
 
 export type BeatBlueprint =
   | { kind: "narrative"; role: BeatRole; text: string; sourceNotes?: string }
-  | { kind: "bridge"; role: BeatRole; text: string; sourceNotes?: string }
-  | {
-      kind: "decision";
-      role: BeatRole;
-      text: string;
-      decisionContinuations: DecisionContinuation[];
-      sourceNotes?: string;
-    };
+  | { kind: "bridge"; role: BeatRole; text: string; sourceNotes?: string };
 
 export type FigureRow = {
   figureKey: string;
@@ -46,7 +30,6 @@ export type Facets = {
 export type FigureStageRow = FigureRow & {
   stageId: string;
   stageLabel: string;
-  arcVariant: ArcVariant;
   ageMin: number;
   ageMax: number;
   shapeSentences: string[];
@@ -68,7 +51,7 @@ export type Session = {
   age: number;
   feeling: string;
   nextBeatIndex: number;
-  choices: Record<number, string>;
+  nextChunkIndex: number;
   createdAt: number;
 };
 
@@ -79,15 +62,13 @@ export type MatchResponse =
 
 export type ClientBeat =
   | { kind: "narrative"; role: BeatRole }
-  | { kind: "bridge"; role: BeatRole }
-  | { kind: "decision"; role: BeatRole; options: { label: string }[] };
+  | { kind: "bridge"; role: BeatRole };
 
 export type ClientFigureOutline = {
   figureKey: string;
   displayName: string;
   birthYear?: number;
   deathYear?: number;
-  arcVariant: ArcVariant;
   ageMin: number;
   ageMax: number;
   beats: ClientBeat[];

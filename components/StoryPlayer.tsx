@@ -3,83 +3,83 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { ClientFigureOutline, Framing } from "@/lib/types";
-import { DecisionCards } from "./DecisionCards";
-import { StoryBeat } from "./StoryBeat";
+import { PrefaceCard } from "./PrefaceCard";
+import { StoryBeat, type StoryAdvance } from "./StoryBeat";
 
 type Props = {
   sessionId: string;
   outline: ClientFigureOutline;
   framing: Framing;
   initialBeatIndex: number;
+  initialChunkIndex: number;
 };
+
+type Phase = "preface" | "playing" | "ended";
 
 export function StoryPlayer({
   sessionId,
   outline,
   framing,
   initialBeatIndex,
+  initialChunkIndex,
 }: Props) {
-  const [beatIndex, setBeatIndex] = useState(initialBeatIndex);
-  const [chooseError, setChooseError] = useState<string | null>(null);
-
   const totalBeats = outline.beats.length;
+  const [phase, setPhase] = useState<Phase>(() => {
+    if (initialBeatIndex >= totalBeats) return "ended";
+    if (initialBeatIndex === 0 && initialChunkIndex === 0) return "preface";
+    return "playing";
+  });
+  const [beatIndex, setBeatIndex] = useState(initialBeatIndex);
+  const [chunkIndex, setChunkIndex] = useState(initialChunkIndex);
+
   const isPastEnd = beatIndex >= totalBeats;
   const currentBeat = isPastEnd ? null : outline.beats[beatIndex];
-  const isFinalBeat = beatIndex === totalBeats - 1;
 
-  async function handlePick(label: string) {
-    setChooseError(null);
-    let response: Response;
-    try {
-      response = await fetch("/api/choose", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ sessionId, beatIndex, choice: label }),
-      });
-    } catch {
-      setChooseError("The connection dropped. Please try again.");
-      throw new Error("network");
+  function handleComplete(next: StoryAdvance) {
+    switch (next) {
+      case "chunk":
+        setChunkIndex((current) => current + 1);
+        break;
+      case "beat":
+        setBeatIndex((current) => current + 1);
+        setChunkIndex(0);
+        break;
+      case "end":
+        // Intentional no-op. Per StoryBeat's contract, when next === "end"
+        // the Continue button is hidden and the final chunk stays visible
+        // with "The journey ends here." underneath. onComplete should not
+        // even be called with "end" in normal flow; this branch only runs
+        // if a future caller misuses the contract. The "ended" phase is
+        // entered exclusively via the refresh path (initialBeatIndex >= total).
+        break;
+      default: {
+        const exhaustive: never = next;
+        return exhaustive;
+      }
     }
-    if (!response.ok) {
-      setChooseError(`This choice could not be recorded (${response.status}).`);
-      throw new Error("response");
-    }
-    let data: { nextBeatIndex: number };
-    try {
-      data = (await response.json()) as { nextBeatIndex: number };
-    } catch {
-      setChooseError("The server response was unreadable.");
-      throw new Error("parse");
-    }
-    setBeatIndex(data.nextBeatIndex);
   }
 
   return (
     <div className="space-y-12">
-      <Header outline={outline} framing={framing} />
+      {phase !== "preface" ? <Header outline={outline} framing={framing} /> : null}
 
       <AnimatePresence mode="wait">
-        {currentBeat ? (
+        {phase === "preface" ? (
+          <PrefaceCard onBegin={() => setPhase("playing")} />
+        ) : phase === "playing" && currentBeat ? (
           <motion.div
-            key={`${currentBeat.kind}-${beatIndex}`}
+            key={`${currentBeat.kind}-${beatIndex}-${chunkIndex}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
-            {currentBeat.kind === "decision" ? (
-              <DecisionCards
-                options={currentBeat.options}
-                onPick={handlePick}
-              />
-            ) : (
-              <StoryBeat
-                sessionId={sessionId}
-                beatIndex={beatIndex}
-                isFinal={isFinalBeat}
-                onComplete={() => setBeatIndex((current) => current + 1)}
-              />
-            )}
+            <StoryBeat
+              sessionId={sessionId}
+              beatIndex={beatIndex}
+              chunkIndex={chunkIndex}
+              onComplete={handleComplete}
+            />
           </motion.div>
         ) : (
           <motion.p
@@ -93,12 +93,6 @@ export function StoryPlayer({
           </motion.p>
         )}
       </AnimatePresence>
-
-      {chooseError ? (
-        <p className="font-ui text-sm text-[var(--color-accent)]">
-          {chooseError}
-        </p>
-      ) : null}
     </div>
   );
 }

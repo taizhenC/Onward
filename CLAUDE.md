@@ -8,7 +8,21 @@ Guidance for Claude Code working in this repo.
 
 The product is for hurting people. Tone, pacing, and prose quality matter more than features.
 
-**Repo state:** greenfield. The only committed artifacts are this file and `tbd_plan.md` (the design doc — high-level architecture and assumptions, no step-by-step build plan). Everything below describes the *target* design that should govern code as it lands. Treat file paths, table names, and interface shapes as the planned shape, not as code you can read today.
+## Status — read this before trusting anything below (2026-05-13)
+
+The body of this doc still describes the **original forked design**. It's preserved for historical context (it explains the *why* behind invariants like anti-echo and recovery-asymmetry) but several concrete things named below have been **removed in the as-shipped Phase 0 code**:
+
+- **Forks are gone.** No `decision` BeatKind, no `fork`/`reveal` BeatRole, no `ArcVariant` (`single_fork`/`double_fork`), no `DecisionContinuation`, no `decisionContinuations[]`, no `realChoice`, no `Session.choices`. The arc is a **linear 7-beat shape**: `scene → dark_moment → response → struggle → turning_point → became → bridge`.
+- **No `/api/choose` route.** The truthful-history fork mechanic was cut in favor of a linear narrative the user reads through. `/api/beat` and `/api/match` are the only API routes.
+- **No `<DecisionCards>` component.** All beats stream via `<StoryBeat>`.
+- **Preface + chunked reading landed.** First visit to a story shows a hardcoded universal `<PrefaceCard>` before any figure name or story prose. Beat prose is server-chunked into 1-2 paragraph chunks and tracked with `Session.nextChunkIndex`; `/api/beat` streams one chunk per call and returns `x-onward-next` (`chunk` | `beat` | `end`) for the next Continue action.
+- **`STUB_KEYWORD_MAP` matcher**, not the FacetsRAG pipeline. The body's matching architecture (six lanes, RRF, dynamic weights, tagger, projection) is **all Phase 1**.
+
+Phase 1 direction (decided 2026-05-13, not yet built): **prototype + LLM regeneration with RAG-grounded entity validation** as the path to interactive storytelling, not a return to forks. User agency comes via Wuwa-style **cosmetic choices** that do not branch the story. Hallucination control via strict prompt constraints + entity allowlist validation against a per-figure prototype, with hand-authored beats as the regression-reference and validation-failure fallback. Replace the Phase 0 hardcoded preface with LLM-personalized comfort copy generated from `session.feeling`, subject to the same tone and validation discipline.
+
+See `MVP.md` for the as-shipped Phase 0 reality. Below is the original target.
+
+**Repo state:** Phase 0 code lives. The body below describes the *original target* design that pre-dated the 2026-05-13 fork-cut. Treat file paths, table names, and interface shapes that contradict the Status section above as historical, not current.
 
 ## Stack
 

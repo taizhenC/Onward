@@ -43,7 +43,7 @@ export function createSession(input: CreateSessionInput): string {
     age: input.age,
     feeling: input.feeling,
     nextBeatIndex: 0,
-    choices: {},
+    nextChunkIndex: 0,
     createdAt: Date.now(),
   };
   sessions.set(sessionId, session);
@@ -57,12 +57,17 @@ export function getSession(sessionId: string): Session | null {
     sessions.delete(sessionId);
     return null;
   }
+  if (session.nextChunkIndex === undefined) {
+    const migrated = { ...session, nextChunkIndex: 0 };
+    sessions.set(sessionId, migrated);
+    return migrated;
+  }
   return session;
 }
 
 export function updateSession(
   sessionId: string,
-  patch: Partial<Pick<Session, "nextBeatIndex" | "choices">>,
+  patch: Partial<Pick<Session, "nextBeatIndex" | "nextChunkIndex">>,
 ): Session | null {
   const existing = sessions.get(sessionId);
   if (!existing) return null;
@@ -75,8 +80,8 @@ export function updateSession(
     ...(patch.nextBeatIndex !== undefined
       ? { nextBeatIndex: patch.nextBeatIndex }
       : {}),
-    ...(patch.choices !== undefined
-      ? { choices: { ...existing.choices, ...patch.choices } }
+    ...(patch.nextChunkIndex !== undefined
+      ? { nextChunkIndex: patch.nextChunkIndex }
       : {}),
   };
   sessions.set(sessionId, next);

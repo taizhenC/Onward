@@ -35,29 +35,21 @@ export function getByKey(figureKey: string, stageId: string): FigureStageRow | n
 // to the client. Anything not explicitly returned here stays on the server.
 //
 // Stripped: shapeSentences, facets, biographicalFacts, sources, stageLabel,
-// per-beat text, per-beat sourceNotes, decisionContinuations[*].continuationText,
-// decisionContinuations[*].realChoice.
+// per-beat text, per-beat sourceNotes.
 //
-// Kept: figureKey, displayName, birthYear, deathYear, arcVariant, ageMin, ageMax,
-// per-beat kind+role, per-decision option labels (the client needs labels to render
-// DecisionCards). Beat text streams via /api/beat — never crosses in the outline.
+// Kept: figureKey, displayName, birthYear, deathYear, ageMin, ageMax,
+// per-beat kind+role. Beat text streams via /api/beat — never crosses in
+// the outline.
 export function toClientOutline(stage: FigureStageRow): ClientFigureOutline {
   return {
     figureKey: stage.figureKey,
     displayName: stage.displayName,
     birthYear: stage.birthYear,
     deathYear: stage.deathYear,
-    arcVariant: stage.arcVariant,
     ageMin: stage.ageMin,
     ageMax: stage.ageMax,
     beats: stage.beats.map((beat): ClientBeat => {
       switch (beat.kind) {
-        case "decision":
-          return {
-            kind: "decision",
-            role: beat.role,
-            options: beat.decisionContinuations.map((c) => ({ label: c.label })),
-          };
         case "narrative":
           return { kind: "narrative", role: beat.role };
         case "bridge":

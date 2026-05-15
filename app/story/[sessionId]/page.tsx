@@ -27,6 +27,7 @@ export default async function StoryPage({
         outline={outline}
         framing={session.framing}
         initialBeatIndex={session.nextBeatIndex}
+        initialChunkIndex={session.nextChunkIndex}
       />
     </main>
   );

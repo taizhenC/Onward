@@ -3,7 +3,8 @@ import { handleIntake } from "../lib/intake";
 import { classifyCrisis } from "../lib/safety";
 import { listAll, toClientOutline } from "../lib/figures";
 import { _sessionMapSize } from "../lib/session";
-import { chunkBeatText } from "../lib/chunks";
+import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
+import type { BeatBlueprint } from "../lib/types";
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
 
@@ -238,36 +239,85 @@ function runChunkIntegrityAssertion(): AssertionResult {
         };
       }
 
-      const overGrouped = chunks.find(
-        (chunk) => chunk.split(/\n\n+/).filter(Boolean).length > 2,
-      );
-      if (overGrouped) {
+      const overLimit = chunks.find((chunk) => chunk.length > CHUNK_CHAR_LIMIT);
+      if (overLimit) {
         return {
-          name: "chunking: beat text preserved in small chunks",
+          name: "chunking: beat text preserved under limit",
           ok: false,
-          detail: `figure=${stage.figureKey} beat[${index}] has a chunk with more than 2 paragraphs`,
+          detail: `figure=${stage.figureKey} beat[${index}] produced ${overLimit.length} char chunk, limit=${CHUNK_CHAR_LIMIT}`,
         };
       }
 
-      // Byte-exact reconstruction. If a beat is authored with \n\n\n between
-      // paragraphs (or any non-\n\n separator), this fires and the editorial
-      // fix is to normalize the beat text to use exactly \n\n.
       const reassembled = chunks.join("\n\n");
-      if (reassembled !== beat.text) {
+      if (normalizeChunkText(reassembled) !== normalizeChunkText(beat.text)) {
         return {
-          name: "chunking: beat text preserved in small chunks",
+          name: "chunking: beat text preserved under limit",
           ok: false,
-          detail: `figure=${stage.figureKey} beat[${index}] did not byte-exact reassemble to original text`,
+          detail: `figure=${stage.figureKey} beat[${index}] did not preserve normalized text`,
         };
       }
     }
   }
 
   return {
-    name: "chunking: beat text preserved in small chunks",
+    name: "chunking: beat text preserved under limit",
     ok: true,
     detail: `${beatCount} beat(s), ${chunkCount} chunk(s)`,
   };
+}
+
+function runChunkBehaviorAssertion(): AssertionResult {
+  const grouped = chunkBeatText({
+    kind: "narrative",
+    role: "scene",
+    text: "One.\n\nTwo.\n\nThree.",
+  } satisfies BeatBlueprint);
+
+  if (grouped.length !== 1 || grouped[0] !== "One.\n\nTwo.\n\nThree.") {
+    return {
+      name: "chunking: groups short paragraphs and wraps long ones",
+      ok: false,
+      detail: `expected three short paragraphs to fit in one chunk, got ${grouped.length}`,
+    };
+  }
+
+  const longText = Array.from({ length: 80 }, (_, index) => `word${index}`).join(
+    " ",
+  );
+  const wrapped = chunkBeatText({
+    kind: "narrative",
+    role: "scene",
+    text: longText,
+  } satisfies BeatBlueprint);
+  const overLimit = wrapped.find((chunk) => chunk.length > CHUNK_CHAR_LIMIT);
+
+  if (wrapped.length <= 1 || overLimit) {
+    return {
+      name: "chunking: groups short paragraphs and wraps long ones",
+      ok: false,
+      detail: overLimit
+        ? `wrapped chunk length ${overLimit.length} exceeded limit=${CHUNK_CHAR_LIMIT}`
+        : "long paragraph did not wrap into multiple chunks",
+    };
+  }
+
+  if (normalizeChunkText(wrapped.join("\n\n")) !== normalizeChunkText(longText)) {
+    return {
+      name: "chunking: groups short paragraphs and wraps long ones",
+      ok: false,
+      detail: "wrapped long paragraph did not preserve normalized text",
+    };
+  }
+
+  return {
+    name: "chunking: groups short paragraphs and wraps long ones",
+    ok: true,
+    detail: `short=${grouped.length} chunk, long=${wrapped.length} chunks`,
+  };
+}
+
+function normalizeChunkText(value: string): string {
+  return value.replace(/\s+/g, " ").trim();
 }
 
 function findForbiddenKey(value: unknown): string | null {
@@ -332,6 +382,7 @@ function main(): void {
     runOutlineAssertion(),
     runArcShapeAssertion(),
     runChunkIntegrityAssertion(),
+    runChunkBehaviorAssertion(),
   ];
 
   console.log("Onward Phase 0 smoke check");

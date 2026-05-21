@@ -2,7 +2,7 @@ import "./_smoke-bootstrap";
 import { handleIntake } from "../lib/intake";
 import { classifyCrisis } from "../lib/safety";
 import { listAll, toClientOutline } from "../lib/figures";
-import { toRerankCandidate } from "../lib/llm-real";
+import { toRerankCandidate } from "../lib/llm";
 import { _sessionMapSize, getSession } from "../lib/session";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import type { BeatBlueprint } from "../lib/types";

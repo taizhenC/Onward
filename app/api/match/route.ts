@@ -16,7 +16,7 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError("Request body must be an object.", 400);
   }
 
-  const result = handleIntake(body);
+  const result = await handleIntake(body);
 
   if ("error" in result) {
     return jsonError(result.error, 400);

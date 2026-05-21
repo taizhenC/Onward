@@ -19,6 +19,12 @@ export type KeywordPick = {
 };
 
 const AGE_SOFT_PENALTY_PER_YEAR = 0.1;
+const KEYWORD_MATCHERS = Object.entries(STUB_KEYWORD_MAP).map(
+  ([keyword, themes]) => ({
+    regex: new RegExp(keywordPattern(keyword), "i"),
+    themes,
+  }),
+);
 
 export function pickByKeywordHybrid(
   input: { age: number; feeling: string },
@@ -52,21 +58,21 @@ function scoreKeywords(stage: FigureStageRow, feeling: string): number {
   const normalizedFeeling = feeling.toLowerCase();
   let score = 0;
 
-  for (const [keyword, themes] of Object.entries(STUB_KEYWORD_MAP)) {
-    if (!hasKeyword(normalizedFeeling, keyword)) continue;
-    score += themes.filter((theme) => stage.themes.includes(theme)).length;
+  for (const { regex, themes } of KEYWORD_MATCHERS) {
+    if (!regex.test(normalizedFeeling)) continue;
+    for (const theme of themes) {
+      if (stage.themes.includes(theme)) score += 1;
+    }
   }
 
   return score;
 }
 
-function hasKeyword(normalizedFeeling: string, keyword: string): boolean {
+function keywordPattern(keyword: string): string {
   const escapedKeyword = escapeRegExp(keyword.toLowerCase());
-  const pattern = keyword.includes(" ")
+  return keyword.includes(" ")
     ? `(?<![a-z0-9])${escapedKeyword}(?![a-z0-9])`
     : `\\b${escapedKeyword}\\b`;
-
-  return new RegExp(pattern, "i").test(normalizedFeeling);
 }
 
 function escapeRegExp(value: string): string {

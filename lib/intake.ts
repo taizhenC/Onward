@@ -20,7 +20,7 @@ const MAX_AGE = 100;
 const MIN_FEELING_LENGTH = 10;
 const MAX_FEELING_LENGTH = 1000;
 
-export function handleIntake(input: unknown): MatchResponse {
+export async function handleIntake(input: unknown): Promise<MatchResponse> {
   const validated = validateIntake(input);
   if ("error" in validated) return validated;
 
@@ -29,7 +29,7 @@ export function handleIntake(input: unknown): MatchResponse {
     return { crisis: true, resources: CRISIS_RESOURCES };
   }
 
-  const result = match(validated);
+  const result = await match(validated);
   const sessionId = createSession({
     figureKey: result.figureKey,
     stageId: result.stageId,

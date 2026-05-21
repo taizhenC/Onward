@@ -14,7 +14,8 @@ export type { StreamBeatInput } from "./llm-stub";
 
 // The boundary's error contract: callers (lib/matching.ts) catch this to drive the
 // keyword-hybrid fallback without importing lib/llm-real directly.
-export { RerankError } from "./llm-real";
+export { RerankError, toRerankCandidate } from "./llm-real";
+export type { RerankCandidate } from "./llm-real";
 
 // Provider is resolved lazily on first use (NOT at module load) and memoized. A script
 // that sets process.env.LLM_PROVIDER before its first match call therefore always wins,

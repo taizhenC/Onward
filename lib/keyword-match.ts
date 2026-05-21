@@ -34,7 +34,8 @@ export function pickByKeywordHybrid(
     throw new Error("pickByKeywordHybrid requires a non-empty candidate pool.");
   }
 
-  const scored = pool.map((stage) => scoreStage(stage, input));
+  const themeWeights = getMatchedThemeWeights(input.feeling);
+  const scored = pool.map((stage) => scoreStage(stage, input, themeWeights));
   scored.sort(compareScoredStages);
   return scored[0];
 }
@@ -42,8 +43,9 @@ export function pickByKeywordHybrid(
 function scoreStage(
   stage: FigureStageRow,
   input: { age: number; feeling: string },
+  themeWeights: Map<string, number>,
 ): KeywordPick {
-  const keywordScore = scoreKeywords(stage, input.feeling);
+  const keywordScore = scoreThemeOverlap(stage, themeWeights);
   const agePenalty = ageDistance(stage, input.age) * AGE_SOFT_PENALTY_PER_YEAR;
 
   return {
@@ -54,15 +56,28 @@ function scoreStage(
   };
 }
 
-function scoreKeywords(stage: FigureStageRow, feeling: string): number {
+function getMatchedThemeWeights(feeling: string): Map<string, number> {
   const normalizedFeeling = feeling.toLowerCase();
-  let score = 0;
+  const themeWeights = new Map<string, number>();
 
   for (const { regex, themes } of KEYWORD_MATCHERS) {
     if (!regex.test(normalizedFeeling)) continue;
     for (const theme of themes) {
-      if (stage.themes.includes(theme)) score += 1;
+      themeWeights.set(theme, (themeWeights.get(theme) ?? 0) + 1);
     }
+  }
+
+  return themeWeights;
+}
+
+function scoreThemeOverlap(
+  stage: FigureStageRow,
+  themeWeights: Map<string, number>,
+): number {
+  let score = 0;
+
+  for (const [theme, weight] of themeWeights) {
+    if (stage.themes.includes(theme)) score += weight;
   }
 
   return score;

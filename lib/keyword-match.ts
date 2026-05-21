@@ -83,5 +83,7 @@ function compareScoredStages(a: KeywordPick, b: KeywordPick): number {
   if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
   if (b.keywordScore !== a.keywordScore) return b.keywordScore - a.keywordScore;
   if (a.agePenalty !== b.agePenalty) return a.agePenalty - b.agePenalty;
-  return a.stage.figureKey.localeCompare(b.stage.figureKey);
+  const figureOrder = a.stage.figureKey.localeCompare(b.stage.figureKey);
+  if (figureOrder !== 0) return figureOrder;
+  return a.stage.stageId.localeCompare(b.stage.stageId);
 }

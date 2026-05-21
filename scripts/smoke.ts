@@ -2,9 +2,14 @@ import "./_smoke-bootstrap";
 import { handleIntake } from "../lib/intake";
 import { classifyCrisis } from "../lib/safety";
 import { listAll, toClientOutline } from "../lib/figures";
+import { toRerankCandidate } from "../lib/llm-real";
 import { _sessionMapSize, getSession } from "../lib/session";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import type { BeatBlueprint } from "../lib/types";
+
+// Smoke always runs in stub mode (provider matrix). getLLM() resolves lazily on the
+// first match call, so setting this before main() runs is sufficient.
+process.env.LLM_PROVIDER = "stub";
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
 
@@ -235,6 +240,55 @@ function runOutlineAssertion(): AssertionResult {
   };
 }
 
+function runRerankCandidateAssertion(): AssertionResult {
+  const name = "anti-echo: toRerankCandidate excludes embedded surfaces";
+  const stages = listAll();
+  if (stages.length === 0) {
+    return { name, ok: false, detail: "no stages in library" };
+  }
+
+  const allowedKeys = new Set([
+    "figureKey",
+    "stageId",
+    "displayName",
+    "ageMin",
+    "ageMax",
+    "biographicalFacts",
+  ]);
+
+  for (const stage of stages) {
+    const candidate = toRerankCandidate(stage);
+
+    const extraKey = Object.keys(candidate).find((key) => !allowedKeys.has(key));
+    if (extraKey) {
+      return {
+        name,
+        ok: false,
+        detail: `figure=${stage.figureKey} leaked key=${extraKey}`,
+      };
+    }
+
+    // Content guard: the embedded surfaces (shape sentences, facet text, beat prose)
+    // must never ride along into the rerank prompt.
+    const serialized = JSON.stringify(candidate);
+    const embedded = [
+      stage.shapeSentences[0],
+      stage.facets.emotionalCore,
+      stage.beats[0]?.text,
+    ];
+    const leak = embedded.find((text) => text && serialized.includes(text));
+    if (leak) {
+      return {
+        name,
+        ok: false,
+        detail: `figure=${stage.figureKey} rerank candidate contained embedded (shape/facet/beat) text`,
+      };
+    }
+  }
+
+  return { name, ok: true, detail: `${stages.length} candidate(s) audited` };
+}
+
 function runChunkIntegrityAssertion(): AssertionResult {
   const stages = listAll();
   let beatCount = 0;
@@ -396,6 +450,7 @@ async function main(): Promise<void> {
     ),
     await runCrisisAssertion(),
     runOutlineAssertion(),
+    runRerankCandidateAssertion(),
     runArcShapeAssertion(),
     runChunkIntegrityAssertion(),
     runChunkBehaviorAssertion(),

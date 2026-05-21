@@ -5,7 +5,7 @@ import {
 } from "@/lib/api-utils";
 import { chunkBeatText } from "@/lib/chunks";
 import { getByKey } from "@/lib/figures";
-import { streamBeat } from "@/lib/llm-stub";
+import { streamBeat } from "@/lib/llm";
 import {
   getNextStoryAdvance,
   parseBeatPositionRequest,

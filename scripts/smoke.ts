@@ -272,9 +272,12 @@ function runRerankCandidateAssertion(): AssertionResult {
     // must never ride along into the rerank prompt.
     const serialized = JSON.stringify(candidate);
     const embedded = [
-      stage.shapeSentences[0],
+      ...stage.shapeSentences,
       stage.facets.emotionalCore,
-      stage.beats[0]?.text,
+      stage.facets.decisionShape,
+      stage.facets.triggerEvent,
+      stage.facets.agencyState,
+      ...stage.beats.map((beat) => beat.text),
     ];
     const leak = embedded.find((text) => text && serialized.includes(text));
     if (leak) {

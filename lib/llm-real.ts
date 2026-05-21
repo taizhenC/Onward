@@ -19,6 +19,7 @@ import type {
 
 const DEFAULT_BASE_URL = "https://api.groq.com/openai/v1";
 const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_TEMPERATURE = 0;
 const DEFAULT_TIMEOUT_MS = 8000;
 
 function baseUrl(): string {
@@ -28,14 +29,21 @@ function model(): string {
   return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
 }
 function temperature(): number {
-  return Number(process.env.LLM_RERANK_TEMPERATURE ?? "0");
+  return numberEnv("LLM_RERANK_TEMPERATURE", DEFAULT_TEMPERATURE);
 }
 function reasoningEffort(): string {
   // Empty string disables the param (in case an endpoint rejects it).
   return process.env.LLM_RERANK_REASONING_EFFORT ?? "low";
 }
 function timeoutMs(): number {
-  return Number(process.env.LLM_RERANK_TIMEOUT_MS ?? String(DEFAULT_TIMEOUT_MS));
+  const value = numberEnv("LLM_RERANK_TIMEOUT_MS", DEFAULT_TIMEOUT_MS);
+  return value > 0 ? value : DEFAULT_TIMEOUT_MS;
+}
+function numberEnv(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (raw === undefined || raw.trim() === "") return fallback;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 // Anti-echo chokepoint (plan #8): the ONLY way a candidate is serialized into the

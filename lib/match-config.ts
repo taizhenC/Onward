@@ -1,8 +1,18 @@
-export const matchConfigVersion = "phase0-stub-linear-2026-05";
+import type { Confidence, Framing } from "./types";
+
+export const matchConfigVersion = "phase1-rerank-eval-2026-05";
 
 export const AGE_TOLERANCE_YEARS = 10;
 
 export const PARTIAL_FRAMING_THRESHOLD = 1;
+
+// Confidence → framing. Only "definitive" | "partial" crosses the wire (CLAUDE.md:
+// the client never sees the underlying confidence). A low-confidence pick — including
+// every keyword-hybrid fallback — is framed "partial" so we never present a weak
+// match as a definitive mirror.
+export function framingFromConfidence(confidence: Confidence): Framing {
+  return confidence === "low" ? "partial" : "definitive";
+}
 
 // Lowercase substring → theme tags. A figure earns one point per matched keyword
 // whose theme tag is in the figure's themes[]. Phase 1 replaces this with the

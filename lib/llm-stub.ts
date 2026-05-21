@@ -1,5 +1,7 @@
 import "server-only";
-import type { BeatBlueprint, Session } from "./types";
+import type { BeatBlueprint, Pick, PickInput, Session } from "./types";
+import { pickByKeywordHybrid } from "./keyword-match";
+import { PARTIAL_FRAMING_THRESHOLD } from "./match-config";
 
 const WORD_DELAY_MS = 40;
 
@@ -32,4 +34,23 @@ function toWordChunks(text: string): string[] {
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Stub reranker: delegates to the shared keyword-hybrid scorer. Confidence mirrors
+// Phase 0 framing — a clear keyword hit reads as confident, no hit reads as "partial".
+// resonance/gap are empty (the stub has no narrative reasoning). The real reranker in
+// lib/llm-real.ts replaces this when LLM_PROVIDER=real.
+export async function pickFigureStub(input: PickInput): Promise<Pick> {
+  const { stage, keywordScore } = pickByKeywordHybrid(
+    { age: input.age, feeling: input.feeling },
+    input.candidates,
+  );
+
+  return {
+    figureKey: stage.figureKey,
+    stageId: stage.stageId,
+    resonance: "",
+    gap: "",
+    confidence: keywordScore >= PARTIAL_FRAMING_THRESHOLD ? "high" : "low",
+  };
 }

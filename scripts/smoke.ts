@@ -2,7 +2,7 @@ import "./_smoke-bootstrap";
 import { handleIntake } from "../lib/intake";
 import { classifyCrisis } from "../lib/safety";
 import { listAll, toClientOutline } from "../lib/figures";
-import { _sessionMapSize } from "../lib/session";
+import { _sessionMapSize, getSession } from "../lib/session";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import type { BeatBlueprint } from "../lib/types";
 
@@ -44,13 +44,13 @@ const CRISIS_OVERTRIGGER_PHRASES = [
   "I almost died laughing",
 ];
 
-function runMatchAssertion(
+async function runMatchAssertion(
   label: string,
   input: { age: number; feeling: string },
   expectedFigureKey: string,
-): AssertionResult {
+): Promise<AssertionResult> {
   const before = _sessionMapSize();
-  const result = handleIntake(input);
+  const result = await handleIntake(input);
 
   if ("error" in result) {
     return { name: label, ok: false, detail: `validation error: ${result.error}` };
@@ -75,6 +75,22 @@ function runMatchAssertion(
     };
   }
 
+  const session = getSession(result.sessionId);
+  if (!session) {
+    return {
+      name: label,
+      ok: false,
+      detail: `sessionId=${result.sessionId.slice(0, 8)} not found after creation`,
+    };
+  }
+  if (session.figureKey !== expectedFigureKey) {
+    return {
+      name: label,
+      ok: false,
+      detail: `matched figureKey=${session.figureKey}, expected ${expectedFigureKey}`,
+    };
+  }
+
   const outline = listAll().find(
     (stage) => stage.figureKey === expectedFigureKey,
   );
@@ -93,9 +109,9 @@ function runMatchAssertion(
   };
 }
 
-function runCrisisAssertion(): AssertionResult {
+async function runCrisisAssertion(): Promise<AssertionResult> {
   const before = _sessionMapSize();
-  const result = handleIntake({
+  const result = await handleIntake({
     age: 22,
     feeling: "I want to kill myself",
   });
@@ -354,9 +370,9 @@ function printOverTriggerMap(): void {
   }
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const assertions: AssertionResult[] = [
-    runMatchAssertion(
+    await runMatchAssertion(
       "match: rejection feeling at 28 → Butler",
       {
         age: 28,
@@ -365,12 +381,12 @@ function main(): void {
       },
       "butler",
     ),
-    runMatchAssertion(
+    await runMatchAssertion(
       "match: escape feeling at 21 → Douglass",
       { age: 21, feeling: "I escaped and don't know who I am" },
       "douglass",
     ),
-    runMatchAssertion(
+    await runMatchAssertion(
       "match: stuck-in-wrong-life at 52 → Lee",
       {
         age: 52,
@@ -378,7 +394,7 @@ function main(): void {
       },
       "lee",
     ),
-    runCrisisAssertion(),
+    await runCrisisAssertion(),
     runOutlineAssertion(),
     runArcShapeAssertion(),
     runChunkIntegrityAssertion(),
@@ -409,4 +425,4 @@ function main(): void {
   process.exit(1);
 }
 
-main();
+void main();

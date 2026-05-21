@@ -1,10 +1,14 @@
 import "server-only";
-import type { FigureStageRow, Framing } from "./types";
-import { ageDistance, listAll, listByAge } from "./figures";
-import {
-  PARTIAL_FRAMING_THRESHOLD,
-  STUB_KEYWORD_MAP,
-} from "./match-config";
+import type {
+  Confidence,
+  FigureStageRow,
+  Framing,
+  RerankFailureReason,
+} from "./types";
+import { listAll, listByAge } from "./figures";
+import { framingFromConfidence } from "./match-config";
+import { pickFigure, RerankError } from "./llm";
+import { pickByKeywordHybrid } from "./keyword-match";
 
 export type MatchInput = {
   age: number;
@@ -17,16 +21,93 @@ export type MatchResult = {
   framing: Framing;
 };
 
-type ScoredStage = {
-  stage: FigureStageRow;
-  keywordScore: number;
-  agePenalty: number;
-  totalScore: number;
+export type ChosenBy = "rerank" | "keyword_fallback";
+
+// Server-only, eval-only enrichment of MatchResult. resonance/gap are deliberately
+// NOT here — they never leave lib/. Production callers use match(); the eval uses
+// matchWithDebug() to report calibration, latency, and degraded-mode usage.
+export type MatchDebug = MatchResult & {
+  confidence: Confidence;
+  chosenBy: ChosenBy;
+  failureReason?: RerankFailureReason;
+  latencyMs: number;
 };
 
-const AGE_SOFT_PENALTY_PER_YEAR = 0.1;
+// Production entry point: only the client-safe shape escapes.
+export async function match(input: MatchInput): Promise<MatchResult> {
+  const { figureKey, stageId, framing } = await matchWithDebug(input);
+  return { figureKey, stageId, framing };
+}
 
-export function match(input: MatchInput): MatchResult {
+export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
+  const { pool, fallbackToAll } = buildPool(input);
+  const start = performance.now();
+
+  try {
+    const pick = await pickFigure({
+      age: input.age,
+      feeling: input.feeling,
+      candidates: pool,
+    });
+
+    // #5: don't trust syntactically valid output. A pick naming a figure that isn't
+    // in the pool (hallucinated / filtered out) is a failure, not a match.
+    const inPool = pool.some(
+      (s) => s.figureKey === pick.figureKey && s.stageId === pick.stageId,
+    );
+    if (!inPool) {
+      return keywordFallback(input, pool, start, "invalid_pick");
+    }
+
+    return {
+      figureKey: pick.figureKey,
+      stageId: pick.stageId,
+      // An age-gate fallback-to-all pool is honest-but-thin → always "partial".
+      framing: fallbackToAll ? "partial" : framingFromConfidence(pick.confidence),
+      confidence: pick.confidence,
+      chosenBy: "rerank",
+      latencyMs: performance.now() - start,
+    };
+  } catch (error) {
+    const reason: RerankFailureReason =
+      error instanceof RerankError ? error.reason : "api_error";
+    return keywordFallback(input, pool, start, reason);
+  }
+}
+
+// Meaning-preserving degraded path: the shared keyword-hybrid scorer, forced to low
+// confidence (→ "partial"). Strictly better than nearest-age, which would discard the
+// user's feeling. See plan, "age vs keyword" discussion.
+function keywordFallback(
+  input: MatchInput,
+  pool: FigureStageRow[],
+  start: number,
+  failureReason: RerankFailureReason,
+): MatchDebug {
+  const { stage } = pickByKeywordHybrid(
+    { age: input.age, feeling: input.feeling },
+    pool,
+  );
+
+  return {
+    figureKey: stage.figureKey,
+    stageId: stage.stageId,
+    framing: "partial",
+    confidence: "low",
+    chosenBy: "keyword_fallback",
+    failureReason,
+    latencyMs: performance.now() - start,
+  };
+}
+
+// Wide age hard gate, with a Phase 0/1A-specific fallback-to-all so testers who fall
+// outside every window (only a handful of figures) aren't silently dropped — that
+// would violate recovery-asymmetry. Phase 1B removes the fallback once the library
+// is large enough that the gate reliably returns candidates.
+function buildPool(input: MatchInput): {
+  pool: FigureStageRow[];
+  fallbackToAll: boolean;
+} {
   const candidates = listByAge(input.age);
   const fallbackToAll = candidates.length === 0;
   const pool = fallbackToAll ? listAll() : candidates;
@@ -35,62 +116,5 @@ export function match(input: MatchInput): MatchResult {
     throw new Error("No figure stages are available to match against.");
   }
 
-  const scored = pool.map((stage) => scoreStage(stage, input));
-  scored.sort(compareScoredStages);
-
-  const top = scored[0];
-  const framing: Framing =
-    fallbackToAll || top.keywordScore < PARTIAL_FRAMING_THRESHOLD
-      ? "partial"
-      : "definitive";
-
-  return {
-    figureKey: top.stage.figureKey,
-    stageId: top.stage.stageId,
-    framing,
-  };
-}
-
-function scoreStage(stage: FigureStageRow, input: MatchInput): ScoredStage {
-  const keywordScore = scoreKeywords(stage, input.feeling);
-  const agePenalty = ageDistance(stage, input.age) * AGE_SOFT_PENALTY_PER_YEAR;
-
-  return {
-    stage,
-    keywordScore,
-    agePenalty,
-    totalScore: keywordScore - agePenalty,
-  };
-}
-
-function scoreKeywords(stage: FigureStageRow, feeling: string): number {
-  const normalizedFeeling = feeling.toLowerCase();
-  let score = 0;
-
-  for (const [keyword, themes] of Object.entries(STUB_KEYWORD_MAP)) {
-    if (!hasKeyword(normalizedFeeling, keyword)) continue;
-    score += themes.filter((theme) => stage.themes.includes(theme)).length;
-  }
-
-  return score;
-}
-
-function hasKeyword(normalizedFeeling: string, keyword: string): boolean {
-  const escapedKeyword = escapeRegExp(keyword.toLowerCase());
-  const pattern = keyword.includes(" ")
-    ? `(?<![a-z0-9])${escapedKeyword}(?![a-z0-9])`
-    : `\\b${escapedKeyword}\\b`;
-
-  return new RegExp(pattern, "i").test(normalizedFeeling);
-}
-
-function escapeRegExp(value: string): string {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function compareScoredStages(a: ScoredStage, b: ScoredStage): number {
-  if (b.totalScore !== a.totalScore) return b.totalScore - a.totalScore;
-  if (b.keywordScore !== a.keywordScore) return b.keywordScore - a.keywordScore;
-  if (a.agePenalty !== b.agePenalty) return a.agePenalty - b.agePenalty;
-  return a.stage.figureKey.localeCompare(b.stage.figureKey);
+  return { pool, fallbackToAll };
 }

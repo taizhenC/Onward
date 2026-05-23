@@ -1,0 +1,61 @@
+{
+  "readme": "Gold cases for scripts/eval-match.ts. Each case: { age:int, feeling:string, expect:figureKey|\"miss\", note?:string }. Hard near-miss cases add { hard:true, plausibleWrong:figureKey, confusionGroup:string } so confusion is computable. expect:\"miss\" means NO figure fits — the case passes if framing comes back \"partial\" (an honest 'fragment that rhymes'), regardless of which figure is named. NOTE on library shape: with only 3 age-clustered figures (douglass ~20-23, butler ~26-28, lee ~50-54) and a +/-10y age gate, the only intra-pool confusable pair is butler<->douglass; lee is age-isolated and has no confusion partner until a similarly-aged figure is authored. The miss cases are deliberately age-in-range so they exercise the reranker's confidence calibration, not just the age gate. Expand this set as the library grows; a high top-1 with few hard pairs is unproven, not validated — weight authoring effort on hard confusionGroup cases.",
+  "cases": [
+    {
+      "age": 28,
+      "feeling": "I keep getting rejected and I don't know if I should keep trying",
+      "expect": "butler",
+      "note": "known-good (smoke): creative dismissal + keep-going"
+    },
+    {
+      "age": 21,
+      "feeling": "I escaped and don't know who I am",
+      "expect": "douglass",
+      "note": "known-good (smoke): escape + self-invention"
+    },
+    {
+      "age": 52,
+      "feeling": "I'm stuck in the wrong life and don't know how to leave",
+      "expect": "lee",
+      "note": "known-good (smoke): late start + social constraint"
+    },
+
+    {
+      "age": 27,
+      "feeling": "I just had my first child and I'm terrified I'll pass on my own father's temper",
+      "expect": "miss",
+      "note": "intergenerational parenting fear; age sits in butler's window so the reranker must judge fit, not the age gate"
+    },
+    {
+      "age": 52,
+      "feeling": "My husband of thirty years died last spring and the silence in the house is unbearable",
+      "expect": "miss",
+      "note": "late-life bereavement; age in lee's window — single-candidate calibration test"
+    },
+    {
+      "age": 22,
+      "feeling": "I can't stop gambling and the debt is crushing me but I can't tell anyone",
+      "expect": "miss",
+      "note": "addiction + financial shame; age in douglass's window"
+    },
+
+    {
+      "age": 27,
+      "feeling": "I've poured years into my work with nothing to show for it, and lately I just want to walk away and start over as someone new",
+      "expect": "butler",
+      "hard": true,
+      "plausibleWrong": "douglass",
+      "confusionGroup": "persistence-vs-reinvention",
+      "note": "'start over as someone new' pulls douglass's self-invention; the core is creative perseverance (butler)"
+    },
+    {
+      "age": 24,
+      "feeling": "I cut off the people who defined my whole life and now I'm alone and have no idea who I am without them",
+      "expect": "douglass",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "persistence-vs-reinvention",
+      "note": "young self-invention after leaving (douglass); the only in-pool alternative at this age is butler"
+    }
+  ]
+}

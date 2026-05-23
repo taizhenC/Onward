@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "smoke": "tsx scripts/smoke.ts"
+    "smoke": "tsx scripts/smoke.ts",
+    "check-figure": "tsx scripts/check-figure.ts",
+    "health": "tsx scripts/check-provider.ts",
+    "eval": "tsx scripts/eval-match.ts"
   },
   "dependencies": {
     "next": "^15.1.0",

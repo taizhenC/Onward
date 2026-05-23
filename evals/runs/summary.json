@@ -1,0 +1,57 @@
+{
+  "config": {
+    "matchConfigVersion": "phase1-rerank-eval-2026-05",
+    "provider": "real",
+    "model": "openai/gpt-oss-120b",
+    "k": 1,
+    "concurrency": 1,
+    "maxRetries": 2,
+    "ranAt": "2026-05-23T04:36:32.384Z",
+    "caseCount": 8,
+    "trialCount": 8
+  },
+  "metrics": {
+    "rerankTop1": 1,
+    "rerankTop1Counts": {
+      "correct": 5,
+      "total": 5
+    },
+    "overallTop1": 1,
+    "overallTop1Counts": {
+      "correct": 5,
+      "total": 5
+    },
+    "missDetection": 0.6666666666666666,
+    "missDetectionCounts": {
+      "detected": 2,
+      "total": 3
+    },
+    "hardConfusion": 0,
+    "hardConfusionCounts": {
+      "confused": 0,
+      "total": 2
+    },
+    "confusionByGroup": [
+      {
+        "group": "persistence-vs-reinvention",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      }
+    ],
+    "calibration": {
+      "definitiveCorrect": 5,
+      "definitiveWrong": 0,
+      "partialCorrect": 0,
+      "partialWrong": 0
+    },
+    "chosenBy": {
+      "rerank": 8,
+      "keyword_fallback": 0
+    },
+    "failureReasons": {},
+    "latencyP50": 641,
+    "latencyP95": 1142,
+    "stability": null
+  }
+}

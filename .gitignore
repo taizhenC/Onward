@@ -33,6 +33,11 @@ yarn-error.log*
 # editorial workspace (Phase 1 readiness)
 scripts/drafts/
 
+# eval run dumps — full per-trial dumps are local-only (they carry synthetic gold
+# feelings); the metrics-only summary.json is committable for cross-run diffing.
+evals/runs/*
+!evals/runs/summary.json
+
 # IDE / OS
 .vscode/
 .idea/

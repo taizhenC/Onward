@@ -329,6 +329,18 @@ function runEyebrowGuardAssertion(): AssertionResult {
       expectNeutral: false,
     },
     {
+      label: "article in figure name is not a leak",
+      raw: "the pressure before the next step",
+      displayName: "The Buddha",
+      expectNeutral: false,
+    },
+    {
+      label: "epithet in figure name is not a leak",
+      raw: "a great pressure held quietly",
+      displayName: "Catherine the Great",
+      expectNeutral: false,
+    },
+    {
       label: "preamble (multi-line)",
       raw: "Here is the line:\nthe long wait for a yes",
       displayName: "Octavia Butler",

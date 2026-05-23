@@ -26,7 +26,9 @@ const DEFAULT_MODEL = "openai/gpt-oss-120b";
 const HEALTH_TIMEOUT_MS = 8000;
 
 function baseUrl(): string {
-  return process.env.GROQ_BASE_URL ?? DEFAULT_BASE_URL;
+  const configured = process.env.GROQ_BASE_URL?.trim();
+  if (!configured) return DEFAULT_BASE_URL;
+  return configured.replace(/\/+$/, "") || DEFAULT_BASE_URL;
 }
 function model(): string {
   return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;

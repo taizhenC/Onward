@@ -169,15 +169,12 @@ function main(): void {
   let failed = 0;
   stages.forEach((stage, index) => {
     const problems = checkFigure(stage);
+    if (problems.length > 0) failed += 1;
     const tag = problems.length === 0 ? "OK  " : "FAIL";
     const number = `[${index + 1}/${stages.length}]`;
     console.log(`${number} ${tag}  ${stage.figureKey} / ${stage.stageId}`);
     for (const problem of problems) console.log(`         - ${problem}`);
   });
-
-  for (const stage of stages) {
-    if (checkFigure(stage).length > 0) failed += 1;
-  }
 
   console.log("");
   if (failed === 0) {

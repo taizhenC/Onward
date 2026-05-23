@@ -2,10 +2,17 @@ import "server-only";
 import type {
   Confidence,
   FigureStageRow,
+  OpeningCopy,
   Pick,
   PickInput,
   RerankFailureReason,
 } from "./types";
+import {
+  sanitizeEyebrow,
+  toEyebrowSurface,
+  type EyebrowPromptSurface,
+  type OpeningCopyInput,
+} from "./opening-copy";
 
 // Real reranker: GPT-OSS 120B via Groq's OpenAI-compatible REST endpoint.
 //
@@ -44,6 +51,23 @@ function numberEnv(name: string, fallback: number): number {
   if (raw === undefined || raw.trim() === "") return fallback;
   const parsed = Number(raw);
   return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+// Prose model (Llama) — separate from the GPT-OSS reranker per the cross-model rule
+// (Llama writes prose, GPT-OSS reranks; don't flip them). Used for opening copy.
+const DEFAULT_PROSE_MODEL = "llama-3.3-70b-versatile";
+const DEFAULT_PROSE_TEMPERATURE = 0.3;
+const DEFAULT_PROSE_TIMEOUT_MS = 8000;
+
+function proseModel(): string {
+  return process.env.LLM_MODEL_PROSE ?? DEFAULT_PROSE_MODEL;
+}
+function proseTemperature(): number {
+  return numberEnv("LLM_PROSE_TEMPERATURE", DEFAULT_PROSE_TEMPERATURE);
+}
+function proseTimeoutMs(): number {
+  const value = numberEnv("LLM_PROSE_TIMEOUT_MS", DEFAULT_PROSE_TIMEOUT_MS);
+  return value > 0 ? value : DEFAULT_PROSE_TIMEOUT_MS;
 }
 
 // Anti-echo chokepoint (plan #8): the ONLY way a candidate is serialized into the
@@ -217,4 +241,94 @@ function coerceConfidence(value: unknown): Confidence {
   return value === "high" || value === "medium" || value === "low"
     ? value
     : "low";
+}
+
+// ── Opening copy (eyebrow) ───────────────────────────────────────────────────────────
+// Prose generation, not rerank: routed to the Llama prose model. Unlike pickFigureReal,
+// this NEVER throws — any failure (no key, timeout, HTTP error, bad output) degrades to the
+// neutral fallback via sanitizeEyebrow, because copy must never block the story.
+
+const EYEBROW_SYSTEM_PROMPT = [
+  "You write one quiet line for the top of a page in a small, gentle book.",
+  "Someone has just shared what they are going through. A real life story has been chosen to sit beside theirs, but its subject is not named here.",
+  "Write a single short line that gestures at the kind of pressure in what they wrote — like a chapter eyebrow, not a full sentence.",
+  "",
+  "Rules:",
+  "- No diagnosis. No advice. No reassurance and no promises.",
+  "- Do not name any person, place, or year. Do not claim the two lives match exactly.",
+  "- Under ten words. Plain and calm. No quotation marks.",
+  "- No preamble and no explanation. Output ONLY the line itself.",
+].join("\n");
+
+function buildEyebrowPrompt(surface: EyebrowPromptSurface): string {
+  return [
+    "They wrote:",
+    '"""',
+    surface.feeling,
+    '"""',
+    "",
+    "The chosen life carries this emotional through-line (do not quote it, do not name its subject):",
+    surface.throughLine,
+    "",
+    "Write the one-line eyebrow now.",
+  ].join("\n");
+}
+
+export async function writeOpeningCopyReal(
+  input: OpeningCopyInput,
+): Promise<OpeningCopy> {
+  const surface = toEyebrowSurface(input);
+  const raw = await generateEyebrowLine(surface);
+  // sanitizeEyebrow turns null / blank / preamble / too-long / name-leak into the neutral
+  // fallback, so this always returns a usable line.
+  return { eyebrow: sanitizeEyebrow(raw, surface.displayName) };
+}
+
+// Returns the raw model line, or null on any failure. Never throws, and never logs the
+// prompt/feeling or the raw error (privacy floor).
+async function generateEyebrowLine(
+  surface: EyebrowPromptSurface,
+): Promise<string | null> {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) return null;
+
+  const body = {
+    model: proseModel(),
+    temperature: proseTemperature(),
+    messages: [
+      { role: "system", content: EYEBROW_SYSTEM_PROMPT },
+      { role: "user", content: buildEyebrowPrompt(surface) },
+    ],
+  };
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), proseTimeoutMs());
+
+  let response: Response;
+  try {
+    response = await fetch(`${baseUrl()}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+
+  if (!response.ok) return null;
+
+  try {
+    const envelope = (await response.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+    return envelope.choices?.[0]?.message?.content ?? null;
+  } catch {
+    return null;
+  }
 }

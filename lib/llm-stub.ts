@@ -1,7 +1,8 @@
 import "server-only";
-import type { BeatBlueprint, Pick, PickInput, Session } from "./types";
+import type { BeatBlueprint, OpeningCopy, Pick, PickInput, Session } from "./types";
 import { pickByKeywordHybrid } from "./keyword-match";
 import { PARTIAL_FRAMING_THRESHOLD } from "./match-config";
+import { NEUTRAL_EYEBROW, type OpeningCopyInput } from "./opening-copy";
 
 const WORD_DELAY_MS = 40;
 
@@ -53,4 +54,12 @@ export async function pickFigureStub(input: PickInput): Promise<Pick> {
     gap: "",
     confidence: keywordScore >= PARTIAL_FRAMING_THRESHOLD ? "high" : "low",
   };
+}
+
+// Stub opening copy: always the neutral fallback (the stub has no generative model). The
+// real generator in lib/llm-real.ts replaces this when LLM_PROVIDER=real.
+export async function writeOpeningCopyStub(
+  _input: OpeningCopyInput,
+): Promise<OpeningCopy> {
+  return { eyebrow: NEUTRAL_EYEBROW };
 }

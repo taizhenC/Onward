@@ -45,8 +45,8 @@ export type Framing = "definitive" | "partial";
 
 export type Confidence = "low" | "medium" | "high";
 
-// The reranker's per-candidate verdict. resonance/gap/confidence are server-only —
-// only `framing` (derived from confidence) ever crosses to the client.
+// The reranker's per-candidate verdict. resonance/gap/confidence are server-only and
+// never cross to the client; the client sees only the generated openingCopy (eyebrow).
 export type Pick = {
   figureKey: string;
   stageId: string;
@@ -72,11 +72,20 @@ export type RerankFailureReason =
 
 export type StoryAdvance = "chunk" | "beat" | "end";
 
+// LLM-generated opening copy, stored on the session at intake and shown to the user. The
+// eyebrow replaces the old confidence-derived framing label as the line above the figure
+// (prefaceLines lands next). Derived from the user's feeling → sensitive: fine to show the
+// user, never logged.
+export type OpeningCopy = {
+  eyebrow: string;
+};
+
 export type Session = {
   sessionId: string;
   figureKey: string;
   stageId: string;
   framing: Framing;
+  openingCopy: OpeningCopy;
   age: number;
   feeling: string;
   nextBeatIndex: number;

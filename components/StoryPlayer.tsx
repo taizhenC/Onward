@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { ClientFigureOutline, Framing, StoryAdvance } from "@/lib/types";
+import type { ClientFigureOutline, OpeningCopy, StoryAdvance } from "@/lib/types";
 import { PrefaceCard } from "./PrefaceCard";
 import { StoryBeat } from "./StoryBeat";
 
 type Props = {
   sessionId: string;
   outline: ClientFigureOutline;
-  framing: Framing;
+  openingCopy: OpeningCopy;
   initialBeatIndex: number;
   initialChunkIndex: number;
 };
@@ -19,7 +19,7 @@ type Phase = "preface" | "playing" | "ended";
 export function StoryPlayer({
   sessionId,
   outline,
-  framing,
+  openingCopy,
   initialBeatIndex,
   initialChunkIndex,
 }: Props) {
@@ -64,7 +64,7 @@ export function StoryPlayer({
   return (
     <div className="space-y-12">
       {phase !== "preface" ? (
-        <Header outline={outline} framing={framing} revealName={revealName} />
+        <Header outline={outline} eyebrow={openingCopy.eyebrow} revealName={revealName} />
       ) : null}
 
       <AnimatePresence mode="wait">
@@ -103,23 +103,18 @@ export function StoryPlayer({
 
 function Header({
   outline,
-  framing,
+  eyebrow,
   revealName,
 }: {
   outline: ClientFigureOutline;
-  framing: Framing;
+  eyebrow: string;
   revealName: boolean;
 }) {
-  const framingLine =
-    framing === "definitive"
-      ? "Someone who felt this"
-      : "A fragment that rhymes";
-
   if (!revealName) {
     return (
       <header className="space-y-3 pb-6 border-b border-[var(--color-ink-soft)]/30">
         <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-          {framingLine}
+          {eyebrow}
         </p>
       </header>
     );
@@ -133,7 +128,7 @@ function Header({
   return (
     <header className="space-y-3 pb-6 border-b border-[var(--color-ink-soft)]/30">
       <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-        {framingLine}
+        {eyebrow}
       </p>
       <h1 className="text-2xl">
         {outline.displayName}

@@ -5,6 +5,7 @@ import { listAll, toClientOutline } from "../lib/figures";
 import { toRerankCandidate } from "../lib/llm";
 import { _sessionMapSize, getSession } from "../lib/session";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
+import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
 import type { BeatBlueprint } from "../lib/types";
 
 // Smoke always runs in stub mode (provider matrix). getLLM() resolves lazily on the
@@ -93,6 +94,18 @@ async function runMatchAssertion(
       name: label,
       ok: false,
       detail: `matched figureKey=${session.figureKey}, expected ${expectedFigureKey}`,
+    };
+  }
+
+  if (
+    !session.openingCopy ||
+    session.openingCopy.eyebrow.trim().length === 0 ||
+    session.openingCopy.eyebrow.includes("\n")
+  ) {
+    return {
+      name: label,
+      ok: false,
+      detail: "session.openingCopy.eyebrow missing or not a clean single line",
     };
   }
 
@@ -292,6 +305,73 @@ function runRerankCandidateAssertion(): AssertionResult {
   return { name, ok: true, detail: `${stages.length} candidate(s) audited` };
 }
 
+function runEyebrowGuardAssertion(): AssertionResult {
+  const name =
+    "opening copy: eyebrow guard yields one clean line or the neutral fallback";
+  const cases: Array<{
+    label: string;
+    raw: string | null;
+    displayName: string;
+    expectNeutral: boolean;
+  }> = [
+    { label: "null", raw: null, displayName: "Octavia Butler", expectNeutral: true },
+    { label: "blank", raw: "   ", displayName: "Octavia Butler", expectNeutral: true },
+    {
+      label: "clean line",
+      raw: "a weight you carry without setting down",
+      displayName: "Octavia Butler",
+      expectNeutral: false,
+    },
+    {
+      label: "quoted clean line",
+      raw: '"the long wait for a yes"',
+      displayName: "Frederick Douglass",
+      expectNeutral: false,
+    },
+    {
+      label: "preamble (multi-line)",
+      raw: "Here is the line:\nthe long wait for a yes",
+      displayName: "Octavia Butler",
+      expectNeutral: true,
+    },
+    {
+      label: "names the figure",
+      raw: "what Douglass carried alone",
+      displayName: "Frederick Douglass",
+      expectNeutral: true,
+    },
+    {
+      label: "too long",
+      raw: "x".repeat(120),
+      displayName: "Frances Glessner Lee",
+      expectNeutral: true,
+    },
+  ];
+
+  for (const testCase of cases) {
+    const out = sanitizeEyebrow(testCase.raw, testCase.displayName);
+    const isNeutral = out === NEUTRAL_EYEBROW;
+    if (isNeutral !== testCase.expectNeutral) {
+      return {
+        name,
+        ok: false,
+        detail: `case "${testCase.label}": expected ${
+          testCase.expectNeutral ? "neutral fallback" : "kept line"
+        }, got "${out}"`,
+      };
+    }
+    if (!testCase.expectNeutral && (out.includes("\n") || out !== out.trim())) {
+      return {
+        name,
+        ok: false,
+        detail: `case "${testCase.label}": kept line not clean: "${out}"`,
+      };
+    }
+  }
+
+  return { name, ok: true, detail: `${cases.length} guard case(s) audited` };
+}
+
 function runChunkIntegrityAssertion(): AssertionResult {
   const stages = listAll();
   let beatCount = 0;
@@ -454,6 +534,7 @@ async function main(): Promise<void> {
     await runCrisisAssertion(),
     runOutlineAssertion(),
     runRerankCandidateAssertion(),
+    runEyebrowGuardAssertion(),
     runArcShapeAssertion(),
     runChunkIntegrityAssertion(),
     runChunkBehaviorAssertion(),

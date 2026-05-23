@@ -25,7 +25,7 @@ export default async function StoryPage({
       <StoryPlayer
         sessionId={sessionId}
         outline={outline}
-        framing={session.framing}
+        openingCopy={session.openingCopy}
         initialBeatIndex={session.nextBeatIndex}
         initialChunkIndex={session.nextChunkIndex}
       />

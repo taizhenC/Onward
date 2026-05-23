@@ -1,6 +1,7 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
-import type { Framing, Session } from "./types";
+import type { Framing, OpeningCopy, Session } from "./types";
+import { NEUTRAL_EYEBROW } from "./opening-copy";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -16,6 +17,7 @@ export type CreateSessionInput = {
   figureKey: string;
   stageId: string;
   framing: Framing;
+  openingCopy: OpeningCopy;
   age: number;
   feeling: string;
 };
@@ -40,6 +42,7 @@ export function createSession(input: CreateSessionInput): string {
     figureKey: input.figureKey,
     stageId: input.stageId,
     framing: input.framing,
+    openingCopy: input.openingCopy,
     age: input.age,
     feeling: input.feeling,
     nextBeatIndex: 0,
@@ -57,8 +60,17 @@ export function getSession(sessionId: string): Session | null {
     sessions.delete(sessionId);
     return null;
   }
-  if (session.nextChunkIndex === undefined) {
-    const migrated = { ...session, nextChunkIndex: 0 };
+  // Hot-reload safety for in-memory sessions created before these fields existed.
+  if (session.nextChunkIndex === undefined || session.openingCopy === undefined) {
+    const migrated: Session = {
+      ...session,
+      nextChunkIndex:
+        session.nextChunkIndex === undefined ? 0 : session.nextChunkIndex,
+      openingCopy:
+        session.openingCopy === undefined
+          ? { eyebrow: NEUTRAL_EYEBROW }
+          : session.openingCopy,
+    };
     sessions.set(sessionId, migrated);
     return migrated;
   }

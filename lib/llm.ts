@@ -1,7 +1,8 @@
 import "server-only";
-import type { Pick, PickInput } from "./types";
-import { pickFigureStub } from "./llm-stub";
-import { pickFigureReal } from "./llm-real";
+import type { OpeningCopy, Pick, PickInput } from "./types";
+import type { OpeningCopyInput } from "./opening-copy";
+import { pickFigureStub, writeOpeningCopyStub } from "./llm-stub";
+import { pickFigureReal, writeOpeningCopyReal } from "./llm-real";
 
 // The single LLM boundary. Everything outside lib/ imports from here — never from
 // llm-stub / llm-real directly (CLAUDE.md: the provider is invisible outside lib/).
@@ -34,4 +35,13 @@ export function pickFigure(input: PickInput): Promise<Pick> {
   return resolveProvider() === "real"
     ? pickFigureReal(input)
     : pickFigureStub(input);
+}
+
+// Opening copy (eyebrow) generation. Prose, so the real path uses the Llama prose model,
+// not the GPT-OSS reranker. Best-effort by contract — the real implementation never throws;
+// it degrades to a neutral fallback rather than blocking the story.
+export function writeOpeningCopy(input: OpeningCopyInput): Promise<OpeningCopy> {
+  return resolveProvider() === "real"
+    ? writeOpeningCopyReal(input)
+    : writeOpeningCopyStub(input);
 }

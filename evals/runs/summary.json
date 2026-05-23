@@ -4,26 +4,26 @@
     "provider": "real",
     "model": "openai/gpt-oss-120b",
     "k": 1,
-    "concurrency": 1,
+    "concurrency": 3,
     "maxRetries": 2,
-    "ranAt": "2026-05-23T04:36:32.384Z",
+    "ranAt": "2026-05-23T05:07:10.101Z",
     "caseCount": 8,
     "trialCount": 8
   },
   "metrics": {
     "rerankTop1": 1,
     "rerankTop1Counts": {
-      "correct": 5,
-      "total": 5
+      "correct": 4,
+      "total": 4
     },
     "overallTop1": 1,
     "overallTop1Counts": {
       "correct": 5,
       "total": 5
     },
-    "missDetection": 0.6666666666666666,
+    "missDetection": 0.3333333333333333,
     "missDetectionCounts": {
-      "detected": 2,
+      "detected": 1,
       "total": 3
     },
     "hardConfusion": 0,
@@ -40,18 +40,20 @@
       }
     ],
     "calibration": {
-      "definitiveCorrect": 5,
+      "definitiveCorrect": 4,
       "definitiveWrong": 0,
-      "partialCorrect": 0,
+      "partialCorrect": 1,
       "partialWrong": 0
     },
     "chosenBy": {
-      "rerank": 8,
-      "keyword_fallback": 0
+      "rerank": 7,
+      "keyword_fallback": 1
     },
-    "failureReasons": {},
-    "latencyP50": 641,
-    "latencyP95": 1142,
+    "failureReasons": {
+      "api_error": 1
+    },
+    "latencyP50": 588,
+    "latencyP95": 824,
     "stability": null
   }
 }

@@ -3,6 +3,9 @@ import type { MatchResponse } from "./types";
 import { CRISIS_RESOURCES, classifyCrisis } from "./safety";
 import { createSession } from "./session";
 import { match } from "./matching";
+import { getByKey } from "./figures";
+import { writeOpeningCopy } from "./llm";
+import { NEUTRAL_EYEBROW } from "./opening-copy";
 
 export type IntakeInput = {
   age: number;
@@ -30,10 +33,21 @@ export async function handleIntake(input: unknown): Promise<MatchResponse> {
   }
 
   const result = await match(validated);
+
+  // Generate the opening eyebrow from the user's feeling + the chosen stage. Best-effort:
+  // writeOpeningCopy never throws (it degrades to a neutral line), and a missing stage
+  // (shouldn't happen — match() validates in-pool) also falls back, so intake never fails
+  // on copy.
+  const stage = getByKey(result.figureKey, result.stageId);
+  const openingCopy = stage
+    ? await writeOpeningCopy({ feeling: validated.feeling, stage })
+    : { eyebrow: NEUTRAL_EYEBROW };
+
   const sessionId = createSession({
     figureKey: result.figureKey,
     stageId: result.stageId,
     framing: result.framing,
+    openingCopy,
     age: validated.age,
     feeling: validated.feeling,
   });

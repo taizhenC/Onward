@@ -478,8 +478,6 @@ async function main(): Promise<void> {
 
 main().catch((error) => {
   // Never print prompt/feeling/provider bodies — only a class-level message.
-  console.error(
-    `Eval failed: ${error instanceof Error ? error.message : "unknown error"}`,
-  );
+  console.error("Eval failed:", error instanceof Error ? error : "unknown error");
   process.exit(1);
 });

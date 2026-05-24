@@ -111,8 +111,13 @@ function rowToSession(row: SessionRow): Session {
     nextChunkIndex: row.next_chunk_index,
     // Session.createdAt stays a number — map timestamptz back so the ISO string never leaks
     // into TTL/component code that assumes a number.
-    createdAt: Date.parse(row.created_at),
+    createdAt: parseCreatedAt(row.created_at),
   };
+}
+
+function parseCreatedAt(value: string): number {
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? Date.now() : parsed;
 }
 
 // Defensive prefaceLines/eyebrow backfill, mirroring the memory store's migrateOpeningCopy —

@@ -47,16 +47,36 @@ export async function loadDbStages(): Promise<FigureStageRow[]> {
     return globalThis.__onwardFigureCachePromise;
   }
 
-  globalThis.__onwardFigureCachePromise = fetchDbStages()
-    .then((stages) => {
+  globalThis.__onwardFigureCachePromise = (async () => {
+    try {
+      const supabase = getSupabase();
+      const [stagesRes, figuresRes] = await Promise.all([
+        supabase.from("figure_stages").select("*").eq("status", "published"),
+        supabase.from("figures").select("*"),
+      ]);
+      if (stagesRes.error) {
+        throw new Error(
+          `loadDbStages (figure_stages) failed: ${stagesRes.error.message}`,
+        );
+      }
+      if (figuresRes.error) {
+        throw new Error(`loadDbStages (figures) failed: ${figuresRes.error.message}`);
+      }
+
+      const figuresByKey = new Map<string, FigureDbRow>();
+      for (const figure of (figuresRes.data ?? []) as FigureDbRow[]) {
+        figuresByKey.set(figure.key, figure);
+      }
+
+      const stages = ((stagesRes.data ?? []) as FigureStageDbRow[]).map((row) =>
+        rowToStage(row, figuresByKey.get(row.figure_key)),
+      );
       globalThis.__onwardFigureCache = stages;
-      globalThis.__onwardFigureCachePromise = undefined;
       return stages;
-    })
-    .catch((error) => {
+    } finally {
       globalThis.__onwardFigureCachePromise = undefined;
-      throw error;
-    });
+    }
+  })();
 
   return globalThis.__onwardFigureCachePromise;
 }
@@ -64,30 +84,6 @@ export async function loadDbStages(): Promise<FigureStageRow[]> {
 export function resetDbFigureCache(): void {
   globalThis.__onwardFigureCache = undefined;
   globalThis.__onwardFigureCachePromise = undefined;
-}
-
-async function fetchDbStages(): Promise<FigureStageRow[]> {
-  const supabase = getSupabase();
-  const [stagesRes, figuresRes] = await Promise.all([
-    supabase.from("figure_stages").select("*").eq("status", "published"),
-    supabase.from("figures").select("*"),
-  ]);
-  if (stagesRes.error) {
-    throw new Error(`loadDbStages (figure_stages) failed: ${stagesRes.error.message}`);
-  }
-  if (figuresRes.error) {
-    throw new Error(`loadDbStages (figures) failed: ${figuresRes.error.message}`);
-  }
-
-  const figuresByKey = new Map<string, FigureDbRow>();
-  for (const figure of (figuresRes.data ?? []) as FigureDbRow[]) {
-    figuresByKey.set(figure.key, figure);
-  }
-
-  const stages = ((stagesRes.data ?? []) as FigureStageDbRow[]).map((row) =>
-    rowToStage(row, figuresByKey.get(row.figure_key)),
-  );
-  return stages;
 }
 
 function rowToStage(

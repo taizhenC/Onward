@@ -62,11 +62,17 @@ export function getSession(sessionId: string): Session | null {
   }
   // Hot-reload safety for in-memory sessions created before these fields existed.
   const openingCopy = migrateOpeningCopy(session.openingCopy);
-  if (session.nextChunkIndex === undefined || openingCopy !== session.openingCopy) {
+  const legacySession = session as any;
+  if (
+    legacySession.nextChunkIndex === undefined ||
+    openingCopy !== session.openingCopy
+  ) {
     const migrated: Session = {
       ...session,
       nextChunkIndex:
-        session.nextChunkIndex === undefined ? 0 : session.nextChunkIndex,
+        legacySession.nextChunkIndex === undefined
+          ? 0
+          : legacySession.nextChunkIndex,
       openingCopy,
     };
     sessions.set(sessionId, migrated);

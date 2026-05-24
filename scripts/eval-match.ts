@@ -417,7 +417,7 @@ async function main(): Promise<void> {
   const maxRetries = Math.floor(numberEnv("EVAL_MAX_RETRIES", 2));
   const model = process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
 
-  const validKeys = new Set(listAll().map((s) => s.figureKey));
+  const validKeys = new Set((await listAll()).map((s) => s.figureKey));
   const cases = loadGold(validKeys);
 
   const jobs = cases.flatMap((gold) =>

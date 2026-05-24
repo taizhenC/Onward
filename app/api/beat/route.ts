@@ -26,7 +26,7 @@ export async function POST(request: Request): Promise<Response> {
   const parsed = parseBeatPositionRequest(body);
   if ("error" in parsed) return jsonError(parsed.error, 400);
 
-  const session = getSession(parsed.sessionId);
+  const session = await getSession(parsed.sessionId);
   if (!session) return jsonError("Story session not found.", 404);
 
   if (session.nextBeatIndex !== parsed.beatIndex) {
@@ -36,7 +36,7 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError("Chunk index does not match the current session position.", 409);
   }
 
-  const stage = getByKey(session.figureKey, session.stageId);
+  const stage = await getByKey(session.figureKey, session.stageId);
   if (!stage) return jsonError("Figure stage not found.", 404);
 
   const beat = stage.beats[parsed.beatIndex];

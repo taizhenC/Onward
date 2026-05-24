@@ -40,7 +40,7 @@ export async function match(input: MatchInput): Promise<MatchResult> {
 }
 
 export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
-  const { pool, fallbackToAll } = buildPool(input);
+  const { pool, fallbackToAll } = await buildPool(input);
   const start = performance.now();
 
   try {
@@ -104,13 +104,13 @@ function keywordFallback(
 // outside every window (only a handful of figures) aren't silently dropped — that
 // would violate recovery-asymmetry. Phase 1B removes the fallback once the library
 // is large enough that the gate reliably returns candidates.
-function buildPool(input: MatchInput): {
+async function buildPool(input: MatchInput): Promise<{
   pool: FigureStageRow[];
   fallbackToAll: boolean;
-} {
-  const candidates = listByAge(input.age);
+}> {
+  const candidates = await listByAge(input.age);
   const fallbackToAll = candidates.length === 0;
-  const pool = fallbackToAll ? listAll() : candidates;
+  const pool = fallbackToAll ? await listAll() : candidates;
 
   if (pool.length === 0) {
     throw new Error("No figure stages are available to match against.");

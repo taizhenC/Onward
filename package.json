@@ -11,14 +11,17 @@
     "smoke": "tsx scripts/smoke.ts",
     "check-figure": "tsx scripts/check-figure.ts",
     "health": "tsx scripts/check-provider.ts",
-    "eval": "tsx scripts/eval-match.ts"
+    "eval": "tsx scripts/eval-match.ts",
+    "seed": "tsx scripts/seed-figures.ts",
+    "check-db": "tsx scripts/check-db.ts"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.106.1",
+    "motion": "^11.15.0",
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "server-only": "^0.0.1",
-    "motion": "^11.15.0"
+    "server-only": "^0.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",

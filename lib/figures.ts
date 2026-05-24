@@ -1,38 +1,52 @@
 import "server-only";
 import type { ClientBeat, ClientFigureOutline, FigureStageRow } from "./types";
-import { FIGURE_STAGES } from "./figures-data";
 import { AGE_TOLERANCE_YEARS } from "./match-config";
+import { loadConstStages } from "./figures-source-const";
+import { loadDbStages, resetDbFigureCache } from "./figures-source-db";
 
 if (typeof window !== "undefined") {
   throw new Error("lib/figures.ts must not be imported on the client");
 }
 
-export function listAll(): FigureStageRow[] {
-  return FIGURE_STAGES;
+// Figure source switch (mirrors lib/session.ts): PERSISTENCE=memory serves the authored const,
+// supabase serves the load-once DB cache. listAll/listByAge/getByKey are async (the DB source
+// may need a fetch); ageDistance and toClientOutline stay sync — they're pure transforms.
+function loadStages(): Promise<FigureStageRow[]> {
+  return process.env.PERSISTENCE === "supabase"
+    ? loadDbStages()
+    : loadConstStages();
+}
+
+export async function listAll(): Promise<FigureStageRow[]> {
+  return loadStages();
 }
 
 // Wide age hard gate: range overlap with user_age plus AGE_TOLERANCE_YEARS on each side.
 // Returns stages whose [ageMin, ageMax] is within ±tolerance of `age`.
-export function listByAge(age: number): FigureStageRow[] {
-  return FIGURE_STAGES.filter((stage) => ageDistance(stage, age) <= AGE_TOLERANCE_YEARS);
+export async function listByAge(age: number): Promise<FigureStageRow[]> {
+  const stages = await loadStages();
+  return stages.filter((stage) => ageDistance(stage, age) <= AGE_TOLERANCE_YEARS);
 }
 
 // Distance from `age` to the stage's age range. 0 if `age` is inside [ageMin, ageMax];
-// positive otherwise. Used by both listByAge (hard gate) and matching's soft penalty.
+// positive otherwise. Used by both listByAge (hard gate) and matching's soft penalty. Pure.
 export function ageDistance(stage: FigureStageRow, age: number): number {
   return Math.max(stage.ageMin - age, age - stage.ageMax, 0);
 }
 
-export function getByKey(figureKey: string, stageId: string): FigureStageRow | null {
+export async function getByKey(
+  figureKey: string,
+  stageId: string,
+): Promise<FigureStageRow | null> {
+  const stages = await loadStages();
   return (
-    FIGURE_STAGES.find(
-      (s) => s.figureKey === figureKey && s.stageId === stageId,
-    ) ?? null
+    stages.find((s) => s.figureKey === figureKey && s.stageId === stageId) ?? null
   );
 }
 
 // SINGLE CHOKEPOINT for stripping server-only fields before any outline crosses
-// to the client. Anything not explicitly returned here stays on the server.
+// to the client. Anything not explicitly returned here stays on the server. Pure and
+// source-agnostic — strips identically whether the stage came from the const or the DB.
 //
 // Stripped: shapeSentences, facets, biographicalFacts, sources, stageLabel,
 // per-beat text, per-beat sourceNotes.
@@ -62,4 +76,10 @@ export function toClientOutline(stage: FigureStageRow): ClientFigureOutline {
       }
     }),
   };
+}
+
+// Test/ops helper: clear the DB figure cache so a process that re-seeds can reload (no-op for
+// the const source). Used by scripts/check-db.ts before its parity read.
+export function _resetFigureCache(): void {
+  resetDbFigureCache();
 }

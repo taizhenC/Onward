@@ -1,9 +1,10 @@
 import "./_smoke-bootstrap";
 import { handleIntake } from "../lib/intake";
 import { classifyCrisis } from "../lib/safety";
-import { listAll, toClientOutline } from "../lib/figures";
+import { toClientOutline } from "../lib/figures";
+import { FIGURE_STAGES } from "../lib/figures-data";
 import { toRerankCandidate } from "../lib/llm";
-import { _sessionMapSize, getSession } from "../lib/session";
+import { _sessionCount, getSession } from "../lib/session";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
 import type { BeatBlueprint } from "../lib/types";
@@ -11,6 +12,8 @@ import type { BeatBlueprint } from "../lib/types";
 // Smoke always runs in stub mode (provider matrix). getLLM() resolves lazily on the
 // first match call, so setting this before main() runs is sufficient.
 process.env.LLM_PROVIDER = "stub";
+// Sessions + figures from the in-process store/const (no DB) — keeps smoke hermetic.
+process.env.PERSISTENCE = "memory";
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
 
@@ -55,7 +58,7 @@ async function runMatchAssertion(
   input: { age: number; feeling: string },
   expectedFigureKey: string,
 ): Promise<AssertionResult> {
-  const before = _sessionMapSize();
+  const before = await _sessionCount();
   const result = await handleIntake(input);
 
   if ("error" in result) {
@@ -72,7 +75,7 @@ async function runMatchAssertion(
     return { name: label, ok: false, detail: "no sessionId in response" };
   }
 
-  const after = _sessionMapSize();
+  const after = await _sessionCount();
   if (after !== before + 1) {
     return {
       name: label,
@@ -81,7 +84,7 @@ async function runMatchAssertion(
     };
   }
 
-  const session = getSession(result.sessionId);
+  const session = await getSession(result.sessionId);
   if (!session) {
     return {
       name: label,
@@ -122,7 +125,7 @@ async function runMatchAssertion(
     };
   }
 
-  const outline = listAll().find(
+  const outline = FIGURE_STAGES.find(
     (stage) => stage.figureKey === expectedFigureKey,
   );
   if (!outline) {
@@ -141,12 +144,12 @@ async function runMatchAssertion(
 }
 
 async function runCrisisAssertion(): Promise<AssertionResult> {
-  const before = _sessionMapSize();
+  const before = await _sessionCount();
   const result = await handleIntake({
     age: 22,
     feeling: "I want to kill myself",
   });
-  const after = _sessionMapSize();
+  const after = await _sessionCount();
 
   if ("error" in result) {
     return {
@@ -192,7 +195,7 @@ async function runCrisisAssertion(): Promise<AssertionResult> {
 }
 
 function runArcShapeAssertion(): AssertionResult {
-  const stages = listAll();
+  const stages = FIGURE_STAGES;
   if (stages.length === 0) {
     return {
       name: "arc shape: 7 linear beats per figure",
@@ -238,7 +241,7 @@ function runArcShapeAssertion(): AssertionResult {
 }
 
 function runOutlineAssertion(): AssertionResult {
-  const stages = listAll();
+  const stages = FIGURE_STAGES;
   if (stages.length === 0) {
     return {
       name: "toClientOutline strips server-only fields",
@@ -268,7 +271,7 @@ function runOutlineAssertion(): AssertionResult {
 
 function runRerankCandidateAssertion(): AssertionResult {
   const name = "anti-echo: toRerankCandidate excludes embedded surfaces";
-  const stages = listAll();
+  const stages = FIGURE_STAGES;
   if (stages.length === 0) {
     return { name, ok: false, detail: "no stages in library" };
   }
@@ -398,7 +401,7 @@ function runEyebrowGuardAssertion(): AssertionResult {
 }
 
 function runChunkIntegrityAssertion(): AssertionResult {
-  const stages = listAll();
+  const stages = FIGURE_STAGES;
   let beatCount = 0;
   let chunkCount = 0;
 

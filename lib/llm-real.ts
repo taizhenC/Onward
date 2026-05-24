@@ -73,6 +73,16 @@ function proseTimeoutMs(): number {
   return value > 0 ? value : DEFAULT_PROSE_TIMEOUT_MS;
 }
 
+// Resolved model ids for the match recipe (frozen on the session at intake, surfaced via
+// lib/llm.ts#activeRecipe). Same env resolution the real calls use, so the recipe records the
+// ids that WOULD run even when LLM_PROVIDER=stub.
+export function rerankModelId(): string {
+  return model();
+}
+export function proseModelId(): string {
+  return proseModel();
+}
+
 // Anti-echo chokepoint (plan #8): the ONLY way a candidate is serialized into the
 // prompt. `biographicalFacts` is the rerank surface; shapeSentences, facets, themes,
 // and beat text must NEVER reach the reranker. Never spread a FigureStageRow here.

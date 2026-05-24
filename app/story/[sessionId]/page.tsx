@@ -12,10 +12,10 @@ export default async function StoryPage({
   params: Promise<{ sessionId: string }>;
 }) {
   const { sessionId } = await params;
-  const session = getSession(sessionId);
+  const session = await getSession(sessionId);
   if (!session) notFound();
 
-  const stage = getByKey(session.figureKey, session.stageId);
+  const stage = await getByKey(session.figureKey, session.stageId);
   if (!stage) notFound();
 
   const outline = toClientOutline(stage);

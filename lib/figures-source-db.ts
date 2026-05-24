@@ -47,36 +47,40 @@ export async function loadDbStages(): Promise<FigureStageRow[]> {
     return globalThis.__onwardFigureCachePromise;
   }
 
-  globalThis.__onwardFigureCachePromise = (async () => {
-    try {
-      const supabase = getSupabase();
-      const [stagesRes, figuresRes] = await Promise.all([
-        supabase.from("figure_stages").select("*").eq("status", "published"),
-        supabase.from("figures").select("*"),
-      ]);
-      if (stagesRes.error) {
-        throw new Error(
-          `loadDbStages (figure_stages) failed: ${stagesRes.error.message}`,
-        );
-      }
-      if (figuresRes.error) {
-        throw new Error(`loadDbStages (figures) failed: ${figuresRes.error.message}`);
-      }
-
-      const figuresByKey = new Map<string, FigureDbRow>();
-      for (const figure of (figuresRes.data ?? []) as FigureDbRow[]) {
-        figuresByKey.set(figure.key, figure);
-      }
-
-      const stages = ((stagesRes.data ?? []) as FigureStageDbRow[]).map((row) =>
-        rowToStage(row, figuresByKey.get(row.figure_key)),
+  const pendingLoad = (async () => {
+    const supabase = getSupabase();
+    const [stagesRes, figuresRes] = await Promise.all([
+      supabase.from("figure_stages").select("*").eq("status", "published"),
+      supabase.from("figures").select("*"),
+    ]);
+    if (stagesRes.error) {
+      throw new Error(
+        `loadDbStages (figure_stages) failed: ${stagesRes.error.message}`,
       );
-      globalThis.__onwardFigureCache = stages;
-      return stages;
-    } finally {
-      globalThis.__onwardFigureCachePromise = undefined;
     }
-  })();
+    if (figuresRes.error) {
+      throw new Error(`loadDbStages (figures) failed: ${figuresRes.error.message}`);
+    }
+
+    const figuresByKey = new Map<string, FigureDbRow>();
+    for (const figure of (figuresRes.data ?? []) as FigureDbRow[]) {
+      figuresByKey.set(figure.key, figure);
+    }
+
+    const stages = ((stagesRes.data ?? []) as FigureStageDbRow[]).map((row) =>
+      rowToStage(row, figuresByKey.get(row.figure_key)),
+    );
+    globalThis.__onwardFigureCache = stages;
+    return stages;
+  })()
+    .finally(() => {
+      globalThis.__onwardFigureCachePromise = undefined;
+    });
+
+  // The shared promise still rejects to callers, but the global reference is
+  // explicitly observed so a dropped caller cannot surface as an unhandled rejection.
+  pendingLoad.catch(() => {});
+  globalThis.__onwardFigureCachePromise = pendingLoad;
 
   return globalThis.__onwardFigureCachePromise;
 }

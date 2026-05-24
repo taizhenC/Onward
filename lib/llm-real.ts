@@ -8,6 +8,7 @@ import type {
   RerankFailureReason,
 } from "./types";
 import {
+  DEFAULT_PREFACE_LINES,
   sanitizeEyebrow,
   toEyebrowSurface,
   type EyebrowPromptSurface,
@@ -283,7 +284,13 @@ export async function writeOpeningCopyReal(
   const raw = await generateEyebrowLine(surface);
   // sanitizeEyebrow turns null / blank / preamble / too-long / name-leak into the neutral
   // fallback, so this always returns a usable line.
-  return { eyebrow: sanitizeEyebrow(raw, surface.displayName) };
+  return {
+    eyebrow: sanitizeEyebrow(raw, surface.displayName),
+    // Preface per-feeling personalization is deferred. Until it lands, real mode serves the
+    // same hand-authored universal lines as the stub (which will become the failure fallback
+    // for the eventual generated preface, mirroring the eyebrow's neutral fallback).
+    prefaceLines: DEFAULT_PREFACE_LINES,
+  };
 }
 
 // Returns the raw model line, or null on any failure. Never throws, and never logs the

@@ -109,6 +109,19 @@ async function runMatchAssertion(
     };
   }
 
+  const prefaceLines = session.openingCopy.prefaceLines;
+  if (
+    !Array.isArray(prefaceLines) ||
+    prefaceLines.length === 0 ||
+    prefaceLines.some((line) => line.trim().length === 0)
+  ) {
+    return {
+      name: label,
+      ok: false,
+      detail: "session.openingCopy.prefaceLines missing, empty, or has a blank line",
+    };
+  }
+
   const outline = listAll().find(
     (stage) => stage.figureKey === expectedFigureKey,
   );

@@ -1,14 +1,20 @@
 import "./_smoke-bootstrap";
 import { loadEnvLocal } from "./_load-env";
 import { listAll } from "../lib/figures";
-import { pickFigure, RerankError } from "../lib/llm";
+import { pickFigure, RerankError, writeOpeningCopy } from "../lib/llm";
+import { NEUTRAL_EYEBROW } from "../lib/opening-copy";
 
-// Real-mode provider health check. Run BEFORE a full eval so a broken Groq config
-// (bad key, wrong model id, JSON mode unsupported) surfaces in seconds, not mid-run.
+// Real-mode provider health check. Run BEFORE a full eval or real-mode intake smoke so a
+// broken Groq config (bad key, wrong model id, JSON mode unsupported) surfaces in seconds,
+// not mid-run.
 //
-// Standalone by design: loads no gold set, writes no run dumps. Two probes:
-//   1. GET /models — auth + reachability + the configured model id is actually offered.
-//   2. one minimal pickFigure — model id + reasoning_effort + JSON mode work end-to-end.
+// Standalone by design: loads no gold set, writes no run dumps. Three probes:
+//   1. GET /models — auth + reachability + the configured rerank AND prose model ids
+//      are actually offered.
+//   2. one minimal pickFigure — rerank model + reasoning_effort + JSON mode end-to-end.
+//   3. one writeOpeningCopy — the prose (Llama) eyebrow path end-to-end. That path never
+//      throws (it degrades to a neutral fallback), so a neutral result is the only
+//      failure signal available here — we treat it as a failed probe.
 //
 // Privacy floor (same as lib/llm-real.ts): never print prompt/response bodies,
 // resonance/gap, or raw provider errors. The probe feeling is synthetic, not a user
@@ -23,6 +29,7 @@ process.env.LLM_PROVIDER = "real";
 // SAME model id that pickFigureReal will call. Keep these in sync with lib/llm-real.ts.
 const DEFAULT_BASE_URL = "https://api.groq.com/openai/v1";
 const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_PROSE_MODEL = "llama-3.3-70b-versatile";
 const HEALTH_TIMEOUT_MS = 8000;
 
 function baseUrl(): string {
@@ -33,11 +40,14 @@ function baseUrl(): string {
 function model(): string {
   return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
 }
+function proseModel(): string {
+  return process.env.LLM_MODEL_PROSE ?? DEFAULT_PROSE_MODEL;
+}
 
 type Step = { name: string; ok: boolean; detail: string };
 
 async function checkModelsEndpoint(apiKey: string): Promise<Step> {
-  const name = "Groq /models reachable + configured model available";
+  const name = "Groq /models reachable + configured models available";
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), HEALTH_TIMEOUT_MS);
   const start = performance.now();
@@ -74,18 +84,21 @@ async function checkModelsEndpoint(apiKey: string): Promise<Step> {
     return { name, ok: false, detail: `response was not valid JSON (${ms}ms)` };
   }
 
-  const wanted = model();
-  if (!ids.includes(wanted)) {
+  const wanted = [model(), proseModel()];
+  const missing = wanted.filter((id) => !ids.includes(id));
+  if (missing.length > 0) {
     return {
       name,
       ok: false,
-      detail: `model "${wanted}" not among ${ids.length} available models (${ms}ms)`,
+      detail: `model(s) ${missing
+        .map((id) => `"${id}"`)
+        .join(", ")} not among ${ids.length} available models (${ms}ms)`,
     };
   }
   return {
     name,
     ok: true,
-    detail: `model "${wanted}" available among ${ids.length} models (${ms}ms)`,
+    detail: `rerank "${model()}" + prose "${proseModel()}" available among ${ids.length} models (${ms}ms)`,
   };
 }
 
@@ -131,6 +144,48 @@ async function checkPickFigure(): Promise<Step> {
   }
 }
 
+async function checkOpeningCopy(): Promise<Step> {
+  const name = "writeOpeningCopy end-to-end (prose model + eyebrow guard)";
+  const stages = listAll();
+  const stage =
+    stages.find((candidate) => candidate.figureKey === "butler") ?? stages[0];
+  if (!stage) {
+    return { name, ok: false, detail: "no figures in library to probe with" };
+  }
+
+  const start = performance.now();
+  try {
+    const { eyebrow } = await writeOpeningCopy({
+      // Synthetic probe — NOT a real user disclosure.
+      feeling: "I keep working at something and it never seems to get better.",
+      stage,
+    });
+    const ms = Math.round(performance.now() - start);
+
+    // writeOpeningCopy never throws; on any failure (no key, timeout, HTTP error, bad
+    // output, guard rejection) it returns the neutral fallback. So a neutral result is
+    // the only failure signal available here — treat it as a failed probe.
+    if (eyebrow === NEUTRAL_EYEBROW) {
+      return {
+        name,
+        ok: false,
+        detail: `returned the neutral fallback — the real prose call failed or its output was guard-rejected; re-run or check LLM_MODEL_PROSE (${ms}ms)`,
+      };
+    }
+
+    // The eyebrow was generated from a synthetic probe, so printing it is safe and lets
+    // the operator eyeball tone before the manual intake smoke.
+    return { name, ok: true, detail: `generated eyebrow="${eyebrow}" (${ms}ms)` };
+  } catch {
+    const ms = Math.round(performance.now() - start);
+    return {
+      name,
+      ok: false,
+      detail: `writeOpeningCopy threw unexpectedly (it should degrade, not throw) (${ms}ms)`,
+    };
+  }
+}
+
 async function main(): Promise<void> {
   console.log("Onward provider health check (real mode)");
   console.log("========================================");
@@ -153,10 +208,11 @@ async function main(): Promise<void> {
 
   const steps: Step[] = [];
   steps.push(await checkModelsEndpoint(apiKey));
-  // Only probe the completion if the endpoint/model check passed — otherwise the failure
-  // is already explained and a second timeout just adds noise.
+  // Only probe the completions if the endpoint/model check passed — otherwise the failure
+  // is already explained and further timeouts just add noise.
   if (steps[0].ok) {
     steps.push(await checkPickFigure());
+    steps.push(await checkOpeningCopy());
   }
 
   console.log("");
@@ -169,11 +225,11 @@ async function main(): Promise<void> {
   });
 
   console.log("");
-  if (failed === 0 && steps.length === 2) {
-    console.log("Provider healthy. Safe to run npm run eval.");
+  if (failed === 0 && steps.length === 3) {
+    console.log("Provider healthy. Safe to run npm run eval and real-mode intake smoke.");
     process.exit(0);
   }
-  console.log("Provider health check failed. Fix the above before running the eval.");
+  console.log("Provider health check failed. Fix the above before relying on real provider paths.");
   process.exit(1);
 }
 

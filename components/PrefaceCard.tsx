@@ -3,12 +3,14 @@
 import { motion } from "motion/react";
 
 type Props = {
+  lines: readonly string[];
   onBegin: () => void;
 };
 
-// Phase 1 replaces this universal copy with LLM-personalized preface text
-// generated from the user's intake language.
-export function PrefaceCard({ onBegin }: Props) {
+// The preface copy is supplied by the opening-copy layer (lib/opening-copy.ts →
+// DEFAULT_PREFACE_LINES today). Phase 1 personalizes those lines from the user's intake
+// language in lib/llm-real.ts; this component just renders whatever it is handed.
+export function PrefaceCard({ lines, onBegin }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -17,10 +19,9 @@ export function PrefaceCard({ onBegin }: Props) {
       className="space-y-8 pt-8"
     >
       <div className="space-y-5 text-xl leading-relaxed">
-        <p>That hurts.</p>
-        <p>You do not have to solve everything right now.</p>
-        <p>Here is someone who stood in a similar kind of weight.</p>
-        <p>Let's start with their story.</p>
+        {lines.map((line, index) => (
+          <p key={index}>{line}</p>
+        ))}
       </div>
 
       <button

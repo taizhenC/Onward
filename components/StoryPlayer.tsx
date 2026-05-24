@@ -69,7 +69,10 @@ export function StoryPlayer({
 
       <AnimatePresence mode="wait">
         {phase === "preface" ? (
-          <PrefaceCard onBegin={() => setPhase("playing")} />
+          <PrefaceCard
+            lines={openingCopy.prefaceLines}
+            onBegin={() => setPhase("playing")}
+          />
         ) : phase === "playing" && currentBeat ? (
           <motion.div
             key={`${currentBeat.kind}-${beatIndex}-${chunkIndex}`}

@@ -5,7 +5,7 @@ import { createSession } from "./session";
 import { match } from "./matching";
 import { getByKey } from "./figures";
 import { writeOpeningCopy } from "./llm";
-import { NEUTRAL_EYEBROW } from "./opening-copy";
+import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 
 export type IntakeInput = {
   age: number;
@@ -41,7 +41,7 @@ export async function handleIntake(input: unknown): Promise<MatchResponse> {
   const stage = getByKey(result.figureKey, result.stageId);
   const openingCopy = stage
     ? await writeOpeningCopy({ feeling: validated.feeling, stage })
-    : { eyebrow: NEUTRAL_EYEBROW };
+    : { eyebrow: NEUTRAL_EYEBROW, prefaceLines: DEFAULT_PREFACE_LINES };
 
   const sessionId = createSession({
     figureKey: result.figureKey,

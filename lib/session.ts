@@ -1,7 +1,7 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
 import type { Framing, OpeningCopy, Session } from "./types";
-import { NEUTRAL_EYEBROW } from "./opening-copy";
+import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -61,20 +61,31 @@ export function getSession(sessionId: string): Session | null {
     return null;
   }
   // Hot-reload safety for in-memory sessions created before these fields existed.
-  if (session.nextChunkIndex === undefined || session.openingCopy === undefined) {
+  const openingCopy = migrateOpeningCopy(session.openingCopy);
+  if (session.nextChunkIndex === undefined || openingCopy !== session.openingCopy) {
     const migrated: Session = {
       ...session,
       nextChunkIndex:
         session.nextChunkIndex === undefined ? 0 : session.nextChunkIndex,
-      openingCopy:
-        session.openingCopy === undefined
-          ? { eyebrow: NEUTRAL_EYEBROW }
-          : session.openingCopy,
+      openingCopy,
     };
     sessions.set(sessionId, migrated);
     return migrated;
   }
   return session;
+}
+
+// Backfill opening copy for sessions created before a field existed (first eyebrow, then
+// prefaceLines). Returns the SAME reference when nothing is missing, so getSession can
+// cheaply tell whether a migration write is needed.
+function migrateOpeningCopy(openingCopy: OpeningCopy | undefined): OpeningCopy {
+  if (openingCopy === undefined) {
+    return { eyebrow: NEUTRAL_EYEBROW, prefaceLines: DEFAULT_PREFACE_LINES };
+  }
+  if (openingCopy.prefaceLines === undefined) {
+    return { ...openingCopy, prefaceLines: DEFAULT_PREFACE_LINES };
+  }
+  return openingCopy;
 }
 
 export function updateSession(

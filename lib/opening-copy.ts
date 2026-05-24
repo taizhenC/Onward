@@ -1,10 +1,43 @@
 import "server-only";
 import type { FigureStageRow } from "./types";
 
-// Neutral fallback eyebrow. Returned by the stub, and by the real generator whenever
-// the LLM call fails or its output fails the runtime guard below. Generation is
-// best-effort: a degraded line must never block the story from loading.
+// Neutral fallback eyebrow. Returned by the stub for any uncurated stage, and by the
+// real generator whenever the LLM call fails or its output fails the runtime guard
+// below. Generation is best-effort: a degraded line must never block the story.
 export const NEUTRAL_EYEBROW = "A life under a similar pressure";
+
+// Hand-authored eyebrows, one per stage, keyed by `${figureKey}:${stageId}`. The stub
+// (lib/llm-stub.ts) serves these verbatim, so a dev or friend-test run with no provider
+// key still shows a line tuned to the matched episode instead of the flat neutral one.
+// The real generator (lib/llm-real.ts) ignores this map — it tailors per user feeling and
+// deliberately keeps NEUTRAL_EYEBROW as its failure fallback so `npm run health` can still
+// tell a dead prose call apart from a real one. Each line obeys the same constraints
+// sanitizeEyebrow enforces below: one short fragment, under the length cap, naming no
+// person, place, or year (the figure is anonymous until the bridge beat).
+const CURATED_EYEBROWS: Record<string, string> = {
+  "douglass:1838-1841-nyc-to-nantucket": "Beginning again with no name to stand on",
+  "butler:1974-1975-pre-patternmaster": "Years of work no one had asked for",
+  "lee:1929-1931-harvard-pivot": "A life spent inside someone else's plan",
+};
+
+// The stub's eyebrow for a stage: the curated line when one exists, else the neutral
+// fallback. Keyed by stage (not figure) so v2 multi-stage figures can carry one line per
+// episode without a signature change.
+export function curatedEyebrow(figureKey: string, stageId: string): string {
+  return CURATED_EYEBROWS[`${figureKey}:${stageId}`] ?? NEUTRAL_EYEBROW;
+}
+
+// Hand-authored universal preface: the comfort card shown before any figure name or story
+// prose on first visit. Served by BOTH providers in Phase 1A — the stub has no model, and
+// the real generator's per-feeling personalization is deferred (lib/llm-real.ts returns
+// these lines today and will keep them as its fallback once generation lands). Tone bar
+// (CLAUDE.md): comfort without false promises, no dismissive "don't worry" language.
+export const DEFAULT_PREFACE_LINES: readonly string[] = [
+  "That hurts.",
+  "You do not have to solve everything right now.",
+  "Here is someone who stood in a similar kind of weight.",
+  "Let's start with their story.",
+];
 
 // A quiet chapter-eyebrow is a few words; anything sentence-length is the model
 // ignoring instructions, so we fall back rather than show it.

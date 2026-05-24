@@ -2,7 +2,11 @@ import "server-only";
 import type { BeatBlueprint, OpeningCopy, Pick, PickInput, Session } from "./types";
 import { pickByKeywordHybrid } from "./keyword-match";
 import { PARTIAL_FRAMING_THRESHOLD } from "./match-config";
-import { NEUTRAL_EYEBROW, type OpeningCopyInput } from "./opening-copy";
+import {
+  curatedEyebrow,
+  DEFAULT_PREFACE_LINES,
+  type OpeningCopyInput,
+} from "./opening-copy";
 
 const WORD_DELAY_MS = 40;
 
@@ -56,10 +60,15 @@ export async function pickFigureStub(input: PickInput): Promise<Pick> {
   };
 }
 
-// Stub opening copy: always the neutral fallback (the stub has no generative model). The
-// real generator in lib/llm-real.ts replaces this when LLM_PROVIDER=real.
+// Stub opening copy: the hand-authored per-stage eyebrow (curatedEyebrow falls back to
+// the neutral line for any uncurated stage) plus the universal hand-authored preface. The
+// real generator in lib/llm-real.ts tailors the eyebrow per user feeling when
+// LLM_PROVIDER=real; preface personalization is deferred in both modes.
 export async function writeOpeningCopyStub(
-  _input: OpeningCopyInput,
+  input: OpeningCopyInput,
 ): Promise<OpeningCopy> {
-  return { eyebrow: NEUTRAL_EYEBROW };
+  return {
+    eyebrow: curatedEyebrow(input.stage.figureKey, input.stage.stageId),
+    prefaceLines: DEFAULT_PREFACE_LINES,
+  };
 }

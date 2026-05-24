@@ -16,6 +16,7 @@ import { getSupabase } from "./db";
 // module loads harmlessly in memory mode (the provider switch imports it unconditionally).
 
 const TABLE = "sessions";
+const MAX_SESSION_ID_INSERT_ATTEMPTS = 5;
 
 type SessionRow = {
   session_id: string;
@@ -32,21 +33,29 @@ type SessionRow = {
 };
 
 async function createSession(input: CreateSessionInput): Promise<string> {
-  const sessionId = randomBytes(16).toString("hex");
-  const { error } = await getSupabase().from(TABLE).insert({
-    session_id: sessionId,
-    figure_key: input.figureKey,
-    stage_id: input.stageId,
-    framing: input.framing,
-    opening_copy: input.openingCopy,
-    age: input.age,
-    feeling: input.feeling,
-    match_recipe: input.matchRecipe,
-    next_beat_index: 0,
-    next_chunk_index: 0,
-  });
-  if (error) throw new Error(`createSession insert failed: ${error.message}`);
-  return sessionId;
+  for (let attempt = 0; attempt < MAX_SESSION_ID_INSERT_ATTEMPTS; attempt += 1) {
+    const sessionId = randomBytes(16).toString("hex");
+    const { error } = await getSupabase().from(TABLE).insert({
+      session_id: sessionId,
+      figure_key: input.figureKey,
+      stage_id: input.stageId,
+      framing: input.framing,
+      opening_copy: input.openingCopy,
+      age: input.age,
+      feeling: input.feeling,
+      match_recipe: input.matchRecipe,
+      next_beat_index: 0,
+      next_chunk_index: 0,
+    });
+    if (!error) return sessionId;
+    if (!isUniqueConstraintViolation(error)) {
+      throw new Error(`createSession insert failed: ${error.message}`);
+    }
+  }
+
+  throw new Error(
+    `createSession insert failed: session_id collided ${MAX_SESSION_ID_INSERT_ATTEMPTS} times`,
+  );
 }
 
 async function getSession(sessionId: string): Promise<Session | null> {
@@ -117,6 +126,10 @@ function normalizeOpeningCopy(value: unknown): OpeningCopy {
       ? copy.prefaceLines
       : DEFAULT_PREFACE_LINES,
   };
+}
+
+function isUniqueConstraintViolation(error: { code?: string }): boolean {
+  return error.code === "23505";
 }
 
 export const supabaseSessionStore: SessionStore = {

@@ -84,7 +84,7 @@ export function getSession(sessionId: string): Session | null {
 // Backfill opening copy for sessions created before a field existed (first eyebrow, then
 // prefaceLines). Returns the SAME reference when nothing is missing, so getSession can
 // cheaply tell whether a migration write is needed.
-function migrateOpeningCopy(openingCopy: OpeningCopy | undefined): OpeningCopy {
+function migrateOpeningCopy(openingCopy: any): OpeningCopy {
   if (openingCopy === undefined) {
     return { eyebrow: NEUTRAL_EYEBROW, prefaceLines: DEFAULT_PREFACE_LINES };
   }

@@ -72,12 +72,15 @@ export type RerankFailureReason =
 
 export type StoryAdvance = "chunk" | "beat" | "end";
 
-// LLM-generated opening copy, stored on the session at intake and shown to the user. The
-// eyebrow replaces the old confidence-derived framing label as the line above the figure
-// (prefaceLines lands next). Derived from the user's feeling → sensitive: fine to show the
-// user, never logged.
+// LLM-generated opening copy, stored on the session at intake and shown to the user.
+//   - eyebrow: the line above the (still anonymous) figure; replaced the framing label.
+//   - prefaceLines: the comfort card shown before any figure name or prose on first visit.
+// Both are derived from the user's feeling → sensitive: fine to show the user, never logged.
+// Phase 1A: eyebrow is real-generated in real mode; prefaceLines is hand-authored in both
+// modes (real per-feeling personalization deferred — see lib/opening-copy.ts).
 export type OpeningCopy = {
   eyebrow: string;
+  prefaceLines: readonly string[];
 };
 
 export type Session = {

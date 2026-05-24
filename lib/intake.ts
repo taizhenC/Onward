@@ -1,10 +1,11 @@
 import "server-only";
-import type { MatchResponse } from "./types";
-import { CRISIS_RESOURCES, classifyCrisis } from "./safety";
+import type { MatchRecipe, MatchResponse } from "./types";
+import { CRISIS_RESOURCES, classifyCrisis, crisisRegexVersion } from "./safety";
 import { createSession } from "./session";
 import { match } from "./matching";
+import { matchConfigVersion } from "./match-config";
 import { getByKey } from "./figures";
-import { writeOpeningCopy } from "./llm";
+import { activeRecipe, writeOpeningCopy } from "./llm";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 
 export type IntakeInput = {
@@ -38,18 +39,26 @@ export async function handleIntake(input: unknown): Promise<MatchResponse> {
   // writeOpeningCopy never throws (it degrades to a neutral line), and a missing stage
   // (shouldn't happen — match() validates in-pool) also falls back, so intake never fails
   // on copy.
-  const stage = getByKey(result.figureKey, result.stageId);
+  const stage = await getByKey(result.figureKey, result.stageId);
   const openingCopy = stage
     ? await writeOpeningCopy({ feeling: validated.feeling, stage })
     : { eyebrow: NEUTRAL_EYEBROW, prefaceLines: DEFAULT_PREFACE_LINES };
 
-  const sessionId = createSession({
+  // Freeze the active config/model versions on the session for auditable replay.
+  const matchRecipe: MatchRecipe = {
+    matchConfigVersion,
+    crisisRegexVersion,
+    ...activeRecipe(),
+  };
+
+  const sessionId = await createSession({
     figureKey: result.figureKey,
     stageId: result.stageId,
     framing: result.framing,
     openingCopy,
     age: validated.age,
     feeling: validated.feeling,
+    matchRecipe,
   });
 
   return { sessionId };

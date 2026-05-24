@@ -1,6 +1,6 @@
 import "./_smoke-bootstrap";
 import { loadEnvLocal } from "./_load-env";
-import { listAll } from "../lib/figures";
+import { FIGURE_STAGES } from "../lib/figures-data";
 import { pickFigure, RerankError, writeOpeningCopy } from "../lib/llm";
 import { NEUTRAL_EYEBROW } from "../lib/opening-copy";
 
@@ -104,7 +104,7 @@ async function checkModelsEndpoint(apiKey: string): Promise<Step> {
 
 async function checkPickFigure(): Promise<Step> {
   const name = "pickFigure end-to-end (auth + model + JSON mode)";
-  const pool = listAll().slice(0, 2);
+  const pool = FIGURE_STAGES.slice(0, 2);
   if (pool.length === 0) {
     return { name, ok: false, detail: "no figures in library to probe with" };
   }
@@ -146,7 +146,7 @@ async function checkPickFigure(): Promise<Step> {
 
 async function checkOpeningCopy(): Promise<Step> {
   const name = "writeOpeningCopy end-to-end (prose model + eyebrow guard)";
-  const stages = listAll();
+  const stages = FIGURE_STAGES;
   const stage =
     stages.find((candidate) => candidate.figureKey === "butler") ?? stages[0];
   if (!stage) {

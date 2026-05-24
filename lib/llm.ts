@@ -2,7 +2,12 @@ import "server-only";
 import type { OpeningCopy, Pick, PickInput } from "./types";
 import type { OpeningCopyInput } from "./opening-copy";
 import { pickFigureStub, writeOpeningCopyStub } from "./llm-stub";
-import { pickFigureReal, writeOpeningCopyReal } from "./llm-real";
+import {
+  pickFigureReal,
+  proseModelId,
+  rerankModelId,
+  writeOpeningCopyReal,
+} from "./llm-real";
 
 // The single LLM boundary. Everything outside lib/ imports from here — never from
 // llm-stub / llm-real directly (CLAUDE.md: the provider is invisible outside lib/).
@@ -44,4 +49,18 @@ export function writeOpeningCopy(input: OpeningCopyInput): Promise<OpeningCopy> 
   return resolveProvider() === "real"
     ? writeOpeningCopyReal(input)
     : writeOpeningCopyStub(input);
+}
+
+// The LLM half of a session's match recipe (frozen at intake for replay): provider + the
+// resolved rerank/prose model ids. lib/intake.ts adds matchConfigVersion + crisisRegexVersion.
+export function activeRecipe(): {
+  llmProvider: "stub" | "real";
+  rerankModelId: string;
+  proseModelId: string;
+} {
+  return {
+    llmProvider: resolveProvider(),
+    rerankModelId: rerankModelId(),
+    proseModelId: proseModelId(),
+  };
 }

@@ -1,5 +1,5 @@
 import "./_smoke-bootstrap";
-import { listAll } from "../lib/figures";
+import { FIGURE_STAGES } from "../lib/figures-data";
 import type { BeatBlueprint, FigureStageRow } from "../lib/types";
 
 // Authoring validator: structural / role gates on every hand-authored figure stage in
@@ -155,7 +155,7 @@ function checkBeats(beats: BeatBlueprint[]): string[] {
 }
 
 function main(): void {
-  const stages = listAll();
+  const stages = FIGURE_STAGES;
 
   console.log("Onward figure validator");
   console.log("=======================");

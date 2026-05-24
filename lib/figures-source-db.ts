@@ -14,6 +14,8 @@ import { getSupabase } from "./db";
 declare global {
   // eslint-disable-next-line no-var
   var __onwardFigureCache: FigureStageRow[] | undefined;
+  // eslint-disable-next-line no-var
+  var __onwardFigureCachePromise: Promise<FigureStageRow[]> | undefined;
 }
 
 type FigureDbRow = {
@@ -41,7 +43,30 @@ type FigureStageDbRow = {
 
 export async function loadDbStages(): Promise<FigureStageRow[]> {
   if (globalThis.__onwardFigureCache) return globalThis.__onwardFigureCache;
+  if (globalThis.__onwardFigureCachePromise) {
+    return globalThis.__onwardFigureCachePromise;
+  }
 
+  globalThis.__onwardFigureCachePromise = fetchDbStages()
+    .then((stages) => {
+      globalThis.__onwardFigureCache = stages;
+      globalThis.__onwardFigureCachePromise = undefined;
+      return stages;
+    })
+    .catch((error) => {
+      globalThis.__onwardFigureCachePromise = undefined;
+      throw error;
+    });
+
+  return globalThis.__onwardFigureCachePromise;
+}
+
+export function resetDbFigureCache(): void {
+  globalThis.__onwardFigureCache = undefined;
+  globalThis.__onwardFigureCachePromise = undefined;
+}
+
+async function fetchDbStages(): Promise<FigureStageRow[]> {
   const supabase = getSupabase();
   const [stagesRes, figuresRes] = await Promise.all([
     supabase.from("figure_stages").select("*").eq("status", "published"),
@@ -62,12 +87,7 @@ export async function loadDbStages(): Promise<FigureStageRow[]> {
   const stages = ((stagesRes.data ?? []) as FigureStageDbRow[]).map((row) =>
     rowToStage(row, figuresByKey.get(row.figure_key)),
   );
-  globalThis.__onwardFigureCache = stages;
   return stages;
-}
-
-export function resetDbFigureCache(): void {
-  globalThis.__onwardFigureCache = undefined;
 }
 
 function rowToStage(

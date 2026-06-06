@@ -482,4 +482,666 @@ You don't have to be early. You just have to begin.`,
   ],
 };
 
-export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee];
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1928 Latrobe PA; only child (sister adopted when he was 11); severe
+//    asthma + frequent childhood illness; overweight, shy; bullied — boys followed him home
+//    from school shouting "fat Freddy"; played alone with hand puppets and at the piano;
+//    maternal grandfather Fred McFeely told him "you make my day special" / "I like you just
+//    the way you are"; became Mister Rogers (Mister Rogers' Neighborhood, 1968-2001); 1969
+//    Senate testimony saved public-TV funding. (King, The Good Neighbor; Junod, Esquire 1998;
+//    Rogers' 1995 Saint Vincent College address.)
+//  Interpretive: framing the loneliness/sensitivity as the seedbed of his life's work; "he
+//    decided the problem was him"; the grandfather as the one counter-voice. Emotional reading.
+//  Avoid saying: don't name the show / puppets-on-TV / cardigan before the bridge (kills the
+//    reveal); don't make the childhood a tidy origin myth; the loneliness is this episode, not
+//    his whole life (he had friends and love later).
+const rogers: FigureStageRow = {
+  figureKey: "rogers",
+  displayName: "Fred Rogers",
+  birthYear: 1928,
+  deathYear: 2003,
+  stageId: "1936-1941-latrobe-childhood",
+  stageLabel: "The lonely childhood: sick, bullied, alone with his puppets",
+  ageMin: 8,
+  ageMax: 13,
+  themes: ["bullied", "solitude", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was a sick, shy, heavy boy whom the other kids chased home from school, and he spent the long afternoons alone in his room making whole worlds out of puppets because there was no one else to be with.",
+    "The one thing that held him up was not a friend his own age but an old man who told him, plainly and often, that he was liked exactly as he was.",
+    "The loneliness he felt as a boy became the very thing he understood better than almost anyone: what it is to be small and afraid and sure that nobody likes you.",
+  ],
+  facets: {
+    emotionalCore:
+      "He carried the particular loneliness of a child who has quietly decided that the problem is him — too sick, too soft, too heavy to be wanted — and who has stopped expecting that to change.",
+    decisionShape:
+      "Whether to believe the boys who chased him or the grandfather who said he was likeable, when the boys were many and loud and the grandfather was one old man.",
+    triggerEvent:
+      "He was a frequently ill, overweight, only child in a town built around hard work, followed the long way home from school by boys who shouted that they were going to get him.",
+    agencyState:
+      "He had almost no power over how other children treated him; the only ground that was truly his was the room where he made up worlds with puppets and no one could come in.",
+  },
+  biographicalFacts: `Fred McFeely Rogers was born March 20, 1928, in Latrobe, Pennsylvania, the only child of James Hillis Rogers, president of the McFeely Brick Company, and Nancy McFeely Rogers; a sister, Elaine, was adopted when Fred was eleven. He was an overweight, shy, and frequently ill child who suffered from severe asthma, scarlet fever, and a string of other childhood diseases that often kept him indoors and alone. He had few friends and was bullied; he later recalled a group of boys following him the eleven blocks home from school, shouting "Freddy, hey fat Freddy! We're going to get you, Freddy!" Told by adults to act as though it did not bother him, he did — while privately concluding that the fault was his own. He spent long stretches alone, inventing characters and stories with hand puppets and expressing what he could not say at the piano. His maternal grandfather, Fred Brooks McFeely, was a decisive presence: he told the boy "Freddie, you make my day very special," a sentiment Rogers later distilled into the phrase "I like you just the way you are." Rogers graduated from Latrobe High School, studied music at Rollins College, and was ordained a Presbyterian minister. In 1968 he launched Mister Rogers' Neighborhood, which ran for more than thirty years; he used television to speak slowly and honestly to children about fear, anger, loneliness, and worth. In 1969 his six-minute testimony before a U.S. Senate subcommittee preserved federal funding for public broadcasting. He died of stomach cancer on February 27, 2003.`,
+  sources: [
+    "King, Maxwell. The Good Neighbor: The Life and Work of Fred Rogers (New York: Abrams Press, 2018).",
+    "Junod, Tom. \"Can You Say... Hero?\" Esquire, November 1998.",
+    "Rogers, Fred. Commencement and convocation address, Saint Vincent College, Latrobe, PA, 1995.",
+    "Won't You Be My Neighbor?, dir. Morgan Neville (Tremolo Productions, 2018).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Frequent illness/asthma, only child, shy and heavy, hours alone with hand puppets and piano — all documented. The room as his one private world is a fair reading of the record.",
+      text: `There was a boy. He was about nine.
+
+He was sick a lot. His chest would close up and he would have to stay inside, in bed, while the other kids were out in the street. He was heavy, and shy, and he was an only child, so the house was usually quiet.
+
+He spent most of his time alone in his room. He had built a little world up there. Small cloth figures he had made himself, each one with its own voice. He would put on whole shows for no audience at all.
+
+When he felt something he had no words for, he sat at the piano and found a key that matched it, and pressed it.
+
+It wasn't that he didn't want friends. He just didn't seem to have any. The room was the one place that was all his.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The walk home and the taunt (\"fat Freddy... we're going to get you\") are his own account. Being told by adults to act unbothered, and his private conclusion that the fault was his, are documented.",
+      text: `School was the hard part.
+
+There was a group of boys who had decided he was theirs to chase. When the last bell rang, he would come outside and they would be waiting for him.
+
+He had a long way to walk. Block after block, through a town built around hard, loud work. And the boys would follow him most of the way, shouting his name. Telling him they were going to get him. Telling him what was wrong with him. Calling him fat.
+
+He didn't fight back. He didn't really know how. He just kept walking, his face hot, listening to them behind him.
+
+He asked some grown-ups about it once. What he should do. They told him to just act like it didn't bother him. So that is what he did. He acted like it was fine.
+
+It was not fine. By then he had decided the problem was him.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "His grandfather as the counter-voice, and the phrasing (\"you make my day special\" / \"I like you just the way you are\"), are documented as the origin of his later message.",
+      text: `There was one person who made it different.
+
+His grandfather. An old man who lived nearby, who actually seemed glad whenever the boy turned up.
+
+When they were together, the old man said things to him that nobody else said. He would say, "You make my day special. Just by being here." He told the boy he liked him — not for anything he did, not if he changed, but exactly as he was, right then.
+
+The boy didn't have many people. But he had that. He held onto it.
+
+Then he went back up to his room and his small made-up world. He just carried the old man's words up the stairs with him.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "His lifelong shyness and intense sensitivity, long viewed by him as a weakness, are documented. The realization that knowing loneliness from the inside was useful is the editorial through-line, fairly grounded.",
+      text: `He grew up slowly, and a lot of it was lonely.
+
+He stayed shy. He stayed the kind of person who felt things hard — who could be wrecked by something small that other people just shrugged off. For a long time he thought that was a weakness. Something to keep hidden.
+
+He kept making his little worlds. He kept playing music. When a feeling came that he had no words for, he still went to the piano and found the key for it.
+
+And slowly he started to notice something. All those hours alone, feeling too much, had taught him a thing most people never learn. He knew, from the inside, exactly what it felt like to be small, and scared, and certain that nobody liked you.
+
+He didn't know yet that this would matter. He just knew it was true.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Documented: as a young man he found the new medium loud and demeaning to children and chose to do the opposite — slow, honest, addressing real feelings. Medium kept unnamed here to protect the bridge reveal.",
+      text: `Years later, as a young man, he found a kind of work that surprised everyone who remembered the quiet, heavy boy.
+
+He found a way to talk to children. Not one child — a great many of them, all at once.
+
+And he saw right away that most of the grown-ups doing this same work were doing it loud. Fast. Full of noise and selling and pretend. Talking at children instead of to them.
+
+He decided to do the exact opposite.
+
+He would go slow. He would be honest. He would talk to children about the things no one talked to children about — being scared, being angry, being lonely, feeling like nobody liked you.
+
+And to every child out there, he would say the thing his grandfather had once said to him. That they were liked. Just as they were. Right now. Without changing a single thing about themselves.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Decades of work, the trust of multiple generations, the lived sense people had of being seen and safe near him — all documented. Name and medium withheld for the bridge.",
+      text: `He did that for the rest of his life.
+
+Day after day, year after year, he showed up and told children the truth, gently. That their feelings were real. That being sad was allowed. That they did not have to be big or loud or fast to be worth something.
+
+Somehow he became one of the most trusted people in the whole country. Parents who had grown up with him as children sat their own kids down in front of him. People who met him said that being near him felt like being completely seen, and completely safe.
+
+The heavy, lonely boy who was sure he had no friends had grown into a man whose entire job was to be a friend — to millions of children who needed exactly what he had needed, and not gotten.
+
+He never stopped being soft. It turned out the softness was the whole point.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Fred Rogers.
+
+For more than thirty years he made a television show for children — just him, talking quietly, with a few hand puppets and a cardigan and a pair of sneakers he changed into at the start of every visit. He told a whole country of kids that they were liked just the way they were. When people in the government wanted to cut the money that paid for it, he spoke to them for six minutes and they changed their minds. He is one of the most beloved people this country has ever made.
+
+You wrote: "{feeling}"
+
+The boy who became that man spent his own childhood sick, alone, and chased home from school. He thought his soft heart was the thing that was wrong with him. It turned out to be the thing the world needed most from him.
+
+You don't have to toughen up to be worth something. He never did either.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1912 Pasadena; Smith 1934; drifted through her 20s-30s (advertising copy
+//    for W. & J. Sloane, odd jobs, no vocation); joined the OSS in WWII (too tall, 6'2", for the
+//    women's services), posted to Ceylon/China, met Paul Child, married 1946; Paris 1948; the
+//    sole meuniere lunch at La Couronne in Rouen at age 36 ("an opening up of the soul and
+//    spirit"); Le Cordon Bleu 1949, diploma 1951; ~a decade co-writing with Simone Beck and
+//    Louisette Bertholle; Houghton Mifflin rejected the manuscript; Mastering the Art of French
+//    Cooking published by Knopf 1961 (age 49); The French Chef from 1963. (Child, My Life in
+//    France; Spitz, Dearie; Conant, A Covert Affair.)
+//  Interpretive: the mid-life "I have no calling" dread, "the question felt closed" — her inner
+//    state before the epiphany is a fair reading, not a quote. The epiphany itself is documented.
+//  Avoid saying: don't name cooking / France / the cookbook / television / her height before the
+//    bridge (height + Paris + cooking = instant ID). Don't frame her as a failure — she was
+//    comfortable and capable; the ache is purposelessness, not poverty.
+const child: FigureStageRow = {
+  figureKey: "child",
+  displayName: "Julia Child",
+  birthYear: 1912,
+  deathYear: 2004,
+  stageId: "1946-1961-aimless-to-the-book",
+  stageLabel: "The aimless years: drifting into her mid-thirties before she found it",
+  ageMin: 34,
+  ageMax: 49,
+  themes: ["late_start", "self_doubt", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "She had drifted past her mid-thirties without ever finding the one thing she was meant to do, and she had started to believe there might not be one for her.",
+    "Then a single meal in a foreign country cracked her open, and at an age when most people think the question is long settled, she finally knew what she wanted.",
+    "It took another decade of unglamorous work before anyone paid her for it, and she did the work anyway, for years, with no proof it would ever amount to anything.",
+  ],
+  facets: {
+    emotionalCore:
+      "She felt the quiet dread of a capable person who has reached middle age without a calling — watching the years go by while the question of what she was for stayed unanswered.",
+    decisionShape:
+      "Whether to accept that her life would simply be pleasant and shapeless, or to throw herself completely into a hard new thing at an age when starting over is supposed to be foolish.",
+    triggerEvent:
+      "She had drifted through odd jobs and wartime work into her mid-thirties with no real direction, married and living abroad, when a meal in a small restaurant showed her what she had been missing.",
+    agencyState:
+      "She had time, security, and a strong, willing mind, and none of it was pointed at anything; the missing piece was never opportunity, only a reason.",
+  },
+  biographicalFacts: `Julia Carolyn McWilliams was born August 15, 1912, in Pasadena, California, into a wealthy family. She graduated from Smith College in 1934 and drifted through her twenties and early thirties with no clear direction — writing advertising copy for the W. & J. Sloane furniture company in New York, returning to California, finding nothing that felt like a vocation. After the United States entered World War II she joined the Office of Strategic Services (the wartime forerunner of the CIA), too tall at 6'2" for the women's military branches; she was posted to Ceylon and China, where she met Paul Child, a cultured OSS officer. They married in 1946. In 1948 Paul was posted to Paris, and there, at age thirty-six, Julia ate a lunch of oysters, sole meuniere, and wine at La Couronne in Rouen that she later called "an opening up of the soul and spirit." French food was the first thing that fully gripped her. She enrolled at Le Cordon Bleu in 1949, earned her diploma in 1951, and spent roughly a decade testing and writing recipes with Simone Beck and Louisette Bertholle. The huge manuscript was rejected by Houghton Mifflin as impractical; Alfred A. Knopf published Mastering the Art of French Cooking in 1961, when she was forty-nine. Her television program, The French Chef, began in 1963 and made her the most influential cook in America. She died August 13, 2004.`,
+  sources: [
+    "Child, Julia, with Alex Prud'homme. My Life in France (New York: Alfred A. Knopf, 2006).",
+    "Spitz, Bob. Dearie: The Remarkable Life of Julia Child (New York: Alfred A. Knopf, 2012).",
+    "Conant, Jennet. A Covert Affair: Julia Child and Paul Child in the OSS (New York: Simon & Schuster, 2011).",
+    "\"Julia Child: Cooking Up Spy Ops for OSS,\" Central Intelligence Agency, cia.gov.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Privileged upbringing, good schooling, post-college drift through advertising and odd jobs, wartime work abroad where she met her husband — all documented. The lack of a vocation is the through-line.",
+      text: `There was a woman in her thirties.
+
+By every outside measure her life was fine. She came from money. She had gone to a good school. She was funny, and people liked her at parties.
+
+But she had reached her mid-thirties without ever finding the thing she was for.
+
+She had tried. After school she took a job writing ads. It didn't take. She drifted home, then drifted somewhere else. During the war she did useful work, far from home, and met the man she married. But when the war ended and the work stopped, the old question came back.
+
+What was she going to do with her life?
+
+She was nearly forty, and she still didn't know. Most people her age had stopped asking a long time ago.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Move abroad for husband's posting, days suddenly unstructured, trying classes that didn't catch — documented. The fear that some people simply never find a calling is a fair reading of her own later accounts of feeling adrift.",
+      text: `She and her husband moved across the ocean for his job.
+
+Now she had time on her hands. A whole foreign country to herself and nothing she had to do in it.
+
+That was the hard part. Back home, being busy had hidden the problem. Here, with the days wide open, she could see it plainly. She was a grown woman with a good mind and a strong back and no idea what to point them at.
+
+She tried things. A class here. A club there. A course in the language. Nothing caught. She came home from each one a little emptier than before.
+
+She watched her husband, who loved his work, who lit up when he talked about it. She didn't have that. She never had. She began to wonder if some people just never got it — if she was simply one of the ones who would pass through a pleasant life without ever once feeling on fire about anything.
+
+She was nearly forty. The question felt closed.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The transformative restaurant meal at 36 is documented (her \"opening up of the soul and spirit\"), as is enrolling as a beginner among younger students. The craft is left unnamed to protect the bridge reveal.",
+      text: `Then one afternoon she had lunch.
+
+That was all it was. A meal, in a small restaurant, in the country she had moved to. But it was made with such care, such seriousness, that something in her went still and then woke up.
+
+She couldn't stop thinking about it. For the first time in her life, here was a thing she wanted to understand all the way down to the bottom.
+
+So she did a small, almost embarrassing thing for a woman her age. She signed up to learn it. As a beginner. In a room full of people half her age who had wanted this since they were young.
+
+She didn't tell herself it would amount to anything. She just couldn't stay away from it.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Years of practice and obsessive recipe-testing, the decade-long collaborative book project, and the publisher's rejection of the manuscript as impractical are all documented.",
+      text: `What followed was not glamorous and not quick.
+
+She practiced for hours. She made the same things over and over, getting them wrong, until her arms ached. She filled notebooks. She measured everything, tested everything, threw out whatever failed and started again.
+
+She decided to write it all down — to make the thing she loved usable by ordinary people back home. That turned into a project that swallowed years. Nearly a decade. She and two others wrote, and rewrote, and tested, and argued over tiny details no one else would ever notice.
+
+A publisher looked at the enormous manuscript and said no. It was too long, too strange, too much.
+
+She was nearing fifty now. She had poured the better part of a decade into something no one had bought.
+
+She kept going.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "A second publisher (Knopf) accepted the book; it sold and spread by word of mouth. Publication came when she was 49. Her sense of finally having direction is a fair reading.",
+      text: `Then another publisher said yes.
+
+They believed in the strange, enormous book she and her friends had built. They printed it.
+
+And it worked. People bought it. Then more people. Word spread from one home to the next. It turned out there were thousands of ordinary people back home who had wanted exactly this and never had it — someone patient enough to show them how, step by step, and certain that they could do it too.
+
+She was nearly fifty when it came out. The thing she had been missing her whole life had taken her until middle age just to begin.
+
+It did not matter to her at all. She had found it. For the first time, when she woke in the morning, she knew exactly what she was for.
+
+After a lifetime of drifting, the drifting was over.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The television work, her unpolished joyful on-screen manner, the lasting national influence into her eighties — all documented. Name and craft withheld for the bridge.",
+      text: `She did not slow down after that. She sped up.
+
+Someone asked her to do the thing where people could watch her — to teach it out loud, in front of cameras, to anyone at home who wanted to learn. She was tall, and loud, and joyful, and not remotely smooth, and that turned out to be exactly why people trusted her. She fumbled things and laughed and kept right on going. If she could do it, you could do it. That was the whole message.
+
+She became the most beloved teacher of her craft the country had ever had. She changed the way a whole nation did an ordinary, daily thing. She kept working into her eighties.
+
+The woman who had reached forty sure she had no calling spent the entire second half of her life on fire with one.
+
+She just got a late start. That was all.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Julia Child.
+
+She taught America how to cook. The huge French cookbook she spent a decade on is still in kitchens everywhere, and her television show made her one of the most loved people in the country. She didn't learn to cook until she was almost forty, didn't publish that book until she was forty-nine, and didn't become famous until her fifties.
+
+You wrote: "{feeling}"
+
+For the whole first half of her life, she thought maybe she just wasn't built for a calling — that some people get one and some people don't, and she was one of the ones who don't. She was wrong. It hadn't passed her by. It simply hadn't started yet.
+
+You don't have to have found it yet. She hadn't either, at your age.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1898 Belfast; mother died of cancer when he was 9; atheist in adolescence,
+//    Christian again at 32; famous novelist + popular-theology writer, incl. a 1940 book giving a
+//    reasoned account of why a good God allows suffering; married Joy Davidman (civil 1956, then a
+//    Christian bedside ceremony 1957 after her bone-cancer diagnosis); brief remission; she died
+//    13 July 1960 (he was 61); kept four notebooks of raw grief/doubt; published them 1961 as
+//    "N. W. Clerk," titled A Grief Observed, calling her only "H."; he died 1963. (A Grief
+//    Observed; Sayer, Jack; McGrath, C. S. Lewis - A Life.)
+//  Interpretive: "grief felt like fear" is his own; framing his faith as returning "smaller,
+//    quieter" is a fair reading of the book's arc. The turn is internal (grief as a process that
+//    moves), not a decision - this is a single-fork-style integrity shape.
+//  Avoid saying: don't name Narnia / Christianity / the titles / his name before the bridge.
+//    Don't tidy the faith into a triumphant restoration - the honest record is a partial, humbled
+//    recovery, not a neat happy ending. Don't sentimentalize the marriage.
+const lewis: FigureStageRow = {
+  figureKey: "lewis",
+  displayName: "C. S. Lewis",
+  birthYear: 1898,
+  deathYear: 1963,
+  stageId: "1960-1961-a-grief-observed",
+  stageLabel: "After his wife's death: grief, and a faith shaken to its foundations",
+  ageMin: 60,
+  ageMax: 62,
+  themes: ["grief", "solitude", "self_doubt"],
+  antiThemes: [],
+  shapeSentences: [
+    "Late in life he finally married the person he loved most, and within a few short years he had to watch her die, and the grief did not match anything he had spent his whole life believing about how to bear it.",
+    "He had written, years before, confident pages about how to carry suffering, and now that it was his own, the words he had handed everyone else were no help to him at all.",
+    "He kept a private notebook through the worst of it, not to teach anyone anything, but only to keep from going under.",
+  ],
+  facets: {
+    emotionalCore:
+      "He felt grief as a kind of fear, and worse, the terror that the faith he had built his whole life and his name on might be a house of cards that only stood while nothing was testing it.",
+    decisionShape:
+      "Whether to keep faith with everything he had believed and written now that it brought him no comfort, or to admit he might have been wrong about all of it.",
+    triggerEvent:
+      "The woman he married late and loved completely died of cancer a few years into the marriage, undoing the settled certainties of a man who had spent decades explaining suffering to other people.",
+    agencyState:
+      "There was nothing to do and nothing to fix; for once the famously articulate man could not think or argue his way out of what had happened, and could only endure it.",
+  },
+  biographicalFacts: `Clive Staples Lewis was born November 29, 1898, in Belfast, Ireland. His mother died of cancer when he was nine, a loss that shadowed his early life; he became an atheist in adolescence and a Christian again at thirty-two, going on to be one of the most widely read religious writers and novelists of the twentieth century — including a famous series of children's fantasy novels and works of popular theology, among them a 1940 book offering a reasoned account of why a good God permits suffering. In 1956 he married Joy Davidman, an American writer, first in a civil ceremony and then, after she was diagnosed with bone cancer, in a Christian ceremony at her hospital bedside in 1957. Her cancer briefly went into remission and they had a few happy years. She died on July 13, 1960; Lewis was sixty-one. In the months after, he filled four handwritten notebooks with his raw grief and his anger and doubt toward God, and published them in 1961 under the pseudonym N. W. Clerk, titled A Grief Observed, referring to Joy only as "H." The book records a man whose lifelong faith was shaken to its foundations by a loss he could not reason away. Lewis died on November 22, 1963.`,
+  sources: [
+    "Lewis, C. S. (as N. W. Clerk). A Grief Observed (London: Faber & Faber, 1961).",
+    "Lewis, C. S. Surprised by Joy: The Shape of My Early Life (London: Geoffrey Bles, 1955).",
+    "Sayer, George. Jack: A Life of C. S. Lewis (London: Hodder & Stoughton, 1988).",
+    "McGrath, Alister. C. S. Lewis - A Life (Carol Stream, IL: Tyndale House, 2013).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A confirmed bachelor for most of his life, an unexpectedly late marriage to a sharp, equal partner who argued with him, and his happiness in it are documented. Name and fame withheld for the bridge.",
+      text: `There was a man in his sixties.
+
+For most of his life he had been alone, in the romantic sense. He had friends, and work he was good at, and a quiet set of rooms full of his books. He had long ago made his peace with the idea that the great love most people get was simply not going to be his.
+
+And then, late — far later than people usually do this — he met her.
+
+She was sharp and funny and unafraid of him. She argued with him as an equal, which almost no one did. He married her. For the first time in his long life, the man who had everything except this finally had it too.
+
+He was happier than he had ever been. He thought the hard part of his life was behind him.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Her cancer, the brief remission and renewed hope, her death, and his own account of grief feeling like fear are documented (A Grief Observed opens almost exactly this way).",
+      text: `Then she got sick.
+
+It was the kind of sickness that does not let go. There were a few stretches where it seemed to pull back, where they let themselves hope. Each time, it came back.
+
+He sat with her through all of it. He watched the person who had finally made his life full grow smaller and weaker in front of him, and there was nothing — nothing — he could do.
+
+She died.
+
+And the grief that came was not what he had expected. He had assumed grief would feel like sadness. It didn't. It felt like fear. He would be doing something ordinary and a wave of pure animal panic would rise in him for no reason he could name.
+
+The house was unbearably quiet. He kept turning to tell her things, and she wasn't there.
+
+He had been alone before. This was not that. This was a room with a person-shaped hole in it.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The four notebooks, written privately and not initially intended for publication, are documented as the origin of the book. The framing of writing as survival rather than teaching is fair.",
+      text: `He started writing in a notebook.
+
+Not for anyone. Not to publish, not to teach. He had spent his life writing things meant to help other people, and this was the opposite of that. This was just a man trying not to drown — putting down on paper exactly how bad it was, so it would stop rattling around inside his skull.
+
+He wrote down the fear. He wrote down the anger. He wrote down the questions he was ashamed to be asking.
+
+He didn't tidy any of it. He didn't make it wise. He just told the truth, page after page, on the worst nights.
+
+It was the only thing that helped. And it barely helped.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The crisis of faith is the documented core of the book — including the irony that he had previously written a reasoned book on suffering. His fear that his faith only worked untested is drawn closely from the text.",
+      text: `Here is the part that frightened him most.
+
+His whole life, he had believed something. He had built everything on it — his work, his name, the way he explained the world to himself and to thousands of other people. He had once written an entire book about how to bear suffering. People wrote to him for comfort. He had answers.
+
+Now the suffering was his, and the answers were ashes in his mouth.
+
+He found himself furious at the very thing he had believed in. He wondered, in the dark, whether he had been fooling himself the whole time — whether the faith that had held him up for decades was just a story that worked only as long as nothing truly tested it.
+
+He had no tidy way out of this. For once, the man who could argue anything could not argue his way out.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The turn is internal and gradual, not a decision or an event: grief as a process that moves, faith returning in a humbler form. This is the documented shape of the book's later sections.",
+      text: `Slowly — and it was slow — something shifted. Not a fix. Not a moment where the clouds broke and it all made sense.
+
+What changed was smaller and stranger. As he kept writing, he noticed the grief was not one frozen thing. It moved. Some mornings were a fraction less terrible than the ones before. The pain did not leave, but it began to feel less like a wall he was slammed against and more like a country he was slowly walking through.
+
+And his faith, when it came back, came back different. Smaller. Quieter. Less sure of its own cleverness. He stopped demanding that the universe explain itself to him. He found he could hold the grief and the belief at the same time, without either one having to win.
+
+He was not healed. He was simply, somehow, still standing. And being still standing, he slowly came to feel, was its own kind of answer.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "He published the notebooks under a pseudonym; the book has since become a standard, widely given comfort to the grieving. \"The most comforting thing he wrote was written when he had no comfort\" is interpretive but well-grounded.",
+      text: `He did something he had not planned to do. He let the notebook be published.
+
+Not under his own name — he used a false one, because the pages were too raw and too private to put his real name on. He didn't want it to be a famous man's book. He wanted it to be one grieving person speaking honestly to another.
+
+And that is exactly what it became. A small, plain, unbearably honest book about losing someone. It has been pressed into the hands of grieving people ever since — by friends who don't know what else to say — because it says the thing: that this is as bad as you think it is, and that you can still, somehow, come out the other side.
+
+The most comforting thing he ever wrote was the thing he wrote when he had no comfort at all.
+
+He didn't fix his grief. He just refused to lie about it. That turned out to be the gift.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was C. S. Lewis.
+
+He was one of the most famous writers of his century — beloved children's books about a magical land, and works of faith that millions still read. He had even written, years before his wife died, a confident book explaining how to bear suffering. Then he had to actually bear it, and the small, honest book he wrote in his grief — first published under a false name — has comforted more hurting people than perhaps anything else he made.
+
+You wrote: "{feeling}"
+
+He was past sixty, at the height of his fame, with all the answers, and grief knocked every one of them out of his hands. He didn't get them back the same. He got something quieter instead. He kept going anyway — not because it stopped hurting, but because the hurting slowly began to move.
+
+You don't have to have the answers right now. He didn't either, and he had written the book on it.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1931 Arkabutla MS; as a small child sent to grandparents John Henry & Maggie
+//    Connolly's farm in Dublin, Michigan; the move was traumatic; developed a severe stutter and
+//    was "functionally mute" roughly age 6-14; spoke freely only to the farm animals and to
+//    himself; wrote poetry; high-school teacher Donald Crouch (a former professor) dared him to
+//    recite his own poem aloud to prove he'd written it; he got through it without stuttering;
+//    went on to recite Shakespeare for hours, won at debate; became the voice of Darth Vader and
+//    Mufasa across a celebrated career; died 2024. (Jones & Niven, Voices and Silences; Academy of
+//    Achievement; the Stuttering Foundation.)
+//  Interpretive: the boy's internal "my own voice is the enemy" framing; shame as the engine of
+//    the silence. Drawn closely from his own accounts; lightly dramatized.
+//  Avoid saying: don't name Vader / Mufasa / Star Wars / his name before the bridge. Don't turn
+//    the teacher into a magic cure - it unlocked him, but years of work followed. Keep farm/era
+//    markers soft.
+const jones: FigureStageRow = {
+  figureKey: "jones",
+  displayName: "James Earl Jones",
+  birthYear: 1931,
+  deathYear: 2024,
+  stageId: "1937-1945-the-silent-years",
+  stageLabel: "The silent years: a stutter so deep he stopped speaking",
+  ageMin: 6,
+  ageMax: 14,
+  themes: ["shame", "finding_voice", "solitude"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was a small boy sent to live on a farm far from everything he knew, and the shock of it gave him a stutter so bad that he simply stopped talking, for years.",
+    "He was so ashamed of the sounds that came out when he tried to speak that he learned to live almost entirely in silence, writing things down, talking only to the farm animals.",
+    "The thing that brought his voice back was not a doctor but a teacher who refused to believe the silence was permanent, and a poem the boy had written himself.",
+  ],
+  facets: {
+    emotionalCore:
+      "He carried the deep shame of a child who believes the very act of opening his mouth will humiliate him, and who has decided that silence is safer than the certainty of being laughed at.",
+    decisionShape:
+      "Whether to stay safe inside the silence he had built, or to risk the one thing that had always humiliated him — his own voice — out loud, in front of a room full of people.",
+    triggerEvent:
+      "Uprooted as a small child and sent to live with relatives far away, the boy developed a stutter so severe that he stopped speaking aloud almost entirely for years.",
+    agencyState:
+      "He had near-total control over one thing — whether to speak at all — and he used it to protect himself by choosing silence, which kept him safe and kept him alone.",
+  },
+  biographicalFacts: `James Earl Jones was born January 17, 1931, in Arkabutla, Mississippi. As a small child he was sent to live with his maternal grandparents, John Henry and Maggie Connolly, on their farm in Dublin, Michigan; the upheaval of the move was traumatic, and he developed a stutter so severe that he essentially stopped speaking. From roughly age six to fourteen he was, in his own word, "functionally mute" — communicating in writing, speaking only haltingly to his family, and talking at length only to the farm animals and to himself. In high school in Michigan, an English teacher named Donald Crouch, a former college professor, discovered that the silent boy wrote poetry. Suspecting the poems were too accomplished to be the boy's own, Crouch challenged him to prove authorship by reciting one aloud to the class. Jones did — and got through it without stuttering. The shock of hearing his own fluent voice changed his life. He went on to recite Shakespeare for hours, joined the debate team and became a champion, and eventually became one of the most distinctive and recognizable voices in the world — the voice of Darth Vader in the Star Wars films and Mufasa in The Lion King, across a celebrated stage and screen career spanning more than six decades. He died September 9, 2024.`,
+  sources: [
+    "Jones, James Earl, and Penelope Niven. James Earl Jones: Voices and Silences (New York: Charles Scribner's Sons, 1993).",
+    "\"James Earl Jones,\" Academy of Achievement interview.",
+    "The Stuttering Foundation, profile of James Earl Jones.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Sent away as a small child to be raised by grandparents on a farm, the traumatic move, the onset of a severe stutter, and the gradual retreat into silence are all documented.",
+      text: `There was a boy. He was about seven.
+
+When he was little, he had been sent away — taken from the place and the people he knew and dropped onto a farm a long way off, to be raised by his grandparents. He never really got over the shock of it.
+
+Somewhere in there, his words broke.
+
+When he tried to talk, they came out stuck and stuttering and wrong. The other kids noticed. They always notice. And the shame of it grew so big that he made a decision a child should never have to make.
+
+He just stopped talking.
+
+Not all at once. But more and more, until silence became the normal thing. It was safer. If he didn't open his mouth, no one could laugh at what came out.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Years of near-total silence, writing answers instead of speaking, talking freely only to the farm animals and to himself, are documented in his own account. The internal belief that his voice was the enemy is drawn from it.",
+      text: `He stayed silent for years.
+
+Think about what that means for a kid. Years. He went to school and didn't speak. He raised his hand for nothing. When a teacher asked him a question, he wrote the answer down, or just looked at the floor until they moved on.
+
+The only ones he really talked to were the animals on the farm. They didn't care how the words came out. He would talk to them as long as he wanted, easy and free, and then go back to the house and lock the silence back into place around the people.
+
+He talked to himself, too. Inside his own head, his voice worked fine. It was only when it had to come out into the world that it failed him.
+
+He grew up believing, all the way down, that his own voice was the enemy — the thing that would shame him every single time. So he kept it locked up, and he kept himself locked up with it.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "That he wrote — including poetry — fluently while unable to speak is documented, and is the hinge the later turn depends on.",
+      text: `There was one place the words came out clean. On paper.
+
+When he wrote, there was no stutter. No one waiting for him to finish. No faces watching him struggle. He could say anything he wanted, exactly the way he meant it.
+
+So he wrote. Quietly, for himself. He started writing poems — the things he could not say out loud, set down where they could finally hold still and be true.
+
+He didn't show them to anyone. They were his. They were proof, at least to himself, that there was a voice in there.
+
+It just had no way out.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The long duration of the silence and the way it shaped his whole identity as \"the quiet one\" are documented. The carried sentence (\"if I open my mouth, everyone will hear it\") is interpretive but well-grounded.",
+      text: `This went on for years. Most of his childhood, really.
+
+On the outside he was the quiet one. The boy who didn't talk. Teachers learned not to call on him. Kids learned he wasn't going to say anything back. He folded himself smaller and smaller around the silence until it was simply who he was.
+
+He was good at hiding it. He had to be. A whole life can be built around not letting people see the thing you are ashamed of.
+
+But the hiding cost him. Every day he carried the same quiet sentence around inside him: there is something wrong with me, and if I open my mouth, everyone will hear it.
+
+He had no reason to think this would ever change. As far as he knew, this was just the shape of his life.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The teacher (Donald Crouch) finding his poetry, daring him to recite it to prove authorship, and the boy getting through it without a stutter are all documented; he called it the turning point of his life.",
+      text: `Then he got a new teacher.
+
+An older man, who had taught a long time and paid real attention to his students. He found one of the boy's poems. And it was good — good enough that the teacher, maybe testing him, maybe just refusing to let him hide, said the thing that must have stopped the boy's heart.
+
+He said: if this poem is really yours, then stand up and say it. Out loud. To the whole class.
+
+Every instinct the boy had screamed no. Standing up was the exact thing he had spent years avoiding. The whole room would watch his mouth fail.
+
+But he stood up.
+
+And he opened his mouth, and the poem came out. All of it. Clean. Not one stutter.
+
+He stood there, stunned, hearing his own voice fill the room for the first time in years. It had been in there the whole time. The teacher had simply refused to believe it was gone.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Reciting Shakespeare for hours, debate-team success, and a lifelong career built on his extraordinary voice are documented. The famous roles are withheld for the bridge.",
+      text: `After that, he could not be stopped.
+
+He chased the very thing that had terrified him his whole life. He read aloud for hours, alone, just to feel the words come out whole. He joined the team where you argue out loud in front of judges, and he won. The boy who had not spoken for years became known, of all things, for his voice.
+
+And not just any voice. As he grew up it deepened into something extraordinary — low and warm and steady, a voice that could fill a room, a theater, eventually a screen the whole world watched. People would know it instantly, anywhere, for the rest of his life.
+
+The thing he had been most ashamed of turned out to be his single greatest gift. The enemy he had locked away was the best of him.
+
+He just had to be dared, one time, to let it out.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was James Earl Jones.
+
+The boy who couldn't speak grew up to have one of the most famous voices in the history of the world. He was the voice of Darth Vader in Star Wars. He was Mufasa in The Lion King. For decades, on stage and screen, that deep, unmistakable voice was one of the most beloved sounds anywhere — and it belonged to a man who, as a child, was so ashamed of his voice that he went almost completely silent for years.
+
+You wrote: "{feeling}"
+
+He didn't fix it alone. It took one teacher who refused to believe the silence was the end of the story, and one poem he had written when he thought no one would ever hear it. The voice was always in there. It just needed one safe place to come out.
+
+You don't have to have your voice yet. He didn't either, for years. It was still in there the whole time.`,
+    },
+  ],
+};
+
+export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones];

@@ -1,35 +1,35 @@
 {
   "config": {
     "matchConfigVersion": "phase1-rerank-eval-2026-05",
-    "provider": "real",
+    "provider": "stub",
     "model": "openai/gpt-oss-120b",
     "k": 1,
     "concurrency": 3,
     "maxRetries": 2,
-    "ranAt": "2026-05-23T05:07:10.101Z",
-    "caseCount": 8,
-    "trialCount": 8
+    "ranAt": "2026-06-06T06:09:31.757Z",
+    "caseCount": 14,
+    "trialCount": 14
   },
   "metrics": {
-    "rerankTop1": 1,
+    "rerankTop1": 0.9166666666666666,
     "rerankTop1Counts": {
-      "correct": 4,
-      "total": 4
+      "correct": 11,
+      "total": 12
     },
-    "overallTop1": 1,
+    "overallTop1": 0.9166666666666666,
     "overallTop1Counts": {
-      "correct": 5,
-      "total": 5
+      "correct": 11,
+      "total": 12
     },
-    "missDetection": 0.3333333333333333,
+    "missDetection": 1,
     "missDetectionCounts": {
-      "detected": 1,
-      "total": 3
-    },
-    "hardConfusion": 0,
-    "hardConfusionCounts": {
-      "confused": 0,
+      "detected": 2,
       "total": 2
+    },
+    "hardConfusion": 0.25,
+    "hardConfusionCounts": {
+      "confused": 1,
+      "total": 4
     },
     "confusionByGroup": [
       {
@@ -37,23 +37,27 @@
         "trials": 2,
         "pickedPlausibleWrong": 0,
         "correct": 2
+      },
+      {
+        "group": "lonely-child",
+        "trials": 2,
+        "pickedPlausibleWrong": 1,
+        "correct": 1
       }
     ],
     "calibration": {
-      "definitiveCorrect": 4,
-      "definitiveWrong": 0,
+      "definitiveCorrect": 10,
+      "definitiveWrong": 1,
       "partialCorrect": 1,
       "partialWrong": 0
     },
     "chosenBy": {
-      "rerank": 7,
-      "keyword_fallback": 1
+      "rerank": 14,
+      "keyword_fallback": 0
     },
-    "failureReasons": {
-      "api_error": 1
-    },
-    "latencyP50": 588,
-    "latencyP95": 824,
+    "failureReasons": {},
+    "latencyP50": 0,
+    "latencyP95": 7,
     "stability": null
   }
 }

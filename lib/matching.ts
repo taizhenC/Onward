@@ -6,9 +6,9 @@ import type {
   RerankFailureReason,
 } from "./types";
 import { listAll, listByAge } from "./figures";
-import { framingFromConfidence } from "./match-config";
+import { framingFromConfidence, RERANK_TOP_K } from "./match-config";
 import { pickFigure, RerankError } from "./llm";
-import { pickByKeywordHybrid } from "./keyword-match";
+import { pickByKeywordHybrid, scoreAllByKeywordHybrid } from "./keyword-match";
 
 export type MatchInput = {
   age: number;
@@ -30,6 +30,10 @@ export type MatchDebug = MatchResult & {
   confidence: Confidence;
   chosenBy: ChosenBy;
   failureReason?: RerankFailureReason;
+  httpStatus?: number;
+  candidateCount: number;
+  ageCandidateCount: number;
+  promptChars: number;
   latencyMs: number;
 };
 
@@ -41,22 +45,28 @@ export async function match(input: MatchInput): Promise<MatchResult> {
 
 export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
   const { pool, fallbackToAll } = await buildPool(input);
+  const rerankPool = selectRerankPool(input, pool);
+  const debugScalars = {
+    candidateCount: rerankPool.length,
+    ageCandidateCount: pool.length,
+    promptChars: sumBiographicalFactChars(rerankPool),
+  };
   const start = performance.now();
 
   try {
     const pick = await pickFigure({
       age: input.age,
       feeling: input.feeling,
-      candidates: pool,
+      candidates: rerankPool,
     });
 
     // #5: don't trust syntactically valid output. A pick naming a figure that isn't
     // in the pool (hallucinated / filtered out) is a failure, not a match.
-    const inPool = pool.some(
+    const inPool = rerankPool.some(
       (s) => s.figureKey === pick.figureKey && s.stageId === pick.stageId,
     );
     if (!inPool) {
-      return keywordFallback(input, pool, start, "invalid_pick");
+      return keywordFallback(input, pool, start, debugScalars, "invalid_pick");
     }
 
     return {
@@ -66,12 +76,14 @@ export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
       framing: fallbackToAll ? "partial" : framingFromConfidence(pick.confidence),
       confidence: pick.confidence,
       chosenBy: "rerank",
+      ...debugScalars,
       latencyMs: performance.now() - start,
     };
   } catch (error) {
     const reason: RerankFailureReason =
       error instanceof RerankError ? error.reason : "api_error";
-    return keywordFallback(input, pool, start, reason);
+    const httpStatus = error instanceof RerankError ? error.status : undefined;
+    return keywordFallback(input, pool, start, debugScalars, reason, httpStatus);
   }
 }
 
@@ -82,7 +94,13 @@ function keywordFallback(
   input: MatchInput,
   pool: FigureStageRow[],
   start: number,
+  debugScalars: {
+    candidateCount: number;
+    ageCandidateCount: number;
+    promptChars: number;
+  },
   failureReason: RerankFailureReason,
+  httpStatus?: number,
 ): MatchDebug {
   const { stage } = pickByKeywordHybrid(
     { age: input.age, feeling: input.feeling },
@@ -96,8 +114,24 @@ function keywordFallback(
     confidence: "low",
     chosenBy: "keyword_fallback",
     failureReason,
+    httpStatus,
+    ...debugScalars,
     latencyMs: performance.now() - start,
   };
+}
+
+export function selectRerankPool(
+  input: MatchInput,
+  pool: FigureStageRow[],
+): FigureStageRow[] {
+  if (pool.length <= RERANK_TOP_K) return pool;
+  return scoreAllByKeywordHybrid(input, pool)
+    .slice(0, RERANK_TOP_K)
+    .map((pick) => pick.stage);
+}
+
+function sumBiographicalFactChars(pool: FigureStageRow[]): number {
+  return pool.reduce((sum, stage) => sum + stage.biographicalFacts.length, 0);
 }
 
 // Wide age hard gate, with a Phase 0/1A-specific fallback-to-all so testers who fall

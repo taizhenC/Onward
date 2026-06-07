@@ -1,48 +1,48 @@
 {
   "config": {
-    "matchConfigVersion": "phase1-rerank-eval-2026-05",
+    "matchConfigVersion": "phase1-rerank-topk-2026-06-07",
     "provider": "real",
-    "model": "openai/gpt-oss-120b",
+    "model": "gpt-oss-120b",
     "k": 1,
     "concurrency": 1,
-    "maxRetries": 4,
-    "ranAt": "2026-06-07T03:01:51.626Z",
-    "caseCount": 37,
-    "trialCount": 37
+    "maxRetries": 2,
+    "ranAt": "2026-06-07T09:38:03.891Z",
+    "caseCount": 39,
+    "trialCount": 39
   },
   "metrics": {
-    "rerankTop1": 0.8235294117647058,
+    "rerankTop1": 0.9722222222222222,
     "rerankTop1Counts": {
-      "correct": 14,
-      "total": 17
+      "correct": 35,
+      "total": 36
     },
-    "overallTop1": 0.8823529411764706,
+    "overallTop1": 0.9722222222222222,
     "overallTop1Counts": {
-      "correct": 30,
-      "total": 34
+      "correct": 35,
+      "total": 36
     },
     "missDetection": 0.3333333333333333,
     "missDetectionCounts": {
       "detected": 1,
       "total": 3
     },
-    "hardConfusion": 0.16666666666666666,
+    "hardConfusion": 0,
     "hardConfusionCounts": {
-      "confused": 2,
-      "total": 12
+      "confused": 0,
+      "total": 14
     },
     "confusionByGroup": [
       {
         "group": "persistence-vs-reinvention",
         "trials": 2,
         "pickedPlausibleWrong": 0,
-        "correct": 1
+        "correct": 2
       },
       {
         "group": "lonely-child",
         "trials": 2,
-        "pickedPlausibleWrong": 1,
-        "correct": 1
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       },
       {
         "group": "creative-perseverance",
@@ -59,31 +59,79 @@
       {
         "group": "boxed-in-woman",
         "trials": 2,
-        "pickedPlausibleWrong": 1,
-        "correct": 1
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       },
       {
         "group": "dismissed-no-credit",
         "trials": 2,
         "pickedPlausibleWrong": 0,
         "correct": 2
+      },
+      {
+        "group": "trapped-life-vs-lost-career",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "private-trap-vs-denied-recognition",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
       }
     ],
     "calibration": {
-      "definitiveCorrect": 14,
-      "definitiveWrong": 3,
-      "partialCorrect": 16,
-      "partialWrong": 1
+      "definitiveCorrect": 35,
+      "definitiveWrong": 1,
+      "partialCorrect": 0,
+      "partialWrong": 0
     },
     "chosenBy": {
-      "rerank": 19,
-      "keyword_fallback": 18
+      "rerank": 39,
+      "keyword_fallback": 0
     },
-    "failureReasons": {
-      "api_error": 18
+    "failureReasons": {},
+    "failureReasonStatuses": {},
+    "candidateCounts": {
+      "5": 3,
+      "6": 36
     },
-    "latencyP50": 525,
-    "latencyP95": 1585,
-    "stability": null
+    "failedCandidateCounts": {},
+    "promptChars": {
+      "min": 6527,
+      "p50": 7715,
+      "p95": 8512,
+      "max": 8512
+    },
+    "failedPromptChars": {
+      "min": 0,
+      "p50": 0,
+      "p95": 0,
+      "max": 0
+    },
+    "latencyP50": 324,
+    "latencyP95": 736,
+    "stability": null,
+    "trustGate": {
+      "passed": false,
+      "coverage": 1,
+      "checks": {
+        "coverage": true,
+        "rerankTop1": true,
+        "missDetection": false,
+        "noDefinitiveWrong": false,
+        "top1": true,
+        "hardConfusion": true
+      },
+      "thresholds": {
+        "minCoverage": 0.95,
+        "minRerankTop1": 0.971,
+        "minOverallTop1": 0.971,
+        "minMissDetection": 1,
+        "maxDefinitiveWrong": 0,
+        "maxHardConfusion": 0
+      }
+    }
   }
 }

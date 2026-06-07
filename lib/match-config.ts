@@ -1,10 +1,21 @@
 import type { Confidence, Framing } from "./types";
 
-export const matchConfigVersion = "phase1-rerank-eval-2026-05";
+export const matchConfigVersion = "phase1-rerank-topk-2026-06-07";
 
 export const AGE_TOLERANCE_YEARS = 10;
 
 export const PARTIAL_FRAMING_THRESHOLD = 1;
+
+export const RERANK_TOP_K = 6;
+
+export const RERANK_TRUST_GATE = {
+  minCoverage: 0.95,
+  minRerankTop1: 0.971,
+  minOverallTop1: 0.971,
+  minMissDetection: 1,
+  maxDefinitiveWrong: 0,
+  maxHardConfusion: 0,
+} as const;
 
 // Confidence → framing. Only "definitive" | "partial" crosses the wire (CLAUDE.md:
 // the client never sees the underlying confidence). A low-confidence pick — including

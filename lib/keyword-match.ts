@@ -34,10 +34,21 @@ export function pickByKeywordHybrid(
     throw new Error("pickByKeywordHybrid requires a non-empty candidate pool.");
   }
 
+  return scoreAllByKeywordHybrid(input, pool)[0];
+}
+
+export function scoreAllByKeywordHybrid(
+  input: { age: number; feeling: string },
+  pool: FigureStageRow[],
+): KeywordPick[] {
+  if (pool.length === 0) {
+    throw new Error("scoreAllByKeywordHybrid requires a non-empty candidate pool.");
+  }
+
   const themeWeights = getMatchedThemeWeights(input.feeling);
   const scored = pool.map((stage) => scoreStage(stage, input, themeWeights));
   scored.sort(compareScoredStages);
-  return scored[0];
+  return scored;
 }
 
 function scoreStage(

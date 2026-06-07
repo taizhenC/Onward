@@ -28,7 +28,7 @@ import {
 const DEFAULT_BASE_URL = "https://api.groq.com/openai/v1";
 const DEFAULT_MODEL = "openai/gpt-oss-120b";
 const DEFAULT_TEMPERATURE = 0;
-const DEFAULT_TIMEOUT_MS = 8000;
+const DEFAULT_TIMEOUT_MS = 15000;
 
 function baseUrl(): string {
   const configured = process.env.GROQ_BASE_URL?.trim();
@@ -109,12 +109,16 @@ export function toRerankCandidate(stage: FigureStageRow): RerankCandidate {
 // API-side failures only. `invalid_pick` (model named an out-of-pool figure) is
 // detected by the caller (lib/matching.ts), which holds the candidate pool.
 export class RerankError extends Error {
+  readonly status?: number;
+
   constructor(
     readonly reason: Exclude<RerankFailureReason, "invalid_pick">,
     message: string,
+    options?: { status?: number },
   ) {
     super(message);
     this.name = "RerankError";
+    this.status = options?.status;
   }
 }
 
@@ -126,7 +130,10 @@ const SYSTEM_PROMPT = [
   "Rules:",
   "- Bias against figures whose stories are widely taught in school (Lincoln, Van Gogh, Einstein, etc.). When fit is comparable, prefer the less-famous figure — recognizability adds nothing if the resonance is shallow.",
   "- Weigh emotional shape first. Treat a large gap between the person's age and a candidate's age range as part of what the match does NOT cover, not as a disqualifier.",
+  "- Distinguish being trapped in a life or role imposed by others from losing, wrecking, or restarting a career path one chose. When both are possible, prefer the candidate whose trigger matches the person's stated trap.",
+  "- Distinguish being trapped in a private life role imposed by family or convention from being denied public credit or recognition for work one actually did.",
   "- Before deciding, hold two things in mind: the strongest reason the match resonates with the person's specific words, and the strongest gap (what their words carry that this figure's struggle does not). Then commit. Do not refuse to choose.",
+  "- If no candidate genuinely matches the person's situation, still choose the closest candidate, but set confidence to \"low\"; do not inflate a weak or merely adjacent fit.",
   "- Choose only from the provided candidates, using their exact figure_key and stage_id.",
   "",
   'Respond with a single JSON object and nothing else, with keys: figure_key (string), stage_id (string), resonance (one sentence), gap (one sentence), confidence (one of "low", "medium", "high").',
@@ -207,7 +214,9 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
   }
 
   if (!response.ok) {
-    throw new RerankError("api_error", `rerank HTTP ${response.status}`);
+    throw new RerankError("api_error", `rerank HTTP ${response.status}`, {
+      status: response.status,
+    });
   }
 
   let content: string;

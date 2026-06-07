@@ -268,6 +268,24 @@
       "plausibleWrong": "rustin",
       "confusionGroup": "dismissed-no-credit",
       "note": "work dismissed by the field, kept going alone (mcclintock) vs rustin's social erasure"
+    },
+    {
+      "age": 52,
+      "feeling": "i'm stuck in a life i didn't choose, the one everyone expected of me, and i don't know how to leave",
+      "expect": "lee",
+      "hard": true,
+      "plausibleWrong": "chandler",
+      "confusionGroup": "trapped-life-vs-lost-career",
+      "note": "the real wrong-definitive: trapped in a life imposed by others (lee) vs chandler's chosen-then-wrecked career; real rerank had picked chandler high-confidence"
+    },
+    {
+      "age": 52,
+      "feeling": "i've spent my whole life trapped in the role my family expected of me, never allowed to pursue what i actually wanted, and i don't know how to break out",
+      "expect": "lee",
+      "hard": true,
+      "plausibleWrong": "rustin",
+      "confusionGroup": "private-trap-vs-denied-recognition",
+      "note": "private-life trap imposed by family/convention (lee) vs rustin's denied-public-recognition; real rerank had picked rustin on the plain 'stuck in the wrong life' case"
     }
   ]
 }

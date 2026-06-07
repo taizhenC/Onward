@@ -1,34 +1,34 @@
 {
   "config": {
     "matchConfigVersion": "phase1-rerank-eval-2026-05",
-    "provider": "stub",
+    "provider": "real",
     "model": "openai/gpt-oss-120b",
     "k": 1,
-    "concurrency": 3,
-    "maxRetries": 2,
-    "ranAt": "2026-06-07T02:28:06.192Z",
+    "concurrency": 1,
+    "maxRetries": 4,
+    "ranAt": "2026-06-07T03:01:51.626Z",
     "caseCount": 37,
     "trialCount": 37
   },
   "metrics": {
-    "rerankTop1": 0.9705882352941176,
+    "rerankTop1": 0.8235294117647058,
     "rerankTop1Counts": {
-      "correct": 33,
-      "total": 34
+      "correct": 14,
+      "total": 17
     },
-    "overallTop1": 0.9705882352941176,
+    "overallTop1": 0.8823529411764706,
     "overallTop1Counts": {
-      "correct": 33,
+      "correct": 30,
       "total": 34
     },
-    "missDetection": 1,
+    "missDetection": 0.3333333333333333,
     "missDetectionCounts": {
-      "detected": 3,
+      "detected": 1,
       "total": 3
     },
-    "hardConfusion": 0.08333333333333333,
+    "hardConfusion": 0.16666666666666666,
     "hardConfusionCounts": {
-      "confused": 1,
+      "confused": 2,
       "total": 12
     },
     "confusionByGroup": [
@@ -36,7 +36,7 @@
         "group": "persistence-vs-reinvention",
         "trials": 2,
         "pickedPlausibleWrong": 0,
-        "correct": 2
+        "correct": 1
       },
       {
         "group": "lonely-child",
@@ -59,8 +59,8 @@
       {
         "group": "boxed-in-woman",
         "trials": 2,
-        "pickedPlausibleWrong": 0,
-        "correct": 2
+        "pickedPlausibleWrong": 1,
+        "correct": 1
       },
       {
         "group": "dismissed-no-credit",
@@ -70,18 +70,20 @@
       }
     ],
     "calibration": {
-      "definitiveCorrect": 32,
-      "definitiveWrong": 1,
-      "partialCorrect": 1,
-      "partialWrong": 0
+      "definitiveCorrect": 14,
+      "definitiveWrong": 3,
+      "partialCorrect": 16,
+      "partialWrong": 1
     },
     "chosenBy": {
-      "rerank": 37,
-      "keyword_fallback": 0
+      "rerank": 19,
+      "keyword_fallback": 18
     },
-    "failureReasons": {},
-    "latencyP50": 0,
-    "latencyP95": 3,
+    "failureReasons": {
+      "api_error": 18
+    },
+    "latencyP50": 525,
+    "latencyP95": 1585,
     "stability": null
   }
 }

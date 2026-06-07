@@ -121,4 +121,140 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "stay silent": ["finding_voice", "solitude"],
   "keep it inside": ["shame", "finding_voice"],
   stutter: ["finding_voice", "shame"],
+
+  // Wilma Rudolph — disability / keep_going / quiet_defiance
+  disabled: ["disability"],
+  disability: ["disability"],
+  "can't walk": ["disability"],
+  "never walk": ["disability", "quiet_defiance"],
+  "my body won't": ["disability"],
+  "wrote me off": ["disability", "quiet_defiance"],
+  "told i'd never": ["disability", "quiet_defiance"],
+
+  // Maya Angelou — new_parent_fear / self_doubt / keep_going
+  "new parent": ["new_parent_fear"],
+  "first child": ["new_parent_fear"],
+  "just had a baby": ["new_parent_fear"],
+  "new baby": ["new_parent_fear"],
+  "be a good mother": ["new_parent_fear", "self_doubt"],
+  "be a good father": ["new_parent_fear", "self_doubt"],
+  "be a good parent": ["new_parent_fear", "self_doubt"],
+  "ruin my kid": ["new_parent_fear"],
+  "mess up my kid": ["new_parent_fear"],
+  "too young to": ["new_parent_fear", "self_doubt"],
+  "fail my child": ["new_parent_fear"],
+
+  // Rachmaninoff — public_failure / creative_dismissal / keep_going
+  humiliated: ["public_failure", "shame"],
+  humiliation: ["public_failure", "shame"],
+  "failed in front of": ["public_failure"],
+  "everyone saw me fail": ["public_failure"],
+  "made a fool of myself": ["public_failure", "shame"],
+  "fell apart in public": ["public_failure"],
+  "can't create": ["creative_dismissal", "public_failure"],
+  "creative block": ["creative_dismissal"],
+  "lost my confidence": ["public_failure", "self_doubt"],
+  "torn apart": ["public_failure", "creative_dismissal"],
+
+  // Flannery O'Connor — illness / solitude / keep_going
+  "got sick": ["illness"],
+  "seriously ill": ["illness"],
+  illness: ["illness"],
+  chronic: ["illness"],
+  diagnosed: ["illness"],
+  "body is failing": ["illness"],
+  incurable: ["illness"],
+  dying: ["illness"],
+  "running out of time": ["illness", "keep_going"],
+  "can't do what i used to": ["illness"],
+
+  // Barry Marshall — dismissed / quiet_defiance / keep_going
+  dismissed: ["dismissed"],
+  "no one believes me": ["dismissed"],
+  "nobody believes me": ["dismissed"],
+  "they don't believe me": ["dismissed"],
+  "not taken seriously": ["dismissed"],
+  "ignored my work": ["dismissed"],
+  "ahead of my time": ["dismissed"],
+  "i know i'm right": ["dismissed", "quiet_defiance"],
+  "prove them wrong": ["dismissed", "quiet_defiance"],
+  "laughed out of": ["dismissed"],
+
+  // Isabel Allende — exile / self_invention / finding_voice
+  exile: ["exile"],
+  exiled: ["exile"],
+  "had to flee": ["exile", "dispossession"],
+  "lost my country": ["exile", "dispossession"],
+  "lost my home": ["exile"],
+  "far from home": ["exile", "solitude"],
+  "forced to leave": ["exile"],
+  refugee: ["exile"],
+  "start over in a new country": ["exile", "self_invention"],
+  "everything i knew is gone": ["exile", "dispossession"],
+
+  // Bill Wilson — addiction / shame / keep_going
+  addicted: ["addiction"],
+  addiction: ["addiction"],
+  "can't stop drinking": ["addiction"],
+  "can't stop gambling": ["addiction"],
+  "can't stop using": ["addiction"],
+  alcoholic: ["addiction"],
+  "rock bottom": ["addiction", "shame"],
+  "hit bottom": ["addiction"],
+  "drinking has": ["addiction"],
+  "too ashamed to tell": ["shame", "addiction"],
+
+  // Vera Wang — late_start / self_invention / public_failure
+  "passed over": ["public_failure", "self_invention"],
+  "didn't get the promotion": ["public_failure"],
+  "didn't get the job": ["public_failure"],
+  "start a new career": ["late_start", "self_invention"],
+  "start over at": ["late_start", "self_invention"],
+  "the plan didn't work": ["self_invention", "late_start"],
+  "career change": ["late_start", "self_invention"],
+  "starting again": ["late_start", "self_invention"],
+
+  // Raymond Chandler — late_start / public_failure / self_invention
+  fired: ["public_failure", "self_invention"],
+  "lost my job": ["public_failure"],
+  "begin again": ["late_start", "self_invention"],
+  "reinvent myself": ["self_invention", "late_start"],
+  "wasted my best years": ["late_start", "public_failure"],
+  "start from scratch": ["self_invention", "late_start"],
+
+  // Katharine Graham — self_doubt / social_constraint / finding_voice
+  "feel like a fraud": ["self_doubt"],
+  "don't belong": ["self_doubt", "social_constraint"],
+  "out of my depth": ["self_doubt"],
+  "made me feel small": ["social_constraint", "self_doubt"],
+  "not smart enough": ["self_doubt"],
+  "thrust into": ["self_doubt"],
+  "pushed into": ["self_doubt", "social_constraint"],
+  "everyone expects me to fail": ["self_doubt"],
+
+  // Barbara McClintock — dismissed / quiet_defiance / keep_going
+  overlooked: ["dismissed"],
+  "no recognition": ["dismissed"],
+  "no one understands": ["dismissed"],
+  "my work is ignored": ["dismissed"],
+  "ignored for years": ["dismissed", "keep_going"],
+
+  // Bayard Rustin — dismissed / social_constraint / quiet_defiance
+  "no credit": ["dismissed"],
+  "get no credit": ["dismissed"],
+  "do all the work": ["dismissed"],
+  "behind the scenes": ["dismissed"],
+  "pushed aside": ["dismissed", "social_constraint"],
+  "pushed me aside": ["dismissed", "social_constraint"],
+  "in the background": ["dismissed"],
+  "for who i am": ["social_constraint"],
+  "because of who i": ["social_constraint"],
+  erased: ["dismissed"],
+
+  // Harland Sanders — late_start / public_failure / keep_going
+  "at my age": ["late_start"],
+  "lost everything": ["public_failure", "late_start"],
+  "have to start over": ["late_start", "self_invention"],
+  "too old now": ["late_start"],
+  "starting over so late": ["late_start"],
 };

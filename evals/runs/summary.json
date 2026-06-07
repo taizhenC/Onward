@@ -6,30 +6,30 @@
     "k": 1,
     "concurrency": 3,
     "maxRetries": 2,
-    "ranAt": "2026-06-06T06:09:31.757Z",
-    "caseCount": 14,
-    "trialCount": 14
+    "ranAt": "2026-06-07T02:28:06.192Z",
+    "caseCount": 37,
+    "trialCount": 37
   },
   "metrics": {
-    "rerankTop1": 0.9166666666666666,
+    "rerankTop1": 0.9705882352941176,
     "rerankTop1Counts": {
-      "correct": 11,
-      "total": 12
+      "correct": 33,
+      "total": 34
     },
-    "overallTop1": 0.9166666666666666,
+    "overallTop1": 0.9705882352941176,
     "overallTop1Counts": {
-      "correct": 11,
-      "total": 12
+      "correct": 33,
+      "total": 34
     },
     "missDetection": 1,
     "missDetectionCounts": {
-      "detected": 2,
-      "total": 2
+      "detected": 3,
+      "total": 3
     },
-    "hardConfusion": 0.25,
+    "hardConfusion": 0.08333333333333333,
     "hardConfusionCounts": {
       "confused": 1,
-      "total": 4
+      "total": 12
     },
     "confusionByGroup": [
       {
@@ -43,21 +43,45 @@
         "trials": 2,
         "pickedPlausibleWrong": 1,
         "correct": 1
+      },
+      {
+        "group": "creative-perseverance",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "late-start-midlife",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "boxed-in-woman",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "dismissed-no-credit",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       }
     ],
     "calibration": {
-      "definitiveCorrect": 10,
+      "definitiveCorrect": 32,
       "definitiveWrong": 1,
       "partialCorrect": 1,
       "partialWrong": 0
     },
     "chosenBy": {
-      "rerank": 14,
+      "rerank": 37,
       "keyword_fallback": 0
     },
     "failureReasons": {},
     "latencyP50": 0,
-    "latencyP95": 7,
+    "latencyP95": 3,
     "stability": null
   }
 }

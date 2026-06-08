@@ -482,4 +482,2778 @@ You don't have to be early. You just have to begin.`,
   ],
 };
 
-export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee];
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1928 Latrobe PA; only child (sister adopted when he was 11); severe
+//    asthma + frequent childhood illness; overweight, shy; bullied — boys followed him home
+//    from school shouting "fat Freddy"; played alone with hand puppets and at the piano;
+//    maternal grandfather Fred McFeely told him "you make my day special" / "I like you just
+//    the way you are"; became Mister Rogers (Mister Rogers' Neighborhood, 1968-2001); 1969
+//    Senate testimony saved public-TV funding. (King, The Good Neighbor; Junod, Esquire 1998;
+//    Rogers' 1995 Saint Vincent College address.)
+//  Interpretive: framing the loneliness/sensitivity as the seedbed of his life's work; "he
+//    decided the problem was him"; the grandfather as the one counter-voice. Emotional reading.
+//  Avoid saying: don't name the show / puppets-on-TV / cardigan before the bridge (kills the
+//    reveal); don't make the childhood a tidy origin myth; the loneliness is this episode, not
+//    his whole life (he had friends and love later).
+const rogers: FigureStageRow = {
+  figureKey: "rogers",
+  displayName: "Fred Rogers",
+  birthYear: 1928,
+  deathYear: 2003,
+  stageId: "1936-1941-latrobe-childhood",
+  stageLabel: "The lonely childhood: sick, bullied, alone with his puppets",
+  ageMin: 8,
+  ageMax: 13,
+  themes: ["bullied", "solitude", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was a sick, shy, heavy boy whom the other kids chased home from school, and he spent the long afternoons alone in his room making whole worlds out of puppets because there was no one else to be with.",
+    "The one thing that held him up was not a friend his own age but an old man who told him, plainly and often, that he was liked exactly as he was.",
+    "The loneliness he felt as a boy became the very thing he understood better than almost anyone: what it is to be small and afraid and sure that nobody likes you.",
+  ],
+  facets: {
+    emotionalCore:
+      "He carried the particular loneliness of a child who has quietly decided that the problem is him — too sick, too soft, too heavy to be wanted — and who has stopped expecting that to change.",
+    decisionShape:
+      "Whether to believe the boys who chased him or the grandfather who said he was likeable, when the boys were many and loud and the grandfather was one old man.",
+    triggerEvent:
+      "He was a frequently ill, overweight, only child in a town built around hard work, followed the long way home from school by boys who shouted that they were going to get him.",
+    agencyState:
+      "He had almost no power over how other children treated him; the only ground that was truly his was the room where he made up worlds with puppets and no one could come in.",
+  },
+  biographicalFacts: `Fred McFeely Rogers was born March 20, 1928, in Latrobe, Pennsylvania, the only child of James Hillis Rogers, president of the McFeely Brick Company, and Nancy McFeely Rogers; a sister, Elaine, was adopted when Fred was eleven. He was an overweight, shy, and frequently ill child who suffered from severe asthma, scarlet fever, and a string of other childhood diseases that often kept him indoors and alone. He had few friends and was bullied; he later recalled a group of boys following him the eleven blocks home from school, shouting "Freddy, hey fat Freddy! We're going to get you, Freddy!" Told by adults to act as though it did not bother him, he did — while privately concluding that the fault was his own. He spent long stretches alone, inventing characters and stories with hand puppets and expressing what he could not say at the piano. His maternal grandfather, Fred Brooks McFeely, was a decisive presence: he told the boy "Freddie, you make my day very special," a sentiment Rogers later distilled into the phrase "I like you just the way you are." Rogers graduated from Latrobe High School, studied music at Rollins College, and was ordained a Presbyterian minister. In 1968 he launched Mister Rogers' Neighborhood, which ran for more than thirty years; he used television to speak slowly and honestly to children about fear, anger, loneliness, and worth. In 1969 his six-minute testimony before a U.S. Senate subcommittee preserved federal funding for public broadcasting. He died of stomach cancer on February 27, 2003.`,
+  sources: [
+    "King, Maxwell. The Good Neighbor: The Life and Work of Fred Rogers (New York: Abrams Press, 2018).",
+    "Junod, Tom. \"Can You Say... Hero?\" Esquire, November 1998.",
+    "Rogers, Fred. Commencement and convocation address, Saint Vincent College, Latrobe, PA, 1995.",
+    "Won't You Be My Neighbor?, dir. Morgan Neville (Tremolo Productions, 2018).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Frequent illness/asthma, only child, shy and heavy, hours alone with hand puppets and piano — all documented. The room as his one private world is a fair reading of the record.",
+      text: `There was a boy. He was about nine.
+
+He was sick a lot. His chest would close up and he would have to stay inside, in bed, while the other kids were out in the street. He was heavy, and shy, and he was an only child, so the house was usually quiet.
+
+He spent most of his time alone in his room. He had built a little world up there. Small cloth figures he had made himself, each one with its own voice. He would put on whole shows for no audience at all.
+
+When he felt something he had no words for, he sat at the piano and found a key that matched it, and pressed it.
+
+It wasn't that he didn't want friends. He just didn't seem to have any. The room was the one place that was all his.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The walk home and the taunt (\"fat Freddy... we're going to get you\") are his own account. Being told by adults to act unbothered, and his private conclusion that the fault was his, are documented.",
+      text: `School was the hard part.
+
+There was a group of boys who had decided he was theirs to chase. When the last bell rang, he would come outside and they would be waiting for him.
+
+He had a long way to walk. Block after block, through a town built around hard, loud work. And the boys would follow him most of the way, shouting his name. Telling him they were going to get him. Telling him what was wrong with him. Calling him fat.
+
+He didn't fight back. He didn't really know how. He just kept walking, his face hot, listening to them behind him.
+
+He asked some grown-ups about it once. What he should do. They told him to just act like it didn't bother him. So that is what he did. He acted like it was fine.
+
+It was not fine. By then he had decided the problem was him.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "His grandfather as the counter-voice, and the phrasing (\"you make my day special\" / \"I like you just the way you are\"), are documented as the origin of his later message.",
+      text: `There was one person who made it different.
+
+His grandfather. An old man who lived nearby, who actually seemed glad whenever the boy turned up.
+
+When they were together, the old man said things to him that nobody else said. He would say, "You make my day special. Just by being here." He told the boy he liked him — not for anything he did, not if he changed, but exactly as he was, right then.
+
+The boy didn't have many people. But he had that. He held onto it.
+
+Then he went back up to his room and his small made-up world. He just carried the old man's words up the stairs with him.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "His lifelong shyness and intense sensitivity, long viewed by him as a weakness, are documented. The realization that knowing loneliness from the inside was useful is the editorial through-line, fairly grounded.",
+      text: `He grew up slowly, and a lot of it was lonely.
+
+He stayed shy. He stayed the kind of person who felt things hard — who could be wrecked by something small that other people just shrugged off. For a long time he thought that was a weakness. Something to keep hidden.
+
+He kept making his little worlds. He kept playing music. When a feeling came that he had no words for, he still went to the piano and found the key for it.
+
+And slowly he started to notice something. All those hours alone, feeling too much, had taught him a thing most people never learn. He knew, from the inside, exactly what it felt like to be small, and scared, and certain that nobody liked you.
+
+He didn't know yet that this would matter. He just knew it was true.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Documented: as a young man he found the new medium loud and demeaning to children and chose to do the opposite — slow, honest, addressing real feelings. Medium kept unnamed here to protect the bridge reveal.",
+      text: `Years later, as a young man, he found a kind of work that surprised everyone who remembered the quiet, heavy boy.
+
+He found a way to talk to children. Not one child — a great many of them, all at once.
+
+And he saw right away that most of the grown-ups doing this same work were doing it loud. Fast. Full of noise and selling and pretend. Talking at children instead of to them.
+
+He decided to do the exact opposite.
+
+He would go slow. He would be honest. He would talk to children about the things no one talked to children about — being scared, being angry, being lonely, feeling like nobody liked you.
+
+And to every child out there, he would say the thing his grandfather had once said to him. That they were liked. Just as they were. Right now. Without changing a single thing about themselves.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Decades of work, the trust of multiple generations, the lived sense people had of being seen and safe near him — all documented. Name and medium withheld for the bridge.",
+      text: `He did that for the rest of his life.
+
+Day after day, year after year, he showed up and told children the truth, gently. That their feelings were real. That being sad was allowed. That they did not have to be big or loud or fast to be worth something.
+
+Somehow he became one of the most trusted people in the whole country. Parents who had grown up with him as children sat their own kids down in front of him. People who met him said that being near him felt like being completely seen, and completely safe.
+
+The heavy, lonely boy who was sure he had no friends had grown into a man whose entire job was to be a friend — to millions of children who needed exactly what he had needed, and not gotten.
+
+He never stopped being soft. It turned out the softness was the whole point.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Fred Rogers.
+
+For more than thirty years he made a television show for children — just him, talking quietly, with a few hand puppets and a cardigan and a pair of sneakers he changed into at the start of every visit. He told a whole country of kids that they were liked just the way they were. When people in the government wanted to cut the money that paid for it, he spoke to them for six minutes and they changed their minds. He is one of the most beloved public figures in the country.
+
+You wrote: "{feeling}"
+
+The boy who became that man spent his own childhood sick, alone, and chased home from school. He thought his soft heart was the thing that was wrong with him. It turned out to be the thing the world needed most from him.
+
+You don't have to toughen up to be worth something. He never did either.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1912 Pasadena; Smith 1934; drifted through her 20s-30s (advertising copy
+//    for W. & J. Sloane, odd jobs, no vocation); joined the OSS in WWII (too tall, 6'2", for the
+//    women's services), posted to Ceylon/China, met Paul Child, married 1946; Paris 1948; the
+//    sole meuniere lunch at La Couronne in Rouen at age 36 ("an opening up of the soul and
+//    spirit"); Le Cordon Bleu 1949, diploma 1951; ~a decade co-writing with Simone Beck and
+//    Louisette Bertholle; Houghton Mifflin rejected the manuscript; Mastering the Art of French
+//    Cooking published by Knopf 1961 (age 49); The French Chef from 1963. (Child, My Life in
+//    France; Spitz, Dearie; Conant, A Covert Affair.)
+//  Interpretive: the mid-life "I have no calling" dread, "the question felt closed" — her inner
+//    state before the epiphany is a fair reading, not a quote. The epiphany itself is documented.
+//  Avoid saying: don't name cooking / France / the cookbook / television / her height before the
+//    bridge (height + Paris + cooking = instant ID). Don't frame her as a failure — she was
+//    comfortable and capable; the ache is purposelessness, not poverty.
+const child: FigureStageRow = {
+  figureKey: "child",
+  displayName: "Julia Child",
+  birthYear: 1912,
+  deathYear: 2004,
+  stageId: "1946-1961-aimless-to-the-book",
+  stageLabel: "The aimless years: drifting into her mid-thirties before she found it",
+  ageMin: 34,
+  ageMax: 49,
+  themes: ["late_start", "self_doubt", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "She had drifted past her mid-thirties without ever finding the one thing she was meant to do, and she had started to believe there might not be one for her.",
+    "Then a single meal in a foreign country cracked her open, and at an age when most people think the question is long settled, she finally knew what she wanted.",
+    "It took another decade of unglamorous work before anyone paid her for it, and she did the work anyway, for years, with no proof it would ever amount to anything.",
+  ],
+  facets: {
+    emotionalCore:
+      "She felt the quiet dread of a capable person who has reached middle age without a calling — watching the years go by while the question of what she was for stayed unanswered.",
+    decisionShape:
+      "Whether to accept that her life would simply be pleasant and shapeless, or to throw herself completely into a hard new thing at an age when starting over is supposed to be foolish.",
+    triggerEvent:
+      "She had drifted through odd jobs and wartime work into her mid-thirties with no real direction, married and living abroad, when a meal in a small restaurant showed her what she had been missing.",
+    agencyState:
+      "She had time, security, and a strong, willing mind, and none of it was pointed at anything; the missing piece was never opportunity, only a reason.",
+  },
+  biographicalFacts: `Julia Carolyn McWilliams was born August 15, 1912, in Pasadena, California, into a wealthy family. She graduated from Smith College in 1934 and drifted through her twenties and early thirties with no clear direction — writing advertising copy for the W. & J. Sloane furniture company in New York, returning to California, finding nothing that felt like a vocation. After the United States entered World War II she joined the Office of Strategic Services (the wartime forerunner of the CIA), too tall at 6'2" for the women's military branches; she was posted to Ceylon and China, where she met Paul Child, a cultured OSS officer. They married in 1946. In 1948 Paul was posted to Paris, and there, at age thirty-six, Julia ate a lunch of oysters, sole meuniere, and wine at La Couronne in Rouen that she later called "an opening up of the soul and spirit." French food was the first thing that fully gripped her. She enrolled at Le Cordon Bleu in 1949, earned her diploma in 1951, and spent roughly a decade testing and writing recipes with Simone Beck and Louisette Bertholle. The huge manuscript was rejected by Houghton Mifflin as impractical; Alfred A. Knopf published Mastering the Art of French Cooking in 1961, when she was forty-nine. Her television program, The French Chef, began in 1963 and made her the most influential cook in America. She died August 13, 2004.`,
+  sources: [
+    "Child, Julia, with Alex Prud'homme. My Life in France (New York: Alfred A. Knopf, 2006).",
+    "Spitz, Bob. Dearie: The Remarkable Life of Julia Child (New York: Alfred A. Knopf, 2012).",
+    "Conant, Jennet. A Covert Affair: Julia Child and Paul Child in the OSS (New York: Simon & Schuster, 2011).",
+    "\"Julia Child: Cooking Up Spy Ops for OSS,\" Central Intelligence Agency, cia.gov.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Privileged upbringing, good schooling, post-college drift through advertising and odd jobs, wartime work abroad where she met her husband — all documented. The lack of a vocation is the through-line.",
+      text: `There was a woman in her thirties.
+
+By every outside measure her life was fine. She came from money. She had gone to a good school. She was funny, and people liked her at parties.
+
+But she had reached her mid-thirties without ever finding the thing she was for.
+
+She had tried. After school she took a job writing ads. It didn't take. She drifted home, then drifted somewhere else. During the war she did useful work, far from home, and met the man she married. But when the war ended and the work stopped, the old question came back.
+
+What was she going to do with her life?
+
+She was nearly forty, and she still didn't know. Most people her age had stopped asking a long time ago.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Move abroad for husband's posting, days suddenly unstructured, trying classes that didn't catch — documented. The fear that some people simply never find a calling is a fair reading of her own later accounts of feeling adrift.",
+      text: `She and her husband moved across the ocean for his job.
+
+Now she had time on her hands. A whole foreign country to herself and nothing she had to do in it.
+
+That was the hard part. Back home, being busy had hidden the problem. Here, with the days wide open, she could see it plainly. She was a grown woman with a good mind and a strong back and no idea what to point them at.
+
+She tried things. A class here. A club there. A course in the language. Nothing caught. She came home from each one a little emptier than before.
+
+She watched her husband, who loved his work, who lit up when he talked about it. She didn't have that. She never had. She began to wonder if some people just never got it — if she was simply one of the ones who would pass through a pleasant life without ever once feeling on fire about anything.
+
+She was nearly forty. The question felt closed.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The transformative restaurant meal at 36 is documented (her \"opening up of the soul and spirit\"), as is enrolling as a beginner among younger students. The craft is left unnamed to protect the bridge reveal.",
+      text: `Then one afternoon she had lunch.
+
+That was all it was. A meal, in a small restaurant, in the country she had moved to. But it was made with such care, such seriousness, that something in her went still and then woke up.
+
+She couldn't stop thinking about it. For the first time in her life, here was a thing she wanted to understand all the way down to the bottom.
+
+So she did a small, almost embarrassing thing for a woman her age. She signed up to learn it. As a beginner. In a room full of people half her age who had wanted this since they were young.
+
+She didn't tell herself it would amount to anything. She just couldn't stay away from it.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Years of practice and obsessive recipe-testing, the decade-long collaborative book project, and the publisher's rejection of the manuscript as impractical are all documented.",
+      text: `What followed was not glamorous and not quick.
+
+She practiced for hours. She made the same things over and over, getting them wrong, until her arms ached. She filled notebooks. She measured everything, tested everything, threw out whatever failed and started again.
+
+She decided to write it all down — to make the thing she loved usable by ordinary people back home. That turned into a project that swallowed years. Nearly a decade. She and two others wrote, and rewrote, and tested, and argued over tiny details no one else would ever notice.
+
+A publisher looked at the enormous manuscript and said no. It was too long, too strange, too much.
+
+She was nearing fifty now. She had poured the better part of a decade into something no one had bought.
+
+She kept going.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "A second publisher (Knopf) accepted the book; it sold and spread by word of mouth. Publication came when she was 49. Her sense of finally having direction is a fair reading.",
+      text: `Then another publisher said yes.
+
+They believed in the strange, enormous book she and her friends had built. They printed it.
+
+And it worked. People bought it. Then more people. Word spread from one home to the next. It turned out there were thousands of ordinary people back home who had wanted exactly this and never had it — someone patient enough to show them how, step by step, and certain that they could do it too.
+
+She was nearly fifty when it came out. The thing she had been missing her whole life had taken her until middle age just to begin.
+
+It did not matter to her at all. She had found it. For the first time, when she woke in the morning, she knew exactly what she was for.
+
+After a lifetime of drifting, the drifting was over.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The television work, her unpolished joyful on-screen manner, the lasting national influence into her eighties — all documented. Name and craft withheld for the bridge.",
+      text: `She did not slow down after that. She sped up.
+
+Someone asked her to do the thing where people could watch her — to teach it out loud, in front of cameras, to anyone at home who wanted to learn. She was tall, and loud, and joyful, and not remotely smooth, and that turned out to be exactly why people trusted her. She fumbled things and laughed and kept right on going. If she could do it, you could do it. That was the whole message.
+
+She became the most beloved teacher of her craft the country had ever had. She changed the way a whole nation saw a craft most people had believed was too difficult for them. She kept working into her eighties.
+
+The woman who had reached forty sure she had no calling spent the entire second half of her life on fire with one.
+
+She just got a late start. That was all.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Julia Child.
+
+She taught America how to cook. The huge French cookbook she spent a decade on is still in kitchens everywhere, and her television show made her one of the most loved people in the country. She didn't learn to cook until she was almost forty, didn't publish that book until she was forty-nine, and didn't become famous until her fifties.
+
+You wrote: "{feeling}"
+
+For the whole first half of her life, she thought maybe she just wasn't built for a calling — that some people get one and some people don't, and she was one of the ones who don't. She was wrong. It hadn't passed her by. It simply hadn't started yet.
+
+You don't have to have found it yet. She hadn't either, at your age.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1898 Belfast; mother died of cancer when he was 9; atheist in adolescence,
+//    Christian again at 32; famous novelist + popular-theology writer, incl. a 1940 book giving a
+//    reasoned account of why a good God allows suffering; married Joy Davidman (civil 1956, then a
+//    Christian bedside ceremony 1957 after her bone-cancer diagnosis); brief remission; she died
+//    13 July 1960 (he was 61); kept four notebooks of raw grief/doubt; published them 1961 as
+//    "N. W. Clerk," titled A Grief Observed, calling her only "H."; he died 1963. (A Grief
+//    Observed; Sayer, Jack; McGrath, C. S. Lewis - A Life.)
+//  Interpretive: "grief felt like fear" is his own; framing his faith as returning "smaller,
+//    quieter" is a fair reading of the book's arc. The turn is internal (grief as a process that
+//    moves), not a decision - this is a single-fork-style integrity shape.
+//  Avoid saying: don't name Narnia / Christianity / the titles / his name before the bridge.
+//    Don't tidy the faith into a triumphant restoration - the honest record is a partial, humbled
+//    recovery, not a neat happy ending. Don't sentimentalize the marriage.
+const lewis: FigureStageRow = {
+  figureKey: "lewis",
+  displayName: "C. S. Lewis",
+  birthYear: 1898,
+  deathYear: 1963,
+  stageId: "1960-1961-a-grief-observed",
+  stageLabel: "After his wife's death: grief, and a faith shaken to its foundations",
+  ageMin: 60,
+  ageMax: 62,
+  themes: ["grief", "solitude", "self_doubt"],
+  antiThemes: [],
+  shapeSentences: [
+    "Late in life he finally married the person he loved most, and within a few short years he had to watch her die, and the grief did not match anything he had spent his whole life believing about how to bear it.",
+    "He had written, years before, confident pages about how to carry suffering, and now that it was his own, the words he had handed everyone else were no help to him at all.",
+    "He kept a private notebook through the worst of it, not to teach anyone anything, but only to keep from going under.",
+  ],
+  facets: {
+    emotionalCore:
+      "He felt grief as a kind of fear, and worse, the terror that the faith he had built his whole life and his name on might be a house of cards that only stood while nothing was testing it.",
+    decisionShape:
+      "Whether to keep faith with everything he had believed and written now that it brought him no comfort, or to admit he might have been wrong about all of it.",
+    triggerEvent:
+      "The woman he married late and loved completely died of cancer a few years into the marriage, undoing the settled certainties of a man who had spent decades explaining suffering to other people.",
+    agencyState:
+      "There was nothing to do and nothing to fix; for once the famously articulate man could not think or argue his way out of what had happened, and could only endure it.",
+  },
+  biographicalFacts: `Clive Staples Lewis was born November 29, 1898, in Belfast, Ireland. His mother died of cancer when he was nine, a loss that shadowed his early life; he became an atheist in adolescence and a Christian again at thirty-two, going on to be one of the most widely read religious writers and novelists of the twentieth century — including a famous series of children's fantasy novels and works of popular theology, among them a 1940 book offering a reasoned account of why a good God permits suffering. In 1956 he married Joy Davidman, an American writer, first in a civil ceremony and then, after she was diagnosed with bone cancer, in a Christian ceremony at her hospital bedside in 1957. Her cancer briefly went into remission and they had a few happy years. She died on July 13, 1960; Lewis was sixty-one. In the months after, he filled four handwritten notebooks with his raw grief and his anger and doubt toward God, and published them in 1961 under the pseudonym N. W. Clerk, titled A Grief Observed, referring to Joy only as "H." The book records a man whose lifelong faith was shaken to its foundations by a loss he could not reason away. Lewis died on November 22, 1963.`,
+  sources: [
+    "Lewis, C. S. (as N. W. Clerk). A Grief Observed (London: Faber & Faber, 1961).",
+    "Lewis, C. S. Surprised by Joy: The Shape of My Early Life (London: Geoffrey Bles, 1955).",
+    "Sayer, George. Jack: A Life of C. S. Lewis (London: Hodder & Stoughton, 1988).",
+    "McGrath, Alister. C. S. Lewis - A Life (Carol Stream, IL: Tyndale House, 2013).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A confirmed bachelor for most of his life, an unexpectedly late marriage to a sharp, equal partner who argued with him, and his happiness in it are documented. Name and fame withheld for the bridge.",
+      text: `There was a man in his sixties.
+
+For most of his life he had been alone, in the romantic sense. He had friends, and work he was good at, and a quiet set of rooms full of his books. He had long ago made his peace with the idea that the great love most people get was simply not going to be his.
+
+And then, late — far later than people usually do this — he met her.
+
+She was sharp and funny and unafraid of him. She argued with him as an equal, which almost no one did. He married her. For the first time in his long life, the man who had everything except this finally had it too.
+
+He was happier than he had ever been. He thought the hard part of his life was behind him.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Her cancer, the brief remission and renewed hope, her death, and his own account of grief feeling like fear are documented (A Grief Observed opens almost exactly this way).",
+      text: `Then she got sick.
+
+It was the kind of sickness that does not let go. There were a few stretches where it seemed to pull back, where they let themselves hope. Each time, it came back.
+
+He sat with her through all of it. He watched the person who had finally made his life full grow smaller and weaker in front of him, and there was nothing — nothing — he could do.
+
+She died.
+
+And the grief that came was not what he had expected. He had assumed grief would feel like sadness. It didn't. It felt like fear. He would be doing something ordinary and a wave of pure animal panic would rise in him for no reason he could name.
+
+The house was unbearably quiet. He kept turning to tell her things, and she wasn't there.
+
+He had been alone before. This was not that. This was a room with a person-shaped hole in it.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The four notebooks, written privately and not initially intended for publication, are documented as the origin of the book. The framing of writing as survival rather than teaching is fair.",
+      text: `He started writing in a notebook.
+
+Not for anyone. Not to publish, not to teach. He had spent his life writing things meant to help other people, and this was the opposite of that. This was just a man trying not to drown — putting down on paper exactly how bad it was, so it would stop rattling around inside his skull.
+
+He wrote down the fear. He wrote down the anger. He wrote down the questions he was ashamed to be asking.
+
+He didn't tidy any of it. He didn't make it wise. He just told the truth, page after page, on the worst nights.
+
+It was the only thing that helped. And it barely helped.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The crisis of faith is the documented core of the book — including the irony that he had previously written a reasoned book on suffering. His fear that his faith only worked untested is drawn closely from the text.",
+      text: `Here is the part that frightened him most.
+
+His whole life, he had believed something. He had built everything on it — his work, his name, the way he explained the world to himself and to thousands of other people. He had once written an entire book about how to bear suffering. People wrote to him for comfort. He had answers.
+
+Now the suffering was his, and the answers were ashes in his mouth.
+
+He found himself furious at the very thing he had believed in. He wondered, in the dark, whether he had been fooling himself the whole time — whether the faith that had held him up for decades was just a story that worked only as long as nothing truly tested it.
+
+He had no tidy way out of this. For once, the man who could argue anything could not argue his way out.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The turn is internal and gradual, not a decision or an event: grief as a process that moves, faith returning in a humbler form. This is the documented shape of the book's later sections.",
+      text: `Slowly — and it was slow — something shifted. Not a fix. Not a moment where the clouds broke and it all made sense.
+
+What changed was smaller and stranger. As he kept writing, he noticed the grief was not one frozen thing. It moved. Some mornings were a fraction less terrible than the ones before. The pain did not leave, but it began to feel less like a wall he was slammed against and more like a country he was slowly walking through.
+
+And his faith, when it came back, came back different. Smaller. Quieter. Less sure of its own cleverness. He stopped demanding that the universe explain itself to him. He found he could hold the grief and the belief at the same time, without either one having to win.
+
+He was not healed. He was simply, somehow, still standing. And being still standing, he slowly came to feel, was its own kind of answer.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "He published the notebooks under a pseudonym; the book has since become a standard, widely given comfort to the grieving. \"The most comforting thing he wrote was written when he had no comfort\" is interpretive but well-grounded.",
+      text: `He did something he had not planned to do. He let the notebook be published.
+
+Not under his own name — he used a false one, because the pages were too raw and too private to put his real name on. He didn't want it to be a famous man's book. He wanted it to be one grieving person speaking honestly to another.
+
+And that is exactly what it became. A small, plain, unbearably honest book about losing someone. It has been pressed into the hands of grieving people ever since — by friends who don't know what else to say — because it says the thing: that this is as bad as you think it is, and that you can still, somehow, come out the other side.
+
+The most comforting thing he ever wrote was the thing he wrote when he had no comfort at all.
+
+He didn't fix his grief. He just refused to lie about it. That turned out to be the gift.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was C. S. Lewis.
+
+He was one of the most famous writers of his century — beloved children's books about a magical land, and works of faith that millions still read. He had even written, years before his wife died, a confident book explaining how to bear suffering. Then he had to actually bear it, and the small, honest book he wrote in his grief — first published under a false name — has comforted more hurting people than perhaps anything else he made.
+
+You wrote: "{feeling}"
+
+He was past sixty, at the height of his fame, with all the answers, and grief knocked every one of them out of his hands. He didn't get them back the same. He got something quieter instead. He kept going anyway — not because it stopped hurting, but because the hurting slowly began to move.
+
+You don't have to have the answers right now. He didn't either, and he had written the book on it.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1931 Arkabutla MS; as a small child sent to grandparents John Henry & Maggie
+//    Connolly's farm in Dublin, Michigan; the move was traumatic; developed a severe stutter and
+//    was "functionally mute" roughly age 6-14; spoke freely only to the farm animals and to
+//    himself; wrote poetry; high-school teacher Donald Crouch (a former professor) dared him to
+//    recite his own poem aloud to prove he'd written it; he got through it without stuttering;
+//    went on to recite Shakespeare for hours, won at debate; became the voice of Darth Vader and
+//    Mufasa across a celebrated career; died 2024. (Jones & Niven, Voices and Silences; Academy of
+//    Achievement; the Stuttering Foundation.)
+//  Interpretive: the boy's internal "my own voice is the enemy" framing; shame as the engine of
+//    the silence. Drawn closely from his own accounts; lightly dramatized.
+//  Avoid saying: don't name Vader / Mufasa / Star Wars / his name before the bridge. Don't turn
+//    the teacher into a magic cure - it unlocked him, but years of work followed. Keep farm/era
+//    markers soft.
+const jones: FigureStageRow = {
+  figureKey: "jones",
+  displayName: "James Earl Jones",
+  birthYear: 1931,
+  deathYear: 2024,
+  stageId: "1937-1945-the-silent-years",
+  stageLabel: "The silent years: a stutter so deep he stopped speaking",
+  ageMin: 6,
+  ageMax: 14,
+  themes: ["shame", "finding_voice", "solitude"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was a small boy sent to live on a farm far from everything he knew, and the shock of it gave him a stutter so bad that he simply stopped talking, for years.",
+    "He was so ashamed of the sounds that came out when he tried to speak that he learned to live almost entirely in silence, writing things down, talking only to the farm animals.",
+    "The thing that brought his voice back was not a doctor but a teacher who refused to believe the silence was permanent, and a poem the boy had written himself.",
+  ],
+  facets: {
+    emotionalCore:
+      "He carried the deep shame of a child who believes the very act of opening his mouth will humiliate him, and who has decided that silence is safer than the certainty of being laughed at.",
+    decisionShape:
+      "Whether to stay safe inside the silence he had built, or to risk the one thing that had always humiliated him — his own voice — out loud, in front of a room full of people.",
+    triggerEvent:
+      "Uprooted as a small child and sent to live with relatives far away, the boy developed a stutter so severe that he stopped speaking aloud almost entirely for years.",
+    agencyState:
+      "He had near-total control over one thing — whether to speak at all — and he used it to protect himself by choosing silence, which kept him safe and kept him alone.",
+  },
+  biographicalFacts: `James Earl Jones was born January 17, 1931, in Arkabutla, Mississippi. As a small child he was sent to live with his maternal grandparents, John Henry and Maggie Connolly, on their farm in Dublin, Michigan; the upheaval of the move was traumatic, and he developed a stutter so severe that he essentially stopped speaking. From roughly age six to fourteen he was, in his own word, "functionally mute" — communicating in writing, speaking only haltingly to his family, and talking at length only to the farm animals and to himself. In high school in Michigan, an English teacher named Donald Crouch, a former college professor, discovered that the silent boy wrote poetry. Suspecting the poems were too accomplished to be the boy's own, Crouch challenged him to prove authorship by reciting one aloud to the class. Jones did — and got through it without stuttering. The shock of hearing his own fluent voice changed his life. He went on to recite Shakespeare for hours, joined the debate team and became a champion, and eventually became one of the most distinctive and recognizable voices in the world — the voice of Darth Vader in the Star Wars films and Mufasa in The Lion King, across a celebrated stage and screen career spanning more than six decades. He died September 9, 2024.`,
+  sources: [
+    "Jones, James Earl, and Penelope Niven. James Earl Jones: Voices and Silences (New York: Charles Scribner's Sons, 1993).",
+    "\"James Earl Jones,\" Academy of Achievement interview.",
+    "The Stuttering Foundation, profile of James Earl Jones.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Sent away as a small child to be raised by grandparents on a farm, the traumatic move, the onset of a severe stutter, and the gradual retreat into silence are all documented.",
+      text: `There was a boy. He was about seven.
+
+When he was little, he had been sent away — taken from the place and the people he knew and dropped onto a farm a long way off, to be raised by his grandparents. He never really got over the shock of it.
+
+Somewhere in there, his words broke.
+
+When he tried to talk, they came out stuck and stuttering and wrong. The other kids noticed. They always notice. And the shame of it grew so big that he made a decision a child should never have to make.
+
+He just stopped talking.
+
+Not all at once. But more and more, until silence became the normal thing. It was safer. If he didn't open his mouth, no one could laugh at what came out.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Years of near-total silence, writing answers instead of speaking, talking freely only to the farm animals and to himself, are documented in his own account. The internal belief that his voice was the enemy is drawn from it.",
+      text: `He stayed silent for years.
+
+Think about what that means for a kid. Years. He went to school and didn't speak. He raised his hand for nothing. When a teacher asked him a question, he wrote the answer down, or just looked at the floor until they moved on.
+
+The only ones he really talked to were the animals on the farm. They didn't care how the words came out. He would talk to them as long as he wanted, easy and free, and then go back to the house and lock the silence back into place around the people.
+
+He talked to himself, too. Inside his own head, his voice worked fine. It was only when it had to come out into the world that it failed him.
+
+He grew up believing, all the way down, that his own voice was the enemy — the thing that would shame him every single time. So he kept it locked up, and he kept himself locked up with it.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "That he wrote — including poetry — fluently while unable to speak is documented, and is the hinge the later turn depends on.",
+      text: `There was one place the words came out clean. On paper.
+
+When he wrote, there was no stutter. No one waiting for him to finish. No faces watching him struggle. He could say anything he wanted, exactly the way he meant it.
+
+So he wrote. Quietly, for himself. He started writing poems — the things he could not say out loud, set down where they could finally hold still and be true.
+
+He didn't show them to anyone. They were his. They were proof, at least to himself, that there was a voice in there.
+
+It just had no way out.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The long duration of the silence and the way it shaped his whole identity as \"the quiet one\" are documented. The carried sentence (\"if I open my mouth, everyone will hear it\") is interpretive but well-grounded.",
+      text: `This went on for years. Most of his childhood, really.
+
+On the outside he was the quiet one. The boy who didn't talk. Teachers learned not to call on him. Kids learned he wasn't going to say anything back. He folded himself smaller and smaller around the silence until it was simply who he was.
+
+He was good at hiding it. He had to be. A whole life can be built around not letting people see the thing you are ashamed of.
+
+But the hiding cost him. Every day he carried the same quiet sentence around inside him: there is something wrong with me, and if I open my mouth, everyone will hear it.
+
+He had no reason to think this would ever change. As far as he knew, this was just the shape of his life.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The teacher (Donald Crouch) finding his poetry, daring him to recite it to prove authorship, and the boy getting through it without a stutter are all documented; he called it the turning point of his life.",
+      text: `Then he got a new teacher.
+
+An older man, who had taught a long time and paid real attention to his students. He found one of the boy's poems. And it was good — good enough that the teacher, maybe testing him, maybe just refusing to let him hide, said the thing that must have stopped the boy's heart.
+
+He said: if this poem is really yours, then stand up and say it. Out loud. To the whole class.
+
+Every instinct the boy had screamed no. Standing up was the exact thing he had spent years avoiding. The whole room would watch his mouth fail.
+
+But he stood up.
+
+And he opened his mouth, and the poem came out. All of it. Clean. Not one stutter.
+
+He stood there, stunned, hearing his own voice fill the room for the first time in years. It had been in there the whole time. The teacher had simply refused to believe it was gone.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Reciting Shakespeare for hours, debate-team success, and a lifelong career built on his extraordinary voice are documented. The famous roles are withheld for the bridge.",
+      text: `After that, he could not be stopped.
+
+He chased the very thing that had terrified him his whole life. He read aloud for hours, alone, just to feel the words come out whole. He joined the team where you argue out loud in front of judges, and he won. The boy who had not spoken for years became known, of all things, for his voice.
+
+And not just any voice. As he grew up it deepened into something extraordinary — low and warm and steady, a voice that could fill rooms far larger than that classroom.
+
+The sound he had spent years avoiding became the work itself. The enemy he had locked away was the best of him.
+
+He just had to be dared, one time, to let it out.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was James Earl Jones.
+
+The boy who couldn't speak grew up to have one of the most famous voices in the history of the world. He was the voice of Darth Vader in Star Wars. He was Mufasa in The Lion King. For decades, on stage and screen, that deep, unmistakable voice was one of the most beloved sounds anywhere — and it belonged to a man who, as a child, was so ashamed of his voice that he went almost completely silent for years.
+
+You wrote: "{feeling}"
+
+He didn't fix it alone. It took one teacher who refused to believe the silence was the end of the story, and one poem he had written when he thought no one would ever hear it. The voice was always in there. It just needed one safe place to come out.
+
+You don't have to have your voice yet. He didn't either, for years. It was still in there the whole time.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: born 1940 near Clarksville TN, premature, 20th of 22 in her father's family;
+//    polio ~age 5 left her left leg weak; a doctor said she'd never walk, her mother said she
+//    would; segregated South -> ~2 years of weekly ~50mi bus trips to the (Black) Meharry
+//    Medical College in Nashville + family massage 4x/day; metal leg brace until ~12; walked
+//    unaided, then ran; 1956 Olympics relay bronze at 16; 1960 Rome 3 golds (100m, 200m, relay),
+//    "fastest woman in the world"; insisted her homecoming be integrated; later coach/foundation;
+//    died 1994. (Rudolph, Wilma; Smith, Wilma Rudolph; NWHM.)
+//  Interpretive: framing "believe her mother over the doctor" as the act of defiance; the secret
+//    brace-off practice and the "if I can walk I can run" turn are grounded, lightly dramatized.
+//  Avoid saying: don't name the Olympics / Rome / three golds / "fastest woman" / her name before
+//    the bridge. Keep segregation real but softened (no slurs, no era-coded institution names).
+//    Don't reduce her to an inspirational object - the agency is hers.
+const rudolph: FigureStageRow = {
+  figureKey: "rudolph",
+  displayName: "Wilma Rudolph",
+  birthYear: 1940,
+  deathYear: 1994,
+  stageId: "1945-1953-the-brace-years",
+  stageLabel: "The brace years: a sick girl told she would never walk",
+  ageMin: 8,
+  ageMax: 16,
+  themes: ["disability", "keep_going", "quiet_defiance"],
+  antiThemes: [],
+  shapeSentences: [
+    "She was a small, sick girl in a leg brace whom a doctor had told would never walk, and for years the most defiant thing she did was believe her mother instead of him.",
+    "Week after week she made the long trip for treatment and let her family work her dead leg by hand, on the faith that a body everyone had written off might still be taught to move.",
+    "The day she finally walked without the brace was not the end of it — it was the day she decided that if she could walk, she could run.",
+  ],
+  facets: {
+    emotionalCore:
+      "She carried the strange double burden of a child who has been told, by someone who should know, that her own body has already decided the size of her life.",
+    decisionShape:
+      "Whether to accept the verdict a doctor had handed down about what her body could never do, or to spend years on the slim, unglamorous chance that he was wrong.",
+    triggerEvent:
+      "A childhood illness left one of her legs weak and braced, and the doctor said she would never walk, while her mother said she would.",
+    agencyState:
+      "She had little control over a poor, crowded household or a body that had failed her, but she could choose, every single day, to do the exercises and believe the harder of the two predictions.",
+  },
+  biographicalFacts: `Wilma Glodean Rudolph was born prematurely on June 23, 1940, near Clarksville, Tennessee, one of twenty-two children in her father's family. A sickly child, she survived pneumonia and scarlet fever and then, around age five, contracted infantile paralysis (polio), which left her left leg and foot weak and partly paralyzed. A doctor told the family she would never walk again; her mother, Blanche, told her she would. Because the local hospital would not treat Black patients, for about two years Wilma and her mother rode the bus some fifty miles to the historically Black Meharry Medical College in Nashville for weekly therapy, and family members massaged her leg four times a day at home. She wore a heavy metal leg brace and, later, an orthopedic shoe. By about age twelve she could walk without the brace. She threw it off and began to play basketball, then to run. She competed in her first Olympic Games at sixteen, winning a bronze medal in the relay; four years later, at the 1960 Rome Olympics, she won three gold medals — the 100 meters, the 200 meters, and the 4x100 relay — and was called the fastest woman in the world. She insisted that her hometown victory celebration be the first integrated public event in the town's history. She later became a teacher and coach and founded a foundation for young athletes. She died of cancer on November 12, 1994.`,
+  sources: [
+    "Rudolph, Wilma. Wilma: The Story of Wilma Rudolph (New York: New American Library, 1977).",
+    "Smith, Maureen M. Wilma Rudolph: A Biography (Westport, CT: Greenwood Press, 2006).",
+    "\"Wilma Rudolph,\" National Women's History Museum, womenshistory.org.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Large poor family, childhood polio leaving a braced leg, the doctor's \"never walk\" verdict and her mother's opposite one are documented. The two-futures framing is fair.",
+      text: `There was a girl. She was about eight.
+
+She had been sick almost since the day she was born. One of the sicknesses had left a leg weak and turned the wrong way, so she wore a heavy brace of metal and leather to hold it up. She couldn't run with the other kids. Most days she could barely keep up walking.
+
+She came from a big family — so many brothers and sisters she could hardly count them — and there was never quite enough of anything to go around.
+
+When she was small, a doctor had looked at her leg and told her family the truth as he saw it: this girl will never walk on her own.
+
+Her mother heard the same words and said something different. She told the girl: you will.
+
+Two grown-ups. Two opposite futures. The girl had to choose which one to believe.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The weekly long trips to a faraway clinic that would treat her (the local one would not), and the family massaging her leg four times a day, are documented. Segregation softened per the no-era-markers rule.",
+      text: `Being the girl in the brace was its own kind of lonely.
+
+She sat and watched while the other children ran. She clanked when she moved. Kids can be unkind about a thing like that, and they were.
+
+Once a week, her mother took her on a long bus ride to the only place that would treat a child like her — a clinic far away, because the one nearby would not take her family. Hours there. Hours back. Then home, where her brothers and sisters took turns rubbing the life back into her dead leg, four times a day, every day.
+
+It would have been so easy to stop. To decide the doctor was right. To let the leg be what it was and make her whole life small enough to fit it.
+
+Some nights, lying there while someone worked her useless leg, she must have wondered if any of it was doing a thing.
+
+She kept letting them try. She kept trying.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "Years of daily exercise/massage and gradual recovery of the leg are documented. The secret brace-off practice is plausible dramatization of her drive to walk unaided.",
+      text: `She did the exercises. Every day. For years.
+
+There was nothing dramatic about it. No single morning where everything changed. Just a girl and her family quietly refusing to agree with the doctor, one rubbed muscle and one wobbly step at a time.
+
+And slowly — so slowly no one could see it day to day — the leg began to answer.
+
+She found she could stand a little longer. Then take a step without the brace. Then a few.
+
+She started taking the brace off in secret, when no grown-ups were watching, just to practice being a girl who didn't need it.
+
+She wasn't healed. But she was no longer sure the doctor had been right. And that small, stubborn doubt was the most powerful thing she owned.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The long, nonlinear recovery across most of her childhood is documented. The unspoken larger ambition is the editorial through-line that sets up the turn.",
+      text: `It took years. Most of her childhood.
+
+There were setbacks. The leg got tired. The brace went back on, then came off again. Progress is never a straight line, and hers zigzagged through a lot of ordinary days that didn't feel like victories.
+
+She kept at it anyway. The trips. The massages. The exercises. The quiet practice when no one was looking.
+
+She had decided something, deep down, that she didn't say out loud. She wasn't only trying to walk like everyone else. Somewhere in all those slow steps, a bigger, almost ridiculous idea had taken hold of her.
+
+If she could teach this leg to walk, maybe she could teach it to do more than that.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Walking without the brace by about age twelve, then taking up basketball and running, is documented. The \"walking wasn't enough\" framing captures her competitive drive.",
+      text: `Then came the day.
+
+She was about twelve. She had worn that brace, in one form or another, for most of her life. And she walked into the place where they treated her, took it off, and walked across the room without it.
+
+And she kept it off.
+
+The thing the doctor had said would never happen had happened. She could walk.
+
+But here is the part that tells you who she was. Walking wasn't enough for her. The moment her body would carry her, she didn't just want to keep up with the other kids. She wanted to beat them.
+
+So she started to run. The girl who was never supposed to walk began, of all things, to chase being fast. And it turned out that the leg that had failed her for so long had something in it nobody had guessed.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Her rise to the top of world sport and her insistence on an integrated homecoming celebration are documented. Name and the Olympics withheld for the bridge.",
+      text: `She got fast. Then she got faster than anyone around her. Then faster than almost anyone, anywhere.
+
+A few years later, the girl who had spent her childhood in a leg brace stood on the biggest stage in sport, in front of the whole world, and won — not once, but again and again. She became, for a time, the fastest woman alive.
+
+The body a doctor had written off carried her past every runner they lined up beside her.
+
+And when her town wanted to throw a celebration for her, she made one condition. Back then, events like that were split by the color of people's skin. She said she would only come if everyone could come. So her homecoming became the first time her town ever celebrated together, as one.
+
+The girl who couldn't walk had decided, again, that the rules about what she was allowed did not get the last word.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Wilma Rudolph.
+
+At the 1960 Olympics in Rome she won three gold medals and was called the fastest woman in the world. The girl who had been told she would never walk became the most famous runner on the planet — and then spent the rest of her life coaching kids and opening doors for the athletes who came after her.
+
+You wrote: "{feeling}"
+
+None of it arrived in one heroic leap. It came from a little girl, a stubborn mother, a family that rubbed a dead leg back to life four times a day, and years of small steps that didn't look like much from the outside.
+
+You don't have to believe the worst thing you've been told about yourself. She didn't. And she was right not to.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1928 St. Louis; pregnant at 16, hid it, gave birth ~3 weeks after graduating,
+//    at 17; son Clyde (later Guy) Johnson; the father wanted no part; raised him alone on low-wage
+//    jobs (cook, waitress, dancer), hand-to-mouth; the documented anecdote of her mother making
+//    the baby sleep in her bed, her terror of crushing him, waking to find she'd curled
+//    protectively around him, and the lesson "if you're for the right thing, you do it without
+//    thinking"; later one of the great writers (I Know Why the Caged Bird Sings), inaugural poet;
+//    raised Guy lifelong; d.2014. (Caged Bird; Gather Together in My Name; Oprah interviews.)
+//  Interpretive: the "I'm going to ruin him / I'm not enough" inner voice. From her own accounts,
+//    lightly dramatized.
+//  Avoid saying: don't name Angelou / Caged Bird / the inaugural poem before the bridge. Do NOT
+//    pull in her separate childhood-trauma/mutism episode (a different stage) - keep this one about
+//    young motherhood. The "father's temper" eval-miss is adjacent, not identical (her fear was
+//    youth/inadequacy, not repeating violence); let the reranker judge the fit.
+const angelou: FigureStageRow = {
+  figureKey: "angelou",
+  displayName: "Maya Angelou",
+  birthYear: 1928,
+  deathYear: 2014,
+  stageId: "1944-1945-teen-mother",
+  stageLabel: "The terrified teen mother",
+  ageMin: 16,
+  ageMax: 19,
+  themes: ["new_parent_fear", "self_doubt", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "She got pregnant at sixteen, gave birth weeks after finishing school, and found herself a teenager with a newborn and a bone-deep certainty that she was going to ruin him.",
+    "The father wanted nothing to do with them, so it was just her and the baby and a string of jobs that barely covered the rent.",
+    "The night she first understood she might not destroy this child came from her mother, and from her own arms doing the right thing while she slept.",
+  ],
+  facets: {
+    emotionalCore:
+      "She felt the specific terror of a young parent who is sure she is too young, too unready, and too damaged to keep a small helpless person alive, let alone raise him well.",
+    decisionShape:
+      "Whether to believe she was bound to fail this child — too young and too alone to do it right — or to simply keep showing up for him until the doing became the proof.",
+    triggerEvent:
+      "A teenager barely out of school had a baby on her own, with the father gone and no money, and had to become a mother before she felt remotely ready to be one.",
+    agencyState:
+      "She had almost nothing — no partner, little money, no experience — except the daily, exhausting power to keep choosing this child over her own fear.",
+  },
+  biographicalFacts: `Marguerite Annie Johnson — later known as Maya Angelou — was born April 4, 1928, in St. Louis, Missouri, and grew up between Missouri, Arkansas, and California. At sixteen, in her final year of high school in San Francisco, she became pregnant after a brief encounter; she hid the pregnancy until after graduation and gave birth to her son, Clyde (later called Guy) Johnson, about three weeks later, at seventeen. The baby's father wanted no part of them. Terrified but determined, she refused to give the child up and set out to raise him alone, taking a string of low-wage jobs — cook, waitress, nightclub dancer — and at times living hand to mouth. She later recounted that on the first night her mother insisted the baby sleep in the bed beside her; Maya was so afraid she would roll over and crush him that she meant to stay awake all night, but fell asleep — and woke to find she had instinctively curled her body into a tent around him without waking. Her mother told her: "See, you don't have to think about doing the right thing. If you're for the right thing, then you do it without thinking." Angelou went on to become one of the most celebrated writers of the twentieth century — author of I Know Why the Caged Bird Sings, a poet who read at a U.S. presidential inauguration, an actor, and a civil-rights worker — and raised Guy as a single mother through years of struggle. She died May 28, 2014.`,
+  sources: [
+    "Angelou, Maya. I Know Why the Caged Bird Sings (New York: Random House, 1969).",
+    "Angelou, Maya. Gather Together in My Name (New York: Random House, 1974).",
+    "\"Maya Angelou,\" interviews with Oprah Winfrey (OWN / SuperSoul Sunday).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Pregnant at 16 after a brief encounter, hid it, gave birth weeks after graduating at 17, the father absent - all documented. Her love-and-terror is from her own accounts.",
+      text: `There was a girl. She was seventeen.
+
+She had just finished school. Most kids her age were thinking about the summer, about what came next, about being young.
+
+She was holding a baby.
+
+She had gotten pregnant the year before, near the end of school, after one brief thing with a boy. She hid it as long as she could under loose clothes. A few weeks after she graduated, her son was born.
+
+The baby's father didn't want anything to do with them.
+
+So it was her. A seventeen-year-old, with a newborn who needed everything, and almost nothing to give him but herself.
+
+She loved him so much it scared her. And she was certain, all the way down, that she was going to get this terribly, terribly wrong.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Her fear of being inadequate, her own hard history, and the relentless low-wage work to support the baby are documented. The interior \"I am going to fail him\" voice is drawn from her accounts.",
+      text: `The fear was the worst part.
+
+She was so young. She didn't know what she was doing. Every cry could be something serious and she wouldn't know it. Every choice felt like one she was bound to make wrong.
+
+She had grown up with her own hard things — things that made her wonder whether she even had it in her to be somebody's safe place. How do you keep a small person whole when you're not sure you are one yourself?
+
+There was the money, too. Never enough. She took whatever work she could get. Long shifts on her feet. Coming home wrung out to a baby who needed her to have more left.
+
+And underneath all of it, the quiet, constant dread: I am going to fail him. I'm too young. I'm too alone. I am not enough for this.
+
+She held him anyway. She just didn't believe, yet, that holding him was enough.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "Raising him alone hour by hour, working constantly, refusing to quit, is documented. The \"choosing him before feeling ready\" framing is a fair reading.",
+      text: `She didn't have a plan. She had a baby and the next hour.
+
+So she did the next hour. Then the one after that.
+
+She fed him. She kept him warm. She went to work and came home and went to work again. When she got something wrong, she fixed what she could and kept going. There was no room to quit, so she didn't.
+
+She wasn't doing it gracefully. She was doing it scared, most of the time. But she was doing it.
+
+Nobody handed her confidence. She just kept choosing him, over and over, before she felt ready — because there was no version of this where she got to wait until she felt ready.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The years of lean, hand-to-mouth single parenthood and constant self-doubt are documented. The boy growing \"because she stayed\" is interpretive but grounded.",
+      text: `The next few years were lean and hard.
+
+She moved between jobs and rooms. She counted coins. She raised him in the cracks of long workdays, tired in a way only single parents really know.
+
+She made mistakes. She second-guessed almost everything. There was no partner to tell her she was doing okay, no cushion if she got it wrong.
+
+And the boy grew. He grew because she fed him and held him and stayed. Whatever she felt about herself, she kept being the one thing he could count on.
+
+The dread didn't vanish. It just had to share the day with the work.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The documented anecdote: her mother made the baby sleep beside her, she feared crushing him, fell asleep, woke curled protectively around him, and her mother's lesson - \"if you're for the right thing, you do it without thinking.\"",
+      text: `One night, early on, her own mother made her let the baby sleep in the bed beside her.
+
+She was terrified. She was sure she would roll over in her sleep and crush him. She decided she simply would not sleep. She would stay awake all night to keep him safe.
+
+She fell asleep anyway.
+
+And when she woke, she found that in the night, without thinking, without trying, her body had curled itself into a kind of tent around the baby. She hadn't crushed him. She had protected him — in her sleep, on instinct, while her scared, second-guessing mind was switched off.
+
+Her mother told her something she never forgot. That you don't have to think your way into doing right by someone. If your heart is set on the right thing, you'll do it without even thinking.
+
+She had been so busy being afraid she would fail him that she had not noticed she was already keeping him safe.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "She raised Guy through years of struggle and became a major writer and public voice. The line about speaking \"in front of the whole country\" gestures at the inaugural poem without naming it.",
+      text: `She raised him.
+
+Not perfectly. Nobody does. But she stayed, and she worked, and the scared seventeen-year-old slowly became a woman who knew, in her body, that she could be relied on.
+
+And she became so much more than she could have imagined on those frightened first nights. She found she had a voice — a big, deep, unforgettable one. She wrote books that told the truth about hard lives, including her own, and they reached millions of people. She stood up in front of the whole country and spoke words people still carry around with them.
+
+The boy she was sure she would ruin grew up loved, and grew up proud of her.
+
+She did all of it while believing, for a long time, that she wasn't enough. She was. She just had to keep going long enough to find out.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Maya Angelou.
+
+She became one of the most beloved writers of the last hundred years. Her first book, about surviving a hard childhood, is read all over the world. She wrote and recited a poem at a President's inauguration. And she did it as a woman who had started out a terrified teenager, alone with a baby, certain she would fail him.
+
+You wrote: "{feeling}"
+
+She raised that son her whole life. The fear that she wasn't enough didn't go away because someone reassured her. It went away slowly, because she kept showing up for him until the showing up became the proof.
+
+You don't have to feel ready. She didn't. You just have to keep choosing the people you love, and let that be the answer.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1873 Russia; gifted young pianist/composer; First Symphony premiere 28 Mar 1897
+//    in St. Petersburg was a disaster (under-rehearsed; conductor Glazunov reportedly drunk); the
+//    critic Cesar Cui savaged it ("if there were a conservatory in Hell," Rachmaninoff would win
+//    its prize); ~3-year depression, composed almost nothing, doubted his talent; from Jan 1900
+//    daily sessions with Dr. Nikolai Dahl (hypnosis + calm repeated suggestion: "you will compose
+//    again... it will be excellent"); recovered; Piano Concerto No. 2 (1901), dedicated to Dahl,
+//    became a beloved staple; major career; d.1943 Beverly Hills. (Bertensson & Leyda; Harrison;
+//    Walker.)
+//  Interpretive: "the skill stayed, the belief left"; "faith can be borrowed until yours returns"
+//    reading of the Dahl treatment. Grounded, lightly dramatized.
+//  Avoid saying: don't name Rachmaninoff / the Second Concerto / Russia / Cui / Dahl before the
+//    bridge. Don't render the therapy as magic - it was patient, repeated suggestion over months,
+//    plus his own slow return.
+const rachmaninoff: FigureStageRow = {
+  figureKey: "rachmaninoff",
+  displayName: "Sergei Rachmaninoff",
+  birthYear: 1873,
+  deathYear: 1943,
+  stageId: "1897-1901-after-the-first-symphony",
+  stageLabel: "After the disastrous premiere: three years unable to compose",
+  ageMin: 23,
+  ageMax: 28,
+  themes: ["public_failure", "creative_dismissal", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was a young composer whose first big work was wrecked at its premiere and torn apart in print, and the public humiliation knocked the music out of him for years.",
+    "For three years he could not write — not a stuck patch but a total collapse of the belief that he had anything worth writing at all.",
+    "What brought him back was not a sudden idea but a quiet doctor who, day after day, simply told him he would write again.",
+  ],
+  facets: {
+    emotionalCore:
+      "He felt the particular shame of public failure — not a private rejection he could hide, but a humiliation witnessed by everyone whose opinion he cared about, which curdled into the conviction that he was finished.",
+    decisionShape:
+      "Whether to accept the verdict of one catastrophic night and the cruel reviews that followed, or to risk believing he still had music in him when all the evidence said otherwise.",
+    triggerEvent:
+      "His ambitious first symphony was performed so badly, and reviewed so savagely, that the young composer concluded he had no talent and stopped composing altogether.",
+    agencyState:
+      "He had the skill and the training intact, but the one thing a creator cannot manufacture — the belief that the work is worth making — had been taken from him, and without it the skill was useless.",
+  },
+  biographicalFacts: `Sergei Vasilyevich Rachmaninoff was born April 1, 1873, in Russia. A prodigiously gifted pianist and composer, he completed his ambitious First Symphony in his early twenties. Its premiere, in St. Petersburg on March 28, 1897, was a catastrophe: the orchestra was under-rehearsed and the conductor, Alexander Glazunov, was reportedly drunk. The work was savaged, most famously by the composer-critic Cesar Cui, who wrote that if there were a conservatory in Hell, Rachmaninoff would deserve its first prize for the symphony. The humiliation devastated him. He fell into a severe depression that lasted roughly three years, during which he composed almost nothing and doubted he had any talent at all. In January 1900, at his family's urging, he began daily sessions with Dr. Nikolai Dahl, a physician who used hypnosis and calm, repeated suggestion — telling him steadily that he would compose again and that the work would be excellent. Rachmaninoff slowly recovered, and the music returned. The result was his Piano Concerto No. 2, premiered in 1901 and dedicated to Dahl; it became one of the most beloved works in the entire piano repertoire. He went on to be one of the great composers and pianists of his era. He died March 28, 1943, in Beverly Hills, California.`,
+  sources: [
+    "Bertensson, Sergei, and Jay Leyda. Sergei Rachmaninoff: A Lifetime in Music (New York: New York University Press, 1956).",
+    "Harrison, Max. Rachmaninoff: Life, Works, Recordings (London: Continuum, 2005).",
+    "Walker, Robert. Rachmaninoff (London: Omnibus Press, 1980).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A prodigiously gifted young composer, recognized since boyhood, finishing his first large-scale work and staking his reputation on its premiere - all documented.",
+      text: `There was a young man, not yet thirty. He wrote music.
+
+He was good. Everyone had said so since he was a boy — teachers, other musicians, the people who knew. He had the kind of talent that makes a room go quiet.
+
+He had just finished the biggest thing he had ever written. A huge, ambitious piece he had poured years into. It was going to be the work that announced him to the world.
+
+The night of its first performance, the whole musical world he cared about would be in the room.
+
+He was nervous, the way you are before something you've bet everything on. But under the nerves was a young man's certainty that this was his moment.
+
+It was about to go very, very wrong.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The under-rehearsed premiere, the reportedly drunk conductor, and the savage review (the \"conservatory in Hell\" line) are documented. His internal conclusion that he himself had failed is drawn from the record.",
+      text: `The performance was a disaster.
+
+The musicians had barely rehearsed. The man waving the baton out front did a clumsy, careless job — some said he had been drinking. The beautiful thing in the young man's head came out of that orchestra as a mess.
+
+He sat there and listened to his great work fall apart in front of everyone whose opinion mattered to him.
+
+Then came the reviews. One of the most famous critics alive tore it to shreds — not gently, not usefully, but cruelly, the kind of review built to end someone. He wrote that the piece belonged in hell.
+
+Something in the young man broke that night and didn't mend for a long time. It wasn't only that the piece had failed. It was that he had failed, in public, completely. And he believed it. He decided the critic was right. He decided he had nothing.
+
+And the music stopped.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "He continued to work as a performing musician to earn a living while unable to compose. The \"survived the days and waited\" framing fits the documented depression.",
+      text: `He didn't stop being a musician. He just stopped being able to make anything new.
+
+He still went out into the world. He played. He earned his keep. To everyone watching, he looked fine — a working musician, doing his job.
+
+Inside, the well was dry. He would sit down to write and nothing came. Not bad music. No music. The part of him that made things had gone silent, and he had no idea how to wake it.
+
+So he did the only thing he could. He kept getting up. He kept his hands on the keys, even when they made nothing of his own. He survived the days, one after another, and waited for something that didn't seem to be coming.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The roughly three-year depression, withdrawal, and pervasive self-doubt are documented, as is the fact that his technical skill never left him.",
+      text: `This went on for years. Three of them.
+
+Three years is a long time to believe you used to be something and aren't anymore. He grew gloomy and withdrawn. He doubted everything. The bright, certain young man was gone, and in his place was someone who flinched at the memory of that night.
+
+People who loved him watched him sink and didn't know how to reach him. He didn't know how to reach himself.
+
+The talent was still in there — the skill hadn't gone anywhere. But talent is useless without the one thing he had lost: the belief that anything he made was worth making.
+
+He was a maker who could no longer make. And he was starting to think that was simply the end of his story.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "His family urged him to a doctor who used calm, daily, repeated suggestion that he would compose again; the slow return of his ability to write followed. Documented.",
+      text: `Then his family talked him into seeing a certain doctor.
+
+The doctor's method was strange and simple. Day after day, the young man would come and sit, and the doctor would talk to him in a calm, steady, certain voice. He said the same things, over and over. You will write again. The work will be good. It will come.
+
+That was most of it. A quiet man repeating, patiently, a belief the young man could not yet hold on his own.
+
+And slowly, it took. Something in him that had been clenched shut for three years began to loosen. One day he sat down — and a few notes came. Then a few more. Then a flood.
+
+He wrote a new piece. And it was not just good. It poured out of him warm and enormous and alive, the way music used to.
+
+He had it back. Someone had simply believed it for him until he could believe it again.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The comeback work became one of the most beloved in the repertoire; he dedicated it to the doctor; he became a giant of his era. Name and titles withheld for the bridge.",
+      text: `That new piece became one of the most loved pieces of music ever written.
+
+A hundred years later, people still play it, still record it, still fall in love to it. The thing he wrote crawling out of the worst years of his life turned out to be the work the world would remember him for most.
+
+He went on writing. He became one of the great composers of his time, and one of the great players too — the kind of name that outlives everyone who knew him.
+
+He dedicated that comeback piece to the quiet doctor who had talked him back to life.
+
+The young man who sat in that hall convinced he was finished had more than half his music still ahead of him. He just couldn't see it from the bottom.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Sergei Rachmaninoff.
+
+He became one of the most beloved composers in the world. The piece he wrote after three years of being unable to put down a single note — his Second Piano Concerto — is still one of the most played, most loved works in all of music. Even the disastrous symphony that nearly ended him is performed now, and admired.
+
+You wrote: "{feeling}"
+
+He didn't claw his way out alone. It took years, and his family, and a patient doctor who believed in his music out loud, every day, until he could believe in it himself again. The talent never left. Only the faith did — and faith can be borrowed from someone else until yours comes back.
+
+You don't have to believe in yourself today. Let someone believe it for you for a while. He did.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1925 Savannah GA; Iowa Writers' Workshop, early career in the Northeast; Dec 1950
+//    (age 25) first attack of systemic lupus - the incurable disease that had killed her father
+//    when she was 15; returned to Andalusia, her mother Regina's dairy farm near Milledgeville GA;
+//    steroid-weakened bones -> crutches from the mid-1950s; daily routine of Mass + ~2-3 hours
+//    writing, then rest/reading; kept peafowl; ~2 novels + 32 stories across 14 ill years; major
+//    posthumous stature; d.1964 age 39. (O'Connor, The Habit of Being; Gooch, Flannery.)
+//  Interpretive: the internal turn - writing from inside the shortened life, the constraint
+//    sharpening the work - is a fair reading of her letters. The illness is rendered honestly.
+//  Avoid saying: don't name O'Connor / Georgia / book titles / Catholicism specifics before the
+//    bridge. Don't sentimentalize the illness or imply suffering "made" her great in a tidy way -
+//    she'd have despised that. The turn is acceptance + work, not recovery.
+const oconnor: FigureStageRow = {
+  figureKey: "oconnor",
+  displayName: "Flannery O'Connor",
+  birthYear: 1925,
+  deathYear: 1964,
+  stageId: "1950-1955-lupus-and-the-farm",
+  stageLabel: "After the lupus diagnosis: writing as her body failed",
+  ageMin: 25,
+  ageMax: 33,
+  themes: ["illness", "solitude", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "At twenty-five, on the edge of the literary life she had worked for, she was struck by the same incurable illness that had killed her father, and had to go home to her mother's farm to live out whatever was left.",
+    "Her body slowly failed — first her strength, then her ability to walk without crutches — and she answered it by writing every single morning, for the few hours she had, year after year.",
+    "She did not get better and she did not pretend she would; she simply kept making her work, on a deadline she could feel in her own bones.",
+  ],
+  facets: {
+    emotionalCore:
+      "She felt the strange clarity of a young person handed a death sentence early — robbed of the open future she had assumed, and forced to decide what a shortened life was actually for.",
+    decisionShape:
+      "Whether to let a failing body and a forced return home shrink her into an invalid waiting to die, or to wring real work out of the few good hours each day still left her.",
+    triggerEvent:
+      "Just as her career was beginning, she was diagnosed with the incurable disease that had killed her father and had to leave her independent life to be cared for on her mother's farm.",
+    agencyState:
+      "She had almost no control over her body or her dwindling time, but complete control over what she did with the few clear morning hours the illness allowed her.",
+  },
+  biographicalFacts: `Mary Flannery O'Connor was born March 25, 1925, in Savannah, Georgia. A fiercely talented young writer, she studied at the Iowa Writers' Workshop and was living and working in the Northeast, at the start of a promising literary career, when she fell ill. In December 1950, at age twenty-five, she suffered her first attack of systemic lupus erythematosus — the autoimmune disease that had killed her father when she was fifteen. The illness was incurable. She returned to Andalusia, her mother's dairy farm near Milledgeville, Georgia, where her mother, Regina, cared for her. The disease and the steroid treatments weakened her bones; from the mid-1950s she walked on crutches. She organized her days around the illness: Mass in the morning, then two or three hours of writing — all the energy she had — then rest and reading, and tending the peafowl she kept. Over fourteen years of declining health she produced two novels and some thirty-two short stories, work now considered among the finest American fiction of the century, much of it darkly comic and morally severe. She knew her time was short and worked steadily against it. She died of complications of lupus on August 3, 1964, at age thirty-nine.`,
+  sources: [
+    "O'Connor, Flannery. The Habit of Being: Letters of Flannery O'Connor, ed. Sally Fitzgerald (New York: Farrar, Straus and Giroux, 1979).",
+    "Gooch, Brad. Flannery: A Life of Flannery O'Connor (New York: Little, Brown, 2009).",
+    "O'Connor, Flannery. The Complete Stories (New York: Farrar, Straus and Giroux, 1971).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A sharp, already-noticed young writer building an independent life away from home, with a father who'd died of a rare incurable illness in her teens - all documented.",
+      text: `There was a young woman. She was twenty-five.
+
+She was a writer — a real one, the kind people had already started to notice. She had trained at a good program, moved away from the place she grew up, and was building the independent life she had always wanted, far from home.
+
+She was sharp, and funny, and a little merciless on the page. She had decades of work ahead of her, and she knew it. The future was wide open.
+
+She had one shadow behind her. When she was a teenager, her father had died of a rare, incurable illness. But that was his story. She was young, and just beginning hers.
+
+She had no idea the same illness was already in her, waiting.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The diagnosis at 25 with the same incurable disease that killed her father, and the forced return to her mother's farm to be cared for, are documented.",
+      text: `It hit her at twenty-five.
+
+She got sick — strange, frightening sick — and when they finally named it, it was the same disease that had killed her father. The incurable one.
+
+There was no fixing it. There was only managing it, and watching it take things from her slowly.
+
+She had to leave the life she had built. The independence, the distance, the world she had moved toward — all of it. She went back home, to her mother's farm in the place she had come from, to be looked after, because she could no longer fully look after herself.
+
+At twenty-five, she had to trade a wide-open future for a single hard fact: her body was failing, the clock was short, and she would spend what was left of it back in the place she had worked so hard to leave.
+
+It would have been so understandable to give up.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "Her documented daily discipline: a few clear morning hours of writing, all the energy the illness allowed, guarded fiercely - not writing about the illness, just writing.",
+      text: `She started writing in the mornings.
+
+That was when she had the most in her — a few hours, before the illness took the rest of the day. So she guarded those hours like treasure. Every morning, she sat down and worked.
+
+Not for very long. The sickness only gave her so much. But she used what it gave her, completely, every single day.
+
+She didn't write about being sick. She didn't write to be brave. She just wrote — the strange, sharp, funny, unsettling stories only she could write — because the work was hers, and the work was the point, and the work was the one thing the illness couldn't take.
+
+A few good hours a day. She decided that was enough to build something with.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The slow physical decline, the move to crutches, and the fact that she knew she would not recover are documented. \"Working, not waiting to die\" is a fair characterization of her letters.",
+      text: `The years that followed were a slow narrowing.
+
+Her body kept failing in small steps. Her strength went. The treatments wore her down in their own way. After a while she couldn't walk without crutches, and then that was just how she got around.
+
+She did not get better. She was never going to get better. She knew it.
+
+And still, every morning, the few hours. Story after story. She built a whole body of work out of small daily windows, on a farm, far from the literary world, with her mother caring for her and the clock ticking loud in her own bones.
+
+She wasn't waiting to die. She was working. There is a difference, and she lived inside it.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Internal, not an event: she stopped writing as someone waiting to get her old life back and wrote from inside the life she had; the work deepened. A fair reading of her mature period.",
+      text: `Somewhere in those years, something turned in her — not in her body, which kept failing, but in how she met it.
+
+She stopped writing like someone waiting to get her real life back. She started writing like someone whose real life was this one — the farm, the crutches, the short hours, the nearness of the end.
+
+And strangely, the work got better. Deeper. The illness had stripped away everything easy and left her with what mattered most to her, and that severity went straight into the stories. She wrote about mercy and cruelty and the human soul with a clarity most healthy people never reach, because she was writing with the clock right there in the room.
+
+She never beat the illness. That was never on the table. What she did instead was refuse to let it have the one thing she could still give the world.
+
+The shortened life, it turned out, was still a whole life. She just had to build it at the size she had actually been given.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Two novels and ~32 stories written in small daily windows; her stature grew enormously after her early death. Name and titles withheld for the bridge.",
+      text: `She kept it up until almost the very end.
+
+By the time the illness finally took her — far too young, still in her thirties — she had written two novels and a pile of short stories in those small, stolen morning hours.
+
+And that work did not fade with her. It grew. Today she is considered one of the finest writers her country has ever produced. People who care about the craft study her sentences. Her strange, severe, unforgettable stories are read all over the world, decades after the few-hours-a-day woman who wrote them ran out of mornings.
+
+She did not waste the time she was given being angry that it was short. She filled it.
+
+A handful of clear hours a day, for a handful of years, was enough to make something that outlived her by generations.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Flannery O'Connor.
+
+She is one of the greatest short-story writers in the history of American letters. She wrote nearly all of it in two or three morning hours a day, on her mother's farm, on crutches, dying slowly of an illness she had carried since she was twenty-five. She never got the long, open future she had planned. She made something permanent out of the short, hard one she got instead.
+
+You wrote: "{feeling}"
+
+She didn't pretend it wasn't bad. She didn't promise herself it would get better. She just took the few good hours each day handed her and put everything she had into them.
+
+You don't have to have a whole, easy life ahead of you to make it count. She didn't. She used what she had.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1951 Australia; Perth physician; with pathologist Robin Warren proposed that
+//    H. pylori (not stress/acid) causes most ulcers/gastritis, curable with antibiotics; the field
+//    dismissed it (dogma: nothing survives stomach acid); 1983 the Australian Gastroenterological
+//    Society ranked his work in the bottom tier; animal infection failed; July 1984 (age 32) he
+//    drank an H. pylori broth, developed gastritis as predicted, an endoscopy confirmed it, and he
+//    self-cured with antibiotics; vindicated; 2005 Nobel in Medicine with Warren. (Nobel
+//    biographical; Marshall & Warren, The Lancet, 1984.)
+//  Interpretive: the "right but powerless" isolation and the maddening pity. Grounded.
+//  Avoid saying: don't name Marshall / Nobel / H. pylori / "ulcers" before the bridge. He is living
+//    - use present tense in the reveal. Don't overstate the self-experiment as instantly decisive;
+//    vindication still took time.
+const marshall: FigureStageRow = {
+  figureKey: "marshall",
+  displayName: "Barry Marshall",
+  birthYear: 1951,
+  stageId: "1982-1984-drinking-the-proof",
+  stageLabel: "Mocked for the theory: the year he drank the proof",
+  ageMin: 31,
+  ageMax: 34,
+  themes: ["dismissed", "quiet_defiance", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was a young doctor with an unfashionable idea about what made people sick, and the experts laughed it out of the room for years.",
+    "He had the evidence and could not make anyone look at it, so in the end he did something reckless to his own body to force them to.",
+    "He swallowed a dose of the very thing everyone insisted was harmless, got sick exactly the way he had predicted, and dared them to keep ignoring him.",
+  ],
+  facets: {
+    emotionalCore:
+      "He felt the maddening isolation of being right in a room full of people certain you are a fool — where the more sure you are, the more they pity you.",
+    decisionShape:
+      "Whether to keep politely losing the argument and let patients go on suffering for a dogma he knew was wrong, or to do something drastic enough that the experts could no longer look away.",
+    triggerEvent:
+      "His evidence that a common, miserable illness had a simple, curable cause was rejected and ridiculed by his field, which held firmly to a different explanation.",
+    agencyState:
+      "He had the truth and the data but no authority and no audience; the one body he was completely free to experiment on was his own.",
+  },
+  biographicalFacts: `Barry James Marshall was born September 30, 1951, in Australia. As a young physician in Perth, working with the pathologist Robin Warren, he became convinced that most stomach ulcers and gastritis were caused not by stress or excess acid — the settled medical wisdom — but by a bacterium, Helicobacter pylori, that could be eradicated with antibiotics. The medical establishment dismissed the idea; it was a fixed belief that no bacteria could survive the acid of the stomach. In 1983 the Australian Gastroenterological Society rejected his research, ranking it in the bottom tier of submissions. His attempts to infect animals failed, and he could not ethically infect patients. Frustrated, and unable to get the field to take him seriously, in July 1984, at age thirty-two, Marshall drank a broth teeming with H. pylori. Within days he developed nausea, vomiting, and gastritis; an endoscopy confirmed that his stomach was inflamed and colonized exactly as he had predicted. He then cured himself with antibiotics. The self-experiment helped turn the tide. Marshall and Warren were eventually vindicated, and in 2005 they were awarded the Nobel Prize in Physiology or Medicine. Stomach ulcers, once a chronic, recurring misery for millions, are now routinely cured.`,
+  sources: [
+    "\"Barry J. Marshall - Biographical,\" The Nobel Prize, nobelprize.org.",
+    "Marshall, B. J., and J. R. Warren. \"Unidentified curved bacilli in the stomach of patients with gastritis and peptic ulceration.\" The Lancet (1984).",
+    "Marshall, Barry, ed. Helicobacter Pioneers (Oxford: Blackwell, 2002).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A junior doctor far from elite centers, with a colleague, proposing a cause for a common painful illness that contradicted a century of textbooks - all documented.",
+      text: `There was a young doctor. He was in his early thirties.
+
+He worked in a hospital far from the famous centers of medicine, and he had gotten an idea into his head. He had noticed something, with a colleague, about why a very common and very painful illness happened — and what he saw didn't match what every textbook and every senior doctor said was true.
+
+The textbooks said the illness came from stress and worry. He thought they were wrong. He thought the real cause was something small and fixable, and that millions of people were suffering for no good reason.
+
+He was probably right. He had the beginnings of proof.
+
+The trouble was, he was nobody. Young. Unknown. From the wrong place. And he was telling the most powerful people in his field that they had had it wrong for a hundred years.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The establishment's dismissal, the specialist society ranking his work near the bottom, and his failed (ethically limited) attempts to prove it are documented. The anguish of being right and ignored is the through-line.",
+      text: `They did not take it well.
+
+He brought his evidence to the experts, and they brushed it off. It went against everything they knew, so they decided he was the one who was confused. A famous society of specialists looked at his work and ranked it near the very bottom of everything they received that year.
+
+People in his field smiled at him the way you smile at someone who doesn't understand how things really work. He would stand up to make his case and watch the room decide, before he finished, that he wasn't worth listening to.
+
+He knew he was right. That was the worst part. It is one thing to be wrong and rejected. It is another to be right and rejected — to watch people keep suffering from a thing you could fix, while everyone who could help pats you on the head and moves on.
+
+He tried to prove it properly. The experiments he was allowed to do didn't work. He was stuck.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "Unable to prove it on animals or ethically on patients, he chose to infect himself. Documented. The quiet, private decision is fairly characterized.",
+      text: `So he made a decision most people would call insane.
+
+If he couldn't prove it on anyone else, he would prove it on the only person he was completely free to risk. Himself.
+
+He took the thing everyone swore was harmless — the small thing he believed was the real cause — and he swallowed a whole dose of it on purpose.
+
+Then he waited to get sick.
+
+He didn't tell many people first. He just did it, quietly, and watched his own body to see who was right: him, or a hundred years of medicine.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "He developed gastritis on schedule, documented it, cured himself, and kept pushing; one self-experiment did not instantly convert the field. All documented.",
+      text: `It worked, in the worst possible way. He got sick — exactly the way he had predicted. Nausea. Throwing up. His stomach inflamed and overrun, right on schedule.
+
+He had made himself ill to win an argument. And even then, it wasn't instant. One man poisoning himself doesn't flip a whole field overnight. There were still doubters. Still people who didn't want to admit that someone so junior, so far from the center of things, had seen what they had all missed.
+
+He cured himself, wrote up exactly what had happened, and kept pushing. He had put his own body on the line, and he was not about to let them ignore it now.
+
+Slowly, the evidence became impossible to wave away.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "As others tested the theory, the simple antibiotic cure worked and the dogma fell. Documented. \"A fact doesn't care how junior you are\" is editorial framing of a real shift.",
+      text: `The thing about a fact is that it doesn't care how junior you are.
+
+Other doctors started testing his idea. And it held. Patients with the painful illness got the simple treatment he had proposed, and they got better — really better, not just for a while. The thing the experts had only ever managed for a lifetime, he had a way to actually cure.
+
+Once that became clear, the argument was over. Not because he had shouted loudest, but because he had been right, and being right, in the end, was enough.
+
+The young nobody from the wrong place had seen something the whole field had missed. And he had been willing to drink poison to make them look at it.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "He earned his field's highest honor; the illness became routinely curable; countless people benefited. Name and prize withheld for the bridge.",
+      text: `He became one of the most respected people in his field — the same field that had laughed at him.
+
+The illness that used to torment millions of people for years on end became, thanks to him, a thing a doctor could simply cure. People who will never know his name live easier lives because he refused to back down.
+
+And he won the highest prize his science can give. The man they had ranked at the bottom ended up at the very top.
+
+He hadn't been crazy. He had just been early, and stubborn, and unwilling to let a comfortable lie stand when he had the truth in his hands.
+
+Sometimes the whole room is wrong. Sometimes the person they are laughing at is the one who is right.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name is Barry Marshall.
+
+He proved that most stomach ulcers are caused by a bacterium, not by stress — and that they can be cured with antibiotics. For years the medical world mocked him, until he drank a flask of the bacteria himself to prove it. In 2005 he and his colleague won the Nobel Prize. Because of them, an illness that ruined millions of lives is now a quick fix.
+
+You wrote: "{feeling}"
+
+For a long time, being right got him nothing but pity and closed doors. He didn't have power, or fame, or important friends. He just had the truth, and enough stubbornness to keep holding it up until the world finally looked.
+
+Being doubted by everyone is not the same as being wrong. He would tell you that himself.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1942 Lima, Peru, Chilean family, journalist in Chile; Sept 1973 military coup
+//    overthrew her relative, Chile's president Salvador Allende, who died; she fled to Venezuela in
+//    1975 with husband and two children; ~13 years of exile in Caracas, disoriented, scarce work;
+//    on 8 Jan 1981 she began a letter to her dying ~100-year-old grandfather that became The House
+//    of the Spirits; rejected by several publishers, published Barcelona 1982, an international
+//    bestseller; one of the most-read Spanish-language authors; still starts each book on Jan 8.
+//    (Allende, Paula; My Invented Country; isabelallende.com.)
+//  Interpretive: exile as loss-of-self (not just homesickness); "saving up what she'd need."
+//    Grounded in Paula.
+//  Avoid saying: don't name Allende / The House of the Spirits / Chile / the coup date / Salvador
+//    before the bridge. Soften the political specifics (no date, no president's name) the way the
+//    Douglass slavery material is softened. She is living - present tense in the reveal.
+const allende: FigureStageRow = {
+  figureKey: "allende",
+  displayName: "Isabel Allende",
+  birthYear: 1942,
+  stageId: "1975-1981-exile-to-the-letter",
+  stageLabel: "Exile: losing her country and finding her voice in a borrowed one",
+  ageMin: 33,
+  ageMax: 40,
+  themes: ["exile", "self_invention", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "A violent overthrow of her country's government forced her to flee with her family to a place that would never feel like home, and for years she was a stranger with no country and no clear self.",
+    "She had been someone back home — she had work and a name and a place — and exile stripped all of it away and left her starting from nothing in her late thirties.",
+    "What gave her back to herself was a letter, written to a dying old man she could not reach, that quietly turned into the thing she was meant to do all along.",
+  ],
+  facets: {
+    emotionalCore:
+      "She felt the particular grief of exile — not just missing a place, but losing the whole scaffolding of who she had been, and not knowing who she was without her country holding her up.",
+    decisionShape:
+      "Whether to spend her exile waiting to return to the life that was taken, or to accept it was gone and build an entirely new self in a country that was not hers.",
+    triggerEvent:
+      "Political violence destroyed the country she knew and made it unsafe to stay, so she fled abroad with her family and lost her home, her work, and her sense of who she was.",
+    agencyState:
+      "She had lost almost everything outside her control — country, safety, standing — and was left with only what she could make from the inside: words, memory, and the choice to begin again.",
+  },
+  biographicalFacts: `Isabel Allende was born August 2, 1942, in Lima, Peru, into a Chilean family, and grew up in Chile, where she became a journalist. In September 1973 a military coup overthrew the government of her relative, Chile's president, who died during the takeover. The country became dangerous, especially for those connected to the fallen government; in 1975 Isabel fled with her husband and two children to Venezuela, where she lived in exile in Caracas for thirteen years. Exile was disorienting and lonely: she struggled to find journalism work and felt she had lost her country and her footing. On January 8, 1981, hearing that her beloved grandfather, nearly a hundred years old, was dying back in Chile, she began writing him a letter she knew he would never read. The letter kept growing, filling with the family stories and the memories of the country she had lost, and it became a novel — The House of the Spirits. Rejected by several Spanish-language publishers, it was published in Barcelona in 1982 and became an international sensation. Allende went on to become one of the most widely read Spanish-language authors in the world. To this day she begins every new book on January 8th.`,
+  sources: [
+    "Allende, Isabel. Paula (New York: HarperCollins, 1995).",
+    "Allende, Isabel. My Invented Country: A Nostalgic Journey Through Chile (New York: HarperCollins, 2003).",
+    "\"Isabel Allende,\" biography and interviews, isabelallende.com.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A journalist with a settled life in her home country, and a deeply loved near-centenarian grandfather full of stories - documented. Place and names withheld for the bridge.",
+      text: `There was a woman in her thirties.
+
+In the country where she grew up, she had a life. A real one. She had work she was good at — she wrote, and people read what she wrote. She had a family, a home, a place she belonged. She knew who she was there.
+
+She had a grandfather she loved more than almost anyone. An old man, full of stories, who had helped raise her. He was part of what made the place home.
+
+She thought she would grow old there, near him, in the country that had made her.
+
+She had no idea how quickly all of it could be taken away.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The coup, a relative who led the country killed in it, the danger, and the flight abroad with her family are documented. Political specifics softened per the no-era-markers rule.",
+      text: `Then her country fell apart.
+
+There was a violent overthrow of the government — soldiers, fear, people disappearing. Someone close to her family, who had led the country, was killed in it. Overnight, the place she knew became a place where it was dangerous to be who she was.
+
+She had to run. She gathered her husband and her children and fled across borders to another country — a safer one, but not hers. Not even close.
+
+And there, the full weight of it landed. She had lost her home. Her work. Her language of belonging. The grandfather she loved was back there, out of reach, and she could not go to him.
+
+She was a grown woman starting over from nothing, in a place that would always look at her as a stranger. She didn't know who she was anymore, without the country that used to hold her up.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "She held her family together, took what scarce work she could in exile, and kept the lost country alive in memory. Documented in Paula. \"Saving up what she'd need\" is editorial foreshadowing.",
+      text: `She did what she could to hold on.
+
+She kept her family together. She took what work she could find, which wasn't much, and wasn't hers. She made a kind of life in the borrowed country, the way exiles do — functional on the outside, homesick all the way down.
+
+And she held onto the place she had lost the only way she could: in her head. She remembered it. The streets, the smells, the family stories, the old man and his hundred years of tales. She kept it all alive inside her, because keeping it was the only thing that still connected her to who she had been.
+
+She didn't know it yet, but she was saving up everything she would need.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The long, disorienting years of exile and loss of professional identity are documented. The dissolving sense of self is a fair reading of her account.",
+      text: `The years went by like that. A lot of them.
+
+She was not back home, and she was not really at home where she was. She lived in the in-between place that exiles know — always a little foreign, always a little homesick, the old life receding a bit more each year.
+
+She was in her late thirties now. The work she had been known for felt like another person's life. If you had asked her what she was, she might not have had a clean answer anymore. The country that used to tell her who she was, was gone. And nothing had come to replace it.
+
+She kept going. But she was, in a real way, lost.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "On 8 Jan 1981 she began a letter to her dying grandfather she could not reach; it grew into The House of the Spirits. Documented. The pouring-out of exile's stored memory is well-grounded.",
+      text: `Then word came that her grandfather — the old man, the keeper of all the stories — was dying, far away, where she could not go.
+
+She couldn't be with him. She couldn't even reach him in time. So she did the only thing she could. One night, she sat down and started writing him a letter.
+
+She wrote to him about the family. The country. The old stories he used to tell. Everything she had been carrying around inside her through all those exiled years came pouring out onto the page, for him.
+
+And the letter didn't stop. It grew, and grew, past anything a letter should be. Night after night she wrote, and the memories became people, and the people became a story.
+
+By the time she looked up, the letter to a dying man had become something else entirely. It had become a book. And in writing it, the lost woman had found, at last, exactly what she was for.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The book became an international bestseller; she became one of the most-read authors in her language; she still starts each book on the same January date. Documented. Name/title withheld for the bridge.",
+      text: `That book made her.
+
+The thing she had written to hold onto a country she had lost turned out to speak to people everywhere. It was published, and then it was everywhere, and the stranger in the borrowed country became one of the most read writers in her language anywhere in the world.
+
+She had found the work she was actually born for — not back home, where she had her old comfortable life, but in exile, with everything stripped away, when she had nothing left but her memories and a page.
+
+She kept writing. Book after book, for decades. To this day she starts every new one on the same date: the night she sat down to write that first letter to a dying old man.
+
+The country took everything from her. And in the taking, it forced her to find the thing that had been hers all along.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name is Isabel Allende.
+
+She is one of the most widely read writers in the Spanish language — tens of millions of books, in dozens of languages. And she didn't begin until she was almost forty, in exile, after a coup tore apart her country and forced her family to flee. The novel that started it all began as a letter to her dying grandfather, written in a country that wasn't hers.
+
+You wrote: "{feeling}"
+
+She lost her home, her work, and her sense of who she was. For years she was nobody, in a place that wasn't hers. And it was exactly there, with everything familiar stripped away, that she finally found what she was made to do.
+
+Losing the old life is not the same as losing yourself. Sometimes it is how you finally find yourself. She did.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1895 Vermont; WWI vet, 1920s Wall Street speculator; severe alcoholic - ruined
+//    finances, health, and his marriage to Lois; repeated stays at the Towns Hospital under Dr.
+//    Silkworth (alcoholism-as-disease); his newly-sober friend Ebby Thacher visited him; last drink
+//    11 Dec 1934 (age 39) amid a sudden overwhelming experience that lifted the obsession; realized
+//    he stayed sober by helping other alcoholics; May/June 1935 in Akron he sought out Dr. Bob
+//    Smith and helped him get sober - the founding of AA; co-wrote the "Big Book" and the Twelve
+//    Steps; known publicly only as "Bill W." per the anonymity tradition; d.1971. (AA "Big Book";
+//    "Pass It On"; Cheever, My Name Is Bill.)
+//  Interpretive: the shame-of-the-addict interior and "connection, not willpower." The "something
+//    gave/shifted" deliberately under-specifies his spiritual experience (which he described
+//    variously) - do not over-religious it.
+//  Avoid saying: don't name AA / "Alcoholics Anonymous" / the Twelve Steps / Bill / Dr. Bob before
+//    the bridge. The reveal leans on the anonymity ("Bill W.") - keep that payoff. Don't moralize
+//    about addiction; render it as the compulsion/disease the record describes.
+const wilson: FigureStageRow = {
+  figureKey: "wilson",
+  displayName: "Bill Wilson",
+  birthYear: 1895,
+  deathYear: 1971,
+  stageId: "1934-1935-rock-bottom-to-the-fellowship",
+  stageLabel: "Rock bottom: the last drink and the thing that kept him sober",
+  ageMin: 38,
+  ageMax: 40,
+  themes: ["addiction", "shame", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was a grown man whose drinking had wrecked his career, his health, and nearly his marriage, and who had failed to stop so many times that he had run out of reasons to believe he ever could.",
+    "Lying in a hospital bed, ashamed and hopeless, he finally surrendered the fight to control it on his own.",
+    "What kept him sober turned out not to be willpower but other people — he discovered he could stay dry by helping the next person who was drowning the way he had been.",
+  ],
+  facets: {
+    emotionalCore:
+      "He carried the specific despair of the addict who has broken every promise to quit — the shame of knowing exactly what he is doing to the people he loves and doing it anyway, and the terror that he is simply beyond help.",
+    decisionShape:
+      "Whether to keep believing he could white-knuckle his way to control on his own, as he had failed to do for years, or to admit total defeat and try something that required surrendering and leaning on others.",
+    triggerEvent:
+      "Years of worsening alcoholism had destroyed his work and his health and brought him to repeated hospitalizations, until he hit a bottom from which he could see no way out.",
+    agencyState:
+      "He had almost no power over the drink — that was the whole problem — and the only move left was the paradoxical one: to stop relying on his own strength, reach for help, and then offer it to someone else.",
+  },
+  biographicalFacts: `William Griffith Wilson was born November 26, 1895, in East Dorset, Vermont. A veteran of the First World War, he became a Wall Street stock speculator in the 1920s. He was also a severe alcoholic, and his drinking grew steadily worse, wrecking his finances, his health, and his marriage to his wife, Lois. Through the early 1930s he was hospitalized repeatedly at the Charles B. Towns Hospital in New York under Dr. William Silkworth, who taught him that alcoholism was a kind of disease rather than a moral failing. An old drinking friend, Ebby Thacher, who had gotten sober, visited Wilson and showed him it was possible. On December 11, 1934, drunk and despairing during his final hospital stay, Wilson had a sudden, overwhelming experience that lifted his obsession to drink; he never drank again. He came to believe he stayed sober by carrying the message to other alcoholics. In May 1935, on a failed business trip to Akron, Ohio, terrified he would drink, he sought out another struggling alcoholic — a local surgeon, Dr. Bob Smith — and helped him get sober. Their meeting is considered the founding of Alcoholics Anonymous, which Wilson co-created and which grew into a worldwide fellowship that has helped many millions of people recover. He wrote the book and the twelve steps at its core, and, honoring its tradition of anonymity, was known publicly only as "Bill W." He died January 24, 1971.`,
+  sources: [
+    "Alcoholics Anonymous (the \"Big Book\"), 1st ed. (New York: Works Publishing, 1939).",
+    "\"Pass It On\": The Story of Bill Wilson and How the A.A. Message Reached the World (New York: A.A. World Services, 1984).",
+    "Cheever, Susan. My Name Is Bill: Bill Wilson - His Life and the Creation of Alcoholics Anonymous (New York: Simon & Schuster, 2004).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A once-promising, ambitious man whose alcoholism cost him work and health and was destroying his marriage, with a long history of broken promises to quit - all documented.",
+      text: `There was a man. He was in his late thirties.
+
+Once, he had been on his way up — sharp, ambitious, good at his work, married to a woman who believed in him. But there was a thing that had its hooks in him, and the thing was winning.
+
+He drank. Not the way some people drink. The way that takes everything. It had cost him his work. It was costing him his health. It was breaking the heart of the woman who loved him, slowly, in front of his own eyes.
+
+He had promised to stop more times than he could count. He had meant it every time. And every time, he had ended up back in the same place, with a glass in his hand and a fresh load of shame on his back.
+
+He was starting to believe he was simply beyond help.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Repeated hospitalizations, the despair and shame of relapse, and the collapse of the belief that willpower could fix it are documented. The bottom precedes his recovery experience.",
+      text: `He ended up in a hospital. Again.
+
+It wasn't the first time. The doctors there knew him. They had dried him out before, and watched him walk out and come right back. He knew what they must think of him. He thought worse of himself.
+
+Lying in that bed, he hit the bottom of everything. He had tried so hard, for so long, to control this on his own — to be strong enough, to want it badly enough — and he had failed, over and over and over. The shame of it was crushing. He had become a man who hurt the people he loved most, knew it, and couldn't stop.
+
+There was nothing left of his pride. Nothing left of the idea that he could fix himself by simply trying harder.
+
+He was completely, utterly out of his own ideas.
+
+And it was right there, with nothing left, that something finally gave.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "His surrender of the willpower model, and the influence of a newly-sober friend who showed recovery was possible by leaning on others, are documented. The spiritual experience is left under-specified on purpose.",
+      text: `He stopped fighting it alone.
+
+That was the strange key. For years he had treated this as a battle of willpower — him against the drink — and he had lost every round. Now, with no strength left, he gave up the idea that his own strength was the answer.
+
+And he latched onto something a friend had shown him. This friend had been just as far gone, and had gotten sober — not by being tougher, but by leaning on other people and on something bigger than himself.
+
+The man in the bed grabbed that idea the way a drowning person grabs a rope.
+
+He didn't drink that day. Or the next. Something had shifted that he couldn't fully explain. The endless craving had, for now, let go of him.
+
+But he knew himself. He knew it could come back. He needed something to keep it away.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The fragility of early sobriety and the dangerous Akron business trip where he feared he would drink are documented and set up the turn.",
+      text: `Staying sober, it turned out, was its own daily fight.
+
+The first days are one thing — the real test is the ordinary afternoon, weeks later, when the old pull comes back quiet and reasonable and tells you one won't hurt.
+
+He white-knuckled through it. He held on. But he could feel how fragile it was. He was one bad night away from losing everything he had just barely gotten back.
+
+Then came a trip away from home that went badly. A deal fell through. He was alone, discouraged, in a strange town — exactly the kind of moment that had always sent him to the bottle.
+
+He could feel it coming for him. The craving, rising. He knew, standing there, that his sobriety — and maybe his life — was about to come down to what he did in the next hour.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Instead of drinking, he sought out another struggling alcoholic (Dr. Bob Smith) to help, and found that helping kept him sober - the core insight and the founding moment. Documented.",
+      text: `So he did something that didn't quite make sense.
+
+Instead of looking for a drink, he went looking for another person like himself. Another hopeless case. Someone else who was drowning in the exact same way.
+
+He found one — a man in that town who was deep in it, just as he had been. And he sat with that man, and talked to him, not as an expert with answers but as one drunk to another. I have been where you are. Here is what is helping me.
+
+And here is the thing he discovered: helping that man helped him. Sitting with someone else's struggle kept his own craving at bay better than willpower ever had. In trying to save another person, he saved himself.
+
+That was the secret. Not strength. Connection. One person who had been there, reaching for the next.
+
+He didn't drink that day. Because he spent it helping someone else not drink.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The fellowship grew from that first pairing into a worldwide movement that has helped millions; he stayed sober for life. Name and the fellowship withheld for the bridge.",
+      text: `That one conversation became two. Then a small group. Then more.
+
+He and the man he had helped started finding others — building a fellowship of people who had all been to the bottom, who stayed sober by being honest with each other and helping the next person through the door. No experts. No shame. Just people who had been there, holding the rope for the ones still in the water.
+
+It grew. Slowly at first, then beyond anything he could have imagined. The simple thing he had stumbled into — one wrecked person helping another — spread across the country, and then the world.
+
+Millions of people who thought they were beyond help got their lives back through the thing he started in a hospital bed and a stranger's living room.
+
+He stayed sober the rest of his life. And he did it the same way he had that first day: by helping the next person who couldn't.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was William Wilson — though almost everyone who knows what he built knows him only as Bill W.
+
+He founded Alcoholics Anonymous. The thing he discovered — that people who have hit bottom can stay sober by helping each other, one day at a time — has saved the lives of many millions of people, and the fellowship he started is now all over the world. He kept his last name private on purpose, because he believed the help mattered more than any one person's fame.
+
+You wrote: "{feeling}"
+
+He didn't beat the thing that was destroying him by being strong. He beat it by admitting he couldn't do it alone, and then by reaching for someone else who was struggling too.
+
+You don't have to carry it by yourself. He couldn't either. That turned out to be the way through — not the thing to be ashamed of.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1949 NYC; serious competitive figure skater who failed to make the US Olympic
+//    team; joined Vogue at 23, 17 years there, rose to senior fashion editor; 1987 passed over for
+//    editor-in-chief (it went to Anna Wintour), left; ~2 years as a Ralph Lauren design director;
+//    around her own wedding at 40, unable to find a dress she loved, she designed her own and opened
+//    her first bridal boutique in 1990 (age 41); became a world-famous bridal/fashion designer; the
+//    skating discipline and the editor's eye both fed the design career. (Wang, Vera Wang on
+//    Weddings; WWD and Vogue profiles.)
+//  Interpretive: "two near-misses, then a third start"; the flat grief of doing everything right and
+//    still not getting the thing. Grounded.
+//  Avoid saying: don't name Wang / Vogue / wedding dresses / the skating-Olympics / Wintour before
+//    the bridge. She is living - present tense in the reveal. The skating + magazine + bridal combo
+//    IS the reveal; keep them generic ("a sport," "a well-known company") until then.
+const wang: FigureStageRow = {
+  figureKey: "wang",
+  displayName: "Vera Wang",
+  birthYear: 1949,
+  stageId: "1987-1990-passed-over-to-the-pivot",
+  stageLabel: "Twice the plan failed: passed over, then starting over at forty",
+  ageMin: 38,
+  ageMax: 41,
+  themes: ["late_start", "self_invention", "public_failure"],
+  antiThemes: [],
+  shapeSentences: [
+    "Twice she committed her whole self to a path — first a sport, then a career — and twice the door she had worked toward for years closed in her face.",
+    "After almost two decades at a company, she was passed over for the top job she had earned, and walked away with nothing to show for the climb.",
+    "She didn't find the work she would be known for until she was forty, in a field she had never worked in, starting from scratch.",
+  ],
+  facets: {
+    emotionalCore:
+      "She felt the flat, disorienting grief of doing everything right and still not getting the thing — of looking up in mid-life and realizing the path you bet on simply is not going to open.",
+    decisionShape:
+      "Whether to accept that her best years and chances were behind her after two long roads led nowhere, or to start over a third time, from zero, in something completely new and late.",
+    triggerEvent:
+      "After failing years earlier to reach the top of the sport she had trained for, she spent nearly two decades climbing at a company — and was then passed over for the leadership job she had worked toward.",
+    agencyState:
+      "She had talent, taste, and a long resume, and none of it had delivered the thing she wanted; what she still controlled was whether to risk starting a brand-new career when it felt far too late.",
+  },
+  biographicalFacts: `Vera Ellen Wang was born June 27, 1949, in New York City. She was a serious competitive figure skater as a young woman, training for years, but she failed to make the U.S. Olympic team and gave up the sport. She turned to fashion, joining Vogue magazine at twenty-three. She worked there for seventeen years and rose to senior fashion editor, but in 1987 she was passed over for the editor-in-chief position — which went to Anna Wintour — and left the magazine. She spent about two years as a design director for Ralph Lauren. Then, around the time of her own wedding at the age of forty, frustrated that she could not find a wedding dress she loved, she decided to design her own and to start her own bridal business. She opened her first boutique in 1990, at forty-one. Vera Wang became one of the most famous and influential bridal and fashion designers in the world, dressing brides, celebrities, and Olympic figure skaters. Her two earlier "failures" — the skating and the magazine — both fed the career she finally found: a designer with an athlete's discipline and an editor's eye, who didn't begin her real life's work until middle age.`,
+  sources: [
+    "Wang, Vera. Vera Wang on Weddings (New York: HarperCollins, 2001).",
+    "\"How Vera Wang Went From Ice Skater to Top Bridal Designer,\" WWD (career feature).",
+    "Career-pivot profiles in Vogue and The Cut.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A young woman who trained for years at a competitive sport and aimed at its highest level, then failed to make the top team - documented. The sport is left unnamed for the bridge.",
+      text: `There was a woman who had spent her whole young life chasing one dream.
+
+A sport. She had trained at it since she was a girl — hours on end, year after year, the way you only train for something you intend to be great at. It was who she was. When people asked what she did, that was the answer.
+
+She was good. Good enough to compete at a high level. Good enough to believe the very top was within reach.
+
+And then she tried out for the highest level of all — the one she had aimed at her entire childhood.
+
+She didn't make it.
+
+Just like that, the thing she had organized her whole young life around was over. The door she had been running toward shut, and she was standing on the wrong side of it, wondering what on earth she was supposed to do now.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "A second career built over ~17 years at a well-known company, rising to a senior role, then being passed over for the top job - documented. Company unnamed for the bridge.",
+      text: `She picked herself up and built a second life.
+
+She found a new field, nothing like the first, and she was good at this too. She joined a well-known company and worked her way up — year after year, climbing, proving herself, getting closer to the top.
+
+She gave it almost two decades. She earned the next step. When the big job finally opened — the one she had spent seventeen years working toward — she was an obvious choice.
+
+They gave it to someone else.
+
+After all that time, all that work, she was passed over. The top of this mountain, too, turned out to be a door that closed in her face.
+
+She left. And there she was, no longer young, with two long roads behind her that had each led almost to the summit and then stopped. Twice now she had given everything to a path. Twice it had not opened.
+
+What do you even do with that?`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "She took further work in the same field (a design role elsewhere) while still searching for her own thing, approaching forty - documented. The \"too late\" pressure is a fair reading.",
+      text: `She didn't fall apart. She kept moving.
+
+She took another job in the same world, working for someone else, learning more of the craft. It was good work. It just wasn't hers. She was still, at heart, a person looking for the thing that was actually hers — and running low on time to find it, or so the world kept telling her.
+
+She was approaching forty. In the fields she had worked in, that was supposed to be late. The big dreams were supposed to be behind her now. The sensible thing was to settle, to be grateful for a good-enough career, to stop reaching.
+
+She wasn't quite ready to stop reaching.
+
+She just didn't know yet what she was reaching for.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The mid-life in-between - competent but unfulfilled, and old by her industries' standards - is a fair characterization of this period before the pivot.",
+      text: `For a while she lived in that in-between place.
+
+Good at her work, but not in love with it. Successful enough on paper, but quietly certain she hadn't yet done the thing she was meant to do. And old enough, by the rules of her industries, to wonder if she had missed her shot entirely.
+
+It is a particular kind of hard — not dramatic, just heavy. You did everything right. You worked, you climbed, you were good. And somehow the life you pictured never quite arrived, and now there's a clock on it, and a voice that says maybe this is just how it stays.
+
+She carried that around. Two near-misses behind her, forty ahead of her, and no clear idea what came next.
+
+And then the answer came from the most ordinary place imaginable.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Planning her own wedding at ~40, unable to find a dress she loved, she designed her own and decided to start her own business in a field she'd never worked in - documented.",
+      text: `She was getting married.
+
+And when she went looking for a dress for her own wedding, she couldn't find one she loved. Everything out there felt wrong to her — and she had spent a whole career around taste and style, so she knew exactly what she wanted and exactly why nothing measured up.
+
+So she designed her own.
+
+And somewhere in doing that — in making the thing she couldn't find — something clicked that two whole careers never had. This. This was it. The taste she had built in one field, the discipline she had built in the other, all of it suddenly had somewhere to go.
+
+At an age when she was supposed to be winding down, she decided to start something brand new. Her own business. In a field she had never actually worked in. From scratch.
+
+Everyone might have called it late. She called it the beginning.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The business she started at ~40 made her one of the most famous names in her industry, and both prior \"failures\" turned out to be the training it required. Name/field withheld for the bridge.",
+      text: `It worked. Spectacularly.
+
+The thing she started at forty, in a field she had entered as a beginner, made her one of the most famous names in her whole industry. People all over the world know her work. The two failures that had broken her heart — the sport, the company — turned out to be the exact training she needed: one gave her discipline, the other gave her eye, and the new work demanded both.
+
+Nothing was wasted. Not the years on the first dream that didn't happen. Not the long climb at the company that passed her over. It all fed the thing she finally became, the thing that had been waiting for her on the other side of forty.
+
+She had spent half her life sure she had missed her moment.
+
+Her moment hadn't come yet. That was all.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name is Vera Wang.
+
+She is one of the most famous fashion designers in the world, known above all for her wedding dresses. And she didn't design her first one until she was forty. Before that, she had failed to make the Olympic figure-skating team as a young woman, and then spent seventeen years at a magazine only to be passed over for the top job. Both of those heartbreaks became the foundation of the career that made her famous.
+
+You wrote: "{feeling}"
+
+Twice she gave everything to a path and watched it close. She could have decided, very reasonably, that her chances were behind her. Instead she started over, at forty, at something new — and that one was hers all along.
+
+It is not too late, and the roads that didn't work were not wasted. Hers weren't. They were the training.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1888; Los Angeles oil-company executive (Dabney Oil Syndicate); drinking,
+//    absenteeism, and affairs during the Depression; fired in 1932 at age 44; broke, he taught
+//    himself pulp writing by studying and imitating Erle Stanley Gardner; first story "Blackmailers
+//    Don't Shoot" in Black Mask, 1933; first novel The Big Sleep, 1939 (age 51), introducing the
+//    detective Philip Marlowe; became a master of hard-boiled crime fiction and a Hollywood
+//    screenwriter (Double Indemnity); d.1959. (Chicago Public Library biography; Hiney, Raymond
+//    Chandler: A Biography.)
+//  Interpretive: the midlife shame of self-inflicted failure; "the only door left." Grounded.
+//  Avoid saying: don't name Chandler / Marlowe / The Big Sleep / detective fiction before the
+//    bridge. Don't moralize the drinking (Wilson is the addiction figure) - here it's context for
+//    the firing, and the through-line is the late reinvention.
+const chandler: FigureStageRow = {
+  figureKey: "chandler",
+  displayName: "Raymond Chandler",
+  birthYear: 1888,
+  deathYear: 1959,
+  stageId: "1932-1939-fired-to-the-first-novel",
+  stageLabel: "Fired at forty-four: teaching himself a new craft in the wreckage",
+  ageMin: 44,
+  ageMax: 52,
+  themes: ["late_start", "public_failure", "self_invention"],
+  antiThemes: [],
+  shapeSentences: [
+    "He wrecked a good executive career through his own drinking and got fired at forty-four, in the worst economy of his life, when starting over was supposed to be impossible.",
+    "Broke and middle-aged, he taught himself an entirely new craft from scratch, studying cheap magazines like a schoolboy because it was the only door left.",
+    "He did not publish the first real book of his new life until he was fifty-one — and it turned out to be the start of everything he is remembered for.",
+  ],
+  facets: {
+    emotionalCore:
+      "He felt the particular shame of a grown man who had held a good life and thrown it away himself, now staring at middle age with nothing to show and every rule saying it was too late to begin again.",
+    decisionShape:
+      "Whether to accept that his best years were spent and wasted, or to start over as a rank beginner in a brand-new craft at an age when that is supposed to be foolish.",
+    triggerEvent:
+      "He lost his executive job to his own drinking and unreliability in the depths of the Great Depression, leaving him middle-aged, broke, and effectively unemployable.",
+    agencyState:
+      "He had no career, no prospects, and a bad reputation, but he still had a desk, some time, and a long-buried hunch that he might be able to write — the one thing nobody could take.",
+  },
+  biographicalFacts: `Raymond Thornton Chandler was born July 23, 1888. After an unsettled early life he became a successful executive in the Los Angeles oil business, rising to a vice presidency at the Dabney Oil Syndicate. During the Great Depression his heavy drinking, absenteeism, and affairs caught up with him, and he was fired in 1932, at age forty-four. Broke and middle-aged in a collapsed economy, he turned to a long-latent ambition and taught himself to write pulp fiction — reportedly by closely studying and imitating a novelette by Erle Stanley Gardner. His first story, "Blackmailers Don't Shoot," appeared in the pulp magazine Black Mask in 1933, when he was forty-five, for very little money. He published more stories through the 1930s, sharpening his style, and in 1939, at age fifty-one, published his first novel, The Big Sleep, introducing the private detective Philip Marlowe. Chandler went on to become one of the most influential crime writers in the English language, elevating hard-boiled detective fiction into literature, and later a celebrated Hollywood screenwriter (co-writing Double Indemnity). He died in 1959.`,
+  sources: [
+    "Hiney, Tom. Raymond Chandler: A Biography (London: Chatto & Windus, 1997).",
+    "MacShane, Frank. The Life of Raymond Chandler (New York: E. P. Dutton, 1976).",
+    "\"Raymond Chandler Biography,\" Chicago Public Library.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A successful oil-industry executive whose drinking and unreliability were unraveling a respectable career is documented. The complacency is a fair reading.",
+      text: `There was a man in his early forties.
+
+On paper, he had made it. He was an executive at a company — a good job, a real salary, the kind of position people respected. He wore the suit. He had the office.
+
+But he was coming apart underneath it. He drank, more and more. He stopped showing up. He had been good at the work once, but he had lost interest in it, and it showed.
+
+He was the kind of man other men pointed to as a cautionary tale — talented, well-paid, and quietly throwing it all away.
+
+He probably told himself he had plenty of time to pull it together.
+
+He was about to find out he didn't.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Fired at 44 in the depths of the Depression, with the resulting unemployability of a middle-aged man with a bad reputation, is documented. The shame is editorial but well-grounded.",
+      text: `They fired him.
+
+At forty-four, in the middle of the worst economy the country had seen, he lost the good job and everything that came with it.
+
+The timing could not have been worse. There was no work out there. Men far younger and steadier than him were standing in lines for anything at all. And here he was — middle-aged, with a drinking problem and a reputation for being unreliable, looking for someone to take a chance on him.
+
+No one was going to.
+
+He had spent his best years climbing a ladder that had just been kicked out from under him. He was too old to start over, by every rule anyone knew. He had a wife to support and almost nothing coming in.
+
+He sat with the particular shame of a grown man who'd had it all and lost it through his own fault.
+
+He had to do something. He had no idea what.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "He taught himself to write pulp fiction by closely studying and imitating an existing writer's work - documented. \"A beginner again at forty-five\" is accurate.",
+      text: `So he tried something almost embarrassing for a man his age.
+
+He decided to teach himself to write.
+
+He had always had a feeling there was a writer somewhere in him, buried under decades of business. Now, with nothing left to lose, he went looking for it. He got hold of the cheap, pulpy magazines people read on trains, the ones full of crime stories, and he studied them like a student. He took them apart. He copied them out by hand to learn how they worked.
+
+Then he started writing his own.
+
+It was slow. He was a beginner again at forty-five, learning a craft most writers start in their twenties. He wrote, and rewrote, and threw away, and tried again.
+
+He had no idea if any of it was good. He just knew it was the only door left, so he kept walking toward it.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Years of low-paying pulp stories through the 1930s, gradually refining his voice, are documented. No sudden break preceded the first novel.",
+      text: `It took years.
+
+His first little stories sold for almost nothing — a few dollars from those cheap magazines, barely enough to live on. He wrote one, then another, then another, getting a little better each time, learning his own voice slowly, in his late forties, story by story.
+
+There was no overnight anything. No big break. Just a middle-aged man at a desk, doing the unglamorous work of getting good at something late, with the clock running and the money tight.
+
+He kept at it. The drinking, the lost job, the shame — none of it had stopped him from finding, of all things, a brand-new craft on the far side of fifty.
+
+He was building toward something. He just couldn't see how big yet.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "First novel at 51, introducing his famous detective and a distinctive new voice in crime writing - documented.",
+      text: `Then, at fifty-one, he wrote a book.
+
+A real one. A novel, built out of everything he had taught himself in those years of cheap stories. It had a detective in it — a tough, lonely, decent man walking through a corrupt city — and a voice unlike anything else out there. Hard and clean and a little heartbroken.
+
+People noticed. This wasn't pulp anymore. This was something new.
+
+The man who had been fired in disgrace at forty-four, who had taught himself to write from magazines, had just published one of the books that would change what crime stories could be.
+
+At an age when most people are settled — finished becoming whoever they are going to be — he had just become a writer.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "His later novels, the iconic detective, his lasting influence on the genre, and his Hollywood screenwriting are documented. Name and titles withheld for the bridge.",
+      text: `He had found it. Late, but completely.
+
+He wrote more novels, and they got better, and the lonely detective he had invented became one of the most famous characters in the language. Other writers studied him the way he had once studied those cheap magazines. The movies came calling, and he helped write some of the most admired films of his day.
+
+The voice he had built at a desk in middle age — that hard, sad, beautiful way of seeing a city — outlived him completely. People still read him. People still copy him. He basically invented a whole style.
+
+And he didn't even start until he had already failed, been fired, and run out of other options.
+
+The end of his old life turned out to be the beginning of the only one that mattered.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Raymond Chandler.
+
+He became one of the greatest crime writers who ever lived — the man who turned detective stories into real literature, and created the legendary private eye Philip Marlowe. Writers and filmmakers still imitate him today. And he didn't publish his first novel until he was fifty-one, after getting fired from his executive job at forty-four, broke and middle-aged in the Great Depression.
+
+You wrote: "{feeling}"
+
+He had every reason to believe his best years were behind him. He'd had a career and wrecked it. He was too old, by all the usual rules, to begin again. So he began anyway, from scratch, at an age when you're supposed to be done.
+
+It is not too late to become who you actually are. He didn't start until midlife either.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1917; daughter of Eugene Meyer, who owned The Washington Post and handed it to her
+//    husband, Phil Graham, rather than to her; Phil was charismatic, domineering, and belittling,
+//    and had bipolar disorder; he died by suicide on 3 Aug 1963; Katharine, 46, took over the
+//    company; she was gripped by self-doubt and underestimated by the men around her; she made the
+//    call to publish the Pentagon Papers (1971) and backed the Watergate reporting; she became one
+//    of the most powerful publishers in America; memoir Personal History won the Pulitzer (1998);
+//    d.2001. (Graham, Personal History.)
+//  Interpretive: "raised to pour the coffee," the imposter dread. Drawn from her memoir.
+//  Avoid saying: don't name Graham / The Washington Post / Pentagon Papers / Watergate before the
+//    bridge - soften to "the biggest, most dangerous story of its time." Handle the husband's death
+//    gently in-beat ("died suddenly"); the suicide stays in the facts, not the prose. Don't imply
+//    she sought power - it was thrust on her.
+const graham: FigureStageRow = {
+  figureKey: "graham",
+  displayName: "Katharine Graham",
+  birthYear: 1917,
+  deathYear: 2001,
+  stageId: "1963-1971-thrust-into-the-chair",
+  stageLabel: "Thrust into the chair: a diminished wife who became formidable",
+  ageMin: 45,
+  ageMax: 48,
+  themes: ["self_doubt", "social_constraint", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "She had been raised and married to be a wife in a powerful man's shadow, taught by everyone, including herself, that she was not the kind of person who runs things.",
+    "When her husband died suddenly and the family business fell to her, she was certain she would fail at it, publicly and badly, in front of everyone who already doubted her.",
+    "She kept walking into rooms where she felt like a fraud until, one decision at a time, she discovered she was the strongest person in them.",
+  ],
+  facets: {
+    emotionalCore:
+      "She carried the deep self-doubt of a woman taught her whole life that her judgment didn't count — the conviction that she was a fraud the moment she stepped outside the narrow role she'd been handed.",
+    decisionShape:
+      "Whether to do the expected thing and hand the business to some capable man and retreat to her old life, or to take a job she felt wholly unequal to and risk failing at it in public.",
+    triggerEvent:
+      "Her husband, who ran the powerful family company, died suddenly, leaving the business — and a role she had never been prepared for — abruptly in her hands.",
+    agencyState:
+      "She suddenly held enormous power she had never been trained to use and did not believe she deserved, surrounded by men who assumed she would fail and quietly hoped she would step aside.",
+  },
+  biographicalFacts: `Katharine Graham was born June 16, 1917, the daughter of the financier Eugene Meyer, who bought The Washington Post in 1933. When Katharine married Philip Graham in 1940, her father eventually handed control of the Post to her husband rather than to her — a choice she accepted as natural for the time. Phil Graham was brilliant and charismatic but also domineering and often belittling toward her, and he suffered from severe bipolar disorder. On August 3, 1963, he died by suicide. At forty-six, having spent her adult life as a wife and mother in his shadow, Katharine unexpectedly took over the company to preserve it for her children. She was gripped by self-doubt, felt like an impostor among the powerful men of the business, and was widely underestimated. She learned the job in public. In 1971 she made the decision to publish the Pentagon Papers, and through 1972–74 she backed her reporters' Watergate investigation despite enormous political and financial pressure. She became one of the most powerful and respected publishers in America. Her memoir, Personal History, won the Pulitzer Prize in 1998. She died in 2001.`,
+  sources: [
+    "Graham, Katharine. Personal History (New York: Alfred A. Knopf, 1997).",
+    "Felsenthal, Carol. Power, Privilege, and the Post: The Katharine Graham Story (New York: Putnam, 1993).",
+    "\"Katharine Graham,\" Britannica.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Raised to be a wife, married to a charismatic, belittling man who ran the family business her father gave to him (not her); her diminished self-image is documented in her memoir.",
+      text: `There was a woman in her forties.
+
+She had been raised, her whole life, to be a wife. A good one. The daughter of a powerful man, married to a brilliant, charming, difficult one. Her husband ran the important family business — the one her own father had built, and had handed to her husband instead of to her.
+
+She kept the house. She raised the children. She stood a little behind her husband at parties and let him shine, because that was the role, and she had never been taught there was another one.
+
+He could be cruel to her. He made her feel small, and slow, and not very bright.
+
+She had come to half-believe it. She thought of herself as a wife, a hostess, a helper. Nothing more. Certainly not someone who could ever run anything herself.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Her husband's sudden death and her abrupt, unprepared inheritance of the company, the assumption she'd sell or hand it off, and her terror and impostor feelings are documented. The suicide is softened to \"died suddenly.\"",
+      text: `Then her husband died, suddenly, and everything fell on her.
+
+The business — the big, important, powerful one — had no one to run it. It was hers now, by family, but she had never been groomed for it. She had been groomed to pour the coffee.
+
+Everyone around her assumed she would sell it, or hand it to some man to run, and go quietly back to her old life. That was what a woman in her position did.
+
+She thought so too, at first. She was terrified. She walked into rooms full of powerful men who had spent their whole careers in this world, and she felt like a fraud — a housewife playing at a job she had no business holding. She second-guessed every word out of her own mouth.
+
+She was sure, deep down, that she was going to fail. Publicly. Badly. In front of everyone who already doubted her.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "She chose to run it herself rather than sell or delegate, working through intense nerves and over-preparation - documented in her memoir.",
+      text: `But she didn't sell it. And she didn't hand it off.
+
+She decided, against all her own doubt, to try to do it herself.
+
+It was not brave and confident. It was shaky. She would go into meetings sick with nerves. She would prepare three times as hard as the men, because she was sure she was three times as likely to be caught out. She made mistakes and burned with embarrassment over them.
+
+But she kept showing up. Day after day, into rooms where she felt she didn't belong, doing a job everyone expected her to fail at.
+
+She didn't feel like a leader. She just refused to run away from the chair she'd been put in.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Years of learning a complex business in public, being underestimated, and gradually trusting her own judgment are documented.",
+      text: `For a long time it was hard and lonely.
+
+She was learning an enormous, complicated business in public, with no margin for error and an audience half-hoping she would stumble. The men around her were polite, mostly, in the way that doesn't quite hide that they don't take you seriously.
+
+She kept at it. She learned. Slowly, the job stopped feeling like a costume. She started having opinions, and then trusting them, and then acting on them.
+
+The voice she had spent her whole life keeping quiet — the one she'd been taught wasn't worth much — turned out to be sharp, and steady, and right more often than the loud, confident men around her.
+
+She was becoming something nobody had expected. Including herself.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The defining test: deciding to publish a dangerous story, then backing her reporters under intense pressure, with the company at risk - documented (Pentagon Papers, Watergate), softened to remove identifying specifics.",
+      text: `Then came the test that decided everything.
+
+Her company got hold of the biggest, most dangerous story of its time — the kind that powerful people will destroy you to bury. Printing it could have ruined the whole business. The government leaned on her. Her own advisors were terrified.
+
+It came down to her. One decision, hers alone, with everything on the line.
+
+The woman who used to think she wasn't smart enough to have opinions looked at the risk, and looked at what was right, and said: print it.
+
+And then, when it got even more dangerous, she backed her people again. And again.
+
+The frightened housewife everyone expected to fold turned out to have more nerve than any of the men who'd doubted her. When it mattered most, she didn't blink.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Two decades running the company, becoming one of the most powerful figures in the country, while never fully losing the memory of her early self-doubt - documented. Name withheld for the bridge.",
+      text: `She ran that company for more than twenty years.
+
+She turned it into one of the most respected and powerful of its kind in the country, and she became one of the most powerful people in the nation — a person the most important men alive treated with care, because they knew, now, exactly how formidable she was.
+
+The girl who was raised to pour the coffee had become someone whose decisions shaped the country.
+
+And she never quite lost the memory of the scared woman in the meeting, sure she didn't belong. She just stopped letting that woman have the final say.
+
+She had been underestimated her whole life — most of all by herself. It turned out she was the last one to find out who she really was.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Katharine Graham.
+
+She ran The Washington Post for more than two decades. She made the call to publish the Pentagon Papers, and she backed the reporters whose work brought down a president. She became one of the most powerful and respected people in America — and she did it after her husband's death forced her, at forty-six, into a job she was certain she would fail at, having spent her whole life being treated, and treating herself, as just a wife.
+
+You wrote: "{feeling}"
+
+Nobody believed she could do it. She least of all. The doubt didn't disappear. She just kept walking into the room anyway, until one day she looked up and discovered she had become the strongest person in it.
+
+You can feel like a fraud and still be exactly the right person for the thing. She did, for years. And she was.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1902; maize geneticist; discovered transposition ("jumping genes") ~1944-48,
+//    presented it ~1951 to a cold, uncomprehending reception; deeply disappointed, she stopped
+//    publishing those results and stopped lecturing (~1953) but kept researching in isolation for
+//    decades; vindicated in the late 1960s-70s as molecular biology caught up; solo Nobel in
+//    Physiology or Medicine 1983 (age 81), the first woman to win it unshared; d.1992. (Keller, A
+//    Feeling for the Organism; Nobel; Britannica.)
+//  Interpretive: "she loved the work for itself, so being ignored couldn't stop her, only delay the
+//    recognition." A fair reading of her documented temperament.
+//  Avoid saying: don't name McClintock / Nobel / "jumping genes" / corn-maize before the bridge.
+//    Don't make her a bitter martyr - the record shows equanimity, not resentment.
+const mcclintock: FigureStageRow = {
+  figureKey: "mcclintock",
+  displayName: "Barbara McClintock",
+  birthYear: 1902,
+  deathYear: 1992,
+  stageId: "1951-1960s-dismissed-and-right",
+  stageLabel: "Dismissed and right: the discovery the field ignored for decades",
+  ageMin: 48,
+  ageMax: 55,
+  themes: ["dismissed", "quiet_defiance", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "She made the discovery of her life, showed it to her field, and watched them look at her as if she had gone strange — because what she had found was decades ahead of what they could understand.",
+    "Rather than beg them to believe her, she simply stopped trying to convince anyone and kept doing the work alone, in near-total scientific silence, for the better part of thirty years.",
+    "She let being right be its own reward, because for a very long time it was the only reward on offer — until, at last, the world caught up.",
+  ],
+  facets: {
+    emotionalCore:
+      "She felt the lonely certainty of someone who has seen a true thing clearly and cannot get anyone else to see it — and the quiet grief of being treated as eccentric for being early.",
+    decisionShape:
+      "Whether to fight for recognition and water down her findings to make them palatable, or to keep following the truth alone, unpublished and unrecognized, for as long as it took.",
+    triggerEvent:
+      "She presented a discovery that contradicted the deepest assumptions of her field, and instead of curiosity she met blank incomprehension and dismissal.",
+    agencyState:
+      "She had no power to make the field understand her, but complete power over whether she kept doing the work — and she chose to keep going, in obscurity, on her own terms.",
+  },
+  biographicalFacts: `Barbara McClintock was born June 16, 1902. A maize geneticist of extraordinary gifts, she spent decades in painstaking observation of corn and, in the 1940s, discovered "transposition" — that genetic elements can move and rearrange themselves on the chromosome (now called transposons, or "jumping genes"). It overturned the assumption that the genome was a stable, fixed thing. When she presented her findings around 1951, the scientific community largely met them with incomprehension and skepticism; the idea was too far ahead of what the field could then grasp. Deeply disappointed, she stopped publishing her results and stopped giving lectures around 1953 — but she never stopped doing the research, continuing in relative scientific isolation for decades. Only in the late 1960s and 1970s, as molecular biology matured, did other scientists confirm what she had seen, and her work was recognized as foundational. In 1983, at age eighty-one, she was awarded the Nobel Prize in Physiology or Medicine — the first woman to win that prize unshared. She continued her research almost to the end of her life. She died September 2, 1992.`,
+  sources: [
+    "Keller, Evelyn Fox. A Feeling for the Organism: The Life and Work of Barbara McClintock (San Francisco: W. H. Freeman, 1983).",
+    "\"Barbara McClintock,\" The Nobel Prize, nobelprize.org.",
+    "\"Barbara McClintock,\" Britannica.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. Decades of patient close observation of one organism, indifference to status, and a major discovery that didn't fit the textbooks - all documented.",
+      text: `There was a woman, around fifty, who studied living things.
+
+She was brilliant — everyone in her field knew it. She had spent her whole life looking very, very closely at one kind of plant, season after season, decades of patient watching, until she understood it better than almost anyone alive.
+
+She wasn't interested in fame or committees. She was interested in the truth of how living things actually worked. She would sit with her plants for hours, noticing what no one else noticed.
+
+And after all those years of looking, she had seen something. Something big. Something that didn't fit anything the textbooks said.
+
+She was sure of it. She had the evidence, row after row of it.
+
+She couldn't wait to show them.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Her ~1951 presentation met with incomprehension and dismissal because the idea was too far ahead of the field - documented. The interior shutting-down is a fair reading.",
+      text: `She stood up in front of the other scientists and showed them what she had found.
+
+And they didn't get it.
+
+Worse than didn't get it — they looked at her like she had lost her way. What she was describing went against the deepest assumptions of her field, and rather than wonder if she might be onto something, the room mostly decided she had gone strange. Too long alone with her plants.
+
+There were polite silences. Blank faces. A few people were openly dismissive. Almost no one understood, and the few who half-did weren't sure they believed it.
+
+She had handed them the discovery of her life, and they had handed it back as if it were nothing.
+
+She was not a person who showed much. But something in her closed that day. She had been so sure they would see it. They hadn't. And she did not know how to make them.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "She stopped publishing and lecturing around 1953 rather than fight for acceptance, but kept doing the research - documented. The framing of this as a deliberate, dignified choice is fair.",
+      text: `So she made an unusual choice.
+
+She stopped trying to convince them.
+
+She didn't argue. She didn't fight for credit, or campaign, or water down her findings to make them easier to swallow. She also didn't quit. She did something quieter and stranger than either.
+
+She just kept working. Alone. She stopped publishing the results no one understood, stopped giving the talks that fell flat — and went right back to her plants, and kept following the truth wherever it led, whether or not anyone ever came along.
+
+She decided the work was worth doing even if she was the only person alive who knew it mattered.
+
+So she did it. For years. In near-total scientific silence.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Decades of scientific isolation, being seen as an eccentric while her finding sat unrecognized, and her refusal to become bitter, are documented.",
+      text: `The years stretched on. A lot of them.
+
+She worked in a kind of exile — not forced out, exactly, just quietly set aside. Seen as the eccentric woman doing her odd, outdated thing in the corner. Younger scientists came up barely knowing what she had discovered. Her great finding sat there, unread, ahead of its time, waiting.
+
+It would have been so easy to grow bitter. To decide the world was stupid and stop. Or to want the recognition so badly it poisoned the work.
+
+She did neither. She kept her head down and kept looking, and she let being right be its own reward, since it was the only reward on offer.
+
+Decade after decade. The truth she had found just sat there, patient, while the world slowly built the tools to finally understand it.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "As molecular biology matured (late 1960s-70s) others confirmed her discovery; recognition came late, culminating in the top prize when she was 81 - documented.",
+      text: `And then, slowly, the world caught up to her.
+
+New tools came along. New discoveries. And as other scientists pushed deeper into how living things really work, they kept bumping into the exact thing she had seen, alone, decades before. The impossible idea that had gotten her dismissed turned out to be simply, profoundly true.
+
+People went back and read the work everyone had ignored. And they realized this quiet woman had seen, half a lifetime early, something the whole field was only now able to grasp.
+
+The recognition came in a flood, late. The highest honors. The award that sits at the very top of her science.
+
+She was an old woman by then. She accepted it gracefully — and went back to her plants. The prize was nice. But she'd had the thing that actually mattered all along: she had been right, and she had never stopped doing the work.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Her discovery became foundational and is now textbook biology; her equanimity about recognition is documented. Name and prize withheld for the bridge.",
+      text: `She had been right. About all of it.
+
+The discovery they had dismissed became one of the foundations of how we understand life itself. It is in the textbooks now — the same kind of textbooks that once said she was wrong. Students learn her finding as basic fact, often without ever knowing the woman who waited thirty years for the world to believe her.
+
+She never needed them to clap. That was her strange power. She had loved the work for itself, not for what it could get her, and so when the world ignored her, it couldn't actually stop her. It could only be late.
+
+She had spent the lonely decades doing exactly what she would have done if she had been famous the whole time: looking closely, and telling the truth about what she saw.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Barbara McClintock.
+
+She discovered "jumping genes" — that the genetic code can move and rearrange itself — one of the most important findings in all of biology. Her field dismissed it for decades. She stopped publishing rather than beg them to listen, and just kept working. More than thirty years later, science caught up, and in 1983 she won the Nobel Prize, alone — the first woman ever to win that prize unshared.
+
+You wrote: "{feeling}"
+
+For most of her life, the very people who should have understood her work simply didn't. She didn't let that make her bitter, and she didn't let it make her stop. She trusted what she had seen, and she kept doing the work in the dark, for as long as it took.
+
+Being right early can look exactly like being wrong. She would tell you to keep going anyway.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1912; Quaker; master nonviolent strategist of the civil-rights movement; chief
+//    organizer of the 1963 March on Washington (200,000+ people, built in under two months); gay,
+//    openly so for the era; a 1953 morals-charge arrest was used repeatedly to discredit him; kept
+//    out of public leadership and denied credit (Roy Wilkins did not want him credited; Sen. Strom
+//    Thurmond attacked him on the Senate floor); Quaker ethic of not pushing oneself forward;
+//    largely written out of the movement's history for decades; posthumous Presidential Medal of
+//    Freedom, 2013; d.1987. (Branch, Parting the Waters; the King Institute; PBS/NPR profiles.)
+//  Interpretive: the loneliness of being needed but hidden; "doing right matters more than being
+//    seen." Grounded in his own Quaker statements.
+//  Avoid saying: HEAVY softening - don't name Rustin / the March on Washington / MLK / "civil
+//    rights" / the famous speech before the bridge. Render the cause generically ("a great movement
+//    for justice," "a huge gathering"). The 2023 film raised his profile, so anonymize firmly.
+//    Handle his sexuality with dignity, never as scandal.
+const rustin: FigureStageRow = {
+  figureKey: "rustin",
+  displayName: "Bayard Rustin",
+  birthYear: 1912,
+  deathYear: 1987,
+  stageId: "1963-the-man-in-the-back",
+  stageLabel: "The genius in the back: erased from the movement he built",
+  ageMin: 48,
+  ageMax: 54,
+  themes: ["dismissed", "social_constraint", "quiet_defiance"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was the brilliant organizer behind one of the great movements of his time, and the people he gave his life to kept him hidden because of who he loved.",
+    "He was told, again and again, to do the work but stay in the back, and to let other men stand at the front and take the credit.",
+    "He built the most important day that movement would ever have, watched other men's names go in the papers, and decided the work itself was worth more than being seen doing it.",
+  ],
+  facets: {
+    emotionalCore:
+      "He carried the deep loneliness of being needed and hidden at the same time — indispensable to the cause and an embarrassment to the people leading it, for a reason that had nothing to do with the quality of his work.",
+    decisionShape:
+      "Whether to demand the recognition he had earned, or to keep pouring himself into the cause from the shadows it insisted he stay in, knowing the credit would go to others.",
+    triggerEvent:
+      "Because he was a gay man in an unforgiving time, the movement he was helping to lead kept pushing him out of public view, afraid his enemies would use who he was to discredit everything.",
+    agencyState:
+      "He had enormous skill and almost no permission to be seen using it; the only thing fully his was the choice to do the work anyway, brilliantly, without his name on it.",
+  },
+  biographicalFacts: `Bayard Rustin was born March 17, 1912, and raised a Quaker. A master strategist of nonviolent protest, he became one of the most important organizers of the American civil rights movement and a key teacher of its philosophy of nonviolence. In 1963 he was the chief organizer of the March on Washington for Jobs and Freedom, building in under two months an event that brought more than 200,000 people peacefully to the capital — the day of the most famous speech in the movement's history. Rustin was also an openly gay man at a time when that was dangerous; in 1953 he had been arrested on a "morals charge," which was used against him for the rest of his career. Though leaders knew how essential he was, many worked to keep him out of public view and to deny him credit, fearing his sexuality and his past would be used to discredit the cause; one prominent leader objected to putting "a person of his liabilities" at the head, and a segregationist senator attacked him on the Senate floor as a communist and a homosexual. Shaped by a Quaker conviction that one should not push oneself forward, Rustin did the work from the background. For decades he was written out of the movement's popular history. Long after his death in 1987, he was posthumously awarded the Presidential Medal of Freedom in 2013.`,
+  sources: [
+    "Branch, Taylor. Parting the Waters: America in the King Years 1954-63 (New York: Simon & Schuster, 1988).",
+    "\"Rustin, Bayard,\" The Martin Luther King, Jr. Research and Education Institute, Stanford.",
+    "\"Bayard Rustin: The Man Who Organized the March on Washington,\" NPR Code Switch (2013).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A brilliant behind-the-scenes organizer who had given everything to a justice movement - including jail and beatings - yet was little known publicly. Documented. The movement is kept generic for the bridge.",
+      text: `There was a man, around fifty, who was the quiet engine behind a great cause.
+
+He was one of those people who make enormous things happen and are almost never seen doing it. Brilliant at it. He could take a wild, impossible dream and turn it into a real plan — who stands where, who does what, how to move a sea of people safely toward one goal.
+
+He believed, with his whole life, in justice for people who had been denied it. And he had given that belief everything: his freedom, his safety, his youth. He had gone to jail for it. He had been beaten for it.
+
+He was, by any honest accounting, one of the most important people in the whole movement.
+
+And almost no one outside it knew his name.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "He was a gay man in a dangerous era; a past public humiliation (the 1953 arrest) followed him; movement leaders kept him in the shadows fearing his sexuality would discredit the cause. Documented; rendered without the identifying specifics.",
+      text: `Here is why.
+
+He was a gay man, in a time and place where that could destroy you. He had never been able to fully hide it, and once, years before, it had been used to humiliate him publicly, in a way that followed him for the rest of his life.
+
+And so the very movement he was helping to build kept him in the shadows. The leaders knew exactly how good he was. They needed him. But they were afraid that if his enemies pointed at who he loved, it would be used to discredit everything.
+
+So he was told, again and again, in so many words: do the work, but stay in the back. Don't lead, where people can see you. Let other men stand at the front and take the credit and give the speeches.
+
+He had given his life to this. And the people he gave it to were ashamed to be seen with him.
+
+That is a particular kind of lonely.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "His Quaker ethic of not pushing himself forward, and his choice to keep working from the background without credit, are documented.",
+      text: `He could have walked away. He could have demanded his name in lights, or gone to the press, or let the bitterness eat him.
+
+He didn't.
+
+He kept doing the work. Brilliantly. Without his name on it.
+
+He had been raised in a faith that taught him you don't push yourself to the front — that the point is the truth and the good you do, not the credit you collect for doing it. He took that seriously. If the cause needed him in the shadows, he would work in the shadows.
+
+So he poured himself into the thing fully, knowing the applause would go to other men. He decided that doing the right thing mattered more than being seen doing it.
+
+And then he was handed the hardest job of all.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "He organized an enormous, high-stakes mass gathering in a very short time, from the background, with disaster a constant risk - documented (the 1963 March), rendered generically.",
+      text: `They asked him to build the biggest single event the movement had ever attempted. Hundreds of thousands of people, brought to one place, on one day, peacefully, to demand justice in front of the whole world.
+
+He had almost no time to do it. Weeks, not months. Everything that could go wrong would set the cause back years. If a single thing broke — violence, chaos, too few people, too many — it would be a disaster seen around the globe.
+
+And he had to do all of it from the back. Quietly. Without the authority that comes from being a public leader, because he wasn't allowed to be one.
+
+He worked around the clock. He thought of everything. The water, the routes, the sound, the safety, the ten thousand details no one would ever thank him for.
+
+He carried the whole impossible thing on his shoulders, in the dark.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The day was a historic, peaceful success that changed the country; he made it work from behind the scenes while others were seen. Documented; the famous speech kept unnamed.",
+      text: `The day came.
+
+And it was perfect. Hundreds of thousands of people gathered in peace. No chaos. No disaster. One of the most powerful, moving days that cause would ever have — a day that changed the country, that people would still be talking about generations later.
+
+It worked because he made it work. Every piece of it ran the way it did because a man almost no one could see had thought it all through.
+
+He stood at the edge of the enormous thing he had built and watched it succeed beyond anyone's hope. Other men gave the speeches. Other men's names went in the papers.
+
+He did not get up front. That was the deal. But he knew. He knew exactly whose hands had built this.
+
+Sometimes that has to be enough. For him, that day, it was.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "He was written out of the movement's popular history for decades, then rediscovered and honored, including a posthumous national honor. Documented. Name and the specific honor withheld for the bridge.",
+      text: `For a long time, history did what the movement had done: it left him out.
+
+The famous day got remembered. The famous speeches got quoted. The man who had actually built it stayed a footnote, pushed aside in the records for the same reason he'd been pushed aside in life — because of who he loved.
+
+But the truth has a way of surfacing. Slowly, people went back and asked who had really made that day happen. And they found him. The quiet genius in the back. They began, finally, to say his name out loud, and to honor it.
+
+Long after he was gone, his own country gave him its highest honor for a citizen — the recognition it had denied him while he lived.
+
+He had done the work without it. But it was right that it finally came.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Bayard Rustin.
+
+He was the chief organizer of the March on Washington in 1963 — the day of the most famous speech in American history. He was a genius of nonviolent organizing who helped shape the entire civil rights movement. And he was pushed to the background for decades, denied the credit he had earned, because he was a gay man. Long after his death, the country awarded him its Presidential Medal of Freedom.
+
+You wrote: "{feeling}"
+
+He did some of the most important work of his century and watched other people take the credit for it, because of who he was. He didn't stop. He decided the work itself was worth doing, seen or unseen.
+
+Being unseen is not the same as not mattering. He mattered more than almost anyone in the room — and the room is only now admitting it.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b.1890; many failed early jobs/ventures; built the successful Sanders Court & Cafe on
+//    US-25 in Corbin, KY, locally famous for his fried chicken (pressure-cooker + "11 herbs and
+//    spices"); ~1956 Interstate 75 bypassed the town and killed the business; he owed ~$165k, the
+//    business auctioned for only ~$75k, barely covering his debts; at 65, broke, he drove the
+//    country selling "handshake" franchises of the recipe; ~400 franchises by age 71; sold the
+//    company for $2M in 1964 (age 74) to John Y. Brown Jr. and Jack Massey; d.1980. (Corbin KY
+//    Tourism / Harland Sanders Cafe and Museum; standard biographies.)
+//  Interpretive: the "earned a rest, then the ground dropped out" framing. Grounded.
+//  Avoid saying: don't name Sanders / Colonel / KFC / Kentucky Fried Chicken / "fried chicken"
+//    before the bridge. STRIP the motivational-poster myth: NOT "$105 Social Security check," NOT
+//    "rejected 1,009 times" - the real story is the mortgage/auction and the road-trip franchising.
+//    Soften era markers (the highway is fine; keep exact dates/places out).
+const sanders: FigureStageRow = {
+  figureKey: "sanders",
+  displayName: "Harland Sanders",
+  birthYear: 1890,
+  deathYear: 1980,
+  stageId: "1956-broke-at-sixty-five",
+  stageLabel: "Broke at sixty-five: the highway, the auction, and the road",
+  ageMin: 62,
+  ageMax: 66,
+  themes: ["late_start", "public_failure", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "After a lifetime of false starts he had finally built one good thing — a roadside business people loved — and then a new highway went around his town and killed it.",
+    "He was sixty-five and broke, at the exact age people retire, with almost nothing left but the one recipe nobody could take from him.",
+    "So he got in his car and started over from scratch, driving town to town to sell that recipe, and built the biggest thing of his life on the far side of sixty-five.",
+  ],
+  facets: {
+    emotionalCore:
+      "He felt the cruel timing of losing everything at the age when starting over is supposed to be off the table — the humiliation of being wiped out, old, after finally getting something right.",
+    decisionShape:
+      "Whether to accept that a broke man in his mid-sixties is finished and quietly give up, or to take the one asset he had left and begin an exhausting new venture far too late.",
+    triggerEvent:
+      "A new highway bypassed his town and destroyed the roadside business he had built, and when he sold it, it brought far less than he owed, leaving him broke at sixty-five.",
+    agencyState:
+      "He had lost his business, his savings, and the years he should have been able to coast on, and was left with one thing entirely his: a recipe and the method to cook it.",
+  },
+  biographicalFacts: `Harland David Sanders was born September 9, 1890. His early life was a long string of jobs and ventures that mostly failed or fell apart. In middle age he finally found something that worked: a roadside restaurant and motel, the Sanders Court & Café, on a busy highway (U.S. 25) in Corbin, Kentucky, where travelers stopped for the fried chicken he cooked, using a pressure cooker and a blend of seasonings. The business thrived for years — until, around 1956, the new Interstate 75 bypassed Corbin, and the stream of travelers vanished almost overnight. The business collapsed. Sanders owed roughly $165,000; when the property was auctioned, it brought only about $75,000, barely enough to cover his debts. He was sixty-five and broke. With little more than his recipe and his cooking method, he took to the road, driving from restaurant to restaurant to persuade owners to cook his chicken and pay him a few cents for each one sold — "handshake" franchise deals. Many turned him down; he kept going. By about age seventy-one he had some 400 franchises; the operation grew explosively. In 1964, at seventy-four, he sold the company for $2 million. It became Kentucky Fried Chicken, one of the most recognized food brands in the world. He died December 16, 1980.`,
+  sources: [
+    "\"Harland Sanders Cafe and Museum,\" Corbin, Kentucky Tourism.",
+    "Sanders, Harland. Life As I Have Known It Has Been Finger Lickin' Good (autobiography, 1974).",
+    "Ozersky, Josh. Colonel Sanders and the American Dream (Austin: University of Texas Press, 2012).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Anonymized. A man with a long history of failed ventures who finally built a thriving roadside restaurant locally famous for one dish - documented. The dish/brand kept unnamed for the bridge.",
+      text: `There was a man in his sixties.
+
+He'd had a hard, scrappy life — dozens of jobs, a lot of them gone wrong — but late in middle age he had finally built something good. A little roadside spot on a busy highway, where travelers stopped to eat. He had gotten locally famous for one thing he cooked better than anyone around. People drove out of their way for it.
+
+It wasn't a fortune. But it was his, and it worked, and after a lifetime of false starts he could finally see himself coasting gently into old age on the strength of it.
+
+He had earned a rest. He thought he was going to get one.
+
+He had no idea the ground was about to drop out from under him, at the worst possible age for it to happen.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "A new interstate bypassed the town and killed the business; the sale brought far less than he owed; he was left broke at 65. Documented (mortgage/auction). The motivational myth is deliberately avoided.",
+      text: `They built a new road.
+
+A big, fast highway, the kind that lets people skip the old route entirely. And the new road went around his town. Just like that, the steady stream of travelers who had kept his little place alive simply... stopped coming. They were all out on the new highway now, miles away.
+
+His business dried up almost overnight. He held on as long as he could, then had to give it up. When he sold it, it went for far less than he owed. After he paid his debts, there was almost nothing left.
+
+He was sixty-five years old. Broke. The thing he had spent his best late years building was gone, killed by a road he could do nothing about.
+
+Sixty-five. The age when people retire. He had next to nothing, and he was, by every reasonable measure, too old to start over.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "With essentially only his recipe and method left, he began driving to other restaurants to license it for a few cents per sale - documented. The \"a little crazy at his age\" framing is fair.",
+      text: `He took stock of what he had left.
+
+It wasn't much. But there was one thing. The way he cooked that one dish — the recipe, the method, the thing people used to drive out of their way for. That was still his. Nobody could build a highway around that.
+
+So he had an idea that, at his age, must have looked a little crazy.
+
+He would take the recipe to other restaurants. He'd show their owners how to make it, and if their customers loved it the way his had, they would pay him a few cents for every plate they sold.
+
+He got in his car. An old man with a recipe and not much else, and he started driving from town to town, restaurant to restaurant, asking strangers to let him into their kitchens.
+
+He was starting completely over. At sixty-five.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Long drives, frequent rejection, cooking his dish on the spot to prove it, accumulating slow handshake deals - documented in the franchising period.",
+      text: `It was a hard, humbling way to live.
+
+He drove enormous distances. He slept cheap. He walked into restaurants run by people half his age and asked them to trust an old man they had never met. Plenty of them said no. Plenty looked at him like what he obviously was — an elderly man whose own place had failed, trying to sell them something.
+
+He cooked his dish for them right there, in their kitchens, to prove it. Some still passed. He would thank them and drive to the next town and do it all again.
+
+For a man in his late sixties, it was exhausting and often discouraging. Every yes was paid for with a lot of nos.
+
+But every so often, someone said yes. And then their customers came back asking for more. And slowly, one handshake at a time, the thing began to grow.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The franchises multiplied rapidly - hundreds by his early seventies - and the bypassed little business was reborn far larger. Documented.",
+      text: `And then it caught.
+
+A few restaurants became a dozen. A dozen became a hundred. The thing people used to drive out of their way for, it turned out, people everywhere would line up for. His one good recipe, carried door to door by a broke old man, started spreading across the country faster than he could keep up with.
+
+By his early seventies — an age when most people are long retired — he had hundreds of places paying him for his recipe. The little roadside spot that the highway had killed had been reborn as something a hundred times bigger, with his cooking in town after town after town.
+
+The failure at sixty-five had not been the end of his story. It had forced the beginning of the biggest chapter of his life.
+
+He had been right about the one thing he had left.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The recipe became a globally famous brand and he sold the company for a fortune in his seventies. Documented. Name and brand withheld for the bridge.",
+      text: `It became enormous. Bigger than he could have dreamed standing in his dead restaurant at sixty-five.
+
+The recipe he drove around selling out of his car turned into one of the most famous foods on the planet — his face, eventually, on signs in countries he had never visited. When he finally sold the business, he sold it for a fortune. The broke old man became a wealthy one, and far more than that: he became known, everywhere, for the thing he had refused to give up on.
+
+He had lived most of his life as a man whose ventures kept falling apart. And then, at the age when most people stop, he built the thing he would be remembered for forever.
+
+Not despite starting late. Because he was willing to start at all, when everything said he was finished.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Harland Sanders — though you know him as Colonel Sanders.
+
+After a new highway killed his roadside restaurant and left him broke at sixty-five, he drove around the country selling his fried chicken recipe one handshake at a time. It became Kentucky Fried Chicken — KFC — one of the most famous food brands in the world. His face is still on it.
+
+You wrote: "{feeling}"
+
+He was sixty-five and wiped out, at the exact age when you're supposed to be done. He had every reason to call it a life and sit down. Instead he took the one thing he had left and started over, and built the biggest thing he would ever build.
+
+It is not too late. It really isn't. He was past retirement when he even began.`,
+    },
+  ],
+};
+
+export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones, rudolph, angelou, rachmaninoff, oconnor, marshall, allende, wilson, wang, chandler, graham, mcclintock, rustin, sanders];

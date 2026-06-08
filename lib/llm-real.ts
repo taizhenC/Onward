@@ -15,7 +15,7 @@ import {
   type OpeningCopyInput,
 } from "./opening-copy";
 
-// Real reranker: GPT-OSS 120B via Groq's OpenAI-compatible REST endpoint.
+// Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
 // Implementation note: this calls the endpoint with plain `fetch` rather than the
 // `openai` SDK. The call is a single non-streaming JSON completion, and an explicit
@@ -25,15 +25,27 @@ import {
 // Everything provider-specific is env-configurable (plan #10), never a baked constant.
 // `npm run health` validates the model id / reasoning_effort / JSON-mode at runtime.
 
-const DEFAULT_BASE_URL = "https://api.groq.com/openai/v1";
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_BASE_URL = "https://api.cerebras.ai/v1";
+const DEFAULT_MODEL = "gpt-oss-120b";
 const DEFAULT_TEMPERATURE = 0;
-const DEFAULT_TIMEOUT_MS = 8000;
+const DEFAULT_TIMEOUT_MS = 15000;
 
 function baseUrl(): string {
-  const configured = process.env.GROQ_BASE_URL?.trim();
+  const configured =
+    process.env.LLM_BASE_URL?.trim() ??
+    process.env.CEREBRAS_BASE_URL?.trim() ??
+    process.env.GROQ_BASE_URL?.trim();
   if (!configured) return DEFAULT_BASE_URL;
   return configured.replace(/\/+$/, "") || DEFAULT_BASE_URL;
+}
+function apiKey(): string | undefined {
+  return [
+    process.env.LLM_API_KEY,
+    process.env.CEREBRAS_API_KEY,
+    process.env.GROQ_API_KEY,
+  ]
+    .map((key) => key?.trim())
+    .find((key): key is string => Boolean(key));
 }
 function model(): string {
   return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
@@ -56,9 +68,9 @@ function numberEnv(name: string, fallback: number): number {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
-// Prose model (Llama) — separate from the GPT-OSS reranker per the cross-model rule
-// (Llama writes prose, GPT-OSS reranks; don't flip them). Used for opening copy.
-const DEFAULT_PROSE_MODEL = "llama-3.3-70b-versatile";
+// Prose model for opening copy. Some Cerebras accounts expose only GPT-OSS;
+// override LLM_MODEL_PROSE when a dedicated prose model is available on the account.
+const DEFAULT_PROSE_MODEL = "gpt-oss-120b";
 const DEFAULT_PROSE_TEMPERATURE = 0.3;
 const DEFAULT_PROSE_TIMEOUT_MS = 8000;
 
@@ -109,12 +121,16 @@ export function toRerankCandidate(stage: FigureStageRow): RerankCandidate {
 // API-side failures only. `invalid_pick` (model named an out-of-pool figure) is
 // detected by the caller (lib/matching.ts), which holds the candidate pool.
 export class RerankError extends Error {
+  readonly status?: number;
+
   constructor(
     readonly reason: Exclude<RerankFailureReason, "invalid_pick">,
     message: string,
+    options?: { status?: number },
   ) {
     super(message);
     this.name = "RerankError";
+    this.status = options?.status;
   }
 }
 
@@ -126,7 +142,10 @@ const SYSTEM_PROMPT = [
   "Rules:",
   "- Bias against figures whose stories are widely taught in school (Lincoln, Van Gogh, Einstein, etc.). When fit is comparable, prefer the less-famous figure — recognizability adds nothing if the resonance is shallow.",
   "- Weigh emotional shape first. Treat a large gap between the person's age and a candidate's age range as part of what the match does NOT cover, not as a disqualifier.",
+  "- Distinguish being trapped in a life or role imposed by others from losing, wrecking, or restarting a career path one chose. When both are possible, prefer the candidate whose trigger matches the person's stated trap.",
+  "- Distinguish being trapped in a private life role imposed by family or convention from being denied public credit or recognition for work one actually did.",
   "- Before deciding, hold two things in mind: the strongest reason the match resonates with the person's specific words, and the strongest gap (what their words carry that this figure's struggle does not). Then commit. Do not refuse to choose.",
+  "- If no candidate genuinely matches the person's situation, still choose the closest candidate, but set confidence to \"low\"; do not inflate a weak or merely adjacent fit.",
   "- Choose only from the provided candidates, using their exact figure_key and stage_id.",
   "",
   'Respond with a single JSON object and nothing else, with keys: figure_key (string), stage_id (string), resonance (one sentence), gap (one sentence), confidence (one of "low", "medium", "high").',
@@ -156,9 +175,12 @@ function buildUserPrompt(
 }
 
 export async function pickFigureReal(input: PickInput): Promise<Pick> {
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
-    throw new RerankError("api_error", "GROQ_API_KEY is not set.");
+  const key = apiKey();
+  if (!key) {
+    throw new RerankError(
+      "api_error",
+      "CEREBRAS_API_KEY or LLM_API_KEY is not set.",
+    );
   }
   if (input.candidates.length === 0) {
     throw new RerankError("api_error", "pickFigureReal called with no candidates.");
@@ -191,7 +213,7 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${apiKey}`,
+        authorization: `Bearer ${key}`,
       },
       body: JSON.stringify(body),
       signal: controller.signal,
@@ -207,7 +229,9 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
   }
 
   if (!response.ok) {
-    throw new RerankError("api_error", `rerank HTTP ${response.status}`);
+    throw new RerankError("api_error", `rerank HTTP ${response.status}`, {
+      status: response.status,
+    });
   }
 
   let content: string;
@@ -308,8 +332,8 @@ export async function writeOpeningCopyReal(
 async function generateEyebrowLine(
   surface: EyebrowPromptSurface,
 ): Promise<string | null> {
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) return null;
+  const key = apiKey();
+  if (!key) return null;
 
   const body = {
     model: proseModel(),
@@ -329,7 +353,7 @@ async function generateEyebrowLine(
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${apiKey}`,
+        authorization: `Bearer ${key}`,
       },
       body: JSON.stringify(body),
       signal: controller.signal,

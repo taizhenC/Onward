@@ -2,9 +2,17 @@ import "./_smoke-bootstrap";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { loadEnvLocal } from "./_load-env";
-import { listAll } from "../lib/figures";
-import { matchWithDebug, type MatchDebug } from "../lib/matching";
-import { matchConfigVersion } from "../lib/match-config";
+import { listAll, listByAge } from "../lib/figures";
+import {
+  matchWithDebug,
+  selectRerankPool,
+  type MatchDebug,
+} from "../lib/matching";
+import {
+  matchConfigVersion,
+  RERANK_TOP_K,
+  RERANK_TRUST_GATE,
+} from "../lib/match-config";
 
 // The verification instrument for Phase 1A: run hand-graded gold cases through the real
 // matcher and report whether the reranker picks the right figure — and how honestly it
@@ -17,7 +25,7 @@ import { matchConfigVersion } from "../lib/match-config";
 
 const GOLD_PATH = resolve(process.cwd(), "evals/match.json");
 const RUNS_DIR = resolve(process.cwd(), "evals/runs");
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_MODEL = "gpt-oss-120b";
 
 type GoldCase = {
   age: number;
@@ -161,6 +169,38 @@ async function runTrial(gold: GoldCase, maxRetries: number): Promise<MatchDebug>
   }
 }
 
+async function assertExpectedSurvivesPrefilter(
+  cases: GoldCase[],
+  allStages: Awaited<ReturnType<typeof listAll>>,
+): Promise<void> {
+  const errors: string[] = [];
+
+  for (const [index, gold] of cases.entries()) {
+    if (gold.expect === "miss") continue;
+
+    const agePool = await listByAge(gold.age);
+    const pool = agePool.length === 0 ? allStages : agePool;
+    const selected = selectRerankPool(
+      { age: gold.age, feeling: gold.feeling },
+      pool,
+    );
+
+    const survived = selected.some((stage) => stage.figureKey === gold.expect);
+    if (!survived) {
+      errors.push(
+        `cases[${index}] expected ${gold.expect}, but RERANK_TOP_K=${RERANK_TOP_K} selected ${selected.length}/${pool.length} candidates without it`,
+      );
+    }
+  }
+
+  if (errors.length > 0) {
+    console.error("Rerank top-K prefilter dropped expected gold figure(s):");
+    for (const error of errors) console.error(`  - ${error}`);
+    console.error("Raise RERANK_TOP_K or add keyword routes before running provider eval.");
+    process.exit(1);
+  }
+}
+
 async function mapWithConcurrency<T, R>(
   items: T[],
   limit: number,
@@ -210,9 +250,36 @@ type Metrics = {
   calibration: Calibration;
   chosenBy: { rerank: number; keyword_fallback: number };
   failureReasons: Record<string, number>;
+  failureReasonStatuses: Record<string, number>;
+  candidateCounts: Record<string, number>;
+  failedCandidateCounts: Record<string, number>;
+  promptChars: Distribution;
+  failedPromptChars: Distribution;
   latencyP50: number;
   latencyP95: number;
   stability: number | null;
+  trustGate: TrustGate;
+};
+
+type Distribution = {
+  min: number;
+  p50: number;
+  p95: number;
+  max: number;
+};
+
+type TrustGate = {
+  passed: boolean;
+  coverage: number | null;
+  checks: {
+    coverage: boolean;
+    rerankTop1: boolean;
+    missDetection: boolean;
+    noDefinitiveWrong: boolean;
+    top1: boolean;
+    hardConfusion: boolean;
+  };
+  thresholds: typeof RERANK_TRUST_GATE;
 };
 
 function isCorrect(gold: GoldCase, result: MatchDebug): boolean {
@@ -229,6 +296,17 @@ function percentile(sortedAsc: number[], p: number): number {
   if (sortedAsc.length === 0) return 0;
   const idx = Math.ceil((p / 100) * sortedAsc.length) - 1;
   return sortedAsc[Math.min(sortedAsc.length - 1, Math.max(0, idx))];
+}
+
+function distribution(values: number[]): Distribution {
+  if (values.length === 0) return { min: 0, p50: 0, p95: 0, max: 0 };
+  const sorted = [...values].sort((a, b) => a - b);
+  return {
+    min: sorted[0],
+    p50: Math.round(percentile(sorted, 50)),
+    p95: Math.round(percentile(sorted, 95)),
+    max: sorted[sorted.length - 1],
+  };
 }
 
 function computeMetrics(trials: Trial[], k: number): Metrics {
@@ -266,15 +344,26 @@ function computeMetrics(trials: Trial[], k: number): Metrics {
 
   const chosenBy = { rerank: 0, keyword_fallback: 0 };
   const failureReasons: Record<string, number> = {};
+  const failureReasonStatuses: Record<string, number> = {};
+  const candidateCounts: Record<string, number> = {};
+  const failedCandidateCounts: Record<string, number> = {};
   for (const t of trials) {
     chosenBy[t.result.chosenBy] += 1;
+    increment(candidateCounts, String(t.result.candidateCount));
     if (t.result.failureReason) {
       failureReasons[t.result.failureReason] =
         (failureReasons[t.result.failureReason] ?? 0) + 1;
+      const status = t.result.httpStatus === undefined ? "none" : String(t.result.httpStatus);
+      increment(failureReasonStatuses, `${t.result.failureReason}:${status}`);
+      increment(failedCandidateCounts, String(t.result.candidateCount));
     }
   }
 
   const latencies = trials.map((t) => t.result.latencyMs).sort((a, b) => a - b);
+  const promptChars = distribution(trials.map((t) => t.result.promptChars));
+  const failedPromptChars = distribution(
+    trials.filter((t) => t.result.failureReason).map((t) => t.result.promptChars),
+  );
 
   // Stability: per case, the share of its k runs that landed on the modal pick.
   let stability: number | null = null;
@@ -302,23 +391,83 @@ function computeMetrics(trials: Trial[], k: number): Metrics {
   const overallCorrect = nonMiss.filter((t) => isCorrect(t.gold, t.result)).length;
   const missDetected = miss.filter((t) => t.result.framing === "partial").length;
   const hardConfused = hard.filter((t) => t.result.figureKey === t.gold.plausibleWrong).length;
+  const rerankTop1 = ratio(rerankCorrect, rerankNonMiss.length);
+  const overallTop1 = ratio(overallCorrect, nonMiss.length);
+  const hardConfusion = ratio(hardConfused, hard.length);
+  const missDetection = ratio(missDetected, miss.length);
 
   return {
-    rerankTop1: ratio(rerankCorrect, rerankNonMiss.length),
+    rerankTop1,
     rerankTop1Counts: { correct: rerankCorrect, total: rerankNonMiss.length },
-    overallTop1: ratio(overallCorrect, nonMiss.length),
+    overallTop1,
     overallTop1Counts: { correct: overallCorrect, total: nonMiss.length },
-    missDetection: ratio(missDetected, miss.length),
+    missDetection,
     missDetectionCounts: { detected: missDetected, total: miss.length },
-    hardConfusion: ratio(hardConfused, hard.length),
+    hardConfusion,
     hardConfusionCounts: { confused: hardConfused, total: hard.length },
     confusionByGroup: [...groupMap.values()],
     calibration,
     chosenBy,
     failureReasons,
+    failureReasonStatuses,
+    candidateCounts,
+    failedCandidateCounts,
+    promptChars,
+    failedPromptChars,
     latencyP50: Math.round(percentile(latencies, 50)),
     latencyP95: Math.round(percentile(latencies, 95)),
     stability,
+    trustGate: computeTrustGate({
+      chosenBy,
+      calibration,
+      rerankTop1,
+      missDetection,
+      overallTop1,
+      hardConfusion,
+      trialCount: trials.length,
+    }),
+  };
+}
+
+function increment(counts: Record<string, number>, key: string): void {
+  counts[key] = (counts[key] ?? 0) + 1;
+}
+
+function computeTrustGate(input: {
+  chosenBy: { rerank: number; keyword_fallback: number };
+  calibration: Calibration;
+  rerankTop1: number | null;
+  missDetection: number | null;
+  overallTop1: number | null;
+  hardConfusion: number | null;
+  trialCount: number;
+}): TrustGate {
+  const coverage = ratio(input.chosenBy.rerank, input.trialCount);
+  const checks = {
+    coverage:
+      coverage !== null && coverage >= RERANK_TRUST_GATE.minCoverage,
+    rerankTop1:
+      input.rerankTop1 !== null &&
+      input.rerankTop1 >= RERANK_TRUST_GATE.minRerankTop1,
+    missDetection:
+      input.missDetection === null ||
+      input.missDetection >= RERANK_TRUST_GATE.minMissDetection,
+    noDefinitiveWrong:
+      input.calibration.definitiveWrong <=
+      RERANK_TRUST_GATE.maxDefinitiveWrong,
+    top1:
+      input.overallTop1 !== null &&
+      input.overallTop1 >= RERANK_TRUST_GATE.minOverallTop1,
+    hardConfusion:
+      input.hardConfusion === null ||
+      input.hardConfusion <= RERANK_TRUST_GATE.maxHardConfusion,
+  };
+
+  return {
+    passed: Object.values(checks).every(Boolean),
+    coverage,
+    checks,
+    thresholds: RERANK_TRUST_GATE,
   };
 }
 
@@ -373,9 +522,31 @@ function printReport(metrics: Metrics): void {
   console.log(
     `Failure reasons: ${reasons.length === 0 ? "(none)" : reasons.map(([r, c]) => `${r}=${c}`).join("  ")}`,
   );
+  const reasonStatuses = Object.entries(m.failureReasonStatuses);
+  console.log(
+    `Failure reason/status: ${
+      reasonStatuses.length === 0
+        ? "(none)"
+        : reasonStatuses.map(([r, c]) => `${r}=${c}`).join("  ")
+    }`,
+  );
+  console.log(
+    `Rerank candidate counts: ${formatCounts(m.candidateCounts)}`,
+  );
+  console.log(
+    `Failed candidate counts: ${formatCounts(m.failedCandidateCounts)}`,
+  );
+  console.log(
+    `Prompt chars: min=${m.promptChars.min} p50=${m.promptChars.p50} p95=${m.promptChars.p95} max=${m.promptChars.max}`,
+  );
+  console.log(
+    `Failed prompt chars: min=${m.failedPromptChars.min} p50=${m.failedPromptChars.p50} p95=${m.failedPromptChars.p95} max=${m.failedPromptChars.max}`,
+  );
   console.log("");
   console.log(`Latency: p50=${m.latencyP50}ms  p95=${m.latencyP95}ms`);
   console.log(`Stability: ${m.stability === null ? "n/a (k=1)" : pct(m.stability)}`);
+  console.log("");
+  printTrustGate(m.trustGate);
 
   if (m.chosenBy.rerank === 0) {
     console.log("");
@@ -389,9 +560,60 @@ function pad(value: number): string {
   return String(value).padStart(5, " ");
 }
 
+function formatCounts(counts: Record<string, number>): string {
+  const entries = Object.entries(counts).sort(([a], [b]) => Number(a) - Number(b));
+  return entries.length === 0
+    ? "(none)"
+    : entries.map(([value, count]) => `${value}=${count}`).join("  ");
+}
+
+function printTrustGate(gate: TrustGate): void {
+  const tag = gate.passed ? "PASS" : "FAIL";
+  console.log(`Real rerank trust gate: ${tag}`);
+  console.log(
+    `  coverage >= ${pct(RERANK_TRUST_GATE.minCoverage)}: ${gate.checks.coverage ? "pass" : "fail"} (${pct(gate.coverage)})`,
+  );
+  console.log(
+    `  rerank top-1 >= ${pct(RERANK_TRUST_GATE.minRerankTop1)}: ${gate.checks.rerankTop1 ? "pass" : "fail"}`,
+  );
+  console.log(
+    `  miss detection >= ${pct(RERANK_TRUST_GATE.minMissDetection)}: ${gate.checks.missDetection ? "pass" : "fail"}`,
+  );
+  console.log(
+    `  definitive wrong <= ${RERANK_TRUST_GATE.maxDefinitiveWrong}: ${gate.checks.noDefinitiveWrong ? "pass" : "fail"}`,
+  );
+  console.log(
+    `  overall top-1 >= ${pct(RERANK_TRUST_GATE.minOverallTop1)}: ${gate.checks.top1 ? "pass" : "fail"}`,
+  );
+  console.log(
+    `  hard confusion <= ${pct(RERANK_TRUST_GATE.maxHardConfusion)}: ${gate.checks.hardConfusion ? "pass" : "fail"}`,
+  );
+}
+
+function toDumpTrial(trial: Trial): {
+  gold: Omit<GoldCase, "feeling" | "note">;
+  run: number;
+  result: MatchDebug;
+} {
+  const { feeling: _feeling, note: _note, ...gold } = trial.gold;
+  return {
+    gold,
+    run: trial.run,
+    result: trial.result,
+  };
+}
+
 function fail(message: string): never {
   console.error(message);
   process.exit(1);
+}
+
+function apiKeyConfigured(): boolean {
+  return [
+    process.env.LLM_API_KEY,
+    process.env.CEREBRAS_API_KEY,
+    process.env.GROQ_API_KEY,
+  ].some((key) => Boolean(key?.trim()));
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────
@@ -406,9 +628,9 @@ async function main(): Promise<void> {
   if (!process.env.LLM_PROVIDER) process.env.LLM_PROVIDER = "real";
   const provider = process.env.LLM_PROVIDER;
 
-  if (provider === "real" && !process.env.GROQ_API_KEY) {
+  if (provider === "real" && !apiKeyConfigured()) {
     fail(
-      `GROQ_API_KEY is not set (.env.local${env.found ? " was loaded" : " not found"}). Run \`npm run health\` first.`,
+      `CEREBRAS_API_KEY or LLM_API_KEY is not set (.env.local${env.found ? " was loaded" : " not found"}). Run \`npm run health\` first.`,
     );
   }
 
@@ -417,8 +639,10 @@ async function main(): Promise<void> {
   const maxRetries = Math.floor(numberEnv("EVAL_MAX_RETRIES", 2));
   const model = process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
 
-  const validKeys = new Set((await listAll()).map((s) => s.figureKey));
+  const stages = await listAll();
+  const validKeys = new Set(stages.map((s) => s.figureKey));
   const cases = loadGold(validKeys);
+  await assertExpectedSurvivesPrefilter(cases, stages);
 
   const jobs = cases.flatMap((gold) =>
     Array.from({ length: k }, (_, run) => ({ gold, run })),
@@ -459,7 +683,7 @@ async function main(): Promise<void> {
   // No resonance/gap exists to leak — matchWithDebug never returns it.
   writeFileSync(
     fullPath,
-    JSON.stringify({ config, metrics, trials: results }, null, 2),
+    JSON.stringify({ config, metrics, trials: results.map(toDumpTrial) }, null, 2),
   );
 
   const summaryPath = resolve(RUNS_DIR, "summary.json");
@@ -474,6 +698,21 @@ async function main(): Promise<void> {
   console.log(
     "Decision gate: high rerank top-1 + low near-miss confusion -> matching works at this scale; the vector pipeline (Phase 1B) stays deferred. High hard-pair confusion is the eval evidence to build the lanes.",
   );
+
+  // Fail loudly for CI/pre-deploy, but only AFTER the dump + summary are written above,
+  // and only in real mode (the gate is the real-rerank trust gate; the stub deliberately
+  // carries the accepted lonely-child definitive-wrong, which would always trip it).
+  if (
+    process.env.EVAL_REQUIRE_GATE === "1" &&
+    provider === "real" &&
+    !metrics.trustGate.passed
+  ) {
+    console.error("");
+    console.error(
+      "EVAL_REQUIRE_GATE=1 and the real rerank trust gate FAILED — exiting non-zero (dump + summary were written above).",
+    );
+    process.exit(1);
+  }
 }
 
 main().catch((error) => {

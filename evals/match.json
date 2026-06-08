@@ -23,14 +23,14 @@
     {
       "age": 27,
       "feeling": "I just had my first child and I'm terrified I'll pass on my own father's temper",
-      "expect": "miss",
-      "note": "intergenerational parenting fear; age sits in butler's window so the reranker must judge fit, not the age gate"
+      "expect": "angelou",
+      "note": "converted: new-parent terror is angelou's territory; the 'father's temper' flavor is adjacent (her fear was youth/inadequacy, not repeating violence) - a fit the reranker judges. Age 27 vs her 16-19 window means the new_parent_fear signal must beat the soft age penalty"
     },
     {
       "age": 52,
       "feeling": "My husband of thirty years died last spring and the silence in the house is unbearable",
-      "expect": "miss",
-      "note": "late-life bereavement; age in lee's window — single-candidate calibration test"
+      "expect": "lewis",
+      "note": "converted from miss once grief was covered (lewis); age 52 sits 8y below lewis's 60-62 window, so grief signal must beat the soft age penalty"
     },
     {
       "age": 22,
@@ -56,6 +56,236 @@
       "plausibleWrong": "butler",
       "confusionGroup": "persistence-vs-reinvention",
       "note": "young self-invention after leaving (douglass); the only in-pool alternative at this age is butler"
+    },
+
+    {
+      "age": 11,
+      "feeling": "the other kids pick on me at school and i don't have any friends",
+      "expect": "rogers",
+      "note": "known-good: bullied + solitude at a child's age"
+    },
+    {
+      "age": 38,
+      "feeling": "i'm almost forty and i still have no idea what i'm supposed to do with my life",
+      "expect": "child",
+      "note": "known-good: late_start + self_doubt, midlife aimlessness"
+    },
+    {
+      "age": 61,
+      "feeling": "the person i loved most is gone and i don't know how to believe in anything anymore",
+      "expect": "lewis",
+      "note": "known-good: grief + self_doubt (faith shaken), at-age"
+    },
+    {
+      "age": 13,
+      "feeling": "i'm too scared to talk in class because i'm ashamed of how i sound when i speak",
+      "expect": "jones",
+      "note": "known-good: shame + finding_voice, child age"
+    },
+
+    {
+      "age": 12,
+      "feeling": "i feel completely alone, the other kids treat me like there's something wrong with me, and i just want to disappear",
+      "expect": "rogers",
+      "hard": true,
+      "plausibleWrong": "jones",
+      "confusionGroup": "lonely-child",
+      "note": "isolation/being-rejected at child age; rogers (bullied+solitude) is the fit, jones (shame+silence) is the same-age decoy"
+    },
+    {
+      "age": 13,
+      "feeling": "i've basically stopped talking because every time i open my mouth i'm scared they'll laugh at me",
+      "expect": "jones",
+      "hard": true,
+      "plausibleWrong": "rogers",
+      "confusionGroup": "lonely-child",
+      "note": "shame-driven silence (jones); rogers (being laughed at / bullied) is the same-age decoy"
+    },
+
+    {
+      "age": 13,
+      "feeling": "i was told i'd never walk again and i'm trying not to give up on my body",
+      "expect": "rudolph",
+      "note": "known-good: disability + quiet_defiance + keep_going"
+    },
+    {
+      "age": 18,
+      "feeling": "i just had a baby way too young and i'm terrified i'm going to fail him",
+      "expect": "angelou",
+      "note": "known-good: new_parent_fear + self_doubt, teen mother"
+    },
+    {
+      "age": 26,
+      "feeling": "i was humiliated in front of everyone and now i can't create at all, i think i have no talent",
+      "expect": "rachmaninoff",
+      "note": "known-good: public_failure + creative_dismissal"
+    },
+    {
+      "age": 27,
+      "feeling": "i got sick with something incurable and had to move back home and leave the life i was building",
+      "expect": "oconnor",
+      "note": "known-good: illness, forced surrender of the planned life"
+    },
+
+    {
+      "age": 27,
+      "feeling": "i've worked so hard at my craft and it keeps getting rejected and i don't know if i should keep going",
+      "expect": "butler",
+      "hard": true,
+      "plausibleWrong": "rachmaninoff",
+      "confusionGroup": "creative-perseverance",
+      "note": "quiet ongoing rejection (butler) vs one public collapse (rachmaninoff)"
+    },
+    {
+      "age": 25,
+      "feeling": "my big project failed publicly and i was humiliated, and i haven't been able to create since",
+      "expect": "rachmaninoff",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "creative-perseverance",
+      "note": "one public, humiliating collapse (rachmaninoff) vs butler's quiet persistence"
+    },
+
+    {
+      "age": 30,
+      "feeling": "i just found out my partner cheated on me for years and i feel like a complete fool",
+      "expect": "miss",
+      "note": "betrayal/heartbreak - no figure covers this; keeps miss-calibration honest"
+    },
+    {
+      "age": 45,
+      "feeling": "i hate my coworkers and my boss and every single day at the office feels pointless",
+      "expect": "miss",
+      "note": "ordinary job dissatisfaction - no figure; keeps miss-calibration honest"
+    },
+
+    {
+      "age": 33,
+      "feeling": "nobody believes me and they won't take my work seriously, but i know i'm right",
+      "expect": "marshall",
+      "note": "known-good: dismissed + quiet_defiance"
+    },
+    {
+      "age": 38,
+      "feeling": "i was forced to leave my country and i lost my home, and now i'm a stranger trying to build a life somewhere that isn't mine",
+      "expect": "allende",
+      "note": "known-good: exile + self_invention"
+    },
+    {
+      "age": 40,
+      "feeling": "i can't stop drinking, it's wrecked my life, and i'm too ashamed to tell anyone",
+      "expect": "wilson",
+      "note": "known-good: addiction + shame"
+    },
+    {
+      "age": 39,
+      "feeling": "i got passed over for the promotion i'd worked toward for years and now i'm starting a new career from scratch",
+      "expect": "wang",
+      "note": "known-good: public_failure + self_invention + late_start"
+    },
+
+    {
+      "age": 47,
+      "feeling": "i got fired in my forties and it feels far too late to start over and become someone new",
+      "expect": "chandler",
+      "note": "known-good: public_failure + self_invention + late_start (fired -> reinvention)"
+    },
+    {
+      "age": 46,
+      "feeling": "i got pushed into a role i feel like a fraud in, and i'm sure i'm not smart enough, and everyone expects me to fail",
+      "expect": "graham",
+      "note": "known-good: self_doubt + social_constraint (thrust into a role she feels unequal to)"
+    },
+    {
+      "age": 50,
+      "feeling": "everyone dismissed my work but i know i'm right, so i just keep going on my own",
+      "expect": "mcclintock",
+      "note": "known-good: dismissed + quiet_defiance + keep_going (withdrew and kept working)"
+    },
+    {
+      "age": 51,
+      "feeling": "i do all the work but i get no credit, because of who i am, and they keep me in the background",
+      "expect": "rustin",
+      "note": "known-good: dismissed + social_constraint (erased for who he was)"
+    },
+    {
+      "age": 64,
+      "feeling": "i lost everything at my age and i'm starting over from nothing, everyone says i'm too old",
+      "expect": "sanders",
+      "note": "known-good: late_start + public_failure (broke and starting over old)"
+    },
+
+    {
+      "age": 46,
+      "feeling": "i wasted my best years on the wrong path and now i'm starting from scratch way too late",
+      "expect": "chandler",
+      "hard": true,
+      "plausibleWrong": "child",
+      "confusionGroup": "late-start-midlife",
+      "note": "midlife restart after a wrecked path (chandler) vs never-found-a-calling (child)"
+    },
+    {
+      "age": 44,
+      "feeling": "i'm in my forties and i still have no idea what i'm meant to do with my life",
+      "expect": "child",
+      "hard": true,
+      "plausibleWrong": "chandler",
+      "confusionGroup": "late-start-midlife",
+      "note": "aimless, never found it (child) vs chandler's lost-then-rebuilt career"
+    },
+    {
+      "age": 49,
+      "feeling": "i feel trapped in the wrong life, being what everyone wanted, not allowed to be myself",
+      "expect": "lee",
+      "hard": true,
+      "plausibleWrong": "graham",
+      "confusionGroup": "boxed-in-woman",
+      "note": "boxed in by others' expectations, finally free to choose (lee) vs graham's thrust-in self-doubt"
+    },
+    {
+      "age": 47,
+      "feeling": "i got pushed into a huge role, i feel like a fraud, and i'm sure i'm not smart enough to do it",
+      "expect": "graham",
+      "hard": true,
+      "plausibleWrong": "lee",
+      "confusionGroup": "boxed-in-woman",
+      "note": "impostor dread in a role thrust on her (graham) vs lee's social-constraint late start"
+    },
+    {
+      "age": 52,
+      "feeling": "i built it but they pushed me aside and gave others the credit, because of who i love",
+      "expect": "rustin",
+      "hard": true,
+      "plausibleWrong": "mcclintock",
+      "confusionGroup": "dismissed-no-credit",
+      "note": "erased/uncredited for who he is (rustin) vs mcclintock's field-dismissed discovery"
+    },
+    {
+      "age": 49,
+      "feeling": "they ignored my work for years and i know i'm right, i just keep going without them",
+      "expect": "mcclintock",
+      "hard": true,
+      "plausibleWrong": "rustin",
+      "confusionGroup": "dismissed-no-credit",
+      "note": "work dismissed by the field, kept going alone (mcclintock) vs rustin's social erasure"
+    },
+    {
+      "age": 52,
+      "feeling": "i'm stuck in a life i didn't choose, the one everyone expected of me, and i don't know how to leave",
+      "expect": "lee",
+      "hard": true,
+      "plausibleWrong": "chandler",
+      "confusionGroup": "trapped-life-vs-lost-career",
+      "note": "the real wrong-definitive: trapped in a life imposed by others (lee) vs chandler's chosen-then-wrecked career; real rerank had picked chandler high-confidence"
+    },
+    {
+      "age": 52,
+      "feeling": "i've spent my whole life trapped in the role my family expected of me, never allowed to pursue what i actually wanted, and i don't know how to break out",
+      "expect": "lee",
+      "hard": true,
+      "plausibleWrong": "rustin",
+      "confusionGroup": "private-trap-vs-denied-recognition",
+      "note": "private-life trap imposed by family/convention (lee) vs rustin's denied-public-recognition; real rerank had picked rustin on the plain 'stuck in the wrong life' case"
     }
   ]
 }

@@ -459,7 +459,7 @@ function computeTrustGate(input: {
       input.overallTop1 !== null &&
       input.overallTop1 >= RERANK_TRUST_GATE.minOverallTop1,
     hardConfusion:
-      input.hardConfusion !== null &&
+      input.hardConfusion === null ||
       input.hardConfusion <= RERANK_TRUST_GATE.maxHardConfusion,
   };
 

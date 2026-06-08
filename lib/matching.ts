@@ -131,7 +131,10 @@ export function selectRerankPool(
 }
 
 function sumBiographicalFactChars(pool: FigureStageRow[]): number {
-  return pool.reduce((sum, stage) => sum + stage.biographicalFacts.length, 0);
+  return pool.reduce(
+    (sum, stage) => sum + (stage.biographicalFacts?.length ?? 0),
+    0,
+  );
 }
 
 // Wide age hard gate, with a Phase 0/1A-specific fallback-to-all so testers who fall

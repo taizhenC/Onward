@@ -15,7 +15,7 @@ import {
   type OpeningCopyInput,
 } from "./opening-copy";
 
-// Real reranker: GPT-OSS 120B via Groq's OpenAI-compatible REST endpoint.
+// Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
 // Implementation note: this calls the endpoint with plain `fetch` rather than the
 // `openai` SDK. The call is a single non-streaming JSON completion, and an explicit
@@ -25,15 +25,25 @@ import {
 // Everything provider-specific is env-configurable (plan #10), never a baked constant.
 // `npm run health` validates the model id / reasoning_effort / JSON-mode at runtime.
 
-const DEFAULT_BASE_URL = "https://api.groq.com/openai/v1";
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_BASE_URL = "https://api.cerebras.ai/v1";
+const DEFAULT_MODEL = "gpt-oss-120b";
 const DEFAULT_TEMPERATURE = 0;
 const DEFAULT_TIMEOUT_MS = 15000;
 
 function baseUrl(): string {
-  const configured = process.env.GROQ_BASE_URL?.trim();
+  const configured =
+    process.env.LLM_BASE_URL?.trim() ??
+    process.env.CEREBRAS_BASE_URL?.trim() ??
+    process.env.GROQ_BASE_URL?.trim();
   if (!configured) return DEFAULT_BASE_URL;
   return configured.replace(/\/+$/, "") || DEFAULT_BASE_URL;
+}
+function apiKey(): string | undefined {
+  return (
+    process.env.LLM_API_KEY ??
+    process.env.CEREBRAS_API_KEY ??
+    process.env.GROQ_API_KEY
+  );
 }
 function model(): string {
   return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
@@ -56,9 +66,9 @@ function numberEnv(name: string, fallback: number): number {
   return Number.isFinite(parsed) ? parsed : fallback;
 }
 
-// Prose model (Llama) — separate from the GPT-OSS reranker per the cross-model rule
-// (Llama writes prose, GPT-OSS reranks; don't flip them). Used for opening copy.
-const DEFAULT_PROSE_MODEL = "llama-3.3-70b-versatile";
+// Prose model for opening copy. Some Cerebras accounts expose only GPT-OSS;
+// override LLM_MODEL_PROSE when a dedicated prose model is available on the account.
+const DEFAULT_PROSE_MODEL = "gpt-oss-120b";
 const DEFAULT_PROSE_TEMPERATURE = 0.3;
 const DEFAULT_PROSE_TIMEOUT_MS = 8000;
 
@@ -163,9 +173,12 @@ function buildUserPrompt(
 }
 
 export async function pickFigureReal(input: PickInput): Promise<Pick> {
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
-    throw new RerankError("api_error", "GROQ_API_KEY is not set.");
+  const key = apiKey();
+  if (!key) {
+    throw new RerankError(
+      "api_error",
+      "CEREBRAS_API_KEY or LLM_API_KEY is not set.",
+    );
   }
   if (input.candidates.length === 0) {
     throw new RerankError("api_error", "pickFigureReal called with no candidates.");
@@ -198,7 +211,7 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${apiKey}`,
+        authorization: `Bearer ${key}`,
       },
       body: JSON.stringify(body),
       signal: controller.signal,
@@ -317,8 +330,8 @@ export async function writeOpeningCopyReal(
 async function generateEyebrowLine(
   surface: EyebrowPromptSurface,
 ): Promise<string | null> {
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) return null;
+  const key = apiKey();
+  if (!key) return null;
 
   const body = {
     model: proseModel(),
@@ -338,7 +351,7 @@ async function generateEyebrowLine(
       method: "POST",
       headers: {
         "content-type": "application/json",
-        authorization: `Bearer ${apiKey}`,
+        authorization: `Bearer ${key}`,
       },
       body: JSON.stringify(body),
       signal: controller.signal,

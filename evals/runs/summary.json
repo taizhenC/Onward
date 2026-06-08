@@ -6,7 +6,7 @@
     "k": 1,
     "concurrency": 1,
     "maxRetries": 2,
-    "ranAt": "2026-06-07T09:38:03.891Z",
+    "ranAt": "2026-06-07T22:59:19.519Z",
     "caseCount": 39,
     "trialCount": 39
   },
@@ -21,9 +21,9 @@
       "correct": 35,
       "total": 36
     },
-    "missDetection": 0.3333333333333333,
+    "missDetection": 1,
     "missDetectionCounts": {
-      "detected": 1,
+      "detected": 3,
       "total": 3
     },
     "hardConfusion": 0,
@@ -82,10 +82,10 @@
       }
     ],
     "calibration": {
-      "definitiveCorrect": 35,
-      "definitiveWrong": 1,
-      "partialCorrect": 0,
-      "partialWrong": 0
+      "definitiveCorrect": 27,
+      "definitiveWrong": 0,
+      "partialCorrect": 8,
+      "partialWrong": 1
     },
     "chosenBy": {
       "rerank": 39,
@@ -110,17 +110,17 @@
       "p95": 0,
       "max": 0
     },
-    "latencyP50": 324,
-    "latencyP95": 736,
+    "latencyP50": 287,
+    "latencyP95": 824,
     "stability": null,
     "trustGate": {
-      "passed": false,
+      "passed": true,
       "coverage": 1,
       "checks": {
         "coverage": true,
         "rerankTop1": true,
-        "missDetection": false,
-        "noDefinitiveWrong": false,
+        "missDetection": true,
+        "noDefinitiveWrong": true,
         "top1": true,
         "hardConfusion": true
       },

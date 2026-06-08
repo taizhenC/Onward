@@ -18,11 +18,15 @@ export const RERANK_TRUST_GATE = {
 } as const;
 
 // Confidence → framing. Only "definitive" | "partial" crosses the wire (CLAUDE.md:
-// the client never sees the underlying confidence). A low-confidence pick — including
-// every keyword-hybrid fallback — is framed "partial" so we never present a weak
-// match as a definitive mirror.
+// the client never sees the underlying confidence). ONLY a "high"-confidence pick is
+// framed as a definitive mirror; "medium" and "low" (and every keyword-hybrid fallback)
+// are framed "partial" ("a fragment that rhymes"). The rerank eval shows "high" is a
+// clean signal (all correct) while "medium" is a mixed bucket holding wrong and no-match
+// cases — so presenting a medium pick as definitive is the trust-killer CLAUDE.md warns
+// against. This preserves the match choice while making the framing honest when the model
+// itself is not fully certain.
 export function framingFromConfidence(confidence: Confidence): Framing {
-  return confidence === "low" ? "partial" : "definitive";
+  return confidence === "high" ? "definitive" : "partial";
 }
 
 // Lowercase substring → theme tags. A figure earns one point per matched keyword

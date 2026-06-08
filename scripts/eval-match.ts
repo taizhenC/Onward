@@ -25,7 +25,7 @@ import {
 
 const GOLD_PATH = resolve(process.cwd(), "evals/match.json");
 const RUNS_DIR = resolve(process.cwd(), "evals/runs");
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_MODEL = "gpt-oss-120b";
 
 type GoldCase = {
   age: number;
@@ -608,6 +608,14 @@ function fail(message: string): never {
   process.exit(1);
 }
 
+function apiKeyConfigured(): boolean {
+  return Boolean(
+    process.env.LLM_API_KEY ??
+      process.env.CEREBRAS_API_KEY ??
+      process.env.GROQ_API_KEY,
+  );
+}
+
 // ── Main ─────────────────────────────────────────────────────────────────────
 
 async function main(): Promise<void> {
@@ -620,9 +628,9 @@ async function main(): Promise<void> {
   if (!process.env.LLM_PROVIDER) process.env.LLM_PROVIDER = "real";
   const provider = process.env.LLM_PROVIDER;
 
-  if (provider === "real" && !process.env.GROQ_API_KEY) {
+  if (provider === "real" && !apiKeyConfigured()) {
     fail(
-      `GROQ_API_KEY is not set (.env.local${env.found ? " was loaded" : " not found"}). Run \`npm run health\` first.`,
+      `CEREBRAS_API_KEY or LLM_API_KEY is not set (.env.local${env.found ? " was loaded" : " not found"}). Run \`npm run health\` first.`,
     );
   }
 

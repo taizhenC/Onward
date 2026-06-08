@@ -5,14 +5,14 @@ import { pickFigure, RerankError, writeOpeningCopy } from "../lib/llm";
 import { NEUTRAL_EYEBROW } from "../lib/opening-copy";
 
 // Real-mode provider health check. Run BEFORE a full eval or real-mode intake smoke so a
-// broken Groq config (bad key, wrong model id, JSON mode unsupported) surfaces in seconds,
+// broken Cerebras config (bad key, wrong model id, JSON mode unsupported) surfaces in seconds,
 // not mid-run.
 //
 // Standalone by design: loads no gold set, writes no run dumps. Three probes:
 //   1. GET /models — auth + reachability + the configured rerank AND prose model ids
 //      are actually offered.
 //   2. one minimal pickFigure — rerank model + reasoning_effort + JSON mode end-to-end.
-//   3. one writeOpeningCopy — the prose (Llama) eyebrow path end-to-end. That path never
+//   3. one writeOpeningCopy — the prose eyebrow path end-to-end. That path never
 //      throws (it degrades to a neutral fallback), so a neutral result is the only
 //      failure signal available here — we treat it as a failed probe.
 //
@@ -27,15 +27,25 @@ process.env.LLM_PROVIDER = "real";
 
 // Mirror lib/llm-real.ts's env resolution + defaults so the /models probe checks the
 // SAME model id that pickFigureReal will call. Keep these in sync with lib/llm-real.ts.
-const DEFAULT_BASE_URL = "https://api.groq.com/openai/v1";
-const DEFAULT_MODEL = "openai/gpt-oss-120b";
-const DEFAULT_PROSE_MODEL = "llama-3.3-70b-versatile";
+const DEFAULT_BASE_URL = "https://api.cerebras.ai/v1";
+const DEFAULT_MODEL = "gpt-oss-120b";
+const DEFAULT_PROSE_MODEL = "gpt-oss-120b";
 const HEALTH_TIMEOUT_MS = 8000;
 
 function baseUrl(): string {
-  const configured = process.env.GROQ_BASE_URL?.trim();
+  const configured =
+    process.env.LLM_BASE_URL?.trim() ??
+    process.env.CEREBRAS_BASE_URL?.trim() ??
+    process.env.GROQ_BASE_URL?.trim();
   if (!configured) return DEFAULT_BASE_URL;
   return configured.replace(/\/+$/, "") || DEFAULT_BASE_URL;
+}
+function apiKey(): string | undefined {
+  return (
+    process.env.LLM_API_KEY ??
+    process.env.CEREBRAS_API_KEY ??
+    process.env.GROQ_API_KEY
+  );
 }
 function model(): string {
   return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
@@ -47,7 +57,7 @@ function proseModel(): string {
 type Step = { name: string; ok: boolean; detail: string };
 
 async function checkModelsEndpoint(apiKey: string): Promise<Step> {
-  const name = "Groq /models reachable + configured models available";
+  const name = "Cerebras /models reachable + configured models available";
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), HEALTH_TIMEOUT_MS);
   const start = performance.now();
@@ -198,16 +208,18 @@ async function main(): Promise<void> {
       : "No .env.local found; using shell environment",
   );
 
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) {
+  const key = apiKey();
+  if (!key) {
     console.log("");
-    console.log("FAIL  GROQ_API_KEY is not set (.env.local or shell).");
-    console.log("Set GROQ_API_KEY before running npm run eval.");
+    console.log(
+      "FAIL  CEREBRAS_API_KEY or LLM_API_KEY is not set (.env.local or shell).",
+    );
+    console.log("Set CEREBRAS_API_KEY before running npm run eval.");
     process.exit(1);
   }
 
   const steps: Step[] = [];
-  steps.push(await checkModelsEndpoint(apiKey));
+  steps.push(await checkModelsEndpoint(key));
   // Only probe the completions if the endpoint/model check passed — otherwise the failure
   // is already explained and further timeouts just add noise.
   if (steps[0].ok) {

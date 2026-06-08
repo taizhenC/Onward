@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 
 // Minimal .env.local loader for tsx-run scripts. `next dev` loads .env.local
 // automatically; tsx does NOT, so real-mode scripts (check-provider, eval-match)
-// call loadEnvLocal() to pull GROQ_API_KEY (and friends) into process.env.
+// call loadEnvLocal() to pull CEREBRAS_API_KEY / LLM_API_KEY (and friends) into process.env.
 //
 // No dotenv dependency — the format we need is trivial. Deliberately conservative:
 //   - shell / CI env always wins (never overrides an already-set var),

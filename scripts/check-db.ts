@@ -11,7 +11,7 @@ import type { FigureStageRow } from "../lib/types";
 // Supabase-mode acceptance check. Run AFTER `npm run seed`, as a SEPARATE process so the
 // load-once figure cache reflects current DB state. Pins PERSISTENCE=supabase so it exercises
 // the real DB paths (figure serving + session store); LLM stays stub (the crisis probe returns
-// before any match/LLM call, so no Groq key is needed).
+// before any match/LLM call, so no LLM provider key is needed).
 process.env.PERSISTENCE = "supabase";
 process.env.LLM_PROVIDER = "stub";
 

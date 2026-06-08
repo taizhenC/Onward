@@ -609,11 +609,11 @@ function fail(message: string): never {
 }
 
 function apiKeyConfigured(): boolean {
-  return Boolean(
-    process.env.LLM_API_KEY ??
-      process.env.CEREBRAS_API_KEY ??
-      process.env.GROQ_API_KEY,
-  );
+  return [
+    process.env.LLM_API_KEY,
+    process.env.CEREBRAS_API_KEY,
+    process.env.GROQ_API_KEY,
+  ].some((key) => Boolean(key?.trim()));
 }
 
 // ── Main ─────────────────────────────────────────────────────────────────────

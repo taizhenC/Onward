@@ -39,11 +39,13 @@ function baseUrl(): string {
   return configured.replace(/\/+$/, "") || DEFAULT_BASE_URL;
 }
 function apiKey(): string | undefined {
-  return (
-    process.env.LLM_API_KEY ??
-    process.env.CEREBRAS_API_KEY ??
-    process.env.GROQ_API_KEY
-  );
+  return [
+    process.env.LLM_API_KEY,
+    process.env.CEREBRAS_API_KEY,
+    process.env.GROQ_API_KEY,
+  ]
+    .map((key) => key?.trim())
+    .find((key): key is string => Boolean(key));
 }
 function model(): string {
   return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;

@@ -81,6 +81,10 @@ export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
   };
   const start = performance.now();
 
+  if (rerankPool.length === 0) {
+    return keywordFallback(input, pool, start, debugScalars, "invalid_pick");
+  }
+
   try {
     const pick = await pickFigure({
       age: input.age,

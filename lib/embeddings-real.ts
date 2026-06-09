@@ -137,11 +137,7 @@ async function postJson(path: string, body: unknown): Promise<unknown> {
     try {
       return await postJsonOnce(path, body, key);
     } catch (error) {
-      if (
-        !(error instanceof EmbeddingHttpError) ||
-        !shouldRetryHttp(error.status) ||
-        attempt >= maxRetries()
-      ) {
+      if (!isTransientEmbeddingError(error) || attempt >= maxRetries()) {
         throw error;
       }
       await sleep(retryDelayMs(error, attempt));
@@ -205,9 +201,19 @@ function shouldRetryHttp(status: number): boolean {
   return status === 429 || status === 500 || status === 502 || status === 503 || status === 504;
 }
 
-function retryDelayMs(error: EmbeddingHttpError, attempt: number): number {
-  if (error.retryAfterMs !== undefined) return error.retryAfterMs;
-  if (error.status === 429) return DEFAULT_RATE_LIMIT_RETRY_MS;
+function isTransientEmbeddingError(error: unknown): boolean {
+  return (
+    (error instanceof EmbeddingHttpError && shouldRetryHttp(error.status)) ||
+    (error instanceof EmbeddingError &&
+      (error.errorClass === "network" || error.errorClass === "timeout"))
+  );
+}
+
+function retryDelayMs(error: unknown, attempt: number): number {
+  if (error instanceof EmbeddingHttpError) {
+    if (error.retryAfterMs !== undefined) return error.retryAfterMs;
+    if (error.status === 429) return DEFAULT_RATE_LIMIT_RETRY_MS;
+  }
   return retryBaseMs() * 2 ** attempt;
 }
 

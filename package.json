@@ -12,8 +12,11 @@
     "check-figure": "tsx scripts/check-figure.ts",
     "health": "tsx scripts/check-provider.ts",
     "eval": "tsx scripts/eval-match.ts",
+    "eval-retrieval": "tsx scripts/eval-retrieval.ts",
     "seed": "tsx scripts/seed-figures.ts",
-    "check-db": "tsx scripts/check-db.ts"
+    "seed-embeddings": "tsx scripts/seed-embeddings.ts",
+    "check-db": "tsx scripts/check-db.ts",
+    "check-embeddings": "tsx scripts/check-embeddings.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.1",

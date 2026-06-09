@@ -4,11 +4,14 @@ import type {
   FigureStageRow,
   Framing,
   RerankFailureReason,
+  RetrievalMode,
 } from "./types";
 import { listAll, listByAge } from "./figures";
 import { framingFromConfidence, RERANK_TOP_K } from "./match-config";
 import { pickFigure, RerankError } from "./llm";
 import { pickByKeywordHybrid, scoreAllByKeywordHybrid } from "./keyword-match";
+import { EmbeddingError } from "./embeddings";
+import { retrieveFacets, RetrievalUnavailableError } from "./facets-retrieval";
 
 export type MatchInput = {
   age: number;
@@ -23,19 +26,38 @@ export type MatchResult = {
 
 export type ChosenBy = "rerank" | "keyword_fallback";
 
-// Server-only, eval-only enrichment of MatchResult. resonance/gap are deliberately
-// NOT here — they never leave lib/. Production callers use match(); the eval uses
-// matchWithDebug() to report calibration, latency, and degraded-mode usage.
-export type MatchDebug = MatchResult & {
-  confidence: Confidence;
-  chosenBy: ChosenBy;
-  failureReason?: RerankFailureReason;
-  httpStatus?: number;
+// Which retrieval path actually produced the rerank pool (distinct from the CONFIGURED
+// RetrievalMode: "auto" resolves to one of these at runtime).
+export type RetrievalPath = "facetsrag" | "keyword";
+
+// Retrieval-stage diagnostics, shared by the rerank-success and keyword-fallback returns.
+// stageAKeys/stageBKeys are cache keys (`figureKey/stageId`) carrying NO gold label — the eval
+// computes gold survival from them. Present only on the FacetsRAG path.
+type RetrievalDebug = {
+  retrievalMode: RetrievalPath;
+  retrievalFallbackReason?: string;
+  retrievalPoolSize?: number;
+  stageAKeys?: string[];
+  stageBKeys?: string[];
+};
+
+type DebugScalars = RetrievalDebug & {
   candidateCount: number;
   ageCandidateCount: number;
   promptChars: number;
-  latencyMs: number;
 };
+
+// Server-only, eval-only enrichment of MatchResult. resonance/gap are deliberately
+// NOT here — they never leave lib/. Production callers use match(); the eval uses
+// matchWithDebug() to report calibration, latency, and degraded-mode usage.
+export type MatchDebug = MatchResult &
+  DebugScalars & {
+    confidence: Confidence;
+    chosenBy: ChosenBy;
+    failureReason?: RerankFailureReason;
+    httpStatus?: number;
+    latencyMs: number;
+  };
 
 // Production entry point: only the client-safe shape escapes.
 export async function match(input: MatchInput): Promise<MatchResult> {
@@ -45,13 +67,23 @@ export async function match(input: MatchInput): Promise<MatchResult> {
 
 export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
   const { pool, fallbackToAll } = await buildPool(input);
-  const rerankPool = selectRerankPool(input, pool);
-  const debugScalars = {
+  const selection = await selectMatchPool(input, pool, resolveRetrievalMode());
+  const rerankPool = selection.rerankPool;
+  const debugScalars: DebugScalars = {
     candidateCount: rerankPool.length,
     ageCandidateCount: pool.length,
     promptChars: sumBiographicalFactChars(rerankPool),
+    retrievalMode: selection.retrievalMode,
+    retrievalFallbackReason: selection.retrievalFallbackReason,
+    retrievalPoolSize: selection.retrievalPoolSize,
+    stageAKeys: selection.stageAKeys,
+    stageBKeys: selection.stageBKeys,
   };
   const start = performance.now();
+
+  if (rerankPool.length === 0) {
+    return keywordFallback(input, pool, start, debugScalars, "invalid_pick");
+  }
 
   try {
     const pick = await pickFigure({
@@ -94,11 +126,7 @@ function keywordFallback(
   input: MatchInput,
   pool: FigureStageRow[],
   start: number,
-  debugScalars: {
-    candidateCount: number;
-    ageCandidateCount: number;
-    promptChars: number;
-  },
+  debugScalars: DebugScalars,
   failureReason: RerankFailureReason,
   httpStatus?: number,
 ): MatchDebug {
@@ -120,6 +148,65 @@ function keywordFallback(
   };
 }
 
+// The configured retrieval mode (RETRIEVAL_MODE env, default "auto"). Unknown values fall back to
+// "auto". Exported so lib/intake.ts can freeze it into the match recipe for replay.
+export function resolveRetrievalMode(explicit?: string): RetrievalMode {
+  const raw = (explicit ?? process.env.RETRIEVAL_MODE ?? "auto").trim().toLowerCase();
+  return raw === "keyword" || raw === "facetsrag" ? raw : "auto";
+}
+
+type RetrievalSelection = RetrievalDebug & { rerankPool: FigureStageRow[] };
+
+// Picks the rerank pool per the configured mode:
+//   keyword   → the keyword-hybrid prefilter (no embeddings touched).
+//   facetsrag → FacetsRAG; throws if unavailable, so a forced "FacetsRAG run" can never silently be
+//               a keyword run.
+//   auto      → FacetsRAG when available, else keyword (recording the fallback reason).
+async function selectMatchPool(
+  input: MatchInput,
+  pool: FigureStageRow[],
+  mode: RetrievalMode,
+): Promise<RetrievalSelection> {
+  if (mode === "keyword") {
+    return { rerankPool: selectRerankPool(input, pool), retrievalMode: "keyword" };
+  }
+
+  try {
+    const retrieval = await retrieveFacets(input, pool);
+    return {
+      rerankPool: retrieval.pool,
+      retrievalMode: "facetsrag",
+      retrievalPoolSize: retrieval.stageAKeys.length,
+      stageAKeys: retrieval.stageAKeys,
+      stageBKeys: retrieval.stageBKeys,
+    };
+  } catch (error) {
+    const reason = retrievalErrorReason(error);
+    if (mode === "facetsrag") {
+      throw new Error(
+        `FacetsRAG retrieval unavailable (RETRIEVAL_MODE=facetsrag): ${reason}. ` +
+          "Seed embeddings and set EMBEDDING_PROVIDER=gemini, or run with RETRIEVAL_MODE=auto.",
+      );
+    }
+    // auto: degrade to keyword (recovery-asymmetry — a degraded match beats no match).
+    return {
+      rerankPool: selectRerankPool(input, pool),
+      retrievalMode: "keyword",
+      retrievalFallbackReason: reason,
+    };
+  }
+}
+
+// Short, non-sensitive reason code for why FacetsRAG didn't run (debug/telemetry only).
+function retrievalErrorReason(error: unknown): string {
+  if (error instanceof RetrievalUnavailableError) return error.reason;
+  if (error instanceof EmbeddingError) return `embed_${error.errorClass}`;
+  return "retrieval_error";
+}
+
+// The keyword-hybrid prefilter (Stage-A/B's degraded sibling): keep the rerank pool to the top
+// RERANK_TOP_K by keyword-hybrid score. Stays SYNC and keyword-only — selectMatchPool's keyword
+// branch and scripts/eval-match.ts's prefilter-survival assertion both depend on that.
 export function selectRerankPool(
   input: MatchInput,
   pool: FigureStageRow[],

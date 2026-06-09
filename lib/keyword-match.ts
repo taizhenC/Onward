@@ -67,7 +67,10 @@ function scoreStage(
   };
 }
 
-function getMatchedThemeWeights(feeling: string): Map<string, number> {
+// Exported so the FacetsRAG theme lane (lib/themes.ts) derives user themes from the SAME keyword
+// parsing as the keyword scorer — one source of truth, never a duplicated parser. Returns a map of
+// theme → match count (the weight); empty when no keyword matched (→ theme lane disables).
+export function getMatchedThemeWeights(feeling: string): Map<string, number> {
   const normalizedFeeling = feeling.toLowerCase();
   const themeWeights = new Map<string, number>();
 

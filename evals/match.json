@@ -1,5 +1,5 @@
 {
-  "readme": "Gold cases for scripts/eval-match.ts. Each case: { age:int, feeling:string, expect:figureKey|\"miss\", note?:string }. Hard near-miss cases add { hard:true, plausibleWrong:figureKey, confusionGroup:string } so confusion is computable. expect:\"miss\" means NO figure fits — the case passes if framing comes back \"partial\" (an honest 'fragment that rhymes'), regardless of which figure is named. NOTE on library shape: with only 3 age-clustered figures (douglass ~20-23, butler ~26-28, lee ~50-54) and a +/-10y age gate, the only intra-pool confusable pair is butler<->douglass; lee is age-isolated and has no confusion partner until a similarly-aged figure is authored. The miss cases are deliberately age-in-range so they exercise the reranker's confidence calibration, not just the age gate. Expand this set as the library grows; a high top-1 with few hard pairs is unproven, not validated — weight authoring effort on hard confusionGroup cases.",
+  "readme": "Gold cases for scripts/eval-match.ts. Each case: { age:int, feeling:string, expect:figureKey|\"miss\", note?:string }. Hard near-miss cases add { hard:true, plausibleWrong:figureKey, confusionGroup:string } so confusion is computable. expect:\"miss\" means NO figure fits — the case passes if framing comes back \"partial\" (an honest 'fragment that rhymes'), regardless of which figure is named. NOTE on library shape: with only 3 age-clustered figures (douglass ~20-23, butler ~26-28, lee ~50-54) and a +/-10y age gate, the only intra-pool confusable pair is butler<->douglass; lee is age-isolated and has no confusion partner until a similarly-aged figure is authored. The miss cases are deliberately age-in-range so they exercise the reranker's confidence calibration, not just the age gate. Expand this set as the library grows; a high top-1 with few hard pairs is unproven, not validated — weight authoring effort on hard confusionGroup cases. Paraphrase/metaphor cases carry { semantic:true }: low literal keyword overlap, EXPECTED to elude the keyword prefilter (so they're exempt from its survival assertion) and to be retrieved only by FacetsRAG — the keyword-vs-facetsrag head-to-head signal. Run keyword vs facetsrag (RETRIEVAL_MODE) and diff summary.json: FacetsRAG-positive = top-1 >= keyword AND hard/semantic confusion drops.",
   "cases": [
     {
       "age": 28,
@@ -286,6 +286,42 @@
       "plausibleWrong": "rustin",
       "confusionGroup": "private-trap-vs-denied-recognition",
       "note": "private-life trap imposed by family/convention (lee) vs rustin's denied-public-recognition; real rerank had picked rustin on the plain 'stuck in the wrong life' case"
+    },
+
+    {
+      "age": 27,
+      "feeling": "every door i knock on closes, and i'm starting to wonder if i'm meant to stop knocking",
+      "expect": "butler",
+      "semantic": true,
+      "note": "metaphor: creative rejection + whether to persist, no literal reject/manuscript/keep-trying tokens"
+    },
+    {
+      "age": 13,
+      "feeling": "at school i'm a ghost, everyone looks right through me like i'm not even there",
+      "expect": "rogers",
+      "semantic": true,
+      "note": "metaphor: invisibility/exclusion for bullied+solitude at child age, no literal bully/friends tokens"
+    },
+    {
+      "age": 61,
+      "feeling": "the house has a hole in the middle of it where she used to be, and i just move around the edges",
+      "expect": "lewis",
+      "semantic": true,
+      "note": "metaphor: grief rendered spatially, no literal died/grief/loss tokens"
+    },
+    {
+      "age": 40,
+      "feeling": "i keep promising myself that was the last time, and by morning the promise is already broken",
+      "expect": "wilson",
+      "semantic": true,
+      "note": "metaphor: the relapse cycle, no literal drinking/addiction/ashamed tokens"
+    },
+    {
+      "age": 50,
+      "feeling": "i send my work out into the world and it disappears without an echo, and still i get up and do it again",
+      "expect": "mcclintock",
+      "semantic": true,
+      "note": "metaphor: being ignored by the field + quiet persistence, no literal dismissed/ignored tokens"
     }
   ]
 }

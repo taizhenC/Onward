@@ -27,6 +27,40 @@ export type Facets = {
   agencyState: string;
 };
 
+// The snake_case facet identifiers used at the DB / embedding boundary (figure_facet_embeddings
+// .facet_type, the per-lane FacetsRAG keys). The rest of the app stays camelCase (Facets); this
+// is the ONE mapper between the two spaces. Order is canonical — seeding and the cache iterate it.
+export type FacetType =
+  | "emotional_core"
+  | "decision_shape"
+  | "trigger_event"
+  | "agency_state";
+
+export const FACET_TYPES: readonly FacetType[] = [
+  "emotional_core",
+  "decision_shape",
+  "trigger_event",
+  "agency_state",
+];
+
+const FACET_TYPE_TO_KEY: Record<FacetType, keyof Facets> = {
+  emotional_core: "emotionalCore",
+  decision_shape: "decisionShape",
+  trigger_event: "triggerEvent",
+  agency_state: "agencyState",
+};
+
+// The single camel↔snake crossing: given a stage's Facets and a snake_case FacetType, return the
+// authored facet text. Used by the seeder (what to embed) and the cache (what to hash-validate).
+export function facetText(facets: Facets, type: FacetType): string {
+  return facets[FACET_TYPE_TO_KEY[type]];
+}
+
+// How retrieval selects the rerank pool. `auto` = FacetsRAG when available else keyword fallback;
+// `keyword` = force the keyword-hybrid prefilter; `facetsrag` = force FacetsRAG and FAIL if the
+// embedder/cache is unavailable (so a "FacetsRAG eval" can never silently be a keyword run).
+export type RetrievalMode = "auto" | "keyword" | "facetsrag";
+
 export type FigureStageRow = FigureRow & {
   stageId: string;
   stageLabel: string;
@@ -84,15 +118,18 @@ export type OpeningCopy = {
 };
 
 // Frozen at session creation for auditable replay (CLAUDE.md: sessions.match_recipe).
-// Phase 1A subset — embedding/tagger/projection fields slot in later (jsonb, no migration).
 // proseModelId is included because the opening copy + preface are prose-model-generated and
-// stored on the session at intake.
+// stored on the session at intake. embeddingModelId + retrievalMode were added with the FacetsRAG
+// skeleton so replay reconstructs which embedder/retrieval path produced the match. Stored as
+// jsonb, so new fields need no migration; tagger/projection fields slot in the same way later.
 export type MatchRecipe = {
   matchConfigVersion: string;
   crisisRegexVersion: string;
   llmProvider: string;
   rerankModelId: string;
   proseModelId: string;
+  embeddingModelId: string;
+  retrievalMode: RetrievalMode;
 };
 
 export type Session = {

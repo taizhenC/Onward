@@ -2,10 +2,11 @@ import "server-only";
 import type { MatchRecipe, MatchResponse } from "./types";
 import { CRISIS_RESOURCES, classifyCrisis, crisisRegexVersion } from "./safety";
 import { createSession } from "./session";
-import { match } from "./matching";
+import { match, resolveRetrievalMode } from "./matching";
 import { matchConfigVersion } from "./match-config";
 import { getByKey } from "./figures";
 import { activeRecipe, writeOpeningCopy } from "./llm";
+import { embeddingModelId } from "./embeddings";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 
 export type IntakeInput = {
@@ -44,11 +45,15 @@ export async function handleIntake(input: unknown): Promise<MatchResponse> {
     ? await writeOpeningCopy({ feeling: validated.feeling, stage })
     : { eyebrow: NEUTRAL_EYEBROW, prefaceLines: DEFAULT_PREFACE_LINES };
 
-  // Freeze the active config/model versions on the session for auditable replay.
+  // Freeze the active config/model versions on the session for auditable replay. activeRecipe()
+  // stays LLM-only; the embedder id and configured retrieval mode are merged here so the embedding
+  // and LLM provider boundaries stay decoupled.
   const matchRecipe: MatchRecipe = {
     matchConfigVersion,
     crisisRegexVersion,
     ...activeRecipe(),
+    embeddingModelId: embeddingModelId(),
+    retrievalMode: resolveRetrievalMode(),
   };
 
   const sessionId = await createSession({

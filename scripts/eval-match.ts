@@ -5,6 +5,7 @@ import { loadEnvLocal } from "./_load-env";
 import { listAll, listByAge } from "../lib/figures";
 import {
   matchWithDebug,
+  resolveRetrievalMode,
   selectRerankPool,
   type MatchDebug,
 } from "../lib/matching";
@@ -13,6 +14,7 @@ import {
   RERANK_TOP_K,
   RERANK_TRUST_GATE,
 } from "../lib/match-config";
+import { embeddingModelId } from "../lib/embeddings";
 
 // The verification instrument for Phase 1A: run hand-graded gold cases through the real
 // matcher and report whether the reranker picks the right figure — and how honestly it
@@ -35,6 +37,9 @@ type GoldCase = {
   hard?: boolean;
   plausibleWrong?: string;
   confusionGroup?: string;
+  // Paraphrase/metaphor case with low literal keyword overlap — keyword is EXPECTED to miss it;
+  // only FacetsRAG should retrieve it. Exempt from the keyword top-K prefilter survival assertion.
+  semantic?: boolean;
 };
 
 type Trial = {
@@ -105,6 +110,7 @@ function loadGold(validKeys: Set<string>): GoldCase[] {
     }
 
     const hard = entry.hard === true;
+    const semantic = entry.semantic === true;
     const plausibleWrong =
       typeof entry.plausibleWrong === "string" ? entry.plausibleWrong : undefined;
     const confusionGroup =
@@ -133,6 +139,7 @@ function loadGold(validKeys: Set<string>): GoldCase[] {
         hard: hard || undefined,
         plausibleWrong,
         confusionGroup,
+        semantic: semantic || undefined,
       });
     }
   });
@@ -177,6 +184,9 @@ async function assertExpectedSurvivesPrefilter(
 
   for (const [index, gold] of cases.entries()) {
     if (gold.expect === "miss") continue;
+    // Metaphor/paraphrase cases are expected to elude the keyword prefilter — they exist to prove
+    // FacetsRAG's value, so they don't gate the keyword-path provider run.
+    if (gold.semantic) continue;
 
     const agePool = await listByAge(gold.age);
     const pool = agePool.length === 0 ? allStages : agePool;
@@ -246,6 +256,11 @@ type Metrics = {
   missDetectionCounts: { detected: number; total: number };
   hardConfusion: number | null;
   hardConfusionCounts: { confused: number; total: number };
+  // FacetsRAG retrieval survival (null/zero-total when the run took the keyword path, which
+  // populates no stage keys). Eval-owned: computed here from stageAKeys/stageBKeys.
+  goldSurvivalStageA: number | null;
+  goldSurvivalStageB: number | null;
+  goldSurvivalCounts: { survivedA: number; survivedB: number; total: number };
   confusionByGroup: GroupConfusion[];
   calibration: Calibration;
   chosenBy: { rerank: number; keyword_fallback: number };
@@ -288,6 +303,11 @@ function isCorrect(gold: GoldCase, result: MatchDebug): boolean {
     : result.figureKey === gold.expect;
 }
 
+// Did the gold figure survive a retrieval stage? Stage keys are `figureKey/stageId`.
+function keysIncludeFigure(keys: string[] | undefined, figureKey: string): boolean {
+  return (keys ?? []).some((key) => key.split("/")[0] === figureKey);
+}
+
 function ratio(num: number, den: number): number | null {
   return den === 0 ? null : num / den;
 }
@@ -314,6 +334,17 @@ function computeMetrics(trials: Trial[], k: number): Metrics {
   const miss = trials.filter((t) => t.gold.expect === "miss");
   const hard = nonMiss.filter((t) => t.gold.hard);
   const rerankNonMiss = nonMiss.filter((t) => t.result.chosenBy === "rerank");
+
+  // FacetsRAG survival — only trials whose retrieval populated stage keys (the FacetsRAG path).
+  const facetsTrials = nonMiss.filter(
+    (t) => t.result.stageAKeys !== undefined && t.result.stageBKeys !== undefined,
+  );
+  const survivedA = facetsTrials.filter((t) =>
+    keysIncludeFigure(t.result.stageAKeys, t.gold.expect),
+  ).length;
+  const survivedB = facetsTrials.filter((t) =>
+    keysIncludeFigure(t.result.stageBKeys, t.gold.expect),
+  ).length;
 
   const calibration: Calibration = {
     definitiveCorrect: 0,
@@ -405,6 +436,9 @@ function computeMetrics(trials: Trial[], k: number): Metrics {
     missDetectionCounts: { detected: missDetected, total: miss.length },
     hardConfusion,
     hardConfusionCounts: { confused: hardConfused, total: hard.length },
+    goldSurvivalStageA: ratio(survivedA, facetsTrials.length),
+    goldSurvivalStageB: ratio(survivedB, facetsTrials.length),
+    goldSurvivalCounts: { survivedA, survivedB, total: facetsTrials.length },
     confusionByGroup: [...groupMap.values()],
     calibration,
     chosenBy,
@@ -491,6 +525,16 @@ function printReport(metrics: Metrics): void {
   console.log(
     `Miss detection (expect=miss -> partial): ${pct(m.missDetection)}  (${m.missDetectionCounts.detected}/${m.missDetectionCounts.total})`,
   );
+  if (m.goldSurvivalCounts.total > 0) {
+    console.log("");
+    console.log("FacetsRAG gold survival (non-miss; retrieval-owned)");
+    console.log(
+      `  Stage A (deduped pool)   : ${pct(m.goldSurvivalStageA)}  (${m.goldSurvivalCounts.survivedA}/${m.goldSurvivalCounts.total})`,
+    );
+    console.log(
+      `  Stage B (top-K to rerank): ${pct(m.goldSurvivalStageB)}  (${m.goldSurvivalCounts.survivedB}/${m.goldSurvivalCounts.total})`,
+    );
+  }
   console.log("");
   console.log("Near-miss confusion (hard cases that picked plausibleWrong)");
   if (m.confusionByGroup.length === 0) {
@@ -642,7 +686,14 @@ async function main(): Promise<void> {
   const stages = await listAll();
   const validKeys = new Set(stages.map((s) => s.figureKey));
   const cases = loadGold(validKeys);
-  await assertExpectedSurvivesPrefilter(cases, stages);
+
+  const retrievalMode = resolveRetrievalMode();
+  // The keyword top-K prefilter assertion applies only to the keyword path. FacetsRAG's pre-flight
+  // is `npm run eval-retrieval` (Stage A/B survival); and a forced-but-unavailable facetsrag run
+  // throws per-trial, so a "FacetsRAG run" can never silently degrade to keyword unnoticed.
+  if (retrievalMode === "keyword") {
+    await assertExpectedSurvivesPrefilter(cases, stages);
+  }
 
   const jobs = cases.flatMap((gold) =>
     Array.from({ length: k }, (_, run) => ({ gold, run })),
@@ -651,7 +702,9 @@ async function main(): Promise<void> {
   console.log(
     `provider=${provider} model=${model} k=${k} concurrency=${concurrency} cases=${cases.length} trials=${jobs.length}`,
   );
-  console.log(`matchConfigVersion=${matchConfigVersion}`);
+  console.log(
+    `matchConfigVersion=${matchConfigVersion} retrievalMode=${retrievalMode} embeddingModel=${embeddingModelId()}`,
+  );
 
   const results = await mapWithConcurrency(jobs, concurrency, async (job) => ({
     gold: job.gold,
@@ -669,6 +722,8 @@ async function main(): Promise<void> {
     matchConfigVersion,
     provider,
     model,
+    retrievalMode,
+    embeddingModel: embeddingModelId(),
     k,
     concurrency,
     maxRetries,

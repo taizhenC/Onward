@@ -22,6 +22,9 @@ const DEFAULT_DIM = 1536;
 const DEFAULT_TIMEOUT_MS = 20000;
 // Gemini batchEmbedContents caps requests per call; chunk to stay safely under it.
 const BATCH_LIMIT = 100;
+const DEFAULT_MAX_RETRIES = 3;
+const DEFAULT_RETRY_BASE_MS = 3000;
+const DEFAULT_RATE_LIMIT_RETRY_MS = 65000;
 
 type EmbeddingErrorClass =
   | "no_key"
@@ -72,6 +75,18 @@ function timeoutMs(): number {
   const parsed = Number(raw);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TIMEOUT_MS;
 }
+function maxRetries(): number {
+  const raw = process.env.EMBEDDING_MAX_RETRIES;
+  if (raw === undefined || raw.trim() === "") return DEFAULT_MAX_RETRIES;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) && parsed >= 0 ? Math.floor(parsed) : DEFAULT_MAX_RETRIES;
+}
+function retryBaseMs(): number {
+  const raw = process.env.EMBEDDING_RETRY_BASE_MS;
+  if (raw === undefined || raw.trim() === "") return DEFAULT_RETRY_BASE_MS;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_RETRY_BASE_MS;
+}
 
 // One query embedding (match time). RETRIEVAL_QUERY.
 export async function embedQueryReal(text: string): Promise<number[]> {
@@ -118,6 +133,37 @@ async function postJson(path: string, body: unknown): Promise<unknown> {
   const key = apiKey();
   if (!key) throw new EmbeddingError("no_key", "GEMINI_API_KEY is not set.");
 
+  for (let attempt = 0; ; attempt += 1) {
+    try {
+      return await postJsonOnce(path, body, key);
+    } catch (error) {
+      if (
+        !(error instanceof EmbeddingHttpError) ||
+        !shouldRetryHttp(error.status) ||
+        attempt >= maxRetries()
+      ) {
+        throw error;
+      }
+      await sleep(retryDelayMs(error, attempt));
+    }
+  }
+}
+
+class EmbeddingHttpError extends EmbeddingError {
+  constructor(
+    readonly status: number,
+    readonly retryAfterMs: number | undefined,
+  ) {
+    super("http", `embedding HTTP ${status}`);
+    this.name = "EmbeddingHttpError";
+  }
+}
+
+async function postJsonOnce(
+  path: string,
+  body: unknown,
+  key: string,
+): Promise<unknown> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs());
 
@@ -143,13 +189,39 @@ async function postJson(path: string, body: unknown): Promise<unknown> {
   }
 
   if (!response.ok) {
-    throw new EmbeddingError("http", `embedding HTTP ${response.status}`);
+    throw new EmbeddingHttpError(
+      response.status,
+      retryAfterMs(response.headers.get("retry-after")),
+    );
   }
   try {
     return await response.json();
   } catch {
     throw new EmbeddingError("parse", "embedding response was not valid JSON");
   }
+}
+
+function shouldRetryHttp(status: number): boolean {
+  return status === 429 || status === 500 || status === 502 || status === 503 || status === 504;
+}
+
+function retryDelayMs(error: EmbeddingHttpError, attempt: number): number {
+  if (error.retryAfterMs !== undefined) return error.retryAfterMs;
+  if (error.status === 429) return DEFAULT_RATE_LIMIT_RETRY_MS;
+  return retryBaseMs() * 2 ** attempt;
+}
+
+function retryAfterMs(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const seconds = Number(value);
+  if (Number.isFinite(seconds) && seconds >= 0) return seconds * 1000;
+  const dateMs = Date.parse(value);
+  if (!Number.isNaN(dateMs)) return Math.max(0, dateMs - Date.now());
+  return undefined;
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function normalizeOrThrow(values: number[] | undefined): number[] {

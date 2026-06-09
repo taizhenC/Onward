@@ -1,6 +1,6 @@
-import type { Confidence, Framing } from "./types";
+import type { Confidence, FacetType, Framing } from "./types";
 
-export const matchConfigVersion = "phase1-rerank-topk-2026-06-07";
+export const matchConfigVersion = "facetsrag-skeleton-inmemory-2026-06-08";
 
 export const AGE_TOLERANCE_YEARS = 10;
 
@@ -29,9 +29,76 @@ export function framingFromConfidence(confidence: Confidence): Framing {
   return confidence === "high" ? "definitive" : "partial";
 }
 
-// Lowercase substring → theme tags. A figure earns one point per matched keyword
-// whose theme tag is in the figure's themes[]. Phase 1 replaces this with the
-// real BASE_WEIGHTS / WEIGHT_BOUNDS / DYNAMIC from CLAUDE.md.
+// ── FacetsRAG retrieval (skeleton) ─────────────────────────────────────────────
+// Static lane weights + quotas for the in-memory Stage-A/Stage-B retrieval that feeds the
+// reranker. No tagger / projection / dynamic-weights yet (deferred fast-follow); WEIGHT_BOUNDS
+// ship now so the dynamic variant is a later config flip, not a refactor. Loosening any of these
+// requires eval evidence (recovery-asymmetry) — never intuition.
+
+// The five embedded lanes (shape + one per facet) and the full lane set (+ deterministic theme).
+export type VectorLane = "shape" | FacetType;
+export type RetrievalLane = VectorLane | "theme";
+
+// BASE_WEIGHTS is the THEME-ABSENT weighting: the five embedded lanes summing to 1.0. When the
+// theme lane is active (user themes matched), THEME_WEIGHT is inserted and the set is renormalized
+// back to 1.0 (lib/facets-retrieval.ts). When no user theme matched, the theme lane is dropped and
+// BASE_WEIGHTS is used as-is — never scoring everything 0 as arbitrary tie-break noise.
+export const BASE_WEIGHTS: Record<VectorLane, number> = {
+  shape: 0.45,
+  emotional_core: 0.25,
+  decision_shape: 0.15,
+  trigger_event: 0.1,
+  agency_state: 0.05,
+};
+
+export const THEME_WEIGHT = 0.15;
+
+// Bounds for the (deferred) dynamic-weight variant — passive, tight, eval-tunable. Unused by the
+// skeleton (static BASE_WEIGHTS only); present so the dynamic fast-follow is a config change.
+export const WEIGHT_BOUNDS: Record<VectorLane, { min: number; max: number }> = {
+  shape: { min: 0.3, max: 0.55 },
+  emotional_core: { min: 0.15, max: 0.35 },
+  decision_shape: { min: 0.05, max: 0.25 },
+  trigger_event: { min: 0.03, max: 0.2 },
+  agency_state: { min: 0.02, max: 0.15 },
+};
+
+// Reciprocal-rank-fusion constant (Stage B). Standard k=60.
+export const RRF_K = 60;
+
+// Stage A per-lane quotas: each lane contributes its top-N post-filter to the deduped pool
+// UNCONDITIONALLY (recovery-asymmetry — a retrieval miss is unrecoverable). At 20 figures behind a
+// ±10y age gate the live pool is smaller than these, so today every age-gated stage survives Stage
+// A; the quotas only bite once the library grows.
+export const LANE_QUOTAS: Record<RetrievalLane, number> = {
+  shape: 20,
+  emotional_core: 20,
+  decision_shape: 20,
+  trigger_event: 15,
+  agency_state: 15,
+  theme: 20,
+};
+
+// Shape lane aggregation: max-not-mean over a stage's shape sentences —
+// max_s sim(q,s) + α·second_max_s sim(q,s). Averaging would blur the distinct anchors.
+export const MAX_NOT_MEAN_ALPHA = 0.15;
+
+// Theme lane (deterministic): clamp(wJaccard(user,themes) − λ·wJaccard(user,antiThemes), lo, hi).
+export const THEME_LAMBDA = 1.0;
+export const THEME_CLAMP = { min: -0.25, max: 0.35 } as const;
+
+// Soft age adjustment applied AFTER Stage B RRF, MULTIPLICATIVELY (additive would swamp the tiny
+// 1/(k+rank) RRF scores): adjusted = rrf · (1 − min(AGE_CAP, ageDistance·AGE_SLOPE)). At the ±10y
+// hard-gate edge the penalty reaches the cap. Age nudges ranking; it never dominates meaning.
+export const AGE_CAP = 0.2;
+export const AGE_SLOPE = 0.02;
+
+// Stage B output size: the top-K stages handed to the reranker.
+export const FACETSRAG_TOP_K = 12;
+
+// Lowercase substring → theme tags. A figure earns one point per matched keyword whose theme tag
+// is in the figure's themes[]. Drives the keyword-hybrid scorer/fallback AND (via the exported
+// getMatchedThemeWeights in lib/keyword-match.ts) the deterministic FacetsRAG theme lane.
 export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   // Butler — creative_dismissal / worthlessness / keep_going
   reject: ["creative_dismissal", "worthlessness"],

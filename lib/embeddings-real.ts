@@ -24,7 +24,7 @@ const DEFAULT_TIMEOUT_MS = 20000;
 const BATCH_LIMIT = 100;
 const DEFAULT_MAX_RETRIES = 3;
 const DEFAULT_RETRY_BASE_MS = 3000;
-const DEFAULT_RATE_LIMIT_RETRY_MS = 65000;
+const DEFAULT_RATE_LIMIT_RETRY_MS = 10000;
 
 type EmbeddingErrorClass =
   | "no_key"

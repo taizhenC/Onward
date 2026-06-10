@@ -83,6 +83,12 @@ export function IntakeForm() {
       return;
     }
 
+    // A gentle terminal state, not an error: the 429 means "come back in a while".
+    if (response.status === 429 || "rateLimited" in payload) {
+      setRateLimited(true);
+      return;
+    }
+
     if (!response.ok) {
       const message =
         "error" in payload ? payload.error : "Something went wrong.";
@@ -105,6 +111,26 @@ export function IntakeForm() {
 
   if (crisisResources) {
     return <CrisisCard resources={crisisResources} />;
+  }
+
+  if (rateLimited) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="space-y-6"
+      >
+        <header className="space-y-3">
+          <h1 className="text-3xl">A pause</h1>
+        </header>
+        <p className="text-[var(--color-ink-soft)] leading-relaxed">
+          You&apos;ve begun several stories in a short while, so Onward is
+          asking for a little time. The door opens again within the hour. The
+          stories will be here.
+        </p>
+      </motion.div>
+    );
   }
 
   return (

@@ -4,11 +4,26 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { CrisisCard } from "./CrisisCard";
+import { getSupabaseBrowser } from "@/lib/supabase/client";
 
 type MatchSuccess = { sessionId: string };
 type MatchCrisis = { crisis: true; resources: string[] };
+type MatchRateLimited = { rateLimited: true };
 type MatchError = { error: string };
-type MatchPayload = MatchSuccess | MatchCrisis | MatchError;
+type MatchPayload = MatchSuccess | MatchCrisis | MatchRateLimited | MatchError;
+
+// Invisible anonymous-first auth: make sure this browser holds an auth session
+// (anonymous or permanent) before posting the intake. Signing in at SUBMIT, not page
+// mount, means bouncing visitors mint no users. Without Supabase env (offline/memory
+// dev) there's no client and the server falls back to its local dev user.
+async function ensureAuthSession(): Promise<boolean> {
+  const supabase = getSupabaseBrowser();
+  if (!supabase) return true;
+  const { data } = await supabase.auth.getSession();
+  if (data.session) return true;
+  const { error } = await supabase.auth.signInAnonymously();
+  return !error;
+}
 
 export function IntakeForm() {
   const router = useRouter();
@@ -17,6 +32,7 @@ export function IntakeForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [crisisResources, setCrisisResources] = useState<string[] | null>(null);
+  const [rateLimited, setRateLimited] = useState(false);
 
   const ageNum = Number.parseInt(age, 10);
   const ageValid =
@@ -31,6 +47,15 @@ export function IntakeForm() {
     if (!canSubmit) return;
     setSubmitting(true);
     setError(null);
+
+    const authed = await ensureAuthSession();
+    if (!authed) {
+      setError(
+        "We couldn't start a private session. Your browser may be blocking cookies — they're needed to keep your story yours.",
+      );
+      setSubmitting(false);
+      return;
+    }
 
     let response: Response;
     try {
@@ -58,6 +83,12 @@ export function IntakeForm() {
       return;
     }
 
+    // A gentle terminal state, not an error: the 429 means "come back in a while".
+    if (response.status === 429 || "rateLimited" in payload) {
+      setRateLimited(true);
+      return;
+    }
+
     if (!response.ok) {
       const message =
         "error" in payload ? payload.error : "Something went wrong.";
@@ -80,6 +111,26 @@ export function IntakeForm() {
 
   if (crisisResources) {
     return <CrisisCard resources={crisisResources} />;
+  }
+
+  if (rateLimited) {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="space-y-6"
+      >
+        <header className="space-y-3">
+          <h1 className="text-3xl">A pause</h1>
+        </header>
+        <p className="text-[var(--color-ink-soft)] leading-relaxed">
+          You&apos;ve begun several stories in a short while, so Onward is
+          asking for a little time. The door opens again within the hour. The
+          stories will be here.
+        </p>
+      </motion.div>
+    );
   }
 
   return (

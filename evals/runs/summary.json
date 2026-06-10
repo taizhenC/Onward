@@ -1,14 +1,14 @@
 {
   "config": {
-    "matchConfigVersion": "facetsrag-skeleton-inmemory-2026-06-08",
-    "provider": "real",
+    "matchConfigVersion": "deploy-auth-ratelimit-2026-06-10",
+    "provider": "stub",
     "model": "gpt-oss-120b",
     "retrievalMode": "keyword",
-    "embeddingModel": "gemini-embedding-001@d1536",
+    "embeddingModel": "stub@v0",
     "k": 1,
-    "concurrency": 1,
+    "concurrency": 3,
     "maxRetries": 2,
-    "ranAt": "2026-06-09T02:36:02.010Z",
+    "ranAt": "2026-06-10T05:54:07.861Z",
     "caseCount": 44,
     "trialCount": 44
   },
@@ -23,9 +23,9 @@
       "correct": 37,
       "total": 41
     },
-    "missDetection": 0.6666666666666666,
+    "missDetection": 1,
     "missDetectionCounts": {
-      "detected": 2,
+      "detected": 3,
       "total": 3
     },
     "hardConfusion": 0.07142857142857142,
@@ -45,13 +45,13 @@
         "group": "persistence-vs-reinvention",
         "trials": 2,
         "pickedPlausibleWrong": 0,
-        "correct": 1
+        "correct": 2
       },
       {
         "group": "lonely-child",
         "trials": 2,
-        "pickedPlausibleWrong": 0,
-        "correct": 2
+        "pickedPlausibleWrong": 1,
+        "correct": 1
       },
       {
         "group": "creative-perseverance",
@@ -68,8 +68,8 @@
       {
         "group": "boxed-in-woman",
         "trials": 2,
-        "pickedPlausibleWrong": 1,
-        "correct": 1
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       },
       {
         "group": "dismissed-no-credit",
@@ -81,7 +81,7 @@
         "group": "trapped-life-vs-lost-career",
         "trials": 1,
         "pickedPlausibleWrong": 0,
-        "correct": 0
+        "correct": 1
       },
       {
         "group": "private-trap-vs-denied-recognition",
@@ -91,10 +91,10 @@
       }
     ],
     "calibration": {
-      "definitiveCorrect": 32,
-      "definitiveWrong": 0,
-      "partialCorrect": 5,
-      "partialWrong": 4
+      "definitiveCorrect": 34,
+      "definitiveWrong": 1,
+      "partialCorrect": 3,
+      "partialWrong": 3
     },
     "chosenBy": {
       "rerank": 44,
@@ -119,8 +119,8 @@
       "p95": 0,
       "max": 0
     },
-    "latencyP50": 332,
-    "latencyP95": 744,
+    "latencyP50": 0,
+    "latencyP95": 0,
     "stability": null,
     "trustGate": {
       "passed": false,
@@ -128,8 +128,8 @@
       "checks": {
         "coverage": true,
         "rerankTop1": false,
-        "missDetection": false,
-        "noDefinitiveWrong": true,
+        "missDetection": true,
+        "noDefinitiveWrong": false,
         "top1": false,
         "hardConfusion": false
       },

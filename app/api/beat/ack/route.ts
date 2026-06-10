@@ -1,7 +1,8 @@
 import { jsonError } from "@/lib/api-utils";
+import { getAuthUserId } from "@/lib/auth";
 import { chunkBeatText } from "@/lib/chunks";
 import { getByKey } from "@/lib/figures";
-import { getSession, updateSession } from "@/lib/session";
+import { getOwnedSession, updateSession } from "@/lib/session";
 import {
   getNextStoryAdvance,
   nextSessionPosition,
@@ -23,7 +24,9 @@ export async function POST(request: Request): Promise<Response> {
   const parsed = parseBeatPositionRequest(body);
   if ("error" in parsed) return jsonError(parsed.error, 400);
 
-  const session = await getSession(parsed.sessionId);
+  // Ownership 404 fires before any position check — a foreign session must be
+  // indistinguishable from a missing one (no position oracle).
+  const session = await getOwnedSession(parsed.sessionId, await getAuthUserId());
   if (!session) return jsonError("Story session not found.", 404);
 
   const stage = await getByKey(session.figureKey, session.stageId);

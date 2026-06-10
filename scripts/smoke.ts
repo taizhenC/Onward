@@ -1,10 +1,12 @@
 import "./_smoke-bootstrap";
 import { handleIntake } from "../lib/intake";
+import type { IntakeContext } from "../lib/intake";
 import { classifyCrisis } from "../lib/safety";
 import { toClientOutline } from "../lib/figures";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { toRerankCandidate } from "../lib/llm";
-import { _sessionCount, getSession } from "../lib/session";
+import { _sessionCount, getOwnedSession, getSession } from "../lib/session";
+import { MATCH_LIMITS } from "../lib/rate-limit";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
 import type { BeatBlueprint } from "../lib/types";
@@ -14,6 +16,11 @@ import type { BeatBlueprint } from "../lib/types";
 process.env.LLM_PROVIDER = "stub";
 // Sessions + figures from the in-process store/const (no DB) — keeps smoke hermetic.
 process.env.PERSISTENCE = "memory";
+
+// Fixed request identity for every intake in this run. The whole run shares one
+// user, so the rate-limit assertion (which exhausts the 5/hour budget) MUST stay
+// last among the intake-driven assertions.
+const SMOKE_CTX: IntakeContext = { userId: "smoke-user", ipHash: "smoke-ip" };
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
 
@@ -59,7 +66,7 @@ async function runMatchAssertion(
   expectedFigureKey: string,
 ): Promise<AssertionResult> {
   const before = await _sessionCount();
-  const result = await handleIntake(input);
+  const result = await handleIntake(input, SMOKE_CTX);
 
   if ("error" in result) {
     return { name: label, ok: false, detail: `validation error: ${result.error}` };
@@ -70,6 +77,9 @@ async function runMatchAssertion(
       ok: false,
       detail: `crisis triggered unexpectedly`,
     };
+  }
+  if ("rateLimited" in result) {
+    return { name: label, ok: false, detail: "rate-limited unexpectedly" };
   }
   if (!("sessionId" in result)) {
     return { name: label, ok: false, detail: "no sessionId in response" };
@@ -145,10 +155,13 @@ async function runMatchAssertion(
 
 async function runCrisisAssertion(): Promise<AssertionResult> {
   const before = await _sessionCount();
-  const result = await handleIntake({
-    age: 22,
-    feeling: "I want to kill myself",
-  });
+  const result = await handleIntake(
+    {
+      age: 22,
+      feeling: "I want to kill myself",
+    },
+    SMOKE_CTX,
+  );
   const after = await _sessionCount();
 
   if ("error" in result) {
@@ -191,6 +204,90 @@ async function runCrisisAssertion(): Promise<AssertionResult> {
     name: "crisis: no session created",
     ok: true,
     detail: `resources=${result.resources.length}, sessions=${after}`,
+  };
+}
+
+// Ownership chokepoint: a foreign or absent user must read null (the routes' 404),
+// indistinguishable from a missing session.
+async function runOwnershipAssertion(): Promise<AssertionResult> {
+  const name = "ownership: foreign/absent user cannot read a session";
+  const result = await handleIntake(
+    {
+      age: 28,
+      feeling: "I keep getting rejected and I don't know if I should keep trying",
+    },
+    SMOKE_CTX,
+  );
+  if (!("sessionId" in result)) {
+    return { name, ok: false, detail: "intake did not create a session" };
+  }
+
+  const owned = await getOwnedSession(result.sessionId, SMOKE_CTX.userId);
+  if (!owned) {
+    return { name, ok: false, detail: "owner could not read their own session" };
+  }
+  const foreign = await getOwnedSession(result.sessionId, "someone-else");
+  if (foreign) {
+    return { name, ok: false, detail: "foreign user could read the session" };
+  }
+  const absent = await getOwnedSession(result.sessionId, null);
+  if (absent) {
+    return { name, ok: false, detail: "absent user could read the session" };
+  }
+
+  return { name, ok: true, detail: "owner reads; foreign and absent users get null" };
+}
+
+// MUST run last among intake assertions: it spends the rest of smoke-user's hourly
+// budget. Earlier assertions consumed 4 (3 matches + 1 ownership); the 5th here
+// still passes, the 6th must come back rate-limited — without a session and without
+// blocking crisis.
+async function runRateLimitAssertion(): Promise<AssertionResult> {
+  const name = `rate limit: intake ${MATCH_LIMITS.userPerHour + 1} of the hour is refused`;
+  const input = {
+    age: 28,
+    feeling: "I keep getting rejected and I don't know if I should keep trying",
+  };
+
+  const fifth = await handleIntake(input, SMOKE_CTX);
+  if (!("sessionId" in fifth)) {
+    return {
+      name,
+      ok: false,
+      detail: `intake ${MATCH_LIMITS.userPerHour} of the hour should still pass`,
+    };
+  }
+
+  const before = await _sessionCount();
+  const sixth = await handleIntake(input, SMOKE_CTX);
+  const after = await _sessionCount();
+  if (!("rateLimited" in sixth)) {
+    return { name, ok: false, detail: "over-budget intake was not rate-limited" };
+  }
+  if (after !== before) {
+    return {
+      name,
+      ok: false,
+      detail: `rate-limited intake changed the session map (before=${before}, after=${after})`,
+    };
+  }
+
+  const crisis = await handleIntake(
+    { age: 22, feeling: "I want to kill myself" },
+    SMOKE_CTX,
+  );
+  if (!("crisis" in crisis)) {
+    return {
+      name,
+      ok: false,
+      detail: "crisis did not bypass the rate limit while over budget",
+    };
+  }
+
+  return {
+    name,
+    ok: true,
+    detail: "limit holds, no session created, crisis still bypasses",
   };
 }
 
@@ -560,12 +657,15 @@ async function main(): Promise<void> {
       "lee",
     ),
     await runCrisisAssertion(),
+    await runOwnershipAssertion(),
     runOutlineAssertion(),
     runRerankCandidateAssertion(),
     runEyebrowGuardAssertion(),
     runArcShapeAssertion(),
     runChunkIntegrityAssertion(),
     runChunkBehaviorAssertion(),
+    // Last on purpose — exhausts smoke-user's hourly budget (see the comment above).
+    await runRateLimitAssertion(),
   ];
 
   console.log("Onward Phase 0 smoke check");

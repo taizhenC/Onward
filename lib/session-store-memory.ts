@@ -8,6 +8,7 @@ import type {
   SessionStore,
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
+import { LOCAL_DEV_USER_ID } from "./auth";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -39,8 +40,10 @@ function pruneExpiredSessions(now = Date.now()): void {
 async function createSession(input: CreateSessionInput): Promise<string> {
   pruneExpiredSessions();
   const sessionId = randomBytes(16).toString("hex");
+  const now = Date.now();
   const session: Session = {
     sessionId,
+    userId: input.userId,
     figureKey: input.figureKey,
     stageId: input.stageId,
     framing: input.framing,
@@ -50,7 +53,8 @@ async function createSession(input: CreateSessionInput): Promise<string> {
     matchRecipe: input.matchRecipe,
     nextBeatIndex: 0,
     nextChunkIndex: 0,
-    createdAt: Date.now(),
+    createdAt: now,
+    updatedAt: now,
   };
   sessions.set(sessionId, session);
   return sessionId;
@@ -68,6 +72,8 @@ async function getSession(sessionId: string): Promise<Session | null> {
   const legacySession = session as any;
   if (
     legacySession.nextChunkIndex === undefined ||
+    legacySession.userId === undefined ||
+    legacySession.updatedAt === undefined ||
     openingCopy !== session.openingCopy
   ) {
     const migrated: Session = {
@@ -76,6 +82,8 @@ async function getSession(sessionId: string): Promise<Session | null> {
         legacySession.nextChunkIndex === undefined
           ? 0
           : legacySession.nextChunkIndex,
+      userId: legacySession.userId ?? LOCAL_DEV_USER_ID,
+      updatedAt: legacySession.updatedAt ?? session.createdAt,
       openingCopy,
     };
     sessions.set(sessionId, migrated);
@@ -115,9 +123,17 @@ async function updateSession(
     ...(patch.nextChunkIndex !== undefined
       ? { nextChunkIndex: patch.nextChunkIndex }
       : {}),
+    updatedAt: Date.now(),
   };
   sessions.set(sessionId, next);
   return next;
+}
+
+async function listSessionsByUser(userId: string): Promise<Session[]> {
+  pruneExpiredSessions();
+  return [...sessions.values()]
+    .filter((session) => session.userId === userId)
+    .sort((a, b) => b.createdAt - a.createdAt);
 }
 
 async function sessionCount(): Promise<number> {
@@ -129,5 +145,6 @@ export const memorySessionStore: SessionStore = {
   createSession,
   getSession,
   updateSession,
+  listSessionsByUser,
   _sessionCount: sessionCount,
 };

@@ -1,6 +1,16 @@
 import type { Confidence, FacetType, Framing } from "./types";
 
-export const matchConfigVersion = "facetsrag-skeleton-inmemory-2026-06-08";
+export const matchConfigVersion = "deploy-auth-ratelimit-2026-06-10";
+
+// ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in
+// the cron job). SQL can't read TS, so migration 0003's pg_cron schedules are the LIVE
+// copies of these values; change both together.
+//   - Anonymous guests (and their sessions, via FK cascade) are deleted this many hours
+//     after their last reading activity. Linking an email exempts the user permanently.
+//   - sessions.feeling / the user's disclosure is NULL'd this many days after creation;
+//     structural fields are preserved.
+export const ANON_USER_TTL_HOURS = 6;
+export const FEELING_RETENTION_DAYS = 60;
 
 export const AGE_TOLERANCE_YEARS = 10;
 

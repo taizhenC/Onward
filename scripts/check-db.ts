@@ -76,14 +76,19 @@ async function checkServingParity(): Promise<Step> {
 }
 
 // Gate 3 — a crisis intake writes no session row (handleIntake returns before createSession).
+// The fixed ctx is safe in supabase mode: crisis short-circuits before the rate limiter and
+// the store, so this non-uuid user id never reaches Postgres.
 async function checkCrisisPersistsNothing(): Promise<Step> {
   const name = "crisis persists nothing";
   try {
     const before = await _sessionCount();
-    const result = await handleIntake({
-      age: 22,
-      feeling: "I want to kill myself",
-    });
+    const result = await handleIntake(
+      {
+        age: 22,
+        feeling: "I want to kill myself",
+      },
+      { userId: "check-db", ipHash: "check-db" },
+    );
     const after = await _sessionCount();
 
     const isCrisis = "crisis" in result && result.crisis === true;

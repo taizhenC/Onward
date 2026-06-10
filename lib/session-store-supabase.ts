@@ -20,6 +20,7 @@ const MAX_SESSION_ID_INSERT_ATTEMPTS = 5;
 
 type SessionRow = {
   session_id: string;
+  user_id: string;
   figure_key: string;
   stage_id: string;
   framing: string;
@@ -30,6 +31,7 @@ type SessionRow = {
   next_beat_index: number;
   next_chunk_index: number;
   created_at: string;
+  updated_at: string;
 };
 
 async function createSession(input: CreateSessionInput): Promise<string> {
@@ -37,6 +39,7 @@ async function createSession(input: CreateSessionInput): Promise<string> {
     const sessionId = randomBytes(16).toString("hex");
     const { error } = await getSupabase().from(TABLE).insert({
       session_id: sessionId,
+      user_id: input.userId,
       figure_key: input.figureKey,
       stage_id: input.stageId,
       framing: input.framing,
@@ -72,10 +75,13 @@ async function updateSession(
   sessionId: string,
   patch: SessionPatch,
 ): Promise<Session | null> {
-  const update: Record<string, number> = {};
+  const update: Record<string, number | string> = {};
   if (patch.nextBeatIndex !== undefined) update.next_beat_index = patch.nextBeatIndex;
   if (patch.nextChunkIndex !== undefined) update.next_chunk_index = patch.nextChunkIndex;
   if (Object.keys(update).length === 0) return getSession(sessionId);
+
+  // Last-activity signal for the anonymous-guest retention job (migration 0003).
+  update.updated_at = new Date().toISOString();
 
   const { data, error } = await getSupabase()
     .from(TABLE)
@@ -85,6 +91,17 @@ async function updateSession(
     .maybeSingle();
   if (error) throw new Error(`updateSession failed: ${error.message}`);
   return data ? rowToSession(data as SessionRow) : null;
+}
+
+async function listSessionsByUser(userId: string): Promise<Session[]> {
+  const { data, error } = await getSupabase()
+    .from(TABLE)
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(100);
+  if (error) throw new Error(`listSessionsByUser failed: ${error.message}`);
+  return ((data ?? []) as SessionRow[]).map(rowToSession);
 }
 
 async function sessionCount(): Promise<number> {
@@ -98,24 +115,26 @@ async function sessionCount(): Promise<number> {
 function rowToSession(row: SessionRow): Session {
   return {
     sessionId: row.session_id,
+    userId: row.user_id,
     figureKey: row.figure_key,
     stageId: row.stage_id,
     framing: row.framing === "definitive" ? "definitive" : "partial",
     openingCopy: normalizeOpeningCopy(row.opening_copy),
     age: row.age,
-    // feeling is nullable (a future retention job NULLs it). A NULLed session is months old
-    // and not mid-story; reconstruct as "" rather than widen Session.feeling to string|null.
+    // feeling is nullable (the retention job NULLs it after 60 days). A NULLed session is
+    // months old and not mid-story; reconstruct as "" rather than widen Session.feeling.
     feeling: row.feeling ?? "",
     matchRecipe: row.match_recipe as MatchRecipe,
     nextBeatIndex: row.next_beat_index,
     nextChunkIndex: row.next_chunk_index,
-    // Session.createdAt stays a number — map timestamptz back so the ISO string never leaks
+    // Session timestamps stay numbers — map timestamptz back so the ISO string never leaks
     // into TTL/component code that assumes a number.
-    createdAt: parseCreatedAt(row.created_at),
+    createdAt: parseTimestamp(row.created_at),
+    updatedAt: parseTimestamp(row.updated_at),
   };
 }
 
-function parseCreatedAt(value: string): number {
+function parseTimestamp(value: string): number {
   const parsed = Date.parse(value);
   return Number.isNaN(parsed) ? Date.now() : parsed;
 }
@@ -141,5 +160,6 @@ export const supabaseSessionStore: SessionStore = {
   createSession,
   getSession,
   updateSession,
+  listSessionsByUser,
   _sessionCount: sessionCount,
 };

@@ -35,8 +35,29 @@ export function createSession(input: CreateSessionInput): Promise<string> {
   return resolveStore().createSession(input);
 }
 
+// Owner-blind read. For scripts and internal plumbing only — request-scoped code
+// (pages, API routes) must use getOwnedSession so a foreign session 404s.
 export function getSession(sessionId: string): Promise<Session | null> {
   return resolveStore().getSession(sessionId);
+}
+
+// The ownership chokepoint (404-over-500 invariant): absent user, unknown id, and
+// FOREIGN session are deliberately indistinguishable — all return null, which every
+// caller already maps to its 404 branch. No position/existence oracle for sessions
+// you don't own.
+export async function getOwnedSession(
+  sessionId: string,
+  userId: string | null,
+): Promise<Session | null> {
+  if (!userId) return null;
+  const session = await resolveStore().getSession(sessionId);
+  return session && session.userId === userId ? session : null;
+}
+
+// Own-sessions listing for /stories (created-desc). Inherently scoped — callers pass
+// the authenticated user id only.
+export function listSessionsByUser(userId: string): Promise<Session[]> {
+  return resolveStore().listSessionsByUser(userId);
 }
 
 export function updateSession(

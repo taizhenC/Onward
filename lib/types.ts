@@ -134,6 +134,10 @@ export type MatchRecipe = {
 
 export type Session = {
   sessionId: string;
+  // Owner (Supabase auth user id; LOCAL_DEV_USER_ID in memory mode). Sessions are only
+  // readable through lib/session.ts#getOwnedSession in request-scoped code — a foreign
+  // session is indistinguishable from a missing one (404-over-500).
+  userId: string;
   figureKey: string;
   stageId: string;
   framing: Framing;
@@ -144,6 +148,9 @@ export type Session = {
   nextBeatIndex: number;
   nextChunkIndex: number;
   createdAt: number;
+  // Last progress write (ms). The activity signal for the anonymous-guest retention job
+  // (migration 0003); bumped on every updateSession.
+  updatedAt: number;
 };
 
 // Server-side session storage contract. Implemented by an in-memory store (default) and a
@@ -151,6 +158,7 @@ export type Session = {
 // the repo uses for LLM and embeddings. All methods are async so the two impls share one
 // signature; the in-memory impl is trivially async.
 export type CreateSessionInput = {
+  userId: string;
   figureKey: string;
   stageId: string;
   framing: Framing;
@@ -172,11 +180,13 @@ export interface SessionStore {
   createSession(input: CreateSessionInput): Promise<string>;
   getSession(sessionId: string): Promise<Session | null>;
   updateSession(sessionId: string, patch: SessionPatch): Promise<Session | null>;
+  listSessionsByUser(userId: string): Promise<Session[]>;
   _sessionCount(): Promise<number>;
 }
 
 export type MatchResponse =
   | { crisis: true; resources: string[] }
+  | { rateLimited: true }
   | { error: string }
   | { sessionId: string };
 

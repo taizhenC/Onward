@@ -28,17 +28,24 @@ export default async function StoriesPage() {
   if (!userId) redirect("/signin");
 
   const sessions = await listSessionsByUser(userId);
-  const items: StoryListItem[] = [];
-  for (const session of sessions) {
-    const stage = await getByKey(session.figureKey, session.stageId);
-    if (!stage) continue;
-    items.push({
-      sessionId: session.sessionId,
-      displayName: stage.displayName,
-      startedAt: session.createdAt,
-      finished: session.nextBeatIndex >= stage.beats.length,
-    });
-  }
+  // The lookups are independent, so resolve them concurrently. Today getByKey hits
+  // the load-once figure cache (one fetch total), so this is about staying fast if
+  // it ever becomes per-call I/O — not about current latency. Order is preserved
+  // (created-desc from the store).
+  const items = (
+    await Promise.all(
+      sessions.map(async (session): Promise<StoryListItem | null> => {
+        const stage = await getByKey(session.figureKey, session.stageId);
+        if (!stage) return null;
+        return {
+          sessionId: session.sessionId,
+          displayName: stage.displayName,
+          startedAt: session.createdAt,
+          finished: session.nextBeatIndex >= stage.beats.length,
+        };
+      }),
+    )
+  ).filter((item): item is StoryListItem => item !== null);
 
   return (
     <main className="mx-auto max-w-[36rem] px-6 py-24">

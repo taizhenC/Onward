@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type { ClientFigureOutline, OpeningCopy, StoryAdvance } from "@/lib/types";
 import { PrefaceCard } from "./PrefaceCard";
+import { SaveStoriesCard } from "./SaveStoriesCard";
 import { StoryBeat } from "./StoryBeat";
 
 type Props = {
@@ -31,6 +32,9 @@ export function StoryPlayer({
   });
   const [beatIndex, setBeatIndex] = useState(initialBeatIndex);
   const [chunkIndex, setChunkIndex] = useState(initialChunkIndex);
+  // In-flow story finish (StoryBeat's onEnd). The refresh path lands in phase
+  // "ended" instead; the save card below covers both.
+  const [reachedEnd, setReachedEnd] = useState(false);
 
   const isPastEnd = beatIndex >= totalBeats;
   const currentBeat = isPastEnd ? null : outline.beats[beatIndex];
@@ -47,10 +51,10 @@ export function StoryPlayer({
       case "end":
         // Intentional no-op. Per StoryBeat's contract, when next === "end"
         // the Continue button is hidden and the final chunk stays visible
-        // with "The journey ends here." underneath. onComplete should not
-        // even be called with "end" in normal flow; this branch only runs
-        // if a future caller misuses the contract. The "ended" phase is
-        // entered exclusively via the refresh path (initialBeatIndex >= total).
+        // with "The journey ends here." underneath (the in-flow finish is
+        // signalled via onEnd, not onComplete). This branch only runs if a
+        // future caller misuses the contract. The "ended" phase is entered
+        // exclusively via the refresh path (initialBeatIndex >= total).
         break;
       default: {
         const exhaustive: never = next;
@@ -86,6 +90,7 @@ export function StoryPlayer({
               beatIndex={beatIndex}
               chunkIndex={chunkIndex}
               onComplete={handleComplete}
+              onEnd={() => setReachedEnd(true)}
             />
           </motion.div>
         ) : (
@@ -100,6 +105,10 @@ export function StoryPlayer({
           </motion.p>
         )}
       </AnimatePresence>
+
+      {/* Sibling of the AnimatePresence region on purpose — inside the mode="wait"
+          block it would unmount the final bridge text. Covers both end paths. */}
+      {reachedEnd || phase === "ended" ? <SaveStoriesCard /> : null}
     </div>
   );
 }

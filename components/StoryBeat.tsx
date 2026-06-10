@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { StoryAdvance } from "@/lib/types";
 
@@ -9,6 +9,9 @@ type Props = {
   beatIndex: number;
   chunkIndex: number;
   onComplete: (next: StoryAdvance) => void;
+  // Fired once when the ack resolves next === "end" (the in-flow story finish).
+  // Separate channel from onComplete, whose contract excludes "end".
+  onEnd?: () => void;
 };
 
 export function StoryBeat({
@@ -16,11 +19,19 @@ export function StoryBeat({
   beatIndex,
   chunkIndex,
   onComplete,
+  onEnd,
 }: Props) {
   const [text, setText] = useState("");
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [nextStep, setNextStep] = useState<StoryAdvance | null>(null);
+
+  // Ref so the streaming effect below doesn't list onEnd as a dependency — a parent
+  // re-render handing in a fresh closure must not abort and restart the stream.
+  const onEndRef = useRef(onEnd);
+  useEffect(() => {
+    onEndRef.current = onEnd;
+  }, [onEnd]);
 
   useEffect(() => {
     setText("");
@@ -83,6 +94,7 @@ export function StoryBeat({
         if (!cancelled) {
           setNextStep(next);
           setDone(true);
+          if (next === "end") onEndRef.current?.();
         }
       } catch (caught) {
         if (cancelled || (caught as Error).name === "AbortError") return;

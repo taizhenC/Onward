@@ -108,7 +108,7 @@ grant execute on function consume_rate_limit(text, text, int, int, int, int) to 
 -- flips is_anonymous to false, which exempts the user permanently. (A guest
 -- who requested an email link but never confirmed is still anonymous and is
 -- deleted at TTL — accepted edge; activity restarts the clock.)
-create or replace function delete_stale_anonymous_users(p_ttl interval)
+create or replace function public.delete_stale_anonymous_users(p_ttl interval)
 returns void
 language sql
 as $fn$
@@ -123,18 +123,19 @@ as $fn$
     );
 $fn$;
 
-revoke all on function delete_stale_anonymous_users(interval) from public;
-revoke all on function delete_stale_anonymous_users(interval) from anon, authenticated;
+revoke all on function public.delete_stale_anonymous_users(interval) from public;
+revoke all on function public.delete_stale_anonymous_users(interval) from anon, authenticated;
 
 -- ── pg_cron schedules (pg_cron runs in UTC) ─────────────────────────────────
 create extension if not exists pg_cron;
 
 -- (a) Ephemeral guests, every 30 minutes. TTL = 6 hours. Live copy of the TTL;
 --     lib/match-config.ts#ANON_USER_TTL_HOURS documents it — keep in sync.
+--     Schema-qualified: the pg_cron worker's search_path may not include public.
 select cron.schedule(
   'onward-delete-stale-anon-users',
   '*/30 * * * *',
-  $job$ select delete_stale_anonymous_users(interval '6 hours') $job$
+  $job$ select public.delete_stale_anonymous_users(interval '6 hours') $job$
 );
 
 -- (b) Disclosure retention: NULL feelings 60 days after creation, daily.

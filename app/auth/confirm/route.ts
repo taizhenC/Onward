@@ -15,9 +15,10 @@ export async function GET(request: NextRequest) {
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
   const rawNext = searchParams.get("next") ?? "/stories";
-  // Same-origin paths only — no open redirect.
-  const next =
-    rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/stories";
+  // Same-origin paths only — no open redirect. Blocks "//" AND "/\": browsers
+  // normalize backslashes to slashes in URLs, so "/\example.com" would become a
+  // protocol-relative redirect to example.com.
+  const next = /^\/(?![/\\])/.test(rawNext) ? rawNext : "/stories";
 
   if (tokenHash && type) {
     const supabase = await createSupabaseServer();

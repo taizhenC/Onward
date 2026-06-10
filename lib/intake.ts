@@ -7,11 +7,20 @@ import { matchConfigVersion } from "./match-config";
 import { getByKey } from "./figures";
 import { activeRecipe, writeOpeningCopy } from "./llm";
 import { embeddingModelId } from "./embeddings";
+import { consumeMatchRateLimit } from "./rate-limit";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 
 export type IntakeInput = {
   age: number;
   feeling: string;
+};
+
+// Request identity, composed by the caller (the route pairs the authenticated user
+// with the hashed request IP; scripts pass fixed ids). handleIntake deliberately does
+// NOT import lib/auth.ts — keeping it callable outside request scope (smoke, check-db).
+export type IntakeContext = {
+  userId: string;
+  ipHash: string;
 };
 
 export type IntakeValidationError = {
@@ -25,13 +34,25 @@ const MAX_AGE = 100;
 const MIN_FEELING_LENGTH = 10;
 const MAX_FEELING_LENGTH = 1000;
 
-export async function handleIntake(input: unknown): Promise<MatchResponse> {
+export async function handleIntake(
+  input: unknown,
+  ctx: IntakeContext,
+): Promise<MatchResponse> {
   const validated = validateIntake(input);
   if ("error" in validated) return validated;
 
+  // Crisis first and NEVER rate-limited: someone in crisis retrying must always get
+  // resources. Persists nothing, calls no provider — there's nothing to protect.
   const crisis = classifyCrisis(validated.feeling);
   if (crisis.crisisDetected) {
     return { crisis: true, resources: CRISIS_RESOURCES };
+  }
+
+  // Rate limit BEFORE matching, so limited requests never spend the query embedding
+  // or the Cerebras rerank/opening-copy calls.
+  const allowed = await consumeMatchRateLimit(ctx.userId, ctx.ipHash);
+  if (!allowed) {
+    return { rateLimited: true };
   }
 
   const result = await match(validated);
@@ -57,6 +78,7 @@ export async function handleIntake(input: unknown): Promise<MatchResponse> {
   };
 
   const sessionId = await createSession({
+    userId: ctx.userId,
     figureKey: result.figureKey,
     stageId: result.stageId,
     framing: result.framing,

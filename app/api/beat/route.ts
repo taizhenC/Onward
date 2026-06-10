@@ -3,6 +3,7 @@ import {
   streamText,
   textStreamHeaders,
 } from "@/lib/api-utils";
+import { getAuthUserId } from "@/lib/auth";
 import { chunkBeatText } from "@/lib/chunks";
 import { getByKey } from "@/lib/figures";
 import { streamBeat } from "@/lib/llm";
@@ -10,7 +11,7 @@ import {
   getNextStoryAdvance,
   parseBeatPositionRequest,
 } from "@/lib/story-progress";
-import { getSession } from "@/lib/session";
+import { getOwnedSession } from "@/lib/session";
 
 export const runtime = "nodejs";
 
@@ -26,7 +27,9 @@ export async function POST(request: Request): Promise<Response> {
   const parsed = parseBeatPositionRequest(body);
   if ("error" in parsed) return jsonError(parsed.error, 400);
 
-  const session = await getSession(parsed.sessionId);
+  // Ownership 404 fires before the 409 position checks — a foreign session must be
+  // indistinguishable from a missing one (no position oracle).
+  const session = await getOwnedSession(parsed.sessionId, await getAuthUserId());
   if (!session) return jsonError("Story session not found.", 404);
 
   if (session.nextBeatIndex !== parsed.beatIndex) {

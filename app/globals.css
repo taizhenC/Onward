@@ -4,6 +4,7 @@
   --color-bg: #faf7f2;
   --color-ink: #1f1b16;
   --color-ink-soft: #5a544c;
+  --color-ink-faint: #a89f92;
   --color-accent: #9c6b3f;
 }
 
@@ -28,4 +29,32 @@ textarea,
 label,
 .font-ui {
   font-family: var(--font-ui-stack);
+}
+
+/* Opt back into the body serif on form controls that should read as prose
+   (preflight + the rule above default them to the UI stack). */
+.font-body {
+  font-family: var(--font-body-stack);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Slow breath for the diamond ornament on the "check your email" state. */
+@keyframes ow-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.diamond-pulse {
+  animation: ow-pulse 1.8s ease-in-out infinite;
 }

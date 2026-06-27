@@ -17,6 +17,11 @@ type DemoPage = {
 
 const STREAM_SPEED_MS = 30;
 
+// The sample disclosure the demo answers — shown once in the intro and echoed
+// back in the closing beat. Kept in one place so the two can't drift apart.
+const SAMPLE_FEELING =
+  "I moved across the country to get away from where I grew up, and now I'm completely alone. I don't recognize the person I'm supposed to become out here, and some days I'm sure I made a mistake.";
+
 const STORY: DemoPage[] = [
   {
     stream: true,
@@ -64,7 +69,7 @@ const STORY: DemoPage[] = [
     paragraphs: [
       "His name was Frederick Douglass.",
       "He became one of the most important voices in American history. He had escaped from slavery as a young man, and he spent the rest of his life — fifty years — fighting to end it, and then fighting for everyone the country still wouldn't make room for. His books are still read. His words are still quoted. None of that had happened yet on the morning we just sat with him.",
-      "You wrote: “I moved across the country to get away from where I grew up, and now I'm completely alone. I don't recognize the person I'm supposed to become out here, and some days I'm sure I made a mistake.”",
+      `You wrote: “${SAMPLE_FEELING}”`,
       "When he sat in that chair, four days free, he didn't have a name yet. He didn't have a plan. He didn't know if the woman he loved would come. He didn't know that the voice he would become known for was already inside him, waiting.",
       "You don't have to know who you are yet. He didn't either.",
     ],
@@ -190,9 +195,7 @@ export function StoryDemo() {
             Someone opened Onward and wrote
           </p>
           <p className="border-l-2 border-[var(--color-accent)]/55 pl-[22px] text-[21px] italic leading-[1.66] text-[var(--color-ink)] text-pretty">
-            “I moved across the country to get away from where I grew up, and now
-            I'm completely alone. I don't recognize the person I'm supposed to
-            become out here, and some days I'm sure I made a mistake.”
+            {`“${SAMPLE_FEELING}”`}
           </p>
           <div className="mt-10">
             <button

@@ -78,8 +78,7 @@ export default function Home() {
           You are not the first to carry this.
         </h1>
         <p className="mx-auto mt-7 max-w-[34rem] text-[20px] leading-[1.6] text-[var(--color-ink-soft)] text-pretty">
-          Tell Onward what you're carrying. Meet someone who felt the same way
-          you do — and came through.
+          {"Tell Onward what you're carrying. Meet someone who felt the same way you do — and came through."}
         </p>
         <div className="mt-[38px] flex flex-wrap items-center justify-center gap-[22px]">
           <Link href="/begin" className={filledButton}>
@@ -158,7 +157,7 @@ export default function Home() {
       <section className="mx-auto max-w-[1080px] px-8 pb-24 pt-[104px] text-center">
         <Diamond />
         <p className="mx-auto max-w-[24rem] text-[clamp(2rem,4.8vw,2.7rem)] font-semibold leading-[1.24] tracking-[-0.015em] text-balance">
-          You don't have to know who you are yet.
+          {"You don't have to know who you are yet."}
         </p>
         <p className="mx-auto mt-4 max-w-[28rem] text-[21px] italic leading-[1.5] text-[var(--color-ink-soft)]">
           Neither did they — and look what they went on to become.

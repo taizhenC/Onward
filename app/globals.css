@@ -4,7 +4,9 @@
   --color-bg: #faf7f2;
   --color-ink: #1f1b16;
   --color-ink-soft: #5a544c;
+  --color-ink-faint: #a89f92;
   --color-accent: #9c6b3f;
+  --color-paper-deep: #f1eade;
 }
 
 :root {
@@ -22,10 +24,133 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 button,
 input,
 textarea,
 label,
 .font-ui {
   font-family: var(--font-ui-stack);
+}
+
+/* Opt back into the body serif on form controls that should read as prose
+   (preflight + the rule above default them to the UI stack). */
+.font-body {
+  font-family: var(--font-body-stack);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* ---- Motion ---- */
+
+/* Slow breath for the diamond ornament on the "check your email" state. */
+@keyframes ow-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.diamond-pulse {
+  animation: ow-pulse 1.8s ease-in-out infinite;
+}
+
+/* Fade-and-rise used by the landing demo and reveals. */
+@keyframes ow-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ow-fade {
+  animation: ow-fade 0.6s ease both;
+}
+
+/* Streaming caret. */
+@keyframes ow-blink {
+  0%,
+  48% {
+    opacity: 1;
+  }
+  49%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Hero quote rotator: each line fades in, holds, fades out, then waits. */
+@keyframes ow-hero-cycle {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  2% {
+    opacity: 1;
+    visibility: visible;
+  }
+  18% {
+    opacity: 1;
+    visibility: visible;
+  }
+  20% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Each rotator line stays out of the accessibility tree until its turn —
+   opacity alone leaves all five overlapping lines exposed to screen readers.
+   The running animation flips it to visible during the line's window; this base
+   rule covers the staggered start delay (and the reduced-motion fallback). */
+.ow-hero-quote {
+  visibility: hidden;
+}
+
+/* Respect "reduce motion": stop continuous animations, drop the movement from
+   one-shots (they snap to their end state so fade-ins stay visible), and turn
+   off smooth scrolling. Catch-all rather than a class list because several
+   animations here are applied via inline style, which class selectors miss. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* The rotator reveals one quote at a time via its cycle; with motion off that
+     would leave every line hidden, so show the first and drop the rest. */
+  .ow-hero-quote {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+  .ow-hero-quote:first-of-type {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
 }

@@ -98,19 +98,32 @@ label,
 @keyframes ow-hero-cycle {
   0% {
     opacity: 0;
+    visibility: hidden;
   }
   2% {
     opacity: 1;
+    visibility: visible;
   }
   18% {
     opacity: 1;
+    visibility: visible;
   }
   20% {
     opacity: 0;
+    visibility: hidden;
   }
   100% {
     opacity: 0;
+    visibility: hidden;
   }
+}
+
+/* Each rotator line stays out of the accessibility tree until its turn —
+   opacity alone leaves all five overlapping lines exposed to screen readers.
+   The running animation flips it to visible during the line's window; this base
+   rule covers the staggered start delay (and the reduced-motion fallback). */
+.ow-hero-quote {
+  visibility: hidden;
 }
 
 /* Respect "reduce motion": stop continuous animations, drop the movement from
@@ -138,5 +151,6 @@ label,
   }
   .ow-hero-quote:first-of-type {
     opacity: 1 !important;
+    visibility: visible !important;
   }
 }

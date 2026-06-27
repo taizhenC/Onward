@@ -112,3 +112,31 @@ label,
     opacity: 0;
   }
 }
+
+/* Respect "reduce motion": stop continuous animations, drop the movement from
+   one-shots (they snap to their end state so fade-ins stay visible), and turn
+   off smooth scrolling. Catch-all rather than a class list because several
+   animations here are applied via inline style, which class selectors miss. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* The rotator reveals one quote at a time via its cycle; with motion off that
+     would leave every line hidden, so show the first and drop the rest. */
+  .ow-hero-quote {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+  .ow-hero-quote:first-of-type {
+    opacity: 1 !important;
+  }
+}

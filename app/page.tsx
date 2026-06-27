@@ -101,7 +101,7 @@ export default function Home() {
             {HERO_QUOTES.map((quote, i) => (
               <p
                 key={quote}
-                className="absolute inset-0 m-0 flex items-center justify-center text-center text-[clamp(1.3rem,3.1vw,1.75rem)] italic leading-[1.42] text-[var(--color-ink)] text-pretty opacity-0"
+                className="ow-hero-quote absolute inset-0 m-0 flex items-center justify-center text-center text-[clamp(1.3rem,3.1vw,1.75rem)] italic leading-[1.42] text-[var(--color-ink)] text-pretty opacity-0"
                 style={{
                   animation: `ow-hero-cycle 19s ease-in-out ${i * 3.8}s infinite`,
                 }}

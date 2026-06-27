@@ -259,7 +259,23 @@ export function StoryDemo() {
           </div>
 
           {isProse ? (
-            <div onClick={skip} className="flex-1">
+            <div
+              onClick={streaming ? skip : undefined}
+              onKeyDown={
+                streaming
+                  ? (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        skip();
+                      }
+                    }
+                  : undefined
+              }
+              role={streaming ? "button" : undefined}
+              tabIndex={streaming ? 0 : -1}
+              aria-label={streaming ? "Skip animation" : undefined}
+              className="flex-1 focus-visible:outline-offset-4 focus-visible:[outline:2px_solid_var(--color-accent)]"
+            >
               {paragraphsHead.map((para, i) => (
                 <p
                   key={i}

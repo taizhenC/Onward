@@ -38,10 +38,11 @@ export function SaveStoriesCard() {
 
   const trimmedEmail = email.trim();
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
-  // Password is optional; if typed, it must clear Supabase's 6-char minimum.
+  // Password is optional; if typed, let Supabase validate its strength on submit —
+  // so the weak_password message below actually fires, and the rule tracks whatever
+  // Supabase is configured to require (no hardcoded length on the client).
   const wantsPassword = password.length > 0;
-  const passwordValid = !wantsPassword || password.length >= 6;
-  const canSave = emailValid && passwordValid;
+  const canSave = emailValid;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

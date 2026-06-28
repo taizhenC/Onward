@@ -16,7 +16,9 @@ export function SetPasswordForm() {
   const supabase = getSupabaseBrowser();
   if (!supabase) return null; // offline/memory dev — no auth
 
-  const valid = password.length >= 6;
+  // Gate on non-empty only; let Supabase validate strength on submit so the
+  // weak_password message fires and the rule tracks the dashboard config.
+  const valid = password.length > 0;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

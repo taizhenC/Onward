@@ -7,14 +7,16 @@ import { getSupabaseBrowser } from "@/lib/supabase/client";
 
 // Post-story upgrade card: converts the invisible anonymous user into a permanent one
 // via updateUser({ email }) — same user id, so every story they own carries over by
-// doing nothing. Mounted by StoryPlayer at both end paths (in-flow finish + refresh
-// after finish). Renders nothing while auth state is unknown or unavailable.
+// doing nothing. An optional password can be set in the same step so the user can sign
+// in without an email link next time. Mounted by StoryPlayer at both end paths.
+// Renders nothing while auth state is unknown or unavailable.
 
 type Mode = "hidden" | "idle" | "sending" | "sent" | "permanent";
 
 export function SaveStoriesCard() {
   const [mode, setMode] = useState<Mode>("hidden");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [emailExists, setEmailExists] = useState(false);
 
@@ -36,19 +38,27 @@ export function SaveStoriesCard() {
 
   const trimmedEmail = email.trim();
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
+  // Password is optional; if typed, it must clear Supabase's 6-char minimum.
+  const wantsPassword = password.length > 0;
+  const passwordValid = !wantsPassword || password.length >= 6;
+  const canSave = emailValid && passwordValid;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!emailValid || mode === "sending") return;
+    if (!canSave || mode === "sending") return;
     const supabase = getSupabaseBrowser();
     if (!supabase) return;
     setMode("sending");
     setError(null);
     setEmailExists(false);
 
-    const { error: updateError } = await supabase.auth.updateUser({
-      email: trimmedEmail,
-    });
+    // Setting email + password together: the password is stored now; the email
+    // change still requires confirmation via the link we send.
+    const { error: updateError } = await supabase.auth.updateUser(
+      wantsPassword
+        ? { email: trimmedEmail, password }
+        : { email: trimmedEmail },
+    );
 
     if (updateError) {
       if (updateError.code === "email_exists") {
@@ -57,6 +67,8 @@ export function SaveStoriesCard() {
         setError(
           "We just sent a link — give it a minute before asking for another.",
         );
+      } else if (updateError.code === "weak_password") {
+        setError("Please choose a longer password (at least 6 characters).");
       } else {
         setError("The link couldn't be sent. Please try again in a moment.");
       }
@@ -102,7 +114,8 @@ export function SaveStoriesCard() {
           </p>
           <p className="leading-relaxed">
             Right now you&apos;re anonymous. This story fades about six hours
-            after you stop reading. Add an email and it stays.
+            after you stop reading. Add an email and it stays — and a password,
+            if you&apos;d like to skip the email next time.
           </p>
           {emailExists ? (
             <p className="font-ui text-sm text-[var(--color-accent)]">
@@ -118,11 +131,8 @@ export function SaveStoriesCard() {
               {error}
             </p>
           ) : null}
-          <form
-            onSubmit={handleSubmit}
-            className="flex items-end gap-4 flex-wrap"
-          >
-            <label className="block grow space-y-2">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <label className="block">
               <span className="sr-only">Email</span>
               <input
                 type="email"
@@ -134,9 +144,21 @@ export function SaveStoriesCard() {
                 className="block w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2 font-ui text-sm"
               />
             </label>
+            <label className="block">
+              <span className="sr-only">Password (optional)</span>
+              <input
+                type="password"
+                value={password}
+                onChange={(event) => setPassword(event.target.value)}
+                disabled={mode === "sending"}
+                placeholder="Password (optional, 6+ characters)"
+                autoComplete="new-password"
+                className="block w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2 font-ui text-sm"
+              />
+            </label>
             <button
               type="submit"
-              disabled={!emailValid || mode === "sending"}
+              disabled={!canSave || mode === "sending"}
               className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-5 py-2 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               {mode === "sending" ? "Sending…" : "Save"}

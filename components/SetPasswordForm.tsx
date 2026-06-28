@@ -12,16 +12,21 @@ export function SetPasswordForm() {
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<Mode>("idle");
   const [error, setError] = useState<string | null>(null);
-  // Match SignInForm: render nothing until mounted so the server HTML and the first
-  // client render are identical, hardening the browser-only auth gate below.
+  // Render nothing until mounted so server + first client render match (hardens the
+  // browser-only auth gate below against hydration mismatch).
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  if (!mounted) return null;
+
+  // Reuse this instance in handleSubmit (no second getSupabaseBrowser() call). It's
+  // guarded non-null right below, but TS doesn't carry that narrowing into the async
+  // closure, so handleSubmit asserts it — safe because the form only renders, and
+  // handleSubmit only runs, when supabase is non-null.
   const supabase = getSupabaseBrowser();
-  // Hooks above run unconditionally; this is the first early return.
-  if (!mounted || !supabase) return null; // not mounted yet, or offline/memory dev
+  if (!supabase) return null; // offline/memory dev — no auth
 
   // Gate on non-empty only; let Supabase validate strength on submit so the
   // weak_password message fires and the rule tracks the dashboard config.
@@ -30,12 +35,10 @@ export function SetPasswordForm() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!valid || mode === "saving") return;
-    const client = getSupabaseBrowser();
-    if (!client) return;
     setMode("saving");
     setError(null);
 
-    const { error: updateError } = await client.auth.updateUser({ password });
+    const { error: updateError } = await supabase!.auth.updateUser({ password });
     if (updateError) {
       setError(
         updateError.code === "weak_password"

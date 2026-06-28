@@ -5,6 +5,7 @@ import { getAuthUserId } from "@/lib/auth";
 import { getByKey } from "@/lib/figures";
 import { listSessionsByUser } from "@/lib/session";
 import { SignOutButton } from "@/components/SignOutButton";
+import { SetPasswordForm } from "@/components/SetPasswordForm";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -87,6 +88,8 @@ export default async function StoriesPage() {
             Begin another
           </Link>
         </footer>
+
+        <SetPasswordForm />
       </div>
     </main>
   );

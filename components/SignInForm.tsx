@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -60,6 +60,13 @@ export function SignInForm({ linkError }: Props) {
   const [sending, setSending] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // Render nothing until mounted on the client, so the server HTML and the first
+  // client render are identical — defensive hardening of the browser-only auth gate
+  // below against any future hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const supabaseAvailable = getSupabaseBrowser() !== null;
   const trimmedEmail = email.trim();
@@ -112,6 +119,9 @@ export function SignInForm({ linkError }: Props) {
     }
     setSentTo(trimmedEmail);
   }
+
+  // Gate the entire render on mount (the line that actually prevents the mismatch).
+  if (!mounted) return null;
 
   if (!supabaseAvailable) {
     return (

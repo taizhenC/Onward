@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getByKey, toClientOutline } from "@/lib/figures";
 import { getAuthUserId } from "@/lib/auth";
@@ -31,14 +32,36 @@ export default async function StoryPage({
   const outline = toClientOutline(stage);
 
   return (
-    <main className="mx-auto max-w-[36rem] px-6 py-16">
-      <StoryPlayer
-        sessionId={sessionId}
-        outline={outline}
-        openingCopy={session.openingCopy}
-        initialBeatIndex={session.nextBeatIndex}
-        initialChunkIndex={session.nextChunkIndex}
-      />
-    </main>
+    <div className="flex min-h-screen flex-col">
+      {/* Masthead — a quiet way out: home, or your saved stories, at any point
+          in the read (matches the /signin and / mastheads). */}
+      <div className="border-t-[3px] border-[var(--color-ink)]" />
+      <div className="mx-auto w-full max-w-[1080px] px-8">
+        <div className="flex items-center justify-between border-b border-[var(--color-ink)]/12 py-[17px]">
+          <Link
+            href="/"
+            className="text-[21px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]"
+          >
+            Onward
+          </Link>
+          <Link
+            href="/stories"
+            className="border-b border-[var(--color-ink)]/30 pb-[2px] font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+          >
+            Your stories
+          </Link>
+        </div>
+      </div>
+
+      <main className="mx-auto w-full max-w-[36rem] px-6 py-16">
+        <StoryPlayer
+          sessionId={sessionId}
+          outline={outline}
+          openingCopy={session.openingCopy}
+          initialBeatIndex={session.nextBeatIndex}
+          initialChunkIndex={session.nextChunkIndex}
+        />
+      </main>
+    </div>
   );
 }

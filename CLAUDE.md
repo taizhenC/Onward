@@ -47,6 +47,12 @@ Authoring/verify loop for the retrieval: apply `0002` → set `GEMINI_API_KEY` +
 - **Retention is live** (pg_cron in 0003; constants documented in `match-config.ts`, SQL is the live copy — change both together): anonymous users + their sessions deleted **6 hours** after last activity (`ANON_USER_TTL_HOURS`, user-confirmed); `feeling` NULL'd at 60 days (`FEELING_RETENTION_DAYS`); rate-limit windows pruned at 2 days.
 - `handleIntake` now takes `IntakeContext {userId, ipHash}` and deliberately does NOT import auth — the route composes them; scripts pass fixed ids. Smoke gained ownership + rate-limit assertions (the rate-limit one runs LAST: it exhausts smoke-user's hourly budget). Deploy mechanics: `maxDuration=60` on the match route, `robots.ts` + noindex metadata on private pages, branded `error.tsx` that renders NO error content, root `not-found.tsx`, `.env.example`, README rewritten (UTF-8 — the old one was UTF-16-mangled and still described forks).
 
+**Update (2026-06-28): live on Vercel + passwords are now an OPTIONAL sign-in method.** The app is deployed (`onwardapp.me`, Vercel project `onward`, branch `main`; Supabase Site URL set, custom SMTP via Resend live). The earlier "no passwords ever" rule is RELAXED: **magic-link remains primary and is the password-recovery path** (no dedicated reset flow), with email+password added as a convenience for faster / cross-device sign-in. As-built:
+- `components/SignInForm.tsx` has two modes — **password** (default: `signInWithPassword` → on success `router.push("/stories")`, no email round-trip) and **email-link** (the existing `signInWithOtp`, reachable via "Forgot your password? Email me a link"). Errors branch on `error.code` (`invalid_credentials`, `email_not_confirmed`) and always offer the email-link fallback.
+- Setting a password: `components/SetPasswordForm.tsx` (`updateUser({password})`) in an **Account** section on `/stories` (canonical, always reliable — user is signed-in + permanent), plus an **optional** password field on `<SaveStoriesCard>` that calls `updateUser({email, password})` in the save step.
+- Still browser → Supabase **Auth endpoints only**; no DB migration, no new env, no dashboard change (email provider already supports passwords; min length 6; "leaked password protection" is Pro-only, skipped).
+- `app/story/[sessionId]/page.tsx` gained the shared masthead (Onward → `/`, "Your stories" → `/stories`) so a reader can leave anytime; `StoryPlayer` itself unchanged.
+
 ## Stack
 
 - Next.js 15 (App Router) + TypeScript

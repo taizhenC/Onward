@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
 
 // Set/change a password from the profile (/stories). The user is already signed
@@ -12,9 +12,16 @@ export function SetPasswordForm() {
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<Mode>("idle");
   const [error, setError] = useState<string | null>(null);
+  // Match SignInForm: render nothing until mounted so the server HTML and the first
+  // client render are identical, hardening the browser-only auth gate below.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const supabase = getSupabaseBrowser();
-  if (!supabase) return null; // offline/memory dev — no auth
+  // Hooks above run unconditionally; this is the first early return.
+  if (!mounted || !supabase) return null; // not mounted yet, or offline/memory dev
 
   // Gate on non-empty only; let Supabase validate strength on submit so the
   // weak_password message fires and the rule tracks the dashboard config.

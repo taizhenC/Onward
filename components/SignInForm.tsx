@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
 
@@ -9,6 +10,11 @@ type Props = {
   // Set when /auth/confirm bounced an expired or already-used link back here.
   linkError: boolean;
 };
+
+// Two ways in: a password (fast, no email round-trip) or a one-time email link.
+// Password is the default for returning users; the email link doubles as the
+// password-recovery path (no separate reset flow).
+type Mode = "password" | "link";
 
 // Diamond divider that opens each state. It breathes on the confirmation state
 // to give the otherwise-static "check your email" screen a small sign of life.
@@ -40,8 +46,17 @@ function Eyebrow() {
 const headingClasses =
   "text-[clamp(2.1rem,5vw,2.8rem)] font-semibold leading-[1.08] tracking-[-0.018em]";
 
+const inputClasses =
+  "block w-full border-b border-[var(--color-ink)]/40 bg-transparent px-[2px] py-2 font-body text-[20px] text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink)]";
+
+const labelClasses =
+  "mb-[10px] block font-ui text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-ink-soft)]";
+
 export function SignInForm({ linkError }: Props) {
+  const router = useRouter();
+  const [mode, setMode] = useState<Mode>("password");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [sending, setSending] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +64,15 @@ export function SignInForm({ linkError }: Props) {
   const supabaseAvailable = getSupabaseBrowser() !== null;
   const trimmedEmail = email.trim();
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
-  const canSubmit = emailValid && !sending;
+  const canSubmit =
+    !sending &&
+    emailValid &&
+    (mode === "link" || password.length > 0);
+
+  function switchMode(next: Mode) {
+    setMode(next);
+    setError(null);
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,10 +82,25 @@ export function SignInForm({ linkError }: Props) {
     setSending(true);
     setError(null);
 
+    if (mode === "password") {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: trimmedEmail,
+        password,
+      });
+      if (signInError) {
+        setError(passwordErrorMessage(signInError.code));
+        setSending(false);
+        return;
+      }
+      // The browser client has written the auth cookie; let the server pick it up.
+      router.push("/stories");
+      router.refresh();
+      return;
+    }
+
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email: trimmedEmail,
     });
-
     if (otpError) {
       setError(
         otpError.code === "over_email_send_rate_limit"
@@ -72,7 +110,6 @@ export function SignInForm({ linkError }: Props) {
       setSending(false);
       return;
     }
-
     setSentTo(trimmedEmail);
   }
 
@@ -84,8 +121,8 @@ export function SignInForm({ linkError }: Props) {
     );
   }
 
-  // Sent state. This is terminal on purpose: the magic link must be opened from
-  // the user's email — there is no signed-in session to continue from here.
+  // Sent state (email-link mode). Terminal on purpose: the magic link must be
+  // opened from the user's email — there is no signed-in session to continue from.
   if (sentTo) {
     return (
       <motion.div
@@ -117,25 +154,20 @@ export function SignInForm({ linkError }: Props) {
         <Eyebrow />
         <h1 className={headingClasses}>Sign in</h1>
         <p className="mx-auto mt-[18px] max-w-[26rem] text-[18px] leading-[1.62] text-[var(--color-ink-soft)] text-pretty">
-          Enter the email you saved your stories with. We&apos;ll send you a
-          link — there are no passwords here.
+          {mode === "password"
+            ? "Enter the email and password you saved your stories with."
+            : "We'll email you a one-time link — no password needed."}
         </p>
         {linkError ? (
           <p className="mx-auto mt-4 max-w-[26rem] font-ui text-sm text-[var(--color-accent)]">
-            That link expired or was already used. Enter your email for a fresh
-            one.
+            That link expired or was already used. Sign in again below.
           </p>
         ) : null}
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="mt-[42px] flex flex-col gap-[26px]"
-      >
+      <form onSubmit={handleSubmit} className="mt-[42px] flex flex-col gap-[26px]">
         <label className="block">
-          <span className="mb-[10px] block font-ui text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-ink-soft)]">
-            Email
-          </span>
+          <span className={labelClasses}>Email</span>
           <input
             type="email"
             value={email}
@@ -143,9 +175,24 @@ export function SignInForm({ linkError }: Props) {
             disabled={sending}
             autoComplete="email"
             placeholder="you@example.com"
-            className="block w-full border-b border-[var(--color-ink)]/40 bg-transparent px-[2px] py-2 font-body text-[20px] text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink)]"
+            className={inputClasses}
           />
         </label>
+
+        {mode === "password" ? (
+          <label className="block">
+            <span className={labelClasses}>Password</span>
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              disabled={sending}
+              autoComplete="current-password"
+              placeholder="••••••••"
+              className={inputClasses}
+            />
+          </label>
+        ) : null}
 
         {error ? (
           <p className="font-ui text-sm text-[var(--color-accent)]">{error}</p>
@@ -161,10 +208,38 @@ export function SignInForm({ linkError }: Props) {
                 : "cursor-not-allowed border-[var(--color-ink)]/30 bg-transparent text-[var(--color-ink)] opacity-40"
             }`}
           >
-            {sending ? "Sending…" : "Send the link"}
+            {sending
+              ? mode === "password"
+                ? "Signing in…"
+                : "Sending…"
+              : mode === "password"
+                ? "Sign in"
+                : "Send the link"}
           </button>
         </div>
       </form>
+
+      {/* Mode toggle — the email link is also the "forgot password" recovery. */}
+      <div className="mt-7">
+        {mode === "password" ? (
+          <button
+            type="button"
+            onClick={() => switchMode("link")}
+            className="font-ui text-[13px] tracking-[0.02em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
+          >
+            Forgot your password?{" "}
+            <span className="text-[var(--color-accent)]">Email me a link instead</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => switchMode("password")}
+            className="font-ui text-[13px] tracking-[0.02em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"
+          >
+            <span className="text-[var(--color-accent)]">Use a password instead</span>
+          </button>
+        )}
+      </div>
 
       <div className="mt-10 border-t border-[var(--color-ink)]/12 pt-[22px]">
         <Link
@@ -177,4 +252,17 @@ export function SignInForm({ linkError }: Props) {
       </div>
     </motion.div>
   );
+}
+
+// Supabase auth error code → gentle, human message. Unknown codes fall through
+// to a generic line; the email-link toggle below is always the recovery path.
+function passwordErrorMessage(code: string | undefined): string {
+  switch (code) {
+    case "invalid_credentials":
+      return "That email and password don't match. Try again, or email yourself a link.";
+    case "email_not_confirmed":
+      return "Your email isn't confirmed yet — use the email link below to get in.";
+    default:
+      return "We couldn't sign you in. Try again in a moment.";
+  }
 }

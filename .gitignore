@@ -1,6 +1,6 @@
 .claude/
 mvp.md
-
+deploy.md
 # dependencies
 node_modules/
 .pnp

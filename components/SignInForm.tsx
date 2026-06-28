@@ -99,9 +99,11 @@ export function SignInForm({ linkError }: Props) {
         setSending(false);
         return;
       }
-      // The browser client has written the auth cookie; let the server pick it up.
-      router.push("/stories");
+      // The browser client just wrote the auth cookie. Invalidate the router cache
+      // first, then navigate, so /stories is fetched fresh with the new cookie
+      // rather than from any cached (logged-out) payload.
       router.refresh();
+      router.push("/stories");
       return;
     }
 

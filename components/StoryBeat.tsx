@@ -63,6 +63,10 @@ export function StoryBeat({
   }, [totalTokens]);
 
   const revealedText = tokens.slice(0, revealedCount).join("");
+  // The not-yet-revealed tail, rendered invisible so the passage reserves its full
+  // height from the start — the Continue button below stays put instead of sliding
+  // down as words appear (and screen readers get the whole passage immediately).
+  const hiddenText = tokens.slice(revealedCount).join("");
   const revealComplete = streamDone && revealedCount >= totalTokens;
   const hasMoreToReveal = !streamDone || revealedCount < totalTokens;
   const canSkip = !skipped && hasMoreToReveal && totalTokens > 0;
@@ -188,7 +192,7 @@ export function StoryBeat({
   return (
     <div className="space-y-8">
       <div
-        onClick={canSkip ? handleSkip : undefined}
+        onDoubleClick={canSkip ? handleSkip : undefined}
         onKeyDown={
           canSkip
             ? (event) => {
@@ -202,7 +206,9 @@ export function StoryBeat({
         role={canSkip ? "button" : undefined}
         tabIndex={canSkip ? 0 : -1}
         aria-label={canSkip ? "Show the rest of this passage" : undefined}
-        className="focus-visible:outline-offset-4 focus-visible:[outline:2px_solid_var(--color-accent)]"
+        className={`focus-visible:outline-offset-4 focus-visible:[outline:2px_solid_var(--color-accent)]${
+          canSkip ? " select-none" : ""
+        }`}
       >
         <p className="whitespace-pre-wrap">
           {revealedText}
@@ -213,16 +219,17 @@ export function StoryBeat({
               style={{ animation: "ow-blink 1s step-end infinite" }}
             />
           ) : null}
+          {hiddenText ? <span className="opacity-0">{hiddenText}</span> : null}
         </p>
       </div>
 
       {failure ? <BeatFailure kind={failure} /> : null}
 
-      {!failure &&
-      done &&
-      nextStep !== null &&
-      nextStep !== "end" &&
-      revealComplete ? (
+      {/* Continue appears as soon as the ack lands — i.e. during the reveal too —
+          so it's a distinct target from the double-click-to-accelerate on the text:
+          a single click on Continue advances; a double-click on the passage only
+          speeds the reveal. */}
+      {!failure && done && nextStep !== null && nextStep !== "end" ? (
         <button
           type="button"
           onClick={handleAdvance}

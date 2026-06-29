@@ -55,8 +55,11 @@ export function StoryBeat({
   const tokens = useMemo(() => fullText.match(/\s*\S+\s*/g) ?? [], [fullText]);
   const totalTokens = tokens.length;
   // Current token count for the interval's functional update without re-subscribing.
+  // Synced in an effect (not during render) so the write stays purity-safe.
   const totalRef = useRef(0);
-  totalRef.current = totalTokens;
+  useEffect(() => {
+    totalRef.current = totalTokens;
+  }, [totalTokens]);
 
   const revealedText = tokens.slice(0, revealedCount).join("");
   const revealComplete = streamDone && revealedCount >= totalTokens;
@@ -173,7 +176,7 @@ export function StoryBeat({
   function handleSkip() {
     if (!canSkip) return;
     setSkipped(true);
-    setRevealedCount(totalRef.current);
+    setRevealedCount(totalTokens);
   }
 
   function handleAdvance() {

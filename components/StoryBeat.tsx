@@ -2,12 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useReducedMotion } from "motion/react";
 
 import type { StoryAdvance } from "@/lib/types";
 
 // Client-owned reveal pacing (the server no longer delays — see lib/llm-stub.ts).
-const STREAM_SPEED_MS = 32;
+// Mirrors the landing-page StoryDemo's word-by-word feel. The reveal is a plain
+// JS timer (content pacing), so it always plays — reduced-motion is honored for
+// the decorative caret blink via the global prefers-reduced-motion CSS rule, the
+// same way the demo handles it.
+const STREAM_SPEED_MS = 40;
 
 type Props = {
   sessionId: string;
@@ -28,8 +31,6 @@ export function StoryBeat({
   onComplete,
   onEnd,
 }: Props) {
-  const prefersReducedMotion = useReducedMotion();
-
   const [fullText, setFullText] = useState("");
   const [revealedCount, setRevealedCount] = useState(0);
   const [skipped, setSkipped] = useState(false);
@@ -64,9 +65,8 @@ export function StoryBeat({
   const revealedText = tokens.slice(0, revealedCount).join("");
   const revealComplete = streamDone && revealedCount >= totalTokens;
   const hasMoreToReveal = !streamDone || revealedCount < totalTokens;
-  const canSkip =
-    !prefersReducedMotion && !skipped && hasMoreToReveal && totalTokens > 0;
-  const showCaret = !prefersReducedMotion && hasMoreToReveal && totalTokens > 0;
+  const canSkip = !skipped && hasMoreToReveal && totalTokens > 0;
+  const showCaret = hasMoreToReveal && totalTokens > 0;
 
   // Network: stream the chunk, then ack to advance the session.
   useEffect(() => {
@@ -154,24 +154,24 @@ export function StoryBeat({
 
   // Reveal pacing: a local timer walks revealedCount toward the buffered token
   // count. It pauses when caught up (no-op until more text lands) and stops once
-  // the reveal is complete. Skip / reduced-motion bypass it via the sync effect.
+  // the reveal is complete. Skipping bypasses it via the sync effect below.
   useEffect(() => {
-    if (prefersReducedMotion || skipped || revealComplete) return;
+    if (skipped || revealComplete) return;
     const id = setInterval(() => {
       setRevealedCount((current) =>
         current < totalRef.current ? current + 1 : current,
       );
     }, STREAM_SPEED_MS);
     return () => clearInterval(id);
-  }, [prefersReducedMotion, skipped, revealComplete]);
+  }, [skipped, revealComplete]);
 
-  // Skip / reduced-motion: pin the reveal to the full buffer, and keep it pinned
-  // as any remaining text arrives.
+  // Skip: pin the reveal to the full buffer, and keep it pinned as any remaining
+  // text arrives.
   useEffect(() => {
-    if (prefersReducedMotion || skipped) {
+    if (skipped) {
       setRevealedCount(totalTokens);
     }
-  }, [prefersReducedMotion, skipped, totalTokens]);
+  }, [skipped, totalTokens]);
 
   function handleSkip() {
     if (!canSkip) return;

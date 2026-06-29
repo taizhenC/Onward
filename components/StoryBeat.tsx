@@ -192,7 +192,7 @@ export function StoryBeat({
   return (
     <div className="space-y-8">
       <div
-        onClick={canSkip ? handleSkip : undefined}
+        onDoubleClick={canSkip ? handleSkip : undefined}
         onKeyDown={
           canSkip
             ? (event) => {
@@ -206,7 +206,9 @@ export function StoryBeat({
         role={canSkip ? "button" : undefined}
         tabIndex={canSkip ? 0 : -1}
         aria-label={canSkip ? "Show the rest of this passage" : undefined}
-        className="focus-visible:outline-offset-4 focus-visible:[outline:2px_solid_var(--color-accent)]"
+        className={`focus-visible:outline-offset-4 focus-visible:[outline:2px_solid_var(--color-accent)]${
+          canSkip ? " select-none" : ""
+        }`}
       >
         <p className="whitespace-pre-wrap">
           {revealedText}
@@ -224,8 +226,9 @@ export function StoryBeat({
       {failure ? <BeatFailure kind={failure} /> : null}
 
       {/* Continue appears as soon as the ack lands — i.e. during the reveal too —
-          so it's a distinct target from the click-to-accelerate on the text:
-          clicking Continue advances, clicking the passage only speeds the reveal. */}
+          so it's a distinct target from the double-click-to-accelerate on the text:
+          a single click on Continue advances; a double-click on the passage only
+          speeds the reveal. */}
       {!failure && done && nextStep !== null && nextStep !== "end" ? (
         <button
           type="button"

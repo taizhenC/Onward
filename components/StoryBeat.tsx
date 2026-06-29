@@ -63,6 +63,10 @@ export function StoryBeat({
   }, [totalTokens]);
 
   const revealedText = tokens.slice(0, revealedCount).join("");
+  // The not-yet-revealed tail, rendered invisible so the passage reserves its full
+  // height from the start — the Continue button below stays put instead of sliding
+  // down as words appear (and screen readers get the whole passage immediately).
+  const hiddenText = tokens.slice(revealedCount).join("");
   const revealComplete = streamDone && revealedCount >= totalTokens;
   const hasMoreToReveal = !streamDone || revealedCount < totalTokens;
   const canSkip = !skipped && hasMoreToReveal && totalTokens > 0;
@@ -213,16 +217,16 @@ export function StoryBeat({
               style={{ animation: "ow-blink 1s step-end infinite" }}
             />
           ) : null}
+          {hiddenText ? <span className="opacity-0">{hiddenText}</span> : null}
         </p>
       </div>
 
       {failure ? <BeatFailure kind={failure} /> : null}
 
-      {!failure &&
-      done &&
-      nextStep !== null &&
-      nextStep !== "end" &&
-      revealComplete ? (
+      {/* Continue appears as soon as the ack lands — i.e. during the reveal too —
+          so it's a distinct target from the click-to-accelerate on the text:
+          clicking Continue advances, clicking the passage only speeds the reveal. */}
+      {!failure && done && nextStep !== null && nextStep !== "end" ? (
         <button
           type="button"
           onClick={handleAdvance}

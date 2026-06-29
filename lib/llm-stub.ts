@@ -8,14 +8,17 @@ import {
   type OpeningCopyInput,
 } from "./opening-copy";
 
-const WORD_DELAY_MS = 40;
-
 export type StreamBeatInput = {
   session: Session;
   beat: BeatBlueprint;
   textOverride?: string;
 };
 
+// Yields the beat text word-by-word as a real ReadableStream, but with NO
+// artificial pacing — reveal speed is now owned by the client (StoryBeat), which
+// animates the buffer locally and lets the reader click to skip to the full
+// passage. The prose is deterministic DB text, so the old server-side delay was
+// purely cosmetic; moving it client-side is what makes "show everything" possible.
 export async function* streamBeat({
   session,
   beat,
@@ -28,17 +31,12 @@ export async function* streamBeat({
       : rawText;
 
   for (const chunk of toWordChunks(text)) {
-    await sleep(WORD_DELAY_MS);
     yield chunk;
   }
 }
 
 function toWordChunks(text: string): string[] {
   return text.match(/\s*\S+\s*/g) ?? [];
-}
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Stub reranker: delegates to the shared keyword-hybrid scorer. Confidence mirrors

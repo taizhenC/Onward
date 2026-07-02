@@ -381,6 +381,107 @@
     },
 
     {
+      "age": 19,
+      "feeling": "my teacher humiliates me in front of the class every day and calls me stupid, and i'm starting to believe him",
+      "expect": "andersen",
+      "note": "known-good: bullied + worthlessness (the headmaster's target, older than his class)"
+    },
+    {
+      "age": 19,
+      "feeling": "they keep telling me to change who i am and hide where i come from if i want to be taken seriously, like i'm some novelty",
+      "expect": "tallchief",
+      "note": "known-good: social_constraint + quiet_defiance + dismissed (erase-your-name pressure)"
+    },
+    {
+      "age": 19,
+      "feeling": "i'm pregnant, i'm not married, everyone in town is judging me, and i'm terrified about the baby's future",
+      "expect": "lindgren",
+      "note": "known-good: new_parent_fear + shame (the town scandal, the secret birth)"
+    },
+    {
+      "age": 19,
+      "feeling": "i was falsely accused of something i didn't do, and even after i was cleared they kicked me out anyway",
+      "expect": "lewis_e",
+      "note": "known-good: dismissed + dispossession (acquitted, expelled anyway)"
+    },
+    {
+      "age": 20,
+      "feeling": "i'm not allowed to study what i love because i'm a woman, my family won't let me, but i will find a way around every wall",
+      "expect": "kovalevskaya",
+      "note": "known-good: social_constraint + quiet_defiance + self_invention (the fictitious-marriage key)"
+    },
+    {
+      "age": 21,
+      "feeling": "my father thinks poetry is a waste of time and will only pay if i pick a practical career, but writing is who i am",
+      "expect": "hughes",
+      "note": "known-good: social_constraint + finding_voice + self_invention (the father's deal)"
+    },
+
+    {
+      "age": 17,
+      "feeling": "everyone at school makes fun of me and makes me feel stupid, and the person in charge is the cruelest one of all",
+      "expect": "andersen",
+      "hard": true,
+      "plausibleWrong": "rogers",
+      "confusionGroup": "bullied-student",
+      "note": "authority-figure cruelty at school-leaving age (andersen) vs rogers's peer bullying in childhood"
+    },
+    {
+      "age": 12,
+      "feeling": "kids pick on me and i have no friends, so i hide out in my own little made-up world",
+      "expect": "rogers",
+      "hard": true,
+      "plausibleWrong": "andersen",
+      "confusionGroup": "bullied-student",
+      "note": "peer bullying + solitary imagination in childhood (rogers) vs andersen's older-student humiliation"
+    },
+    {
+      "age": 18,
+      "feeling": "i just had a baby and i'm terrified i'm too young to be anyone's mother",
+      "expect": "angelou",
+      "hard": true,
+      "plausibleWrong": "lindgren",
+      "confusionGroup": "young-unready-mother",
+      "note": "the too-young terror itself (angelou) vs lindgren's secret-birth shame"
+    },
+    {
+      "age": 20,
+      "feeling": "i had my baby in secret far from home and had to leave him with another family until i can afford him, and the shame is eating me",
+      "expect": "lindgren",
+      "hard": true,
+      "plausibleWrong": "angelou",
+      "confusionGroup": "young-unready-mother",
+      "note": "the hidden birth + foster separation + shame (lindgren) vs angelou's at-home teen motherhood"
+    },
+    {
+      "age": 21,
+      "feeling": "every door is closed to me because i'm a woman, they won't let me study, so i will find a way around every rule",
+      "expect": "kovalevskaya",
+      "hard": true,
+      "plausibleWrong": "tallchief",
+      "confusionGroup": "constrained-young-woman",
+      "note": "institutional exclusion + workaround scheming (kovalevskaya) vs tallchief's identity-erasure pressure"
+    },
+    {
+      "age": 20,
+      "feeling": "to get ahead in my field they want me to erase my heritage and take a name that isn't mine",
+      "expect": "tallchief",
+      "hard": true,
+      "plausibleWrong": "kovalevskaya",
+      "confusionGroup": "constrained-young-woman",
+      "note": "identity-erasure as the price of belonging (tallchief) vs kovalevskaya's barred-education constraint"
+    },
+    {
+      "age": 22,
+      "feeling": "my family will only support a life i don't want, so i walked away from the money to find my own path and my own voice",
+      "expect": "hughes",
+      "hard": true,
+      "plausibleWrong": "douglass",
+      "confusionGroup": "own-path-young-man",
+      "note": "refusing the funded assigned life for the creative one (hughes) vs douglass's escape-into-nothing self-invention"
+    },
+
+    {
       "age": 27,
       "feeling": "every door i knock on closes, and i'm starting to wonder if i'm meant to stop knocking",
       "expect": "butler",

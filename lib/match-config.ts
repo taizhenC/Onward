@@ -393,6 +393,61 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "turned me down": ["dismissed"],
   "fake name": ["shame"],
 
+  // Hans Christian Andersen — bullied / worthlessness / keep_going
+  "humiliates me": ["bullied", "shame"],
+  "calls me stupid": ["bullied", "worthlessness"],
+  "makes me feel stupid": ["bullied", "worthlessness"],
+  stupid: ["worthlessness"],
+  mocked: ["bullied", "dismissed"],
+  mocks: ["bullied"],
+  ridiculed: ["bullied", "dismissed"],
+
+  // Maria Tallchief — social_constraint / quiet_defiance / dismissed
+  "change who i am": ["social_constraint", "quiet_defiance"],
+  "where i come from": ["social_constraint"],
+  "hide where i come from": ["social_constraint", "shame"],
+  "proud of who i am": ["quiet_defiance"],
+  "won't change": ["quiet_defiance"],
+  novelty: ["dismissed"],
+  erase: ["dismissed", "social_constraint"],
+  heritage: ["social_constraint"],
+  assimilate: ["social_constraint"],
+
+  // Astrid Lindgren — shame / new_parent_fear / solitude
+  pregnant: ["new_parent_fear"],
+  pregnancy: ["new_parent_fear"],
+  "single mom": ["new_parent_fear", "solitude"],
+  "single mother": ["new_parent_fear", "solitude"],
+  "single dad": ["new_parent_fear", "solitude"],
+  "single father": ["new_parent_fear", "solitude"],
+  "judging me": ["shame"],
+  scandal: ["shame"],
+  unplanned: ["new_parent_fear"],
+
+  // Edmonia Lewis — dismissed / dispossession / quiet_defiance
+  "falsely accused": ["dismissed"],
+  accused: ["dismissed", "shame"],
+  "cleared my name": ["dismissed", "quiet_defiance"],
+  "kicked out": ["dispossession", "dismissed"],
+  "kicked me out": ["dispossession", "dismissed"],
+  expelled: ["dispossession", "dismissed"],
+
+  // Sofia Kovalevskaya — social_constraint / self_invention / quiet_defiance
+  "won't let me": ["social_constraint"],
+  "because i'm a woman": ["social_constraint"],
+  "because i'm a girl": ["social_constraint"],
+  forbidden: ["social_constraint"],
+  "find a way around": ["quiet_defiance", "self_invention"],
+
+  // Langston Hughes — social_constraint / self_invention / finding_voice
+  "waste of time": ["creative_dismissal", "social_constraint"],
+  "practical career": ["social_constraint"],
+  "my own path": ["self_invention", "quiet_defiance"],
+  "my own voice": ["finding_voice"],
+  "find my voice": ["finding_voice"],
+  poetry: ["finding_voice"],
+  poems: ["finding_voice"],
+
   // Heartbreak (generic) — christie / yeats
   heartbreak: ["heartbreak"],
   heartbroken: ["heartbreak"],

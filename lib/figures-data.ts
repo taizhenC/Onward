@@ -4234,4 +4234,1000 @@ The plan you lose is not always the life you lose. Sometimes it's the life makin
   ],
 };
 
-export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones, rudolph, angelou, rachmaninoff, oconnor, marshall, allende, wilson, wang, chandler, graham, mcclintock, rustin, sanders, berlin_i, charles_r, sullivan_a, fitzgerald_e, poitier, simone];
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. April 2, 1805, Odense, shoemaker's son; to Copenhagen at 14 chasing the theater;
+//    patron Jonas Collin secured royal funding for grammar school — Slagelse 1822 (age 17), placed
+//    with 11-year-olds; headmaster Simon Meisling picked on him in every lesson and humiliated him
+//    before the class; writing poetry was forbidden during his schooling; boarded in Meisling's own
+//    house from 1825; moved with the Meislings to Elsinore 1826; wrote "The Dying Child" in secret
+//    during the Elsinore period; his letters to Collin long hid the abuse; Collin removed him in
+//    1827 (age 22) and arranged private tuition; university entrance exam 1828; first fairy tales
+//    1835 (age 30); he said "The Ugly Duckling" was about himself. d. 1875.
+//  Interpretive: "believing the headmaster a little" as the core wound; the school-as-his-one-
+//    chance dread that kept him silent. Grounded in his diaries and letters.
+//  Avoid saying: don't name Andersen / Denmark / Copenhagen / Slagelse / Meisling / Collin / any
+//    fairy-tale title before the bridge; keep him "the boy" not "the writer"; no era-marking
+//    theater/patronage detail beyond "people paying for his school."
+const andersen: FigureStageRow = {
+  figureKey: "andersen",
+  displayName: "Hans Christian Andersen",
+  birthYear: 1805,
+  deathYear: 1875,
+  stageId: "1822-1827-the-headmasters-school",
+  stageLabel: "The headmaster's target: five years of humiliation at school",
+  ageMin: 17,
+  ageMax: 22,
+  themes: ["bullied", "worthlessness", "keep_going"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was seventeen in a classroom of eleven-year-olds, and the headmaster made a daily sport of humiliating him — and because the school was his one chance, paid for by other people, he took it and stayed.",
+    "He was forbidden to write, mocked for his looks and his voice and his dreams, and he began to believe the man was right about him.",
+    "The boy the headmaster called stupid kept writing in secret, and became the most beloved storyteller in the world.",
+  ],
+  facets: {
+    emotionalCore:
+      "Believing his tormentor a little — that he really might be the stupid, ridiculous boy the man described every day — while being unable to leave, because this was his only chance.",
+    decisionShape:
+      "Whether to run from the school that was crushing him and lose everything people had paid for, or to endure years of daily humiliation for the education inside it.",
+    triggerEvent:
+      "A patron's money sent him to a grammar school at seventeen, years behind the children in his class, under a headmaster who chose him as a target.",
+    agencyState:
+      "He was poor, dependent on other people's charity, forbidden even to write — but they could not stop him from keeping words in his head and, once, on paper in secret.",
+  },
+  biographicalFacts:
+    "Hans Christian Andersen was born April 2, 1805, in Odense, Denmark, the son of a poor shoemaker who died when Hans was eleven. At fourteen he went alone to Copenhagen to seek his fortune in the theater; he failed as a performer, but his strange talent attracted patrons, and Jonas Collin of the Royal Theatre secured royal funds to send him to grammar school. In 1822, at seventeen, he entered Slagelse Grammar School, placed in a class with boys around eleven years old. The headmaster, Simon Meisling, a classical scholar, made the gangly, sensitive, years-behind Andersen his target — picking on him in lessons and humiliating him in front of the class — and Andersen was banned from writing poetry so he would focus on his studies. From 1825 he boarded in Meisling's own house, so the torment followed him home; in 1826 he moved with the family to Elsinore when Meisling took over the school there, leaving him still more isolated. During the Elsinore period he broke the rule in secret and wrote \"The Dying Child,\" which became one of his most famous early poems. For years his letters to Collin politely hid how cruel the school was. When the truth finally reached Collin, he removed Andersen from the school in 1827 and arranged private tuition in Copenhagen; Andersen passed his university entrance examination in 1828 and began publishing. His first fairy tales appeared in 1835, when he was thirty, and made him, in time, the most famous writer in the world; he said of \"The Ugly Duckling\" that the story was about his own life. He died August 4, 1875.",
+  sources: [
+    "Andersen, Hans Christian. The Fairy Tale of My Life (Mit Livs Eventyr, 1855).",
+    "Wullschlager, Jackie. Hans Christian Andersen: The Life of a Storyteller (New York: Knopf, 2001), Chapters 3-4.",
+    "Hans Christian Andersen Centre, University of Southern Denmark, \"Schooling\" biographical materials.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Placed at 17 with ~11-year-olds; the school funded by patrons as his one chance; his oddness and poverty — documented.",
+      text: `There was a boy of seventeen sitting in a classroom of eleven-year-olds.
+
+He was poor — his father had been a shoemaker, and dead a long time. He was odd-looking and too tall, with a high voice and big dreams he couldn't keep quiet about. Kind people who believed there was something in him had raised money to send him to this school. It was, and everyone said so, his one chance in life.
+
+He was years behind the children around him. Latin, grammar, everything — the little boys knew things he didn't. He'd had almost no schooling at all.
+
+So he sat where they put him, folded up at a small desk, grateful and terrified, determined to earn the chance.
+
+The headmaster had other plans for him.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Meisling's documented daily mockery in lessons; the ban on writing; boarding in the headmaster's house from 1825 so there was no escape. 'Believing him a little' is grounded in his diaries.",
+      text: `The headmaster made the boy his sport.
+
+Every lesson, in front of the class, he had something: the boy's looks, his voice, his slowness, his dreams. He called him stupid — day after day, in front of the little boys, who learned the game and laughed along. He said the boy would never amount to anything.
+
+Writing was the one thing the boy loved, so writing was forbidden. Waste of a fool's time, the man said. Focus on your Latin.
+
+Then it got worse: the boy was moved into the headmaster's own house as a boarder. Now the voice that ruled his days sat across from him at supper too. There was no room in his life the man didn't reach.
+
+And here is the darkest part: the boy began to believe him. Maybe he was stupid. Maybe the kind people had wasted their money.
+
+He didn't tell them. This was his one chance. He wrote polite letters home saying he was fine.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "He stayed and endured (leaving meant losing everything his patrons paid for); wrote 'The Dying Child' in secret during the Elsinore years — documented.",
+      text: `He stayed.
+
+Not because he was brave in any grand way. Because leaving meant losing everything — the school, the funding, the one door anyone had ever opened for him. So he got up every morning and took it, and did his Latin, and let the man have his sport.
+
+But one rule he broke.
+
+Once, in secret, he wrote a poem. Quietly, where no one would find him doing it. It was about a child who was dying — a small, sad, tender thing, nothing like his Latin exercises.
+
+He kept it hidden. But he kept it.
+
+If the man was right about him, the poem was pointless. He wrote it anyway. Some part of him refused to hand over the verdict.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The 1826 move with the Meislings to a new town; deeper isolation; years of hiding the truth in his letters — documented.",
+      text: `Years passed like that.
+
+The headmaster took over a school in another town and moved his household with him — including the boy. New town, same table, same voice. Farther now from anyone who knew him. The loneliness closed in until the days all had the same gray taste.
+
+Five years, nearly. From seventeen to almost twenty-two — years other people spend becoming themselves — spent being told daily what he could never become.
+
+His letters to his patron stayed polite. Everything is fine. I am working hard. He was ashamed to say the truth, and afraid of it too: complain, and maybe the money stops. Maybe the chance closes.
+
+But the truth has a way of traveling on its own.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Word of Meisling's cruelty finally reached Collin (via others and Andersen's own appeals); removal in 1827; private tuition; passed the university exam — documented.",
+      text: `Word of what the school really was finally reached the man who paid for it.
+
+Others had seen it — a teacher who knew the headmaster, people who had watched the daily sport with growing disgust. And the boy, at last, stopped protecting everyone and told the truth.
+
+His patron pulled him out at once.
+
+No more headmaster. A private tutor instead — a patient one. And the strangest discovery: away from the daily grinding-down, the boy could learn. Quickly, even. The next year he passed the university entrance examination that was supposed to be beyond him.
+
+The stupid boy, the hopeless boy, the boy who would never amount to anything, had passed.
+
+He walked out of that chapter of his life carrying two things: an education, and a bone-deep knowledge of what it feels like to be small in a room where someone bigger sets the rules.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Poems and novels first; the fairy tales from 1835 onward; world fame in his lifetime — documented, kept anonymous.",
+      text: `He began to publish. Poems first, then travel books, then novels. People noticed.
+
+And then, in his thirties, he began writing something else — little stories, the kind you'd tell a child at bedtime. Simple words. Strange, sad, funny, true. Stories about tin soldiers and mermaids and emperors with no clothes. About the small and the mocked and the overlooked, and what becomes of them.
+
+The little stories went around the world. They have never stopped going around the world.
+
+Kings invited him to dinner. The country that had known him as a shoemaker's odd son came to treat him as its treasure. Children on every continent grew up inside his sentences, and still do.
+
+Every story kind to the laughed-at came from somewhere. He knew exactly where.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Hans Christian Andersen.
+
+He wrote The Little Mermaid, The Emperor's New Clothes, The Snow Queen, Thumbelina — fairy tales told in every language on earth. And he said himself that one of them, The Ugly Duckling — the odd, mocked bird who was never a duck at all — was his own story. None of it existed yet in the years when a grown man made a classroom laugh at him every day.
+
+You wrote: "{feeling}"
+
+He spent five years being told, daily, by the person with all the power in the room, exactly what he was worth. He half believed it — that's what those voices do. But only half. The other half wrote a poem in secret.
+
+The loudest voice in the room is not the truth about you. It wasn't about him.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. Jan 24, 1925, Fairfax OK, Osage Nation (father Osage; family had oil-lease
+//    income); serious piano and ballet training from early childhood, family moved to LA at 8;
+//    moved to NYC 1942 at 17, joined Ballet Russe de Monte Carlo; director Sergei Denham suggested
+//    she Russianize her name to "Tallchieva" (standard practice — American dancers took Russian
+//    names to be booked); she refused: "Tallchief was my name, and I was proud of it"; endured
+//    anti-Native mockery in the company (her memoir records war-whoop jokes and scalping cracks);
+//    corps years of wartime touring; Balanchine arrived as choreographer 1944 and began casting
+//    her; she was the first American to dance with the Paris Opera Ballet (1947, age 22);
+//    Balanchine made Firebird on her in Nov 1949 (24), making her America's first prima ballerina.
+//    (They married 1946; the marriage is deliberately left out of the beats.) d. 2013.
+//  Interpretive: the name-or-career choice as the episode's spine; "twice as precise" corps
+//    framing. Grounded in her memoir Maria Tallchief: America's Prima Ballerina.
+//  Avoid saying: don't name Tallchief / Osage / Oklahoma / Balanchine / Firebird / Paris before
+//    the bridge; don't fabricate poverty (the family had oil money); no marriage subplot; keep the
+//    mockery brief and un-lurid.
+const tallchief: FigureStageRow = {
+  figureKey: "tallchief",
+  displayName: "Maria Tallchief",
+  birthYear: 1925,
+  deathYear: 2013,
+  stageId: "1942-1947-the-name-stays",
+  stageLabel: "The name stays: refusing Tallchieva in a Russian ballet world",
+  ageMin: 17,
+  ageMax: 22,
+  themes: ["social_constraint", "quiet_defiance", "dismissed"],
+  antiThemes: [],
+  shapeSentences: [
+    "At seventeen she joined a company where every serious dancer had a Russian name, and the management told her to trade hers in — and she refused, and set out to be too good to ignore under the name she was born with.",
+    "She was mocked for where she came from and treated as a novelty in the corps, and she answered by being twice as precise as anyone in the room.",
+    "The girl who wouldn't change her name became her country's first great ballerina — under that name.",
+  ],
+  facets: {
+    emotionalCore:
+      "Being told the truest thing about her — her name, her people — was a career liability to be erased, and deciding the price of belonging was too high if it cost who she was.",
+    decisionShape:
+      "Whether to take the Russian-sounding name that would smooth her path, or to keep the name her family gave her and force the field to accept it.",
+    triggerEvent:
+      "The company's management suggested she Russianize her name because no one would take an American — let alone a Native American — ballerina seriously.",
+    agencyState:
+      "A teenager at the bottom of a rigid company, with no say in casting and no allies in power — but complete say over one thing: what she would answer to.",
+  },
+  biographicalFacts:
+    "Maria Tallchief was born Elizabeth Marie Tall Chief on January 24, 1925, in Fairfax, Oklahoma, a citizen of the Osage Nation; her family's oil-lease income paid for serious piano and ballet training, and the family moved to Los Angeles when she was eight to further the children's education. In 1942, at seventeen, she moved to New York City and joined the Ballet Russe de Monte Carlo. Ballet in America was then a Russian world: American dancers routinely took Russian stage names to be cast, and the company's director, Sergei Denham, suggested she become \"Tallchieva.\" She refused — \"Tallchief was my name, and I was proud of it\" — at a time when her Osage heritage drew open mockery inside the company; her memoir records dancers greeting her with war whoops and asking whether her father scalped people. She spent her early years in the wartime corps de ballet, taking class relentlessly and gaining roles as the company's Russian stars moved on. When George Balanchine became the company's choreographer in 1944, he noticed her musicality and precision and began casting her; in 1947, at twenty-two, she became the first American to dance with the Paris Opera Ballet. In November 1949 Balanchine created the lead of his Firebird on her, and its premiere made her America's first prima ballerina — under the name she had refused to give up. She retired in 1966, founded the Chicago City Ballet, and died April 11, 2013.",
+  sources: [
+    "Tallchief, Maria, with Larry Kaplan. Maria Tallchief: America's Prima Ballerina (New York: Henry Holt, 1997), Chapters 2-5.",
+    "Osage Nation and Oklahoma Historical Society biographical materials, \"Tallchief, Elizabeth Maria.\"",
+    "National Women's History Museum, \"Maria Tallchief.\"",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Arrival at 17 into the Russian-dominated company; the corps hierarchy; her disciplined training background — documented.",
+      text: `There was a girl of seventeen at the barre of a famous touring ballet company.
+
+She had trained her whole childhood for this — hours of piano, hours of ballet, a family that took her talent seriously and moved across the country for it. Now she was in, at the bottom, one girl in the long line of the corps.
+
+The company was run by people from far away, in the old tradition. The stars had names from that faraway country. The teachers did. Even the American dancers did — because in this world, everyone understood, a dancer with a plain American name would not be taken seriously. You took a new name the way you took the right shoes. That was the custom.
+
+She had a name already. It was her father's name, and his father's. Her people had carried it a long time.
+
+She was about to find out what it would cost to keep it.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Denham's documented 'Tallchieva' suggestion; the documented in-company mockery of her heritage (war whoops, scalping jokes in her memoir), kept brief.",
+      text: `The management called it a small thing.
+
+Just soften the name. Make it sound like it came from the old country — add a few letters, and doors open. Everyone does it. Surely she wanted a career more than she wanted a word.
+
+And around the edges of the company, the other message came in less polite forms. Dancers who greeted her with mock war cries. Jokes about where she came from, about her father, about her people — said lightly, the way cruel things get said in dressing rooms, with a smile she was expected to return.
+
+What they were all saying, politely and not, was the same thing: what you are is a problem. Fix it.
+
+She was seventeen, at the very bottom of the ladder, with no power over casting, no allies in charge, and one career she had spent her whole childhood building.
+
+All she had to do to keep it moving smoothly was erase her own name.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "Her documented refusal and its stated ground ('Tallchief was my name, and I was proud of it').",
+      text: `She said no.
+
+No speech. No scene. She simply refused. The name was her name. She was proud of it — proud of her father, proud of her people — and she was not going to pretend to be from somewhere else to make strangers comfortable.
+
+If the world of her art wouldn't take the name seriously, she would make the name impossible to ignore. That was the whole plan, and she knew exactly what it meant: everything she did from now on, she would have to do a little better than everyone, because she'd declined the discount.
+
+She went back to the barre.
+
+She took every class. Then she took more.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Wartime corps years, relentless class-taking, gradually inheriting roles as stars departed — documented in her memoir; 'twice as precise' framing is interpretive.",
+      text: `The corps years were long.
+
+Touring by train, town after town, dancing in the back lines where nobody watches. Watching the famous names take the bows. Being, to some in the company, a novelty act from the plains — no matter how clean her technique was.
+
+She answered the only way available to a girl with no power: precision. She became relentlessly, unarguably exact. Musical in a way you can't teach. The kind of dancer other dancers stop to watch in class, even while the posters still spelled other people's names.
+
+Slowly, the war and time thinned the company's stars. Roles opened. She was ready for every one of them — she had been ready for years.
+
+And people who mattered had started to notice the girl who wouldn't change her name.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Balanchine's 1944 arrival and his casting of her; the 1947 Paris Opera first — documented; his 'watching class' is standard accounts compressed.",
+      text: `A new ballet master arrived to run the company's dances — a quiet genius from the old country, already becoming the most important choreographer alive.
+
+He stood at the front of class and watched. He didn't care about names, old country or new. He cared about music, and whether a body could keep up with what he heard in it.
+
+Hers could.
+
+He began setting roles on her — bigger ones, stranger ones, faster ones. Where others saw a girl from nowhere with an unfashionable name, he saw an instrument nobody had played yet.
+
+Within a few years, she was dancing as a guest on the most storied opera stage in Europe — the first American ever invited to do it. The name they printed in the program, in the city where ballet was practically invented, was her own. Unchanged. Exactly as her father carried it.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Firebird (1949) created on her; first American prima ballerina; later career and teaching — documented, names withheld.",
+      text: `Then the choreographer built a ballet on her — on her speed, her attack, her line. A firebird: something untamed and blazing that no one can cage.
+
+Opening night made her, by common consent, her country's first true prima ballerina. Not an American dancing under a borrowed foreign name — an American, with an American name, a name older than the country itself, at the absolute summit of the art.
+
+Little girls who had never seen anyone like her cut her picture out of magazines. Some of them, from her own people and others, became dancers because the picture existed.
+
+She danced for two more decades, then taught for decades more. The name went up on marquees, exactly as it was, for the rest of her life.
+
+They had told her it was a small thing to change. She had understood it was the whole thing.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Maria Tallchief.
+
+A citizen of the Osage Nation, and America's first prima ballerina. Balanchine created Firebird on her; she was the first American to dance at the Paris Opera; and she did all of it after refusing to become "Tallchieva" — after refusing to trade her father's name for an easier road. None of that had happened yet when she was seventeen, at the bottom of the company, being told what she was needed fixing.
+
+You wrote: "{feeling}"
+
+Everyone with power over her career agreed the smart move was to erase a little of herself — just a few letters, just the surface. She bet her whole future the other way: that she could be undeniable as exactly what she was.
+
+The parts of you they call a liability may be the parts history remembers. That's how it went for her.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. Nov 14, 1907, Vimmerby (small, pious Swedish town); trainee at the local paper;
+//    spring 1926 (age 18) pregnant by Reinhold Blomberg, the paper's married, much older editor
+//    (divorce pending; he was ~30 years her senior); scandal risk in the town was severe; the plan
+//    was marriage after his divorce — she broke it off and refused; moved alone to Stockholm,
+//    secretarial school; traveled to Copenhagen (the one place allowing anonymous birth) and bore
+//    Lars ("Lasse") Dec 4, 1926, at 19; left him with foster mother Marie Stevens; visited when
+//    train fare allowed while typing for a living; collected Lasse in Dec 1929 (age 22) — he was
+//    three and spoke Danish; married Sture Lindgren 1931; Pippi Longstocking published 1945 (37).
+//    Biographers connect her books' fierce child-respect to these years. d. 2002.
+//  Interpretive: "she said no to the man and the town at once"; the guilt of the train-window
+//    goodbyes. Grounded in Andersen's biography and her own late-life accounts.
+//  Avoid saying: don't name Lindgren / Pippi / Sweden / Stockholm / Copenhagen before the bridge;
+//    no romance framing of Blomberg (older, married, her boss — stated plainly, briefly); never
+//    moralize about the pregnancy; the foster mother is rendered kind (she was).
+const lindgren: FigureStageRow = {
+  figureKey: "lindgren",
+  displayName: "Astrid Lindgren",
+  birthYear: 1907,
+  deathYear: 2002,
+  stageId: "1926-1929-the-secret-son",
+  stageLabel: "The secret son: pregnant at eighteen to bringing Lasse home",
+  ageMin: 18,
+  ageMax: 22,
+  themes: ["shame", "new_parent_fear", "solitude"],
+  antiThemes: [],
+  shapeSentences: [
+    "She was eighteen, unmarried, and pregnant by a married man in a small pious town, and instead of the respectable rescue everyone expected — marrying him — she said no and boarded a train alone.",
+    "She gave birth among strangers in a foreign city and left her son with a kind foster mother, then spent three years typing for a living and visiting him when she could afford the fare, terrified she was failing him.",
+    "The girl the town whispered about brought her boy home at last, and grew into the writer whose books took children's side against the whole adult world.",
+  ],
+  facets: {
+    emotionalCore:
+      "Carrying a secret the whole town would feast on, and the double guilt of a young mother — ashamed in public, and privately afraid her child was learning to love someone else's arms.",
+    decisionShape:
+      "Whether to accept the respectable exit — marriage to the much older man — or to refuse him and the town's script both, and carry the consequences alone at eighteen.",
+    triggerEvent:
+      "She became pregnant at eighteen by her married, much older employer, in a town small enough that the scandal would swallow her family whole.",
+    agencyState:
+      "She had no money, no husband, and no way to keep her baby with her — but the no was hers, the train ticket was hers, and the promise to come back for him was hers.",
+  },
+  biographicalFacts:
+    "Astrid Lindgren was born Astrid Ericsson on November 14, 1907, on a farm outside Vimmerby, a small and pious town in southern Sweden. At sixteen she became a trainee at the local newspaper; its editor-in-chief, Reinhold Blomberg — married, and roughly thirty years her senior, though his divorce was in progress — began a relationship with her, and in the spring of 1926, at eighteen, she found she was pregnant. In a town of Vimmerby's size and piety the scandal threatened to engulf her family. The expected course was marriage once Blomberg's divorce was final; Astrid instead broke with him categorically and refused. She left for Stockholm alone, enrolling in secretarial school and living in a rented room on very little. On November 21, 1926, she traveled to Copenhagen — where the Rigshospitalet allowed anonymous births — and on December 4, 1926, at nineteen, gave birth to her son Lars, called Lasse. Unable to keep him, she left him in the care of a foster mother, Marie Stevens, who was kind to him. For three years Astrid worked as a typist and secretary in Stockholm, visiting Lasse when she could afford the train fare, watching him grow attached to another home and fearing she was failing him. In December 1929, at twenty-two, she collected the three-year-old Lasse — who by then spoke Danish and considered the Stevens family his own — and brought him home to Sweden. She married Sture Lindgren in 1931. Pippi Longstocking, published in 1945 when she was thirty-seven, made her in time the world's most translated children's author; her biographers trace the radical child-respect of her books to these years. She died January 28, 2002.",
+  sources: [
+    "Andersen, Jens. Astrid Lindgren: The Woman Behind Pippi Longstocking, trans. Caroline Waight (New Haven: Yale University Press, 2018), Chapters 2-4.",
+    "The Astrid Lindgren Company, official biography, \"Youth.\"",
+    "Lindgren, Astrid. Samuel August från Sevedstorp och Hanna i Hult (1975; her own account of her origins).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "The farm childhood, the small pious town, the newspaper traineeship, the much older married editor — documented; rendered without romance.",
+      text: `There was a girl in a small farm town, the kind of town with one church steeple and no secrets.
+
+She was quick and funny and a little too modern for the place — she'd bobbed her hair before anyone, danced when dancing was frowned on. At sixteen she'd talked her way into a job at the town's little newspaper, writing and proofreading. People said she had a future.
+
+The man who ran the paper was much older. Married, though the marriage was ending. He was her boss, and he turned his attention on her, and she was eighteen and flattered and much too young for any of it.
+
+In the spring of her eighteenth year, she realized she was pregnant.
+
+In that town, in those days, there was no such thing as a private catastrophe.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The scandal stakes for her family; the expected marriage-after-divorce script; her categorical refusal — documented.",
+      text: `She could see the whole script laid out for her, and everyone in it.
+
+The whispers were already starting. Her parents were devout, respected people; this would land on them too, hard. And the town had exactly one approved ending for a girl in her condition: marry the man. He was willing — eager, even. Wait for his divorce, take his name, become the third wife of a man three decades older, and let the scandal be papered over into respectability.
+
+All she had to do was hand him the rest of her life.
+
+She was eighteen. She sat with it — the shame pressing in from every window in town, the fear of what was coming, the arithmetic of a baby with no money and no husband.
+
+And underneath all of it, one stubborn, inconvenient certainty: she did not want him.
+
+Marrying him would fix everything except her.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The break with Blomberg, the move to Stockholm alone, secretarial school — documented.",
+      text: `She said no.
+
+No to the man. No, with the same word, to the town's whole script for her. She broke it off completely, and she got on a train to the capital, alone, with almost nothing.
+
+She rented a little room. She enrolled in a school for secretaries — typing, shorthand, skills that could feed a person. By day she trained; by night she was one more anonymous girl in a city that didn't know her name, which was terrible and was also exactly the point.
+
+The baby was coming either way. She found out there was one city, in the neighboring country, where a woman could give birth without her name being recorded and reported.
+
+When the time came, she took the train there, by herself, and had her son among strangers.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Lasse with the kind foster mother; the three years of typing jobs and train-fare visits; his attachment to the foster family and her fear of failing him — documented.",
+      text: `She could not keep him. There was no version of the arithmetic that let her keep him — no money, one rented room, a wage that barely fed one person.
+
+A kind woman in that foreign city took him in. A real home, warm, decent. That was the mercy in it, and also the knife: her boy was loved — a few hundred miles away, by someone else.
+
+For three years she worked and saved and visited when she could afford the fare. Each visit he was bigger. Each visit he spoke more — in the other country's language. He called the foster woman's home his home, because it was the only one he knew.
+
+She rode the train back after each goodbye doing the darkest math a young mother can do: was she failing him? Would he ever really be hers again? Had she already, at twenty, made the mistake that couldn't be unmade?
+
+She kept working. She kept visiting. She kept the promise alive on no evidence at all.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "December 1929: collected the three-year-old Lasse, who spoke Danish and knew the Stevens as family — documented. The train-ride texture is dramatized.",
+      text: `Just before the Christmas he was three, it finally held together: a steady job, a room big enough, enough money to say the word she'd been saving for three years.
+
+She went and got her son.
+
+He was a small, serious boy who spoke a language she had to reach across. He knew the kind woman's kitchen as home, and the woman's family as his family. Now a young woman he'd only ever known as a visitor was taking his hand and telling him he was going home — to a place he had never been.
+
+The train carried them north through the winter dark, the two of them, strangers and mother and son all at once.
+
+It was not a storybook ending. It was harder than that, and better: it was a beginning. From that night on, whatever else happened, they would figure it out in the same house.
+
+She was twenty-two, and she had kept the promise.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The later marriage and family; the mid-life turn to writing; biographers' documented linking of her child-respect to these years — kept anonymous.",
+      text: `The life she rebuilt slowly became a good one. A marriage, a daughter, rooms full of children's noise. She turned out to be the kind of mother children flock to — the one who climbs trees at the birthday party.
+
+And then, in her late thirties, almost by accident, she began writing stories down. Stories for children — but not like anybody else's. Her children were strong and wild and free. They talked back. They lived without supervision and thrived. Her books took the child's side against the whole grown-up world, without apology, every single time.
+
+The books went everywhere. She became her country's most beloved writer — eventually one of the most read children's authors who has ever lived.
+
+People often asked where her fierce tenderness for children came from. The readers of her books didn't know. The serious little boy on the winter train knew.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Astrid Lindgren.
+
+She wrote Pippi Longstocking — and dozens of other books that made her one of the most beloved and translated children's authors in history. Whole generations, in nearly every language, grew up on her fierce, funny, free children. None of that existed yet when she was eighteen and pregnant in a town with no secrets, refusing the one respectable exit on offer.
+
+You wrote: "{feeling}"
+
+She was young, ashamed, and terrified she was failing her child — all three at once, for years. She did the impossible thing anyway: she refused the life that would have fixed her reputation and broken her, and she kept her promise to her son on a typist's wage.
+
+Doing it scared and ashamed still counts as doing it. She's proof of that.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. ~July 4, 1844 (Greenbush NY; year contested 1843-45), mother Ojibwe/African
+//    American, father Haitian; orphaned by ~9, raised among her mother's Ojibwe people; older
+//    brother Samuel (California gold money) funded her schooling; Oberlin College from 1859 (one of
+//    the only colleges admitting Black women); winter 1862: two white classmates fell ill after
+//    spiced wine and accused her of poisoning them; before trial she was seized by a mob at night,
+//    dragged to a field, and beaten so badly she was bedridden for weeks; defended at trial by
+//    John Mercer Langston, charges dismissed for lack of evidence (no analysis of the alleged
+//    poison), carried from the courtroom on friends' shoulders; resumed studies; early 1863 accused
+//    of stealing art supplies (not proven), and the college then refused to let her register for
+//    her final term — no degree; 1864, ~age 19-20, went to Boston with a letter of introduction to
+//    William Lloyd Garrison, trained with sculptor Edward Brackett; her medallions of abolitionists
+//    and bust of Col. Robert Gould Shaw sold well enough to fund her move to Rome in 1866; became
+//    the first professional Black/Native American sculptor of international standing; The Death of
+//    Cleopatra stunned the 1876 Centennial. d. 1907, London.
+//  Interpretive: "the verdict didn't matter to the door" — the expulsion-after-acquittal as the
+//    episode's core wound. Grounded.
+//  Avoid saying: don't name Lewis / Oberlin / Langston / Garrison / Rome / Cleopatra before the
+//    bridge; the beating rendered in two restrained sentences, no graphic detail; don't turn the
+//    accusers' motive into stated fact — the record shows accusation and acquittal.
+const lewis_e: FigureStageRow = {
+  figureKey: "lewis_e",
+  displayName: "Edmonia Lewis",
+  birthYear: 1844,
+  deathYear: 1907,
+  stageId: "1862-1866-accused-acquitted-expelled",
+  stageLabel: "Acquitted and expelled anyway: the Oberlin ordeal to the studio",
+  ageMin: 17,
+  ageMax: 21,
+  themes: ["dismissed", "dispossession", "quiet_defiance"],
+  antiThemes: [],
+  shapeSentences: [
+    "She was falsely accused at college, beaten half to death by a mob before her trial, and acquitted in court — and then the school closed its doors to her anyway, as if the verdict had never happened.",
+    "An orphan far from any family, she watched the institution that was supposed to be her way up decide it would rather lose her than defend her.",
+    "So she took her hands and her nerve to a new city, learned to carve stone, and made a name they could not take back.",
+  ],
+  facets: {
+    emotionalCore:
+      "Winning the verdict and losing the place anyway — learning that being proven innocent does not reopen a door that people have decided to close on you.",
+    decisionShape:
+      "Whether to keep begging an institution that had already decided against her, or to walk away from the degree and build a standing no committee could revoke.",
+    triggerEvent:
+      "Two classmates accused her of poisoning them, a mob beat her before she was ever tried, and after the court cleared her the college barred her final term anyway.",
+    agencyState:
+      "Orphaned, far from her people, with her body still healing and her name still whispered about — but her hands were hers, and there was one craft where the work speaks for itself.",
+  },
+  biographicalFacts:
+    "Edmonia Lewis was born around July 4, 1844, near Greenbush, New York; her mother was of Ojibwe and African-American descent, her father Haitian. Orphaned by about nine, she spent much of her childhood among her mother's Ojibwe people; her older brother Samuel, who had made money in the California gold fields, paid for her schooling and in 1859 sent her to Oberlin College in Ohio, one of the only colleges in America that admitted Black women. In the winter of 1862, two white classmates fell ill after drinking spiced wine with her and accused her of poisoning them. Days before her hearing, she was seized at night by a mob, dragged to a field, and beaten so severely she was bedridden for weeks. At trial she was defended by John Mercer Langston, the celebrated Black attorney and Oberlin graduate; the charges were dismissed for lack of evidence — the alleged poison had never been analyzed — and supporters carried her from the courtroom on their shoulders. She resumed her studies while still recovering. In early 1863 she was accused of stealing art supplies; the charge was not proven, but the college then refused to let her register for her final term, ending her education without a degree. In 1864 she moved to Boston carrying a letter of introduction to the abolitionist William Lloyd Garrison, who connected her with the sculptor Edward Brackett; she learned to model and carve, and her portrait medallions of abolitionists and her bust of Colonel Robert Gould Shaw sold well enough to pay her way to Rome in 1866, where she set up a studio among the expatriate sculptors. She became the first Black and Native American sculptor to achieve international recognition; her monumental The Death of Cleopatra was one of the sensations of the 1876 Philadelphia Centennial Exposition. She died in London in 1907.",
+  sources: [
+    "Blodgett, Geoffrey. \"John Mercer Langston and the Case of Edmonia Lewis: Oberlin, 1862.\" Journal of Negro History 53, no. 3 (1968).",
+    "Buick, Kirsten Pai. Child of the Fire: Mary Edmonia Lewis and the Problem of Art History's Black and Indian Subject (Durham: Duke University Press, 2010).",
+    "National Park Service, \"Edmonia Lewis\" biographical materials.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Orphaned young, raised among her mother's people, brother-funded schooling, one of very few such students at the college — documented.",
+      text: `There was a young woman at a college — one of the only colleges in the country that would admit someone like her.
+
+She had been an orphan since she was small. Her mother's people had raised her; her older brother, who'd gone west and come back with money, believed in her enough to pay for school. She was there on his faith and her own nerve, hundreds of miles from anyone who loved her.
+
+She was good with her hands — drawing, making things. She was finding her feet.
+
+She knew the town around the college didn't love having students like her there. Everyone like her knew it. You kept your head down and did the work, and mostly that was enough.
+
+Until one winter, it wasn't.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The poisoning accusation; the night seizure and mob beating before trial (bedridden for weeks) — documented; rendered in two restrained sentences.",
+      text: `Two classmates fell ill, and the story that went around was that she had poisoned them.
+
+It wasn't true. But the story didn't need to be true. It needed only to be about her — the orphan, the outsider, the one the town already resented — and it spread like a dropped match.
+
+Before she ever saw a courtroom, men came for her at night. They dragged her out to a field in the dark and they beat her, and they left her there. She was weeks in bed before she could stand through a day.
+
+And then, body still broken, she had to get up and face the trial.
+
+She was maybe eighteen years old. Everyone she loved was far away. The whole town believed a lie about her, and the mob had already delivered its verdict — the real court hadn't even started.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The trial: defended by a brilliant attorney, charges dismissed for lack of evidence, carried out on supporters' shoulders; she resumed her studies — documented.",
+      text: `She stood trial, and she stood it well.
+
+A brilliant attorney — a man who had walked her same road — took her case and took it apart. There was no evidence. There had never been any evidence. The charges were dismissed, and her friends carried her out of the courtroom on their shoulders.
+
+And then she did the hard, unglamorous thing: she went back to class.
+
+Still healing. Still whispered about — a verdict doesn't stop whispers. She walked back into those same buildings, past those same faces, and picked her education back up, because it was hers and her brother had paid for it and she had done nothing wrong.
+
+She thought the worst was over. The court had said so.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The second accusation (art supplies, not proven) and the college's refusal to let her register for the final term — documented. 'The verdict didn't matter to the door' is interpretive framing.",
+      text: `A year later, a new accusation. Smaller this time — supplies missing from the art room. Nothing was proven. It didn't matter.
+
+The college had had enough of the trouble that kept finding her — as if she were the trouble, and not its target. When it came time to register for her final term, the answer was no. No hearing, no verdict, no appeal. She simply would not be allowed to finish.
+
+She had won in court and it made no difference to the door.
+
+That was the lesson the place taught her, in the end — not the one in the catalog. Innocence is not a key. Some doors are closed because of what you are, and no verdict reopens them.
+
+She could have spent years pounding on that door. She looked at it, and she chose better.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The move to Boston with one letter of introduction; the sculptor who trained her; the medallions and the bust whose sales funded the Atlantic crossing — documented.",
+      text: `She went east, to a big city, carrying one letter of introduction to a famous champion of her people's cause.
+
+The letter worked. The famous man read it and sent her to a sculptor — a real one, with a working studio — and asked him to see what she could do.
+
+Clay first. Then stone. It turned out her hands had been waiting for stone her whole life.
+
+She started small: portrait medallions of the heroes of the cause, sold to their admirers. Then a bust of a fallen young war hero the whole city mourned. It sold, and sold again in copies — enough money, at last, for the boldest move a sculptor could make.
+
+She booked passage across the ocean, to the ancient capital of her art, where the marble comes out of the mountains and nobody asks your college for permission.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The Rome studio; international fame; the Centennial sensation piece — documented, names withheld for the bridge.",
+      text: `In the old city she opened her own studio and worked the marble herself — no hired carvers, so no one could claim the work wasn't hers.
+
+Collectors came. Tourists came. Famous writers came and wrote about the young sculptor everyone was talking about. She carved her mother's people with dignity. She carved freed men and women standing up. She carved queens.
+
+At her country's great hundredth-birthday exhibition, her most ambitious statue — a dying queen, carved at full scale — stopped the crowds cold. Critics argued about it for years. It became one of the most famous American sculptures of its century.
+
+The college that wouldn't let her finish became a footnote in her story. Not the other way around.
+
+The first of her kind to stand in the front rank of her art — that is what the orphan girl from the field became.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Edmonia Lewis.
+
+She was the first sculptor of African-American and Native American heritage to win international fame. Her masterpiece, The Death of Cleopatra, is in the Smithsonian now. Colleges teach her work — including, these days, the one that turned her away. None of that had happened yet when she was lying in bed, beaten for a lie, waiting for a trial.
+
+You wrote: "{feeling}"
+
+She learned the hardest version of the lesson: you can be completely innocent, proven innocent, and still lose the place. What she did next is the part worth keeping — she stopped asking the closed door for justice and built a life where her work answered for her.
+
+Their verdict on you isn't the last word. She got the last word. It's in a museum.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. Jan 15, 1850, Moscow, general's daughter; her childhood nursery at Palibino was
+//    papered with lithographed pages of Ostrogradsky's calculus lectures (her own memoir); taught
+//    herself trigonometry at ~14; Russian universities barred women, and women could not travel
+//    abroad without a father's or husband's permission; her father refused study abroad; 1868 (18)
+//    contracted a "fictitious marriage" with Vladimir Kovalevsky (a practice in radical circles) to
+//    get free; Heidelberg 1869, auditing only by special permission; Berlin 1870 — the university
+//    refused women entirely, and Karl Weierstrass, after she solved the problems he set to send her
+//    away, taught her privately every week for four years; 1874 (24) doctorate in absentia from
+//    Göttingen, summa cum laude, on three papers incl. the Cauchy-Kovalevskaya theorem — the first
+//    woman in modern Europe to earn a mathematics doctorate; later first woman professor of
+//    mathematics in northern Europe (Stockholm, 1884), Prix Bordin 1888. d. 1891.
+//  Interpretive: the marriage-as-a-key framing; "walls, and a door made of paperwork." Grounded in
+//    her memoir A Russian Childhood and standard biographies.
+//  Avoid saying: don't name Kovalevskaya / Russia / Weierstrass / Berlin / Heidelberg / the theorem
+//    before the bridge; the wallpaper detail stays (it's her own famous memoir image) but unnamed;
+//    the marriage is a documented arrangement, not a romance — keep it exactly that.
+const kovalevskaya: FigureStageRow = {
+  figureKey: "kovalevskaya",
+  displayName: "Sofia Kovalevskaya",
+  birthYear: 1850,
+  deathYear: 1891,
+  stageId: "1868-1874-fictitious-marriage-to-doctorate",
+  stageLabel: "A marriage as a key: barred from university to the first doctorate",
+  ageMin: 18,
+  ageMax: 24,
+  themes: ["social_constraint", "self_invention", "quiet_defiance"],
+  antiThemes: [],
+  shapeSentences: [
+    "Every university in her country was closed to her because she was a woman, and the law would not even let her leave without a father's or husband's signature — so at eighteen she married a near-stranger to manufacture the signature, and left.",
+    "The great university she reached refused women at its door, so the greatest mathematician in it taught her alone, every week, for four years.",
+    "At twenty-four the woman no lecture hall would seat earned the doctorate — the first of her kind in Europe — with work that still carries her name.",
+  ],
+  facets: {
+    emotionalCore:
+      "Burning to use a mind everyone conceded was extraordinary, in a world that had quietly pre-decided the whole shape of her life before she could vote on it.",
+    decisionShape:
+      "Whether to accept the life assigned to a general's daughter, or to bend the rules that could be bent — a paper marriage, a borrowed signature — and walk through the gap.",
+    triggerEvent:
+      "Her father refused to let her study abroad, and the law made his signature — or a husband's — the only key out.",
+    agencyState:
+      "She could not enroll, could not travel, could not sign for herself — but she could learn faster than anyone they had ever seen, and she could find the one legal crack in the wall.",
+  },
+  biographicalFacts:
+    "Sofia Kovalevskaya was born January 15, 1850, in Moscow, the daughter of General Vasily Korvin-Krukovsky. At the family estate at Palibino, her childhood nursery had been papered — by chance, when wallpaper ran short — with lithographed pages of Ostrogradsky's calculus lectures from her father's student days, and she later wrote of puzzling over the strange symbols for hours; she taught herself trigonometry at about fourteen to read a physics book written by a neighbor. Russian universities did not admit women, and by law a woman could not obtain the passport needed to study abroad without the permission of her father or husband. Her father refused. In September 1868, at eighteen, she contracted a \"fictitious marriage\" — an arrangement then known in Russian radical circles — with the young paleontology student Vladimir Kovalevsky, and the couple traveled to Germany. At Heidelberg in 1869 she could only audit lectures by special permission of each professor. In 1870 she moved to Berlin, where the university refused women entirely; she went to Karl Weierstrass, the most celebrated analyst in Europe, who set her a list of difficult problems to put her off — and, when she returned with solutions that startled him, agreed to teach her privately, which he did nearly every week for four years. In 1874 she presented three papers — including the result now taught as the Cauchy-Kovalevskaya theorem on partial differential equations — and the University of Göttingen granted her a doctorate in absentia, summa cum laude, making her the first woman in modern Europe to receive a doctorate in mathematics. After years in which no university would employ her, she became a professor at Stockholm University in 1884 — the first woman professor of mathematics in northern Europe — and won the French Academy's Prix Bordin in 1888. She died of pneumonia in 1891, at forty-one.",
+  sources: [
+    "Kovalevskaya, Sofia. A Russian Childhood, trans. Beatrice Stillman (New York: Springer, 1978).",
+    "Koblitz, Ann Hibner. A Convergence of Lives: Sofia Kovalevskaia — Scientist, Writer, Revolutionary (Boston: Birkhäuser, 1983), Chapters 3-6.",
+    "Cooke, Roger. The Mathematics of Sonya Kovalevskaya (New York: Springer, 1984).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "The calculus-notes nursery wallpaper (her own memoir), self-taught trigonometry, the general's-daughter life script — documented.",
+      text: `There was a girl who grew up in a house where, by pure accident, her nursery walls were papered with pages of an old mathematics textbook — the wallpaper had run short, and someone had used a stack of lecture notes instead.
+
+She spent hours of her childhood staring at those walls. Strange symbols, beautiful and locked. By the time she was fourteen she had taught herself enough to startle her father's educated friends. Everyone agreed the girl had a remarkable mind.
+
+Everyone also agreed on what her life would be, because it had been decided long before she was born. A general's daughter marries well. She runs a household. She is accomplished — a little piano, a little French — and nothing more.
+
+The universities of her country did not admit women. Not one, not partway, not ever.
+
+The walls of her nursery had numbers on them. The walls around her life did not have a door.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The legal travel bar (father's or husband's permission), her father's refusal — documented.",
+      text: `There were universities abroad, in other countries, that had begun — cautiously, partially — to let women in.
+
+She might as well have been told about universities on the moon.
+
+Because the law of her country had one more wall behind the first: a woman could not get the papers to leave without a man's permission. Her father's. Or a husband's. Her signature meant nothing on its own; legally, she was a passenger in her own life.
+
+She asked her father. Her father said no. Daughters of his standing did not run off to foreign lecture halls. The subject was closed.
+
+And that was supposed to be that. A remarkable mind, everyone agreed — and a life already fully furnished for it: the estate, the marriage to come, the drawing rooms, the decades.
+
+She was eighteen, and she could feel the whole thing closing over her like water.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The documented fictitious marriage (a known radical-circle arrangement) at 18 and the departure abroad.",
+      text: `The law said she needed a husband's signature. The law did not say the marriage had to be real.
+
+In the circles of young idealists she had begun to know, there was a quiet practice for exactly this trap: a marriage of convenience. A sympathetic young man lends his name; the paperwork produces the signature; the woman gets her passport and her life.
+
+She found such a man — a young student of fossils, decent, in on the plan. They married. Her father got a son-in-law of acceptable standing; she got the only key that fit the only door.
+
+She was eighteen years old, married to someone she barely knew, and free.
+
+They boarded the train for the border. On the far side of it were the universities.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Heidelberg audit-only status by per-professor permission; Berlin's total refusal of women — documented.",
+      text: `Freedom, it turned out, came in small rationed doses.
+
+At the first university, she could not enroll. She could only sit in on lectures — and only if each professor personally agreed to tolerate a woman in his hall. Some did. Some didn't. She collected permissions the way beggars collect coins, and she outworked everyone in every room they let her enter.
+
+Then she moved to the city with the university she really wanted — the one with the greatest mathematician of the age in it.
+
+That university did not admit women. Not to enroll, not to audit, not to sit quietly in the last row. A total no.
+
+She had crossed a continent, married a stranger, and given up her whole assigned life — to reach a door that was locked as firmly as the ones at home.
+
+So she went around the university entirely. She knocked, instead, at the great man's house.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Weierstrass's screening problems, her startling solutions, and the four years of weekly private lessons — documented.",
+      text: `The great man did what busy famous men do to unwanted visitors: he set her a test designed to end the conversation.
+
+A list of problems — hard ones, the kind he gave his most advanced students — with the polite understanding that she would go away and not come back.
+
+She came back. With solutions.
+
+Not adequate solutions. Solutions that made him sit down and read them twice — original, elegant, better in places than what his own students produced. Whoever this young woman was, the mind on the page was not a curiosity. It was the real thing.
+
+The university still would not have her; that wall didn't move. So he moved instead.
+
+Every week, in his study, the most celebrated mathematician in Europe taught the student his university refused to seat. Just the two of them and the work. For four years.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The 1874 in-absentia doctorate summa cum laude on three papers; the later professorship and prize — documented, names withheld.",
+      text: `At twenty-four, she presented the work of those years: three papers of original mathematics, one of them a result so fundamental that students still learn it today — with her name attached.
+
+A great university granted her the doctorate, with highest honors, without her ever having been allowed to sit in its lecture halls. She was the first woman in modern Europe to earn a doctorate in mathematics.
+
+The world was not finished being the world; for years afterward, no university would hire the most credentialed woman on the continent. She persisted. In time, one made her a full professor of mathematics — the first woman in that part of the world to hold such a chair — and the prize committees of Europe honored work they could no longer pretend wasn't hers.
+
+The girl who studied her nursery wallpaper had signed her own life after all. It just took a borrowed signature to get there.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Sofia Kovalevskaya.
+
+The first woman in modern Europe to earn a doctorate in mathematics, and the first to hold a full professorship in it in northern Europe. The Cauchy-Kovalevskaya theorem — hers — is still taught in every serious mathematics program on earth. None of that existed yet when she was eighteen, staring at a life other people had fully furnished for her.
+
+You wrote: "{feeling}"
+
+Every legitimate door was locked, so she studied the locks. A paper marriage for a signature. A private study instead of a lecture hall. She never got permission — not once, at any step. She got results instead, and eventually the world had to catch up to them.
+
+If the approved path is walled off, the unapproved ones still count. Hers did.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. Feb 1, 1902, Joplin MO; parents separated; father James moved to Mexico, scornful
+//    of Black Americans' prospects and, by Langston's own account in The Big Sea, contemptuous of
+//    Black people and of his son's poetry; Langston wrote "The Negro Speaks of Rivers" at 18 on the
+//    train to Mexico (1920), published in The Crisis 1921; the father would fund only engineering
+//    study — compromise: Columbia (1921-22), which he left amid racial hostility and boredom, and
+//    the father cut support; jobs, then 1923 (21) crewed the SS Malone to West Africa — off Sandy
+//    Hook he threw his books into the sea ("like throwing a million bricks out of my heart," The
+//    Big Sea); Paris dishwashing 1924; Washington DC 1925, busboy at the Wardman Park Hotel, slipped
+//    three poems beside Vachel Lindsay's plate; papers nationwide reported the "busboy poet"; The
+//    Weary Blues published by Knopf, Jan 1926 (he turned 24 that week). d. 1967.
+//  Interpretive: "make something of yourself meant become someone else"; the books-overboard as
+//    shedding an assigned life. Both grounded in The Big Sea.
+//  Avoid saying: don't name Hughes / Columbia / Harlem / Mexico / Paris / Lindsay / poem or book
+//    titles before the bridge; the father's self-contempt handled in one careful clause, no
+//    diagnosis; no "Harlem Renaissance" label before the bridge.
+const hughes: FigureStageRow = {
+  figureKey: "hughes",
+  displayName: "Langston Hughes",
+  birthYear: 1902,
+  deathYear: 1967,
+  stageId: "1920-1926-fathers-deal-to-first-book",
+  stageLabel: "The father's deal: engineering money to the busboy poems",
+  ageMin: 19,
+  ageMax: 24,
+  themes: ["social_constraint", "self_invention", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "His father would pay for his education only if he gave up poetry for engineering, and he took the deal, hated it, and broke it — choosing the poems and the poverty over the funded life someone else had picked.",
+    "He worked ships and kitchens across half the world, and one night he threw his schoolbooks into the sea, lightening himself of a life that was never his.",
+    "The busboy who left three poems beside a famous man's plate woke up in the newspapers, and his first book followed within months.",
+  ],
+  facets: {
+    emotionalCore:
+      "Learning that the person who was supposed to believe in him first held his deepest gift in contempt — and that the price of the money was becoming someone he wasn't.",
+    decisionShape:
+      "Whether to keep the funded, respectable path his father would pay for, or to walk away broke and bet everything on the writing his father despised.",
+    triggerEvent:
+      "His father agreed to fund his education on one condition: engineering, abroad — anything but the poetry.",
+    agencyState:
+      "Cut off and broke once he refused, he still had his hands for ship work and kitchen work, and a notebook nobody could defund.",
+  },
+  biographicalFacts:
+    "Langston Hughes was born February 1, 1902, in Joplin, Missouri. His parents separated soon after his birth; his father, James Hughes, emigrated to Mexico, where he prospered — a man who, by Langston's account in his autobiography The Big Sea, had come to despise the country that had blocked him, the Black Americans he had left behind, and, painfully, much of what his son was. In 1920, at eighteen, Langston rode the train to Mexico hoping to persuade his father to pay for college; crossing the Mississippi at sunset he wrote \"The Negro Speaks of Rivers\" on the back of an envelope. It was published in The Crisis in 1921, when he was nineteen. His father scorned poetry as a way to starve and offered to fund only an engineering education abroad; the compromise was engineering at Columbia University. Hughes enrolled in 1921, endured its racial hostility, spent more time in Harlem than in class, and left in 1922 — at which point his father cut him off. He worked odd jobs, and in 1923, at twenty-one, signed on as a mess boy on the SS Malone bound for West Africa; as the ship passed Sandy Hook he threw his books into the sea, writing later that it felt \"like throwing a million bricks out of my heart.\" He washed dishes in a Paris nightclub in 1924. In 1925, working as a busboy at the Wardman Park Hotel in Washington, D.C., he placed three of his poems beside the plate of Vachel Lindsay, one of the most famous poets in America; Lindsay read them to his audience that night, and newspapers across the country carried the story of the discovered \"busboy poet.\" Alfred A. Knopf published his first collection, The Weary Blues, in January 1926, days before his twenty-fourth birthday. He became the defining poet of the Harlem Renaissance and one of the most beloved American poets of the century. He died May 22, 1967.",
+  sources: [
+    "Hughes, Langston. The Big Sea: An Autobiography (New York: Knopf, 1940), Parts I-II.",
+    "Rampersad, Arnold. The Life of Langston Hughes, Volume I: 1902-1941 (New York: Oxford University Press, 1986), Chapters 2-5.",
+    "Academy of American Poets, \"About Langston Hughes.\"",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "The train ride to the estranged father at 18; the river poem written en route on an envelope — documented (The Big Sea).",
+      text: `There was a young man on a long train ride to meet his father — a father he barely knew.
+
+His parents had split when he was a baby. The father had left the country years ago, bitter at everything it had refused him, and made money in another one. Now the son was eighteen, finished with school, full of words. He was going south to ask the one rich man in his family to help pay for college.
+
+Crossing the great river at sunset, somewhere in the middle of the country, a poem came to him — whole, quiet, certain, about rivers older than pain. He wrote it on the back of an envelope while the light went copper on the water.
+
+He didn't know it yet, but that envelope would outlive every plan his father had for him.
+
+He rode on south, hopeful. Hope was about to get complicated.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The father's documented contempt for his poetry and his people (one careful clause, per The Big Sea); the engineering-only funding condition.",
+      text: `His father, it turned out, had contempt to spare.
+
+For the country he'd left. For the people he'd left — his own people, which the son could hardly bear to watch. And for poetry, which in the father's arithmetic was a fancy word for starving.
+
+The deal came down flat and final: he would pay — generously, even — for an education in engineering. Something solid. Something respectable. Somewhere far from everything the son loved.
+
+Poetry? No. Not a course of it, not a dollar toward it.
+
+The son sat in his father's fine house and understood the terms of the offer under the offer: make something of yourself meant become someone else. The money was real. The door was open. All he had to do was walk through it and leave himself outside.
+
+He was eighteen, and the one man on earth supposed to believe in him first was the one man who plainly didn't.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The Columbia compromise, the departure amid racial hostility, the father cutting him off — documented. The magazine acceptance of the river poem falls in this window.",
+      text: `He tried the deal halfway.
+
+A compromise college, engineering courses, his father's money in his pocket and his father's plan on his desk. He lasted a year. The place was cold to students who looked like him, and his heart was uptown anyway, in the neighborhood full of music where his people were building something new.
+
+Meanwhile, the poem from the train — the river poem — was published in a national magazine. His name, his words, in print. Nobody had paid him to be an engineer of anything, and yet there it was: proof of a different life, one column wide.
+
+He quit the college. His father cut him off to the penny.
+
+Broke, and lighter than he'd felt in years, he went looking for work — any work — that would carry him toward the world instead of away from himself.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The ship years and kitchen years (mess boy to West Africa at 21, Paris dishwashing at 22); the documented books-overboard moment and his own 'million bricks' line.",
+      text: `He signed onto a ship as a mess boy and worked his way down the coast of a continent his ancestors had been stolen from. He washed dishes in a nightclub in the most glamorous city in Europe and ate on what the cooks left. He came home broke and shipped out broke again.
+
+One night, as his freighter cleared the harbor at the start of a voyage, he carried his old schoolbooks up on deck — the whole borrowed life in a box — and threw them into the sea.
+
+He said later it felt like throwing a million bricks out of his heart.
+
+Through all of it, every port and kitchen, he kept the notebook. Poems about work. Poems about his people. Poems that moved the way the music moved. Little magazines took one here, one there. Nobody important was watching.
+
+He was a workingman who wrote, sliding toward twenty-four, with no degree, no backer, and no plan B — because this was already plan B, and it was his.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The Wardman Park busboy job; three poems placed beside Vachel Lindsay's plate; Lindsay reading them that night and the national 'busboy poet' coverage — documented.",
+      text: `He was bussing tables at a grand hotel when he saw a famous poet at dinner — one of the most celebrated in the country, in town to give a reading that night.
+
+The busboy had no invitation to the reading, and no standing to introduce himself. What he had was three of his own poems, and one long moment while the plates went down.
+
+He laid the three poems beside the famous man's plate, said something quick and shy about admiring his work, and got out of the dining room before he could take it back.
+
+That night, at the reading, the famous poet told the audience he had discovered a poet that day — a young Black man bussing tables in this very hotel — and read all three poems to the crowd.
+
+By morning it was in newspapers across the country: the busboy poet. Reporters came to photograph him carrying trays.
+
+The trays' days were numbered.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "First collection published within months by a major house, days before his 24th birthday; the lifetime of poems that followed — documented, names withheld.",
+      text: `Within months, one of the great publishing houses brought out his first book of poems. It appeared a few days before his twenty-fourth birthday.
+
+The book sounded like nothing else — like the blues, like the neighborhood, like people talking on a stoop at dusk and meaning everything they said. He had refused the borrowed voice as firmly as the borrowed life, and readers could hear it.
+
+He never stopped. Books of poems, plays, stories, columns — decade after decade, all of it in the key of his people's actual music and actual lives. He became not just a famous poet but a beloved one: the rare kind whose lines get memorized by heart, by porters and professors alike.
+
+The engineering money would have run out in four years. The poems are still paying out now.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Langston Hughes.
+
+He became the defining poet of the Harlem Renaissance and one of the most beloved American poets of the twentieth century. "The Negro Speaks of Rivers" — the poem he wrote on that envelope at eighteen — is now carved in stone and taught everywhere. None of that had happened yet when he sat in his father's house, listening to the terms.
+
+You wrote: "{feeling}"
+
+The money came with one condition: be someone else. He walked away from it into years of ships and dish pits, carrying nothing but the notebook — and the notebook turned out to be the career, the legacy, the whole point.
+
+Nobody gets to set the terms of your becoming. Not even the one who pays. He's proof.`,
+    },
+  ],
+};
+
+export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones, rudolph, angelou, rachmaninoff, oconnor, marshall, allende, wilson, wang, chandler, graham, mcclintock, rustin, sanders, berlin_i, charles_r, sullivan_a, fitzgerald_e, poitier, simone, andersen, tallchief, lindgren, lewis_e, kovalevskaya, hughes];

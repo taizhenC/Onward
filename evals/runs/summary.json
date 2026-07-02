@@ -8,20 +8,20 @@
     "k": 1,
     "concurrency": 3,
     "maxRetries": 2,
-    "ranAt": "2026-07-02T05:59:19.455Z",
-    "caseCount": 56,
-    "trialCount": 56
+    "ranAt": "2026-07-02T06:10:45.460Z",
+    "caseCount": 69,
+    "trialCount": 69
   },
   "metrics": {
-    "rerankTop1": 0.9433962264150944,
+    "rerankTop1": 0.8939393939393939,
     "rerankTop1Counts": {
-      "correct": 50,
-      "total": 53
+      "correct": 59,
+      "total": 66
     },
-    "overallTop1": 0.9433962264150944,
+    "overallTop1": 0.8939393939393939,
     "overallTop1Counts": {
-      "correct": 50,
-      "total": 53
+      "correct": 59,
+      "total": 66
     },
     "missDetection": 1,
     "missDetectionCounts": {
@@ -31,7 +31,7 @@
     "hardConfusion": 0,
     "hardConfusionCounts": {
       "confused": 0,
-      "total": 20
+      "total": 27
     },
     "goldSurvivalStageA": null,
     "goldSurvivalStageB": null,
@@ -99,37 +99,61 @@
         "group": "artist-at-the-door",
         "trials": 2,
         "pickedPlausibleWrong": 0,
-        "correct": 2
+        "correct": 0
       },
       {
         "group": "young-disability",
         "trials": 2,
         "pickedPlausibleWrong": 0,
         "correct": 2
+      },
+      {
+        "group": "bullied-student",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "young-unready-mother",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "constrained-young-woman",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "own-path-young-man",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
       }
     ],
     "calibration": {
-      "definitiveCorrect": 48,
-      "definitiveWrong": 0,
+      "definitiveCorrect": 57,
+      "definitiveWrong": 4,
       "partialCorrect": 2,
       "partialWrong": 3
     },
     "chosenBy": {
-      "rerank": 56,
+      "rerank": 69,
       "keyword_fallback": 0
     },
     "failureReasons": {},
     "failureReasonStatuses": {},
     "candidateCounts": {
       "5": 1,
-      "6": 55
+      "6": 68
     },
     "failedCandidateCounts": {},
     "promptChars": {
       "min": 6527,
-      "p50": 8189,
-      "p95": 10234,
-      "max": 10492
+      "p50": 9445,
+      "p95": 10617,
+      "max": 10894
     },
     "failedPromptChars": {
       "min": 0,
@@ -147,7 +171,7 @@
         "coverage": true,
         "rerankTop1": false,
         "missDetection": true,
-        "noDefinitiveWrong": true,
+        "noDefinitiveWrong": false,
         "top1": false,
         "hardConfusion": true
       },

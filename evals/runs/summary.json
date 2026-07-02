@@ -4,11 +4,11 @@
     "provider": "stub",
     "model": "gpt-oss-120b",
     "retrievalMode": "keyword",
-    "embeddingModel": "stub@v0",
+    "embeddingModel": "gemini-embedding-001@d1536",
     "k": 1,
     "concurrency": 3,
     "maxRetries": 2,
-    "ranAt": "2026-06-10T05:54:07.861Z",
+    "ranAt": "2026-07-02T05:42:02.688Z",
     "caseCount": 44,
     "trialCount": 44
   },

@@ -31,6 +31,8 @@ export const THEME_VOCABULARY: readonly string[] = [
   "dismissed",
   "exile",
   "addiction",
+  "heartbreak",
+  "burnout",
 ];
 
 // User themes as theme -> match-count weights. Empty map means the caller disables the lane.

@@ -166,6 +166,7 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "left out": ["bullied", "solitude"],
   "don't fit in": ["bullied", "solitude"],
   "nobody likes me": ["solitude", "bullied"],
+  "something wrong with me": ["bullied", "worthlessness"],
   "no friends": ["solitude"],
   "any friends": ["solitude"],
   "have no friends": ["solitude"],
@@ -213,6 +214,7 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "stay silent": ["finding_voice", "solitude"],
   "keep it inside": ["shame", "finding_voice"],
   stutter: ["finding_voice", "shame"],
+  "stopped talking": ["finding_voice", "shame"],
 
   // Wilma Rudolph — disability / keep_going / quiet_defiance
   disabled: ["disability"],
@@ -349,6 +351,47 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "have to start over": ["late_start", "self_invention"],
   "too old now": ["late_start"],
   "starting over so late": ["late_start"],
+
+  // Irving Berlin — dispossession / worthlessness / finding_voice
+  "left home": ["dispossession"],
+  burden: ["worthlessness"],
+  "contribute nothing": ["worthlessness"],
+  "one less mouth": ["worthlessness", "dispossession"],
+  sing: ["finding_voice"],
+  singing: ["finding_voice"],
+
+  // Ray Charles — grief / disability / self_invention
+  blind: ["disability"],
+  "can't see": ["disability"],
+  orphan: ["dispossession", "grief"],
+  orphaned: ["dispossession", "grief"],
+  "take care of myself": ["self_invention"],
+
+  // Anne Sullivan — dispossession / worthlessness / self_invention
+  "no one came": ["dispossession", "solitude"],
+  "gave up on me": ["dispossession", "worthlessness"],
+  "foster care": ["dispossession"],
+  "catch up": ["worthlessness", "self_invention"],
+  "can't read": ["worthlessness"],
+
+  // Ella Fitzgerald — dispossession / solitude / finding_voice
+  homeless: ["dispossession"],
+  "nowhere to go": ["dispossession", "solitude"],
+  "nowhere to sleep": ["dispossession"],
+  "on the streets": ["dispossession"],
+  "no family": ["dispossession", "solitude"],
+
+  // Sidney Poitier — dismissed / worthlessness / self_invention
+  accent: ["dismissed"],
+  audition: ["dismissed"],
+  "not cut out": ["dismissed", "worthlessness"],
+  "dead-end": ["worthlessness"],
+
+  // Nina Simone — dismissed / shame / finding_voice
+  conservatory: ["dismissed"],
+  "didn't get in": ["dismissed"],
+  "turned me down": ["dismissed"],
+  "fake name": ["shame"],
 
   // Heartbreak (generic) — christie / yeats
   heartbreak: ["heartbreak"],

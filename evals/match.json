@@ -289,6 +289,98 @@
     },
 
     {
+      "age": 17,
+      "feeling": "i left home because i was just another mouth to feed and i contribute nothing to anyone, singing on corners is the only thing i'm good for",
+      "expect": "berlin_i",
+      "note": "known-good: dispossession + worthlessness + finding_voice (left home to spare the family)"
+    },
+    {
+      "age": 16,
+      "feeling": "my mom died suddenly and i'm blind, and everyone acts like i can't take care of myself",
+      "expect": "charles_r",
+      "note": "known-good: grief + disability + self_invention (orphaned, refusing helplessness)"
+    },
+    {
+      "age": 17,
+      "feeling": "no one came for me when it mattered, i'm so far behind everyone my age, and i don't know if i can catch up",
+      "expect": "sullivan_a",
+      "note": "known-good: dispossession + worthlessness + self_invention (warehoused, starting from zero)"
+    },
+    {
+      "age": 16,
+      "feeling": "i have nowhere to go and no family left, i've been sleeping on the streets and i feel invisible",
+      "expect": "fitzgerald_e",
+      "note": "known-good: dispossession + solitude (homeless orphan near the music)"
+    },
+    {
+      "age": 18,
+      "feeling": "i got told at an audition that i'm not cut out for this and should stick to my dead-end job, and part of me believes it",
+      "expect": "poitier",
+      "note": "known-good: dismissed + worthlessness (summed up by a stranger)"
+    },
+    {
+      "age": 19,
+      "feeling": "the conservatory turned me down and the dream i trained my whole life for is dead, and i'm too ashamed to face everyone who believed in me",
+      "expect": "simone",
+      "note": "known-good: dismissed + shame (the refused plan a whole town paid for)"
+    },
+
+    {
+      "age": 17,
+      "feeling": "i got sent away after my mom was gone, i got out, and now i sing on the streets for change, alone, with nowhere to sleep",
+      "expect": "fitzgerald_e",
+      "hard": true,
+      "plausibleWrong": "berlin_i",
+      "confusionGroup": "street-singer-teen",
+      "note": "orphaned girl singing on the street (fitzgerald_e) vs the boy who left home to spare his family (berlin_i)"
+    },
+    {
+      "age": 16,
+      "feeling": "my family can barely feed everyone and i bring in the least, i'm basically worthless to them, so i left home to sing for pennies",
+      "expect": "berlin_i",
+      "hard": true,
+      "plausibleWrong": "fitzgerald_e",
+      "confusionGroup": "street-singer-teen",
+      "note": "left home believing the family was better off (berlin_i) vs fitzgerald_e's orphaned homelessness"
+    },
+    {
+      "age": 18,
+      "feeling": "the school i spent my childhood preparing for rejected me and now i play piano in bars under a fake name because i'm ashamed",
+      "expect": "simone",
+      "hard": true,
+      "plausibleWrong": "poitier",
+      "confusionGroup": "artist-at-the-door",
+      "note": "the refused conservatory dream + hidden bar work (simone) vs poitier's audition dismissal"
+    },
+    {
+      "age": 18,
+      "feeling": "people hear my accent and decide i'm not cut out for anything, i can barely read out loud, and i want to prove them wrong",
+      "expect": "poitier",
+      "hard": true,
+      "plausibleWrong": "simone",
+      "confusionGroup": "artist-at-the-door",
+      "note": "dismissed in ninety seconds for voice + reading (poitier) vs simone's institutional rejection"
+    },
+    {
+      "age": 15,
+      "feeling": "i'm disabled and people wrote me off years ago, but i keep pushing",
+      "expect": "rudolph",
+      "hard": true,
+      "plausibleWrong": "charles_r",
+      "confusionGroup": "young-disability",
+      "note": "written-off body + defiant persistence (rudolph) vs charles_r's grief-anchored independence"
+    },
+    {
+      "age": 16,
+      "feeling": "i'm blind and i just lost my mother, and i have to figure out how to live on my own now",
+      "expect": "charles_r",
+      "hard": true,
+      "plausibleWrong": "rudolph",
+      "confusionGroup": "young-disability",
+      "note": "grief + blindness + forced self-reliance (charles_r) vs rudolph's told-i'd-never-walk defiance"
+    },
+
+    {
       "age": 27,
       "feeling": "every door i knock on closes, and i'm starting to wonder if i'm meant to stop knocking",
       "expect": "butler",

@@ -3256,4 +3256,982 @@ It is not too late. It really isn't. He was past retirement when he even began.`
   ],
 };
 
-export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones, rudolph, angelou, rachmaninoff, oconnor, marshall, allende, wilson, wang, chandler, graham, mcclintock, rustin, sanders];
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. May 11, 1888 (Israel Baline, Russian Empire); family emigrated 1893 to the Lower
+//    East Side; father Moses (part-time cantor) died July 1901 when Irving was 13; left home at 14
+//    believing the family was better off with one less mouth (his own later account — he felt he
+//    "contributed less than the least"); Bowery lodging houses, busked in saloons for pennies,
+//    song-plugger work; 1906 (18) singing waiter at the Pelham Cafe in Chinatown; 1907 first
+//    published song "Marie from Sunny Italy" (earned 37 cents), printer credited "I. Berlin" and he
+//    kept the name; "Alexander's Ragtime Band" (1911, age 23) made him internationally famous;
+//    never learned to read/write music fluently; supported his family later; died 1989 at 101.
+//  Interpretive: the "did the math on himself and came out worth almost nothing" framing of why he
+//    left home. Grounded in his own retrospective accounts.
+//  Avoid saying: don't name Berlin / the Bowery / Chinatown / Pelham Cafe / song titles before the
+//    bridge; no dollar amounts (the 37 cents becomes "less than the price of a meal"); soften era
+//    (no "ragtime", no "Tin Pan Alley"); the misspelled-name detail stays but unnamed.
+const berlin_i: FigureStageRow = {
+  figureKey: "berlin_i",
+  displayName: "Irving Berlin",
+  birthYear: 1888,
+  deathYear: 1989,
+  stageId: "1901-1907-bowery-to-first-song",
+  stageLabel: "One less mouth: leaving home at fourteen to the first published song",
+  ageMin: 13,
+  ageMax: 19,
+  themes: ["dispossession", "worthlessness", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "His father died when he was thirteen, and at fourteen he left his grieving family because he believed they were better off with one less mouth to feed — and that his was the mouth worth least.",
+    "For years he slept in cheap lodging houses and sang in saloons for pennies, a boy with no schooling and no trade, only a voice.",
+    "When a printer misspelled his name on the first song he ever sold, he kept the mistake and built the rest of his life under it.",
+  ],
+  facets: {
+    emotionalCore:
+      "He felt like the one useless member of a family that had nothing — the child who brought in less than anyone and would cost less if he were gone.",
+    decisionShape:
+      "Whether to stay a burden in a crowded, grieving home, or to disappear into the streets at fourteen and make his own way with nothing to offer but a voice.",
+    triggerEvent:
+      "His father died when he was thirteen, and the family's survival fell to the children — and he was sure his share was the smallest.",
+    agencyState:
+      "A boy alone in cheap lodging houses with no schooling, no trade, and no money — only a voice, and the saloons that might pay pennies to hear it.",
+  },
+  biographicalFacts:
+    "Irving Berlin was born Israel Baline on May 11, 1888, in the Russian Empire; his family fled anti-Jewish violence and arrived on New York's Lower East Side in 1893 with almost nothing. His father Moses, who had been a cantor and now worked in a kosher meat market, died in July 1901, when Israel was thirteen. Everyone in the family worked; Israel sold newspapers and, by his own later account, was convinced he contributed less than any of his siblings. At fourteen he left home so the family would have one less mouth to feed, living in Bowery lodging houses and singing in saloons for pennies. He worked as a busker and then as a song plugger. In 1906, at eighteen, he became a singing waiter at the Pelham Cafe in Chinatown, where the owner asked him and the house pianist to write an original song after a rival cafe's singing waiter had published one. The result, \"Marie from Sunny Italy\" (1907), earned him 37 cents — and the sheet-music cover credited the lyricist as \"I. Berlin,\" a printer's error he kept as his name. He kept writing. \"Alexander's Ragtime Band\" (1911), written when he was 23, became an international sensation and made him famous. He never learned to read or write musical notation fluently, composing everything by ear. He went on to write an estimated 1,500 songs, including \"White Christmas\" and \"God Bless America,\" supported his mother and siblings, and died in 1989 at 101.",
+  sources: [
+    "Bergreen, Laurence. As Thousands Cheer: The Life of Irving Berlin (New York: Viking, 1990), Chapters 1-3.",
+    "Furia, Philip. Irving Berlin: A Life in Song (New York: Schirmer Books, 1998).",
+    "Jablonski, Edward. Irving Berlin: American Troubadour (New York: Henry Holt, 1999).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Immigrant family, father's death at 13, everyone working, his conviction that he contributed least — documented in his own accounts. The counting-at-the-table image is dramatized texture for that conviction.",
+      text: `There was a boy in a crowded city apartment. He was thirteen, one of the youngest of many, and his father had just died.
+
+The family had come from another country with nothing. Everyone worked. His sisters brought home wages. His mother took in whatever work there was. The boy sold newspapers on the street and brought home less than anyone.
+
+He noticed things like that — who carried what, who cost what. At the table he did the math on himself, and it kept coming out wrong.
+
+He was sure of one thing: of everyone in that apartment, he was the one they could least afford.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Left home at 14 by his own choice, believing the family was better off; Bowery lodging houses paid night by night — documented. 'Nobody chased him down the stairs' is texture for the documented fact that he left on his own.",
+      text: `At fourteen he packed what he had, which was almost nothing, and left home.
+
+Nobody told him to go. He left because he had decided his family was better off with one less mouth at the table. And nobody chased him down the stairs.
+
+That was the part that stayed with him.
+
+He slept in the cheap lodging houses where men at the bottom of the city slept — a boy on a cot in rooms full of grown strangers. He paid for the cot night by night. Some nights he couldn't, and he walked until morning.
+
+He was fourteen, and as far as he could tell, the world agreed with his math: he wasn't worth much, and no one had argued.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "Busked in saloons for pennies; began improvising his own words to popular tunes — documented in the biographies of the busking years.",
+      text: `He had one thing. He could sing.
+
+Not beautifully — nobody ever said beautifully. But he could carry a song and make a room feel like the night was going well.
+
+So he sang wherever pennies might come back. In saloons. At tables. On corners. He followed the coins, and when one place dried up he found another.
+
+It wasn't a plan. It was rent for a cot, one night at a time. But it kept him alive, and it kept a song in his mouth all day, every day.
+
+After a while he started making up his own words to the tunes everybody knew. Just to see if he could.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Years of busking and song-plugging (singing publishers' songs in public for pay); never returned to school — documented. The 'learning what made a room lean in' framing is interpretive.",
+      text: `Years went by like that. He never went back to school.
+
+He got small jobs around music — the lowest ones there were. Singing other people's songs in the street so that someone upstairs could sell more copies. The boys who did that work were nobody, and they knew it.
+
+But at night, in the noise, he was listening. He learned what made a room lean in and what made it turn away. He learned it the way you learn a language: by living inside it, broke.
+
+He still had nothing. He still sent nothing home, because there was nothing to send. But he was becoming, without anyone noticing, a person who understood songs from the inside.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Singing-waiter job at 18; owner demanded an original song to compete with a rival cafe; first published song earned him 37 cents ('less than a meal'); the printer's misspelling became his name — all documented.",
+      text: `At eighteen he got a steady job — a waiter in a loud cafe, the kind of place where the waiter was expected to sing while he worked.
+
+A rival cafe down the street had a singing waiter who had written his own song, and it was getting attention. So the owner told the boy and the house piano player: write us one too.
+
+He had never written a song. He wrote one.
+
+It got published. It sold almost nothing. His share of the money came to less than the price of a meal.
+
+But on the printed cover, the printer had made a mistake. The name was spelled wrong — a new name, really. He looked at it for a while. It looked like someone who could be somebody.
+
+He kept the mistake. And he kept writing.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "One song (1911) made him internationally famous; wrote ~1,500 songs by ear, never fluent in notation; lived to 101; supported the family he had left — all documented.",
+      text: `The songs did not stop coming. He wrote in the noise of the cafe, in the middle of the night, anywhere. A few years later, one of them took off — not in one city, everywhere. The kind of song strangers on two continents were humming in the same month.
+
+The boy from the lodging houses became the most successful songwriter alive. He wrote for the stage. He wrote for the movies. He wrote the songs whole countries sing on their holidays. And he never did learn to read music properly — he wrote it all by ear, the ear he had trained in rooms where he sang for pennies.
+
+He lived past a hundred.
+
+And the family he had left at fourteen, so they'd have one less mouth to feed? He took care of them, all of them, for the rest of their lives.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Irving Berlin.
+
+He wrote "White Christmas" and "God Bless America" — two of the most famous songs in American history — and about fifteen hundred others. There is a fair chance one of his songs is playing somewhere in the world right now. None of that had happened yet when he was fourteen, lying on a rented cot, adding himself up and getting almost zero.
+
+You wrote: "{feeling}"
+
+He honestly believed his family was better off without him at the table. He was wrong about what he was worth — wildly, historically wrong — but he couldn't have known it yet. The proof only came from staying alive and doing the one small thing he could do, over and over, until it grew.
+
+The math you're doing on yourself can be wrong too. His was.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. Sept 23, 1930 (Albany GA, raised Greenville FL); sight failed ~5-7 (glaucoma),
+//    fully blind by 7; mother Aretha ('Retha) Robinson, poor and fiercely insistent on his
+//    self-reliance ("blind, not stupid" is the family's remembered register); Florida School for
+//    the Deaf and the Blind, St. Augustine, 1937-1945 (braille music, piano, clarinet); mother died
+//    suddenly spring 1945 when he was 14 — he called it the great devastation of his life; a family
+//    friend ("Ma Beck") helped him through the locked grief; he left school, played Florida bands
+//    1945-48 (lean, sometimes hungry; had pay counted into his hand); March 1948, age 17, asked a
+//    friend to find the farthest big city from Florida on a map — Seattle — and rode a bus ~5 days
+//    alone; first recordings within a year; dropped "Robinson" (Sugar Ray Robinson collision);
+//    invented soul (gospel+blues); "Georgia on My Mind" became Georgia's state song (1979); d. 2004.
+//  Interpretive: "the voice that organized his world was the thing that vanished" framing; the
+//    map-decision as self-invention. Grounded.
+//  Avoid saying: don't name Ray Charles / Seattle / St. Augustine / Georgia before the bridge; no
+//    pity register anywhere; the brother's drowning (pre-episode, he was ~5) is deliberately left
+//    out of the beats; keep the mother's death un-graphic; no "soul music" before the bridge.
+const charles_r: FigureStageRow = {
+  figureKey: "charles_r",
+  displayName: "Ray Charles",
+  birthYear: 1930,
+  deathYear: 2004,
+  stageId: "1945-1948-orphaned-to-the-bus",
+  stageLabel: "Blind, fourteen, and alone: his mother's death to the five-day bus",
+  ageMin: 14,
+  ageMax: 17,
+  themes: ["grief", "disability", "self_invention"],
+  antiThemes: [],
+  shapeSentences: [
+    "He went blind at seven and lost his mother at fourteen — the one person who had refused to treat him as helpless — and he had to decide whether to be taken care of or to carry himself.",
+    "At an age when most kids sit in classrooms he was playing piano for strangers town to town, blind, broke, and learning that pity and work don't mix.",
+    "At seventeen he picked the farthest city on the map from everything he knew and rode a bus five days alone to start from nothing.",
+  ],
+  facets: {
+    emotionalCore:
+      "He had lost the one person who taught him he could survive, at exactly the moment he had to start surviving — fourteen, in the dark, with no home to go back to.",
+    decisionShape:
+      "Whether to stay where people would look after a blind orphan, or to bet that the skill his mother had made him build could actually carry him.",
+    triggerEvent:
+      "His mother died suddenly when he was fourteen — the person who had refused to let his blindness make him helpless.",
+    agencyState:
+      "Blind, orphaned, and fourteen, with no money and no family home — but carrying a trained skill and his mother's one rule: he was never to beg.",
+  },
+  biographicalFacts:
+    "Ray Charles Robinson was born September 23, 1930, in Albany, Georgia, and raised in deep poverty in Greenville, Florida, by his mother, Aretha (Retha) Robinson. His sight began failing around age five — probably from glaucoma — and he was completely blind by seven. His mother, determined that blindness would not make him helpless, made him do chores, find his own way around, and fend for himself, over the objections of neighbors who thought her too hard on him. From 1937 to 1945 he attended the Florida School for the Deaf and the Blind in St. Augustine, where he learned to read braille music and to play piano and clarinet, and trained his memory to hold whole arrangements. In the spring of 1945, when he was fourteen, his mother died suddenly; she was in her early thirties. He later described it as the most devastating loss of his life, and said he could not cry until a family friend, an older woman known as Ma Beck, talked him through the grief. He did not return to school. Taken in by family friends in Jacksonville, he made his living as a working musician around Florida — Jacksonville, Orlando, Tampa — from fifteen to seventeen, often broke and sometimes hungry, and learned to have his pay counted aloud, bill by bill, into his hand. In March 1948, at seventeen, he asked a friend to look at a map and find the biggest American city farthest from Florida. The answer was Seattle. He rode a bus roughly five days across the country alone, knowing no one there. Within weeks he was playing Seattle clubs; within a year he had made his first recordings, and he dropped his surname to avoid confusion with the boxer Sugar Ray Robinson. He went on to fuse gospel and blues into what became soul music, won seventeen Grammy Awards, and his recording of \"Georgia on My Mind\" became the official state song of Georgia in 1979. He died June 10, 2004.",
+  sources: [
+    "Charles, Ray, and David Ritz. Brother Ray: Ray Charles' Own Story (New York: Dial Press, 1978).",
+    "Lydon, Michael. Ray Charles: Man and Music (New York: Riverhead Books, 1998), Chapters 1-3.",
+    "Evans, Mike. Ray Charles: The Birth of Soul (London: Omnibus Press, 2005).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Blind by 7; mother's fierce self-reliance rules (chores, no pity, over neighbors' objections); boarding school far from home; braille music, piano, clarinet — all documented.",
+      text: `There was a boy at a boarding school for blind children, far from home.
+
+He had lost his sight slowly, when he was little — the world dimming out by the time he was seven. His mother had no money, but she had rules. The big one: he was blind, not helpless, and nobody — including him — was allowed to confuse the two. She made him do chores. She made him find his own way. Neighbors said she was too hard on a blind child. She didn't care.
+
+At school he found the thing: music. He learned to read notes with his fingers and hold whole songs in his head. Piano. Clarinet. He was good, and he knew he was good, and being good at something felt almost like seeing.
+
+Home was poor and far away. But it was there, and she was in it.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Mother's sudden death in spring 1945 (he was 14); his own account calls it the worst loss of his life; he couldn't cry until an older family friend talked him through it; he did not return to school — all documented.",
+      text: `One day in spring, when he was fourteen, they came and got him out of class. His mother had died. No warning. She was still young.
+
+He went home for the funeral. He stood in the crowded little room while it cried around him, and he could not cry at all. The grief had locked itself somewhere he couldn't reach.
+
+He said later it was the worst thing that ever happened to him. Worse than going blind. Going blind had happened slowly, with her voice right beside him. This happened all at once — and her voice was the thing that was gone.
+
+For days he stayed locked like that. Finally an old woman in town, a friend of his mother's, sat him down and talked to him, plainly, for a long time, until the grief broke open and let him through it.
+
+He did not go back to school.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "No family home to return to; taken in by family friends in a bigger city; began sitting in with working bands at 14-15 — documented. The 'her list' framing is interpretive, grounded in his account of her teaching.",
+      text: `He was fourteen, blind, and now without her, in a poor little town that had no way to keep him.
+
+He took stock the way she had taught him. Feeling sorry for himself was not on her list. Begging was not on her list. Doing for himself — that was the whole list.
+
+He had one skill the world might pay for. So he went where the music was. Family friends in a bigger city took him in, and he started showing up wherever bands played, asking to sit in.
+
+Fourteen years old, out at night, in rooms full of grown men.
+
+He played whatever they needed played.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Three years of band work around the state; lean weeks (crackers and water is from his own account); could play anything heard once; had pay counted aloud into his hand — documented.",
+      text: `For three years he scraped by as a working musician, town to town around the state.
+
+Some weeks there was work. Some weeks he ate crackers and drank water and told nobody. Bandleaders took a chance on the blind kid and found out he could play anything he heard once. Other people tried to shortchange him on pay, figuring he couldn't count what he couldn't see. He learned to have them count it out loud, bill by bill, into his hand.
+
+He was getting better. He was also going in circles — the same little towns, the same little rooms, the same state he had grown up in.
+
+He knew that map by heart. That was exactly the problem.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The documented map decision at 17: asked a friend to find the biggest city farthest away; ~5-day bus ride alone; playing clubs within weeks, recording within about a year.",
+      text: `At seventeen he made a decision that still sounds half crazy.
+
+He asked a friend to look at a map of the whole country and find the biggest city that was farthest from where they stood. The friend measured it out and named a city in the far opposite corner — about as far as you could go without leaving the country.
+
+That one, he said.
+
+He had never been there. He knew no one there. He was blind and seventeen, and he got on a bus alone and rode for five days and nights to a city he had chosen because it was far.
+
+Within weeks he was playing in its clubs. Within a couple of years, people were paying to record him.
+
+The new city didn't know what he used to be. It only knew what he sounded like.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Dropped his surname over the famous-boxer collision; stopped imitating his idols and fused gospel and blues against loud objections; toured the world, played for presidents — documented. Kept anonymous.",
+      text: `He dropped his last name — there was already a famous fighter with almost the same one — and went by his first and middle names instead. A new name for the new life.
+
+For a few years he sounded like the singers he admired. Then he stopped imitating and let everything in at once — the church music of his childhood, the blues, the dance bands — mixed together in a way nobody had dared. People told him you couldn't put those together, that it was almost blasphemy. He put them together.
+
+What came out was a new kind of American music, and he was its inventor.
+
+He toured the world. He won every prize his field had to give. He played for presidents. And every bit of it ran on the rules of a woman from a poor little town who had refused, ever, to let him be helpless.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Ray Charles.
+
+He invented soul music — the fusing of gospel and blues that half of everything on the radio still descends from. His version of "Georgia on My Mind" became the official song of the state he was born in. He did all of it blind, and he never once performed as a man to be pitied. None of it had happened yet when he was fourteen, standing at his mother's funeral with no home to go back to.
+
+You wrote: "{feeling}"
+
+He lost the person who had taught him how to survive at exactly the moment the surviving started. What she left him wasn't money — there wasn't any. It was the stubborn idea that he could do for himself. It turned out that was enough to cross the whole map with.
+
+Grief takes what it takes. It doesn't get to take what you know how to do.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. April 14, 1866, Feeding Hills MA, poor Irish immigrant family; mother died of TB
+//    when she was 8; father abandoned the children; sent to Tewksbury Almshouse Feb 1876 (age 9)
+//    with her small brother Jimmie, who died there within about three months; trachoma left her
+//    nearly blind; ~4 years in wards among the sick and dying, no family visits; 1880 state
+//    investigation of Tewksbury — when Frank B. Sanborn's inspection party toured, she threw
+//    herself at him crying "Mr. Sanborn, I want to go to school!"; entered Perkins Institution
+//    Oct 7, 1880, age 14, illiterate; mocked by younger students, temper nearly got her expelled;
+//    eye operations partially restored her sight; graduated valedictorian June 1886, age 20 (her
+//    address: "duty bids us go forth into active life"); March 1887 went to Tuscumbia, Alabama, to
+//    teach 6-year-old Helen Keller. d. 1936.
+//  Interpretive: the "one overheard word — school — held like something in a pocket" framing; the
+//    invisibility-ended-because-she-ended-it reading of the Sanborn moment. Grounded.
+//  Avoid saying: don't name Sullivan / Tewksbury / Perkins / Sanborn / Helen Keller before the
+//    bridge; keep the almshouse un-lurid (no cannibalism-investigation detail); the brother's death
+//    is handled in one quiet line; no "Miracle Worker" before the bridge.
+const sullivan_a: FigureStageRow = {
+  figureKey: "sullivan_a",
+  displayName: "Anne Sullivan",
+  birthYear: 1866,
+  deathYear: 1936,
+  stageId: "1880-1886-almshouse-to-valedictorian",
+  stageLabel: "I want to go to school: the almshouse plea to valedictorian",
+  ageMin: 14,
+  ageMax: 20,
+  themes: ["dispossession", "worthlessness", "self_invention"],
+  antiThemes: [],
+  shapeSentences: [
+    "She spent her girlhood in a state poorhouse, nearly blind, with no one coming for her, and she begged a passing stranger to let her go to school — arriving at fourteen unable to read and leaving first in her class.",
+    "Being years behind children half her age shamed her every day, and she learned anyway, at a furious rate, through operations and humiliations.",
+    "The girl nobody came for became the teacher nobody else could have been.",
+  ],
+  facets: {
+    emotionalCore:
+      "The shame of being a teenager who could not read or write her own name, surrounded by small children who could, after years of being stored away where nobody visits.",
+    decisionShape:
+      "Whether to keep waiting quietly in the place the state had filed her, or to grab the one stranger with the power to move her and beg — publicly, desperately — for a different life.",
+    triggerEvent:
+      "State inspectors walked through the poorhouse where she had spent four years, and she understood that men like that might never come again.",
+    agencyState:
+      "She owned nothing, could barely see, and had no family left — only the nerve to ask out loud and the will to catch up from zero.",
+  },
+  biographicalFacts:
+    "Anne Sullivan was born April 14, 1866, in Feeding Hills, Massachusetts, to poor Irish immigrant parents. Her mother died of tuberculosis when Anne was eight; her father, unable or unwilling to care for the children, abandoned them. In February 1876 Anne and her younger brother Jimmie were sent to the state almshouse at Tewksbury — a warehouse for the destitute, the sick, and the dying. Jimmie, who had a tubercular hip, died there within about three months and was buried on the grounds. Anne, whose eyes had been badly damaged by trachoma since early childhood, spent roughly four years in the wards, nearly blind, with no family visits, undergoing failed eye operations. From ward talk she learned that schools for the blind existed. In 1880 the state investigated conditions at Tewksbury, and when the inspection party led by Frank B. Sanborn of the State Board of Charities toured the wards, fourteen-year-old Anne threw herself toward him and cried, \"Mr. Sanborn, I want to go to school!\" That October she entered the Perkins Institution for the Blind in Boston — fourteen years old and unable to read, write, or spell her own name. Younger students mocked her ignorance; her temper nearly got her expelled more than once. Surgeries at Perkins partially restored her sight, and she rose through the school at a furious pace. In June 1886, at twenty, she graduated as class valedictorian, telling her classmates that \"duty bids us go forth into active life.\" The following March she traveled to Tuscumbia, Alabama, to become the teacher of a deaf-blind six-year-old named Helen Keller. She died October 20, 1936.",
+  sources: [
+    "Nielsen, Kim E. Beyond the Miracle Worker: The Remarkable Life of Anne Sullivan Macy (Boston: Beacon Press, 2009), Chapters 1-3.",
+    "Braddy, Nella. Anne Sullivan Macy: The Story Behind Helen Keller (New York: Doubleday, 1933).",
+    "Perkins School for the Blind archives, \"Anne Sullivan\" biographical materials.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Mother's death, father's abandonment, the almshouse placement with her brother, near-blindness — all documented. Kept un-lurid.",
+      text: `There was a girl in a state poorhouse.
+
+Her mother had died when she was eight. Her father drank, and then he was gone. The state took her and her little brother and sent them to the place where it sent everyone it had no plan for — the old, the sick, the dying. And, somehow, two children.
+
+Her eyes were bad and getting worse. Some days the world was only shapes and light.
+
+She and her brother stuck together in the wards. He was small and frail and she was fierce, and they had exactly one thing in the world, which was each other.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Jimmie's death within months, burial on the grounds, four years without a single visitor, ward talk about schools for the blind — documented. The 'word in a pocket' image is texture.",
+      text: `Her brother died a few months after they arrived. They buried him on the grounds. She was ten.
+
+After that, she was simply... there. Year after year. Nobody came to visit her. Nobody came to claim her. She grew up in wards full of women at the end of their lives, listening to how lives end, going half blind among people the world had already filed away.
+
+She was headed for the same filing. She knew it.
+
+But once, in the ward talk, she heard a rumor: there were schools. Real schools, where they taught girls who couldn't see.
+
+Nobody had ever taught her to read. She could not write her own name. But she held onto that one word the way you hold something small in your pocket through a bad winter.
+
+School. If the world had a door in it anywhere, that was the shape of it.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The 1880 state inspection and her documented plea to the head of the visiting party — 'I want to go to school!' — which got her sent to the school for the blind that fall.",
+      text: `One day, when she was fourteen, important men came to inspect the place. Word ran through the wards ahead of them — men from the state, come to see how bad it really was.
+
+She understood one thing clearly: men like this might never come again.
+
+She followed the group all day, working up her nerve. She couldn't even see well enough to tell which one was in charge. When she felt the visit ending — the voices turning toward the door — she threw herself toward the sound of them and cried out:
+
+I want to go to school!
+
+The men stopped. One of them asked her name. Asked about her eyes.
+
+She had spent four years being invisible. It ended because she ended it — one sentence, thrown into the dark, at exactly the right moment.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Entered at 14 illiterate; mocked by younger children; temper nearly got her expelled; eye operations partially restored sight; rapid rise through the grades — all documented.",
+      text: `They sent her to the school for the blind that fall.
+
+She was fourteen years old, and she could not read, could not write, could not spell her own name. The other students who were starting out were little children — and they could. They laughed at her. Some teachers found her rude and wild, and she was; nobody had ever taught her manners either.
+
+She was humiliated in small ways, daily, for a long time. Her temper went off like a struck match, and it nearly got her thrown out more than once.
+
+But she was also learning at a furious rate — reading, writing, all of it — rising through the school like something coming up from underwater. Doctors operated on her eyes, and part of her sight came back.
+
+She caught up to the little children. Then she passed them.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "Valedictorian at 20, June 1886; 'duty bids us go forth into active life' is from her actual address. The 'distance nobody else in the room knew' framing is interpretive.",
+      text: `Six years after she arrived unable to spell her own name, the school chose her — out of everyone — to give the speech at graduation. First in her class.
+
+She stood up in front of the assembled families and dignitaries, twenty years old, and gave the address. She told her classmates that duty was calling them out into active life, and that they should go gladly.
+
+Nobody in that hall but her knew the whole distance she had crossed to be standing there. From a burial ground behind a poorhouse to the front of that room.
+
+She had asked for one door. Given one, she had walked through it farther than anyone could have guessed.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "The 1887 call to teach a deaf-blind six-year-old; what followed (language, education, world fame for her student) — documented, kept anonymous.",
+      text: `A year later, a family in a faraway state wrote to the school. They had a little girl, six years old, who had lost both her sight and her hearing as a baby. The child had no language — no way in, no way out. Locked inside herself. The family needed a teacher, and what they were asking for had never really been done.
+
+The school recommended the girl from the poorhouse.
+
+She went. She was twenty-one. What she did in the months and years that followed — reaching that child, hand spelling into hand, giving her language and then books and then a university education — became the most famous story of teaching in human history.
+
+Her student became one of the most celebrated people in the world.
+
+And every door her student ever walked through had been unlocked first by the teacher — the girl nobody had come for.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Anne Sullivan.
+
+She was Helen Keller's teacher — the one who spelled water into Helen's hand at the pump and cracked the world open for her. They called her the Miracle Worker. They still do. None of that had happened yet when she was a half-blind girl in a poorhouse, holding onto one overheard word.
+
+You wrote: "{feeling}"
+
+She spent years as the person nobody came for — behind everyone, ashamed of it, starting from zero at an age when starting felt impossible. She caught up anyway. And then she turned around and taught someone else the way out.
+
+Starting behind is not staying behind. She started at fourteen, from nothing, and it was not too late.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. April 25, 1917, Newport News VA, raised Yonkers NY; loved dancing, took the
+//    train to Harlem to watch the theaters; mother Tempie died early 1932 (Ella was 14) after a car
+//    accident; passed to an aunt in Harlem, grades collapsed, ran lookout errands; sent to the NY
+//    State Training School for Girls at Hudson (reform school; girls were beaten there — later NYT
+//    reporting), got out and did not go back; homeless in Harlem ~1933-34, sang and danced on
+//    street corners for change; Nov 21, 1934, age 17, Apollo Amateur Night — entered intending to
+//    dance, followed the professional Edwards Sisters dance act, froze, sang "Judy" and "The Object
+//    of My Affection" in the style of Connee Boswell instead, won first prize; the promised week's
+//    booking was withheld over her unkempt appearance; Chick Webb's band took her in 1935 (Webb and
+//    his wife informally looked after her); "A-Tisket, A-Tasket" (1938, age 21) made her a star;
+//    13 Grammys; d. 1996.
+//  Interpretive: "becoming invisible, and she knew it" street framing; "luck you only get if you
+//    put your name in." Grounded.
+//  Avoid saying: don't name Ella / the Apollo / Harlem / Chick Webb / song titles / Connee Boswell
+//    before the bridge; reform-school violence in one non-graphic line; don't linger on what street
+//    survival required; no "First Lady of Song" before the bridge.
+const fitzgerald_e: FigureStageRow = {
+  figureKey: "fitzgerald_e",
+  displayName: "Ella Fitzgerald",
+  birthYear: 1917,
+  deathYear: 1996,
+  stageId: "1932-1934-streets-to-amateur-night",
+  stageLabel: "Meant to dance: orphaned and homeless to the amateur-night win",
+  ageMin: 15,
+  ageMax: 17,
+  themes: ["dispossession", "solitude", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "She lost her mother at fourteen, was sent away to a place that treated her like a criminal, and ended up singing on street corners for change with nowhere to sleep.",
+    "At seventeen she walked onto the hardest amateur stage in the city planning to dance, froze in the lights, and sang instead — and the room went still.",
+    "The homeless girl they wouldn't book became the most celebrated singer of her century.",
+  ],
+  facets: {
+    emotionalCore:
+      "Being sixteen with no mother, no address, and no one responsible for her, and feeling herself turning invisible on streets full of people.",
+    decisionShape:
+      "Whether to keep surviving small and unseen, or to put her name in and walk onto a stage in front of a merciless crowd with nothing prepared and find out if she was anything.",
+    triggerEvent:
+      "Her mother died suddenly when she was fourteen, and within two years she had gone from a family kitchen to a state reform school to no roof at all.",
+    agencyState:
+      "She had no home, no family watching, and no training — only the steps and songs she'd taught herself, and the nerve to enter anyway.",
+  },
+  biographicalFacts:
+    "Ella Fitzgerald was born April 25, 1917, in Newport News, Virginia, and raised in Yonkers, New York, by her mother, Tempie. As a girl she loved dancing above everything; she and her friends took the train into Harlem to watch the acts at the big theaters, and she planned to be a dancer. In early 1932, when Ella was fourteen, her mother died from injuries connected to a car accident. Ella was passed to an aunt in Harlem; her grades collapsed, she stopped attending school, and after run-ins with the authorities — she ran errands and kept lookout in her neighborhood's informal economy — the state sent her to the New York State Training School for Girls at Hudson, a reform school where, as later investigations reported, girls were routinely beaten. She got out and did not go back, and through 1933-34 she was homeless in Harlem in the depths of the Depression, singing and dancing on street corners for change and sleeping where she could. On November 21, 1934, at seventeen, she was drawn to perform at Amateur Night at the Apollo Theater. She had entered intending to dance, but the act before her was the Edwards Sisters, a polished professional dance duo, and she froze in the lights. As the notoriously unforgiving crowd began to rumble, she asked the band for \"Judy,\" a song her mother had loved, and sang it in the style of Connee Boswell, then sang \"The Object of My Affection.\" She won first prize. The prize was supposed to include a week's engagement at the theater; the management withheld it because of her disheveled appearance. In 1935 the drummer and bandleader Chick Webb reluctantly gave her a tryout and then a place in his band — he and his wife informally took the teenaged Ella under their care. Her playful 1938 recording of \"A-Tisket, A-Tasket,\" made at twenty-one, became a national sensation. She went on to win thirteen Grammy Awards and to be called the First Lady of Song. She died June 15, 1996.",
+  sources: [
+    "Nicholson, Stuart. Ella Fitzgerald: A Biography of the First Lady of Jazz (New York: Scribner, 1994), Chapters 1-2.",
+    "Bernstein, Nina. \"Ward of the State: The Gap in Ella Fitzgerald's Life.\" The New York Times, June 23, 1996.",
+    "Ella Fitzgerald Charitable Foundation, official biography.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "The dancing dream, the train rides to watch the theaters, life with her mother, the sudden death when she was fourteen — documented.",
+      text: `There was a girl who loved to dance.
+
+She grew up just outside the big city, in a busy apartment with her mother, who worked hard and loved her. On good days the girl and her friends rode the train into the city to watch the dancers at the famous theaters, and she came home and practiced the steps on the sidewalk until dark. People said she was good. She believed them. Dancing was going to be her thing.
+
+Then, when she was fourteen, her mother died. Suddenly. An accident, and then gone.
+
+And the floor under her life just went.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "Passed to an aunt, school collapse, reform school where girls were beaten (documented in later reporting), getting out, homelessness — documented. One non-graphic line on the beatings.",
+      text: `Everything came apart fast, the way it does when a kid loses the one person holding things together.
+
+She was passed to a relative. It didn't take. She stopped going to school, got into trouble, and the state stepped in — and the state's answer was to send her away to a reform school upstate. High windows, hard rules. Girls got beaten there for small things.
+
+She got out. She did not go back.
+
+Which left her sixteen, in the middle of the worst years anyone could remember, with no mother, no address, and no one in the world responsible for her. She sang and danced on street corners for coins. She slept where she could. She stopped looking after herself, because there was no one to look after herself for.
+
+She was turning invisible, and she knew it.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The famous amateur night, names drawn by lot, the merciless crowd, her plan to dance — documented. 'Luck you only get if you put your name in' is editorial framing.",
+      text: `The theaters were still there. The music was still there.
+
+The most famous theater in her part of the city ran a contest night for amateurs. Anyone could put a name in. Once a week, somebody's name got pulled, and that somebody got a stage and a crowd famous for two things: loving you loudly, or letting you know — fast — that they didn't.
+
+She put her name in. The plan was to dance. Dancing was the thing she trusted.
+
+Her name came up.
+
+That's luck. But it's the kind of luck you only get if you put your name in.
+
+She was seventeen, wearing what street life had left her, and she had one night and one stage.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The months of street survival preceding the contest; corner performing for change; staying near the music — documented in outline; compressed here.",
+      text: `Getting to that night had taken everything she had.
+
+Months of corners and coins. Of singing to strangers' backs while they walked past. Of counting change to see if she ate. Of finding a place to sleep and then finding another one when that one fell through.
+
+Nobody was coming for her. She knew nobody was coming. The city was full of people surviving, and one skinny girl who used to have a mother and a plan was nobody's business.
+
+But she stayed near the music. Whatever else the streets took, she kept the steps and she kept the songs — her mother's records still playing in her head.
+
+It wasn't hope, exactly. It was closer to a habit she refused to drop.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The documented amateur night: followed a professional dance duo, froze, crowd rumbled, asked the band for a song her mother loved, sang, won first prize. Encore detail simplified.",
+      text: `The act right before her: two sisters who danced for a living. Sequins, speed, polish — the best dancing the crowd had seen in weeks.
+
+And she was supposed to walk out there next, in street clothes, and dance.
+
+She stood in the lights and could not move. The crowd started to rumble. At that theater, they did not wait politely.
+
+And then something in her decided. Not the feet. The voice.
+
+She asked the band for a song her mother used to love, and she closed her eyes and sang it.
+
+The room went still. Then it went up.
+
+They wouldn't let her leave after one. She sang another. When the night ended, the homeless girl who had come to dance had won the whole thing.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Prize's week engagement withheld over her appearance; a famous bandleader and his wife took her in months later; the 1938 novelty hit at 21; six decades of singing — documented, kept anonymous.",
+      text: `The prize was supposed to include a week performing at that theater. They kept that part back — they looked at how the streets had left her and decided she didn't look the part.
+
+It stung. It didn't matter. Word gets around.
+
+Within months, a famous bandleader gave the orphan girl a tryout, and then a place in the band. He and his wife looked after her like family — the first family arrangement she'd had since her mother died. Within a few years she recorded a playful little song built on a nursery rhyme, and it made her the most famous young singer in the country.
+
+She sang for six more decades. Presidents, palaces, every great stage on earth.
+
+The girl who froze before the dance became, by nearly everyone's account, the greatest singer her country ever produced.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Ella Fitzgerald.
+
+The First Lady of Song. Thirteen Grammys, a voice musicians still study like scripture, and the definitive recordings of the American songbook. All of it runs back to one night when a homeless seventeen-year-old meant to dance, froze, and opened her mouth instead. None of it had happened yet while she was sleeping wherever the day left her.
+
+You wrote: "{feeling}"
+
+She was about as alone as a person can be. No family holding her, no address, no plan that had survived contact with her life. What she had was one thing she could do — and the nerve to put her name in.
+
+Feeling invisible now doesn't mean staying invisible. She put her name in. Yours can go in too.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. Feb 20, 1927 (Miami, prematurely, to Bahamian parents); raised on Cat Island and
+//    Nassau (no electricity, little schooling); Miami at 15; NYC winter 1943 at 16 with a few
+//    dollars, slept in a bus-terminal pay washroom / rooftops; dishwasher; brief underage Army stint
+//    (Nov 1943 - Dec 1944); ~1945 (18) saw the American Negro Theatre's notice next to the
+//    dishwasher want-ads, auditioned, read haltingly in a thick island accent, and was marched out
+//    by Frederick O'Neal with words to the effect of "get a job as a dishwasher or something" — the
+//    job he already had; bought a cheap radio and spent ~6 months repeating announcers (he cited
+//    Norman Brokenshire) to flatten the accent; an elderly Jewish waiter at his restaurant sat with
+//    him nightly helping him read the newspaper (Poitier said he never found him again to thank);
+//    reapplied ~6 months later, traded janitor work for classes/a place at the theatre; understudy
+//    to Belafonte; Broadway (Lysistrata, 1946); first Black man to win the Best Actor Oscar (1964,
+//    Lilies of the Field). d. 2022.
+//  Interpretive: "the accuracy stung worse than the no"; "a snapshot, not a prophecy." Grounded in
+//    his memoirs' account of the humiliation.
+//  Avoid saying: don't name Poitier / the American Negro Theatre / Belafonte / the Oscar-first
+//    before the bridge; the audition rejection was about reading + accent (keep it that, not race);
+//    no film titles; "island" is fine, "Bahamas" is not.
+const poitier: FigureStageRow = {
+  figureKey: "poitier",
+  displayName: "Sidney Poitier",
+  birthYear: 1927,
+  deathYear: 2022,
+  stageId: "1943-1945-dishwasher-to-second-audition",
+  stageLabel: "Go be a dishwasher: the audition rejection and the radio nights",
+  ageMin: 16,
+  ageMax: 18,
+  themes: ["dismissed", "worthlessness", "self_invention"],
+  antiThemes: [],
+  shapeSentences: [
+    "He was thrown out of his first audition and told to go wash dishes — which was the job he already had — and he spent six months rebuilding his voice and his reading so he could walk back through the same door.",
+    "Every night after the dishes he repeated the radio word by word to iron out his accent, and an old waiter taught him to read the newspaper across the counter.",
+    "The boy a stranger summed up in ninety seconds became the most honored actor of his generation.",
+  ],
+  facets: {
+    emotionalCore:
+      "The shame of having a stranger size up his entire future in one minute — and half agreeing with him, which was the part that actually hurt.",
+    decisionShape:
+      "Whether to accept the small life a stranger had assigned him, or to rebuild the two things he had been mocked for — his voice and his reading — from nothing, at night, alone.",
+    triggerEvent:
+      "He was marched out of his first audition and told to go get a job washing dishes, which was exactly the job he already had.",
+    agencyState:
+      "Almost no schooling, an accent that marked him the moment he spoke, a job scrubbing plates — and full command of his own evenings, which turned out to be enough.",
+  },
+  biographicalFacts:
+    "Sidney Poitier was born prematurely on February 20, 1927, in Miami, to Bahamian parents, and grew up poor on Cat Island and in Nassau in the Bahamas, with very little formal schooling. At fifteen he was sent to Miami; at sixteen, in the winter of 1943, he arrived in New York City with only a few dollars, sleeping at first in a pay washroom of a bus terminal and on rooftops, and finding work washing dishes. He served briefly in the Army (having lied about his age) from late 1943 to the end of 1944, then returned to dishwashing. Around 1945, at eighteen, he spotted an audition notice for the American Negro Theatre in the newspaper near the dishwasher want-ads. At the audition he stumbled through the reading — his schooling had stopped young and his Bahamian accent was heavy — and the director, Frederick O'Neal, angrily marched him out, telling him to stop wasting people's time and go get a job as a dishwasher or something. Poitier, who was a dishwasher, was stung most by the accuracy: a stranger had read the entire size of his life in about ninety seconds. He resolved to become an actor to disprove him. He bought a cheap radio and spent months listening to announcers — he later credited Norman Brokenshire — repeating everything they said, hour after hour, to flatten his accent; at the restaurant, an elderly Jewish waiter sat with him after closing, night after night, helping him read the newspaper (Poitier later said he never found the man again to thank him). About six months later he auditioned again, and worked as the theatre's janitor in exchange for acting classes. He understudied Harry Belafonte, was cast in a Broadway production of Lysistrata in 1946, and went on to a film career in which, in 1964, he became the first Black man to win the Academy Award for Best Actor. He died January 6, 2022.",
+  sources: [
+    "Poitier, Sidney. This Life (New York: Alfred A. Knopf, 1980).",
+    "Poitier, Sidney. The Measure of a Man: A Spiritual Autobiography (San Francisco: HarperSanFrancisco, 2000).",
+    "Goudsouzian, Aram. Sidney Poitier: Man, Actor, Icon (Chapel Hill: University of North Carolina Press, 2004), Chapters 1-2.",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Island childhood, arrival at 16 with a few dollars, the bus-terminal washroom nights, dishwashing work — all documented in his memoirs.",
+      text: `There was a young man washing dishes in the back of a restaurant in the biggest city in the country.
+
+He had grown up far away, on a small island — a place with no electricity, hardly any cars, no movie houses. He'd arrived in the city at sixteen with a few dollars in his pocket. The cold stunned him; he'd never owned a winter coat. The first nights, he slept in a washroom stall at the bus terminal because it was warm and it locked.
+
+He found work the way new arrivals do: dishes. Sink after sink, night after night. The work was honest and it was going nowhere, and he knew both of those things.
+
+He was eighteen now, and looking — the way you look at that age — for any door at all with his name on it.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The documented first audition: halting reading, heavy accent, marched out with 'go get a job as a dishwasher or something.' The 'accuracy' framing is from his own retrospective telling.",
+      text: `One day, in the paper, right next to the dishwasher want-ads he was already reading, he saw a notice: a theater company was looking for actors.
+
+He had barely ever seen a play. But that page was full of jobs that wanted nothing from him, and this one said wanted. He went.
+
+They handed him a script. He could barely read it — his schooling had stopped young, and the words came out slow and broken, in an island accent thick enough to touch.
+
+The man running the audition stopped him partway through. Came up on the stage. Took him by the arm, walked him to the door, and told him to quit wasting people's time — go get a job as a dishwasher or something.
+
+The man had no way of knowing that was exactly the job he had.
+
+Standing on the sidewalk afterward, that was the part he couldn't swallow. Not the no. The accuracy. A stranger had looked at him for ninety seconds and correctly measured his entire life.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "His documented resolve to disprove the assessment; the cheap radio and the nightly repeat-after-the-announcers practice.",
+      text: `Somewhere on the walk home, the sting cooled into something harder and more useful.
+
+He decided the stranger was not going to stay right about him. Not because he loved acting — he barely knew what acting was. Because he refused to be a man whose whole future could be read in ninety seconds.
+
+He broke the problem into its two names: the reading, and the accent. Problems with names can be worked on.
+
+He bought a cheap radio. And every night after the dishes, alone in his rented room, he turned it on and repeated what the announcers said — the smoothest voices in the country — sentence by sentence, hour after hour, until his mouth learned the new shapes.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "The ~6 months of radio nights; the elderly waiter who tutored his reading nightly and was never found again to thank — both documented.",
+      text: `It went on for months.
+
+Dishes all day. The radio half the night, the same sentences over and over until they lost their edges.
+
+At the restaurant, an old waiter noticed the newspaper he kept trying to read and started sitting with him at the counter after closing. Night after night, a paragraph at a time, the old man walked him through it — patiently, asking nothing in return. Years later he would look for that waiter, to thank him. He never found him.
+
+Progress was slow and invisible, the way real progress usually is. His voice flattened out. The words started to flow.
+
+Nobody was watching him get better. That's the loneliest kind of getting better. He kept at it anyway.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The second audition ~6 months later and the documented janitor-for-classes arrangement; understudy work following. 'Raw as timber' is texture.",
+      text: `Six months after being marched out the door, he walked back through it and asked to try again.
+
+He read again. The accent was nearly gone. The words came smooth and level. He wasn't good yet — he was raw as fresh-cut timber — but he was no longer dismissible. And the distance between those two things was every night he'd spent with the radio.
+
+They still didn't quite take him. So he offered a deal: he would clean the theater — mop it, haul for it, lock it up — in exchange for classes and a place inside.
+
+They took the deal.
+
+He was in the building. That was all he had wanted: to be inside, where the work was, instead of outside being summarized by strangers.
+
+The rest — an understudy's chance, a first role, a director who noticed — followed the way it does once you're inside.`,
+    },
+    // Beat 5 — What he became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Stage to films to carrying films; the deliberate dignity of his role choices; the top prize of his profession — documented, kept anonymous (the 'first' is saved for the bridge).",
+      text: `Within a couple of years he was acting professionally on stage. Within ten he was in films — and then he was carrying films, as a leading man, in an industry that had never made room for a man like him at the top of the bill.
+
+He chose his roles the way a careful man builds an argument: dignity, intelligence, no clowning, no shuffling. A whole generation of moviegoers met, in him, a kind of leading man the movies had simply refused to imagine before.
+
+And one spring evening, in front of the entire industry, he won the highest honor his profession gives an actor.
+
+The young man marched off a stage for how he read had become, by most reckonings, the most important actor of his era.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `His name was Sidney Poitier.
+
+In 1964 he became the first Black man to win the Academy Award for Best Actor. He broke the color line of American movies and stood, for fifty years, for a kind of dignity the screen had never been allowed to show. He was knighted. Presidents honored him. And once, a man threw him out of an audition and told him to go wash dishes. None of the rest had happened yet that night on the sidewalk.
+
+You wrote: "{feeling}"
+
+A stranger measured him in ninety seconds, and the measurement was accurate — that day. So he went home and changed what was true, quietly, at night, with a radio and a borrowed newspaper, until the measurement was wrong.
+
+What someone sees in you today is a snapshot. It is not a prophecy. He's the proof.`,
+    },
+  ],
+};
+
+// Provenance (human-QA note; not script-enforced):
+//  Documented: b. Eunice Kathleen Waymon, Feb 21, 1933, Tryon NC, sixth of eight; church-piano
+//    prodigy from ~3; her piano teacher (Muriel Mazzanovich, "Miss Mazzy") organized the Eunice
+//    Waymon Fund — neighbors' collected money — to pay for her training; the stated plan: to be
+//    the first Black concert pianist on America's great stages; summer 1950 (17) Juilliard prep
+//    year; family moved to Philadelphia on the strength of the Curtis plan; April 1951 (18)
+//    Curtis Institute audition — rejected (3 of ~75 admitted); she believed lifelong the reason
+//    was race (Curtis never said; the motive is unverifiable and the beats keep that honest);
+//    1951-54 taught children piano and accompanied a voice teacher's students; summer 1954 (21)
+//    Midtown Bar & Grill, Atlantic City — took the name "Nina Simone" (niña + Simone Signoret) to
+//    keep it from her Methodist-minister mother, for whom bar music was the devil's; first night
+//    the owner (Harry Steward) told her she'd sing as well as play or lose the job — she had never
+//    sung; "I Loves You, Porgy" hit the national top 20 in 1958 (age 25); Curtis awarded her an
+//    honorary diploma in 2003, days before her death.
+//  Interpretive: "the plan died in one envelope"; "the side door was hers." Grounded in her
+//    autobiography.
+//  Avoid saying: don't name Simone / Eunice / Curtis / Juilliard / Philadelphia / Atlantic City /
+//    song titles before the bridge; do NOT assert the rejection WAS racial — render her lifelong
+//    belief and the school's silence; "High Priestess of Soul" only in the bridge.
+const simone: FigureStageRow = {
+  figureKey: "simone",
+  displayName: "Nina Simone",
+  birthYear: 1933,
+  deathYear: 2003,
+  stageId: "1950-1954-curtis-no-to-the-bar",
+  stageLabel: "The letter said no: the conservatory rejection to the night she sang",
+  ageMin: 17,
+  ageMax: 21,
+  themes: ["dismissed", "shame", "finding_voice"],
+  antiThemes: [],
+  shapeSentences: [
+    "The conservatory she had spent her childhood training for said no, and the plan her whole town had paid for died in one afternoon — so she kept playing, in a bar, under a name her mother wouldn't recognize.",
+    "She was ashamed of the rooms she played in and convinced the refusal had been about her skin, and she kept her hands on the keys anyway.",
+    "The night an owner told her to sing or lose the job, she found the voice the world would know her by.",
+  ],
+  facets: {
+    emotionalCore:
+      "The grief of one closed door killing a plan an entire town had paid for, and the shame of hiding what she did next from the person she most wanted to make proud.",
+    decisionShape:
+      "Whether to quit music when the approved path was refused, or to keep playing in whatever room would have her, under whatever name it took.",
+    triggerEvent:
+      "The conservatory she had trained her whole childhood for turned her down, after her family had moved to a new city on the strength of the plan.",
+    agencyState:
+      "The sanctioned dream was dead and the fund was spent, but the skill was still hers, and nobody could take the piano out of her hands.",
+  },
+  biographicalFacts:
+    "Nina Simone was born Eunice Kathleen Waymon on February 21, 1933, in Tryon, North Carolina, the sixth of eight children of a Methodist minister mother. A prodigy, she began playing piano in church around age three. Her piano teacher, Muriel Mazzanovich — \"Miss Mazzy\" — believed in her so completely that she organized the Eunice Waymon Fund, money collected from the townspeople, to pay for the girl's classical training. The plan was spoken aloud throughout her childhood: Eunice would become the first great Black concert pianist on America's classical stages. In the summer of 1950, at seventeen, she studied in the preparatory program at Juilliard in New York, and her family relocated to Philadelphia in anticipation of her enrolling at the Curtis Institute of Music. On April 7, 1951, at eighteen, she auditioned at Curtis; about seventy-five pianists auditioned that year and only three were admitted. She was rejected. She believed for the rest of her life that the decision was about the color of her skin; the school never gave a reason, and the true motive is unverifiable. The rejection ended the plan her town had funded and her family had moved for. From 1951 to 1954 she stayed in music at its smallest scale — teaching piano to children and accompanying the students of a voice teacher. In the summer of 1954, at twenty-one, she took a job playing piano at the Midtown Bar & Grill in Atlantic City, and to keep her Methodist-minister mother from learning she was playing in a bar, she worked under an invented name: Nina Simone. On her first night the owner, Harry Steward, told her that if she wanted to keep the job she would have to sing as well as play. She had never thought of herself as a singer. She sang. Within weeks people were coming specifically to hear her. Her recording of \"I Loves You, Porgy\" reached the national top twenty in 1958, when she was twenty-five, and she went on to become one of the most original figures in American music and a fierce voice of the civil rights movement. In 2003, two days before her death, the Curtis Institute awarded her an honorary diploma.",
+  sources: [
+    "Simone, Nina, with Stephen Cleary. I Put a Spell on You: The Autobiography of Nina Simone (New York: Pantheon, 1991), Chapters 1-3.",
+    "Cohodas, Nadine. Princess Noire: The Tumultuous Reign of Nina Simone (New York: Pantheon, 2010), Chapters 1-4.",
+    "Light, Alan. What Happened, Miss Simone? (New York: Crown Archetype, 2016).",
+  ],
+  beats: [
+    // Beat 0 — Scene
+    {
+      kind: "narrative",
+      role: "scene",
+      sourceNotes:
+        "Church prodigy from ~3; the teacher-organized town fund; the spoken plan of the classical stage — all documented.",
+      text: `There was a girl from a small mountain town who could really play the piano.
+
+She'd started at three, in church, feet dangling off the bench. By the time she was in school, the whole town knew what they had. Her piano teacher believed in her so hard that she went door to door and raised a fund — actual collected money, from neighbors who didn't have much — to pay for the girl's classical training.
+
+The plan was said out loud, all through her childhood: this girl was going to be a concert pianist. A real one, in the great halls, in a country that had never yet allowed someone like her onto those stages.
+
+She practiced like it was a religion. The town had paid for a dream, and she intended to deliver it whole.`,
+    },
+    // Beat 1 — Dark moment
+    {
+      kind: "narrative",
+      role: "dark_moment",
+      sourceNotes:
+        "The 1951 rejection (3 of ~75 admitted); the family's move made in anticipation; her lifelong belief about the reason and the school's silence — documented, rendered without asserting the motive.",
+      text: `At eighteen, she auditioned for the great conservatory that was the next step — the whole point of everything. Her family had already moved north to a new city on the strength of the plan.
+
+The answer was no.
+
+Dozens of pianists had tried for a handful of places, so a no was always possible. But she had been the prodigy her entire life, and she could not make the no make sense — until she found the one explanation that, in the country she lived in, made a terrible kind of sense: the color of her skin.
+
+Was that the reason? The school never said. She believed it was, to the last day of her life.
+
+Either way, the dream her town had collected coins for, the dream her family had moved for, died in one afternoon, in one envelope.
+
+She was eighteen, and the plan for her whole life was over.`,
+    },
+    // Beat 2 — Response
+    {
+      kind: "narrative",
+      role: "response",
+      sourceNotes:
+        "The 1951-54 teaching and accompanist years — documented. 'Hands went to the keys the way lungs go to air' is texture.",
+      text: `She didn't stop playing. That part never seemed to be a decision — her hands went to the keys the way lungs go to air.
+
+But she stopped being the town's dream and became a working musician nobody had heard of. She taught scales to children in the afternoons. She played accompaniment for a voice teacher's students — other people's auditions, other people's dreams, at her fingertips, hour after hour.
+
+It was smaller than the plan. It paid.
+
+And it kept her hands strong while the rest of her worked out what a life is supposed to be when the approved version is refused.`,
+    },
+    // Beat 3 — Struggle
+    {
+      kind: "narrative",
+      role: "struggle",
+      sourceNotes:
+        "Three years of small music work; the Atlantic City bar offer; the invented name to hide the work from her minister mother — all documented.",
+      text: `Three years went by like that.
+
+Children's lessons. Other people's recitals. She kept some training going on the side, because she hadn't fully let go — maybe another audition someday. Maybe the plan could still be revived.
+
+Then came a summer job offer: playing piano in a bar, in a beach town, nights. Real money — more than teaching paid by a long way.
+
+A bar. Her mother was a minister. In her mother's house, that music, in that kind of room, was the devil's own payroll. If word ever got home —
+
+She took the job. And to make sure word never traveled, she invented a new name to work under. Something a little foreign, a little glamorous. A mask.
+
+Her first night, she sat down at the bar's piano as a person who did not officially exist.`,
+    },
+    // Beat 4 — Turning point
+    {
+      kind: "narrative",
+      role: "turning_point",
+      sourceNotes:
+        "The documented first-night ultimatum from the owner — sing or lose the job — and the voice that resulted; crowds coming specifically for her within weeks.",
+      text: `She played that first night straight through — hours of it, classical runs threaded into popular tunes, everything she had in her hands.
+
+At the end of the night the owner came over. She figured she'd done well.
+
+He told her: fine, but if you want to keep this job, you sing too.
+
+She had never been a singer. Singing was not the plan — the piano was the last piece of the old dream still standing, even here, even in a bar.
+
+But the job was the job. The next night, she sang.
+
+And the voice that came out — low, dark, unhurried, like nothing else in the room — was a thing she had never known she owned. People put their drinks down to listen.
+
+Within weeks, they were coming just for her. For the voice. For the name that had started as a mask and was quickly becoming more real than the old one.`,
+    },
+    // Beat 5 — What she became
+    {
+      kind: "narrative",
+      role: "became",
+      sourceNotes:
+        "Bar seasons to clubs to a national top-20 record at 25; the fused style; the honorary diploma from the same conservatory days before her death — all documented, kept anonymous.",
+      text: `The bar summers turned into club bookings. The club bookings turned into a record. Before she was twenty-six, one of her songs was on the national charts.
+
+She became a category of one in American music — not jazz exactly, not blues exactly, not classical exactly, but all of it fused together at her piano, under the invented name. She filled the great halls after all. Her own way, on her own terms, singing.
+
+And near the end of her life, the conservatory that had said no gave her an honorary diploma. It arrived days before she died.
+
+Late is late. But by then, even they knew exactly who they had turned away.`,
+    },
+    // Beat 6 — Bridge to you
+    {
+      kind: "bridge",
+      role: "bridge",
+      text: `Her name was Nina Simone.
+
+The High Priestess of Soul — one of the most original voices in the history of American music, and later one of the fiercest voices of the civil rights movement. The name she invented to hide a bar job from her mother is the name the whole world knows her by. None of that existed yet on the afternoon the envelope came and the plan died.
+
+You wrote: "{feeling}"
+
+The door she had aimed her entire life at stayed shut, and it broke something in her that never fully healed. The life she actually got came through a side door she took half in shame, under a fake name, just to pay for things. The side door turned out to be hers.
+
+The plan you lose is not always the life you lose. Sometimes it's the life making room.`,
+    },
+  ],
+};
+
+export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones, rudolph, angelou, rachmaninoff, oconnor, marshall, allende, wilson, wang, chandler, graham, mcclintock, rustin, sanders, berlin_i, charles_r, sullivan_a, fitzgerald_e, poitier, simone];

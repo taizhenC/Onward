@@ -8,30 +8,30 @@
     "k": 1,
     "concurrency": 3,
     "maxRetries": 2,
-    "ranAt": "2026-07-02T05:42:02.688Z",
-    "caseCount": 44,
-    "trialCount": 44
+    "ranAt": "2026-07-02T05:59:19.455Z",
+    "caseCount": 56,
+    "trialCount": 56
   },
   "metrics": {
-    "rerankTop1": 0.9024390243902439,
+    "rerankTop1": 0.9433962264150944,
     "rerankTop1Counts": {
-      "correct": 37,
-      "total": 41
+      "correct": 50,
+      "total": 53
     },
-    "overallTop1": 0.9024390243902439,
+    "overallTop1": 0.9433962264150944,
     "overallTop1Counts": {
-      "correct": 37,
-      "total": 41
+      "correct": 50,
+      "total": 53
     },
     "missDetection": 1,
     "missDetectionCounts": {
       "detected": 3,
       "total": 3
     },
-    "hardConfusion": 0.07142857142857142,
+    "hardConfusion": 0,
     "hardConfusionCounts": {
-      "confused": 1,
-      "total": 14
+      "confused": 0,
+      "total": 20
     },
     "goldSurvivalStageA": null,
     "goldSurvivalStageB": null,
@@ -50,8 +50,8 @@
       {
         "group": "lonely-child",
         "trials": 2,
-        "pickedPlausibleWrong": 1,
-        "correct": 1
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       },
       {
         "group": "creative-perseverance",
@@ -88,30 +88,48 @@
         "trials": 1,
         "pickedPlausibleWrong": 0,
         "correct": 1
+      },
+      {
+        "group": "street-singer-teen",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "artist-at-the-door",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "young-disability",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       }
     ],
     "calibration": {
-      "definitiveCorrect": 34,
-      "definitiveWrong": 1,
-      "partialCorrect": 3,
+      "definitiveCorrect": 48,
+      "definitiveWrong": 0,
+      "partialCorrect": 2,
       "partialWrong": 3
     },
     "chosenBy": {
-      "rerank": 44,
+      "rerank": 56,
       "keyword_fallback": 0
     },
     "failureReasons": {},
     "failureReasonStatuses": {},
     "candidateCounts": {
-      "5": 3,
-      "6": 41
+      "5": 1,
+      "6": 55
     },
     "failedCandidateCounts": {},
     "promptChars": {
       "min": 6527,
-      "p50": 7715,
-      "p95": 8461,
-      "max": 8512
+      "p50": 8189,
+      "p95": 10234,
+      "max": 10492
     },
     "failedPromptChars": {
       "min": 0,
@@ -129,9 +147,9 @@
         "coverage": true,
         "rerankTop1": false,
         "missDetection": true,
-        "noDefinitiveWrong": false,
+        "noDefinitiveWrong": true,
         "top1": false,
-        "hardConfusion": false
+        "hardConfusion": true
       },
       "thresholds": {
         "minCoverage": 0.95,

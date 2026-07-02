@@ -34,9 +34,9 @@
     },
     {
       "age": 22,
-      "feeling": "I can't stop gambling and the debt is crushing me but I can't tell anyone",
+      "feeling": "my best friend and i grew apart this year, and i don't know what to do about a friendship that technically didn't end, it just faded",
       "expect": "miss",
-      "note": "addiction + financial shame; age in douglass's window"
+      "note": "friendship drift - no figure covers this; keeps miss-calibration honest (replaced the gambling miss once addiction coverage grew: wilson/coltrane)"
     },
 
     {
@@ -148,9 +148,9 @@
 
     {
       "age": 30,
-      "feeling": "i just found out my partner cheated on me for years and i feel like a complete fool",
+      "feeling": "my life looks fine on paper but i feel completely numb inside, like i'm watching it all through glass",
       "expect": "miss",
-      "note": "betrayal/heartbreak - no figure covers this; keeps miss-calibration honest"
+      "note": "numbness/anhedonia - no figure covers this; keeps miss-calibration honest (replaced the betrayal miss once heartbreak coverage landed: yeats/christie)"
     },
     {
       "age": 45,
@@ -345,7 +345,7 @@
     },
     {
       "age": 18,
-      "feeling": "the school i spent my childhood preparing for rejected me and now i play piano in bars under a fake name because i'm ashamed",
+      "feeling": "the conservatory i spent my childhood preparing for rejected me and now i play piano in bars under a fake name because i'm ashamed",
       "expect": "simone",
       "hard": true,
       "plausibleWrong": "poitier",
@@ -354,7 +354,7 @@
     },
     {
       "age": 18,
-      "feeling": "people hear my accent and decide i'm not cut out for anything, i can barely read out loud, and i want to prove them wrong",
+      "feeling": "people hear my accent and decide i'm not cut out for anything, i'm stuck bussing a dead-end job, and i want to prove them wrong",
       "expect": "poitier",
       "hard": true,
       "plausibleWrong": "simone",
@@ -388,13 +388,13 @@
     },
     {
       "age": 19,
-      "feeling": "they keep telling me to change who i am and hide where i come from if i want to be taken seriously, like i'm some novelty",
+      "feeling": "they keep telling me to change who i am and hide where i come from, i'm not taken seriously, just some novelty to them",
       "expect": "tallchief",
       "note": "known-good: social_constraint + quiet_defiance + dismissed (erase-your-name pressure)"
     },
     {
       "age": 19,
-      "feeling": "i'm pregnant, i'm not married, everyone in town is judging me, and i'm terrified about the baby's future",
+      "feeling": "i'm pregnant, i'm not married, everyone in town is judging me, and i don't know what happens to my baby now",
       "expect": "lindgren",
       "note": "known-good: new_parent_fear + shame (the town scandal, the secret birth)"
     },
@@ -464,7 +464,7 @@
     },
     {
       "age": 20,
-      "feeling": "to get ahead in my field they want me to erase my heritage and take a name that isn't mine",
+      "feeling": "to get ahead in my field they want me to erase my heritage and take a name that isn't mine, but i won't change for them",
       "expect": "tallchief",
       "hard": true,
       "plausibleWrong": "kovalevskaya",
@@ -479,6 +479,271 @@
       "plausibleWrong": "douglass",
       "confusionGroup": "own-path-young-man",
       "note": "refusing the funded assigned life for the creative one (hughes) vs douglass's escape-into-nothing self-invention"
+    },
+
+    {
+      "age": 24,
+      "feeling": "i've lost someone i love again and again, so much loss in two years, and i'm alone in a country not my own",
+      "expect": "shelley_m",
+      "note": "known-good: grief + solitude (the losses in Italy)"
+    },
+    {
+      "age": 21,
+      "feeling": "they won't hire me because i'm a woman, and when they do they hand me the trivial stuff, but i have things to say",
+      "expect": "bly",
+      "note": "known-good: dismissed + social_constraint + finding_voice (the women's-pages ghetto)"
+    },
+    {
+      "age": 22,
+      "feeling": "i taught myself everything i know from books, but the educated people treat me like a servant and look down on me",
+      "expect": "faraday",
+      "note": "known-good: social_constraint + dismissed + self_invention (the valet tour)"
+    },
+    {
+      "age": 23,
+      "feeling": "i was accepted until they saw my face and turned me away because i'm black, and now i'm out here alone in the middle of nowhere starting from dirt",
+      "expect": "carver",
+      "note": "known-good: dismissed + solitude (the withdrawn admission, the sod house)"
+    },
+    {
+      "age": 23,
+      "feeling": "i failed out of school twice and have no degree, and i'm afraid the work i do alone in my notebooks is worthless",
+      "expect": "ramanujan",
+      "note": "known-good: worthlessness + solitude (the unread notebooks)"
+    },
+    {
+      "age": 25,
+      "feeling": "i do the hard work and the educated men take the credit, i'm not allowed in their societies, but i keep going to feed my family",
+      "expect": "anning",
+      "note": "known-good: social_constraint + dismissed + keep_going (the closed society)"
+    },
+
+    {
+      "age": 22,
+      "feeling": "i've lost someone i love twice over, i'm widowed and alone far from home, and i have to keep going for my child",
+      "expect": "shelley_m",
+      "hard": true,
+      "plausibleWrong": "charles_r",
+      "confusionGroup": "young-grief",
+      "note": "repeated bereavement + widowhood + a child to carry (shelley_m) vs charles_r's orphaned self-reliance"
+    },
+    {
+      "age": 23,
+      "feeling": "the men in charge keep sending me back to the trivial assignments because i'm a woman, but i have things to say and i want to say them out loud",
+      "expect": "bly",
+      "hard": true,
+      "plausibleWrong": "anning",
+      "confusionGroup": "uncredited-woman",
+      "note": "voice-hungry reporter shunted to the women's pages (bly) vs anning's credit-theft"
+    },
+    {
+      "age": 26,
+      "feeling": "a man presented my discovery to the society i'm barred from and took the credit",
+      "expect": "anning",
+      "hard": true,
+      "plausibleWrong": "bly",
+      "confusionGroup": "uncredited-woman",
+      "note": "credit taken + institutional exclusion (anning) vs bly's assignment ghetto"
+    },
+    {
+      "age": 24,
+      "feeling": "i keep filling notebooks, alone, with work nobody around me can even understand, and i'm starting to think it's worthless",
+      "expect": "ramanujan",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "unread-work",
+      "note": "unjudgeable solitary work (ramanujan) vs butler's rejected-by-editors persistence"
+    },
+
+    {
+      "age": 24,
+      "feeling": "the thing i was best at got taken away from me overnight, and i feel worthless doing odd jobs while everyone forgets my name",
+      "expect": "owens",
+      "note": "known-good: dispossession + worthlessness (the suspension and the lean years)"
+    },
+    {
+      "age": 25,
+      "feeling": "i love someone who will never love me back, and i don't know what to do with all this feeling",
+      "expect": "yeats",
+      "note": "known-good: heartbreak + the unreturned love (first heartbreak-theme case)"
+    },
+    {
+      "age": 26,
+      "feeling": "no school would take me because of my race and my sex, so i'll find another way in and come back with proof",
+      "expect": "coleman",
+      "hard": true,
+      "plausibleWrong": "bly",
+      "confusionGroup": "shut-out-woman",
+      "note": "credential-hunting around a total lockout (coleman) vs bly's inside-the-door demotion"
+    },
+    {
+      "age": 22,
+      "feeling": "they hired me and then stuck me writing fluff because i'm a woman, and i have things to say, so i'm about to walk out and prove myself somewhere bigger",
+      "expect": "bly",
+      "hard": true,
+      "plausibleWrong": "coleman",
+      "confusionGroup": "shut-out-woman",
+      "note": "inside-the-door demotion + the walkout (bly) vs coleman's total lockout"
+    },
+    {
+      "age": 27,
+      "feeling": "people decide i'm just a pretty face, and my best idea got shot down without anyone even reading it",
+      "expect": "lamarr",
+      "note": "known-good: dismissed + creative_dismissal (the shelved invention)"
+    },
+    {
+      "age": 28,
+      "feeling": "i handed the experts my best idea, they shot down every line of it without reading, and told me to stick to being decorative",
+      "expect": "lamarr",
+      "hard": true,
+      "plausibleWrong": "marshall",
+      "confusionGroup": "dismissed-idea",
+      "note": "the outsider's idea waved away for what she is (lamarr) vs marshall's establishment fight"
+    },
+    {
+      "age": 32,
+      "feeling": "nobody believes me and they won't take my discovery seriously, but i know i'm right and i'll prove them wrong",
+      "expect": "marshall",
+      "hard": true,
+      "plausibleWrong": "lamarr",
+      "confusionGroup": "dismissed-idea",
+      "note": "the insider's crusade to prove the theory (marshall) vs lamarr's shelved gift"
+    },
+    {
+      "age": 28,
+      "feeling": "i lost ten years to just surviving, everyone my age is ahead of me, and i want to go back to school but it feels too late",
+      "expect": "hurston",
+      "note": "known-good: late_start + self_invention (sixteen again at twenty-six)"
+    },
+    {
+      "age": 29,
+      "feeling": "an accident nearly took my sight and in the dark i realized i've been living the wrong life, i want a second chance",
+      "expect": "muir",
+      "note": "known-good: illness + self_invention (the darkened room)"
+    },
+    {
+      "age": 30,
+      "feeling": "i got seriously ill, and in the long recovery i realized the successful life i built isn't the one i actually want, i want a second chance",
+      "expect": "muir",
+      "hard": true,
+      "plausibleWrong": "oconnor",
+      "confusionGroup": "illness-crossroads",
+      "note": "illness as revelation and chosen redirect (muir) vs oconnor's forced surrender of the planned life"
+    },
+
+    {
+      "age": 29,
+      "feeling": "i opened my own practice and i have no patients, i sit there all day feeling worthless and wondering if i should give up",
+      "expect": "banting",
+      "note": "known-good: worthlessness + keep_going (the empty waiting room)"
+    },
+    {
+      "age": 30,
+      "feeling": "my practice is failing, i have no patients, and when i brought the experts my one big idea they dismissed me as a nobody",
+      "expect": "banting",
+      "hard": true,
+      "plausibleWrong": "marshall",
+      "confusionGroup": "dismissed-idea",
+      "note": "the failed nobody with one idea (banting) vs marshall's established-outsider crusade"
+    },
+    {
+      "age": 30,
+      "feeling": "because i'm a woman they say i shouldn't even try, and my novel keeps coming back from every publisher, but i'm writing the next one",
+      "expect": "bronte_c",
+      "note": "known-good: creative_dismissal + social_constraint + keep_going (the unanimous no)"
+    },
+    {
+      "age": 28,
+      "feeling": "my writing has been rejected by every publisher and i can't help feeling it's because of who i am, not what i wrote",
+      "expect": "bronte_c",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "rejected-writer",
+      "note": "rejection entangled with identity/gender verdict (bronte_c) vs butler's pure creative perseverance"
+    },
+    {
+      "age": 30,
+      "feeling": "i was at the top of my field and then i was publicly denounced overnight, now former friends cross the street and i'm afraid of what comes next",
+      "expect": "shostakovich",
+      "note": "known-good: public_failure + social_constraint (the denunciation)"
+    },
+    {
+      "age": 30,
+      "feeling": "the state's paper denounced my work, my show was cancelled, and people i trusted turned on me in public meetings to save themselves",
+      "expect": "shostakovich",
+      "hard": true,
+      "plausibleWrong": "rachmaninoff",
+      "confusionGroup": "public-collapse",
+      "note": "state-driven disgrace + fear (shostakovich) vs rachmaninoff's critical failure and creative paralysis"
+    },
+    {
+      "age": 28,
+      "feeling": "my big premiere was torn apart and now i'm afraid to write anything at all",
+      "expect": "rachmaninoff",
+      "hard": true,
+      "plausibleWrong": "shostakovich",
+      "confusionGroup": "public-collapse",
+      "note": "the critical mauling and creative paralysis (rachmaninoff) vs shostakovich's state terror"
+    },
+    {
+      "age": 31,
+      "feeling": "my addiction cost me the biggest opportunity of my career, i just got clean and i'm trying to rebuild",
+      "expect": "coltrane",
+      "note": "known-good: addiction + keep_going (fired and clean)"
+    },
+    {
+      "age": 30,
+      "feeling": "my habit cost me my big break, i quit cold turkey at my mom's place, and now i'm getting clean and rebuilding",
+      "expect": "coltrane",
+      "hard": true,
+      "plausibleWrong": "wilson",
+      "confusionGroup": "addiction-bottom",
+      "note": "young career-costing habit + cold-turkey rebuild (coltrane) vs wilson's rock-bottom fellowship arc"
+    },
+    {
+      "age": 37,
+      "feeling": "drinking cost me everything and i finally hit bottom, i'm too ashamed to tell the people i let down",
+      "expect": "wilson",
+      "hard": true,
+      "plausibleWrong": "coltrane",
+      "confusionGroup": "addiction-bottom",
+      "note": "the rock-bottom shame at midlife (wilson) vs coltrane's fired-and-clean rebuild"
+    },
+    {
+      "age": 34,
+      "feeling": "my husband left me for another woman the same year my mother died, and i don't know who i am without either of them",
+      "expect": "christie",
+      "note": "known-good: heartbreak + grief (the year that broke)"
+    },
+    {
+      "age": 34,
+      "feeling": "i just found out my partner cheated on me for years and i feel like a complete fool",
+      "expect": "christie",
+      "note": "converted from miss once heartbreak coverage landed: betrayal is christie's territory now"
+    },
+    {
+      "age": 30,
+      "feeling": "i love someone who will never choose me, and i carry it with me everywhere, alone",
+      "expect": "yeats",
+      "hard": true,
+      "plausibleWrong": "christie",
+      "confusionGroup": "heartbreak-flavor",
+      "note": "unreturned love, nothing betrayed (yeats) vs christie's marriage betrayal"
+    },
+    {
+      "age": 36,
+      "feeling": "my spouse betrayed me and the divorce is destroying the person i thought i was, i need to become someone new",
+      "expect": "christie",
+      "hard": true,
+      "plausibleWrong": "yeats",
+      "confusionGroup": "heartbreak-flavor",
+      "note": "betrayal + rebuilding identity after divorce (christie) vs yeats's unrequited ache"
+    },
+    {
+      "age": 38,
+      "feeling": "i gave everything to my work for years and my body finally gave out, i'm exhausted all the time and i can't do what i used to",
+      "expect": "nightingale",
+      "note": "known-good: burnout + illness (spent, and learning to work differently)"
     },
 
     {

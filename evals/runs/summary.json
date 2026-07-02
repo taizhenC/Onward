@@ -1,37 +1,37 @@
 {
   "config": {
-    "matchConfigVersion": "deploy-auth-ratelimit-2026-06-10",
-    "provider": "stub",
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "provider": "real",
     "model": "gpt-oss-120b",
     "retrievalMode": "keyword",
     "embeddingModel": "gemini-embedding-001@d1536",
     "k": 1,
-    "concurrency": 3,
+    "concurrency": 1,
     "maxRetries": 2,
-    "ranAt": "2026-07-02T06:10:45.460Z",
-    "caseCount": 69,
-    "trialCount": 69
+    "ranAt": "2026-07-02T07:07:53.125Z",
+    "caseCount": 104,
+    "trialCount": 104
   },
   "metrics": {
-    "rerankTop1": 0.8939393939393939,
+    "rerankTop1": 0.9702970297029703,
     "rerankTop1Counts": {
-      "correct": 59,
-      "total": 66
+      "correct": 98,
+      "total": 101
     },
-    "overallTop1": 0.8939393939393939,
+    "overallTop1": 0.9702970297029703,
     "overallTop1Counts": {
-      "correct": 59,
-      "total": 66
+      "correct": 98,
+      "total": 101
     },
     "missDetection": 1,
     "missDetectionCounts": {
       "detected": 3,
       "total": 3
     },
-    "hardConfusion": 0,
+    "hardConfusion": 0.022727272727272728,
     "hardConfusionCounts": {
-      "confused": 0,
-      "total": 27
+      "confused": 1,
+      "total": 44
     },
     "goldSurvivalStageA": null,
     "goldSurvivalStageB": null,
@@ -45,7 +45,7 @@
         "group": "persistence-vs-reinvention",
         "trials": 2,
         "pickedPlausibleWrong": 0,
-        "correct": 2
+        "correct": 1
       },
       {
         "group": "lonely-child",
@@ -81,7 +81,7 @@
         "group": "trapped-life-vs-lost-career",
         "trials": 1,
         "pickedPlausibleWrong": 0,
-        "correct": 1
+        "correct": 0
       },
       {
         "group": "private-trap-vs-denied-recognition",
@@ -99,7 +99,7 @@
         "group": "artist-at-the-door",
         "trials": 2,
         "pickedPlausibleWrong": 0,
-        "correct": 0
+        "correct": 2
       },
       {
         "group": "young-disability",
@@ -130,30 +130,90 @@
         "trials": 1,
         "pickedPlausibleWrong": 0,
         "correct": 1
+      },
+      {
+        "group": "young-grief",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "uncredited-woman",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "unread-work",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "shut-out-woman",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "dismissed-idea",
+        "trials": 3,
+        "pickedPlausibleWrong": 0,
+        "correct": 3
+      },
+      {
+        "group": "illness-crossroads",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "rejected-writer",
+        "trials": 1,
+        "pickedPlausibleWrong": 1,
+        "correct": 0
+      },
+      {
+        "group": "public-collapse",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "addiction-bottom",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "heartbreak-flavor",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       }
     ],
     "calibration": {
-      "definitiveCorrect": 57,
-      "definitiveWrong": 4,
-      "partialCorrect": 2,
+      "definitiveCorrect": 91,
+      "definitiveWrong": 0,
+      "partialCorrect": 7,
       "partialWrong": 3
     },
     "chosenBy": {
-      "rerank": 69,
+      "rerank": 104,
       "keyword_fallback": 0
     },
     "failureReasons": {},
     "failureReasonStatuses": {},
     "candidateCounts": {
       "5": 1,
-      "6": 68
+      "6": 103
     },
     "failedCandidateCounts": {},
     "promptChars": {
       "min": 6527,
-      "p50": 9445,
-      "p95": 10617,
-      "max": 10894
+      "p50": 9787,
+      "p95": 10862,
+      "max": 11088
     },
     "failedPromptChars": {
       "min": 0,
@@ -161,8 +221,8 @@
       "p95": 0,
       "max": 0
     },
-    "latencyP50": 0,
-    "latencyP95": 0,
+    "latencyP50": 344,
+    "latencyP95": 657,
     "stability": null,
     "trustGate": {
       "passed": false,
@@ -171,9 +231,9 @@
         "coverage": true,
         "rerankTop1": false,
         "missDetection": true,
-        "noDefinitiveWrong": false,
+        "noDefinitiveWrong": true,
         "top1": false,
-        "hardConfusion": true
+        "hardConfusion": false
       },
       "thresholds": {
         "minCoverage": 0.95,

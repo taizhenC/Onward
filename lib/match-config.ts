@@ -1,6 +1,6 @@
 import type { Confidence, FacetType, Framing } from "./types";
 
-export const matchConfigVersion = "deploy-auth-ratelimit-2026-06-10";
+export const matchConfigVersion = "figure-library-50-2026-07-02";
 
 // ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in
 // the cron job). SQL can't read TS, so migration 0003's pg_cron schedules are the LIVE
@@ -77,9 +77,9 @@ export const WEIGHT_BOUNDS: Record<VectorLane, { min: number; max: number }> = {
 export const RRF_K = 60;
 
 // Stage A per-lane quotas: each lane contributes its top-N post-filter to the deduped pool
-// UNCONDITIONALLY (recovery-asymmetry — a retrieval miss is unrecoverable). At 20 figures behind a
-// ±10y age gate the live pool is smaller than these, so today every age-gated stage survives Stage
-// A; the quotas only bite once the library grows.
+// UNCONDITIONALLY (recovery-asymmetry — a retrieval miss is unrecoverable). At 50 figures the
+// densest age windows (late teens/twenties) put ~25-30 stages behind the ±10y gate, so the quotas
+// can now bite; eval-retrieval's Stage A/B gold-survival check is the tripwire for retuning them.
 export const LANE_QUOTAS: Record<RetrievalLane, number> = {
   shape: 20,
   emotional_core: 20,
@@ -103,8 +103,11 @@ export const THEME_CLAMP = { min: -0.25, max: 0.35 } as const;
 export const AGE_CAP = 0.2;
 export const AGE_SLOPE = 0.02;
 
-// Stage B output size: the top-K stages handed to the reranker.
-export const FACETSRAG_TOP_K = 12;
+// Stage B output size: the top-K stages handed to the reranker. Tightened 12 → 8 at the
+// 50-figure library (2026-07-02 eval): with 12 candidates the rerank regressed on previously
+// green cases (lee definitive-wrongs, butler smoke leak); at 8 the choice set matches the
+// keyword path's proven regime while Stage B gold survival stays 100% (eval-retrieval).
+export const FACETSRAG_TOP_K = 8;
 
 // Lowercase substring → theme tags. A figure earns one point per matched keyword whose theme tag
 // is in the figure's themes[]. Drives the keyword-hybrid scorer/fallback AND (via the exported
@@ -237,6 +240,7 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "mess up my kid": ["new_parent_fear"],
   "too young to": ["new_parent_fear", "self_doubt"],
   "fail my child": ["new_parent_fear"],
+  terrified: ["new_parent_fear", "self_doubt"],
 
   // Rachmaninoff — public_failure / creative_dismissal / keep_going
   humiliated: ["public_failure", "shame"],
@@ -447,6 +451,147 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "find my voice": ["finding_voice"],
   poetry: ["finding_voice"],
   poems: ["finding_voice"],
+
+  // Mary Shelley — grief / solitude / keep_going
+  "lost my child": ["grief"],
+  "lost my baby": ["grief"],
+  "lost my son": ["grief"],
+  "lost my daughter": ["grief"],
+  widowed: ["grief", "solitude"],
+  "one loss after another": ["grief"],
+  "so much loss": ["grief"],
+
+  // Nellie Bly — dismissed / social_constraint / finding_voice
+  "won't hire me": ["dismissed"],
+  "no jobs for": ["dismissed", "social_constraint"],
+  "take me seriously": ["dismissed"],
+  pigeonhole: ["social_constraint"],
+  pigeonholed: ["social_constraint"],
+  "things to say": ["finding_voice"],
+
+  // Michael Faraday — social_constraint / dismissed / self_invention
+  "look down on me": ["social_constraint", "dismissed"],
+  "looks down on me": ["social_constraint", "dismissed"],
+  "looked down on": ["social_constraint", "dismissed"],
+  "treat me like a servant": ["social_constraint", "dismissed"],
+  "beneath them": ["social_constraint"],
+  "no degree": ["social_constraint", "worthlessness"],
+  "self-taught": ["self_invention"],
+  "self taught": ["self_invention"],
+  "taught myself": ["self_invention"],
+  "working class": ["social_constraint"],
+
+  // George Washington Carver — dismissed / solitude / keep_going
+  "because i'm black": ["dismissed", "social_constraint"],
+  "because of my race": ["dismissed", "social_constraint"],
+  "turned away": ["dismissed"],
+  "turned me away": ["dismissed"],
+  "middle of nowhere": ["solitude"],
+
+  // Srinivasa Ramanujan — worthlessness / solitude / keep_going
+  "failed my exams": ["worthlessness"],
+  "failed out": ["worthlessness"],
+  flunked: ["worthlessness"],
+  "dropped out": ["worthlessness"],
+  "no qualifications": ["worthlessness", "social_constraint"],
+  "no credentials": ["worthlessness", "social_constraint"],
+  crank: ["dismissed"],
+
+  // Mary Anning — social_constraint / dismissed / keep_going
+  "take the credit": ["dismissed"],
+  "takes the credit": ["dismissed"],
+  "took the credit": ["dismissed"],
+  "gets the credit": ["dismissed"],
+  "not allowed in": ["social_constraint"],
+  barred: ["social_constraint"],
+  "feed my family": ["keep_going"],
+
+  // Jesse Owens — dispossession / worthlessness / self_invention
+  "taken away": ["dispossession"],
+  "taken from me": ["dispossession"],
+  banned: ["dispossession", "dismissed"],
+  suspended: ["dispossession", "dismissed"],
+  "washed up": ["worthlessness", "late_start"],
+  "used to be somebody": ["worthlessness", "dispossession"],
+
+  // W. B. Yeats — heartbreak / solitude / finding_voice
+  "love me back": ["heartbreak"],
+  "never loved me": ["heartbreak"],
+  "love someone who": ["heartbreak"],
+  "just friends": ["heartbreak"],
+
+  // Bessie Coleman — dismissed / quiet_defiance / self_invention
+  "no school would": ["dismissed"],
+  "won't teach me": ["dismissed"],
+  "won't train me": ["dismissed"],
+  "refused to": ["dismissed"],
+  "not for people like me": ["dismissed", "social_constraint"],
+  "find another way": ["quiet_defiance", "self_invention"],
+  "another way in": ["quiet_defiance", "self_invention"],
+
+  // Hedy Lamarr — dismissed / creative_dismissal / social_constraint
+  "just a pretty face": ["dismissed", "social_constraint"],
+  "pretty face": ["dismissed"],
+  "only see my looks": ["dismissed", "social_constraint"],
+  "shot down": ["creative_dismissal", "dismissed"],
+  underestimate: ["dismissed"],
+  underestimated: ["dismissed"],
+
+  // Zora Neale Hurston — self_invention / late_start / dispossession
+  "missed my window": ["late_start"],
+  "missed my chance": ["late_start"],
+  "ahead of me": ["late_start"],
+  "go back to school": ["late_start", "self_invention"],
+  "years behind": ["late_start", "worthlessness"],
+  "decade behind": ["late_start"],
+
+  // John Muir — illness / solitude / self_invention
+  accident: ["illness"],
+  "almost died": ["illness"],
+  "wake-up call": ["illness", "self_invention"],
+  "second chance": ["self_invention", "illness"],
+  "lost my sight": ["disability", "illness"],
+  "going blind": ["disability", "illness"],
+  "what really matters": ["self_invention"],
+
+  // Frederick Banting — worthlessness / dismissed / keep_going
+  "no patients": ["worthlessness"],
+  "no clients": ["worthlessness"],
+  "practice is failing": ["worthlessness"],
+  "won't fund": ["dismissed"],
+  "no one will back": ["dismissed"],
+
+  // Charlotte Brontë — creative_dismissal / social_constraint / keep_going
+  "every publisher": ["creative_dismissal"],
+  "nobody bought": ["creative_dismissal", "worthlessness"],
+  unpublished: ["creative_dismissal"],
+
+  // Dmitri Shostakovich — public_failure / social_constraint / quiet_defiance
+  denounced: ["public_failure", "social_constraint"],
+  "publicly shamed": ["public_failure", "shame"],
+  cancelled: ["public_failure", "dismissed"],
+  canceled: ["public_failure", "dismissed"],
+  "turned on me": ["public_failure", "social_constraint"],
+
+  // John Coltrane — addiction / shame / keep_going
+  relapse: ["addiction"],
+  relapsed: ["addiction"],
+  "get clean": ["addiction", "keep_going"],
+  "getting clean": ["addiction", "keep_going"],
+  "got clean": ["addiction", "keep_going"],
+  sober: ["addiction"],
+  "cold turkey": ["addiction"],
+
+  // Agatha Christie — heartbreak / grief / self_invention
+  "wants a divorce": ["heartbreak"],
+  "loves someone else": ["heartbreak"],
+  "for someone else": ["heartbreak"],
+
+  // Florence Nightingale — burnout / illness / keep_going
+  "can't work anymore": ["burnout", "illness"],
+  "no energy": ["burnout"],
+  overworked: ["burnout"],
+  "pushed myself too hard": ["burnout"],
 
   // Heartbreak (generic) — christie / yeats
   heartbreak: ["heartbreak"],

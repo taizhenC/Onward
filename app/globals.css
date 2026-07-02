@@ -139,6 +139,9 @@ label,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important; /* delayed one-shots with fill `both` would
+                                       otherwise hold their invisible from-state
+                                       until the delay expires */
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }

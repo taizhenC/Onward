@@ -8,19 +8,19 @@
     "k": 1,
     "concurrency": 1,
     "maxRetries": 2,
-    "ranAt": "2026-07-02T07:07:53.125Z",
+    "ranAt": "2026-07-02T07:13:02.101Z",
     "caseCount": 104,
     "trialCount": 104
   },
   "metrics": {
-    "rerankTop1": 0.9702970297029703,
+    "rerankTop1": 0.9801980198019802,
     "rerankTop1Counts": {
-      "correct": 98,
+      "correct": 99,
       "total": 101
     },
-    "overallTop1": 0.9702970297029703,
+    "overallTop1": 0.9801980198019802,
     "overallTop1Counts": {
-      "correct": 98,
+      "correct": 99,
       "total": 101
     },
     "missDetection": 1,
@@ -28,9 +28,9 @@
       "detected": 3,
       "total": 3
     },
-    "hardConfusion": 0.022727272727272728,
+    "hardConfusion": 0,
     "hardConfusionCounts": {
-      "confused": 1,
+      "confused": 0,
       "total": 44
     },
     "goldSurvivalStageA": null,
@@ -45,7 +45,7 @@
         "group": "persistence-vs-reinvention",
         "trials": 2,
         "pickedPlausibleWrong": 0,
-        "correct": 1
+        "correct": 2
       },
       {
         "group": "lonely-child",
@@ -170,8 +170,8 @@
       {
         "group": "rejected-writer",
         "trials": 1,
-        "pickedPlausibleWrong": 1,
-        "correct": 0
+        "pickedPlausibleWrong": 0,
+        "correct": 1
       },
       {
         "group": "public-collapse",
@@ -193,10 +193,10 @@
       }
     ],
     "calibration": {
-      "definitiveCorrect": 91,
+      "definitiveCorrect": 93,
       "definitiveWrong": 0,
-      "partialCorrect": 7,
-      "partialWrong": 3
+      "partialCorrect": 6,
+      "partialWrong": 2
     },
     "chosenBy": {
       "rerank": 104,
@@ -221,19 +221,19 @@
       "p95": 0,
       "max": 0
     },
-    "latencyP50": 344,
-    "latencyP95": 657,
+    "latencyP50": 319,
+    "latencyP95": 702,
     "stability": null,
     "trustGate": {
-      "passed": false,
+      "passed": true,
       "coverage": 1,
       "checks": {
         "coverage": true,
-        "rerankTop1": false,
+        "rerankTop1": true,
         "missDetection": true,
         "noDefinitiveWrong": true,
-        "top1": false,
-        "hardConfusion": false
+        "top1": true,
+        "hardConfusion": true
       },
       "thresholds": {
         "minCoverage": 0.95,

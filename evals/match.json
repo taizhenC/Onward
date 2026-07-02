@@ -50,7 +50,7 @@
     },
     {
       "age": 24,
-      "feeling": "I cut off the people who defined my whole life and now I'm alone and have no idea who I am without them",
+      "feeling": "I escaped the people who controlled every part of my life, and now I'm alone in a new place with no idea who I am without them",
       "expect": "douglass",
       "hard": true,
       "plausibleWrong": "butler",
@@ -654,7 +654,7 @@
     },
     {
       "age": 28,
-      "feeling": "my writing has been rejected by every publisher and i can't help feeling it's because of who i am, not what i wrote",
+      "feeling": "my writing has been rejected by every publisher and i can't help feeling it's because i'm a woman, not because of what i wrote",
       "expect": "bronte_c",
       "hard": true,
       "plausibleWrong": "butler",

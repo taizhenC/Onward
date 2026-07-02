@@ -1,4 +1,6 @@
+import { Fragment } from "react";
 import Link from "next/link";
+import { Reveal } from "@/components/Reveal";
 import { StoryDemo } from "@/components/StoryDemo";
 import { CRISIS_RESOURCES } from "@/lib/safety";
 
@@ -12,6 +14,21 @@ const HERO_QUOTES = [
   "I gave up the thing I loved because I got scared.",
   "Everyone else has moved on. I feel stuck.",
 ];
+
+// Single source of truth for the headline: the h1's aria-label and the animated
+// word spans are derived from the same string so they can't drift.
+const HEADLINE = "You are not the first to carry this.";
+const HEADLINE_WORDS = HEADLINE.split(" ");
+
+// Inline ow-fade with per-element delay — the established stagger idiom.
+const settle = (delayS: number, durationS = 0.6) => ({
+  animation: `ow-fade ${durationS}s ease ${delayS}s both`,
+});
+
+// Quote rotator phase shift: without it the first quote fades in at t=0–0.38s,
+// fully visible at the bottom while the headline above is still settling. Phase
+// only — period, cadence, and the reduced-motion fallback are unchanged.
+const HERO_QUOTE_START = 1.85;
 
 const STEPS = [
   {
@@ -70,17 +87,48 @@ export default function Home() {
 
       {/* Hero */}
       <header className="mx-auto max-w-[1080px] px-8 pb-[104px] pt-24 text-center">
-        <Diamond />
-        <p className="mb-[26px] font-ui text-[12px] font-medium uppercase tracking-[0.22em] text-[var(--color-ink-soft)]">
+        <div style={settle(0)}>
+          <Diamond />
+        </div>
+        <p
+          className="mb-[26px] font-ui text-[12px] font-medium uppercase tracking-[0.22em] text-[var(--color-ink-soft)]"
+          style={settle(0.12)}
+        >
           A companion for hard seasons
         </p>
-        <h1 className="mx-auto max-w-[13ch] text-[clamp(2.7rem,6.6vw,4.3rem)] font-semibold leading-[1.04] tracking-[-0.02em] text-balance">
-          You are not the first to carry this.
+        <h1
+          aria-label={HEADLINE}
+          className="mx-auto max-w-[13ch] text-[clamp(2.7rem,6.6vw,4.3rem)] font-semibold leading-[1.04] tracking-[-0.02em] text-balance"
+        >
+          {/* One aria-hidden wrapper (not per-word) so browse-mode screen readers
+              can't walk the word fragments; the aria-label above carries the
+              sentence. Word spans are inline-block so the translateY applies;
+              the {" "} siblings keep real spaces between them for text-balance. */}
+          <span aria-hidden="true">
+            {HEADLINE_WORDS.map((word, i) => (
+              <Fragment key={`${word}-${i}`}>
+                <span
+                  className="inline-block"
+                  style={{
+                    animation: `ow-fade 0.5s ease ${(0.35 + i * 0.1).toFixed(2)}s both`,
+                  }}
+                >
+                  {word}
+                </span>{" "}
+              </Fragment>
+            ))}
+          </span>
         </h1>
-        <p className="mx-auto mt-7 max-w-[34rem] text-[20px] leading-[1.6] text-[var(--color-ink-soft)] text-pretty">
+        <p
+          className="mx-auto mt-7 max-w-[34rem] text-[20px] leading-[1.6] text-[var(--color-ink-soft)] text-pretty"
+          style={settle(1.3)}
+        >
           {"Tell Onward what you're carrying. Meet someone who felt the same way you do — and came through."}
         </p>
-        <div className="mt-[38px] flex flex-wrap items-center justify-center gap-[22px]">
+        <div
+          className="mt-[38px] flex flex-wrap items-center justify-center gap-[22px]"
+          style={settle(1.5)}
+        >
           <Link href="/begin" className={filledButton}>
             Read a story
           </Link>
@@ -93,7 +141,7 @@ export default function Home() {
         </div>
 
         {/* Rotating first-person lines */}
-        <div className="mt-[60px]">
+        <div className="mt-[60px]" style={settle(1.65)}>
           <p className="mb-[18px] font-ui text-[11px] font-medium uppercase tracking-[0.18em] text-[#8a8378]">
             What people carry here
           </p>
@@ -103,7 +151,7 @@ export default function Home() {
                 key={quote}
                 className="ow-hero-quote absolute inset-0 m-0 flex items-center justify-center text-center text-[clamp(1.3rem,3.1vw,1.75rem)] italic leading-[1.42] text-[var(--color-ink)] text-pretty opacity-0"
                 style={{
-                  animation: `ow-hero-cycle 19s ease-in-out ${i * 3.8}s infinite`,
+                  animation: `ow-hero-cycle 19s ease-in-out ${HERO_QUOTE_START + i * 3.8}s infinite`,
                 }}
               >
                 “{quote}”
@@ -119,12 +167,18 @@ export default function Home() {
         className="border-y border-[var(--color-ink)]/10 bg-[var(--color-paper-deep)]"
       >
         <div className="mx-auto max-w-[1080px] px-8 py-[84px]">
-          <p className="mb-[54px] text-center font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
-            How it works
-          </p>
+          <Reveal>
+            <p className="mb-[54px] text-center font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
+              How it works
+            </p>
+          </Reveal>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-12">
             {STEPS.map((step) => (
-              <div key={step.n} className="text-center">
+              <Reveal
+                key={step.n}
+                className="text-center"
+                delay={(step.n - 1) * 0.15}
+              >
                 <span className="mx-auto mb-5 block h-[2px] w-[30px] bg-[var(--color-accent)]" />
                 <span className="oldstyle-nums block text-[40px] leading-none text-[var(--color-accent)]">
                   {step.n}
@@ -135,7 +189,7 @@ export default function Home() {
                 <p className="text-[16px] leading-[1.66] text-[var(--color-ink-soft)] text-pretty">
                   {step.body}
                 </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -143,30 +197,42 @@ export default function Home() {
 
       {/* Live demo */}
       <section id="story" className="mx-auto max-w-[1080px] px-8 pb-24 pt-24 text-center">
-        <p className="mb-[14px] font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
-          What a story looks like
-        </p>
-        <p className="mx-auto mb-9 max-w-[30rem] text-[18px] leading-[1.65] text-[var(--color-ink-soft)] text-pretty">
-          An excerpt, exactly as you would meet it — the words arriving one page
-          at a time. The name is kept until the end.
-        </p>
-        <StoryDemo />
+        <Reveal>
+          <p className="mb-[14px] font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
+            What a story looks like
+          </p>
+          <p className="mx-auto mb-9 max-w-[30rem] text-[18px] leading-[1.65] text-[var(--color-ink-soft)] text-pretty">
+            An excerpt, exactly as you would meet it — the words arriving one page
+            at a time. The name is kept until the end.
+          </p>
+        </Reveal>
+        <Reveal delay={0.15}>
+          <StoryDemo />
+        </Reveal>
       </section>
 
       {/* Closing coda */}
       <section className="mx-auto max-w-[1080px] px-8 pb-24 pt-[104px] text-center">
-        <Diamond />
-        <p className="mx-auto max-w-[24rem] text-[clamp(2rem,4.8vw,2.7rem)] font-semibold leading-[1.24] tracking-[-0.015em] text-balance">
-          {"You don't have to know who you are yet."}
-        </p>
-        <p className="mx-auto mt-4 max-w-[28rem] text-[21px] italic leading-[1.5] text-[var(--color-ink-soft)]">
-          Neither did they — and look what they went on to become.
-        </p>
-        <div className="mt-[42px]">
-          <Link href="/begin" className={filledButton}>
-            Begin
-          </Link>
-        </div>
+        <Reveal>
+          <Diamond />
+        </Reveal>
+        <Reveal delay={0.1}>
+          <p className="mx-auto max-w-[24rem] text-[clamp(2rem,4.8vw,2.7rem)] font-semibold leading-[1.24] tracking-[-0.015em] text-balance">
+            {"You don't have to know who you are yet."}
+          </p>
+        </Reveal>
+        <Reveal delay={0.2}>
+          <p className="mx-auto mt-4 max-w-[28rem] text-[21px] italic leading-[1.5] text-[var(--color-ink-soft)]">
+            Neither did they — and look what they went on to become.
+          </p>
+        </Reveal>
+        <Reveal delay={0.3}>
+          <div className="mt-[42px]">
+            <Link href="/begin" className={filledButton}>
+              Begin
+            </Link>
+          </div>
+        </Reveal>
       </section>
 
       {/* Footer */}

@@ -1,6 +1,6 @@
 import type { Confidence, FacetType, Framing } from "./types";
 
-export const matchConfigVersion = "deploy-auth-ratelimit-2026-06-10";
+export const matchConfigVersion = "figure-library-50-2026-07-02";
 
 // ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in
 // the cron job). SQL can't read TS, so migration 0003's pg_cron schedules are the LIVE
@@ -77,9 +77,9 @@ export const WEIGHT_BOUNDS: Record<VectorLane, { min: number; max: number }> = {
 export const RRF_K = 60;
 
 // Stage A per-lane quotas: each lane contributes its top-N post-filter to the deduped pool
-// UNCONDITIONALLY (recovery-asymmetry — a retrieval miss is unrecoverable). At 20 figures behind a
-// ±10y age gate the live pool is smaller than these, so today every age-gated stage survives Stage
-// A; the quotas only bite once the library grows.
+// UNCONDITIONALLY (recovery-asymmetry — a retrieval miss is unrecoverable). At 50 figures the
+// densest age windows (late teens/twenties) put ~25-30 stages behind the ±10y gate, so the quotas
+// can now bite; eval-retrieval's Stage A/B gold-survival check is the tripwire for retuning them.
 export const LANE_QUOTAS: Record<RetrievalLane, number> = {
   shape: 20,
   emotional_core: 20,
@@ -103,8 +103,11 @@ export const THEME_CLAMP = { min: -0.25, max: 0.35 } as const;
 export const AGE_CAP = 0.2;
 export const AGE_SLOPE = 0.02;
 
-// Stage B output size: the top-K stages handed to the reranker.
-export const FACETSRAG_TOP_K = 12;
+// Stage B output size: the top-K stages handed to the reranker. Tightened 12 → 8 at the
+// 50-figure library (2026-07-02 eval): with 12 candidates the rerank regressed on previously
+// green cases (lee definitive-wrongs, butler smoke leak); at 8 the choice set matches the
+// keyword path's proven regime while Stage B gold survival stays 100% (eval-retrieval).
+export const FACETSRAG_TOP_K = 8;
 
 // Lowercase substring → theme tags. A figure earns one point per matched keyword whose theme tag
 // is in the figure's themes[]. Drives the keyword-hybrid scorer/fallback AND (via the exported
@@ -166,6 +169,7 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "left out": ["bullied", "solitude"],
   "don't fit in": ["bullied", "solitude"],
   "nobody likes me": ["solitude", "bullied"],
+  "something wrong with me": ["bullied", "worthlessness"],
   "no friends": ["solitude"],
   "any friends": ["solitude"],
   "have no friends": ["solitude"],
@@ -213,6 +217,7 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "stay silent": ["finding_voice", "solitude"],
   "keep it inside": ["shame", "finding_voice"],
   stutter: ["finding_voice", "shame"],
+  "stopped talking": ["finding_voice", "shame"],
 
   // Wilma Rudolph — disability / keep_going / quiet_defiance
   disabled: ["disability"],
@@ -235,6 +240,7 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "mess up my kid": ["new_parent_fear"],
   "too young to": ["new_parent_fear", "self_doubt"],
   "fail my child": ["new_parent_fear"],
+  terrified: ["new_parent_fear", "self_doubt"],
 
   // Rachmaninoff — public_failure / creative_dismissal / keep_going
   humiliated: ["public_failure", "shame"],
@@ -349,4 +355,276 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "have to start over": ["late_start", "self_invention"],
   "too old now": ["late_start"],
   "starting over so late": ["late_start"],
+
+  // Irving Berlin — dispossession / worthlessness / finding_voice
+  "left home": ["dispossession"],
+  burden: ["worthlessness"],
+  "contribute nothing": ["worthlessness"],
+  "one less mouth": ["worthlessness", "dispossession"],
+  sing: ["finding_voice"],
+  singing: ["finding_voice"],
+
+  // Ray Charles — grief / disability / self_invention
+  blind: ["disability"],
+  "can't see": ["disability"],
+  orphan: ["dispossession", "grief"],
+  orphaned: ["dispossession", "grief"],
+  "take care of myself": ["self_invention"],
+
+  // Anne Sullivan — dispossession / worthlessness / self_invention
+  "no one came": ["dispossession", "solitude"],
+  "gave up on me": ["dispossession", "worthlessness"],
+  "foster care": ["dispossession"],
+  "catch up": ["worthlessness", "self_invention"],
+  "can't read": ["worthlessness"],
+
+  // Ella Fitzgerald — dispossession / solitude / finding_voice
+  homeless: ["dispossession"],
+  "nowhere to go": ["dispossession", "solitude"],
+  "nowhere to sleep": ["dispossession"],
+  "on the streets": ["dispossession"],
+  "no family": ["dispossession", "solitude"],
+
+  // Sidney Poitier — dismissed / worthlessness / self_invention
+  accent: ["dismissed"],
+  audition: ["dismissed"],
+  "not cut out": ["dismissed", "worthlessness"],
+  "dead-end": ["worthlessness"],
+
+  // Nina Simone — dismissed / shame / finding_voice
+  conservatory: ["dismissed"],
+  "didn't get in": ["dismissed"],
+  "turned me down": ["dismissed"],
+  "fake name": ["shame"],
+
+  // Hans Christian Andersen — bullied / worthlessness / keep_going
+  "humiliates me": ["bullied", "shame"],
+  "calls me stupid": ["bullied", "worthlessness"],
+  "makes me feel stupid": ["bullied", "worthlessness"],
+  stupid: ["worthlessness"],
+  mocked: ["bullied", "dismissed"],
+  mocks: ["bullied"],
+  ridiculed: ["bullied", "dismissed"],
+
+  // Maria Tallchief — social_constraint / quiet_defiance / dismissed
+  "change who i am": ["social_constraint", "quiet_defiance"],
+  "where i come from": ["social_constraint"],
+  "hide where i come from": ["social_constraint", "shame"],
+  "proud of who i am": ["quiet_defiance"],
+  "won't change": ["quiet_defiance"],
+  novelty: ["dismissed"],
+  erase: ["dismissed", "social_constraint"],
+  heritage: ["social_constraint"],
+  assimilate: ["social_constraint"],
+
+  // Astrid Lindgren — shame / new_parent_fear / solitude
+  pregnant: ["new_parent_fear"],
+  pregnancy: ["new_parent_fear"],
+  "single mom": ["new_parent_fear", "solitude"],
+  "single mother": ["new_parent_fear", "solitude"],
+  "single dad": ["new_parent_fear", "solitude"],
+  "single father": ["new_parent_fear", "solitude"],
+  "judging me": ["shame"],
+  scandal: ["shame"],
+  unplanned: ["new_parent_fear"],
+
+  // Edmonia Lewis — dismissed / dispossession / quiet_defiance
+  "falsely accused": ["dismissed"],
+  accused: ["dismissed", "shame"],
+  "cleared my name": ["dismissed", "quiet_defiance"],
+  "kicked out": ["dispossession", "dismissed"],
+  "kicked me out": ["dispossession", "dismissed"],
+  expelled: ["dispossession", "dismissed"],
+
+  // Sofia Kovalevskaya — social_constraint / self_invention / quiet_defiance
+  "won't let me": ["social_constraint"],
+  "because i'm a woman": ["social_constraint"],
+  "because i'm a girl": ["social_constraint"],
+  forbidden: ["social_constraint"],
+  "find a way around": ["quiet_defiance", "self_invention"],
+
+  // Langston Hughes — social_constraint / self_invention / finding_voice
+  "waste of time": ["creative_dismissal", "social_constraint"],
+  "practical career": ["social_constraint"],
+  "my own path": ["self_invention", "quiet_defiance"],
+  "my own voice": ["finding_voice"],
+  "find my voice": ["finding_voice"],
+  poetry: ["finding_voice"],
+  poems: ["finding_voice"],
+
+  // Mary Shelley — grief / solitude / keep_going
+  "lost my child": ["grief"],
+  "lost my baby": ["grief"],
+  "lost my son": ["grief"],
+  "lost my daughter": ["grief"],
+  widowed: ["grief", "solitude"],
+  "one loss after another": ["grief"],
+  "so much loss": ["grief"],
+
+  // Nellie Bly — dismissed / social_constraint / finding_voice
+  "won't hire me": ["dismissed"],
+  "no jobs for": ["dismissed", "social_constraint"],
+  "take me seriously": ["dismissed"],
+  pigeonhole: ["social_constraint"],
+  pigeonholed: ["social_constraint"],
+  "things to say": ["finding_voice"],
+
+  // Michael Faraday — social_constraint / dismissed / self_invention
+  "look down on me": ["social_constraint", "dismissed"],
+  "looks down on me": ["social_constraint", "dismissed"],
+  "looked down on": ["social_constraint", "dismissed"],
+  "treat me like a servant": ["social_constraint", "dismissed"],
+  "beneath them": ["social_constraint"],
+  "no degree": ["social_constraint", "worthlessness"],
+  "self-taught": ["self_invention"],
+  "self taught": ["self_invention"],
+  "taught myself": ["self_invention"],
+  "working class": ["social_constraint"],
+
+  // George Washington Carver — dismissed / solitude / keep_going
+  "because i'm black": ["dismissed", "social_constraint"],
+  "because of my race": ["dismissed", "social_constraint"],
+  "turned away": ["dismissed"],
+  "turned me away": ["dismissed"],
+  "middle of nowhere": ["solitude"],
+
+  // Srinivasa Ramanujan — worthlessness / solitude / keep_going
+  "failed my exams": ["worthlessness"],
+  "failed out": ["worthlessness"],
+  flunked: ["worthlessness"],
+  "dropped out": ["worthlessness"],
+  "no qualifications": ["worthlessness", "social_constraint"],
+  "no credentials": ["worthlessness", "social_constraint"],
+  crank: ["dismissed"],
+
+  // Mary Anning — social_constraint / dismissed / keep_going
+  "take the credit": ["dismissed"],
+  "takes the credit": ["dismissed"],
+  "took the credit": ["dismissed"],
+  "gets the credit": ["dismissed"],
+  "not allowed in": ["social_constraint"],
+  barred: ["social_constraint"],
+  "feed my family": ["keep_going"],
+
+  // Jesse Owens — dispossession / worthlessness / self_invention
+  "taken away": ["dispossession"],
+  "taken from me": ["dispossession"],
+  banned: ["dispossession", "dismissed"],
+  suspended: ["dispossession", "dismissed"],
+  "washed up": ["worthlessness", "late_start"],
+  "used to be somebody": ["worthlessness", "dispossession"],
+
+  // W. B. Yeats — heartbreak / solitude / finding_voice
+  "love me back": ["heartbreak"],
+  "never loved me": ["heartbreak"],
+  "love someone who": ["heartbreak"],
+  "just friends": ["heartbreak"],
+
+  // Bessie Coleman — dismissed / quiet_defiance / self_invention
+  "no school would": ["dismissed"],
+  "won't teach me": ["dismissed"],
+  "won't train me": ["dismissed"],
+  "refused to": ["dismissed"],
+  "not for people like me": ["dismissed", "social_constraint"],
+  "find another way": ["quiet_defiance", "self_invention"],
+  "another way in": ["quiet_defiance", "self_invention"],
+
+  // Hedy Lamarr — dismissed / creative_dismissal / social_constraint
+  "just a pretty face": ["dismissed", "social_constraint"],
+  "pretty face": ["dismissed"],
+  "only see my looks": ["dismissed", "social_constraint"],
+  "shot down": ["creative_dismissal", "dismissed"],
+  underestimate: ["dismissed"],
+  underestimated: ["dismissed"],
+
+  // Zora Neale Hurston — self_invention / late_start / dispossession
+  "missed my window": ["late_start"],
+  "missed my chance": ["late_start"],
+  "ahead of me": ["late_start"],
+  "go back to school": ["late_start", "self_invention"],
+  "years behind": ["late_start", "worthlessness"],
+  "decade behind": ["late_start"],
+
+  // John Muir — illness / solitude / self_invention
+  accident: ["illness"],
+  "almost died": ["illness"],
+  "wake-up call": ["illness", "self_invention"],
+  "second chance": ["self_invention", "illness"],
+  "lost my sight": ["disability", "illness"],
+  "going blind": ["disability", "illness"],
+  "what really matters": ["self_invention"],
+
+  // Frederick Banting — worthlessness / dismissed / keep_going
+  "no patients": ["worthlessness"],
+  "no clients": ["worthlessness"],
+  "practice is failing": ["worthlessness"],
+  "won't fund": ["dismissed"],
+  "no one will back": ["dismissed"],
+
+  // Charlotte Brontë — creative_dismissal / social_constraint / keep_going
+  "every publisher": ["creative_dismissal"],
+  "nobody bought": ["creative_dismissal", "worthlessness"],
+  unpublished: ["creative_dismissal"],
+
+  // Dmitri Shostakovich — public_failure / social_constraint / quiet_defiance
+  denounced: ["public_failure", "social_constraint"],
+  "publicly shamed": ["public_failure", "shame"],
+  cancelled: ["public_failure", "dismissed"],
+  canceled: ["public_failure", "dismissed"],
+  "turned on me": ["public_failure", "social_constraint"],
+
+  // John Coltrane — addiction / shame / keep_going
+  relapse: ["addiction"],
+  relapsed: ["addiction"],
+  "get clean": ["addiction", "keep_going"],
+  "getting clean": ["addiction", "keep_going"],
+  "got clean": ["addiction", "keep_going"],
+  sober: ["addiction"],
+  "cold turkey": ["addiction"],
+
+  // Agatha Christie — heartbreak / grief / self_invention
+  "wants a divorce": ["heartbreak"],
+  "loves someone else": ["heartbreak"],
+  "for someone else": ["heartbreak"],
+
+  // Florence Nightingale — burnout / illness / keep_going
+  "can't work anymore": ["burnout", "illness"],
+  "no energy": ["burnout"],
+  overworked: ["burnout"],
+  "pushed myself too hard": ["burnout"],
+
+  // Heartbreak (generic) — christie / yeats
+  heartbreak: ["heartbreak"],
+  heartbroken: ["heartbreak"],
+  "heart is broken": ["heartbreak"],
+  breakup: ["heartbreak"],
+  "broke up": ["heartbreak"],
+  "break up": ["heartbreak"],
+  divorce: ["heartbreak"],
+  divorced: ["heartbreak"],
+  "left me": ["heartbreak"],
+  cheated: ["heartbreak"],
+  "cheating on me": ["heartbreak"],
+  betrayed: ["heartbreak"],
+  betrayal: ["heartbreak"],
+  dumped: ["heartbreak"],
+  affair: ["heartbreak"],
+  "doesn't love me": ["heartbreak"],
+  "didn't love me": ["heartbreak"],
+  "won't love me back": ["heartbreak"],
+  "doesn't want me": ["heartbreak"],
+  "rejected me": ["heartbreak"],
+  unrequited: ["heartbreak"],
+
+  // Burnout (generic) — nightingale
+  burnout: ["burnout"],
+  "burned out": ["burnout"],
+  "burnt out": ["burnout"],
+  exhausted: ["burnout"],
+  exhaustion: ["burnout"],
+  drained: ["burnout"],
+  "running on empty": ["burnout"],
+  "nothing left to give": ["burnout"],
+  "used up": ["burnout"],
+  "tired all the time": ["burnout"],
 };

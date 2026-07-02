@@ -20,8 +20,11 @@ export function chunkBeatText(beat: BeatBlueprint): string[] {
 
     for (let index = 0; index < segments.length; index += 1) {
       const segment = segments[index];
+      // index > 0 means a continuation segment of a word-split oversized paragraph;
+      // rejoining with "" would fuse the boundary words into one. A single space keeps
+      // the reassembled text normalize-equal to the source.
       const separator =
-        current.length > 0 && index === 0 ? PARAGRAPH_SEPARATOR : "";
+        current.length > 0 ? (index === 0 ? PARAGRAPH_SEPARATOR : " ") : "";
       const nextLength = current.length + separator.length + segment.length;
 
       if (current.length > 0 && nextLength > CHUNK_CHAR_LIMIT) {

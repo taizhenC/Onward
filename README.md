@@ -8,7 +8,7 @@ The product is for hurting people. Tone, pacing, and prose quality matter more t
 
 Deploy slice (2026-06-10). The matching engine is real and validated:
 
-- **Library**: 20 hand-authored figure stages, seeded to Supabase.
+- **Library**: 50 hand-authored figure stages (weighted toward ages 15-30), seeded to Supabase.
 - **Retrieval**: FacetsRAG six-lane semantic retrieval (Gemini embeddings, in-memory cosine) with a keyword fallback; head-to-head eval beats keyword 95.1% vs 90.2% top-1.
 - **Rerank**: GPT-OSS 120B on Cerebras, trust-gated by eval.
 - **Auth**: anonymous-first via Supabase Auth — no login wall; sessions are owned and private; an email upgrade keeps stories permanently. Guests and their stories are deleted ~6 hours after last activity.

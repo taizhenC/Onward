@@ -1,37 +1,37 @@
 {
   "config": {
-    "matchConfigVersion": "deploy-auth-ratelimit-2026-06-10",
-    "provider": "stub",
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "provider": "real",
     "model": "gpt-oss-120b",
     "retrievalMode": "keyword",
-    "embeddingModel": "stub@v0",
+    "embeddingModel": "gemini-embedding-001@d1536",
     "k": 1,
-    "concurrency": 3,
+    "concurrency": 1,
     "maxRetries": 2,
-    "ranAt": "2026-06-10T05:54:07.861Z",
-    "caseCount": 44,
-    "trialCount": 44
+    "ranAt": "2026-07-02T07:13:02.101Z",
+    "caseCount": 104,
+    "trialCount": 104
   },
   "metrics": {
-    "rerankTop1": 0.9024390243902439,
+    "rerankTop1": 0.9801980198019802,
     "rerankTop1Counts": {
-      "correct": 37,
-      "total": 41
+      "correct": 99,
+      "total": 101
     },
-    "overallTop1": 0.9024390243902439,
+    "overallTop1": 0.9801980198019802,
     "overallTop1Counts": {
-      "correct": 37,
-      "total": 41
+      "correct": 99,
+      "total": 101
     },
     "missDetection": 1,
     "missDetectionCounts": {
       "detected": 3,
       "total": 3
     },
-    "hardConfusion": 0.07142857142857142,
+    "hardConfusion": 0,
     "hardConfusionCounts": {
-      "confused": 1,
-      "total": 14
+      "confused": 0,
+      "total": 44
     },
     "goldSurvivalStageA": null,
     "goldSurvivalStageB": null,
@@ -50,8 +50,8 @@
       {
         "group": "lonely-child",
         "trials": 2,
-        "pickedPlausibleWrong": 1,
-        "correct": 1
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       },
       {
         "group": "creative-perseverance",
@@ -81,37 +81,139 @@
         "group": "trapped-life-vs-lost-career",
         "trials": 1,
         "pickedPlausibleWrong": 0,
-        "correct": 1
+        "correct": 0
       },
       {
         "group": "private-trap-vs-denied-recognition",
         "trials": 1,
         "pickedPlausibleWrong": 0,
         "correct": 1
+      },
+      {
+        "group": "street-singer-teen",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "artist-at-the-door",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "young-disability",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "bullied-student",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "young-unready-mother",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "constrained-young-woman",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "own-path-young-man",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "young-grief",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "uncredited-woman",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "unread-work",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "shut-out-woman",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "dismissed-idea",
+        "trials": 3,
+        "pickedPlausibleWrong": 0,
+        "correct": 3
+      },
+      {
+        "group": "illness-crossroads",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "rejected-writer",
+        "trials": 1,
+        "pickedPlausibleWrong": 0,
+        "correct": 1
+      },
+      {
+        "group": "public-collapse",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "addiction-bottom",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
+      },
+      {
+        "group": "heartbreak-flavor",
+        "trials": 2,
+        "pickedPlausibleWrong": 0,
+        "correct": 2
       }
     ],
     "calibration": {
-      "definitiveCorrect": 34,
-      "definitiveWrong": 1,
-      "partialCorrect": 3,
-      "partialWrong": 3
+      "definitiveCorrect": 93,
+      "definitiveWrong": 0,
+      "partialCorrect": 6,
+      "partialWrong": 2
     },
     "chosenBy": {
-      "rerank": 44,
+      "rerank": 104,
       "keyword_fallback": 0
     },
     "failureReasons": {},
     "failureReasonStatuses": {},
     "candidateCounts": {
-      "5": 3,
-      "6": 41
+      "5": 1,
+      "6": 103
     },
     "failedCandidateCounts": {},
     "promptChars": {
       "min": 6527,
-      "p50": 7715,
-      "p95": 8461,
-      "max": 8512
+      "p50": 9787,
+      "p95": 10862,
+      "max": 11088
     },
     "failedPromptChars": {
       "min": 0,
@@ -119,19 +221,19 @@
       "p95": 0,
       "max": 0
     },
-    "latencyP50": 0,
-    "latencyP95": 0,
+    "latencyP50": 319,
+    "latencyP95": 702,
     "stability": null,
     "trustGate": {
-      "passed": false,
+      "passed": true,
       "coverage": 1,
       "checks": {
         "coverage": true,
-        "rerankTop1": false,
+        "rerankTop1": true,
         "missDetection": true,
-        "noDefinitiveWrong": false,
-        "top1": false,
-        "hardConfusion": false
+        "noDefinitiveWrong": true,
+        "top1": true,
+        "hardConfusion": true
       },
       "thresholds": {
         "minCoverage": 0.95,

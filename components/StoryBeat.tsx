@@ -183,6 +183,49 @@ export function StoryBeat({
     setRevealedCount(totalTokens);
   }
 
+  // Global click & space-to-skip handling during animation
+  useEffect(() => {
+    if (!canSkip) return;
+
+    function handleGlobalClick(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      // Do not skip if user clicks on a button, link, or input fields
+      if (
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest("input") ||
+        target.closest("textarea")
+      ) {
+        return;
+      }
+      handleSkip();
+    }
+
+    function handleGlobalKeyDown(event: KeyboardEvent) {
+      if (event.key === " ") {
+        const target = event.target as HTMLElement;
+        // Do not skip if user is typing in an input, textarea, or contenteditable element
+        if (
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable
+        ) {
+          return;
+        }
+        event.preventDefault(); // prevent scrolling the page
+        handleSkip();
+      }
+    }
+
+    document.addEventListener("click", handleGlobalClick);
+    window.addEventListener("keydown", handleGlobalKeyDown);
+
+    return () => {
+      document.removeEventListener("click", handleGlobalClick);
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [canSkip, handleSkip]);
+
   function handleAdvance() {
     if (advancing || nextStep === null || nextStep === "end") return;
     setAdvancing(true);
@@ -225,11 +268,9 @@ export function StoryBeat({
 
       {failure ? <BeatFailure kind={failure} /> : null}
 
-      {/* Continue appears as soon as the ack lands — i.e. during the reveal too —
-          so it's a distinct target from the double-click-to-accelerate on the text:
-          a single click on Continue advances; a double-click on the passage only
-          speeds the reveal. */}
-      {!failure && done && nextStep !== null && nextStep !== "end" ? (
+      {/* Continue appears as soon as the ack lands and the reveal is complete (or skipped) —
+          clicking anywhere on screen or hitting space skips the animation to show this. */}
+      {!failure && done && nextStep !== null && nextStep !== "end" && revealComplete ? (
         <button
           type="button"
           onClick={handleAdvance}

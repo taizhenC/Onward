@@ -63,10 +63,6 @@ export function StoryBeat({
   }, [totalTokens]);
 
   const revealedText = tokens.slice(0, revealedCount).join("");
-  // The not-yet-revealed tail, rendered invisible so the passage reserves its full
-  // height from the start — the Continue button below stays put instead of sliding
-  // down as words appear (and screen readers get the whole passage immediately).
-  const hiddenText = tokens.slice(revealedCount).join("");
   const revealComplete = streamDone && revealedCount >= totalTokens;
   const hasMoreToReveal = !streamDone || revealedCount < totalTokens;
   const canSkip = !skipped && hasMoreToReveal && totalTokens > 0;
@@ -210,16 +206,19 @@ export function StoryBeat({
           canSkip ? " select-none" : ""
         }`}
       >
-        <p className="whitespace-pre-wrap">
+        {/* Screen readers read the full text immediately, avoiding partial/choppy reading */}
+        <div className="sr-only" aria-live="polite">
+          {fullText}
+        </div>
+        {/* Sighted users see the text streaming in cleanly without inline opacity wrapping */}
+        <p className="whitespace-pre-wrap" aria-hidden="true">
           {revealedText}
           {showCaret ? (
             <span
-              aria-hidden
               className="ml-[3px] inline-block h-[1.05em] w-[2px] bg-[var(--color-accent)] align-[-2px]"
               style={{ animation: "ow-blink 1s step-end infinite" }}
             />
           ) : null}
-          {hiddenText ? <span className="opacity-0">{hiddenText}</span> : null}
         </p>
       </div>
 

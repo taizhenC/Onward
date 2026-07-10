@@ -1,0 +1,524 @@
+# Technical Architecture
+
+## Architectural recommendation
+
+Keep Onward as a **modular Next.js/Supabase application for the public release**, but replace the current static beat path with an evidence-grounded Story Composer that creates one validated, immutable story artifact per session.
+
+A microservice rewrite is not justified at the current scale. The high-risk problem is semantic correctness, not request volume. The necessary major refactor is inside the domain model and generation pipeline: make facts addressable, isolate user-derived data, validate every personalized artifact, persist the result once, and serve it reliably. Service extraction can follow measured bottlenecks later.
+
+## Current-state architecture
+
+```mermaid
+flowchart LR
+    U[User] --> I[Next.js intake]
+    I --> S[Deterministic crisis regex]
+    S -->|crisis| C[Crisis card]
+    S -->|non-crisis| R[Rate limit]
+    R --> M[Age gate + retrieval]
+    M --> L[LLM reranker or keyword fallback]
+    L --> O[Generated eyebrow]
+    O --> DB[(Supabase session)]
+    DB --> P[Story player]
+    P --> B[Static database beat text]
+    B --> E[Raw feeling interpolation in bridge]
+    P --> A[Immediate progress acknowledgement]
+```
+
+### Current components
+
+| Layer | Implementation | Assessment |
+|---|---|---|
+| Web application | Next.js App Router, React, TypeScript, Tailwind, Motion | Appropriate for the next release; no framework rewrite needed. |
+| Identity | Supabase anonymous auth, email/password or link upgrade | Strong low-friction foundation; user data controls are incomplete. |
+| Persistence | Supabase/Postgres via server-only service role | Appropriate, but session and content updates need stronger atomicity and lifecycle semantics. |
+| Historical content | `figures`, `figure_stages`, JSON beats, sources | Good editorial starting point; not granular enough for runtime claim validation. |
+| Retrieval | Age gate, keyword hybrid or six-lane in-memory cosine, top-K pool | Pluggable and testable; latest evidence favors keyword in production. |
+| Reranking | GPT-OSS 120B through an OpenAI-compatible REST boundary | Sensible provider isolation and degraded fallback. |
+| Prose | Generated eyebrow only; all beats use stub streamer | Does not yet deliver personalized narrative generation. |
+| Story delivery | Server chunking, streamed text, client reveal timer | Good separation of network from visual pacing; progress acknowledgement is semantically wrong. |
+| Safety | Pre-provider deterministic regex | Correct placement; coverage, review, localization, and regression process are incomplete. |
+| Privacy | Owned sessions, default-deny tables, hashed IP, TTL jobs | Better than a typical MVP; derived prose and deletion need explicit treatment. |
+| Evaluation | Matching benchmark, retrieval benchmark, content validator, smoke | Strong start; lacks end-to-end story, safety, privacy, and production-quality gates. |
+
+## Architecture strengths to retain
+
+1. **Provider boundaries.** `lib/llm.ts`, `lib/embeddings.ts`, and `lib/session.ts` keep provider details away from product routes.
+2. **Stage as the retrieval unit.** `(figure_key, stage_id)` represents one emotional episode and should remain the core content identity.
+3. **Anti-echo retrieval surfaces.** Shape/facet embedding text and rerank biography should remain separated.
+4. **Recovery asymmetry.** A degraded but honest canonical story is preferable to a failed request; retrieval recall and generative validation should have different failure strategies.
+5. **Recipe versioning.** Session metadata already contains the seeds of reproducible experiments.
+6. **Client-owned reveal pacing.** The server sends text without artificial word delays; the reader controls animation locally.
+7. **Anonymous-first ownership.** The private-session 404 behavior and server-only data plane are sound patterns.
+
+## Architecture gaps
+
+### Story generation and truth
+
+- Facts are stored in large prose strings, so there is no deterministic claim-to-source mapping.
+- Canonical beats mix documented events, interpretation, and dramatized texture in the same `text` field.
+- `sourceNotes` are useful for editors but not normalized or enforced.
+- The real prose provider does not generate story beats.
+- The raw disclosure is directly inserted into the final bridge.
+- There is no generation artifact, validation status, generation attempt, or canonical fallback reason persisted per session.
+
+### Matching
+
+- The LLM is told to choose even when none is genuinely close.
+- Confidence is self-reported and hidden from the reader.
+- Current vector facet lanes reuse one raw-feeling embedding, even though each facet is a different semantic task.
+- Eval history is mutable and documentation conflicts with the latest stored result.
+- Real-user coverage and calibration are unknown.
+
+### Reliability and state
+
+- The session store's `updateSession` is a blind update without an expected-position compare-and-set.
+- The client acknowledges delivery before user Continue intent.
+- Full story content is assembled at read time from mutable stage data; a later stage edit can change an old session's story.
+- `maxDuration=60` is a timeout allowance, not a latency strategy.
+- There is no production event/trace contract or fallback dashboard.
+
+### Privacy and safety
+
+- Raw disclosure, derived copy, persisted story, feedback, and event retention are not modeled as explicit data classes in code.
+- The planned taint wrappers and string-hostile trace schema are documented but not implemented.
+- Safety regression, reviewed market resource configuration, and operational incident controls are missing.
+- Account and story deletion are absent.
+
+## Target architecture
+
+```mermaid
+flowchart TD
+    U[User intake] --> SG[Deterministic Safety Gate]
+    SG -->|intercept| CR[Reviewed, market-aware resources]
+    SG -->|continue| RB[Resonance Brief]
+    RB --> RET[Approved Retrieval Recipe]
+    RET --> RR[Calibrated Reranker]
+    RR -->|uncertain| Q[One clarification or honest adjacent-match state]
+    Q --> RET
+    RR -->|accepted| SS[Published StorySpec]
+    SS --> SC[Hybrid Story Composer]
+    RB --> SC
+    SC --> VG[Validation Gates]
+    VG -->|pass| SA[Immutable StoryArtifact]
+    VG -->|bounded retry fails| CF[Canonical fallback artifact]
+    CF --> SA
+    SA --> DB[(Supabase)]
+    DB --> API[Story API]
+    API --> PLAYER[Accessible reader]
+    PLAYER --> FB[Resonance feedback / another story]
+    PLAYER --> ACK[Atomic user acknowledgement]
+    RET -. safe operational events .-> OBS[Privacy-safe observability]
+    VG -. safe operational events .-> OBS
+    PLAYER -. safe operational events .-> OBS
+```
+
+## Architecture decisions mapped to the roadmap
+
+| Decision | Priority | Type | Roadmap link | Rationale |
+|---|---|---|---|---|
+| Introduce evidence-addressable `StorySpec` | P0 | [Refactor] | P0-02 | Runtime factual validation is impossible against prose blobs. |
+| Generate and persist one immutable `StoryArtifact` | P0 | [Refactor] | P0-03 | Guarantees replay, stable reading, validation-before-display, and provider-independent delivery. |
+| Remove raw disclosure interpolation | P0 | [Bug Fix] | P0-04 | Protects privacy, tone, and retention coherence. |
+| Add calibrated clarification/no-match states | P0 | [Feature] | P0-05 | The system must be allowed to admit uncertainty. |
+| Move acknowledgement to explicit Continue and make it atomic | P0 | [Bug Fix] | P0-09 | Corrects resume and concurrency semantics. |
+| Implement a closed telemetry schema | P0 | [Feature] | P0-11 | Enables learning without logging intimate text. |
+| Pin production retrieval to an approved manifest | P0 | [Bug Fix] | P0-13 | Prevents configuration drift from selecting a weaker matcher. |
+| Add explicit retention classes and deletion | P0 | [Feature] | P0-14 | Extends privacy from policy text into data lifecycle. |
+| Add facet projections only as a shadow challenger | P1 | [Refactor] | P1-01 | Retrieval sophistication must earn promotion through measured gains. |
+| Add a durable job queue only if measured generation latency requires it | P1 | [Refactor] | P1-10 | Avoids premature distributed complexity while preserving a scale path. |
+| Move cosine to database-native vector search only at measured scale | P2 | [Refactor] | P2-05 | Fifty stages do not justify a vector-infrastructure migration. |
+
+## P0-02 — [Refactor] `StorySpec`: target content contract
+
+The `StorySpec` is an immutable, published editorial artifact. It separates what happened, what editors infer, what prose may say, and how evidence supports each claim.
+
+```ts
+type StorySpec = {
+  storySpecId: string;
+  figureKey: string;
+  stageId: string;
+  version: number;
+  status: "draft" | "review" | "published" | "retired";
+  episode: {
+    ageMin: number;
+    ageMax: number;
+    startDate?: string;
+    endDate?: string;
+    throughLine: string;
+  };
+  facts: FactAtom[];
+  entities: AllowedEntity[];
+  quotes: QuoteRecord[];
+  arc: StoryBeatSpec[];
+  interpretations: InterpretationRule[];
+  avoidRules: string[];
+  sources: SourceRecord[];
+  review: {
+    researcherId: string;
+    historicalReviewerId: string;
+    toneReviewerId: string;
+    reviewedAt: string;
+  };
+};
+
+type FactAtom = {
+  factId: string;
+  statement: string;
+  sourceRefs: SourceRef[];
+  eventOrder: number;
+  confidence: "documented" | "probable" | "disputed";
+  allowedParaphrases?: string[];
+};
+
+type StoryBeatSpec = {
+  role:
+    | "scene"
+    | "dark_moment"
+    | "response"
+    | "struggle"
+    | "turning_point"
+    | "became"
+    | "bridge";
+  requiredFactIds: string[];
+  optionalFactIds: string[];
+  canonicalText: string;
+  personalizationZones: Array<
+    "none" | "emphasis" | "transition" | "reader_bridge"
+  >;
+};
+```
+
+### Content rules
+
+- A **fact atom** carries a claim that can be independently supported.
+- An **interpretation** may explain emotional shape but cannot introduce a new event.
+- A **dramatization limit** says what cannot be invented: interior monologue, private gestures, weather, room detail, dialogue, or causality without support.
+- A **quote record** distinguishes exact text from paraphrase and disputed wording.
+- A **canonical beat** is the guaranteed fallback, not a prompt suggestion.
+- A published spec is immutable. Corrections produce a new version and can retire the old version for new sessions while old artifacts remain auditable.
+
+## P0-03 — [Refactor] `ResonanceBrief`: bounded personalization input
+
+The composer should not receive the raw disclosure everywhere. A dedicated analyzer creates a short-lived structure with explicit provenance. The raw text remains available only to authorized boundaries: crisis check, retrieval/rerank, the analyzer, and an audited replay path.
+
+```ts
+type ResonanceBrief = {
+  version: string;
+  primaryPressure:
+    | "loss"
+    | "rejection"
+    | "isolation"
+    | "identity"
+    | "blocked_agency"
+    | "shame"
+    | "uncertainty"
+    | "exhaustion"
+    | "other";
+  emotionalCore: string;       // sensitive derived text
+  situationShape: string;      // sensitive derived text
+  desiredDistance: "gentle" | "direct" | "unspecified";
+  anchors: Array<{ sourceSpanHash: string; concept: string }>;
+  forbiddenEchoHashes: string[];
+};
+```
+
+The enum is still sensitive when derived from a user; it may enter composition but not general telemetry. Operational traces may include only counts or coarse, pre-approved buckets after reduction.
+
+## P0-03 — [Refactor] `StoryArtifact`: immutable runtime contract
+
+```ts
+type StoryArtifact = {
+  artifactId: string;
+  sessionId: string;
+  storySpecId: string;
+  storySpecVersion: number;
+  recipe: StoryRecipe;
+  status: "validated" | "canonical_fallback" | "retired";
+  framing: "close" | "adjacent";
+  opening: {
+    eyebrow: string;
+    prefaceLines: string[];
+  };
+  beats: Array<{
+    role: StoryBeatSpec["role"];
+    paragraphs: string[];
+    supportingFactIds: string[];
+  }>;
+  rationale: {
+    resonance: string;
+    gap: string;
+  };
+  validation: {
+    schemaVersion: string;
+    passed: boolean;
+    factCoverage: number;
+    retryCount: number;
+    safeReasonCodes: string[];
+  };
+  createdAt: string;
+};
+```
+
+The client receives only the artifact fields required for presentation. Evidence, validation internals, raw disclosure, prompt content, and private rationale inputs remain server-side.
+
+## P0-03 — [Refactor] Validation stack
+
+Validation should be defense in depth. No single LLM judge can certify truth.
+
+### Gate 1: deterministic structure
+
+- Exactly seven ordered roles.
+- Paragraph and length bounds.
+- Required artifact/version fields.
+- No missing final bridge or empty canonical fallback.
+
+### Gate 2: deterministic claim controls
+
+- Every recognized person, location, organization, work, year, date, amount, and direct quote is on the `StorySpec` allowlist.
+- Direct quotes exactly match an approved quote record or are rendered as paraphrase without quotation marks.
+- Required fact IDs are represented and chronology is valid.
+- Forbidden “avoid saying” phrases and unsupported superlatives are rejected.
+
+### Gate 3: evidence and contradiction review
+
+- Split prose into claims and require each factual claim to resolve to fact IDs.
+- Use a constrained entailment/contradiction model as a secondary reviewer against only the selected fact atoms.
+- Fail closed on unsupported named claims; route interpretive uncertainty to canonical fallback rather than silently deleting context.
+
+### Gate 4: tone and safety
+
+- No diagnosis, therapy simulation, commands, or medical/legal advice.
+- No promise that the user will succeed or that pain is necessary for greatness.
+- No equivalence between the user's situation and severe historical trauma.
+- No “at least,” “everything happens for a reason,” or dismissive reassurance.
+- No direct reader address outside approved preface/bridge zones.
+
+### Gate 5: privacy and echo
+
+- Reject verbatim and high-overlap spans from the disclosure.
+- Reject unique names, locations, employers, schools, contact details, or other user-specific entities unless explicitly required and consented—which is not a P0 use case.
+- Reject raw disclosure in source, rationale, trace, error, or list-view fields.
+
+### Gate 6: editorial sampling
+
+- Every new recipe receives blind review before rollout.
+- Production samples are selected by safe recipe/fallback/error strata, using consented test inputs or user feedback artifacts that are explicitly eligible for review.
+- Real disclosures are not made available to editors by default.
+
+## P0-03 — [Refactor] Generation and delivery sequence
+
+1. Validate intake and run the deterministic safety gate.
+2. Consume the rate-limit budget.
+3. Create the `ResonanceBrief` and match the stage.
+4. If uncertain, return the clarification/adjacent-match state before story composition.
+5. Load an immutable published `StorySpec` version.
+6. Compose the full artifact in one bounded operation.
+7. Validate, retry at most once with structured failure reasons, then use canonical fallback.
+8. Persist the immutable artifact and session pointer in one transaction.
+9. Redirect to the reader and stream stored paragraphs; no prose provider is needed during reading.
+10. Acknowledge position only on explicit reader action through an atomic operation.
+
+This sequence favors consistency and auditability over token-by-token model streaming. Visual word reveal remains a client effect and should never be confused with model generation.
+
+## P0-09 — [Bug Fix] Atomic progress state
+
+Replace blind progress updates with a database function or conditional update that accepts the expected and next positions:
+
+```sql
+ack_story_position(
+  p_session_id,
+  p_user_id,
+  p_expected_beat,
+  p_expected_chunk,
+  p_next_beat,
+  p_next_chunk
+)
+```
+
+The operation must atomically verify ownership and current position, then update once. Outcomes should be `advanced`, `already_advanced`, `conflict`, or `not_found`; no result may reveal a foreign session. The memory provider should implement identical semantics so smoke tests remain representative.
+
+Recommended state distinction:
+
+- `delivered`: content successfully reached the browser; operational only.
+- `revealed`: full passage became visible; client event only.
+- `acknowledged`: user explicitly continued; durable position.
+
+Only `acknowledged` changes resume position.
+
+## P0-13 — [Bug Fix] Approved recipe manifest
+
+Configuration should be explicit and promotion-controlled:
+
+```ts
+type ApprovedStoryRecipe = {
+  recipeId: string;
+  datasetVersion: string;
+  retrievalMode: "keyword" | "facetsrag";
+  embeddingModelId: string | null;
+  rerankModelId: string;
+  proseModelId: string;
+  storyPromptVersion: string;
+  validatorVersion: string;
+  storySpecSchemaVersion: string;
+  approvedAt: string;
+};
+```
+
+Production should refuse `auto` selection. `auto` may remain a local-development convenience, but public deployments need one approved recipe ID. A session stores that ID plus resolved component versions.
+
+## P0-11 — [Feature] Safe observability architecture
+
+The event API should reject arbitrary strings. A proposed event envelope:
+
+```ts
+type ProductEvent = {
+  event:
+    | "intake_submitted"
+    | "crisis_intercepted"
+    | "match_completed"
+    | "clarification_shown"
+    | "artifact_validated"
+    | "artifact_fallback"
+    | "first_content"
+    | "passage_acknowledged"
+    | "story_completed"
+    | "feedback_submitted"
+    | "story_saved"
+    | "story_deleted";
+  recipeId?: ApprovedId;
+  figureKey?: ApprovedFigureKey;
+  confidenceBucket?: "high" | "medium" | "low";
+  latencyBucket?: "lt1s" | "1to3s" | "3to6s" | "6to10s" | "gt10s";
+  count?: number;
+  ok?: boolean;
+  errorClass?: ApprovedErrorClass;
+};
+```
+
+Use opaque constructors for approved IDs/enums and prohibit index signatures. Tests must reject keys such as `feeling`, `prompt`, `response`, `rationaleText`, `themes`, `embedding`, `candidateKeys`, `error`, or any free-form payload.
+
+Operational logs should be similarly reduced at provider boundaries. A caught provider exception becomes `{ provider, operation, errorClass, statusBucket, latencyBucket }`; the original exception object is discarded before it can reach application logging.
+
+## P0-14 — [Feature] Data model and retention classes
+
+### Proposed tables
+
+| Table | Contains | Sensitive class | Retention |
+|---|---|---|---|
+| `story_specs` | Versioned editorial specifications | Curated, non-user data | Indefinite with version history |
+| `fact_atoms` / `source_records` | Claim-level evidence | Curated, non-user data | Indefinite with corrections |
+| `story_artifacts` | Validated personalized/canonical output | Sensitive derived for personalized zones | Guest TTL; saved until user deletion under explicit consent, or de-personalize on policy expiry |
+| `sessions` | Ownership, match, raw disclosure, progress | Raw sensitive + safe identifiers | Guest TTL; raw disclosure nulled on stated schedule |
+| `story_feedback` | Rating and bounded reason enums; optional free text separately | Enums may be sensitive-derived; free text is raw sensitive | Short documented retention; user-deletable |
+| `product_events` | Closed non-semantic events | Safe operational | Short operational retention |
+| `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Short operational retention |
+| `content_reports` | Fact ID and bounded issue reason | Curated identifiers | Until resolution plus audit period |
+
+### Retention decision required before launch
+
+“Save this story” must have one explicit meaning. The recommended product contract is:
+
+- Guest: session, artifact, and derived copy are deleted after the guest inactivity TTL.
+- Saved account: the validated story artifact remains until the user deletes it; raw intake is still deleted on the shorter disclosure schedule.
+- The save UI explicitly explains that personalized story wording may remain because it is the saved item.
+- If the team does not want to retain derived sensitive prose, the saved artifact must de-personalize after the disclosure TTL and fall back to canonical copy. The product must not promise permanence while silently producing a broken bridge.
+
+This decision requires product/privacy review, but the schema must support it with `retention_class`, `saved_at`, `personalized_copy_expires_at`, and cascade-tested deletion.
+
+## P0-15 — [Refactor] Module boundaries
+
+Recommended server-side modules:
+
+```text
+lib/
+  safety/                 deterministic gate, resource policy, eval adapters
+  intake/                 validation and sensitive input wrappers
+  resonance/              ResonanceBrief creation and validation
+  retrieval/              candidate retrieval strategies
+  rerank/                 calibrated selection and confidence
+  content/                StorySpec repository, fact/source models, publish rules
+  composition/            Story Composer and canonical fallback
+  validation/             schema, evidence, tone, privacy, safety gates
+  artifacts/              persistence and client projection
+  progress/               atomic acknowledgement contract
+  telemetry/              closed event schema and reductions
+  providers/              LLM and embedding adapters
+```
+
+Routes should orchestrate domain services; they should not build prompts, inspect raw provider errors, or update story state directly. Provider implementations remain swappable, but the product contract lives above them.
+
+## P0-15 — [Refactor] Deployment and rollback
+
+### Required feature controls
+
+- `story_composer_enabled`
+- `personalized_bridge_enabled`
+- `approved_story_recipe_id`
+- `stage_enabled:{figureKey}:{stageId}`
+- `prose_provider_enabled`
+- `facet_retrieval_shadow_enabled`
+
+Controls must be server-side, audited, and unable to reveal user data. The default failure posture is canonical artifact plus approved production matcher; a safety or privacy incident can disable new story creation entirely while preserving access to already-saved safe artifacts.
+
+### Health checks
+
+- Approved recipe resolves to installed models/prompts/validators.
+- Every launch stage has a published `StorySpec` and canonical fallback.
+- Database migrations and atomic progress function are present.
+- Auth, email confirmation, guest cleanup, disclosure retention, and event pruning are healthy.
+- Model provider calls pass a sanitized synthetic probe.
+- Safety/resource configuration exists for the active market.
+
+## P1-10 — [Refactor] Scale path without premature services
+
+For the initial public release, compose synchronously within a strict budget and show an honest preparation state. Add a queue only if instrumentation shows that validated composition cannot reliably meet the first-content target.
+
+If required, the next step is a durable `generation_jobs` table plus worker, not a fleet of microservices:
+
+1. Intake creates session and job transactionally.
+2. Reader route shows a cancellable preparation state.
+3. Worker claims jobs with leases and idempotency keys.
+4. Validated artifact publication is atomic.
+5. Client uses short polling or server-sent events for status—status only, never token streaming.
+6. Timeouts resolve to canonical fallback.
+
+Service extraction becomes justified only when independent scaling, deployment isolation, or team ownership is measured—not anticipated.
+
+## P2-05 — [Refactor] Retrieval scale path
+
+The current exact cosine approach is acceptable for 50 stages. Reconsider database-native vector retrieval when one or more measured thresholds are crossed:
+
+- hundreds to thousands of stage versions materially increase cold-start/cache load;
+- multiple server instances duplicate a large embedding cache;
+- p95 retrieval latency breaches its budget;
+- embedding refresh invalidation becomes operationally unreliable;
+- market/language partitions make in-memory loading wasteful.
+
+Any migration must preserve per-lane typed embeddings, age/status filtering before quotas, content-hash validity, retrieval recall, recipe versioning, and the production promotion gate.
+
+## Security and privacy threat considerations
+
+| Threat | Current posture | P0 control |
+|---|---|---|
+| Story URL enumeration | 128-bit random IDs plus ownership check and uniform 404 | Retain; add route regression tests. |
+| Service-role exposure | Server-only boundaries and no browser data-plane access | Retain; add build/static checks for secret import paths. |
+| Prompt injection through intake | User text is inserted into model prompts | Use strict role separation, structured extraction, output schemas, allowlists, and no tool access. |
+| Historical hallucination | Static text today; future generation risk | `StorySpec`, fact IDs, deterministic entity/quote gates, canonical fallback. |
+| Disclosure leakage through logs | Code avoids explicit logging; no enforced schema | Opaque sensitive wrappers, sanitized provider errors, string-hostile event schema, CI privacy tests. |
+| Cross-user cache leakage | No user story cache today | Cache curated inputs only; artifact cache keys must include ownership and never be publicly shared. |
+| Multi-tab progress races | Route-level idempotency but blind database update | Atomic expected-position acknowledgement. |
+| Abuse/cost exhaustion | User/IP rate limits, fail-open on DB limiter failure | Monitor fail-open, add provider budgets and per-action retry policy. Crisis remains exempt. |
+| Content correction | Requires content/code/database update | Stage/spec kill switch, immutable versions, editorial report queue, rollback. |
+| Account/device exposure | Private sessions but saved story persists | Delete controls, session management, sensitive list-view defaults, explicit retention. |
+
+## Architecture outcome
+
+This design changes Onward from “an LLM chooses one of 50 static stories” into a controlled content system:
+
+- retrieval decides **which documented episode** belongs beside the user;
+- the `StorySpec` defines **what is true and what may be said**;
+- the Story Composer decides **how to emphasize it for this reader**;
+- validators decide **whether it is safe and supported enough to show**;
+- the artifact store guarantees **the story remains stable**;
+- the reader decides **the pace**;
+- feedback and telemetry decide **what to improve next**.

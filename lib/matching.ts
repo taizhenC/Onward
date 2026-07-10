@@ -20,6 +20,7 @@ import { retrieveFacets, RetrievalUnavailableError } from "./facets-retrieval";
 export type MatchInput = {
   age: number;
   feeling: string;
+  eligibleStageKeys?: ReadonlySet<string>;
 };
 
 export type MatchResult = {
@@ -256,9 +257,12 @@ async function buildPool(input: MatchInput): Promise<{
   pool: FigureStageRow[];
   fallbackToAll: boolean;
 }> {
-  const candidates = await listByAge(input.age);
+  const isEligible = (stage: FigureStageRow) =>
+    !input.eligibleStageKeys ||
+    input.eligibleStageKeys.has(`${stage.figureKey}\u0000${stage.stageId}`);
+  const candidates = (await listByAge(input.age)).filter(isEligible);
   const fallbackToAll = candidates.length === 0;
-  const pool = fallbackToAll ? await listAll() : candidates;
+  const pool = fallbackToAll ? (await listAll()).filter(isEligible) : candidates;
 
   if (pool.length === 0) {
     throw new Error("No figure stages are available to match against.");

@@ -36,6 +36,7 @@ npm run smoke             # hermetic regression suite (memory + stubs)
 npm run eval              # match eval (EVAL_CONCURRENCY=1 with real providers)
 npm run seed              # seed figures + figure_stages to Supabase
 npm run check-story-spec  # validate all draft contracts and publish rejection gates
+npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
 npm run seed-story-specs  # seed review drafts; never overwrites reviewed/published content
 npm run check-db          # Supabase acceptance check (after seed)
 npm run seed-embeddings   # embed shape/facet texts (requires EMBEDDING_PROVIDER=gemini)
@@ -66,14 +67,14 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable, evidence-bound StorySpec versions.
+1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable, evidence-bound StorySpec versions; `0005` adds immutable, owner-scoped StoryArtifacts and atomic session creation.
 2. Authentication → Sign In/Up → enable **anonymous sign-ins**.
 3. Authentication → URL Configuration → set **Site URL** to the production URL; add `http://localhost:3000/**` to the redirect allowlist (a separate Supabase project for local dev is cleaner — Site URL is single-valued).
 4. Authentication → Emails → configure **custom SMTP** (Resend's free tier works). The built-in sender is limited to ~2 emails/hour **and only delivers to project team members** — without custom SMTP, real users' save/sign-in emails silently fail.
 5. Rewrite **three** email templates to the `token_hash` form (the default PKCE `?code=` links only work in the originating browser):
    - *Magic Link* and *Confirm signup*: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/stories`
    - *Confirm email change*: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email_change&next=/stories`
-6. Seed: `npm run seed`, `npm run seed-story-specs`, then `npm run check-db`. Seeded StorySpecs stay in `draft`; source mapping and human review are required before an editor moves one to `review` and runs `npm run story-spec:status -- publish <storySpecId>`. The same command with `retire` immediately removes one stage version from new matching without a deploy. For semantic retrieval: `npm run check-embeddings` → `npm run seed-embeddings` → `npm run check-embeddings`.
+6. Seed: `npm run seed`, then `npm run seed-story-specs`. New stages and specs stay in `draft`; source mapping and human review are required before an editor moves a spec to `review` and runs `npm run story-spec:status -- publish <storySpecId>`. Production matching considers only valid published StorySpecs. The same command with `retire` immediately removes one stage version from new matching without a deploy. Run `npm run check-db` after publishing the intended launch subset. For semantic retrieval: `npm run check-embeddings` → `npm run seed-embeddings` → `npm run check-embeddings`.
 
 ### 2. Vercel
 

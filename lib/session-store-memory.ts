@@ -11,6 +11,10 @@ import type {
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import { LOCAL_DEV_USER_ID } from "./auth";
+import {
+  deleteMemoryStoryArtifact,
+  putMemoryStoryArtifact,
+} from "./story-artifact-store-memory";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -25,6 +29,7 @@ const sessions: Map<string, Session> =
   globalThis.__onwardSessions ?? (globalThis.__onwardSessions = new Map());
 
 const PHASE0_SESSION_TTL_MS = 60 * 60 * 1000;
+const MAX_SESSION_ID_ATTEMPTS = 5;
 
 function isExpired(session: Session, now = Date.now()): boolean {
   return now - session.createdAt > PHASE0_SESSION_TTL_MS;
@@ -33,6 +38,7 @@ function isExpired(session: Session, now = Date.now()): boolean {
 function pruneExpiredSessions(now = Date.now()): void {
   for (const [sessionId, session] of sessions) {
     if (isExpired(session, now)) {
+      if (session.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
       sessions.delete(sessionId);
     }
   }
@@ -40,15 +46,24 @@ function pruneExpiredSessions(now = Date.now()): void {
 
 async function createSession(input: CreateSessionInput): Promise<string> {
   pruneExpiredSessions();
-  const sessionId = randomBytes(16).toString("hex");
+  let sessionId = "";
+  for (let attempt = 0; attempt < MAX_SESSION_ID_ATTEMPTS; attempt += 1) {
+    const candidate = randomBytes(16).toString("hex");
+    if (!sessions.has(candidate)) {
+      sessionId = candidate;
+      break;
+    }
+  }
+  if (!sessionId) throw new Error("could not allocate a unique session ID");
   const now = Date.now();
   const session: Session = {
     sessionId,
     userId: input.userId,
     figureKey: input.figureKey,
     stageId: input.stageId,
+    storyArtifactId: input.artifact.artifactId,
     framing: input.framing,
-    openingCopy: input.openingCopy,
+    openingCopy: input.artifact.openingCopy,
     age: input.age,
     feeling: input.feeling,
     matchRecipe: input.matchRecipe,
@@ -57,7 +72,13 @@ async function createSession(input: CreateSessionInput): Promise<string> {
     createdAt: now,
     updatedAt: now,
   };
-  sessions.set(sessionId, session);
+  putMemoryStoryArtifact(sessionId, input.userId, input.artifact);
+  try {
+    sessions.set(sessionId, session);
+  } catch (error) {
+    deleteMemoryStoryArtifact(input.artifact.artifactId);
+    throw error;
+  }
   return sessionId;
 }
 
@@ -65,6 +86,7 @@ async function getSession(sessionId: string): Promise<Session | null> {
   const session = sessions.get(sessionId);
   if (!session) return null;
   if (isExpired(session)) {
+    if (session.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
     sessions.delete(sessionId);
     return null;
   }
@@ -74,11 +96,13 @@ async function getSession(sessionId: string): Promise<Session | null> {
     nextChunkIndex?: number;
     userId?: string;
     updatedAt?: number;
+    storyArtifactId?: string | null;
   };
   if (
     legacySession.nextChunkIndex === undefined ||
     legacySession.userId === undefined ||
     legacySession.updatedAt === undefined ||
+    legacySession.storyArtifactId === undefined ||
     openingCopy !== session.openingCopy
   ) {
     const migrated: Session = {
@@ -89,6 +113,7 @@ async function getSession(sessionId: string): Promise<Session | null> {
           : legacySession.nextChunkIndex,
       userId: legacySession.userId ?? LOCAL_DEV_USER_ID,
       updatedAt: legacySession.updatedAt ?? session.createdAt,
+      storyArtifactId: legacySession.storyArtifactId ?? null,
       openingCopy,
     };
     sessions.set(sessionId, migrated);
@@ -135,6 +160,7 @@ async function updateSession(
   const existing = sessions.get(sessionId);
   if (!existing) return null;
   if (isExpired(existing)) {
+    if (existing.storyArtifactId) deleteMemoryStoryArtifact(existing.storyArtifactId);
     sessions.delete(sessionId);
     return null;
   }
@@ -157,7 +183,10 @@ async function acknowledgePosition(
 ): Promise<AcknowledgeSessionPositionResult> {
   const existing = sessions.get(input.sessionId);
   if (!existing || isExpired(existing) || existing.userId !== input.userId) {
-    if (existing && isExpired(existing)) sessions.delete(input.sessionId);
+    if (existing && isExpired(existing)) {
+      if (existing.storyArtifactId) deleteMemoryStoryArtifact(existing.storyArtifactId);
+      sessions.delete(input.sessionId);
+    }
     return "not_found";
   }
 

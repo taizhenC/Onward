@@ -5,6 +5,29 @@ import type { StorySpec } from "./story-spec-types";
 
 type StorySpecDbRow = { spec: unknown };
 
+export function storySpecStageKey(figureKey: string, stageId: string): string {
+  return `${figureKey}\u0000${stageId}`;
+}
+
+export async function listPublishedStorySpecKeys(): Promise<ReadonlySet<string>> {
+  const result = await getSupabase()
+    .from("story_specs")
+    .select("figure_key,stage_id,spec")
+    .eq("status", "published");
+  if (result.error) throw new Error(`list published StorySpecs failed: ${result.error.message}`);
+  const keys = new Set<string>();
+  for (const row of result.data ?? []) {
+    try {
+      const validation = validateStorySpec(row.spec as StorySpec, { forPublish: true });
+      if (validation.valid) keys.add(storySpecStageKey(row.figure_key, row.stage_id));
+    } catch {
+      // A malformed published row is quarantined from matching. The readiness
+      // check reports incomplete coverage; runtime never offers invalid content.
+    }
+  }
+  return keys;
+}
+
 // Runtime reads fail closed. A malformed or incompletely reviewed document is
 // an operational error and must never be projected into a reader artifact.
 export async function getPublishedStorySpec(

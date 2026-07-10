@@ -1,17 +1,14 @@
 import {
   jsonError,
-  streamText,
   textStreamHeaders,
 } from "@/lib/api-utils";
 import { getAuthUserId } from "@/lib/auth";
-import { chunkBeatText } from "@/lib/chunks";
-import { getByKey } from "@/lib/figures";
-import { streamBeat } from "@/lib/llm";
 import {
   getNextStoryAdvance,
   parseBeatPositionRequest,
 } from "@/lib/story-progress";
 import { getOwnedSession } from "@/lib/session";
+import { getStoryPlayback } from "@/lib/story-playback";
 
 export const runtime = "nodejs";
 
@@ -39,30 +36,26 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError("Chunk index does not match the current session position.", 409);
   }
 
-  const stage = await getByKey(session.figureKey, session.stageId);
-  if (!stage) return jsonError("Figure stage not found.", 404);
+  const playback = await getStoryPlayback(session);
+  if (!playback) return jsonError("Story artifact not found.", 404);
 
-  const beat = stage.beats[parsed.beatIndex];
+  const beat = playback.beats[parsed.beatIndex];
   if (!beat) return jsonError("Beat index is out of range.", 400);
 
-  const chunks = chunkBeatText(beat);
-  const chunk = chunks[parsed.chunkIndex];
+  const chunk = beat.chunks[parsed.chunkIndex];
   if (!chunk) return jsonError("Chunk index is out of range.", 400);
 
   const nextPosition = getNextStoryAdvance({
     beatIndex: parsed.beatIndex,
     chunkIndex: parsed.chunkIndex,
-    chunkCount: chunks.length,
-    beatCount: stage.beats.length,
+    chunkCount: beat.chunks.length,
+    beatCount: playback.beats.length,
   });
 
-  return new Response(
-    streamText(streamBeat({ beat, textOverride: chunk })),
-    {
-      headers: {
-        ...textStreamHeaders,
-        "x-onward-next": nextPosition,
-      },
+  return new Response(chunk, {
+    headers: {
+      ...textStreamHeaders,
+      "x-onward-next": nextPosition,
     },
-  );
+  });
 }

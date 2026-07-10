@@ -31,6 +31,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run check-figure
       - run: npm run check-story-spec
+      - run: npm run check-story-artifact
       - run: npm run eval-crisis
       - run: npm run smoke
       - run: npm run build

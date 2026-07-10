@@ -40,6 +40,7 @@ create index if not exists story_specs_stage_history_idx
 
 alter table story_specs enable row level security;
 revoke all on table story_specs from public, anon, authenticated;
+revoke all on table story_specs from service_role;
 grant select, insert, update on table story_specs to service_role;
 
 create or replace function enforce_story_spec_lifecycle()

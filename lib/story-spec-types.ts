@@ -16,15 +16,18 @@ export type PersonalizationZone =
   | "transition"
   | "reader_bridge";
 
-export type ContentFlag =
-  | "death_or_grief"
-  | "suicide_loss"
-  | "abuse_or_violence"
-  | "addiction"
-  | "serious_illness"
-  | "discrimination"
-  | "pregnancy_or_parenthood"
-  | "other_reviewed_flag";
+export const CONTENT_FLAGS = [
+  "death_or_grief",
+  "suicide_loss",
+  "abuse_or_violence",
+  "addiction",
+  "serious_illness",
+  "discrimination",
+  "pregnancy_or_parenthood",
+  "other_reviewed_flag",
+] as const;
+
+export type ContentFlag = (typeof CONTENT_FLAGS)[number];
 
 export type SourceRecord = {
   sourceId: string;

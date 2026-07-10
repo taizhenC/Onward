@@ -18,8 +18,8 @@
 |---|---|---|---|
 | P0-01 | External gate | Existing 104-case match eval and trust gate. | End-to-end consented benchmark, blind holdout, reviewer rubric, and full-artifact release gate. |
 | P0-02 | In progress | Versioned StorySpec contract, atomic facts, sentence-level evidence maps, source-scope gates, entity/quote links, chronology checks, dramatization limits, reviewer metadata, immutable database versions, fail-closed runtime loading, protected draft seeding, and independent per-stage publish/retire operations are implemented. All 50 legacy stages convert to valid review drafts, and all 50 are rejected when publication is attempted. | The generated drafts intentionally retain broad evidence references and empty beat-to-fact links. Editorial researchers must create exact/bounded locators, resolve quotes/entities/causal claims, and record real reviews for the launch subset before any stage is publicly eligible. |
-| P0-03 | Not started | Canonical beats and provider boundaries exist. | Resonance brief, bounded composer, validation stack, immutable artifact, retry/fallback, persistence. |
-| P0-04 | In progress | All 50 canonical bridges and the demo no longer repeat intake; the final prose boundary sanitizes legacy DB placeholders; smoke covers canonical, legacy, exact, and eight-word overlap cases. | Extend the same rejection contract to future artifact persistence, telemetry, provider-error, and generated-copy schemas before `Complete`. |
+| P0-03 | In progress | New sessions now compose a complete seven-beat StoryArtifact before persistence; the artifact includes validated opening copy, framing, full match/composer/validator recipe, content profile, evidence IDs, precomputed chunks, canonical JSON hash, and closed fallback/validation enums. Memory and Supabase stores atomically bind one owner/session to one immutable artifact; all playback, progress, resume, and library reads use it, and production matching is gated to valid published StorySpecs. Fifty artifact fixtures pass integrity/privacy checks and fifty tamper attempts fail. | Add the ephemeral ResonanceBrief, bounded hybrid personalization, one structured provider retry, claim/entity/chronology/tone/safety validation for generated prose, real Postgres transaction/JSONB round-trip evidence, production latency/fallback gates, and an editorially safe migration plan for permanent pre-0005 sessions. |
+| P0-04 | In progress | All 50 canonical bridges and the demo no longer repeat intake; legacy placeholders are sanitized before chunking; generated opening copy now lives inside the immutable artifact and is rejected for exact/eight-word disclosure overlap, placeholders, promises, diagnosis, or prescription before persistence. Artifact JSON never stores the raw disclosure. | Add the ResonanceBrief bridge, named-detail checks, closed telemetry reductions, provider-capture/privacy tests, and explicit derived-data retention classes before `Complete`. |
 | P0-05 | Partial | Reranker produces confidence and session stores `framing`. | Calibration, client-visible adjacent framing, one clarification, and no-close-match recovery. |
 | P0-06 | Partial | Functional age/free-text intake and gentle error states. | Guided prompt, just-in-time privacy, optional context, durable retry draft, usability/accessibility evidence. |
 | P0-07 | In progress | Reader is book-like; current branch adds visible reveal control and explicit Continue/Finish. | Full coda sequencing, orientation, browser usability/accessibility coverage, and responsive QA. |
@@ -28,9 +28,9 @@
 | P0-10 | Not started | None. | Feedback schema/UI, bounded reasons, privacy controls, and rate-limit-safe alternate story. |
 | P0-11 | Not started | Code avoids deliberate sensitive logging. | Closed event schema, reductions, privacy rejection tests, dashboards, and alerts. |
 | P0-12 | External gate | Deterministic pre-provider gate; versioned 39-case corpus passes 26/26 critical positives; resource actions are region-specific, linked, and dated; crisis persistence/kill-switch behavior is smoke-tested; incident runbook exists. | Qualified safety review, launch-market approval, and a deliberate policy for context/negation over-triggers remain required before `Complete`. |
-| P0-13 | In progress | Current branch adds approved recipe ID, keyword default, production rejection of `auto`, corrected deploy docs, and smoke proof. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
-| P0-14 | Partial | Guest cleanup and 60-day raw-disclosure nulling exist. | Story/account deletion, derived-data retention classes, consent UI, privacy page, cascade tests, market/youth review. |
-| P0-15 | In progress | Current branch adds strict non-interactive ESLint, clean isolated production build, deterministic system fonts, configurable build directory, and CI workflow. | Route/integration matrix, migration preflight/rollback, health checks, kill switches, and a green remote CI run. |
+| P0-13 | In progress | Approved recipe ID, keyword default, production rejection of `auto`, deploy docs, and smoke proof exist; each immutable artifact now pins the complete match recipe plus composer and validator versions. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
+| P0-14 | Partial | Guest cleanup and 60-day raw-disclosure nulling exist; StoryArtifacts are owner-scoped and cascade with their session/user rather than retaining prose as orphans. | User-facing story/account deletion, derived-data retention classes, consent UI, privacy page, real cascade tests, market/youth review. |
+| P0-15 | In progress | Strict non-interactive ESLint, isolated production build, deterministic fonts, CI, approved-recipe fail-closed behavior, story kill switch, and migrations for immutable StorySpecs/StoryArtifacts exist. | Route/integration matrix, real migration preflight/rollback and atomic-RPC tests, health/readiness checks, remaining kill switches, and green remote CI evidence. |
 | P0-16 | Partial | Landing/auth typography, reduced motion, and several keyboard affordances exist. | Shared primitives, all-flow copy system, complete manual accessibility/usability audit. |
 | P0-17 | In progress | StorySpec drafts now carry intensity, inferred content flags, spoiler-light draft notes, and an explicit content-review gate. | Replace inferred profiles with reviewed profiles, then add user boundary input, hard eligibility filtering, boundary-safe fallback, and recovery tests. |
 
@@ -104,6 +104,21 @@ Branch: `roadmap-implementation`
 | `npm run eval-crisis` | Pass, 26/26 critical positives |
 | `npm run smoke` | Pass, 16/16 regressions |
 | `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 routes compiled/generated |
+
+### Stacked branch: `roadmap-story-artifacts`
+
+| Command | Result |
+|---|---|
+| `npm run lint` | Pass, zero warnings |
+| `npm run typecheck` | Pass |
+| `npm run check-figure` | Pass, 50/50 stages |
+| `npm run check-story-spec` | Pass, 50/50 safe drafts and 50/50 unsafe publish attempts rejected |
+| `npm run check-story-artifact` | Pass, 50/50 complete artifacts; disclosure, JSONB key-order, tamper, opening-copy, and static migration-shape gates |
+| `npm run eval-crisis` | Pass, 26/26 critical positives |
+| `npm run smoke` | Pass, 19/19 including private immutable replay, storage-boundary tamper rejection, nested freezing, injected atomic rollback, explicit legacy compatibility, and publication eligibility through age fallback |
+| `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 routes compiled/generated |
+
+`npm run eval-retrieval` was not used as branch evidence: it requires the real Gemini provider, while network/provider access is unavailable in the local sandbox. Matching's new eligibility filter is covered by type, smoke, and artifact/publication gates; the provider retrieval eval remains a release-gate dependency.
 
 ## Completion audit rule
 

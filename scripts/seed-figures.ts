@@ -37,6 +37,21 @@ async function main(): Promise<void> {
   }
   const figureRows = [...figuresByKey.values()];
 
+  // Content lifecycle is editorial state. Reseeding prose must never republish
+  // a retired stage or demote a reviewed one; new rows begin as draft.
+  const statusResult = await supabase
+    .from("figure_stages")
+    .select("figure_key,stage_id,status");
+  if (statusResult.error) {
+    throw new Error(`read figure stage status failed: ${statusResult.error.message}`);
+  }
+  const existingStatus = new Map(
+    (statusResult.data ?? []).map((row) => [
+      `${row.figure_key}\u0000${row.stage_id}`,
+      row.status === "published" ? "published" : "draft",
+    ]),
+  );
+
   // figure_stages: scalars/arrays mapped to snake_case; facets/beats written as jsonb verbatim.
   const stageRows = FIGURE_STAGES.map((stage) => ({
     figure_key: stage.figureKey,
@@ -51,7 +66,7 @@ async function main(): Promise<void> {
     anti_themes: stage.antiThemes,
     beats: stage.beats,
     sources: stage.sources,
-    status: "published",
+    status: existingStatus.get(`${stage.figureKey}\u0000${stage.stageId}`) ?? "draft",
   }));
 
   // figures first (FK parent), then stages.

@@ -42,6 +42,22 @@ function main(): void {
   }
 
   const fixture = specs[0];
+
+  // Editors narrow evidence claim by claim — the builders must give every
+  // fact and quote its own sourceRefs array, never one shared reference.
+  if (
+    fixture.facts.length >= 2 &&
+    fixture.facts[0].sourceRefs === fixture.facts[1].sourceRefs
+  ) {
+    failures.push("fact atoms share one mutable sourceRefs array");
+  }
+  if (
+    fixture.quotes.length >= 2 &&
+    fixture.quotes[0].sourceRefs === fixture.quotes[1].sourceRefs
+  ) {
+    failures.push("quote records share one mutable sourceRefs array");
+  }
+
   expectRejected(
     failures,
     "missing evidence",

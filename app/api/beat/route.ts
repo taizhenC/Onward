@@ -57,7 +57,7 @@ export async function POST(request: Request): Promise<Response> {
   });
 
   return new Response(
-    streamText(streamBeat({ session, beat, textOverride: chunk })),
+    streamText(streamBeat({ beat, textOverride: chunk })),
     {
       headers: {
         ...textStreamHeaders,

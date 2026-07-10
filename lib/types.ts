@@ -106,6 +106,14 @@ export type RerankFailureReason =
 
 export type StoryAdvance = "chunk" | "beat" | "end";
 
+export type CrisisResource = {
+  id: string;
+  region: string;
+  label: string;
+  action: string;
+  href: string;
+};
+
 // LLM-generated opening copy, stored on the session at intake and shown to the user.
 //   - eyebrow: the line above the (still anonymous) figure; replaced the framing label.
 //   - prefaceLines: the comfort card shown before any figure name or prose on first visit.
@@ -204,7 +212,8 @@ export interface SessionStore {
 }
 
 export type MatchResponse =
-  | { crisis: true; resources: string[] }
+  | { crisis: true; resources: CrisisResource[] }
+  | { temporarilyUnavailable: true }
   | { rateLimited: true }
   | { error: string }
   | { sessionId: string };

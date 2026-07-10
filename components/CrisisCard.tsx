@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "motion/react";
+import type { CrisisResource } from "@/lib/types";
 
-export function CrisisCard({ resources }: { resources: string[] }) {
+export function CrisisCard({ resources }: { resources: CrisisResource[] }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -16,18 +17,33 @@ export function CrisisCard({ resources }: { resources: string[] }) {
         not judge you.
       </p>
       <ul className="space-y-3">
-        {resources.map((line) => (
+        {resources.map((resource) => (
           <li
-            key={line}
+            key={resource.id}
             className="border-l-2 border-[var(--color-accent)] pl-4"
           >
-            {line}
+            <a
+              href={resource.href}
+              className="underline decoration-[var(--color-ink-soft)]/40 underline-offset-4"
+            >
+              <span className="block font-ui text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">
+                {resource.region}
+              </span>
+              <span className="block">{resource.label}</span>
+              <span className="block text-[var(--color-ink-soft)]">
+                {resource.action}
+              </span>
+            </a>
           </li>
         ))}
       </ul>
       <p className="font-ui text-xs text-[var(--color-ink-soft)]">
         Onward is not therapy and not an emergency service. If you are in
         immediate danger, call your local emergency number.
+      </p>
+      <p className="font-ui text-xs text-[var(--color-ink-soft)]">
+        Onward did not save what you wrote and will not start a story from this
+        message. You can return another time.
       </p>
     </motion.div>
   );

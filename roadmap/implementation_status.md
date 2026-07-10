@@ -19,7 +19,7 @@
 | P0-01 | External gate | Existing 104-case match eval and trust gate. | End-to-end consented benchmark, blind holdout, reviewer rubric, and full-artifact release gate. |
 | P0-02 | Not started | Stages have biography, sources, and free-text source notes. | Versioned `StorySpec`, fact IDs, exact source refs, entity/quote rules, immutable publishing, and migration. |
 | P0-03 | Not started | Canonical beats and provider boundaries exist. | Resonance brief, bounded composer, validation stack, immutable artifact, retry/fallback, persistence. |
-| P0-04 | Not started | Raw disclosure is private in the data plane. | Runtime and canonical bridges still contain `{feeling}`; demo repeats the sample; derived-data tests absent. |
+| P0-04 | In progress | All 50 canonical bridges and the demo no longer repeat intake; the final prose boundary sanitizes legacy DB placeholders; smoke covers canonical, legacy, exact, and eight-word overlap cases. | Extend the same rejection contract to future artifact persistence, telemetry, provider-error, and generated-copy schemas before `Complete`. |
 | P0-05 | Partial | Reranker produces confidence and session stores `framing`. | Calibration, client-visible adjacent framing, one clarification, and no-close-match recovery. |
 | P0-06 | Partial | Functional age/free-text intake and gentle error states. | Guided prompt, just-in-time privacy, optional context, durable retry draft, usability/accessibility evidence. |
 | P0-07 | In progress | Reader is book-like; current branch adds visible reveal control and explicit Continue/Finish. | Full coda sequencing, orientation, browser usability/accessibility coverage, and responsive QA. |
@@ -27,7 +27,7 @@
 | P0-09 | In progress | Current branch adds owner-scoped atomic compare-and-set; progress moves only on explicit Continue/Finish; smoke covers advance/retry/stale/foreign cases. | Browser-level refresh, back-button, offline, double-click, and multi-tab E2E evidence before `Complete`. |
 | P0-10 | Not started | None. | Feedback schema/UI, bounded reasons, privacy controls, and rate-limit-safe alternate story. |
 | P0-11 | Not started | Code avoids deliberate sensitive logging. | Closed event schema, reductions, privacy rejection tests, dashboards, and alerts. |
-| P0-12 | Partial | Deterministic pre-provider crisis gate; no persistence; static resources; smoke cases. | Versioned safety corpus, zero-critical-FN CI gate, reviewed locale resources, post-intercept policy, incident process. |
+| P0-12 | External gate | Deterministic pre-provider gate; versioned 39-case corpus passes 26/26 critical positives; resource actions are region-specific, linked, and dated; crisis persistence/kill-switch behavior is smoke-tested; incident runbook exists. | Qualified safety review, launch-market approval, and a deliberate policy for context/negation over-triggers remain required before `Complete`. |
 | P0-13 | In progress | Current branch adds approved recipe ID, keyword default, production rejection of `auto`, corrected deploy docs, and smoke proof. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
 | P0-14 | Partial | Guest cleanup and 60-day raw-disclosure nulling exist. | Story/account deletion, derived-data retention classes, consent UI, privacy page, cascade tests, market/youth review. |
 | P0-15 | In progress | Current branch adds strict non-interactive ESLint, clean isolated production build, deterministic system fonts, configurable build directory, and CI workflow. | Route/integration matrix, migration preflight/rollback, health checks, kill switches, and a green remote CI run. |
@@ -81,6 +81,17 @@ Branch: `roadmap-implementation`
 | `npm run check-figure` | Pass, 50/50 stages |
 | `npm run smoke` | Pass, 14/14 |
 | `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 static/dynamic routes compiled and generated |
+
+### Stacked branch: `roadmap-safety-privacy`
+
+| Command | Result |
+|---|---|
+| `npm run lint` | Pass, zero warnings |
+| `npm run typecheck` | Pass |
+| `npm run check-figure` | Pass, 50/50 stages and no disclosure placeholders |
+| `npm run eval-crisis` | Pass, 26/26 critical positives; review-only over-trigger IDs reported |
+| `npm run smoke` | Pass, 16/16 including disclosure, crisis persistence, and kill-switch assertions |
+| `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 routes compiled/generated |
 
 ## Completion audit rule
 

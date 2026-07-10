@@ -48,6 +48,13 @@ export async function handleIntake(
     return { crisis: true, resources: CRISIS_RESOURCES };
   }
 
+  // Operational kill switch for a safety, privacy, or content incident. Crisis
+  // support remains available because it is evaluated above this branch. The
+  // disabled path persists nothing and spends no provider or rate-limit budget.
+  if (process.env.STORY_CREATION_ENABLED?.trim().toLowerCase() === "false") {
+    return { temporarilyUnavailable: true };
+  }
+
   // Rate limit BEFORE matching, so limited requests never spend the query embedding
   // or the Cerebras rerank/opening-copy calls.
   const allowed = await consumeMatchRateLimit(ctx.userId, ctx.ipHash);

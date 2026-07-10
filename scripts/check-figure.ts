@@ -25,7 +25,7 @@ const SHAPE_MIN = 2;
 const SHAPE_MAX = 3;
 const AGE_FLOOR = 0;
 const AGE_CEILING = 120;
-const FEELING_PLACEHOLDER = "{feeling}";
+const FORBIDDEN_FEELING_PLACEHOLDER = "{feeling}";
 
 const FACET_KEYS = [
   "emotionalCore",
@@ -136,17 +136,14 @@ function checkBeats(beats: BeatBlueprint[]): string[] {
       problems.push(`beat[${index}] (${expectedRole}) text is empty`);
     }
 
-    // {feeling} is interpolated ONLY in the bridge beat (lib/llm-stub.ts). A placeholder
-    // anywhere else would render literally to the user; a missing one in the bridge
-    // drops the personal callback the bridge exists for.
+    // Raw intake is never interpolated into story prose. A placeholder anywhere
+    // would either render literally or reintroduce the disclosure-echo privacy bug.
     const hasPlaceholder =
-      typeof beat.text === "string" && beat.text.includes(FEELING_PLACEHOLDER);
-    if (expectedRole === "bridge" && !hasPlaceholder) {
-      problems.push(`bridge beat is missing the ${FEELING_PLACEHOLDER} placeholder`);
-    }
-    if (expectedRole !== "bridge" && hasPlaceholder) {
+      typeof beat.text === "string" &&
+      beat.text.includes(FORBIDDEN_FEELING_PLACEHOLDER);
+    if (hasPlaceholder) {
       problems.push(
-        `beat[${index}] (${expectedRole}) contains ${FEELING_PLACEHOLDER}, only interpolated in the bridge`,
+        `beat[${index}] (${expectedRole}) contains forbidden raw-disclosure placeholder ${FORBIDDEN_FEELING_PLACEHOLDER}`,
       );
     }
   });

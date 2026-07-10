@@ -50,5 +50,12 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
+  if ("temporarilyUnavailable" in result) {
+    return Response.json(result, {
+      status: 503,
+      headers: { "retry-after": "900" },
+    });
+  }
+
   return Response.json(result);
 }

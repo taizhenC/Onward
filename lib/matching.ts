@@ -152,8 +152,9 @@ function keywordFallback(
   };
 }
 
-// The configured retrieval mode (RETRIEVAL_MODE env, default "auto"). Unknown values fall back to
-// "auto". Exported so lib/intake.ts can freeze it into the match recipe for replay.
+// The configured retrieval mode. The evaluated keyword recipe is the default;
+// `auto` is a local/eval convenience and is rejected in production. Exported so
+// lib/intake.ts can freeze the resolved path into the session recipe.
 export function resolveRetrievalMode(
   explicit?: string,
   environment = process.env.NODE_ENV,
@@ -208,7 +209,7 @@ async function selectMatchPool(
     if (mode === "facetsrag") {
       throw new Error(
         `FacetsRAG retrieval unavailable (RETRIEVAL_MODE=facetsrag): ${reason}. ` +
-          "Seed embeddings and set EMBEDDING_PROVIDER=gemini, or run with RETRIEVAL_MODE=auto.",
+          "Seed embeddings and set EMBEDDING_PROVIDER=gemini, or run with RETRIEVAL_MODE=keyword.",
       );
     }
     // auto: degrade to keyword (recovery-asymmetry — a degraded match beats no match).

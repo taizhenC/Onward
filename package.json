@@ -13,6 +13,7 @@
     "health": "tsx scripts/check-provider.ts",
     "eval": "tsx scripts/eval-match.ts",
     "eval-retrieval": "tsx scripts/eval-retrieval.ts",
+    "eval-crisis": "tsx scripts/eval-crisis.ts",
     "seed": "tsx scripts/seed-figures.ts",
     "seed-embeddings": "tsx scripts/seed-embeddings.ts",
     "check-db": "tsx scripts/check-db.ts",

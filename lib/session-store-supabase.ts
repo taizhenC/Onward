@@ -7,7 +7,6 @@ import type {
   MatchRecipe,
   OpeningCopy,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
@@ -70,28 +69,6 @@ async function getSession(sessionId: string): Promise<Session | null> {
     .eq("session_id", sessionId)
     .maybeSingle();
   if (error) throw new Error(`getSession select failed: ${error.message}`);
-  return data ? rowToSession(data as SessionRow) : null;
-}
-
-async function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  const update: Record<string, number | string> = {};
-  if (patch.nextBeatIndex !== undefined) update.next_beat_index = patch.nextBeatIndex;
-  if (patch.nextChunkIndex !== undefined) update.next_chunk_index = patch.nextChunkIndex;
-  if (Object.keys(update).length === 0) return getSession(sessionId);
-
-  // Last-activity signal for the anonymous-guest retention job (migration 0003).
-  update.updated_at = new Date().toISOString();
-
-  const { data, error } = await getSupabase()
-    .from(TABLE)
-    .update(update)
-    .eq("session_id", sessionId)
-    .select("*")
-    .maybeSingle();
-  if (error) throw new Error(`updateSession failed: ${error.message}`);
   return data ? rowToSession(data as SessionRow) : null;
 }
 
@@ -196,7 +173,6 @@ function isUniqueConstraintViolation(error: { code?: string }): boolean {
 export const supabaseSessionStore: SessionStore = {
   createSession,
   getSession,
-  updateSession,
   acknowledgePosition,
   listSessionsByUser,
   _sessionCount: sessionCount,

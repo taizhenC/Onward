@@ -13,7 +13,10 @@ import {
 } from "../lib/session";
 import { MATCH_LIMITS } from "../lib/rate-limit";
 import { resolveRetrievalMode } from "../lib/matching";
-import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import {
+  APPROVED_PRODUCTION_RECIPE,
+  recipeIdForRetrievalMode,
+} from "../lib/match-config";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
 import { streamBeat } from "../lib/llm";
@@ -28,6 +31,9 @@ import type { BeatBlueprint } from "../lib/types";
 process.env.LLM_PROVIDER = "stub";
 // Sessions + figures from the in-process store/const (no DB) — keeps smoke hermetic.
 process.env.PERSISTENCE = "memory";
+// An ambient RETRIEVAL_MODE (e.g. facetsrag in a dev shell) would change both the
+// intake path and the approved-recipe assertion — pin it out for the same reason.
+delete process.env.RETRIEVAL_MODE;
 
 // Fixed request identity for every intake in this run. The whole run shares one
 // user, so the rate-limit assertion (which exhausts the 5/hour budget) MUST stay
@@ -354,16 +360,24 @@ function runApprovedRecipeAssertion(): AssertionResult {
     autoRejected = true;
   }
 
+  // The frozen recipe id must describe the path that ran: approved id for the
+  // approved mode, an explicit unapproved marker for everything else.
+  const approvedId = recipeIdForRetrievalMode(
+    APPROVED_PRODUCTION_RECIPE.retrievalMode,
+  );
+  const challengerId = recipeIdForRetrievalMode("facetsrag");
   const ok =
     defaultMode === APPROVED_PRODUCTION_RECIPE.retrievalMode &&
     productionMode === "keyword" &&
-    autoRejected;
+    autoRejected &&
+    approvedId === APPROVED_PRODUCTION_RECIPE.recipeId &&
+    challengerId.startsWith("unapproved-facetsrag");
   return {
     name,
     ok,
     detail: ok
-      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production auto rejected`
-      : `default=${defaultMode}, production=${productionMode}, autoRejected=${autoRejected}`,
+      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production auto rejected; unapproved modes stamped`
+      : `default=${defaultMode}, production=${productionMode}, autoRejected=${autoRejected}, ids=${approvedId}/${challengerId}`,
   };
 }
 

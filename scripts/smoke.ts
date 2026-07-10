@@ -741,6 +741,36 @@ async function runStoryPrivacyAssertion(): Promise<AssertionResult> {
     };
   }
 
+  // Word-boundary regression: a disclosure that is a substring of different
+  // words ("ice person waits" inside "nice person waits") is not an echo.
+  if (
+    containsDisclosureEcho("They said a nice person waits", "ice person waits") ||
+    !containsDisclosureEcho("They said a nice person waits", "nice person waits")
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: "overlap guard is not matching on whole-word boundaries",
+    };
+  }
+
+  // Backstop: a bare placeholder outside the canonical legacy line must never
+  // render literally.
+  let bareRendered = "";
+  const bareBeat: BeatBlueprint = {
+    kind: "bridge",
+    role: "bridge",
+    text: "They kept going through {feeling} and worse.",
+  };
+  for await (const token of streamBeat({ beat: bareBeat })) bareRendered += token;
+  if (bareRendered.includes("{feeling}")) {
+    return {
+      name,
+      ok: false,
+      detail: "bare legacy placeholder reached rendered prose",
+    };
+  }
+
   return {
     name,
     ok: true,

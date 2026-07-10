@@ -158,7 +158,7 @@ export type Session = {
   nextChunkIndex: number;
   createdAt: number;
   // Last progress write (ms). The activity signal for the anonymous-guest retention job
-  // (migration 0003); bumped on every updateSession.
+  // (migration 0003); bumped on every acknowledged position advance.
   updatedAt: number;
 };
 
@@ -175,14 +175,6 @@ export type CreateSessionInput = {
   age: number;
   feeling: string;
   matchRecipe: MatchRecipe;
-};
-
-// The only mutable session fields (story progress). Optional so a patch can move either one.
-// (A standalone type rather than Pick<Session,...> because `Pick` is shadowed in this file by
-// the reranker's local Pick type above.)
-export type SessionPatch = {
-  nextBeatIndex?: number;
-  nextChunkIndex?: number;
 };
 
 export type AcknowledgeSessionPositionInput = {
@@ -203,7 +195,6 @@ export type AcknowledgeSessionPositionResult =
 export interface SessionStore {
   createSession(input: CreateSessionInput): Promise<string>;
   getSession(sessionId: string): Promise<Session | null>;
-  updateSession(sessionId: string, patch: SessionPatch): Promise<Session | null>;
   acknowledgePosition(
     input: AcknowledgeSessionPositionInput,
   ): Promise<AcknowledgeSessionPositionResult>;

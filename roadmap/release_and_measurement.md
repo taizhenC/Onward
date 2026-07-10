@@ -48,6 +48,8 @@ Track completion and feedback response rate separately so the team can interpret
 | Save rate | Stories saved / completed guest stories | Is the artifact worth keeping? |
 | Return-to-saved rate | Saved stories reopened after seven or more days / saved stories | Does the story retain value? |
 | Source-open rate | Source drawer opened / completed stories | Does transparent provenance add trust? Interpret cautiously. |
+| Carry-forward creation rate | Private Carry-Forward Cards / completed stories | Does the experience create durable, self-directed utility? |
+| Short-to-full expansion rate | Short editions expanded into full stories / short editions started | Does flexible length lead into deeper engagement? |
 
 ### Story-engine metrics
 
@@ -84,6 +86,7 @@ Track completion and feedback response rate separately so the team can interpret
 | Deletion completion | User deletion requests fully cascaded within the stated window | Must match published policy. |
 | Content reports | Reports by fact ID and reason | Each has triage SLA and stage kill switch. |
 | Fallback transparency | Adjacent/canonical fallback correctly framed / applicable sessions | Must be 100% in tests and audit. |
+| Boundary compliance | Artifacts and fallbacks satisfying explicit topic/intensity constraints / constrained sessions | Must be 100%; record compliance, not selected topic values. |
 
 ## Preliminary public-release gates
 
@@ -121,6 +124,7 @@ These are proposed go/no-go thresholds. Establish the baseline during private al
 - No interaction requires double click, hover, precise timing, or reading text as it animates.
 - Refreshing before Continue returns to the same passage; repeated Continue cannot skip content.
 - Final bridge, rationale, sources, feedback, save, and deletion appear in a tested emotional sequence.
+- Explicit topic and intensity boundaries are understandable, optional, and honored by first match, alternate match, and fallback.
 
 ### Reliability and performance gate
 
@@ -216,6 +220,7 @@ Work packages:
 - **P0-10 [Feature]** Add resonance feedback and another-story recovery.
 - **P0-16 [UI/UX]** Apply shared design primitives and complete accessibility hardening.
 - **P0-14 [Feature]** Finish deletion, save consent, privacy page, and retention UI.
+- **P0-17 [Feature]** Add optional emotional boundaries, reviewed content notes, and hard eligibility enforcement.
 
 Exit criteria:
 
@@ -279,7 +284,11 @@ P1 starts only after P0 metrics are stable and the team has enough real feedback
 3. **P1-02 [Feature] reader-controlled emphasis** if the figure is right but story framing feels generic.
 4. **P1-03 [Feature] full-beat regeneration** only if bounded personalization plateaus and evidence gates are mature.
 5. **P1-10 [Refactor] latency/cost optimization** when metrics identify actual bottlenecks.
-6. **P1-06 [UI/UX] library v2**, **P1-08 [UI/UX] market foundation**, and **P1-09 [Feature] revisit mode** after repeat value and initial-market fit are proven.
+6. **P1-11 [Feature] two-perspective matching** when ambiguity—not coverage—is the dominant first-match failure.
+7. **P1-12 [Feature] Carry-Forward Cards**, **P1-13 [UI/UX] reading modes**, and **P1-17 [UI/UX] the factual next-step map** when completion is healthy but save/revisit utility is weak.
+8. **P1-14 [Feature] private continuity** and **P1-15 [Feature] redacted conversation cards** only after deletion and retention controls are proven.
+9. **P1-16 [Feature] outcome-diverse stories** and **P1-18 [Feature] factual afterword lenses** when research shows achievement pressure or missing practical context.
+10. **P1-06 [UI/UX] library v2**, **P1-08 [UI/UX] market foundation**, and **P1-09 [Feature] revisit mode** after repeat value and initial-market fit are proven.
 
 ## Experiment plan
 
@@ -322,6 +331,21 @@ Guardrails: trust, perceived manipulation, source engagement.
 
 Primary outcome: passage acknowledgement and story completion.  
 Guardrails: accidental advances, time to finish, accessibility failures.
+
+### Experiment E — Automatic match versus two-perspective choice
+
+**Hypothesis:** In calibrated ambiguous cases, choosing between two meaningfully different anonymous previews improves felt closeness more than it adds decision burden.
+
+Population: ambiguous top-two cases only.  
+Primary outcome: felt-close rate.  
+Guardrails: abandonment, time to first story, content-boundary compliance, and choice regret.
+
+### Experiment F — Carry-Forward Card
+
+**Hypothesis:** A private, user-authored takeaway increases save and later revisit value without making the coda feel transactional or prescriptive.
+
+Primary outcome: seven-day revisit among completed stories.  
+Guardrails: story completion, deletion comprehension, free-text privacy, and perceived pressure to take action.
 
 ### Experiment policy
 
@@ -385,6 +409,8 @@ Researchers should use consented test accounts and an approved handling protocol
 | Content migration overwhelms the team | High | High | Launch with a smaller reviewed collection; prioritize coverage and demand, not all 50. |
 | Younger users create compliance/safeguarding exposure | Medium | Critical | Launch-market and youth review, clear minimum-age policy, safety/access controls before public traffic. |
 | Story save promise conflicts with disclosure/artifact retention | High unless decided | High | P0-14 explicit contract, retention classes, tested post-TTL experience. |
+| Topic boundaries remove every close match | Medium | Medium | P0-17 honest no-close-match recovery; never weaken an explicit boundary. |
+| Utility features turn reflection into prescriptive self-help | Medium | High | Keep Carry-Forward user-authored, maps/afterwords factual, and all follow-up features optional after the coda. |
 | Account conversion interrupts the story's emotional landing | High today | Medium | P0-07 coda sequence and usability testing. |
 | No telemetry makes failures invisible | High today | High | P0-11 before beta, with privacy gates. |
 | Premature architecture work delays product learning | Medium | High | Keep modular monolith; add queue/vector infrastructure only after measured thresholds. |

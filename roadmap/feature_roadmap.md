@@ -29,6 +29,7 @@
 | P0-14 | P0 | [Feature] | Story deletion, account deletion, consent, and retention controls | Makes the privacy promise controllable by the user. |
 | P0-15 | P0 | [Refactor] | Automated release pipeline, migrations, and rollback readiness | Converts passing local checks into repeatable deployment confidence. |
 | P0-16 | P0 | [UI/UX] | Cross-flow design system and accessibility hardening | Makes landing, intake, story, auth, and library feel like one product. |
+| P0-17 | P0 | [Feature] | Emotional boundaries and story-intensity controls | Lets readers avoid topics or detail levels that would make the story harmful or unreadable. |
 | P1-01 | P1 | [Refactor] | Facet query projections and eval-gated dynamic retrieval | Improves semantic recall only after it proves superiority in shadow mode. |
 | P1-02 | P1 | [Feature] | Reader-controlled story emphasis | Adds agency without inventing historical branches. |
 | P1-03 | P1 | [Feature] | Controlled full-beat regeneration experiment | Tests deeper personalization behind the hybrid composer and evidence gates. |
@@ -39,6 +40,14 @@
 | P1-08 | P1 | [UI/UX] | Market-aware copy, resources, and localization foundation | Makes the experience appropriate outside one assumed locale. |
 | P1-09 | P1 | [Feature] | Gentle revisit and reflection mode | Supports repeat value without streaks or engagement pressure. |
 | P1-10 | P1 | [Refactor] | Latency and cost optimization after instrumentation | Improves economics without trading away quality invisibly. |
+| P1-11 | P1 | [Feature] | Two-perspective match choice for ambiguous cases | Lets the reader choose between meaningfully different, equally plausible human parallels. |
+| P1-12 | P1 | [Feature] | Private Carry-Forward Card | Turns a moving story into one user-authored thought or next step worth keeping. |
+| P1-13 | P1 | [UI/UX] | Short and full reading modes | Makes Onward useful when the reader has two minutes as well as when they have ten. |
+| P1-14 | P1 | [Feature] | Opt-in private context continuity | Remembers boundaries and prior figures without retaining or reusing old disclosures. |
+| P1-15 | P1 | [Feature] | Redacted conversation card | Helps a user bring the historical story into a conversation without exposing their intake. |
+| P1-16 | P1 | [Feature] | Outcome-diverse story library | Reduces survivorship bias by representing endurance, adaptation, help, and changed direction—not only fame. |
+| P1-17 | P1 | [UI/UX] | Source-grounded “What changed next” map | Makes the story practically legible without converting biography into advice. |
+| P1-18 | P1 | [Feature] | Optional source-grounded afterword lenses | Lets readers explore who helped, what failed first, or what took time after the main story. |
 | P2-01 | P2 | [UI/UX] | Optional human-quality audio narration | Adds an accessible listening mode when story quality is stable. |
 | P2-02 | P2 | [Feature] | Native/offline reading surfaces | Extends reach after web retention and reliability are proven. |
 | P2-03 | P2 | [Feature] | Privacy-preserving story sharing | Allows deliberate sharing without exposing the original disclosure. |
@@ -447,6 +456,31 @@
 **Relative effort:** Large.  
 **Primary owners:** Design systems, frontend, accessibility QA.
 
+## P0-17 — [Feature] Emotional boundaries and story-intensity controls
+
+**Problem:** The library includes grief, suicide loss, abuse, discrimination, addiction, illness, and other material that can be deeply relevant to one reader and destabilizing to another. Today the match can place a user into that content without asking what they want to avoid or how directly they want it told.
+
+**Scope**
+
+- Add a lightweight, optional “Keep this story…” control at intake or before opening: gentle/direct detail and broad topics to avoid.
+- Attach reviewed content flags, intensity, and a spoiler-light content note to every published `StorySpec`.
+- Treat an explicit user boundary as a hard eligibility constraint before reranking and composition; it is not a soft preference the matcher may override.
+- Ensure alternate matches and fallbacks obey the same boundaries.
+- Let the reader change boundaries, leave, or request another story without re-entering the disclosure.
+- Do not log the selected topic names in general telemetry; record only whether boundaries were set and whether an eligible story was found.
+
+**Acceptance criteria**
+
+- No stage or generated artifact can bypass an explicit excluded topic or maximum intensity.
+- Content notes are accurate, concise, non-graphic, and editorially reviewed.
+- The default public prose remains non-graphic even when the reader selects direct language.
+- Boundary controls work with keyboard and screen reader and do not resemble a clinical intake.
+- If boundaries remove all close matches, the product says so honestly and offers a safe recovery path.
+
+**Dependencies:** P0-02 `StorySpec`, P0-05 match recovery, P0-06 intake, and P0-12 safety review.  
+**Relative effort:** Medium to large.  
+**Primary owners:** Product, safety/editorial, matching, design, frontend.
+
 ---
 
 # P1 — High-priority fast-follows
@@ -490,6 +524,38 @@ Let saved users revisit a story and optionally add a private, device-appropriate
 ## P1-10 — [Refactor] Latency and cost optimization after instrumentation
 
 Use measured traces to introduce safe caching of curated inputs, prompt compaction, provider hedging where justified, generation prefetch, and cost budgets. Do not cache user-derived prompts across users. **Acceptance:** p95 latency and cost improve with no quality-gate regression and no new sensitive-data persistence. **Effort:** Medium.
+
+## P1-11 — [Feature] Two-perspective match choice for ambiguous cases
+
+When two candidates are genuinely close but represent different emotional shapes, show two anonymous, two-sentence previews such as “a story about starting over alone” and “a story about years of work going unseen.” Let the reader pick the one that feels nearer. Use this only for calibrated ambiguity, not every session. **Acceptance:** previews are evidence-grounded, disclose the meaningful gap, obey content boundaries, add no more than one decision, and improve felt-close rate over automatic selection. **Effort:** Medium.
+
+## P1-12 — [Feature] Private Carry-Forward Card
+
+After the coda, let the reader choose one verified line or moment from the story and optionally write one sentence they want to carry forward—an observation, question, or small self-chosen action. The product must not generate a prescription or score follow-through. Save it privately with deletion and export controls. **Acceptance:** the card is optional, user-authored, separate from feedback, never used to infer mental state, and increases save/revisit value without lowering story completion. **Effort:** Medium.
+
+## P1-13 — [UI/UX] Short and full reading modes
+
+Offer a short edition for a two-to-three-minute read and a full edition for the existing slower arc. Both must compile from the same `StorySpec`, preserve the same truth and emotional turn, and end with the same honest framing. Remember the preference only with consent. **Acceptance:** neither edition invents a separate summary, source coverage remains complete, the user can expand from short to full without losing place, and metrics are segmented by edition. **Effort:** Medium to large.
+
+## P1-14 — [Feature] Opt-in private context continuity
+
+Let returning users choose to remember only stable preferences: age band, reading length, emotional distance, excluded topics, and figures already read. Do not reuse old disclosures or automatically construct a psychological profile. Show and delete every remembered preference from account settings. **Acceptance:** continuity is off by default, improves repeat-start time and duplicate-match rate, and has explicit consent, encryption/access controls, and deletion coverage. **Effort:** Medium.
+
+## P1-15 — [Feature] Redacted conversation card
+
+Create a printable/copyable card containing the historical episode, source link, a user-selected story line, and—only if chosen—their Carry-Forward sentence. Exclude the intake, match rationale, private metadata, and generated sensitive bridge by default. This makes Onward useful as a starting point with a friend, teacher, counselor, or therapist without making the product clinical. **Acceptance:** the user previews every included field, sharing is revocable when link-based, and the default artifact contains no disclosure-derived prose. **Effort:** Medium.
+
+## P1-16 — [Feature] Outcome-diverse story library
+
+Expand the content model beyond “pain before famous success.” Curate episodes whose honest onward movement was endurance, accepting help, adapting to permanent change, leaving an old ambition, repairing a relationship, or building an ordinary meaningful life. Add an editorial arc taxonomy and balance dashboard without presenting it as a user diagnosis. **Acceptance:** launch research shows the library no longer implies that suffering is redeemed by fame, and every new outcome shape meets the same evidence and resonance gates. **Effort:** Large, primarily editorial.
+
+## P1-17 — [UI/UX] Source-grounded “What changed next” map
+
+At the end, offer a compact timeline separating what the figure did, what other people or circumstances changed, what failed, and how long the turn actually took. This corrects the common impression that one brave decision caused later success. It describes history; it does not tell the reader to copy it. **Acceptance:** every timeline node resolves to fact IDs, time gaps are explicit, external help is visible, and no node is phrased as advice. **Effort:** Medium.
+
+## P1-18 — [Feature] Optional source-grounded afterword lenses
+
+Let a reader open one optional factual afterword: “Who helped them?”, “What did not work first?”, or “What took longer than the story could show?” Each lens is pre-authored or evidence-constrained from the `StorySpec`; it never changes the canonical ending. **Acceptance:** lenses improve source engagement or perceived usefulness, add no unsupported claims, remain optional after the emotional coda, and do not become an infinite content feed. **Effort:** Medium to large.
 
 ---
 

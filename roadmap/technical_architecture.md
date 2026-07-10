@@ -90,7 +90,8 @@ flowchart LR
 flowchart TD
     U[User intake] --> SG[Deterministic Safety Gate]
     SG -->|intercept| CR[Reviewed, market-aware resources]
-    SG -->|continue| RB[Resonance Brief]
+    SG -->|continue| BP[Explicit topic and intensity boundaries]
+    BP --> RB[Resonance Brief]
     RB --> RET[Approved Retrieval Recipe]
     RET --> RR[Calibrated Reranker]
     RR -->|uncertain| Q[One clarification or honest adjacent-match state]
@@ -124,7 +125,9 @@ flowchart TD
 | Implement a closed telemetry schema | P0 | [Feature] | P0-11 | Enables learning without logging intimate text. |
 | Pin production retrieval to an approved manifest | P0 | [Bug Fix] | P0-13 | Prevents configuration drift from selecting a weaker matcher. |
 | Add explicit retention classes and deletion | P0 | [Feature] | P0-14 | Extends privacy from policy text into data lifecycle. |
+| Enforce user-selected content boundaries before matching | P0 | [Feature] | P0-17 | A reader's explicit safety boundary must never be overridden by relevance scoring. |
 | Add facet projections only as a shadow challenger | P1 | [Refactor] | P1-01 | Retrieval sophistication must earn promotion through measured gains. |
+| Persist stable reading preferences only through explicit consent | P1 | [Feature] | P1-14 | Repeat utility does not justify silently retaining a psychological profile. |
 | Add a durable job queue only if measured generation latency requires it | P1 | [Refactor] | P1-10 | Avoids premature distributed complexity while preserving a scale path. |
 | Move cosine to database-native vector search only at measured scale | P2 | [Refactor] | P2-05 | Fifty stages do not justify a vector-infrastructure migration. |
 
@@ -145,6 +148,11 @@ type StorySpec = {
     startDate?: string;
     endDate?: string;
     throughLine: string;
+  };
+  contentProfile: {
+    intensity: "gentle" | "moderate" | "direct";
+    flags: ContentFlag[];
+    contentNote: string;
   };
   facts: FactAtom[];
   entities: AllowedEntity[];
@@ -223,6 +231,48 @@ type ResonanceBrief = {
 ```
 
 The enum is still sensitive when derived from a user; it may enter composition but not general telemetry. Operational traces may include only counts or coarse, pre-approved buckets after reduction.
+
+## P0-17 — [Feature] Story-boundary contract
+
+An explicit boundary is different from a relevance preference or editorial `antiTheme`: it is a hard user constraint. Apply it before shortlist construction so neither the reranker nor canonical fallback can select a prohibited stage.
+
+```ts
+type StoryBoundaries = {
+  maxIntensity: "gentle" | "moderate" | "direct";
+  excludedFlags: ContentFlag[]; // sensitive preference; never general telemetry
+};
+
+type ContentFlag =
+  | "death_or_grief"
+  | "suicide_loss"
+  | "abuse_or_violence"
+  | "addiction"
+  | "serious_illness"
+  | "discrimination"
+  | "pregnancy_or_parenthood"
+  | "other_reviewed_flag";
+```
+
+The content vocabulary must be editorially governed and broad enough to inform without spoiling or graphically labeling the story. Matching traces may record `{ boundariesSet: true, excludedFlagCount: 2 }`, never the selected flag values. If no eligible close stage remains, return the honest no-close-match path rather than weakening the boundary.
+
+## P1-14 — [Feature] Opt-in continuity contract
+
+Stable preferences should be stored separately from disclosures and session artifacts:
+
+```ts
+type UserStoryPreferences = {
+  userId: string;
+  consentVersion: string;
+  ageBand?: "13to17" | "18to24" | "25to34" | "35to49" | "50plus";
+  preferredLength?: "short" | "full";
+  preferredDistance?: "gentle" | "direct";
+  boundaries?: StoryBoundaries;
+  previouslyReadStageKeys: string[];
+  updatedAt: string;
+};
+```
+
+This record must never contain prior disclosure text, match rationales, inferred diagnoses, emotional trend scores, or automatically accumulated semantic tags. Users can inspect, change, or delete the entire record.
 
 ## P0-03 — [Refactor] `StoryArtifact`: immutable runtime contract
 
@@ -413,6 +463,8 @@ Operational logs should be similarly reduced at provider boundaries. A caught pr
 | `product_events` | Closed non-semantic events | Safe operational | Short operational retention |
 | `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Short operational retention |
 | `content_reports` | Fact ID and bounded issue reason | Curated identifiers | Until resolution plus audit period |
+| `carry_forward_cards` | User-selected fact/line plus optional user-authored sentence | Raw sensitive user content | Saved until user deletion under explicit consent |
+| `user_story_preferences` | Opt-in length, distance, boundaries, and prior stage IDs | Sensitive preferences | Until consent withdrawal/account deletion |
 
 ### Retention decision required before launch
 
@@ -510,6 +562,7 @@ Any migration must preserve per-lane typed embeddings, age/status filtering befo
 | Abuse/cost exhaustion | User/IP rate limits, fail-open on DB limiter failure | Monitor fail-open, add provider budgets and per-action retry policy. Crisis remains exempt. |
 | Content correction | Requires content/code/database update | Stage/spec kill switch, immutable versions, editorial report queue, rollback. |
 | Account/device exposure | Private sessions but saved story persists | Delete controls, session management, sensitive list-view defaults, explicit retention. |
+| Boundary/preference profiling | Topic exclusions can reveal sensitive concerns | Opt-in storage, no semantic analytics, inspect/delete controls, no disclosure history. |
 
 ## Architecture outcome
 

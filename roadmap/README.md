@@ -10,6 +10,8 @@ This roadmap treats Onward as the barebones MVP described in the brief: a produc
 
 The roadmap therefore prioritizes end-to-end story quality and presentation over breadth, social mechanics, or premature platform expansion.
 
+The prioritized backlog contains **43 items: 17 P0, 18 P1, and 8 P2**. The expanded utility layer adds multiple perspectives, short/full editions, private continuity, carry-forward artifacts, factual afterwords, and safer conversation sharing—without turning the product into chat or a wellness tracker.
+
 ## Documents
 
 1. [Executive summary](./executive_summary.md) — product thesis, current capabilities, unique value proposition, mission, direction, target audience, and strategic diagnosis.

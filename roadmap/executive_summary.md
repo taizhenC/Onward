@@ -163,7 +163,8 @@ Onward reaches its next major stage when a new user can:
 2. describe a hard moment without unnecessary friction;
 3. receive either a demonstrably close match or an honest clarification/no-close-match path;
 4. read a stable, accessible, source-grounded story personalized without verbatim echo;
-5. see what is documented and what is interpretive;
-6. provide low-friction resonance feedback or try another story;
-7. save or delete the story with clear retention semantics; and
-8. complete the flow under measured reliability, latency, safety, and factuality thresholds.
+5. set emotional intensity and topic boundaries that matching cannot override;
+6. see what is documented and what is interpretive;
+7. provide low-friction resonance feedback or try another story;
+8. save, carry forward, or delete the story with clear retention semantics; and
+9. complete the flow under measured reliability, latency, safety, and factuality thresholds.

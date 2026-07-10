@@ -5,8 +5,15 @@ import { classifyCrisis } from "../lib/safety";
 import { toClientOutline } from "../lib/figures";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { toRerankCandidate } from "../lib/llm";
-import { _sessionCount, getOwnedSession, getSession } from "../lib/session";
+import {
+  _sessionCount,
+  acknowledgeOwnedSessionPosition,
+  getOwnedSession,
+  getSession,
+} from "../lib/session";
 import { MATCH_LIMITS } from "../lib/rate-limit";
+import { resolveRetrievalMode } from "../lib/matching";
+import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
 import type { BeatBlueprint } from "../lib/types";
@@ -21,6 +28,10 @@ process.env.PERSISTENCE = "memory";
 // user, so the rate-limit assertion (which exhausts the 5/hour budget) MUST stay
 // last among the intake-driven assertions.
 const SMOKE_CTX: IntakeContext = { userId: "smoke-user", ipHash: "smoke-ip" };
+const PROGRESS_CTX: IntakeContext = {
+  userId: "smoke-progress-user",
+  ipHash: "smoke-progress-ip",
+};
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
 
@@ -236,6 +247,86 @@ async function runOwnershipAssertion(): Promise<AssertionResult> {
   }
 
   return { name, ok: true, detail: "owner reads; foreign and absent users get null" };
+}
+
+async function runAtomicProgressAssertion(): Promise<AssertionResult> {
+  const name = "progress: explicit acknowledgement is atomic and owner-scoped";
+  const result = await handleIntake(
+    {
+      age: 28,
+      feeling: "I keep getting rejected and I don't know if I should keep trying",
+    },
+    PROGRESS_CTX,
+  );
+  if (!("sessionId" in result)) {
+    return { name, ok: false, detail: "intake did not create a progress session" };
+  }
+
+  const input = {
+    sessionId: result.sessionId,
+    userId: PROGRESS_CTX.userId,
+    expectedBeatIndex: 0,
+    expectedChunkIndex: 0,
+    nextBeatIndex: 0,
+    nextChunkIndex: 1,
+  } as const;
+  const first = await acknowledgeOwnedSessionPosition(input);
+  const repeated = await acknowledgeOwnedSessionPosition(input);
+  const stale = await acknowledgeOwnedSessionPosition({
+    ...input,
+    nextBeatIndex: 1,
+    nextChunkIndex: 0,
+  });
+  const foreign = await acknowledgeOwnedSessionPosition({
+    ...input,
+    userId: "someone-else",
+  });
+  const session = await getOwnedSession(result.sessionId, PROGRESS_CTX.userId);
+
+  if (
+    first !== "advanced" ||
+    repeated !== "already_advanced" ||
+    stale !== "conflict" ||
+    foreign !== "not_found" ||
+    session?.nextBeatIndex !== 0 ||
+    session.nextChunkIndex !== 1
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: `first=${first}, repeat=${repeated}, stale=${stale}, foreign=${foreign}, position=${session?.nextBeatIndex}/${session?.nextChunkIndex}`,
+    };
+  }
+
+  return {
+    name,
+    ok: true,
+    detail: "advanced once; retry idempotent; stale/foreign writes rejected",
+  };
+}
+
+function runApprovedRecipeAssertion(): AssertionResult {
+  const name = "recipe: production retrieval is explicit and approved";
+  const defaultMode = resolveRetrievalMode(undefined, "development");
+  const productionMode = resolveRetrievalMode("keyword", "production");
+  let autoRejected = false;
+  try {
+    resolveRetrievalMode("auto", "production");
+  } catch {
+    autoRejected = true;
+  }
+
+  const ok =
+    defaultMode === APPROVED_PRODUCTION_RECIPE.retrievalMode &&
+    productionMode === "keyword" &&
+    autoRejected;
+  return {
+    name,
+    ok,
+    detail: ok
+      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production auto rejected`
+      : `default=${defaultMode}, production=${productionMode}, autoRejected=${autoRejected}`,
+  };
 }
 
 // MUST run last among intake assertions: it spends the rest of smoke-user's hourly
@@ -658,6 +749,8 @@ async function main(): Promise<void> {
     ),
     await runCrisisAssertion(),
     await runOwnershipAssertion(),
+    await runAtomicProgressAssertion(),
+    runApprovedRecipeAssertion(),
     runOutlineAssertion(),
     runRerankCandidateAssertion(),
     runEyebrowGuardAssertion(),

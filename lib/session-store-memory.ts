@@ -1,6 +1,8 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
 import type {
+  AcknowledgeSessionPositionInput,
+  AcknowledgeSessionPositionResult,
   CreateSessionInput,
   OpeningCopy,
   Session,
@@ -16,7 +18,6 @@ import { LOCAL_DEV_USER_ID } from "./auth";
 // the smoke test hermetic and DB-free.
 
 declare global {
-  // eslint-disable-next-line no-var
   var __onwardSessions: Map<string, Session> | undefined;
 }
 
@@ -69,7 +70,11 @@ async function getSession(sessionId: string): Promise<Session | null> {
   }
   // Hot-reload safety for in-memory sessions created before these fields existed.
   const openingCopy = migrateOpeningCopy(session.openingCopy);
-  const legacySession = session as any;
+  const legacySession = session as unknown as {
+    nextChunkIndex?: number;
+    userId?: string;
+    updatedAt?: number;
+  };
   if (
     legacySession.nextChunkIndex === undefined ||
     legacySession.userId === undefined ||
@@ -95,14 +100,32 @@ async function getSession(sessionId: string): Promise<Session | null> {
 // Backfill opening copy for sessions created before a field existed (first eyebrow, then
 // prefaceLines). Returns the SAME reference when nothing is missing, so getSession can
 // cheaply tell whether a migration write is needed.
-function migrateOpeningCopy(openingCopy: any): OpeningCopy {
-  if (openingCopy === undefined) {
+function migrateOpeningCopy(openingCopy: unknown): OpeningCopy {
+  if (
+    openingCopy === null ||
+    openingCopy === undefined ||
+    typeof openingCopy !== "object"
+  ) {
     return { eyebrow: NEUTRAL_EYEBROW, prefaceLines: DEFAULT_PREFACE_LINES };
   }
-  if (openingCopy.prefaceLines === undefined) {
-    return { ...openingCopy, prefaceLines: DEFAULT_PREFACE_LINES };
+
+  const candidate = openingCopy as Partial<OpeningCopy>;
+  if (
+    typeof candidate.eyebrow === "string" &&
+    Array.isArray(candidate.prefaceLines)
+  ) {
+    return openingCopy as OpeningCopy;
   }
-  return openingCopy;
+
+  return {
+    eyebrow:
+      typeof candidate.eyebrow === "string"
+        ? candidate.eyebrow
+        : NEUTRAL_EYEBROW,
+    prefaceLines: Array.isArray(candidate.prefaceLines)
+      ? candidate.prefaceLines
+      : DEFAULT_PREFACE_LINES,
+  };
 }
 
 async function updateSession(
@@ -129,6 +152,38 @@ async function updateSession(
   return next;
 }
 
+async function acknowledgePosition(
+  input: AcknowledgeSessionPositionInput,
+): Promise<AcknowledgeSessionPositionResult> {
+  const existing = sessions.get(input.sessionId);
+  if (!existing || isExpired(existing) || existing.userId !== input.userId) {
+    if (existing && isExpired(existing)) sessions.delete(input.sessionId);
+    return "not_found";
+  }
+
+  if (
+    existing.nextBeatIndex === input.nextBeatIndex &&
+    existing.nextChunkIndex === input.nextChunkIndex
+  ) {
+    return "already_advanced";
+  }
+
+  if (
+    existing.nextBeatIndex !== input.expectedBeatIndex ||
+    existing.nextChunkIndex !== input.expectedChunkIndex
+  ) {
+    return "conflict";
+  }
+
+  sessions.set(input.sessionId, {
+    ...existing,
+    nextBeatIndex: input.nextBeatIndex,
+    nextChunkIndex: input.nextChunkIndex,
+    updatedAt: Date.now(),
+  });
+  return "advanced";
+}
+
 async function listSessionsByUser(userId: string): Promise<Session[]> {
   pruneExpiredSessions();
   return [...sessions.values()]
@@ -145,6 +200,7 @@ export const memorySessionStore: SessionStore = {
   createSession,
   getSession,
   updateSession,
+  acknowledgePosition,
   listSessionsByUser,
   _sessionCount: sessionCount,
 };

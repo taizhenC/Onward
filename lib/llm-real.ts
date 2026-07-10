@@ -218,7 +218,7 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
       body: JSON.stringify(body),
       signal: controller.signal,
     });
-  } catch (error) {
+  } catch {
     // Discard the raw error (it can carry the prompt/feeling) — never log it.
     if (controller.signal.aborted) {
       throw new RerankError("timeout", `rerank timed out after ${timeoutMs()}ms`);

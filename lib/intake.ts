@@ -3,7 +3,7 @@ import type { MatchRecipe, MatchResponse } from "./types";
 import { CRISIS_RESOURCES, classifyCrisis, crisisRegexVersion } from "./safety";
 import { createSession } from "./session";
 import { match, resolveRetrievalMode } from "./matching";
-import { matchConfigVersion } from "./match-config";
+import { APPROVED_PRODUCTION_RECIPE, matchConfigVersion } from "./match-config";
 import { getByKey } from "./figures";
 import { activeRecipe, writeOpeningCopy } from "./llm";
 import { embeddingModelId } from "./embeddings";
@@ -70,6 +70,7 @@ export async function handleIntake(
   // stays LLM-only; the embedder id and configured retrieval mode are merged here so the embedding
   // and LLM provider boundaries stay decoupled.
   const matchRecipe: MatchRecipe = {
+    recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
     matchConfigVersion,
     crisisRegexVersion,
     ...activeRecipe(),

@@ -10,8 +10,10 @@
 }
 
 :root {
-  --font-body-stack: var(--font-body), Georgia, "Times New Roman", serif;
-  --font-ui-stack: var(--font-ui), system-ui, -apple-system, sans-serif;
+  /* Build-stable local stacks. Webfonts may be bundled as local WOFF assets in a
+     later design-system pass, but production compilation must never fetch them. */
+  --font-body-stack: Georgia, "Times New Roman", serif;
+  --font-ui-stack: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 html,

@@ -57,7 +57,7 @@ See `.env.example` for the documented template. Summary:
 | `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE` | default `gpt-oss-120b` |
 | `EMBEDDING_PROVIDER` | `stub` (default) or `gemini` |
 | `GEMINI_API_KEY` | for `EMBEDDING_PROVIDER=gemini` |
-| `RETRIEVAL_MODE` | `auto` (default) / `keyword` / `facetsrag` |
+| `RETRIEVAL_MODE` | `keyword` (approved/default) / `facetsrag` (challenger) / `auto` (local only; rejected in production) |
 
 ## Deploying
 
@@ -74,7 +74,7 @@ See `.env.example` for the documented template. Summary:
 
 ### 2. Vercel
 
-Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=auto`. Deploy; then walk the live flow once: landing → begin → story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
+Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`. Production rejects `auto`: the July 2 fifty-figure holdout approved keyword retrieval, while FacetsRAG remains a shadow/eval challenger. Deploy; then walk the live flow once: landing → begin → story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
 
 ## Privacy posture (plain words, enforced in code)
 

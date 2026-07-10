@@ -1,5 +1,7 @@
 import "server-only";
 import type {
+  AcknowledgeSessionPositionInput,
+  AcknowledgeSessionPositionResult,
   CreateSessionInput,
   Session,
   SessionPatch,
@@ -65,6 +67,12 @@ export function updateSession(
   patch: SessionPatch,
 ): Promise<Session | null> {
   return resolveStore().updateSession(sessionId, patch);
+}
+
+export function acknowledgeOwnedSessionPosition(
+  input: AcknowledgeSessionPositionInput,
+): Promise<AcknowledgeSessionPositionResult> {
+  return resolveStore().acknowledgePosition(input);
 }
 
 export function _sessionCount(): Promise<number> {

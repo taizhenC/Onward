@@ -123,6 +123,7 @@ export type OpeningCopy = {
 // skeleton so replay reconstructs which embedder/retrieval path produced the match. Stored as
 // jsonb, so new fields need no migration; tagger/projection fields slot in the same way later.
 export type MatchRecipe = {
+  recipeId: string;
   matchConfigVersion: string;
   crisisRegexVersion: string;
   llmProvider: string;
@@ -176,10 +177,28 @@ export type SessionPatch = {
   nextChunkIndex?: number;
 };
 
+export type AcknowledgeSessionPositionInput = {
+  sessionId: string;
+  userId: string;
+  expectedBeatIndex: number;
+  expectedChunkIndex: number;
+  nextBeatIndex: number;
+  nextChunkIndex: number;
+};
+
+export type AcknowledgeSessionPositionResult =
+  | "advanced"
+  | "already_advanced"
+  | "conflict"
+  | "not_found";
+
 export interface SessionStore {
   createSession(input: CreateSessionInput): Promise<string>;
   getSession(sessionId: string): Promise<Session | null>;
   updateSession(sessionId: string, patch: SessionPatch): Promise<Session | null>;
+  acknowledgePosition(
+    input: AcknowledgeSessionPositionInput,
+  ): Promise<AcknowledgeSessionPositionResult>;
   listSessionsByUser(userId: string): Promise<Session[]>;
   _sessionCount(): Promise<number>;
 }

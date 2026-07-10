@@ -7,7 +7,11 @@ import type {
   RetrievalMode,
 } from "./types";
 import { listAll, listByAge } from "./figures";
-import { framingFromConfidence, RERANK_TOP_K } from "./match-config";
+import {
+  APPROVED_PRODUCTION_RECIPE,
+  framingFromConfidence,
+  RERANK_TOP_K,
+} from "./match-config";
 import { pickFigure, RerankError } from "./llm";
 import { pickByKeywordHybrid, scoreAllByKeywordHybrid } from "./keyword-match";
 import { EmbeddingError } from "./embeddings";
@@ -150,9 +154,28 @@ function keywordFallback(
 
 // The configured retrieval mode (RETRIEVAL_MODE env, default "auto"). Unknown values fall back to
 // "auto". Exported so lib/intake.ts can freeze it into the match recipe for replay.
-export function resolveRetrievalMode(explicit?: string): RetrievalMode {
-  const raw = (explicit ?? process.env.RETRIEVAL_MODE ?? "auto").trim().toLowerCase();
-  return raw === "keyword" || raw === "facetsrag" ? raw : "auto";
+export function resolveRetrievalMode(
+  explicit?: string,
+  environment = process.env.NODE_ENV,
+): RetrievalMode {
+  const configured = explicit ?? process.env.RETRIEVAL_MODE;
+  const raw = configured?.trim().toLowerCase();
+
+  // No implicit provider-dependent behavior: an unset or unknown value resolves
+  // to the approved baseline. Local/eval callers may still explicitly request
+  // `auto`; a public production process must name its evaluated recipe.
+  if (!raw) return APPROVED_PRODUCTION_RECIPE.retrievalMode;
+  if (raw === "auto") {
+    if (environment === "production") {
+      throw new Error(
+        "RETRIEVAL_MODE=auto is not approved for production; set RETRIEVAL_MODE=keyword.",
+      );
+    }
+    return "auto";
+  }
+  return raw === "facetsrag" || raw === "keyword"
+    ? raw
+    : APPROVED_PRODUCTION_RECIPE.retrievalMode;
 }
 
 type RetrievalSelection = RetrievalDebug & { rerankPool: FigureStageRow[] };

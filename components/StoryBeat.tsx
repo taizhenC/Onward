@@ -17,7 +17,7 @@ type Props = {
   beatIndex: number;
   chunkIndex: number;
   onComplete: (next: StoryAdvance) => void;
-  // Fired once when the ack resolves next === "end" (the in-flow story finish).
+  // Fired once after the reader explicitly acknowledges the final passage.
   // Separate channel from onComplete, whose contract excludes "end".
   onEnd?: () => void;
 };
@@ -35,7 +35,6 @@ export function StoryBeat({
   const [revealedCount, setRevealedCount] = useState(0);
   const [skipped, setSkipped] = useState(false);
   const [streamDone, setStreamDone] = useState(false);
-  const [done, setDone] = useState(false);
   const [failure, setFailure] = useState<FailureKind | null>(null);
   const [nextStep, setNextStep] = useState<StoryAdvance | null>(null);
   // Guards the Continue advance so it fires exactly once per passage. The exiting
@@ -72,13 +71,13 @@ export function StoryBeat({
   const canSkip = !skipped && hasMoreToReveal && totalTokens > 0;
   const showCaret = hasMoreToReveal && totalTokens > 0;
 
-  // Network: stream the chunk, then ack to advance the session.
+  // Network: deliver the current chunk without changing durable progress. The
+  // reader's explicit Continue/Finish action below owns acknowledgement.
   useEffect(() => {
     setFullText("");
     setRevealedCount(0);
     setSkipped(false);
     setStreamDone(false);
-    setDone(false);
     setFailure(null);
     setNextStep(null);
     setAdvancing(false);
@@ -123,25 +122,10 @@ export function StoryBeat({
         if (lastChunk.length > 0) {
           setFullText((previous) => previous + lastChunk);
         }
-        if (!cancelled) setStreamDone(true);
-
-        const next = await acknowledgeBeat({
-          sessionId,
-          beatIndex,
-          chunkIndex,
-          fallbackNext: headerNext,
-          signal: controller.signal,
-        });
-        if (cancelled) return;
-        if (next === null) {
-          // The ack didn't land (position conflict / lost place). Offer a refresh,
-          // which re-reads the true session position server-side.
-          setFailure("conflict");
-          return;
+        if (!cancelled) {
+          setNextStep(headerNext);
+          setStreamDone(true);
         }
-        setNextStep(next);
-        setDone(true);
-        if (next === "end") onEndRef.current?.();
       } catch (caught) {
         if (cancelled || (caught as Error).name === "AbortError") return;
         setFailure("connection");
@@ -183,33 +167,30 @@ export function StoryBeat({
     setRevealedCount(totalTokens);
   }
 
-  function handleAdvance() {
-    if (advancing || nextStep === null || nextStep === "end") return;
+  async function handleAdvance() {
+    if (advancing || nextStep === null || !revealComplete) return;
     setAdvancing(true);
-    onComplete(nextStep);
+    const acknowledged = await acknowledgeBeat({
+      sessionId,
+      beatIndex,
+      chunkIndex,
+      fallbackNext: nextStep,
+    });
+    if (acknowledged === null) {
+      setFailure("conflict");
+      setAdvancing(false);
+      return;
+    }
+    if (acknowledged === "end") {
+      onEndRef.current?.();
+      return;
+    }
+    onComplete(acknowledged);
   }
 
   return (
     <div className="space-y-8">
-      <div
-        onDoubleClick={canSkip ? handleSkip : undefined}
-        onKeyDown={
-          canSkip
-            ? (event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  handleSkip();
-                }
-              }
-            : undefined
-        }
-        role={canSkip ? "button" : undefined}
-        tabIndex={canSkip ? 0 : -1}
-        aria-label={canSkip ? "Show the rest of this passage" : undefined}
-        className={`focus-visible:outline-offset-4 focus-visible:[outline:2px_solid_var(--color-accent)]${
-          canSkip ? " select-none" : ""
-        }`}
-      >
+      <div>
         <p className="whitespace-pre-wrap">
           {revealedText}
           {showCaret ? (
@@ -223,13 +204,21 @@ export function StoryBeat({
         </p>
       </div>
 
+      {canSkip ? (
+        <button
+          type="button"
+          onClick={handleSkip}
+          className="font-ui text-xs tracking-wide text-[var(--color-ink-soft)] underline decoration-[var(--color-ink-soft)]/40 underline-offset-4 hover:text-[var(--color-ink)]"
+        >
+          Show full passage
+        </button>
+      ) : null}
+
       {failure ? <BeatFailure kind={failure} /> : null}
 
-      {/* Continue appears as soon as the ack lands — i.e. during the reveal too —
-          so it's a distinct target from the double-click-to-accelerate on the text:
-          a single click on Continue advances; a double-click on the passage only
-          speeds the reveal. */}
-      {!failure && done && nextStep !== null && nextStep !== "end" ? (
+      {/* Progress changes only after the complete passage is visible and the
+          reader deliberately acknowledges it. */}
+      {!failure && revealComplete && nextStep !== null ? (
         <button
           type="button"
           onClick={handleAdvance}
@@ -240,14 +229,8 @@ export function StoryBeat({
               : "hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]"
           }`}
         >
-          Continue
+          {nextStep === "end" ? "Finish story" : "Continue"}
         </button>
-      ) : null}
-
-      {!failure && done && nextStep === "end" && revealComplete ? (
-        <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)] pt-4">
-          The journey ends here.
-        </p>
       ) : null}
     </div>
   );
@@ -302,7 +285,7 @@ type AcknowledgeBeatInput = {
   beatIndex: number;
   chunkIndex: number;
   fallbackNext: StoryAdvance;
-  signal: AbortSignal;
+  signal?: AbortSignal;
 };
 
 async function acknowledgeBeat({

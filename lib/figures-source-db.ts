@@ -12,9 +12,7 @@ import { getSupabase } from "./db";
 // exact camelCase objects; only scalar/array columns need snake->camel mapping.
 
 declare global {
-  // eslint-disable-next-line no-var
   var __onwardFigureCache: FigureStageRow[] | undefined;
-  // eslint-disable-next-line no-var
   var __onwardFigureCachePromise: Promise<FigureStageRow[]> | undefined;
 }
 

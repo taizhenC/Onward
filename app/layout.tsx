@@ -1,20 +1,6 @@
 import type { Metadata } from "next";
-import { Source_Serif_4, Inter } from "next/font/google";
 import { MotionProvider } from "@/components/MotionProvider";
 import "./globals.css";
-
-const sourceSerif = Source_Serif_4({
-  subsets: ["latin"],
-  style: ["normal", "italic"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-ui",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Onward",
@@ -28,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${sourceSerif.variable} ${inter.variable}`}>
+    <html lang="en">
       <body>
         <MotionProvider>{children}</MotionProvider>
       </body>

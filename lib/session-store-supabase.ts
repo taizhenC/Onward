@@ -1,6 +1,8 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
 import type {
+  AcknowledgeSessionPositionInput,
+  AcknowledgeSessionPositionResult,
   CreateSessionInput,
   MatchRecipe,
   OpeningCopy,
@@ -93,6 +95,41 @@ async function updateSession(
   return data ? rowToSession(data as SessionRow) : null;
 }
 
+// Atomic compare-and-set for reader progress. The expected-position predicates
+// are part of the UPDATE, so concurrent tabs cannot both advance from the same
+// passage. A follow-up owner-scoped read classifies idempotent retries without
+// exposing whether a foreign session exists.
+async function acknowledgePosition(
+  input: AcknowledgeSessionPositionInput,
+): Promise<AcknowledgeSessionPositionResult> {
+  const { data, error } = await getSupabase()
+    .from(TABLE)
+    .update({
+      next_beat_index: input.nextBeatIndex,
+      next_chunk_index: input.nextChunkIndex,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("session_id", input.sessionId)
+    .eq("user_id", input.userId)
+    .eq("next_beat_index", input.expectedBeatIndex)
+    .eq("next_chunk_index", input.expectedChunkIndex)
+    .select("session_id")
+    .maybeSingle();
+
+  if (error) throw new Error(`acknowledgePosition failed: ${error.message}`);
+  if (data) return "advanced";
+
+  const current = await getSession(input.sessionId);
+  if (!current || current.userId !== input.userId) return "not_found";
+  if (
+    current.nextBeatIndex === input.nextBeatIndex &&
+    current.nextChunkIndex === input.nextChunkIndex
+  ) {
+    return "already_advanced";
+  }
+  return "conflict";
+}
+
 async function listSessionsByUser(userId: string): Promise<Session[]> {
   const { data, error } = await getSupabase()
     .from(TABLE)
@@ -160,6 +197,7 @@ export const supabaseSessionStore: SessionStore = {
   createSession,
   getSession,
   updateSession,
+  acknowledgePosition,
   listSessionsByUser,
   _sessionCount: sessionCount,
 };

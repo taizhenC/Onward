@@ -80,7 +80,6 @@ function ipHashSalt(): string {
 // irrelevant for dev).
 
 declare global {
-  // eslint-disable-next-line no-var
   var __onwardRateLimits:
     | Map<string, { count: number; expiresAt: number }>
     | undefined;

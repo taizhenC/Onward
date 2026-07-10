@@ -640,6 +640,8 @@ function toDumpTrial(trial: Trial): {
   result: MatchDebug;
 } {
   const { feeling: _feeling, note: _note, ...gold } = trial.gold;
+  void _feeling;
+  void _note;
   return {
     gold,
     run: trial.run,

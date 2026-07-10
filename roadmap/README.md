@@ -18,6 +18,7 @@ The prioritized backlog contains **43 items: 17 P0, 18 P1, and 8 P2**. The expan
 2. [Feature roadmap](./feature_roadmap.md) — the complete P0/P1/P2 backlog. Every proposed item has exactly one priority and one required type tag.
 3. [Technical architecture](./technical_architecture.md) — current-state review, target story-composition pipeline, data model, service boundaries, privacy model, and refactor rationale.
 4. [Release and measurement plan](./release_and_measurement.md) — delivery sequence, quality gates, metrics, rollout, ownership, dependencies, and risks.
+5. [Implementation status](./implementation_status.md) — live evidence ledger for all 43 items; an item is complete only when every acceptance criterion is directly verified.
 
 ## Priority and tag contract
 

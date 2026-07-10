@@ -42,9 +42,7 @@ export function contentHash(text: string): string {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
   var __onwardEmbeddingCache: EmbeddingCache | undefined;
-  // eslint-disable-next-line no-var
   var __onwardEmbeddingCachePromise: Promise<EmbeddingCache> | undefined;
 }
 

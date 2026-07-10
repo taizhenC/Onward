@@ -2,6 +2,17 @@ import type { Confidence, FacetType, Framing } from "./types";
 
 export const matchConfigVersion = "figure-library-50-2026-07-02";
 
+// The one recipe approved by the latest 50-figure holdout. FacetsRAG remains a
+// challenger: its latest run regressed below keyword and produced definitive
+// wrong matches. Public production must name a deliberate, approved path rather
+// than resolving `auto` according to whichever provider happens to be configured.
+export const APPROVED_PRODUCTION_RECIPE = {
+  recipeId: "keyword-rerank-figure-library-50-2026-07-02",
+  retrievalMode: "keyword",
+  matchConfigVersion,
+  datasetVersion: "match-104-2026-07-02",
+} as const;
+
 // ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in
 // the cron job). SQL can't read TS, so migration 0003's pg_cron schedules are the LIVE
 // copies of these values; change both together.

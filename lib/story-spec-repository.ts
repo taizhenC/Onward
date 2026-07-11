@@ -10,22 +10,39 @@ export function storySpecStageKey(figureKey: string, stageId: string): string {
 }
 
 export async function listPublishedStorySpecKeys(): Promise<ReadonlySet<string>> {
+  const catalog = await listPublishedStorySpecCatalog();
+  return new Set(catalog.keys());
+}
+
+export async function listPublishedStorySpecCatalog(): Promise<
+  ReadonlyMap<string, StorySpec>
+> {
   const result = await getSupabase()
     .from("story_specs")
     .select("figure_key,stage_id,spec")
     .eq("status", "published");
   if (result.error) throw new Error(`list published StorySpecs failed: ${result.error.message}`);
-  const keys = new Set<string>();
+  const catalog = new Map<string, StorySpec>();
   for (const row of result.data ?? []) {
     try {
-      const validation = validateStorySpec(row.spec as StorySpec, { forPublish: true });
-      if (validation.valid) keys.add(storySpecStageKey(row.figure_key, row.stage_id));
+      const spec = row.spec as StorySpec;
+      const validation = validateStorySpec(spec, { forPublish: true });
+      if (
+        validation.valid &&
+        spec.figureKey === row.figure_key &&
+        spec.stageId === row.stage_id
+      ) {
+        catalog.set(
+          storySpecStageKey(row.figure_key, row.stage_id),
+          deepFreeze(structuredClone(spec)),
+        );
+      }
     } catch {
       // A malformed published row is quarantined from matching. The readiness
       // check reports incomplete coverage; runtime never offers invalid content.
     }
   }
-  return keys;
+  return catalog;
 }
 
 // Runtime reads fail closed. A malformed or incompletely reviewed document is

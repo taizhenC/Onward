@@ -4,21 +4,28 @@ import { CRISIS_RESOURCES, classifyCrisis, crisisRegexVersion } from "./safety";
 import { createSession } from "./session";
 import { match, resolveRetrievalMode } from "./matching";
 import { APPROVED_PRODUCTION_RECIPE, matchConfigVersion } from "./match-config";
-import { getByKey } from "./figures";
+import { getByKey, listAll } from "./figures";
 import { activeRecipe, writeOpeningCopy } from "./llm";
 import { embeddingModelId } from "./embeddings";
 import { consumeMatchRateLimit } from "./rate-limit";
 import { buildDraftStorySpec } from "./story-spec";
 import {
-  getPublishedStorySpec,
-  listPublishedStorySpecKeys,
+  listPublishedStorySpecCatalog,
+  storySpecStageKey,
 } from "./story-spec-repository";
 import { composeCanonicalStoryArtifact } from "./story-artifact";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
+import {
+  filterStorySpecCatalog,
+  parseStoryBoundaries,
+  type StoryBoundaries,
+} from "./story-boundaries";
+import type { StorySpec } from "./story-spec-types";
 
 export type IntakeInput = {
   age: number;
   feeling: string;
+  boundaries?: StoryBoundaries;
 };
 
 // Request identity, composed by the caller (the route pairs the authenticated user
@@ -33,7 +40,17 @@ export type IntakeValidationError = {
   error: string;
 };
 
-type ValidatedIntakeInput = IntakeInput;
+type CoreIntakeInput = {
+  age: number;
+  feeling: string;
+  boundariesRaw: unknown;
+};
+
+type ValidatedIntakeInput = {
+  age: number;
+  feeling: string;
+  boundaries: StoryBoundaries | undefined;
+};
 
 const MIN_AGE = 13;
 const MAX_AGE = 100;
@@ -44,15 +61,25 @@ export async function handleIntake(
   input: unknown,
   ctx: IntakeContext,
 ): Promise<MatchResponse> {
-  const validated = validateIntake(input);
-  if ("error" in validated) return validated;
-
-  // Crisis first and NEVER rate-limited: someone in crisis retrying must always get
-  // resources. Persists nothing, calls no provider — there's nothing to protect.
-  const crisis = classifyCrisis(validated.feeling);
-  if (crisis.crisisDetected) {
-    return { crisis: true, resources: CRISIS_RESOURCES };
+  // Crisis detection uses any string feeling before age/boundary validation and
+  // is never rate-limited. Malformed optional controls cannot hide resources.
+  const safetyText = feelingForSafety(input);
+  if (safetyText) {
+    const crisis = classifyCrisis(safetyText);
+    if (crisis.crisisDetected) {
+      return { crisis: true, resources: CRISIS_RESOURCES };
+    }
   }
+
+  const core = validateCoreIntake(input);
+  if ("error" in core) return core;
+  const parsedBoundaries = parseStoryBoundaries(core.boundariesRaw);
+  if ("error" in parsedBoundaries) return parsedBoundaries;
+  const validated: ValidatedIntakeInput = {
+    age: core.age,
+    feeling: core.feeling,
+    boundaries: parsedBoundaries.value,
+  };
 
   // Operational kill switch for a safety, privacy, or content incident. Crisis
   // support remains available because it is evaluated above this branch. The
@@ -61,15 +88,25 @@ export async function handleIntake(
     return { temporarilyUnavailable: true };
   }
 
-  let eligibleStageKeys: ReadonlySet<string> | undefined;
-  if (process.env.PERSISTENCE === "supabase") {
-    try {
-      eligibleStageKeys = await listPublishedStorySpecKeys();
-    } catch {
-      return { temporarilyUnavailable: true };
-    }
-    if (eligibleStageKeys.size === 0) return { temporarilyUnavailable: true };
+  let catalog: ReadonlyMap<string, StorySpec>;
+  try {
+    catalog =
+      process.env.PERSISTENCE === "supabase"
+        ? await listPublishedStorySpecCatalog()
+        : new Map(
+            (await listAll()).map((stage) => [
+              storySpecStageKey(stage.figureKey, stage.stageId),
+              buildDraftStorySpec(stage),
+            ]),
+          );
+  } catch {
+    return { temporarilyUnavailable: true };
   }
+  if (catalog.size === 0) return { temporarilyUnavailable: true };
+
+  const eligibleCatalog = filterStorySpecCatalog(catalog, validated.boundaries);
+  if (eligibleCatalog.size === 0) return { noEligibleStory: true };
+  const eligibleStageKeys = new Set(eligibleCatalog.keys());
 
   // Rate limit before matching/providers, but after the cheap content-readiness
   // gate so an editorial outage never consumes a reader's attempt budget.
@@ -80,7 +117,11 @@ export async function handleIntake(
 
   let result;
   try {
-    result = await match({ ...validated, eligibleStageKeys });
+    result = await match({
+      age: validated.age,
+      feeling: validated.feeling,
+      eligibleStageKeys,
+    });
   } catch {
     return { temporarilyUnavailable: true };
   }
@@ -102,18 +143,11 @@ export async function handleIntake(
     retrievalMode: resolveRetrievalMode(),
   };
 
-  // Production fails closed until editorial publishes an evidence-bound spec.
-  // Generated opening copy is inside the same immutable validation boundary;
-  // a rejected line gets one deterministic canonical fallback, never exposure.
-  let storySpec;
-  try {
-    storySpec =
-      process.env.PERSISTENCE === "supabase"
-        ? await getPublishedStorySpec(result.figureKey, result.stageId)
-        : buildDraftStorySpec(stage);
-  } catch {
-    return { temporarilyUnavailable: true };
-  }
+  // The selected spec comes from the already validated and boundary-filtered
+  // catalog. The persistence RPC rechecks publication under a row lock.
+  const storySpec = eligibleCatalog.get(
+    storySpecStageKey(result.figureKey, result.stageId),
+  );
   if (!storySpec) return { temporarilyUnavailable: true };
 
   const generatedOpeningCopy = await writeOpeningCopy({
@@ -130,6 +164,7 @@ export async function handleIntake(
       openingCopy: generatedOpeningCopy,
       framing: result.framing,
       disclosure: validated.feeling,
+      boundaries: validated.boundaries,
       allowDraftSpec: process.env.PERSISTENCE !== "supabase",
     });
   } catch {
@@ -144,6 +179,7 @@ export async function handleIntake(
         },
         framing: result.framing,
         disclosure: validated.feeling,
+        boundaries: validated.boundaries,
         fallbackReason: "validator_rejected",
         allowDraftSpec: process.env.PERSISTENCE !== "supabase",
       });
@@ -172,7 +208,7 @@ export async function handleIntake(
   return { sessionId };
 }
 
-function validateIntake(input: unknown): ValidatedIntakeInput | IntakeValidationError {
+function validateCoreIntake(input: unknown): CoreIntakeInput | IntakeValidationError {
   if (input === null || typeof input !== "object") {
     return { error: "Intake body must be an object." };
   }
@@ -198,5 +234,11 @@ function validateIntake(input: unknown): ValidatedIntakeInput | IntakeValidation
     return { error: "Feeling must be between 10 and 1000 characters." };
   }
 
-  return { age, feeling };
+  return { age, feeling, boundariesRaw: candidate.boundaries };
+}
+
+function feelingForSafety(input: unknown): string | null {
+  if (input === null || typeof input !== "object") return null;
+  const feeling = (input as Record<string, unknown>).feeling;
+  return typeof feeling === "string" ? feeling : null;
 }

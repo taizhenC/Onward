@@ -11,6 +11,7 @@ import type {
   OpeningCopy,
   Session,
 } from "./types";
+import type { StoryArtifact } from "./story-artifact-types";
 
 export type StoryPlaybackBeat = {
   kind: BeatKind;
@@ -22,6 +23,7 @@ export type StoryPlayback = {
   outline: ClientFigureOutline;
   beats: StoryPlaybackBeat[];
   openingCopy: OpeningCopy;
+  contentNote: string | null;
   source: "artifact" | "legacy_stage";
 };
 
@@ -49,6 +51,7 @@ export async function getStoryPlayback(session: Session): Promise<StoryPlayback 
         chunks: beat.chunks,
       })),
       openingCopy: artifact.openingCopy,
+      contentNote: reviewedStoryContentNote(artifact.contentProfile),
       source: "artifact",
     };
   }
@@ -69,6 +72,15 @@ export async function getStoryPlayback(session: Session): Promise<StoryPlayback 
       }),
     })),
     openingCopy: session.openingCopy,
+    contentNote: null,
     source: "legacy_stage",
   };
+}
+
+export function reviewedStoryContentNote(
+  profile: StoryArtifact["contentProfile"],
+): string | null {
+  return profile.reviewed && profile.contentNote.trim()
+    ? profile.contentNote
+    : null;
 }

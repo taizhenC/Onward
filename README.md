@@ -13,6 +13,7 @@ Deploy slice (2026-06-10). The matching engine is real and validated:
 - **Rerank**: GPT-OSS 120B on Cerebras, trust-gated by eval.
 - **Auth**: anonymous-first via Supabase Auth — no login wall; sessions are owned and private; an email upgrade keeps stories permanently. Guests and their stories are deleted ~6 hours after last activity.
 - **Safety**: deterministic crisis regex before any LLM call; crisis input is never persisted and never rate-limited.
+- **Story boundaries**: optional detail/topic limits are hard eligibility rules before retrieval and composition; selections are not persisted.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres.
 - **Retention**: user disclosures are NULL'd 60 days after creation by a scheduled job.
 
@@ -37,6 +38,7 @@ npm run eval              # match eval (EVAL_CONCURRENCY=1 with real providers)
 npm run seed              # seed figures + figure_stages to Supabase
 npm run check-story-spec  # validate all draft contracts and publish rejection gates
 npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
+npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run seed-story-specs  # seed review drafts; never overwrites reviewed/published content
 npm run check-db          # Supabase acceptance check (after seed)
 npm run seed-embeddings   # embed shape/facet texts (requires EMBEDDING_PROVIDER=gemini)
@@ -87,6 +89,7 @@ Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL
 - Guest accounts and their stories are deleted ~6 hours after last activity (`ANON_USER_TTL_HOURS`); linking an email keeps them.
 - The text a user writes is NULL'd from our side 60 days after creation (`FEELING_RETENTION_DAYS`), saved or not.
 - Crisis input is detected by a deterministic regex before any LLM call and is never persisted.
+- Optional story intensity/topic limits are applied in memory before retrieval and are not stored in the session or StoryArtifact.
 - No prompt/response bodies, feelings, raw IPs, or raw errors are ever logged.
 
 ## Architecture

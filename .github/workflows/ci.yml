@@ -32,6 +32,7 @@ jobs:
       - run: npm run check-figure
       - run: npm run check-story-spec
       - run: npm run check-story-artifact
+      - run: npm run check-source-transparency
       - run: npm run check-story-boundaries
       - run: npm run check-resonance-brief
       - run: npm run check-story-composer

@@ -159,6 +159,36 @@ async function checkMatchRecoverySchema(): Promise<Step> {
   }
 }
 
+async function checkHistoricalConcernSchema(): Promise<Step> {
+  const name = "privacy-safe historical concern queue installed";
+  try {
+    const reports = await tableCount("historical_concern_reports");
+    const probe = await getSupabase().rpc("submit_historical_concern", {
+      p_report_id: "0".repeat(32),
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_session_id: "0".repeat(32),
+      p_artifact_id: "0".repeat(32),
+      p_fact_id: "fact-probe",
+      p_reason: "incorrect_fact",
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === null;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `queue/RPC reachable (${reports} bounded report row(s))`
+        : "submission RPC accepted a nonexistent owned artifact",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} — apply migration 0007`,
+    };
+  }
+}
+
 // Gate 3 — a crisis intake writes no session row (handleIntake returns before createSession).
 // The fixed ctx is safe in supabase mode: crisis short-circuits before the rate limiter and
 // the store, so this non-uuid user id never reaches Postgres.
@@ -223,6 +253,7 @@ async function main(): Promise<void> {
     await checkPublishedStorySpecs(),
     await checkArtifactSchema(),
     await checkMatchRecoverySchema(),
+    await checkHistoricalConcernSchema(),
     await checkCrisisPersistsNothing(),
   ];
 

@@ -10,6 +10,7 @@ import {
   validateStoryArtifact,
 } from "../lib/story-artifact";
 import {
+  HYBRID_STORY_ARTIFACT_SCHEMA_VERSION,
   RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION,
   BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
   LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
@@ -65,7 +66,24 @@ function main(): void {
     if (!validateStoredStoryArtifact(reverseObjectKeys(artifact))) {
       failures.push(`${label}: jsonb-style key reorder broke the content hash`);
     }
-    const resonanceArtifact = structuredClone(artifact);
+    if (
+      artifact.transparency?.provenance.status !== "review_draft" ||
+      artifact.transparency.storySpec.storySpecId !== spec.storySpecId ||
+      artifact.transparency.storySpec.version !== spec.version ||
+      artifact.transparency.sources.length !== spec.sources.length ||
+      !Object.isFrozen(artifact.transparency) ||
+      !Object.isFrozen(artifact.transparency.sources)
+    ) {
+      failures.push(`${label}: draft transparency was absent, misleading, or mutable`);
+    }
+    const hybridArtifact = structuredClone(artifact);
+    hybridArtifact.schemaVersion = HYBRID_STORY_ARTIFACT_SCHEMA_VERSION;
+    delete hybridArtifact.transparency;
+    hybridArtifact.contentHash = storyArtifactContentHash(hybridArtifact);
+    if (!validateStoredStoryArtifact(hybridArtifact)) {
+      failures.push(`${label}: hybrid-era artifact schema no longer replays`);
+    }
+    const resonanceArtifact = structuredClone(hybridArtifact);
     resonanceArtifact.schemaVersion = RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION;
     delete resonanceArtifact.recipe.hybridTemplatePolicyVersion;
     delete resonanceArtifact.composition.attemptCount;

@@ -8,8 +8,10 @@ import type {
   OpeningCopy,
   StoryAdvance,
 } from "@/lib/types";
+import type { StoryTransparency } from "@/lib/story-transparency-types";
 import { PrefaceCard } from "./PrefaceCard";
 import { SaveStoriesCard } from "./SaveStoriesCard";
+import { StoryAfterword } from "./StoryAfterword";
 import { StoryBeat } from "./StoryBeat";
 
 type Props = {
@@ -17,9 +19,11 @@ type Props = {
   outline: ClientFigureOutline;
   openingCopy: OpeningCopy;
   contentNote: string | null;
+  transparency: StoryTransparency | null;
   framing: Framing;
   initialBeatIndex: number;
   initialChunkIndex: number;
+  completedBridgeText: string | null;
 };
 
 type Phase = "preface" | "playing" | "ended";
@@ -29,9 +33,11 @@ export function StoryPlayer({
   outline,
   openingCopy,
   contentNote,
+  transparency,
   framing,
   initialBeatIndex,
   initialChunkIndex,
+  completedBridgeText,
 }: Props) {
   const totalBeats = outline.beats.length;
   const [phase, setPhase] = useState<Phase>(() => {
@@ -105,21 +111,31 @@ export function StoryPlayer({
             />
           </motion.div>
         ) : (
-          <motion.p
+          <motion.div
             key="ended"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="text-[var(--color-ink-soft)]"
+            className="space-y-6"
           >
-            The journey ends here.
-          </motion.p>
+            {completedBridgeText ? (
+              <p className="whitespace-pre-line text-lg leading-relaxed">
+                {completedBridgeText}
+              </p>
+            ) : null}
+            <p className="text-[var(--color-ink-soft)]">The journey ends here.</p>
+          </motion.div>
         )}
       </AnimatePresence>
 
       {/* Sibling of the AnimatePresence region on purpose — inside the mode="wait"
           block it would unmount the final bridge text. Covers both end paths. */}
-      {reachedEnd || phase === "ended" ? <SaveStoriesCard /> : null}
+      {reachedEnd || phase === "ended" ? (
+        <>
+          <StoryAfterword sessionId={sessionId} transparency={transparency} />
+          <SaveStoriesCard />
+        </>
+      ) : null}
     </div>
   );
 }

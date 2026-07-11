@@ -12,6 +12,7 @@ import type {
   Session,
 } from "./types";
 import type { StoryArtifact } from "./story-artifact-types";
+import type { StoryTransparency } from "./story-transparency-types";
 
 export type StoryPlaybackBeat = {
   kind: BeatKind;
@@ -24,6 +25,7 @@ export type StoryPlayback = {
   beats: StoryPlaybackBeat[];
   openingCopy: OpeningCopy;
   contentNote: string | null;
+  transparency: StoryTransparency | null;
   source: "artifact" | "legacy_stage";
 };
 
@@ -52,6 +54,7 @@ export async function getStoryPlayback(session: Session): Promise<StoryPlayback 
       })),
       openingCopy: artifact.openingCopy,
       contentNote: reviewedStoryContentNote(artifact.contentProfile),
+      transparency: artifact.transparency ?? null,
       source: "artifact",
     };
   }
@@ -73,6 +76,7 @@ export async function getStoryPlayback(session: Session): Promise<StoryPlayback 
     })),
     openingCopy: session.openingCopy,
     contentNote: null,
+    transparency: null,
     source: "legacy_stage",
   };
 }

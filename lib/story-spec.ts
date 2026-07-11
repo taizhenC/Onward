@@ -148,7 +148,22 @@ export function validateStorySpec(
   }
 
   spec.sources.forEach((source) => {
-    if (!source.citation.trim()) errors.push(`${source.sourceId} citation is empty`);
+    if (!/^[A-Za-z0-9][A-Za-z0-9:._-]{0,127}$/.test(source.sourceId)) {
+      errors.push("source IDs must use the bounded public identifier format");
+    }
+    if (
+      !source.citation.trim() ||
+      source.citation.length > 2_000 ||
+      hasUnsafeControl(source.citation)
+    ) {
+      errors.push(`${source.sourceId} citation is empty or unsafe`);
+    }
+    if (source.locator !== undefined && !isSafeLocator(source.locator)) {
+      errors.push(`${source.sourceId} locator is invalid`);
+    }
+    if (source.url !== undefined && !isSafeSourceUrl(source.url)) {
+      errors.push(`${source.sourceId} URL must be a credential-free HTTPS URL`);
+    }
   });
 
   for (const [index, fact] of spec.facts.entries()) {
@@ -164,6 +179,9 @@ export function validateStorySpec(
       }
       if (options.forPublish && ref.scope !== "broad" && !ref.locator?.trim()) {
         errors.push(`${fact.factId} source reference needs a locator`);
+      }
+      if (ref.locator !== undefined && !isSafeLocator(ref.locator)) {
+        errors.push(`${fact.factId} source locator is invalid`);
       }
     }
     if (fact.eventOrder < 1 || !Number.isInteger(fact.eventOrder)) {
@@ -269,6 +287,9 @@ export function validateStorySpec(
       if (options.forPublish && ref.scope !== "broad" && !ref.locator?.trim()) {
         errors.push(`${quote.quoteId} source reference needs a locator`);
       }
+      if (ref.locator !== undefined && !isSafeLocator(ref.locator)) {
+        errors.push(`${quote.quoteId} source locator is invalid`);
+      }
     }
     if (options.forPublish && quote.status === "unverified") {
       errors.push(`${quote.quoteId} must be verified, paraphrased, disputed, or removed`);
@@ -343,6 +364,24 @@ function buildSources(stage: FigureStageRow): SourceRecord[] {
     sourceId: `source-${pad(index + 1)}`,
     citation,
   }));
+}
+
+function isSafeSourceUrl(value: string): boolean {
+  if (value.length > 2_000 || hasUnsafeControl(value)) return false;
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
+function isSafeLocator(value: string): boolean {
+  return value.trim().length > 0 && value.length <= 500 && !hasUnsafeControl(value);
+}
+
+function hasUnsafeControl(value: string): boolean {
+  return /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/.test(value);
 }
 
 function buildFactAtoms(stage: FigureStageRow, sources: SourceRecord[]): FactAtom[] {

@@ -145,10 +145,28 @@ const EPHEMERAL_HASH_KEY = randomBytes(32);
 export function createResonanceBrief(
   disclosure: string,
   boundaries?: StoryBoundaries,
+  primaryPressureOverride?: PrimaryPressure,
 ): ResonanceBrief {
+  if (
+    primaryPressureOverride !== undefined &&
+    !PRIMARY_PRESSURES.includes(primaryPressureOverride)
+  ) {
+    throw new Error("ResonanceBrief pressure override is invalid");
+  }
   const scores = new Map<PrimaryPressure, number>();
   const anchors: ResonanceBrief["anchors"] = [];
   const seenAnchors = new Set<string>();
+
+  if (primaryPressureOverride) {
+    const sourceSpanHash = hashSensitiveSpan(
+      `controlled-clarification:${primaryPressureOverride}`,
+    );
+    anchors.push({
+      sourceSpanHash,
+      concept: primaryPressureOverride,
+    });
+    seenAnchors.add(`${primaryPressureOverride}:${sourceSpanHash}`);
+  }
 
   for (const rule of ANCHOR_RULES) {
     for (const match of disclosure.matchAll(rule.pattern)) {
@@ -164,7 +182,8 @@ export function createResonanceBrief(
     }
   }
 
-  const primaryPressure = choosePrimaryPressure(scores);
+  const primaryPressure =
+    primaryPressureOverride ?? choosePrimaryPressure(scores);
   if (anchors.length === 0) {
     anchors.push({
       sourceSpanHash: hashSensitiveSpan(disclosure),

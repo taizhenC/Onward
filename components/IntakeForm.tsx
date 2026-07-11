@@ -13,12 +13,26 @@ import {
   type StoryIntensity,
 } from "@/lib/story-boundaries";
 import type { ContentFlag } from "@/lib/story-spec-types";
+import {
+  MATCH_CLARIFICATION_OPTIONS,
+  type MatchClarification,
+} from "@/lib/match-recovery";
 
 type MatchSuccess = { sessionId: string };
 type MatchCrisis = { crisis: true; resources: CrisisResource[] };
 type MatchRateLimited = { rateLimited: true };
 type MatchUnavailable = { temporarilyUnavailable: true };
 type MatchNoEligible = { noEligibleStory: true };
+type MatchClarificationNeeded = {
+  clarificationNeeded: true;
+  policyVersion: string;
+  recoveryToken: string;
+};
+type MatchNoClose = {
+  noCloseMatch: true;
+  policyVersion: string;
+  recoveryToken: string;
+};
 type MatchError = { error: string };
 type MatchPayload =
   | MatchSuccess
@@ -26,6 +40,8 @@ type MatchPayload =
   | MatchRateLimited
   | MatchUnavailable
   | MatchNoEligible
+  | MatchClarificationNeeded
+  | MatchNoClose
   | MatchError;
 
 // Invisible anonymous-first auth: make sure this browser holds an auth session
@@ -63,12 +79,23 @@ export function IntakeForm() {
     useState<StoryIntensity>("moderate");
   const [excludedFlags, setExcludedFlags] = useState<ContentFlag[]>([]);
   const [noEligibleStory, setNoEligibleStory] = useState(false);
+  const [clarificationNeeded, setClarificationNeeded] = useState(false);
+  const [clarification, setClarification] =
+    useState<MatchClarification | null>(null);
+  const [noCloseMatch, setNoCloseMatch] = useState(false);
+  const [recoveryToken, setRecoveryToken] = useState<string | null>(null);
   const boundaryRef = useRef<HTMLFieldSetElement>(null);
   const noEligibleRef = useRef<HTMLDivElement>(null);
+  const clarificationRef = useRef<HTMLFieldSetElement>(null);
+  const noCloseRef = useRef<HTMLDivElement>(null);
+  const feelingRef = useRef<HTMLTextAreaElement>(null);
+  const submittingRef = useRef(false);
 
   useEffect(() => {
-    if (noEligibleStory) noEligibleRef.current?.focus();
-  }, [noEligibleStory]);
+    if (noCloseMatch) noCloseRef.current?.focus();
+    else if (clarificationNeeded) clarificationRef.current?.focus();
+    else if (noEligibleStory) noEligibleRef.current?.focus();
+  }, [clarificationNeeded, noCloseMatch, noEligibleStory]);
 
   const ageNum = Number.parseInt(age, 10);
   const ageValid =
@@ -76,14 +103,29 @@ export function IntakeForm() {
   const trimmedFeeling = feeling.trim();
   const feelingValid =
     trimmedFeeling.length >= 10 && feeling.length <= 1000;
-  const canSubmit = ageValid && feelingValid && !submitting;
+  const baseCanSubmit = ageValid && feelingValid && !submitting;
+  const canSubmit =
+    baseCanSubmit && (!clarificationNeeded || clarification !== null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!canSubmit) return;
+    if (noCloseMatch) return;
+    await submitMatch(false);
+  }
+
+  async function submitMatch(acceptAdjacent: boolean) {
+    if (
+      !baseCanSubmit ||
+      submittingRef.current ||
+      (clarificationNeeded && clarification === null && !acceptAdjacent)
+    ) {
+      return;
+    }
+    submittingRef.current = true;
     setSubmitting(true);
     setError(null);
     setNoEligibleStory(false);
+    setNoCloseMatch(false);
 
     const authed = await ensureAuthSession();
 
@@ -103,11 +145,14 @@ export function IntakeForm() {
                 } satisfies StoryBoundaries,
               }
             : {}),
+          ...(clarification ? { clarification } : {}),
+          ...(acceptAdjacent ? { acceptAdjacent: true } : {}),
+          ...(recoveryToken ? { recoveryToken } : {}),
         }),
       });
     } catch {
       setError("The connection dropped. Please try again.");
-      setSubmitting(false);
+      finishSubmitting();
       return;
     }
 
@@ -120,7 +165,7 @@ export function IntakeForm() {
           ? "Couldn't read the response."
           : `The server returned an error (${response.status}).`,
       );
-      setSubmitting(false);
+      finishSubmitting();
       return;
     }
 
@@ -131,16 +176,33 @@ export function IntakeForm() {
     }
 
     if (response.status === 503 || "temporarilyUnavailable" in payload) {
+      if (recoveryToken) resetMatchRecovery();
       setError(
         "Onward is pausing new stories for a little while. What you wrote was not saved. Please try again later.",
       );
-      setSubmitting(false);
+      finishSubmitting();
       return;
     }
 
     if ("noEligibleStory" in payload) {
       setNoEligibleStory(true);
-      setSubmitting(false);
+      finishSubmitting();
+      return;
+    }
+
+    if ("clarificationNeeded" in payload) {
+      setClarificationNeeded(true);
+      setClarification(null);
+      setRecoveryToken(payload.recoveryToken);
+      finishSubmitting();
+      return;
+    }
+
+    if ("noCloseMatch" in payload) {
+      setClarificationNeeded(true);
+      setNoCloseMatch(true);
+      setRecoveryToken(payload.recoveryToken);
+      finishSubmitting();
       return;
     }
 
@@ -148,15 +210,16 @@ export function IntakeForm() {
       setError(
         "We couldn't start a private session. Your browser may be blocking cookies — they're needed to keep your story yours.",
       );
-      setSubmitting(false);
+      finishSubmitting();
       return;
     }
 
     if (!response.ok) {
+      if (recoveryToken) resetMatchRecovery();
       const message =
         "error" in payload ? payload.error : "Something went wrong.";
       setError(message);
-      setSubmitting(false);
+      finishSubmitting();
       return;
     }
 
@@ -169,11 +232,16 @@ export function IntakeForm() {
       return;
     }
     setError("Unexpected response from the matcher.");
+    finishSubmitting();
+  }
+
+  function finishSubmitting() {
+    submittingRef.current = false;
     setSubmitting(false);
   }
 
   function toggleExcludedFlag(flag: ContentFlag) {
-    setNoEligibleStory(false);
+    resetMatchRecovery();
     setExcludedFlags((current) =>
       current.includes(flag)
         ? current.filter((candidate) => candidate !== flag)
@@ -184,6 +252,22 @@ export function IntakeForm() {
   function focusBoundaries() {
     setNoEligibleStory(false);
     requestAnimationFrame(() => boundaryRef.current?.focus());
+  }
+
+  function resetMatchRecovery() {
+    setNoEligibleStory(false);
+    setClarificationNeeded(false);
+    setClarification(null);
+    setNoCloseMatch(false);
+    setRecoveryToken(null);
+  }
+
+  function focusDisclosure() {
+    setNoCloseMatch(false);
+    setClarificationNeeded(false);
+    setClarification(null);
+    setRecoveryToken(null);
+    requestAnimationFrame(() => feelingRef.current?.focus());
   }
 
   if (crisisResources) {
@@ -221,8 +305,9 @@ export function IntakeForm() {
       <header className="space-y-3">
         <h1 className="text-3xl">Onward</h1>
         <p className="text-[var(--color-ink-soft)]">
-          Tell us how old you are and what you are going through. We will
-          find someone real who lived through something like it.
+          Tell us how old you are and what you are going through. We will look
+          for one useful point of contact in a real life. If the fit is
+          uncertain, we will say so and may ask one question.
         </p>
       </header>
 
@@ -237,7 +322,7 @@ export function IntakeForm() {
           value={age}
           onChange={(event) => {
             setAge(event.target.value);
-            setNoEligibleStory(false);
+            resetMatchRecovery();
           }}
           disabled={submitting}
           className="w-32 bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2"
@@ -249,10 +334,11 @@ export function IntakeForm() {
           What is going on
         </span>
         <textarea
+          ref={feelingRef}
           value={feeling}
           onChange={(event) => {
             setFeeling(event.target.value);
-            setNoEligibleStory(false);
+            resetMatchRecovery();
           }}
           disabled={submitting}
           rows={6}
@@ -284,7 +370,7 @@ export function IntakeForm() {
             checked={boundaryEnabled}
             onChange={(event) => {
               setBoundaryEnabled(event.target.checked);
-              setNoEligibleStory(false);
+              resetMatchRecovery();
             }}
             className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
           />
@@ -328,7 +414,7 @@ export function IntakeForm() {
                     checked={maxIntensity === option.value}
                     onChange={() => {
                       setMaxIntensity(option.value);
-                      setNoEligibleStory(false);
+                      resetMatchRecovery();
                     }}
                     className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
                   />
@@ -373,6 +459,105 @@ export function IntakeForm() {
         ) : null}
       </fieldset>
 
+      {clarificationNeeded ? (
+        <fieldset
+          ref={clarificationRef}
+          tabIndex={-1}
+          disabled={submitting || noCloseMatch}
+          className="space-y-5 border-l-2 border-[var(--color-accent)] pl-5 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
+        >
+          <legend className="pr-2 font-ui text-xs font-medium uppercase tracking-widest text-[var(--color-ink-soft)]">
+            One clarifying question
+          </legend>
+          <div className="space-y-2">
+            <p className="text-lg leading-relaxed">
+              Which part feels hardest right now?
+            </p>
+            <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Choose the closest answer. We ask only once, use it only for this
+              match, and do not save the choice itself.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {MATCH_CLARIFICATION_OPTIONS.map((option) => (
+              <label key={option.id} className="flex items-start gap-3">
+                <input
+                  type="radio"
+                  name="match-clarification"
+                  value={option.id}
+                  checked={clarification === option.id}
+                  onChange={() => {
+                    setClarification(option.id);
+                    setNoCloseMatch(false);
+                  }}
+                  className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
+                />
+                <span>
+                  <span className="block font-ui text-sm font-medium">
+                    {option.label}
+                  </span>
+                  <span className="block text-xs leading-relaxed text-[var(--color-ink-soft)]">
+                    {option.description}
+                  </span>
+                </span>
+              </label>
+            ))}
+          </div>
+          {!noCloseMatch ? (
+            <button
+              type="button"
+              disabled={!baseCanSubmit}
+              onClick={() => void submitMatch(true)}
+              className="font-ui text-xs uppercase tracking-wider underline underline-offset-4 disabled:opacity-40"
+            >
+              Skip and show the closest story
+            </button>
+          ) : null}
+        </fieldset>
+      ) : null}
+
+      {noCloseMatch ? (
+        <div
+          ref={noCloseRef}
+          tabIndex={-1}
+          role="status"
+          className="space-y-4 border border-[var(--color-ink-soft)]/35 p-5 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
+        >
+          <p className="font-ui text-sm font-medium">
+            We do not have a close enough story yet.
+          </p>
+          <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            The nearest story is only an adjacent parallel. No story or answer
+            was saved; the temporary key for this step expires within ten
+            minutes. You can read the story with its limitation made clear,
+            revise what you wrote, or leave.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              disabled={!baseCanSubmit}
+              onClick={() => void submitMatch(true)}
+              className="font-ui text-xs uppercase tracking-wider underline underline-offset-4 disabled:opacity-40"
+            >
+              Read the closest story
+            </button>
+            <button
+              type="button"
+              onClick={focusDisclosure}
+              className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
+            >
+              Revise what I wrote
+            </button>
+            <Link
+              href="/"
+              className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
+            >
+              Leave
+            </Link>
+          </div>
+        </div>
+      ) : null}
+
       {noEligibleStory ? (
         <div
           ref={noEligibleRef}
@@ -409,13 +594,19 @@ export function IntakeForm() {
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={!canSubmit}
-        className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-6 py-3 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-      >
-        {submitting ? "Finding…" : "Begin"}
-      </button>
+      {!noCloseMatch ? (
+        <button
+          type="submit"
+          disabled={!canSubmit}
+          className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-6 py-3 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        >
+          {submitting
+            ? "Finding…"
+            : clarificationNeeded
+              ? "Use this answer"
+              : "Begin"}
+        </button>
+      ) : null}
     </motion.form>
   );
 }

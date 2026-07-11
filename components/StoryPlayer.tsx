@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { ClientFigureOutline, OpeningCopy, StoryAdvance } from "@/lib/types";
+import type {
+  ClientFigureOutline,
+  Framing,
+  OpeningCopy,
+  StoryAdvance,
+} from "@/lib/types";
 import { PrefaceCard } from "./PrefaceCard";
 import { SaveStoriesCard } from "./SaveStoriesCard";
 import { StoryBeat } from "./StoryBeat";
@@ -12,6 +17,7 @@ type Props = {
   outline: ClientFigureOutline;
   openingCopy: OpeningCopy;
   contentNote: string | null;
+  framing: Framing;
   initialBeatIndex: number;
   initialChunkIndex: number;
 };
@@ -23,6 +29,7 @@ export function StoryPlayer({
   outline,
   openingCopy,
   contentNote,
+  framing,
   initialBeatIndex,
   initialChunkIndex,
 }: Props) {
@@ -78,6 +85,7 @@ export function StoryPlayer({
           <PrefaceCard
             lines={openingCopy.prefaceLines}
             contentNote={contentNote}
+            framing={framing}
             onBegin={() => setPhase("playing")}
           />
         ) : phase === "playing" && currentBeat ? (

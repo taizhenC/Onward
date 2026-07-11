@@ -16,11 +16,16 @@ import { pickFigure, RerankError } from "./llm";
 import { pickByKeywordHybrid, scoreAllByKeywordHybrid } from "./keyword-match";
 import { EmbeddingError } from "./embeddings";
 import { retrieveFacets, RetrievalUnavailableError } from "./facets-retrieval";
+import {
+  withMatchClarification,
+  type MatchClarification,
+} from "./match-recovery";
 
 export type MatchInput = {
   age: number;
   feeling: string;
   eligibleStageKeys?: ReadonlySet<string>;
+  clarification?: MatchClarification;
 };
 
 export type MatchResult = {
@@ -50,6 +55,7 @@ type DebugScalars = RetrievalDebug & {
   candidateCount: number;
   ageCandidateCount: number;
   promptChars: number;
+  ageFallback: boolean;
 };
 
 // Server-only, eval-only enrichment of MatchResult. resonance/gap are deliberately
@@ -70,14 +76,40 @@ export async function match(input: MatchInput): Promise<MatchResult> {
   return { figureKey, stageId, framing };
 }
 
+export type IntakeMatchResult = MatchResult &
+  Pick<MatchDebug, "confidence" | "chosenBy" | "ageFallback">;
+
+export async function matchForIntake(
+  input: MatchInput,
+): Promise<IntakeMatchResult> {
+  const result = await matchWithDebug(input);
+  return {
+    figureKey: result.figureKey,
+    stageId: result.stageId,
+    framing: result.framing,
+    confidence: result.confidence,
+    chosenBy: result.chosenBy,
+    ageFallback: result.ageFallback,
+  };
+}
+
 export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
-  const { pool, fallbackToAll } = await buildPool(input);
-  const selection = await selectMatchPool(input, pool, resolveRetrievalMode());
+  const effectiveInput: MatchInput = {
+    ...input,
+    feeling: withMatchClarification(input.feeling, input.clarification),
+  };
+  const { pool, fallbackToAll } = await buildPool(effectiveInput);
+  const selection = await selectMatchPool(
+    effectiveInput,
+    pool,
+    resolveRetrievalMode(),
+  );
   const rerankPool = selection.rerankPool;
   const debugScalars: DebugScalars = {
     candidateCount: rerankPool.length,
     ageCandidateCount: pool.length,
     promptChars: sumBiographicalFactChars(rerankPool),
+    ageFallback: fallbackToAll,
     retrievalMode: selection.retrievalMode,
     retrievalFallbackReason: selection.retrievalFallbackReason,
     retrievalPoolSize: selection.retrievalPoolSize,
@@ -87,13 +119,13 @@ export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
   const start = performance.now();
 
   if (rerankPool.length === 0) {
-    return keywordFallback(input, pool, start, debugScalars, "invalid_pick");
+    return keywordFallback(effectiveInput, pool, start, debugScalars, "invalid_pick");
   }
 
   try {
     const pick = await pickFigure({
-      age: input.age,
-      feeling: input.feeling,
+      age: effectiveInput.age,
+      feeling: effectiveInput.feeling,
       candidates: rerankPool,
     });
 
@@ -103,7 +135,13 @@ export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
       (s) => s.figureKey === pick.figureKey && s.stageId === pick.stageId,
     );
     if (!inPool) {
-      return keywordFallback(input, pool, start, debugScalars, "invalid_pick");
+      return keywordFallback(
+        effectiveInput,
+        pool,
+        start,
+        debugScalars,
+        "invalid_pick",
+      );
     }
 
     return {
@@ -120,7 +158,14 @@ export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
     const reason: RerankFailureReason =
       error instanceof RerankError ? error.reason : "api_error";
     const httpStatus = error instanceof RerankError ? error.status : undefined;
-    return keywordFallback(input, pool, start, debugScalars, reason, httpStatus);
+    return keywordFallback(
+      effectiveInput,
+      pool,
+      start,
+      debugScalars,
+      reason,
+      httpStatus,
+    );
   }
 }
 

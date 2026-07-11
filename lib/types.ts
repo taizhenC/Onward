@@ -142,6 +142,7 @@ export type MatchRecipe = {
   // Optional only for replaying sessions created before the short-lived
   // ResonanceBrief boundary existed. Every new intake pins this version.
   resonanceBriefVersion?: string;
+  matchRecoveryPolicyVersion?: string;
 };
 
 export type Session = {
@@ -221,6 +222,8 @@ export type MatchResponse =
   | { crisis: true; resources: CrisisResource[] }
   | { temporarilyUnavailable: true }
   | { noEligibleStory: true }
+  | { clarificationNeeded: true; policyVersion: string; recoveryToken: string }
+  | { noCloseMatch: true; policyVersion: string; recoveryToken: string }
   | { rateLimited: true }
   | { error: string }
   | { sessionId: string };

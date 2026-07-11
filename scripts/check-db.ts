@@ -136,6 +136,29 @@ async function checkArtifactSchema(): Promise<Step> {
   }
 }
 
+async function checkMatchRecoverySchema(): Promise<Step> {
+  const name = "single-use match recovery schema installed";
+  try {
+    const flows = await tableCount("match_recovery_flows");
+    const probe = await getSupabase().rpc("consume_match_recovery_flow", {
+      p_token_hash: "0".repeat(64),
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_input_hash: "0".repeat(64),
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === null;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `table/RPC reachable (${flows} active or recently consumed row(s))`
+        : "consume RPC accepted a nonexistent recovery flow",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} 鈥?apply migration 0006` };
+  }
+}
+
 // Gate 3 — a crisis intake writes no session row (handleIntake returns before createSession).
 // The fixed ctx is safe in supabase mode: crisis short-circuits before the rate limiter and
 // the store, so this non-uuid user id never reaches Postgres.
@@ -199,6 +222,7 @@ async function main(): Promise<void> {
     await checkServingParity(),
     await checkPublishedStorySpecs(),
     await checkArtifactSchema(),
+    await checkMatchRecoverySchema(),
     await checkCrisisPersistsNothing(),
   ];
 

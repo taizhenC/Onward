@@ -14,6 +14,7 @@ Deploy slice (2026-06-10). The matching engine is real and validated:
 - **Auth**: anonymous-first via Supabase Auth — no login wall; sessions are owned and private; an email upgrade keeps stories permanently. Guests and their stories are deleted ~6 hours after last activity.
 - **Safety**: deterministic crisis regex before any LLM call; crisis input is never persisted and never rate-limited.
 - **Story boundaries**: optional detail/topic limits are hard eligibility rules before retrieval and composition; selections are not persisted.
+- **Resonance boundary**: prose composition receives a short-lived governed brief, not the raw disclosure; HMAC fingerprints reject copied phrases and named details without persisting them.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres.
 - **Retention**: user disclosures are NULL'd 60 days after creation by a scheduled job.
 
@@ -39,6 +40,7 @@ npm run seed              # seed figures + figure_stages to Supabase
 npm run check-story-spec  # validate all draft contracts and publish rejection gates
 npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
+npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run seed-story-specs  # seed review drafts; never overwrites reviewed/published content
 npm run check-db          # Supabase acceptance check (after seed)
 npm run seed-embeddings   # embed shape/facet texts (requires EMBEDDING_PROVIDER=gemini)

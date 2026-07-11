@@ -1,5 +1,10 @@
 import "server-only";
 import type { FigureStageRow } from "./types";
+import {
+  toResonancePromptSurface,
+  type ResonanceBrief,
+  type ResonancePromptSurface,
+} from "./resonance-brief";
 
 // Neutral fallback eyebrow. Returned by the stub for any uncurated stage, and by the
 // real generator whenever the LLM call fails or its output fails the runtime guard
@@ -29,7 +34,7 @@ export function curatedEyebrow(figureKey: string, stageId: string): string {
 
 // Hand-authored universal preface: the comfort card shown before any figure name or story
 // prose on first visit. Served by BOTH providers in Phase 1A — the stub has no model, and
-// the real generator's per-feeling personalization is deferred (lib/llm-real.ts returns
+// the real generator's per-brief personalization is deferred (lib/llm-real.ts returns
 // these lines today and will keep them as its fallback once generation lands). Tone bar
 // (CLAUDE.md): comfort without false promises, no dismissive "don't worry" language.
 export const DEFAULT_PREFACE_LINES: readonly string[] = [
@@ -56,21 +61,22 @@ const FIGURE_NAME_STOP_WORDS = new Set([
 // narrowed to the prompt surface below, so beats / sources / biography never reach
 // the copy prompt.
 export type OpeningCopyInput = {
-  feeling: string;
+  resonanceBrief: ResonanceBrief;
   stage: FigureStageRow;
 };
 
-// The ONLY fields that may reach the eyebrow prompt. displayName is validation-only
+// The ONLY fields that may reach the eyebrow prompt. The raw disclosure, anchor
+// provenance, and echo fingerprints are absent. displayName is validation-only
 // (used to reject figure-name leaks), never prompt material.
 export type EyebrowPromptSurface = {
-  feeling: string;
+  resonance: ResonancePromptSurface;
   throughLine: string;
   displayName: string;
 };
 
 export function toEyebrowSurface(input: OpeningCopyInput): EyebrowPromptSurface {
   return {
-    feeling: input.feeling,
+    resonance: toResonancePromptSurface(input.resonanceBrief),
     throughLine: input.stage.shapeSentences[0] ?? "",
     displayName: input.stage.displayName,
   };

@@ -1,7 +1,8 @@
 import type { BeatKind, BeatRole, Framing, MatchRecipe, OpeningCopy } from "./types";
 import type { ContentFlag } from "./story-spec-types";
 
-export const STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v2-2026-07";
+export const STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v3-2026-07";
+export const BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v2-2026-07";
 export const LEGACY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v1-2026-07";
 export const STORY_COMPOSER_VERSION = "canonical-composer-v1-2026-07";
 export const STORY_ARTIFACT_VALIDATOR_VERSION = "artifact-validator-v1-2026-07";
@@ -9,6 +10,8 @@ export const STORY_ARTIFACT_VALIDATOR_VERSION = "artifact-validator-v1-2026-07";
 export type ArtifactValidationFailure =
   | "schema_invalid"
   | "story_spec_invalid"
+  | "resonance_brief_invalid"
+  | "recipe_invalid"
   | "identity_mismatch"
   | "role_order_invalid"
   | "empty_passage"
@@ -70,6 +73,7 @@ export type StoryArtifact = {
     composerVersion: string;
     validatorVersion: string;
     boundaryPolicyVersion?: string;
+    resonanceBriefVersion?: string;
   };
   composition: {
     mode: "canonical_fallback" | "hybrid";

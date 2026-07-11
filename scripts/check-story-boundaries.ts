@@ -22,6 +22,7 @@ import { handleIntake } from "../lib/intake";
 import { _sessionCount } from "../lib/session";
 import { _storyArtifactCount } from "../lib/story-artifacts";
 import { reviewedStoryContentNote } from "../lib/story-playback";
+import { createResonanceBrief } from "../lib/resonance-brief";
 import type { StorySpec } from "../lib/story-spec-types";
 import type { MatchRecipe } from "../lib/types";
 import { POST as matchRoutePost } from "../app/api/match/route";
@@ -198,7 +199,10 @@ async function checkRetrievalAndArtifactDefense(failures: string[]): Promise<voi
   const launderingValidation = validateStoryArtifact(
     launderedArtifact,
     launderedSpec,
-    "A private situation that should not enter the artifact.",
+    createResonanceBrief(
+      "A private situation that should not enter the artifact.",
+      restrictive,
+    ),
     restrictive,
   );
   if (
@@ -290,7 +294,10 @@ function compose(
       prefaceLines: ["This story is true.", "Your life is not theirs."],
     },
     framing: "partial",
-    disclosure: "A private situation that should not enter the artifact.",
+    resonanceBrief: createResonanceBrief(
+      "A private situation that should not enter the artifact.",
+      boundaries,
+    ),
     boundaries,
     allowDraftSpec: true,
   });

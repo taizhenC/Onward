@@ -3,6 +3,7 @@ import { loadEnvLocal } from "./_load-env";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { pickFigure, RerankError, writeOpeningCopy } from "../lib/llm";
 import { NEUTRAL_EYEBROW } from "../lib/opening-copy";
+import { createResonanceBrief } from "../lib/resonance-brief";
 
 // Real-mode provider health check. Run BEFORE a full eval or real-mode intake smoke so a
 // broken Cerebras config (bad key, wrong model id, JSON mode unsupported) surfaces in seconds,
@@ -169,7 +170,9 @@ async function checkOpeningCopy(): Promise<Step> {
   try {
     const { eyebrow } = await writeOpeningCopy({
       // Synthetic probe — NOT a real user disclosure.
-      feeling: "I keep working at something and it never seems to get better.",
+      resonanceBrief: createResonanceBrief(
+        "I keep working at something and it never seems to get better.",
+      ),
       stage,
     });
     const ms = Math.round(performance.now() - start);

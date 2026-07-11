@@ -1,7 +1,7 @@
 # Roadmap Implementation Status
 
 **Authoritative objective:** finish every item in `feature_roadmap.md`.  
-**Status date:** July 10, 2026  
+**Status date:** July 11, 2026
 **Evidence rule:** an item is `Complete` only when every acceptance criterion is implemented and directly verified. Passing a neighboring test is not sufficient.
 
 ## Status meanings
@@ -25,13 +25,13 @@
 | P0-07 | In progress | Reader is book-like with visible reveal control and explicit Continue/Finish. The final bridge stays mounted while the afterword and save action appear, and a completed-story refresh now restores the bridge before the coda. | Add quiet orientation and production loading/error polish; complete browser usability/accessibility coverage and responsive QA. |
 | P0-08 | In progress | Immutable v5 artifacts now carry a closed disclosure-safe rationale and explicit gap, pinned StorySpec identity/version, reviewed-vs-draft provenance, safe source projection, only referenced fact/quote evidence, qualified/interpretive/reader-bridge labels, and hybrid-connective disclosure. The end-state reader exposes the rationale plus native source/evidence drawers. An exact three-field owner-scoped API validates fact membership; migration `0007` atomically writes only safe content identifiers and closed reasons into a default-deny, idempotent editorial queue with service-only triage and existing rapid retirement. Synthetic public evidence covers verbatim/paraphrase/disputed quotes; all 50 current drafts are honestly labeled as drafts; v1-v4 replay exposes no fabricated provenance. | Publish a real launch StorySpec with researcher-authored exact/bounded evidence and exercise its quote/source projection; run the migration, RLS/concurrency, triage, and retirement drill against real Postgres; complete keyboard/screen-reader/mobile/zoom testing and target-user trust comprehension before `Complete`. |
 | P0-09 | In progress | Current branch adds owner-scoped atomic compare-and-set; progress moves only on explicit Continue/Finish; smoke covers advance/retry/stale/foreign cases. | Browser-level refresh, back-button, offline, double-click, and multi-tab E2E evidence before `Complete`. |
-| P0-10 | Not started | None. | Feedback schema/UI, bounded reasons, privacy controls, and rate-limit-safe alternate story. |
-| P0-11 | Not started | Code avoids deliberate sensitive logging. | Closed event schema, reductions, privacy rejection tests, dashboards, and alerts. |
+| P0-10 | In progress | Completed-story readers—including anonymous owners—can answer one low-friction close/not-close question with exactly one of seven closed miss reasons. The owner/completion-gated API is same-origin, no-store, idempotent under concurrent retries, and rejects conflicting answers. Immutable default-deny rows retain only safe owner/content/recipe identifiers and enums for 90 days; disclosure, prose, rationale, sources, boundaries, and free text are structurally absent. The accessible card appears after provenance and before save; historical resonance feedback remains separate from fact-level reports. | Add the one-use alternate-story capability without a new public rate unit, while preserving exact boundaries and the original disclosure-retention anchor; add separate consented/encrypted short-retention optional notes or make an explicit product/privacy decision not to collect them; prove anonymous Supabase, real concurrency/RLS/cleanup/deletion, browser accessibility, and aggregate learning with P0-11. |
+| P0-11 | Not started | Code avoids deliberate sensitive logging; P0-10 adds an aggregate-ready closed feedback row without semantic text. | Closed event schema, reductions, privacy rejection tests, dashboards, and alerts. |
 | P0-12 | External gate | Deterministic pre-provider gate; versioned 39-case corpus passes 26/26 critical positives; resource actions are region-specific, linked, and dated; crisis persistence/kill-switch behavior is smoke-tested; the match route and intake return resources before auth, age, malformed boundaries, or malformed recovery fields; incident runbook exists. | Qualified safety review, launch-market approval, and a deliberate policy for context/negation over-triggers remain required before `Complete`. |
 | P0-13 | In progress | Approved recipe ID, keyword default, production rejection of `auto`, deploy docs, and smoke proof exist; each immutable artifact pins the complete match recipe plus analyzer, match-recovery, composer, validator, boundary, hybrid-plan, and template-policy versions. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
-| P0-14 | Partial | Guest cleanup and 60-day raw-disclosure nulling exist; StoryArtifacts are owner-scoped and cascade with their session/user. Recovery stores only an opaque-token hash, keyed base-input fingerprint, owner, purpose, and expiry; it is single-use, usable for ten minutes, cascade-deleted with the user, and removed by a 15-minute cleanup job. Historical concerns deliberately store no reporter, session, artifact, rationale, disclosure, or prose. | User-facing story/account deletion, full derived-rationale/artifact retention classes, consent UI, privacy page, real cascade/cron tests, and market/youth review. |
-| P0-15 | In progress | Strict non-interactive ESLint, isolated production build, deterministic fonts, CI, approved-recipe fail-closed behavior, story kill switch, independent hybrid-composer flag, four-path provider health check, and migrations for immutable StorySpecs/StoryArtifacts, atomic single-use recovery credits, current provenance enforcement, and a bounded editorial concern queue exist. | Complete route/integration matrix, real migration preflight/rollback and atomic-RPC tests, broader health/readiness checks, remaining kill switches, and green remote CI evidence. |
-| P0-16 | Partial | Landing/auth typography, reduced motion, several keyboard affordances, native boundary/clarification/source/report controls, focused no-eligible/no-close live states, visible partial framing, labeled content notes, safe external-link treatment, and announced report outcomes exist. | Shared primitives, all-flow copy system, and complete keyboard/screen-reader/zoom/manual usability audit. |
+| P0-14 | Partial | Guest cleanup and 60-day raw-disclosure nulling exist; StoryArtifacts are owner-scoped and cascade with their session/user. Recovery stores only an opaque-token hash, keyed base-input fingerprint, owner, purpose, and expiry; it is single-use, usable for ten minutes, cascade-deleted with the user, and removed by a 15-minute cleanup job. Historical concerns deliberately store no reporter/session/artifact/prose; bounded resonance feedback cascades with the owner/session and expires after 90 days with no free-text column. | User-facing story/account deletion, full derived-rationale/artifact retention classes, optional-feedback-note consent/encryption decision, privacy page, real cascade/cron tests, and market/youth review. |
+| P0-15 | In progress | Strict non-interactive ESLint, isolated production build, deterministic fonts, CI, approved-recipe fail-closed behavior, story kill switch, independent hybrid-composer flag, four-path provider health check, and migrations for immutable StorySpecs/StoryArtifacts, atomic single-use recovery credits, current provenance enforcement, a bounded editorial concern queue, and immutable completed-story feedback exist. | Complete route/integration matrix, real migration preflight/rollback and atomic-RPC tests, broader health/readiness checks, remaining kill switches, and green remote CI evidence. |
+| P0-16 | Partial | Landing/auth typography, reduced motion, several keyboard affordances, native boundary/clarification/source/report/feedback controls, focused no-eligible/no-close and feedback-reason states, visible partial framing, labeled content notes, safe external-link treatment, and announced report/feedback outcomes exist. | Shared primitives, all-flow copy system, and complete keyboard/screen-reader/zoom/manual usability audit. |
 | P0-17 | In progress | Strict optional boundary input, reviewed StorySpec catalog, hard pre-retrieval intensity/topic filtering, age-fallback protection, artifact-level `boundary_violation`, identical canonical-fallback enforcement, non-persistence of selections, honest no-eligible recovery, native accessible controls, and reviewed-only content-note projection are implemented and directly checked. | Replace inferred draft profiles with human-reviewed launch profiles; add change/try-another controls from the active reader without re-entering disclosure; complete keyboard, screen-reader, reflow, and safety/editorial review before `Complete`. |
 
 ## P1 ledger
@@ -197,6 +197,27 @@ Branch: `roadmap-implementation`
 | `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 12 routes compiled/generated, including `/api/historical-concern`; `/story/[sessionId]` 7.81 kB route payload |
 
 Real Postgres RLS/RPC/concurrency/retirement evidence and browser accessibility/usability evidence are intentionally not claimed by the hermetic checks above; both remain explicit P0-08 release gates.
+
+### Stacked branch: `roadmap-resonance-feedback`
+
+| Command | Result |
+|---|---|
+| `npm run lint` | Pass, zero warnings |
+| `npx tsc --noEmit --incremental false` | Pass |
+| `npm run check-figure` | Pass, 50/50 stages |
+| `npm run check-story-spec` | Pass, 50/50 safe drafts and 50/50 unsafe publish attempts rejected |
+| `npm run check-story-artifact` | Pass, 50/50 v5 artifacts plus v1-v4 replay/privacy/tamper gates |
+| `npm run check-source-transparency` | Pass; provenance/reporting contract unchanged |
+| `npm run check-resonance-feedback` | Pass; exact seven-reason parser, account-free memory owner/completion gates, 12-way concurrent idempotency, conflicting-answer rejection, foreign/missing parity, 90-day/cascade privacy, fact-report separation, migration shape, and accessible static UI sequence |
+| `npm run check-story-boundaries` | Pass; hard exclusions unchanged |
+| `npm run check-resonance-brief` | Pass; governed privacy boundary unchanged |
+| `npm run check-story-composer` | Pass; hybrid/canonical contracts unchanged |
+| `npm run check-match-recovery` | Pass; pre-story recovery contract unchanged |
+| `npm run eval-crisis` | Pass, 26/26 critical positives |
+| `npm run smoke` | Pass, 19/19 regressions |
+| `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 13 routes compiled/generated, including `/api/story-feedback`; `/story/[sessionId]` 8.8 kB route payload |
+
+Real anonymous Supabase/RLS/concurrency/cron/deletion and browser accessibility evidence remain release gates. The free alternate and optional-note decisions remain explicitly open in P0-10; this sub-branch proves only the bounded feedback foundation.
 
 ## Completion audit rule
 

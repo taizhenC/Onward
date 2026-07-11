@@ -19,6 +19,7 @@ Deploy slice (2026-06-10). The matching engine is real and validated:
 - **Honest match recovery**: uncertain matches ask at most one bounded question; unresolved fits persist nothing, and an accepted adjacent story is labeled before playback.
 - **Source transparency**: v5 artifacts freeze a controlled rationale, explicit gap, StorySpec version, claim/quote evidence, and safe source list; older artifacts are never backfilled from mutable content.
 - **Historical concerns**: owners can send only a selected fact ID and closed reason into a privacy-safe editorial queue; no disclosure, story prose, user, session, or artifact ID is retained there.
+- **Resonance feedback**: completed-story readers can answer one bounded close/not-close question without linking an email; rows contain only owner/content identifiers and closed enums, expire after 90 days, and never include disclosure or story prose.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres.
 - **Retention**: user disclosures are NULL'd 60 days after creation by a scheduled job.
 
@@ -44,6 +45,7 @@ npm run seed              # seed figures + figure_stages to Supabase
 npm run check-story-spec  # validate all draft contracts and publish rejection gates
 npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
 npm run check-source-transparency # validate rationale, evidence, sources, and bounded reports
+npm run check-resonance-feedback # validate bounded post-story feedback and privacy gates
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
@@ -80,7 +82,7 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue.
+1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue; `0008` adds immutable 90-day resonance feedback for completed stories.
 2. Authentication → Sign In/Up → enable **anonymous sign-ins**.
 3. Authentication → URL Configuration → set **Site URL** to the production URL; add `http://localhost:3000/**` to the redirect allowlist (a separate Supabase project for local dev is cleaner — Site URL is single-valued).
 4. Authentication → Emails → configure **custom SMTP** (Resend's free tier works). The built-in sender is limited to ~2 emails/hour **and only delivers to project team members** — without custom SMTP, real users' save/sign-in emails silently fail.
@@ -103,6 +105,7 @@ Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL
 - Optional story intensity/topic limits are applied in memory before retrieval and are not stored in the session or StoryArtifact.
 - Clarification choices are not stored. Recovery keeps only an opaque-token hash and keyed input fingerprint; the key is usable for ten minutes and expired rows are removed by the 15-minute cleanup job.
 - Historical concerns retain only curated StorySpec/stage/fact identifiers, a closed reason/status, aggregate count, and timestamps. They do not retain the reporter, session, artifact, rationale, disclosure, or prose.
+- Resonance feedback is owner-linked for deletion but contains only story/recipe identifiers and a closed verdict/reason. It expires after 90 days; no optional note field exists until separate consent, encryption, reviewer access, and shorter deletion are implemented.
 - No prompt/response bodies, feelings, raw IPs, or raw errors are ever logged.
 
 ## Architecture

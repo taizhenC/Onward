@@ -15,6 +15,7 @@ import {
   deleteMemoryStoryArtifact,
   putMemoryStoryArtifact,
 } from "./story-artifact-store-memory";
+import { deleteMemoryResonanceFeedbackForSession } from "./resonance-feedback-store-memory";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -39,6 +40,7 @@ function pruneExpiredSessions(now = Date.now()): void {
   for (const [sessionId, session] of sessions) {
     if (isExpired(session, now)) {
       if (session.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
+      deleteMemoryResonanceFeedbackForSession(sessionId);
       sessions.delete(sessionId);
     }
   }
@@ -87,6 +89,7 @@ async function getSession(sessionId: string): Promise<Session | null> {
   if (!session) return null;
   if (isExpired(session)) {
     if (session.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
+    deleteMemoryResonanceFeedbackForSession(sessionId);
     sessions.delete(sessionId);
     return null;
   }
@@ -161,6 +164,7 @@ async function updateSession(
   if (!existing) return null;
   if (isExpired(existing)) {
     if (existing.storyArtifactId) deleteMemoryStoryArtifact(existing.storyArtifactId);
+    deleteMemoryResonanceFeedbackForSession(sessionId);
     sessions.delete(sessionId);
     return null;
   }
@@ -185,6 +189,7 @@ async function acknowledgePosition(
   if (!existing || isExpired(existing) || existing.userId !== input.userId) {
     if (existing && isExpired(existing)) {
       if (existing.storyArtifactId) deleteMemoryStoryArtifact(existing.storyArtifactId);
+      deleteMemoryResonanceFeedbackForSession(input.sessionId);
       sessions.delete(input.sessionId);
     }
     return "not_found";

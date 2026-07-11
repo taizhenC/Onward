@@ -67,6 +67,7 @@ export default async function StoryPage({
               ? playback.beats.at(-1)?.chunks.join(" ") ?? null
               : null
           }
+          feedbackAvailable={playback.source === "artifact"}
         />
       </main>
     </div>

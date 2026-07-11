@@ -37,6 +37,7 @@ import type { BeatBlueprint, Session } from "../lib/types";
 process.env.LLM_PROVIDER = "stub";
 // Sessions + figures from the in-process store/const (no DB) — keeps smoke hermetic.
 process.env.PERSISTENCE = "memory";
+process.env.HYBRID_STORY_COMPOSER_ENABLED = "true";
 
 // Fixed request identity for every intake in this run. The whole run shares one
 // user, so the rate-limit assertion (which exhausts the 5/hour budget) MUST stay
@@ -275,6 +276,9 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
   }
   if (
     JSON.stringify(artifact).includes(disclosure) ||
+    artifact.composition.mode !== "hybrid" ||
+    artifact.composition.attemptCount !== 1 ||
+    artifact.beats.filter((beat) => beat.personalization).length !== 2 ||
     !Object.isFrozen(artifact) ||
     !Object.isFrozen(artifact.beats) ||
     !Object.isFrozen(artifact.beats[0]) ||

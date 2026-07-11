@@ -1,21 +1,33 @@
 import "./_smoke-bootstrap";
 import { loadEnvLocal } from "./_load-env";
 import { FIGURE_STAGES } from "../lib/figures-data";
-import { pickFigure, RerankError, writeOpeningCopy } from "../lib/llm";
+import {
+  pickFigure,
+  requestHybridPlan,
+  RerankError,
+  writeOpeningCopy,
+} from "../lib/llm";
 import { NEUTRAL_EYEBROW } from "../lib/opening-copy";
 import { createResonanceBrief } from "../lib/resonance-brief";
+import { buildDraftStorySpec } from "../lib/story-spec";
+import {
+  buildHybridPlanRequest,
+  validateHybridCompositionPlan,
+} from "../lib/hybrid-composition";
 
 // Real-mode provider health check. Run BEFORE a full eval or real-mode intake smoke so a
 // broken Cerebras config (bad key, wrong model id, JSON mode unsupported) surfaces in seconds,
 // not mid-run.
 //
-// Standalone by design: loads no gold set, writes no run dumps. Three probes:
+// Standalone by design: loads no gold set, writes no run dumps. Four probes:
 //   1. GET /models — auth + reachability + the configured rerank AND prose model ids
 //      are actually offered.
 //   2. one minimal pickFigure — rerank model + reasoning_effort + JSON mode end-to-end.
 //   3. one writeOpeningCopy — the prose eyebrow path end-to-end. That path never
 //      throws (it degrades to a neutral fallback), so a neutral result is the only
 //      failure signal available here — we treat it as a failed probe.
+//
+//   4. one hybrid plan request — the prose model must return an allowlisted plan.
 //
 // Privacy floor (same as lib/llm-real.ts): never print prompt/response bodies,
 // resonance/gap, or raw provider errors. The probe feeling is synthetic, not a user
@@ -201,6 +213,32 @@ async function checkOpeningCopy(): Promise<Step> {
   }
 }
 
+async function checkHybridPlan(): Promise<Step> {
+  const name = "hybrid composition plan (closed template selection)";
+  const stage = FIGURE_STAGES.find((candidate) => candidate.figureKey === "butler");
+  if (!stage) return { name, ok: false, detail: "composer fixture unavailable" };
+  const brief = createResonanceBrief(
+    "I keep working at something and it never seems to get better.",
+  );
+  const request = buildHybridPlanRequest(buildDraftStorySpec(stage), brief);
+  const start = performance.now();
+  try {
+    const candidate = await requestHybridPlan(request);
+    const validation = validateHybridCompositionPlan(candidate, request);
+    const ms = Math.round(performance.now() - start);
+    return validation.valid
+      ? { name, ok: true, detail: `returned an allowlisted plan (${ms}ms)` }
+      : {
+          name,
+          ok: false,
+          detail: `returned a plan rejected by closed validation (${ms}ms)`,
+        };
+  } catch {
+    const ms = Math.round(performance.now() - start);
+    return { name, ok: false, detail: `composition plan request failed (${ms}ms)` };
+  }
+}
+
 async function main(): Promise<void> {
   console.log("Onward provider health check (real mode)");
   console.log("========================================");
@@ -230,6 +268,7 @@ async function main(): Promise<void> {
   if (steps[0].ok) {
     steps.push(await checkPickFigure());
     steps.push(await checkOpeningCopy());
+    steps.push(await checkHybridPlan());
   }
 
   console.log("");
@@ -242,7 +281,7 @@ async function main(): Promise<void> {
   });
 
   console.log("");
-  if (failed === 0 && steps.length === 3) {
+  if (failed === 0 && steps.length === 4) {
     console.log("Provider healthy. Safe to run npm run eval and real-mode intake smoke.");
     process.exit(0);
   }

@@ -14,6 +14,7 @@
     "check-story-artifact": "tsx scripts/check-story-artifact.ts",
     "check-story-boundaries": "tsx scripts/check-story-boundaries.ts",
     "check-resonance-brief": "tsx scripts/check-resonance-brief.ts",
+    "check-story-composer": "tsx scripts/check-story-composer.ts",
     "health": "tsx scripts/check-provider.ts",
     "eval": "tsx scripts/eval-match.ts",
     "eval-retrieval": "tsx scripts/eval-retrieval.ts",

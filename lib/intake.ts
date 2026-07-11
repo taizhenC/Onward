@@ -13,7 +13,7 @@ import {
   listPublishedStorySpecCatalog,
   storySpecStageKey,
 } from "./story-spec-repository";
-import { composeCanonicalStoryArtifact } from "./story-artifact";
+import { composeStoryArtifact } from "./story-composer";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import {
   filterStorySpecCatalog,
@@ -166,36 +166,23 @@ export async function handleIntake(
 
   let artifact;
   try {
-    artifact = composeCanonicalStoryArtifact({
+    artifact = await composeStoryArtifact({
       storySpec,
       stage,
       matchRecipe,
       openingCopy: generatedOpeningCopy,
+      fallbackOpeningCopy: {
+        eyebrow: NEUTRAL_EYEBROW,
+        prefaceLines: DEFAULT_PREFACE_LINES,
+      },
       framing: result.framing,
       resonanceBrief,
       boundaries: validated.boundaries,
       allowDraftSpec: process.env.PERSISTENCE !== "supabase",
     });
   } catch {
-    try {
-      artifact = composeCanonicalStoryArtifact({
-        storySpec,
-        stage,
-        matchRecipe,
-        openingCopy: {
-          eyebrow: NEUTRAL_EYEBROW,
-          prefaceLines: DEFAULT_PREFACE_LINES,
-        },
-        framing: result.framing,
-        resonanceBrief,
-        boundaries: validated.boundaries,
-        fallbackReason: "validator_rejected",
-        allowDraftSpec: process.env.PERSISTENCE !== "supabase",
-      });
-    } catch {
-      // Never reflect or log composition detail: it may contain curated prose.
-      return { temporarilyUnavailable: true };
-    }
+    // Never reflect or log composition detail: it may contain curated prose.
+    return { temporarilyUnavailable: true };
   }
 
   let sessionId: string;

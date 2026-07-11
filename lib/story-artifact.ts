@@ -4,6 +4,7 @@ import { chunkBeatText } from "./chunks";
 import { validateStorySpec } from "./story-spec";
 import {
   STORY_ARTIFACT_SCHEMA_VERSION,
+  RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION,
   BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
   LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
   STORY_ARTIFACT_VALIDATOR_VERSION,
@@ -24,6 +25,16 @@ import {
   validateResonanceBrief,
   type ResonanceBrief,
 } from "./resonance-brief";
+import {
+  HYBRID_PLAN_SCHEMA_VERSION,
+  HYBRID_TEMPLATE_POLICY_VERSION,
+  isBridgeTemplateId,
+  isHybridTemplateId,
+  isTransitionTemplateId,
+  renderHybridBeatText,
+  renderHybridTemplate,
+  type HybridCompositionPlan,
+} from "./hybrid-composition";
 import type {
   ClientFigureOutline,
   FigureStageRow,
@@ -51,6 +62,7 @@ export type ComposeCanonicalArtifactInput = {
   resonanceBrief: ResonanceBrief;
   boundaries?: StoryBoundaries;
   fallbackReason?: StoryArtifact["composition"]["fallbackReason"];
+  attemptCount?: number;
   allowDraftSpec?: boolean;
   now?: Date;
 };
@@ -73,6 +85,7 @@ export function composeCanonicalStoryArtifact({
   resonanceBrief,
   boundaries,
   fallbackReason = "canonical_only",
+  attemptCount = 0,
   allowDraftSpec = false,
   now = new Date(),
 }: ComposeCanonicalArtifactInput): StoryArtifact {
@@ -114,10 +127,12 @@ export function composeCanonicalStoryArtifact({
       validatorVersion: STORY_ARTIFACT_VALIDATOR_VERSION,
       boundaryPolicyVersion: STORY_BOUNDARY_POLICY_VERSION,
       resonanceBriefVersion: resonanceBrief.version,
+      hybridTemplatePolicyVersion: HYBRID_TEMPLATE_POLICY_VERSION,
     },
     composition: {
       mode: "canonical_fallback",
       fallbackReason,
+      attemptCount,
     },
     beats: storySpec.arc.map((beat) => ({
       role: beat.role,
@@ -153,6 +168,63 @@ export function composeCanonicalStoryArtifact({
   return deepFreeze(artifact);
 }
 
+export type ComposeHybridArtifactInput = Omit<
+  ComposeCanonicalArtifactInput,
+  "fallbackReason" | "attemptCount"
+> & {
+  plan: HybridCompositionPlan;
+  attemptCount: 1 | 2;
+};
+
+export function composeHybridStoryArtifact({
+  plan,
+  attemptCount,
+  ...input
+}: ComposeHybridArtifactInput): StoryArtifact {
+  if (plan.schemaVersion !== HYBRID_PLAN_SCHEMA_VERSION) {
+    throw new StoryCompositionError(["personalization_invalid"]);
+  }
+  const canonical = composeCanonicalStoryArtifact({
+    ...input,
+    fallbackReason: "canonical_only",
+    attemptCount: 0,
+  });
+  const artifact = structuredClone(canonical);
+  artifact.composition = {
+    mode: "hybrid",
+    attemptCount,
+    planVersion: HYBRID_PLAN_SCHEMA_VERSION,
+  };
+  artifact.beats = artifact.beats.map((beat) => {
+    const templateId =
+      beat.role === plan.transitionRole
+        ? plan.transitionTemplateId
+        : beat.role === "bridge"
+          ? plan.bridgeTemplateId
+          : null;
+    if (!templateId) return beat;
+    const text = renderHybridBeatText(beat.text, templateId, input.resonanceBrief);
+    return {
+      ...beat,
+      text,
+      chunks: chunkBeatText({ role: beat.role, kind: beat.kind, text }),
+      personalization: {
+        templateId,
+        policyVersion: HYBRID_TEMPLATE_POLICY_VERSION,
+      },
+    };
+  });
+  artifact.contentHash = storyArtifactContentHash(artifact);
+  const validation = validateStoryArtifact(
+    artifact,
+    input.storySpec,
+    input.resonanceBrief,
+    input.boundaries,
+  );
+  if (!validation.valid) throw new StoryCompositionError(validation.failureReasons);
+  return deepFreeze(artifact);
+}
+
 export function validateStoryArtifact(
   artifact: StoryArtifact,
   storySpec: StorySpec,
@@ -176,9 +248,26 @@ export function validateStoryArtifact(
     artifact.recipe.composerVersion !== STORY_COMPOSER_VERSION ||
     artifact.recipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
     artifact.recipe.boundaryPolicyVersion !== STORY_BOUNDARY_POLICY_VERSION ||
-    artifact.recipe.resonanceBriefVersion !== resonanceBrief.version
+    artifact.recipe.resonanceBriefVersion !== resonanceBrief.version ||
+    artifact.recipe.hybridTemplatePolicyVersion !==
+      HYBRID_TEMPLATE_POLICY_VERSION
   ) {
     failures.add("recipe_invalid");
+  }
+  const attemptCount = artifact.composition.attemptCount;
+  if (
+    !Number.isInteger(attemptCount) ||
+    (attemptCount ?? -1) < 0 ||
+    (attemptCount ?? 3) > 2 ||
+    (artifact.composition.mode === "hybrid" &&
+      (artifact.composition.planVersion !== HYBRID_PLAN_SCHEMA_VERSION ||
+        artifact.composition.fallbackReason !== undefined ||
+        attemptCount === 0)) ||
+    (artifact.composition.mode === "canonical_fallback" &&
+      (artifact.composition.planVersion !== undefined ||
+        artifact.composition.fallbackReason === undefined))
+  ) {
+    failures.add("composition_invalid");
   }
 
   if (!validateResonanceBrief(resonanceBrief)) {
@@ -206,6 +295,8 @@ export function validateStoryArtifact(
     failures.add("boundary_violation");
   }
 
+  let transitionPersonalizationCount = 0;
+  let bridgePersonalizationCount = 0;
   artifact.beats.forEach((beat, index) => {
     const specBeat = storySpec.arc[index];
     if (!specBeat || beat.role !== EXPECTED_ROLES[index] || beat.role !== specBeat.role) {
@@ -216,7 +307,39 @@ export function validateStoryArtifact(
     if (normalizeText(beat.chunks.join(" ")) !== normalizeText(beat.text)) {
       failures.add("chunk_mismatch");
     }
-    if (beat.text !== specBeat.canonicalText) failures.add("canonical_copy_mismatch");
+    let expectedText = specBeat.canonicalText;
+    if (beat.personalization) {
+      const validPolicy =
+        beat.personalization.policyVersion === HYBRID_TEMPLATE_POLICY_VERSION;
+      if (beat.role === "bridge") {
+        bridgePersonalizationCount += 1;
+        if (
+          !validPolicy ||
+          !isBridgeTemplateId(beat.personalization.templateId) ||
+          !specBeat.personalizationZones.includes("reader_bridge")
+        ) {
+          failures.add("personalization_invalid");
+        }
+      } else {
+        transitionPersonalizationCount += 1;
+        if (
+          !validPolicy ||
+          !isTransitionTemplateId(beat.personalization.templateId) ||
+          (!specBeat.personalizationZones.includes("transition") &&
+            !specBeat.personalizationZones.includes("emphasis"))
+        ) {
+          failures.add("personalization_invalid");
+        }
+      }
+      if (isHybridTemplateId(beat.personalization.templateId)) {
+        expectedText = renderHybridBeatText(
+          specBeat.canonicalText,
+          beat.personalization.templateId,
+          resonanceBrief,
+        );
+      }
+    }
+    if (beat.text !== expectedText) failures.add("canonical_copy_mismatch");
     if (!sameSet(beat.factIds, [...specBeat.requiredFactIds, ...specBeat.optionalFactIds])) {
       failures.add("evidence_mismatch");
     }
@@ -226,7 +349,25 @@ export function validateStoryArtifact(
     if (containsResonanceEcho(beat.text, resonanceBrief)) {
       failures.add("disclosure_echo");
     }
+    if (
+      beat.personalization &&
+      isHybridTemplateId(beat.personalization.templateId) &&
+      containsToneViolation(
+        renderHybridTemplate(beat.personalization.templateId, resonanceBrief),
+      )
+    ) {
+      failures.add("tone_invalid");
+    }
   });
+
+  if (
+    (artifact.composition.mode === "hybrid" &&
+      (transitionPersonalizationCount !== 1 || bridgePersonalizationCount !== 1)) ||
+    (artifact.composition.mode === "canonical_fallback" &&
+      (transitionPersonalizationCount !== 0 || bridgePersonalizationCount !== 0))
+  ) {
+    failures.add("personalization_invalid");
+  }
 
   if (artifact.contentHash !== storyArtifactContentHash(artifact)) {
     failures.add("content_hash_mismatch");
@@ -243,6 +384,7 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   const candidate = value as Partial<StoryArtifact>;
   if (
     (candidate.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION &&
+      candidate.schemaVersion !== RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION &&
       candidate.schemaVersion !== BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION &&
       candidate.schemaVersion !== LEGACY_STORY_ARTIFACT_SCHEMA_VERSION) ||
     typeof candidate.artifactId !== "string" ||
@@ -270,7 +412,12 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   const artifact = candidate as StoryArtifact;
   const boundaryAwareSchema =
     artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION ||
+    artifact.schemaVersion === RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION ||
     artifact.schemaVersion === BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION;
+  const resonanceAwareSchema =
+    artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION ||
+    artifact.schemaVersion === RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION;
+  const hybridAwareSchema = artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION;
   const openingFailures = new Set<ArtifactValidationFailure>();
   validateOpeningCopy(artifact.openingCopy, null, openingFailures);
   if (
@@ -295,8 +442,11 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     artifact.recipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
     (boundaryAwareSchema &&
       artifact.recipe.boundaryPolicyVersion !== STORY_BOUNDARY_POLICY_VERSION) ||
-    (artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION &&
+    (resonanceAwareSchema &&
       artifact.recipe.resonanceBriefVersion !== RESONANCE_BRIEF_VERSION) ||
+    (hybridAwareSchema &&
+      artifact.recipe.hybridTemplatePolicyVersion !==
+        HYBRID_TEMPLATE_POLICY_VERSION) ||
     !["canonical_fallback", "hybrid"].includes(artifact.composition.mode) ||
     (artifact.composition.fallbackReason !== undefined &&
       ![
@@ -306,6 +456,17 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
         "provider_output_invalid",
         "validator_rejected",
       ].includes(artifact.composition.fallbackReason)) ||
+    (hybridAwareSchema &&
+      (!Number.isInteger(artifact.composition.attemptCount) ||
+        (artifact.composition.attemptCount ?? -1) < 0 ||
+        (artifact.composition.attemptCount ?? 3) > 2 ||
+        (artifact.composition.mode === "hybrid" &&
+          (artifact.composition.planVersion !== HYBRID_PLAN_SCHEMA_VERSION ||
+            artifact.composition.fallbackReason !== undefined ||
+            artifact.composition.attemptCount === 0)) ||
+        (artifact.composition.mode === "canonical_fallback" &&
+          (artifact.composition.planVersion !== undefined ||
+            artifact.composition.fallbackReason === undefined)))) ||
     !Array.isArray(artifact.validation.failureReasons) ||
     artifact.validation.failureReasons.length > 0 ||
     !isIsoTimestamp(artifact.validation.validatedAt) ||
@@ -314,6 +475,8 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   ) {
     return null;
   }
+  let storedTransitionPersonalizationCount = 0;
+  let storedBridgePersonalizationCount = 0;
   for (const [index, beat] of artifact.beats.entries()) {
     if (
       !isRecord(beat) ||
@@ -332,6 +495,36 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     ) {
       return null;
     }
+    if (!hybridAwareSchema && beat.personalization !== undefined) return null;
+    if (beat.personalization !== undefined) {
+      if (
+        !isRecord(beat.personalization) ||
+        Object.keys(beat.personalization).sort().join(",") !==
+          "policyVersion,templateId" ||
+        typeof beat.personalization.templateId !== "string" ||
+        !isHybridTemplateId(beat.personalization.templateId) ||
+        (beat.role === "bridge" &&
+          !isBridgeTemplateId(beat.personalization.templateId)) ||
+        (beat.role !== "bridge" &&
+          !isTransitionTemplateId(beat.personalization.templateId)) ||
+        beat.personalization.policyVersion !== HYBRID_TEMPLATE_POLICY_VERSION
+      ) {
+        return null;
+      }
+      if (beat.role === "bridge") storedBridgePersonalizationCount += 1;
+      else storedTransitionPersonalizationCount += 1;
+    }
+  }
+  if (
+    hybridAwareSchema &&
+    ((artifact.composition.mode === "hybrid" &&
+      (storedTransitionPersonalizationCount !== 1 ||
+        storedBridgePersonalizationCount !== 1)) ||
+      (artifact.composition.mode === "canonical_fallback" &&
+        (storedTransitionPersonalizationCount !== 0 ||
+          storedBridgePersonalizationCount !== 0)))
+  ) {
+    return null;
   }
   if (artifact.contentHash !== storyArtifactContentHash(artifact)) return null;
   return deepFreeze(artifact);
@@ -423,14 +616,16 @@ function validateOpeningCopy(
     failures.add("disclosure_echo");
   }
   if (
-    lines.some((line) =>
-      /\b(?:you (?:will|must|should|need to)|everything will|guarantee|diagnos(?:e|is)|clinically|cure[ds]?)\b/i.test(
-        line,
-      ),
-    )
+    lines.some(containsToneViolation)
   ) {
     failures.add("tone_invalid");
   }
+}
+
+function containsToneViolation(value: string): boolean {
+  return /\b(?:you (?:will|must|should|need to)|everything will|guarantee|diagnos(?:e|is)|clinically|cure[ds]?|your life is (?:the same as|exactly like)|because (?:they|this person) did it,? you)\b/i.test(
+    value,
+  );
 }
 
 function sameSet(left: string[], right: string[]): boolean {

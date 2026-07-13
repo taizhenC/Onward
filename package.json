@@ -15,6 +15,7 @@
     "check-source-transparency": "tsx scripts/check-source-transparency.ts",
     "check-resonance-feedback": "tsx scripts/check-resonance-feedback.ts",
     "check-try-another": "tsx scripts/check-try-another.ts",
+    "check-telemetry": "tsx scripts/check-telemetry.ts",
     "check-story-boundaries": "tsx scripts/check-story-boundaries.ts",
     "check-resonance-brief": "tsx scripts/check-resonance-brief.ts",
     "check-story-composer": "tsx scripts/check-story-composer.ts",

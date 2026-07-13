@@ -22,6 +22,7 @@ Deploy slice (2026-06-10). The matching engine is real and validated:
 - **Resonance recovery**: completed-story readers can answer one bounded close/not-close question without linking an email. An explicitly rejected root story can use one short-lived capability to produce a different, always-partial story without resending the disclosure, relaxing its limits, or consuming another public rate-limit unit.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres.
 - **Retention**: the disclosure and its closed boundary/clarification context are kept only on the original session and NULL'd together at its immutable 60-day deadline; an alternate never resets that clock.
+- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; raw exceptions reduce to closed buckets before storage.
 
 ## Run locally
 
@@ -47,6 +48,7 @@ npm run check-story-artifact # validate complete replay payloads, privacy, and t
 npm run check-source-transparency # validate rationale, evidence, sources, and bounded reports
 npm run check-resonance-feedback # validate bounded post-story feedback and privacy gates
 npm run check-try-another   # validate one-use alternate, exclusion, retry, and retention gates
+npm run check-telemetry     # validate exact safe events, reductions, retention, and SQL privacy
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
@@ -70,6 +72,8 @@ See `.env.example` for the documented template. Summary:
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public; browser uses it for **auth endpoints only** (RLS default-deny) |
 | `SUPABASE_SERVICE_ROLE_KEY` | **secret**, server-only, bypasses RLS |
 | `IP_HASH_SALT` | **secret**; required with `PERSISTENCE=supabase`; minimum 32 bytes, generated with `openssl rand -hex 32` |
+| `TELEMETRY_ID_SECRET` | Optional dedicated HMAC secret for authenticated telemetry identifiers; minimum 32 bytes; production falls back to `IP_HASH_SALT`. Set it independently to permit isolated rotation. |
+| `TELEMETRY_ID_PREVIOUS_SECRETS` | Optional comma-separated verification ring of up to eight prior telemetry secrets. Retain each previous key for at least 30 days after its last issuance and until its outbox retries are drained. |
 | `MATCH_RECOVERY_TOKEN_SECRET` | Optional dedicated HMAC secret for single-use recovery fingerprints; minimum 32 bytes; production falls back to `IP_HASH_SALT`. |
 | `ALTERNATE_STORY_TOKEN_SECRET` | Optional dedicated HMAC secret for post-story alternate capabilities; minimum 32 bytes; falls back to the recovery secret, then `IP_HASH_SALT`. |
 | `LLM_PROVIDER` | `stub` (default) or `real` (Cerebras) |
@@ -85,9 +89,9 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. For a fresh project, apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue; `0008` adds immutable 90-day resonance feedback; `0009` adds root-only request context plus leased/atomic alternate recovery. Pre-`0009` sessions are deliberately ineligible because their original limits cannot be reconstructed safely.
+1. For a fresh project, apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue; `0008` adds immutable 90-day resonance feedback; `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning. Pre-`0009` sessions are deliberately ineligible because their original limits cannot be reconstructed safely.
 
-For an existing deployment, set `STORY_CREATION_ENABLED=false`, apply `0009`, deploy and verify the version that calls `create_story_session_v2`, then re-enable creation. Keep the legacy RPC through the rollback window. Only after every instance uses v2, production verification passes, and rollback compatibility is no longer required should an operator manually apply `supabase/rollout/remove_legacy_story_session_rpc.sql`. That cleanup intentionally lives outside the automatic migration stream.
+For an existing deployment, set `STORY_CREATION_ENABLED=false`, apply `0009`, deploy and verify the version that calls `create_story_session_v2`, then re-enable creation. Apply `0010` after `0009`; it is additive and does not activate producers by itself. Keep the legacy RPC through the rollback window. Only after every instance uses v2, production verification passes, and rollback compatibility is no longer required should an operator manually apply `supabase/rollout/remove_legacy_story_session_rpc.sql`. That cleanup intentionally lives outside the automatic migration stream.
 
 The alternate capability expiry is a **start-by** deadline: a claim must begin before it, while an already-started claim may finish only within its separate two-minute lease and the original disclosure-retention deadline.
 2. Authentication → Sign In/Up → enable **anonymous sign-ins**.
@@ -102,6 +106,8 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
 
 Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET` and `ALTERNATE_STORY_TOKEN_SECRET`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. Production rejects retrieval `auto`: the July 2 fifty-figure holdout approved keyword retrieval, while FacetsRAG remains a shadow/eval challenger. Promote hybrid independently by setting its flag to `true`; rollback requires only restoring `false`. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
 
+For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys for at least 30 days and until their outbox retries are drained.
+
 ## Privacy posture (plain words, enforced in code)
 
 - Anonymous by default; no account required to use the product.
@@ -114,6 +120,7 @@ Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL
 - Historical concerns retain only curated StorySpec/stage/fact identifiers, a closed reason/status, aggregate count, and timestamps. They do not retain the reporter, session, artifact, rationale, disclosure, or prose.
 - Resonance feedback is owner-linked for deletion but contains only story/recipe identifiers and a closed verdict/reason. It expires after 90 days; no optional note field exists until separate consent, encryption, reviewer access, and shorter deletion are implemented.
 - Alternate flow rows contain only owner/content identifiers, a token hash, closed state, bounded attempt count, lease, and timestamps. The browser sends no age, disclosure, boundaries, clarification, feedback reason, candidate list, or prose; the alternate session stores none of the original sensitive context.
+- Product telemetry accepts only exact closed events and HMAC-authenticated, purpose-separated opaque IDs; raw session/artifact IDs and flow-derived IDs at unlinkable boundaries are rejected. Outbox-only repeatable-occurrence tokens are never stored. IDs carry a non-secret key ID so current and retained previous keys can verify deletion and outbox retries across rotation. Crisis, rate-limit, and deletion events are unlinkable. Operational attempts contain no flow/user/session/story ID. Product events expire within 30 days, attempts within 14 days, and a known linked flow can be deleted early; full owner-to-flow deletion mapping remains part of P0-14. See [`roadmap/telemetry_contract.md`](./roadmap/telemetry_contract.md).
 - No prompt/response bodies, feelings, raw IPs, or raw errors are ever logged.
 
 ## Architecture

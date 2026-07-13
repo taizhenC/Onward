@@ -258,6 +258,39 @@ async function checkAlternateStorySchema(): Promise<Step> {
   }
 }
 
+async function checkTelemetrySchema(): Promise<Step> {
+  const name = "privacy-safe telemetry schemas installed";
+  try {
+    const productEvents = await tableCount("product_events");
+    const generationAttempts = await tableCount("generation_attempts");
+    const productProjection = await getSupabase()
+      .from("product_events")
+      .select(
+        "event_id,schema_version,flow_id,event_name,latency_bucket,error_class,occurred_at,expires_at",
+      )
+      .limit(1);
+    if (productProjection.error) throw new Error(productProjection.error.message);
+    const attemptProjection = await getSupabase()
+      .from("generation_attempts")
+      .select(
+        "attempt_id,schema_version,operation,recipe_id,provider,outcome,latency_bucket,cost_micros,occurred_at,expires_at",
+      )
+      .limit(1);
+    if (attemptProjection.error) throw new Error(attemptProjection.error.message);
+    return {
+      name,
+      ok: true,
+      detail: `typed tables reachable (${productEvents} product event(s), ${generationAttempts} reduced attempt(s))`,
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0010`,
+    };
+  }
+}
+
 // Gate 3 — a crisis intake writes no session row (handleIntake returns before createSession).
 // The fixed ctx is safe in supabase mode: crisis short-circuits before the rate limiter and
 // the store, so this non-uuid user id never reaches Postgres.
@@ -325,6 +358,7 @@ async function main(): Promise<void> {
     await checkHistoricalConcernSchema(),
     await checkStoryFeedbackSchema(),
     await checkAlternateStorySchema(),
+    await checkTelemetrySchema(),
     await checkCrisisPersistsNothing(),
   ];
 

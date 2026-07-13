@@ -36,6 +36,7 @@ jobs:
       - run: npm run check-source-transparency
       - run: npm run check-resonance-feedback
       - run: npm run check-try-another
+      - run: npm run check-telemetry
       - run: npm run check-story-boundaries
       - run: npm run check-resonance-brief
       - run: npm run check-story-composer

@@ -220,6 +220,44 @@ async function checkStoryFeedbackSchema(): Promise<Step> {
   }
 }
 
+async function checkAlternateStorySchema(): Promise<Step> {
+  const name = "one-use alternate story schema installed";
+  try {
+    const flows = await tableCount("alternate_story_flows");
+    const sessions = await getSupabase()
+      .from("sessions")
+      .select(
+        "story_request_context,disclosure_expires_at,alternate_of_session_id",
+      )
+      .limit(1);
+    if (sessions.error) throw new Error(sessions.error.message);
+    const probe = await getSupabase().rpc("issue_alternate_story_flow", {
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_source_session_id: "0".repeat(32),
+      p_source_artifact_id: "0".repeat(32),
+      p_token_hash: "0".repeat(64),
+      p_policy_version: "alternate-story-v1-2026-07",
+      p_allow_create: false,
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const data = probe.data as { status?: unknown } | null;
+    const ok = data?.status === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `context columns and flow RPC reachable (${flows} bounded row(s))`
+        : "alternate issue RPC accepted a nonexistent owned story",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0009`,
+    };
+  }
+}
+
 // Gate 3 — a crisis intake writes no session row (handleIntake returns before createSession).
 // The fixed ctx is safe in supabase mode: crisis short-circuits before the rate limiter and
 // the store, so this non-uuid user id never reaches Postgres.
@@ -286,6 +324,7 @@ async function main(): Promise<void> {
     await checkMatchRecoverySchema(),
     await checkHistoricalConcernSchema(),
     await checkStoryFeedbackSchema(),
+    await checkAlternateStorySchema(),
     await checkCrisisPersistsNothing(),
   ];
 

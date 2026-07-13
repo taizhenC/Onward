@@ -19,9 +19,9 @@ Deploy slice (2026-06-10). The matching engine is real and validated:
 - **Honest match recovery**: uncertain matches ask at most one bounded question; unresolved fits persist nothing, and an accepted adjacent story is labeled before playback.
 - **Source transparency**: v5 artifacts freeze a controlled rationale, explicit gap, StorySpec version, claim/quote evidence, and safe source list; older artifacts are never backfilled from mutable content.
 - **Historical concerns**: owners can send only a selected fact ID and closed reason into a privacy-safe editorial queue; no disclosure, story prose, user, session, or artifact ID is retained there.
-- **Resonance feedback**: completed-story readers can answer one bounded close/not-close question without linking an email; rows contain only owner/content identifiers and closed enums, expire after 90 days, and never include disclosure or story prose.
+- **Resonance recovery**: completed-story readers can answer one bounded close/not-close question without linking an email. An explicitly rejected root story can use one short-lived capability to produce a different, always-partial story without resending the disclosure, relaxing its limits, or consuming another public rate-limit unit.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres.
-- **Retention**: user disclosures are NULL'd 60 days after creation by a scheduled job.
+- **Retention**: the disclosure and its closed boundary/clarification context are kept only on the original session and NULL'd together at its immutable 60-day deadline; an alternate never resets that clock.
 
 ## Run locally
 
@@ -46,6 +46,7 @@ npm run check-story-spec  # validate all draft contracts and publish rejection g
 npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
 npm run check-source-transparency # validate rationale, evidence, sources, and bounded reports
 npm run check-resonance-feedback # validate bounded post-story feedback and privacy gates
+npm run check-try-another   # validate one-use alternate, exclusion, retry, and retention gates
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
@@ -64,11 +65,13 @@ See `.env.example` for the documented template. Summary:
 | Variable | Notes |
 | --- | --- |
 | `PERSISTENCE` | `memory` (default) or `supabase` |
+| `ONWARD_ALLOW_MEMORY_IN_PRODUCTION` | Build-only escape hatch. It is honored only while `npm run build` is executing; served production runtimes still reject memory or unknown persistence modes even if the variable was copied. |
 | `NEXT_PUBLIC_SUPABASE_URL` | public |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public; browser uses it for **auth endpoints only** (RLS default-deny) |
 | `SUPABASE_SERVICE_ROLE_KEY` | **secret**, server-only, bypasses RLS |
-| `IP_HASH_SALT` | **secret**; required with `PERSISTENCE=supabase`; `openssl rand -hex 32` |
-| `MATCH_RECOVERY_TOKEN_SECRET` | Optional dedicated HMAC secret for single-use recovery fingerprints; production falls back to `IP_HASH_SALT`. |
+| `IP_HASH_SALT` | **secret**; required with `PERSISTENCE=supabase`; minimum 32 bytes, generated with `openssl rand -hex 32` |
+| `MATCH_RECOVERY_TOKEN_SECRET` | Optional dedicated HMAC secret for single-use recovery fingerprints; minimum 32 bytes; production falls back to `IP_HASH_SALT`. |
+| `ALTERNATE_STORY_TOKEN_SECRET` | Optional dedicated HMAC secret for post-story alternate capabilities; minimum 32 bytes; falls back to the recovery secret, then `IP_HASH_SALT`. |
 | `LLM_PROVIDER` | `stub` (default) or `real` (Cerebras) |
 | `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL` | for `LLM_PROVIDER=real` |
 | `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE` | default `gpt-oss-120b` |
@@ -82,7 +85,11 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue; `0008` adds immutable 90-day resonance feedback for completed stories.
+1. For a fresh project, apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue; `0008` adds immutable 90-day resonance feedback; `0009` adds root-only request context plus leased/atomic alternate recovery. Pre-`0009` sessions are deliberately ineligible because their original limits cannot be reconstructed safely.
+
+For an existing deployment, set `STORY_CREATION_ENABLED=false`, apply `0009`, deploy and verify the version that calls `create_story_session_v2`, then re-enable creation. Keep the legacy RPC through the rollback window. Only after every instance uses v2, production verification passes, and rollback compatibility is no longer required should an operator manually apply `supabase/rollout/remove_legacy_story_session_rpc.sql`. That cleanup intentionally lives outside the automatic migration stream.
+
+The alternate capability expiry is a **start-by** deadline: a claim must begin before it, while an already-started claim may finish only within its separate two-minute lease and the original disclosure-retention deadline.
 2. Authentication → Sign In/Up → enable **anonymous sign-ins**.
 3. Authentication → URL Configuration → set **Site URL** to the production URL; add `http://localhost:3000/**` to the redirect allowlist (a separate Supabase project for local dev is cleaner — Site URL is single-valued).
 4. Authentication → Emails → configure **custom SMTP** (Resend's free tier works). The built-in sender is limited to ~2 emails/hour **and only delivers to project team members** — without custom SMTP, real users' save/sign-in emails silently fail.
@@ -93,7 +100,7 @@ See `.env.example` for the documented template. Summary:
 
 ### 2. Vercel
 
-Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. Production rejects retrieval `auto`: the July 2 fifty-figure holdout approved keyword retrieval, while FacetsRAG remains a shadow/eval challenger. Promote hybrid independently by setting its flag to `true`; rollback requires only restoring `false`. Deploy; then walk the live flow once: landing → begin → story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
+Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET` and `ALTERNATE_STORY_TOKEN_SECRET`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. Production rejects retrieval `auto`: the July 2 fifty-figure holdout approved keyword retrieval, while FacetsRAG remains a shadow/eval challenger. Promote hybrid independently by setting its flag to `true`; rollback requires only restoring `false`. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
 
 ## Privacy posture (plain words, enforced in code)
 
@@ -102,10 +109,11 @@ Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL
 - Guest accounts and their stories are deleted ~6 hours after last activity (`ANON_USER_TTL_HOURS`); linking an email keeps them.
 - The text a user writes is NULL'd from our side 60 days after creation (`FEELING_RETENTION_DAYS`), saved or not.
 - Crisis input is detected by a deterministic regex before any LLM call and is never persisted.
-- Optional story intensity/topic limits are applied in memory before retrieval and are not stored in the session or StoryArtifact.
-- Clarification choices are not stored. Recovery keeps only an opaque-token hash and keyed input fingerprint; the key is usable for ten minutes and expired rows are removed by the 15-minute cleanup job.
+- Optional story intensity/topic limits and a closed clarification choice are retained with the disclosure only on the original session so one alternate can reuse them exactly. They are never placed in either StoryArtifact or the alternate session, and are NULL'd at the original disclosure deadline.
+- Pre-story recovery keeps only an opaque-token hash and keyed input fingerprint; the key is usable for ten minutes and expired rows are removed by the 15-minute cleanup job.
 - Historical concerns retain only curated StorySpec/stage/fact identifiers, a closed reason/status, aggregate count, and timestamps. They do not retain the reporter, session, artifact, rationale, disclosure, or prose.
 - Resonance feedback is owner-linked for deletion but contains only story/recipe identifiers and a closed verdict/reason. It expires after 90 days; no optional note field exists until separate consent, encryption, reviewer access, and shorter deletion are implemented.
+- Alternate flow rows contain only owner/content identifiers, a token hash, closed state, bounded attempt count, lease, and timestamps. The browser sends no age, disclosure, boundaries, clarification, feedback reason, candidate list, or prose; the alternate session stores none of the original sensitive context.
 - No prompt/response bodies, feelings, raw IPs, or raw errors are ever logged.
 
 ## Architecture

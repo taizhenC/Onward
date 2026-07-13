@@ -9,6 +9,7 @@ import type {
 } from "./types";
 import { memorySessionStore } from "./session-store-memory";
 import { supabaseSessionStore } from "./session-store-supabase";
+import { persistenceMode } from "./persistence";
 
 // The single session-storage boundary. Everything outside lib/ imports from here — never
 // from the store modules directly (mirrors the lib/llm.ts provider switch).
@@ -26,7 +27,7 @@ let store: SessionStore | undefined;
 function resolveStore(): SessionStore {
   if (store === undefined) {
     store =
-      process.env.PERSISTENCE === "supabase"
+      persistenceMode() === "supabase"
         ? supabaseSessionStore
         : memorySessionStore;
   }

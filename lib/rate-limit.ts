@@ -1,6 +1,8 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import { getSupabase } from "./db";
+import { persistenceMode } from "./persistence";
+import { readStrongSecret } from "./secret-config";
 
 // Match rate limiting (the only expensive route: 1 query embed + 2 Cerebras calls per
 // /api/match). Two keys per request, four fixed-window counters:
@@ -30,7 +32,7 @@ export async function consumeMatchRateLimit(
   userId: string,
   ipHash: string,
 ): Promise<boolean> {
-  if (process.env.PERSISTENCE !== "supabase") {
+  if (persistenceMode() === "memory") {
     return consumeInMemory(`u:${userId}`, `ip:${ipHash}`);
   }
 
@@ -62,9 +64,9 @@ export function hashRequestIp(request: Request): string {
 }
 
 function ipHashSalt(): string {
-  const salt = process.env.IP_HASH_SALT;
+  const salt = readStrongSecret(["IP_HASH_SALT"]);
   if (salt) return salt;
-  if (process.env.PERSISTENCE === "supabase") {
+  if (persistenceMode() === "supabase") {
     // Unsalted sha256 over the IPv4 space is reversible by enumeration — refuse to
     // run durable limiting without a salt (mirrors lib/db.ts's throw-on-first-use).
     throw new Error(

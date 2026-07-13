@@ -352,8 +352,14 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
       figureKey: session.figureKey,
       stageId: session.stageId,
       framing: session.framing,
-      age: session.age,
-      feeling: session.feeling,
+      age: session.age ?? 13,
+      feeling: session.feeling ?? "",
+      storyRequestContext:
+        session.storyRequestContext ?? {
+          schemaVersion: "story-request-context-v1-2026-07",
+          boundaries: null,
+          clarification: null,
+        },
       matchRecipe: session.matchRecipe,
       artifact,
     });
@@ -388,8 +394,14 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
       figureKey: session.figureKey,
       stageId: session.stageId,
       framing: session.framing,
-      age: session.age,
-      feeling: session.feeling,
+      age: session.age ?? 13,
+      feeling: session.feeling ?? "",
+      storyRequestContext:
+        session.storyRequestContext ?? {
+          schemaVersion: "story-request-context-v1-2026-07",
+          boundaries: null,
+          clarification: null,
+        },
       matchRecipe: session.matchRecipe,
       artifact: freshArtifact,
     });

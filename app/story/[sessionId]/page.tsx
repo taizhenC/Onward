@@ -5,6 +5,9 @@ import { getAuthUserId } from "@/lib/auth";
 import { getOwnedSession } from "@/lib/session";
 import { StoryPlayer } from "@/components/StoryPlayer";
 import { getStoryPlayback } from "@/lib/story-playback";
+import { getOwnedStoryArtifact } from "@/lib/story-artifacts";
+import { getResonanceFeedbackPresentation } from "@/lib/resonance-feedback";
+import type { ResonanceFeedbackPresentation } from "@/lib/resonance-feedback-types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,12 +26,38 @@ export default async function StoryPage({
   const { sessionId } = await params;
   // Ownership chokepoint: absent user, unknown id, and someone else's story are all
   // the same 404 ("this story has drifted away").
-  const session = await getOwnedSession(sessionId, await getAuthUserId());
+  const userId = await getAuthUserId();
+  const session = await getOwnedSession(sessionId, userId);
   if (!session) notFound();
 
   const playback = await getStoryPlayback(session);
   if (!playback) notFound();
   const outline = playback.outline;
+  let initialFeedback: ResonanceFeedbackPresentation = {
+    status: "unanswered",
+  };
+  let feedbackAvailable = playback.source === "artifact";
+  if (userId && session.storyArtifactId && playback.source === "artifact") {
+    try {
+      const artifact = await getOwnedStoryArtifact(
+        session.storyArtifactId,
+        userId,
+        session.sessionId,
+      );
+      if (artifact) {
+        initialFeedback = await getResonanceFeedbackPresentation({
+          userId,
+          session,
+          artifact,
+        });
+      } else {
+        feedbackAvailable = false;
+      }
+    } catch {
+      // Feedback is optional. A read-path outage must not hide a valid story.
+      feedbackAvailable = false;
+    }
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -54,6 +83,7 @@ export default async function StoryPage({
 
       <main className="mx-auto w-full max-w-[36rem] px-6 py-16">
         <StoryPlayer
+          key={sessionId}
           sessionId={sessionId}
           outline={outline}
           openingCopy={playback.openingCopy}
@@ -67,7 +97,8 @@ export default async function StoryPage({
               ? playback.beats.at(-1)?.chunks.join(" ") ?? null
               : null
           }
-          feedbackAvailable={playback.source === "artifact"}
+          feedbackAvailable={feedbackAvailable}
+          initialFeedback={initialFeedback}
         />
       </main>
     </div>

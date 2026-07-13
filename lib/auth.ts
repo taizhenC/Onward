@@ -1,4 +1,5 @@
 import "server-only";
+import { persistenceMode } from "./persistence";
 
 // The single auth boundary for request-scoped server code. Mirrors the PERSISTENCE
 // switch in lib/session.ts: memory mode (default — offline dev, smoke) never touches
@@ -15,7 +16,7 @@ export const LOCAL_DEV_USER_ID = "local-dev";
 // Authenticated user id, or null when there is no (valid) auth session. Callers map
 // null to 401 (creation paths) or 404 (session-scoped reads, via getOwnedSession).
 export async function getAuthUserId(): Promise<string | null> {
-  if (process.env.PERSISTENCE !== "supabase") return LOCAL_DEV_USER_ID;
+  if (persistenceMode() === "memory") return LOCAL_DEV_USER_ID;
 
   const { createSupabaseServer } = await import("./supabase/server");
   const supabase = await createSupabaseServer();

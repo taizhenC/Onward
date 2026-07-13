@@ -2,6 +2,8 @@ import "server-only";
 import { createHash, createHmac, randomBytes } from "node:crypto";
 import { getSupabase } from "./db";
 import type { StoryBoundaries } from "./story-boundaries";
+import { persistenceMode } from "./persistence";
+import { readStrongSecret } from "./secret-config";
 
 export const MATCH_RECOVERY_FLOW_TTL_MINUTES = 10;
 
@@ -57,7 +59,7 @@ export async function issueMatchRecoveryToken(
   const inputHash = hashIdentity(identity);
   const expiresAt = Date.now() + MATCH_RECOVERY_FLOW_TTL_MINUTES * 60_000;
 
-  if (process.env.PERSISTENCE === "supabase") {
+  if (persistenceMode() === "supabase") {
     const { error } = await getSupabase().from("match_recovery_flows").insert({
       token_hash: tokenHash,
       user_id: userId,
@@ -88,7 +90,7 @@ export async function consumeMatchRecoveryToken(
   const inputHash = hashIdentity(identity);
   const now = Date.now();
 
-  if (process.env.PERSISTENCE === "supabase") {
+  if (persistenceMode() === "supabase") {
     const { data, error } = await getSupabase().rpc(
       "consume_match_recovery_flow",
       {
@@ -118,7 +120,7 @@ export async function consumeMatchRecoveryToken(
 }
 
 export async function _matchRecoveryFlowCount(): Promise<number> {
-  if (process.env.PERSISTENCE === "supabase") {
+  if (persistenceMode() === "supabase") {
     const { count, error } = await getSupabase()
       .from("match_recovery_flows")
       .select("*", { count: "exact", head: true });
@@ -146,11 +148,12 @@ function hashIdentity(identity: MatchRecoveryIdentity): string {
 }
 
 function recoverySecret(): string | Buffer {
-  const configured =
-    process.env.MATCH_RECOVERY_TOKEN_SECRET?.trim() ||
-    process.env.IP_HASH_SALT?.trim();
+  const configured = readStrongSecret([
+    "MATCH_RECOVERY_TOKEN_SECRET",
+    "IP_HASH_SALT",
+  ]);
   if (configured) return configured;
-  if (process.env.PERSISTENCE === "supabase" || process.env.NODE_ENV === "production") {
+  if (persistenceMode() === "supabase" || process.env.NODE_ENV === "production") {
     throw new Error(
       "MATCH_RECOVERY_TOKEN_SECRET or IP_HASH_SALT is required for production recovery flows",
     );

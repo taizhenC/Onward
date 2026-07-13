@@ -45,7 +45,7 @@ async function main(): Promise<void> {
   }
   console.log("PASS closed clarification and deterministic disposition matrix");
   console.log("PASS weak initial and unresolved matches persist nothing");
-  console.log("PASS one clarification can improve retrieval without being stored");
+  console.log("PASS one closed clarification improves retrieval without storing its search phrase");
   console.log("PASS accepted adjacent story is explicitly partial and replayable");
   console.log("PASS recovery credits are single-use, owner-bound, and rate-limit safe");
   console.log("PASS reader preface exposes the partial-parallel limitation");
@@ -368,9 +368,9 @@ async function checkClarificationAndNoCloseFlow(
     session.feeling !== AMBIGUOUS_DISCLOSURE ||
     session.matchRecipe.matchRecoveryPolicyVersion !==
       MATCH_RECOVERY_POLICY_VERSION ||
+    session.storyRequestContext?.clarification !== "uncertainty" ||
     serialized.includes("controlled choice") ||
     serialized.includes("uncertain unsure identity next step which direction") ||
-    serialized.includes('"clarification"') ||
     serialized.includes('"acceptAdjacent"') ||
     (firstToken !== undefined && serialized.includes(firstToken)) ||
     (secondToken !== undefined && serialized.includes(secondToken)) ||
@@ -385,7 +385,7 @@ async function checkClarificationAndNoCloseFlow(
     )
   ) {
     failures.push(
-      `accepted adjacent story contract failed (session=${Boolean(session)}, artifact=${Boolean(artifact)}, sessionFraming=${session?.framing}, artifactFraming=${artifact?.framing}, rawExact=${session?.feeling === AMBIGUOUS_DISCLOSURE}, policy=${session?.matchRecipe.matchRecoveryPolicyVersion}, controlled=${serialized.includes("controlled choice")}, searchPhrase=${serialized.includes("uncertain unsure identity next step which direction")}, clarificationKey=${serialized.includes('"clarification"')}, acceptKey=${serialized.includes('"acceptAdjacent"')})`,
+      `accepted adjacent story contract failed (session=${Boolean(session)}, artifact=${Boolean(artifact)}, sessionFraming=${session?.framing}, artifactFraming=${artifact?.framing}, rawExact=${session?.feeling === AMBIGUOUS_DISCLOSURE}, policy=${session?.matchRecipe.matchRecoveryPolicyVersion}, controlled=${serialized.includes("controlled choice")}, searchPhrase=${serialized.includes("uncertain unsure identity next step which direction")}, clarification=${session?.storyRequestContext?.clarification}, acceptKey=${serialized.includes('"acceptAdjacent"')})`,
     );
   }
 
@@ -439,6 +439,7 @@ async function checkClarificationImprovesMatch(
     !session ||
     !artifact ||
     session.feeling !== feeling ||
+    session.storyRequestContext?.clarification !== "rejection" ||
     !artifact.beats.some((beat) => beat.text.includes("being refused or unseen")) ||
     JSON.stringify(session).includes("rejected dismissed ignored unseen")
   ) {

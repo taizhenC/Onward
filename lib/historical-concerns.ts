@@ -1,5 +1,6 @@
 import "server-only";
 import type { StoryArtifact } from "./story-artifact-types";
+import { persistenceMode } from "./persistence";
 import {
   isHistoricalConcernFact,
   validateStoredStoryTransparency,
@@ -39,7 +40,7 @@ export async function submitHistoricalConcern(
     throw new HistoricalConcernTargetError();
   }
 
-  if (process.env.PERSISTENCE === "supabase") {
+  if (persistenceMode() === "supabase") {
     await submitSupabaseHistoricalConcern({
       userId: input.userId,
       sessionId: input.sessionId,
@@ -61,7 +62,7 @@ export async function submitHistoricalConcern(
 }
 
 export function _listHistoricalConcerns() {
-  if (process.env.PERSISTENCE === "supabase") {
+  if (persistenceMode() === "supabase") {
     throw new Error("historical concern test projection is memory-only");
   }
   return listMemoryHistoricalConcerns();

@@ -17,6 +17,8 @@ Deploy slice (2026-06-10). The matching engine is real and validated:
 - **Resonance boundary**: prose composition receives a short-lived governed brief, not the raw disclosure; HMAC fingerprints reject copied phrases and named details without persisting them.
 - **Hybrid Story Composer**: the model selects only allowlisted placement/template IDs; deterministic rendering preserves canonical facts, retries once, and always returns a validated canonical fallback on failure.
 - **Honest match recovery**: uncertain matches ask at most one bounded question; unresolved fits persist nothing, and an accepted adjacent story is labeled before playback.
+- **Source transparency**: v5 artifacts freeze a controlled rationale, explicit gap, StorySpec version, claim/quote evidence, and safe source list; older artifacts are never backfilled from mutable content.
+- **Historical concerns**: owners can send only a selected fact ID and closed reason into a privacy-safe editorial queue; no disclosure, story prose, user, session, or artifact ID is retained there.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres.
 - **Retention**: user disclosures are NULL'd 60 days after creation by a scheduled job.
 
@@ -41,6 +43,7 @@ npm run eval              # match eval (EVAL_CONCURRENCY=1 with real providers)
 npm run seed              # seed figures + figure_stages to Supabase
 npm run check-story-spec  # validate all draft contracts and publish rejection gates
 npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
+npm run check-source-transparency # validate rationale, evidence, sources, and bounded reports
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
@@ -77,14 +80,14 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits.
+1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue.
 2. Authentication → Sign In/Up → enable **anonymous sign-ins**.
 3. Authentication → URL Configuration → set **Site URL** to the production URL; add `http://localhost:3000/**` to the redirect allowlist (a separate Supabase project for local dev is cleaner — Site URL is single-valued).
 4. Authentication → Emails → configure **custom SMTP** (Resend's free tier works). The built-in sender is limited to ~2 emails/hour **and only delivers to project team members** — without custom SMTP, real users' save/sign-in emails silently fail.
 5. Rewrite **three** email templates to the `token_hash` form (the default PKCE `?code=` links only work in the originating browser):
    - *Magic Link* and *Confirm signup*: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/stories`
    - *Confirm email change*: `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email_change&next=/stories`
-6. Seed: `npm run seed`, then `npm run seed-story-specs`. New stages and specs stay in `draft`; source mapping and human review are required before an editor moves a spec to `review` and runs `npm run story-spec:status -- publish <storySpecId>`. Production matching considers only valid published StorySpecs. The same command with `retire` immediately removes one stage version from new matching without a deploy. Run `npm run check-db` after publishing the intended launch subset. For semantic retrieval: `npm run check-embeddings` → `npm run seed-embeddings` → `npm run check-embeddings`.
+6. Seed: `npm run seed`, then `npm run seed-story-specs`. New stages and specs stay in `draft`; source mapping and human review are required before an editor moves a spec to `review` and runs `npm run story-spec:status -- publish <storySpecId>`. Production matching considers only valid published StorySpecs. The same command with `retire` immediately removes one stage version from new matching without a deploy. Historical concerns appear in `historical_concern_reports`; triage them through `triage_historical_concern`, and retire the pinned `story_spec_id` when a concern requires immediate unpublication. Reports never auto-retire content. Run `npm run check-db` after publishing the intended launch subset. For semantic retrieval: `npm run check-embeddings` → `npm run seed-embeddings` → `npm run check-embeddings`.
 
 ### 2. Vercel
 
@@ -99,6 +102,7 @@ Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL
 - Crisis input is detected by a deterministic regex before any LLM call and is never persisted.
 - Optional story intensity/topic limits are applied in memory before retrieval and are not stored in the session or StoryArtifact.
 - Clarification choices are not stored. Recovery keeps only an opaque-token hash and keyed input fingerprint; the key is usable for ten minutes and expired rows are removed by the 15-minute cleanup job.
+- Historical concerns retain only curated StorySpec/stage/fact identifiers, a closed reason/status, aggregate count, and timestamps. They do not retain the reporter, session, artifact, rationale, disclosure, or prose.
 - No prompt/response bodies, feelings, raw IPs, or raw errors are ever logged.
 
 ## Architecture

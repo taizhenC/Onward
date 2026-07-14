@@ -1,8 +1,10 @@
 import type { BeatKind, BeatRole, Framing, MatchRecipe, OpeningCopy } from "./types";
 import type { ContentFlag } from "./story-spec-types";
 import type { HybridTemplateId } from "./hybrid-composition";
+import type { StoryTransparency } from "./story-transparency-types";
 
-export const STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v4-2026-07";
+export const STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v5-2026-07";
+export const HYBRID_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v4-2026-07";
 export const RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v3-2026-07";
 export const BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v2-2026-07";
 export const LEGACY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v1-2026-07";
@@ -29,6 +31,7 @@ export type ArtifactValidationFailure =
   | "opening_copy_invalid"
   | "tone_invalid"
   | "content_profile_mismatch"
+  | "transparency_invalid"
   | "boundary_violation"
   | "content_hash_mismatch";
 
@@ -90,6 +93,9 @@ export type StoryArtifact = {
     attemptCount?: number;
     planVersion?: string;
   };
+  // Required on v5. Optional in the TypeScript replay shape only because
+  // immutable v1-v4 artifacts predate public provenance.
+  transparency?: StoryTransparency;
   beats: StoryArtifactBeat[];
   validation: {
     status: "validated";

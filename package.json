@@ -12,6 +12,7 @@
     "check-figure": "tsx scripts/check-figure.ts",
     "check-story-spec": "tsx scripts/check-story-spec.ts",
     "check-story-artifact": "tsx scripts/check-story-artifact.ts",
+    "check-source-transparency": "tsx scripts/check-source-transparency.ts",
     "check-story-boundaries": "tsx scripts/check-story-boundaries.ts",
     "check-resonance-brief": "tsx scripts/check-resonance-brief.ts",
     "check-story-composer": "tsx scripts/check-story-composer.ts",

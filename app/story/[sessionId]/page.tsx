@@ -58,9 +58,15 @@ export default async function StoryPage({
           outline={outline}
           openingCopy={playback.openingCopy}
           contentNote={playback.contentNote}
+          transparency={playback.transparency}
           framing={session.framing}
           initialBeatIndex={session.nextBeatIndex}
           initialChunkIndex={session.nextChunkIndex}
+          completedBridgeText={
+            session.nextBeatIndex >= playback.beats.length
+              ? playback.beats.at(-1)?.chunks.join(" ") ?? null
+              : null
+          }
         />
       </main>
     </div>

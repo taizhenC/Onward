@@ -4,6 +4,7 @@ import { chunkBeatText } from "./chunks";
 import { validateStorySpec } from "./story-spec";
 import {
   STORY_ARTIFACT_SCHEMA_VERSION,
+  HYBRID_STORY_ARTIFACT_SCHEMA_VERSION,
   RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION,
   BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
   LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
@@ -14,6 +15,11 @@ import {
   type StoryArtifactValidation,
 } from "./story-artifact-types";
 import { CONTENT_FLAGS, type StorySpec } from "./story-spec-types";
+import {
+  buildStoryTransparency,
+  validateStoredStoryTransparency,
+  validateStoryTransparency,
+} from "./story-transparency";
 import {
   STORY_BOUNDARY_POLICY_VERSION,
   storyProfileAllowed,
@@ -134,6 +140,7 @@ export function composeCanonicalStoryArtifact({
       fallbackReason,
       attemptCount,
     },
+    transparency: buildStoryTransparency(storySpec, resonanceBrief, framing),
     beats: storySpec.arc.map((beat) => ({
       role: beat.role,
       kind: beat.role === "bridge" ? "bridge" : "narrative",
@@ -214,6 +221,12 @@ export function composeHybridStoryArtifact({
       },
     };
   });
+  artifact.transparency = buildStoryTransparency(
+    input.storySpec,
+    input.resonanceBrief,
+    input.framing,
+    plan.transitionRole,
+  );
   artifact.contentHash = storyArtifactContentHash(artifact);
   const validation = validateStoryArtifact(
     artifact,
@@ -369,6 +382,26 @@ export function validateStoryArtifact(
     failures.add("personalization_invalid");
   }
 
+  const personalizedTransitionRoles = artifact.beats
+    .filter((beat) => beat.role !== "bridge" && beat.personalization !== undefined)
+    .map((beat) => beat.role);
+  const personalizedTransitionRole =
+    artifact.composition.mode === "hybrid" &&
+    personalizedTransitionRoles.length === 1
+      ? personalizedTransitionRoles[0]
+      : undefined;
+  if (
+    !validateStoryTransparency(
+      artifact.transparency,
+      storySpec,
+      resonanceBrief,
+      artifact.framing,
+      personalizedTransitionRole,
+    )
+  ) {
+    failures.add("transparency_invalid");
+  }
+
   if (artifact.contentHash !== storyArtifactContentHash(artifact)) {
     failures.add("content_hash_mismatch");
   }
@@ -384,6 +417,7 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   const candidate = value as Partial<StoryArtifact>;
   if (
     (candidate.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION &&
+      candidate.schemaVersion !== HYBRID_STORY_ARTIFACT_SCHEMA_VERSION &&
       candidate.schemaVersion !== RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION &&
       candidate.schemaVersion !== BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION &&
       candidate.schemaVersion !== LEGACY_STORY_ARTIFACT_SCHEMA_VERSION) ||
@@ -412,12 +446,18 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   const artifact = candidate as StoryArtifact;
   const boundaryAwareSchema =
     artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION ||
+    artifact.schemaVersion === HYBRID_STORY_ARTIFACT_SCHEMA_VERSION ||
     artifact.schemaVersion === RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION ||
     artifact.schemaVersion === BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION;
   const resonanceAwareSchema =
     artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION ||
+    artifact.schemaVersion === HYBRID_STORY_ARTIFACT_SCHEMA_VERSION ||
     artifact.schemaVersion === RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION;
-  const hybridAwareSchema = artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION;
+  const hybridAwareSchema =
+    artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION ||
+    artifact.schemaVersion === HYBRID_STORY_ARTIFACT_SCHEMA_VERSION;
+  const transparencyAwareSchema =
+    artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION;
   const openingFailures = new Set<ArtifactValidationFailure>();
   validateOpeningCopy(artifact.openingCopy, null, openingFailures);
   if (
@@ -475,6 +515,16 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   ) {
     return null;
   }
+  if (
+    transparencyAwareSchema
+      ? !validateStoredStoryTransparency(artifact.transparency) ||
+        artifact.transparency.storySpec.storySpecId !== artifact.storySpecId ||
+        artifact.transparency.storySpec.version !== artifact.storySpecVersion ||
+        artifact.transparency.storySpec.schemaVersion !== artifact.storySpecSchemaVersion
+      : artifact.transparency !== undefined
+  ) {
+    return null;
+  }
   let storedTransitionPersonalizationCount = 0;
   let storedBridgePersonalizationCount = 0;
   for (const [index, beat] of artifact.beats.entries()) {
@@ -513,6 +563,21 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
       }
       if (beat.role === "bridge") storedBridgePersonalizationCount += 1;
       else storedTransitionPersonalizationCount += 1;
+    }
+  }
+  if (transparencyAwareSchema) {
+    for (const [index, beat] of artifact.beats.entries()) {
+      const transparencyBeat = artifact.transparency?.beats[index];
+      if (
+        !transparencyBeat ||
+        transparencyBeat.role !== beat.role ||
+        !sameSet(transparencyBeat.factIds, beat.factIds) ||
+        !sameSet(transparencyBeat.quoteIds, beat.quoteIds) ||
+        transparencyBeat.hasPersonalizedTransition !==
+          (beat.role !== "bridge" && beat.personalization !== undefined)
+      ) {
+        return null;
+      }
     }
   }
   if (
@@ -558,6 +623,7 @@ export function storyArtifactContentHash(
     framing: artifact.framing,
     recipe: artifact.recipe,
     composition: artifact.composition,
+    transparency: artifact.transparency,
     beats: artifact.beats,
   };
   // Postgres jsonb does not preserve object-key order. Canonical serialization

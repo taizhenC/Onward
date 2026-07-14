@@ -12,6 +12,7 @@ import type { StoryTransparency } from "@/lib/story-transparency-types";
 import { PrefaceCard } from "./PrefaceCard";
 import { SaveStoriesCard } from "./SaveStoriesCard";
 import { StoryAfterword } from "./StoryAfterword";
+import { ResonanceFeedbackCard } from "./ResonanceFeedbackCard";
 import { StoryBeat } from "./StoryBeat";
 
 type Props = {
@@ -24,6 +25,7 @@ type Props = {
   initialBeatIndex: number;
   initialChunkIndex: number;
   completedBridgeText: string | null;
+  feedbackAvailable: boolean;
 };
 
 type Phase = "preface" | "playing" | "ended";
@@ -38,6 +40,7 @@ export function StoryPlayer({
   initialBeatIndex,
   initialChunkIndex,
   completedBridgeText,
+  feedbackAvailable,
 }: Props) {
   const totalBeats = outline.beats.length;
   const [phase, setPhase] = useState<Phase>(() => {
@@ -132,6 +135,15 @@ export function StoryPlayer({
       {reachedEnd || phase === "ended" ? (
         <>
           <StoryAfterword sessionId={sessionId} transparency={transparency} />
+          {feedbackAvailable ? (
+            <ResonanceFeedbackCard
+              sessionId={sessionId}
+              historicalReportingAvailable={
+                transparency?.provenance.status === "editorially_reviewed" &&
+                transparency.facts.length > 0
+              }
+            />
+          ) : null}
           <SaveStoriesCard />
         </>
       ) : null}

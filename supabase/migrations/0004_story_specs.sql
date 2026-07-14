@@ -119,11 +119,13 @@ begin
   if v_target.status <> 'review' then
     raise exception 'only a reviewed StorySpec can be promoted';
   end if;
+  -- Text comparison on purpose: a stray non-boolean value must read as
+  -- "not approved", not throw a cast error before the clean exception.
   if coalesce(v_target.spec #>> '{review,researcherId}', '') = ''
     or coalesce(v_target.spec #>> '{review,historicalReviewerId}', '') = ''
     or coalesce(v_target.spec #>> '{review,toneReviewerId}', '') = ''
     or coalesce(v_target.spec #>> '{review,reviewedAt}', '') = ''
-    or coalesce((v_target.spec #>> '{review,contentProfileReviewed}')::boolean, false) is false then
+    or coalesce(v_target.spec #>> '{review,contentProfileReviewed}', '') <> 'true' then
     raise exception 'required editorial approvals are missing';
   end if;
   if jsonb_path_exists(
@@ -135,11 +137,13 @@ begin
   ) then
     raise exception 'broad source mappings cannot be published';
   end if;
+  -- coalesce: a beat missing requiredFactIds entirely must fail this gate,
+  -- not slip past it as jsonb_array_length(NULL) = NULL.
   if exists (
     select 1
     from jsonb_array_elements(v_target.spec -> 'arc') as beat
     where beat ->> 'role' <> 'bridge'
-      and jsonb_array_length(beat -> 'requiredFactIds') = 0
+      and coalesce(jsonb_array_length(beat -> 'requiredFactIds'), 0) = 0
   ) then
     raise exception 'canonical beats require supporting fact IDs';
   end if;
@@ -173,12 +177,19 @@ language plpgsql
 security definer
 set search_path = public
 as $fn$
+declare
+  v_figure_key text;
+  v_stage_id text;
 begin
+  -- Resolve the stage first so an unknown id raises the clean exception
+  -- instead of feeding NULL into the advisory lock.
+  select figure_key, stage_id into v_figure_key, v_stage_id
+  from story_specs
+  where story_spec_id = p_story_spec_id;
+  if not found then raise exception 'published StorySpec not found'; end if;
+
   perform pg_advisory_xact_lock(
-    hashtextextended(
-      (select figure_key || ':' || stage_id from story_specs where story_spec_id = p_story_spec_id),
-      0
-    )
+    hashtextextended(v_figure_key || ':' || v_stage_id, 0)
   );
 
   update story_specs
@@ -188,13 +199,10 @@ begin
     and status = 'published';
   if not found then raise exception 'published StorySpec not found'; end if;
 
-  update figure_stages as stage
+  update figure_stages
   set status = 'draft'
-  where (stage.figure_key, stage.stage_id) = (
-    select spec.figure_key, spec.stage_id
-    from story_specs as spec
-    where spec.story_spec_id = p_story_spec_id
-  );
+  where figure_key = v_figure_key
+    and stage_id = v_stage_id;
 end
 $fn$;
 

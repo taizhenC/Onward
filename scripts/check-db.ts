@@ -5,6 +5,11 @@ import { FIGURE_STAGES } from "../lib/figures-data";
 import { _resetFigureCache, listAll } from "../lib/figures";
 import { getSupabase } from "../lib/db";
 import { handleIntake } from "../lib/intake";
+import {
+  createTelemetryEventId,
+  createTelemetryFlowId,
+  createTelemetryOutboxLeaseId,
+} from "../lib/telemetry";
 import { _sessionCount } from "../lib/session";
 import type { FigureStageRow } from "../lib/types";
 import {
@@ -291,6 +296,119 @@ async function checkTelemetrySchema(): Promise<Step> {
   }
 }
 
+async function checkTelemetryLifecycleSchema(): Promise<Step> {
+  const name = "transactional telemetry lifecycle RPCs installed";
+  try {
+    const userId = "00000000-0000-0000-0000-000000000000";
+    const rootSessionId = "0".repeat(32);
+    const flowId = createTelemetryFlowId();
+    const registerValidation = await getSupabase().rpc(
+      "register_telemetry_flow_v1",
+      {
+        p_flow_id: "invalid",
+        p_expires_at: new Date(Date.now() + 86_400_000).toISOString(),
+      },
+    );
+    requireRpcValidationError("flow registration", registerValidation.error);
+    const revokeValidation = await getSupabase().rpc(
+      "revoke_telemetry_flow_v1",
+      {
+        p_flow_id: "invalid",
+        p_user_id: userId,
+      },
+    );
+    requireRpcValidationError("flow revocation", revokeValidation.error);
+    const captureValidation = await getSupabase().rpc(
+      "capture_product_event_v1",
+      {
+        p_event_id: "invalid",
+        p_schema_version: "product-event-v1-2026-07",
+        p_flow_id: null,
+        p_event_name: "intake_started",
+      },
+    );
+    requireRpcValidationError("typed event capture", captureValidation.error);
+    const outboxClaimValidation = await getSupabase().rpc(
+      "claim_product_event_outbox_v1",
+      {
+        p_lease_id: "invalid",
+        p_limit: 1,
+      },
+    );
+    requireRpcValidationError(
+      "outbox claim",
+      outboxClaimValidation.error,
+    );
+    const byRoot = await getSupabase().rpc("resolve_owned_telemetry_flow_v1", {
+      p_user_id: userId,
+      p_root_session_id: rootSessionId,
+    });
+    if (byRoot.error) throw new Error(byRoot.error.message);
+    const byFlow = await getSupabase().rpc("resolve_owned_telemetry_root_v1", {
+      p_user_id: userId,
+      p_flow_id: flowId,
+    });
+    if (byFlow.error) throw new Error(byFlow.error.message);
+    const claim = await getSupabase().rpc("claim_telemetry_flow_owner_v1", {
+      p_flow_id: flowId,
+      p_user_id: userId,
+    });
+    if (claim.error) throw new Error(claim.error.message);
+    const ack = await getSupabase().rpc("ack_product_event_outbox_v1", {
+      p_event_id: createTelemetryEventId(),
+      p_lease_id: createTelemetryOutboxLeaseId(),
+    });
+    if (ack.error) throw new Error(ack.error.message);
+    const nack = await getSupabase().rpc("nack_product_event_outbox_v1", {
+      p_event_id: createTelemetryEventId(),
+      p_lease_id: createTelemetryOutboxLeaseId(),
+      p_error_class: "unknown",
+    });
+    if (nack.error) throw new Error(nack.error.message);
+    const v3 = await getSupabase().rpc("create_story_session_v3", {
+      p_session_id: rootSessionId,
+      p_user_id: userId,
+      p_figure_key: "probe",
+      p_stage_id: "probe",
+      p_framing: "partial",
+      p_age: 22,
+      p_feeling: "non-mutating lifecycle probe",
+      p_story_request_context: {},
+      p_match_recipe: {},
+      p_artifact: {},
+      p_telemetry_flow_id: flowId,
+    });
+    if (v3.error) throw new Error(v3.error.message);
+    const v3Data = v3.data as { status?: unknown } | null;
+    const ok =
+      byRoot.data === null &&
+      byFlow.data === null &&
+      claim.data === "not_found" &&
+      ack.data === "not_found" &&
+      nack.data === "not_found" &&
+      v3Data?.status === "flow_not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "all lifecycle/capture/outbox signatures and service-role grants are reachable without writes"
+        : "a nonexistent lifecycle probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0011` };
+  }
+}
+
+function requireRpcValidationError(
+  label: string,
+  error: { code?: string; message: string } | null,
+): void {
+  if (error?.code === "P0001") return;
+  throw new Error(
+    `${label} RPC signature/grant probe failed: ${error?.message ?? "expected a validation error"}`,
+  );
+}
+
 // Gate 3 — a crisis intake writes no session row (handleIntake returns before createSession).
 // The fixed ctx is safe in supabase mode: crisis short-circuits before the rate limiter and
 // the store, so this non-uuid user id never reaches Postgres.
@@ -303,7 +421,11 @@ async function checkCrisisPersistsNothing(): Promise<Step> {
         age: 22,
         feeling: "I want to kill myself",
       },
-      { userId: "check-db", ipHash: "check-db" },
+      {
+        userId: "check-db",
+        ipHash: "check-db",
+        telemetryFlowId: createTelemetryFlowId(),
+      },
     );
     const after = await _sessionCount();
 
@@ -348,6 +470,14 @@ async function main(): Promise<void> {
     console.log("FAIL  Supabase env missing (NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY).");
     process.exit(1);
   }
+  if (
+    !process.env.TELEMETRY_ID_SECRET ||
+    Buffer.byteLength(process.env.TELEMETRY_ID_SECRET.trim(), "utf8") < 32
+  ) {
+    console.log("");
+    console.log("FAIL  TELEMETRY_ID_SECRET must be a dedicated secret of at least 32 bytes.");
+    process.exit(1);
+  }
 
   const steps = [
     await checkSeeded(),
@@ -359,6 +489,7 @@ async function main(): Promise<void> {
     await checkStoryFeedbackSchema(),
     await checkAlternateStorySchema(),
     await checkTelemetrySchema(),
+    await checkTelemetryLifecycleSchema(),
     await checkCrisisPersistsNothing(),
   ];
 

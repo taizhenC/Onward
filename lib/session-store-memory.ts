@@ -1,5 +1,6 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
+import { isDeepStrictEqual } from "node:util";
 import type {
   AcknowledgeSessionPositionInput,
   AcknowledgeSessionPositionResult,
@@ -24,6 +25,12 @@ import {
 import { ALTERNATE_STORY_POLICY_VERSION } from "./alternate-story-types";
 import { storyProfileAllowed } from "./story-boundaries";
 import type { StoryArtifact } from "./story-artifact-types";
+import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
+import {
+  bindMemoryTelemetryFlow,
+  deleteMemoryTelemetryFlowBindingForRoot,
+  getMemoryTelemetryFlowBindingByFlow,
+} from "./telemetry-flow-binding-memory";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -62,6 +69,45 @@ function allocateSessionId(): string {
 
 async function createSession(input: CreateSessionInput): Promise<string> {
   pruneExpiredSessions();
+  const existingBinding = input.telemetryFlowId
+    ? getMemoryTelemetryFlowBindingByFlow(input.telemetryFlowId)
+    : null;
+  if (existingBinding) {
+    if (existingBinding.userId !== input.userId) {
+      throw new TelemetryFlowConflictError(
+        "telemetry flow is already owned by another session",
+      );
+    }
+    const existing = sessions.get(existingBinding.rootSessionId);
+    if (
+      existing &&
+      !isExpired(existing) &&
+      existing.alternateOfSessionId === null
+    ) {
+      expireSensitiveContext(existing);
+      if (
+        existing.userId === input.userId &&
+        existing.framing === input.framing &&
+        existing.age === input.age &&
+        existing.feeling === input.feeling &&
+        isDeepStrictEqual(
+          existing.storyRequestContext,
+          input.storyRequestContext,
+        )
+      ) {
+        return existing.sessionId;
+      }
+      // A response-loss retry may reuse the root only for the exact disclosure
+      // and safety context that created it. Edited text or tighter boundaries
+      // must never surface the prior story under a new request.
+      throw new TelemetryFlowConflictError(
+        "telemetry flow retry identity conflicted",
+      );
+    }
+    if (existing) deleteMemorySessionCascade(existing.sessionId);
+    else deleteMemoryTelemetryFlowBindingForRoot(existingBinding.rootSessionId);
+  }
+
   const sessionId = allocateSessionId();
   const now = Date.now();
   const session: Session = {
@@ -87,7 +133,20 @@ async function createSession(input: CreateSessionInput): Promise<string> {
   putMemoryStoryArtifact(sessionId, input.userId, input.artifact);
   try {
     sessions.set(sessionId, session);
+    if (input.telemetryFlowId) {
+      const binding = bindMemoryTelemetryFlow({
+        flowId: input.telemetryFlowId,
+        userId: input.userId,
+        rootSessionId: sessionId,
+      });
+      if (binding !== "created" && binding !== "existing") {
+        throw new TelemetryFlowConflictError(
+          `telemetry flow binding failed: ${binding}`,
+        );
+      }
+    }
   } catch (error) {
+    sessions.delete(sessionId);
     deleteMemoryStoryArtifact(input.artifact.artifactId);
     throw error;
   }
@@ -300,6 +359,9 @@ function deleteMemorySessionCascade(sessionId: string): void {
   if (session?.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
   deleteMemoryResonanceFeedbackForSession(sessionId);
   deleteMemoryAlternateStoryFlow(sessionId);
+  if (session?.alternateOfSessionId === null) {
+    deleteMemoryTelemetryFlowBindingForRoot(sessionId);
+  }
   sessions.delete(sessionId);
 }
 

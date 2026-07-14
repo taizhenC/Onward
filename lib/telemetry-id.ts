@@ -6,6 +6,7 @@ import {
   timingSafeEqual,
 } from "node:crypto";
 import { readStrongSecret } from "./secret-config";
+import { TELEMETRY_FLOW_RETENTION_DAYS } from "./telemetry-types";
 import type {
   DeletionCorrelationId,
   GenerationAttemptId,
@@ -13,13 +14,24 @@ import type {
   TelemetryEventId,
   TelemetryFlowId,
   TelemetryOccurrenceId,
+  TelemetryOutboxLeaseId,
 } from "./telemetry-types";
 
 type TelemetryIdPrefix = "tfl" | "tev" | "toc" | "gat" | "tdl";
 type TelemetrySigningKey = Readonly<{ id: string; secret: string }>;
 
-export function issueTelemetryFlowId(): TelemetryFlowId {
-  return issueId("tfl") as TelemetryFlowId;
+export function issueTelemetryFlowId(now = new Date()): TelemetryFlowId {
+  const issuedAtSeconds = Math.floor(now.getTime() / 1000);
+  if (!Number.isSafeInteger(issuedAtSeconds) || issuedAtSeconds < 0) {
+    throw new Error("telemetry flow issuance time is invalid");
+  }
+  const nonce =
+    issuedAtSeconds.toString(16).padStart(FLOW_TIMESTAMP_HEX_LENGTH, "0") +
+    randomBytes(FLOW_RANDOM_BYTES).toString("hex");
+  if (nonce.length !== 32) {
+    throw new Error("telemetry flow issuance time is out of range");
+  }
+  return signedId("tfl", nonce, telemetryIdKeys()[0]) as TelemetryFlowId;
 }
 
 export function issueTelemetryEventId(): TelemetryEventId {
@@ -28,6 +40,10 @@ export function issueTelemetryEventId(): TelemetryEventId {
 
 export function issueTelemetryOccurrenceId(): TelemetryOccurrenceId {
   return issueId("toc") as TelemetryOccurrenceId;
+}
+
+export function issueTelemetryOutboxLeaseId(): TelemetryOutboxLeaseId {
+  return randomBytes(16).toString("hex") as TelemetryOutboxLeaseId;
 }
 
 export function issueGenerationAttemptId(): GenerationAttemptId {
@@ -43,14 +59,14 @@ export function deriveProductEventId(
   flowId: TelemetryFlowId | null,
   occurrenceId?: TelemetryOccurrenceId,
 ): TelemetryEventId {
-  const repeatable =
+  const occurrenceOwned =
     (flowId === null &&
       event.event !== "deletion_requested" &&
       event.event !== "deletion_completed") ||
     event.event === "flow_failed";
   let correlationId: string;
   let nonceDomain: string;
-  if (repeatable) {
+  if (occurrenceOwned) {
     if (occurrenceId === undefined) {
       throw new Error(
         `${event.event} requires one outbox-owned telemetry occurrence ID`,
@@ -69,26 +85,87 @@ export function deriveProductEventId(
     nonceDomain = PRODUCT_EVENT_ID_DOMAIN;
   }
   const signingKey = signingKeyForId(correlationId);
-  const canonicalEvent = JSON.stringify(
-    Object.fromEntries(
-      Object.entries(event).sort(([left], [right]) =>
-        left.localeCompare(right),
-      ),
-    ),
-  );
+  const semanticUnit = occurrenceOwned
+    ? OCCURRENCE_SEMANTIC_UNIT
+    : JSON.stringify(productEventSemanticUnit(event));
   const nonce = createHash("sha256")
     .update(nonceDomain)
     .update("\0")
     .update(correlationId)
     .update("\0")
-    .update(canonicalEvent)
+    .update(semanticUnit)
     .digest("hex")
     .slice(0, 32);
   return signedId("tev", nonce, signingKey) as TelemetryEventId;
 }
 
-export function parseTelemetryFlowId(value: unknown): TelemetryFlowId {
-  return parseSignedId(value, "tfl", "telemetry flow ID") as TelemetryFlowId;
+// Mirrors the partial unique indexes in migration 0011. The event ID is
+// normally derived from this unit, but exposing the unit separately lets the
+// memory provider reject a caller-supplied second valid ID exactly as Postgres
+// does. Unlinkable occurrence events have no durable flow-scoped unit.
+export function deriveProductEventSemanticKey(
+  event: Readonly<ProductEvent>,
+  flowId: TelemetryFlowId | null,
+): string | null {
+  if (flowId === null || event.event === "flow_failed") return null;
+  return JSON.stringify([
+    parseTelemetryFlowId(flowId),
+    productEventSemanticUnit(event),
+  ]);
+}
+
+export function parseTelemetryOutboxLeaseId(
+  value: unknown,
+): TelemetryOutboxLeaseId {
+  if (typeof value !== "string" || !/^[0-9a-f]{32}$/.test(value)) {
+    throw new Error("telemetry outbox lease ID is invalid");
+  }
+  return value as TelemetryOutboxLeaseId;
+}
+
+export function parseTelemetryFlowId(
+  value: unknown,
+  now = new Date(),
+): TelemetryFlowId {
+  const flowId = parseSignedId(
+    value,
+    "tfl",
+    "telemetry flow ID",
+  ) as TelemetryFlowId;
+  const issuedAtSeconds = telemetryFlowIssuedAtSeconds(flowId);
+  const nowSeconds = Math.floor(now.getTime() / 1000);
+  if (!Number.isSafeInteger(nowSeconds)) {
+    throw new Error("telemetry flow validation time is invalid");
+  }
+  if (issuedAtSeconds > nowSeconds + FLOW_CLOCK_SKEW_SECONDS) {
+    throw new Error("telemetry flow ID was issued in the future");
+  }
+  if (issuedAtSeconds + TELEMETRY_FLOW_RETENTION_SECONDS <= nowSeconds) {
+    throw new Error("telemetry flow ID has expired");
+  }
+  return flowId;
+}
+
+// Privacy cleanup may run after the capability's active window. It still must
+// authenticate the opaque identifier, but must not let the normal age guard
+// prevent deletion while database cleanup is catching up.
+export function parseTelemetryFlowIdForRetirement(
+  value: unknown,
+): TelemetryFlowId {
+  const flowId = parseSignedId(
+    value,
+    "tfl",
+    "telemetry flow ID",
+  ) as TelemetryFlowId;
+  telemetryFlowIssuedAtSeconds(flowId);
+  return flowId;
+}
+
+export function telemetryFlowExpiresAt(flowId: TelemetryFlowId): Date {
+  const issuedAtSeconds = telemetryFlowIssuedAtSeconds(flowId);
+  return new Date(
+    (issuedAtSeconds + TELEMETRY_FLOW_RETENTION_SECONDS) * 1000,
+  );
 }
 
 export function parseTelemetryEventId(value: unknown): TelemetryEventId {
@@ -178,12 +255,57 @@ function signingKeyForId(value: string): TelemetrySigningKey {
   return key;
 }
 
+function productEventSemanticUnit(
+  event: Readonly<ProductEvent>,
+): Readonly<Record<string, string | number>> {
+  switch (event.event) {
+    case "match_completed":
+      // A clarification/no-close result and a later closed match are distinct
+      // semantic transitions. All calibration dimensions within that transition
+      // remain first-write-wins.
+      return {
+        event: event.event,
+        storyRole: event.storyRole,
+        disposition: event.disposition,
+      };
+    case "artifact_created":
+    case "first_content_shown":
+    case "story_completed":
+    case "source_opened":
+    case "feedback_submitted":
+    case "story_saved":
+      return { event: event.event, storyRole: event.storyRole };
+    case "passage_acknowledged":
+    case "passage_presented":
+      return {
+        event: event.event,
+        storyRole: event.storyRole,
+        passageOrdinal: event.passageOrdinal,
+      };
+    case "saved_story_reopened":
+      // The contract permits one reopen in each age window for a story unit.
+      return {
+        event: event.event,
+        storyRole: event.storyRole,
+        ageBucket: event.ageBucket,
+      };
+    default:
+      // Every other field is a measured dimension. Keeping it out of the ID
+      // makes a divergent retry collide with the first accepted measurement.
+      return { event: event.event };
+  }
+}
+
 function telemetryIdKeys(): readonly TelemetrySigningKey[] {
-  const configured = readStrongSecret(["TELEMETRY_ID_SECRET", "IP_HASH_SALT"]);
+  const configured = readStrongSecret(["TELEMETRY_ID_SECRET"]);
   let current = configured;
-  if (!current && process.env.NODE_ENV === "production") {
+  if (
+    !current &&
+    (process.env.NODE_ENV === "production" ||
+      process.env.PERSISTENCE?.trim().toLowerCase() === "supabase")
+  ) {
     throw new Error(
-      "TELEMETRY_ID_SECRET or IP_HASH_SALT is required for signed telemetry IDs",
+      "TELEMETRY_ID_SECRET is required for signed telemetry IDs in Supabase/production mode",
     );
   }
   current ??= LOCAL_TELEMETRY_ID_SECRET;
@@ -229,5 +351,23 @@ const ID_SIGNATURE_DOMAIN = "onward:telemetry-id:v1";
 const KEY_ID_DOMAIN = "onward:telemetry-key-id:v1";
 const PRODUCT_EVENT_ID_DOMAIN = "onward:product-event:v1";
 const OCCURRENCE_EVENT_ID_DOMAIN = "onward:occurrence-event:v1";
+const OCCURRENCE_SEMANTIC_UNIT = "one-occurrence";
+const FLOW_TIMESTAMP_HEX_LENGTH = 12;
+const FLOW_RANDOM_BYTES = 10;
+const FLOW_CLOCK_SKEW_SECONDS = 5 * 60;
+const TELEMETRY_FLOW_RETENTION_SECONDS =
+  TELEMETRY_FLOW_RETENTION_DAYS * 24 * 60 * 60;
 const LOCAL_TELEMETRY_ID_SECRET =
   "onward-local-telemetry-id-secret-not-for-production";
+
+function telemetryFlowIssuedAtSeconds(flowId: TelemetryFlowId): number {
+  const nonce = flowId.split("_", 4)[2];
+  const issuedAtSeconds = Number.parseInt(
+    nonce.slice(0, FLOW_TIMESTAMP_HEX_LENGTH),
+    16,
+  );
+  if (!Number.isSafeInteger(issuedAtSeconds)) {
+    throw new Error("telemetry flow ID issuance time is invalid");
+  }
+  return issuedAtSeconds;
+}

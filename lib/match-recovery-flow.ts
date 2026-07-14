@@ -4,12 +4,15 @@ import { getSupabase } from "./db";
 import type { StoryBoundaries } from "./story-boundaries";
 import { persistenceMode } from "./persistence";
 import { readStrongSecret } from "./secret-config";
+import type { TelemetryFlowId } from "./telemetry-types";
+import { parseTelemetryFlowId } from "./telemetry-id";
 
 export const MATCH_RECOVERY_FLOW_TTL_MINUTES = 10;
 
 export type MatchRecoveryIdentity = {
   age: number;
   feeling: string;
+  telemetryFlowId: TelemetryFlowId | null;
   boundaries?: StoryBoundaries;
 };
 
@@ -135,6 +138,10 @@ function hashIdentity(identity: MatchRecoveryIdentity): string {
   const canonical = JSON.stringify({
     age: identity.age,
     feeling: identity.feeling,
+    telemetryFlowId:
+      identity.telemetryFlowId === null
+        ? null
+        : parseTelemetryFlowId(identity.telemetryFlowId),
     boundaries: identity.boundaries
       ? {
           maxIntensity: identity.boundaries.maxIntensity,

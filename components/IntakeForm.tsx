@@ -26,6 +26,8 @@ import {
   isValidIntakeFeeling,
   normalizeIntakeFeeling,
 } from "@/lib/intake-constraints";
+import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
+import type { TelemetryFlowId } from "@/lib/telemetry-types";
 
 type MatchSuccess = { sessionId: string };
 type MatchCrisis = { crisis: true; resources: CrisisResource[] };
@@ -43,6 +45,7 @@ type MatchNoClose = {
   recoveryToken: string;
 };
 type MatchError = { error: string };
+type MatchFlowConflict = { flowConflict: true };
 type MatchPayload =
   | MatchSuccess
   | MatchCrisis
@@ -51,12 +54,13 @@ type MatchPayload =
   | MatchNoEligible
   | MatchClarificationNeeded
   | MatchNoClose
+  | MatchFlowConflict
   | MatchError;
 
-// Invisible anonymous-first auth: make sure this browser holds an auth session
-// (anonymous or permanent) before posting the intake. Signing in at SUBMIT, not page
-// mount, means bouncing visitors mint no users. Without Supabase env (offline/memory
-// dev) there's no client and the server falls back to its local dev user.
+// Invisible anonymous-first auth is attempted only after the server has ruled
+// out the crisis path and returned 401. That keeps reviewed resources independent
+// of cookies and prevents bouncing visitors from minting anonymous users. Without
+// Supabase env (offline/memory dev), the server uses its local development owner.
 async function ensureAuthSession(): Promise<boolean> {
   try {
     const supabase = getSupabaseBrowser();
@@ -73,7 +77,13 @@ async function ensureAuthSession(): Promise<boolean> {
   }
 }
 
-export function IntakeForm() {
+export function IntakeForm({
+  telemetryFlowId,
+  reviewedCrisisResources,
+}: {
+  telemetryFlowId: TelemetryFlowId | null;
+  reviewedCrisisResources: CrisisResource[];
+}) {
   const router = useRouter();
   const [age, setAge] = useState("");
   const [feeling, setFeeling] = useState("");
@@ -93,18 +103,21 @@ export function IntakeForm() {
     useState<MatchClarification | null>(null);
   const [noCloseMatch, setNoCloseMatch] = useState(false);
   const [recoveryToken, setRecoveryToken] = useState<string | null>(null);
+  const [flowConflict, setFlowConflict] = useState(false);
   const boundaryRef = useRef<HTMLFieldSetElement>(null);
   const noEligibleRef = useRef<HTMLDivElement>(null);
   const clarificationRef = useRef<HTMLFieldSetElement>(null);
   const noCloseRef = useRef<HTMLDivElement>(null);
   const feelingRef = useRef<HTMLTextAreaElement>(null);
+  const flowConflictRef = useRef<HTMLAnchorElement>(null);
   const submittingRef = useRef(false);
 
   useEffect(() => {
-    if (noCloseMatch) noCloseRef.current?.focus();
+    if (flowConflict) flowConflictRef.current?.focus();
+    else if (noCloseMatch) noCloseRef.current?.focus();
     else if (clarificationNeeded) clarificationRef.current?.focus();
     else if (noEligibleStory) noEligibleRef.current?.focus();
-  }, [clarificationNeeded, noCloseMatch, noEligibleStory]);
+  }, [clarificationNeeded, flowConflict, noCloseMatch, noEligibleStory]);
 
   const ageNum = Number(age);
   const ageValid = isValidIntakeAge(ageNum);
@@ -112,11 +125,13 @@ export function IntakeForm() {
   const feelingValid = isValidIntakeFeeling(feeling);
   const baseCanSubmit = ageValid && feelingValid && !submitting;
   const canSubmit =
-    baseCanSubmit && (!clarificationNeeded || clarification !== null);
+    baseCanSubmit &&
+    !flowConflict &&
+    (!clarificationNeeded || clarification !== null);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (noCloseMatch) return;
+    if (noCloseMatch || flowConflict) return;
     await submitMatch(false);
   }
 
@@ -124,6 +139,7 @@ export function IntakeForm() {
     if (
       !baseCanSubmit ||
       submittingRef.current ||
+      flowConflict ||
       (clarificationNeeded && clarification === null && !acceptAdjacent)
     ) {
       return;
@@ -133,30 +149,38 @@ export function IntakeForm() {
     setError(null);
     setNoEligibleStory(false);
     setNoCloseMatch(false);
-
-    const authed = await ensureAuthSession();
+    setFlowConflict(false);
 
     let response: Response;
+    const body = JSON.stringify({
+      age: ageNum,
+      feeling,
+      ...(boundaryEnabled
+        ? {
+            boundaries: {
+              maxIntensity,
+              excludedFlags,
+            } satisfies StoryBoundaries,
+          }
+        : {}),
+      ...(clarification ? { clarification } : {}),
+      ...(acceptAdjacent ? { acceptAdjacent: true } : {}),
+      ...(recoveryToken ? { recoveryToken } : {}),
+    });
+    const postMatch = () => {
+      const headers: Record<string, string> = {
+        "content-type": "application/json",
+      };
+      if (telemetryFlowId) headers[TELEMETRY_FLOW_HEADER] = telemetryFlowId;
+      return fetch("/api/match", { method: "POST", headers, body });
+    };
     try {
-      response = await fetch("/api/match", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          age: ageNum,
-          feeling,
-          ...(boundaryEnabled
-            ? {
-                boundaries: {
-                  maxIntensity,
-                  excludedFlags,
-                } satisfies StoryBoundaries,
-              }
-            : {}),
-          ...(clarification ? { clarification } : {}),
-          ...(acceptAdjacent ? { acceptAdjacent: true } : {}),
-          ...(recoveryToken ? { recoveryToken } : {}),
-        }),
-      });
+      // Crisis classification reaches the server before the browser auth SDK.
+      // Only a non-crisis 401 creates an anonymous session and retries.
+      response = await postMatch();
+      if (response.status === 401 && (await ensureAuthSession())) {
+        response = await postMatch();
+      }
     } catch {
       setError("The connection dropped. Please try again.");
       finishSubmitting();
@@ -172,6 +196,12 @@ export function IntakeForm() {
           ? "Couldn't read the response."
           : `The server returned an error (${response.status}).`,
       );
+      finishSubmitting();
+      return;
+    }
+
+    if (response.status === 409 || "flowConflict" in payload) {
+      setFlowConflict(true);
       finishSubmitting();
       return;
     }
@@ -213,7 +243,7 @@ export function IntakeForm() {
       return;
     }
 
-    if (!authed && response.status === 401) {
+    if (response.status === 401) {
       setError(
         "We couldn't start a private session. Your browser may be blocking cookies — they're needed to keep your story yours.",
       );
@@ -317,6 +347,19 @@ export function IntakeForm() {
           uncertain, we will say so and may ask one question.
         </p>
       </header>
+
+      <div className="border-l-2 border-[var(--color-accent)] pl-4">
+        <button
+          type="button"
+          onClick={() => setCrisisResources(reviewedCrisisResources)}
+          className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
+        >
+          I need immediate help
+        </button>
+        <p className="mt-2 text-sm text-[var(--color-ink-soft)]">
+          Crisis resources are available without an age or story submission.
+        </p>
+      </div>
 
       <label className="block space-y-2">
         <span className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
@@ -604,7 +647,22 @@ export function IntakeForm() {
         </p>
       ) : null}
 
-      {!noCloseMatch ? (
+      {flowConflict ? (
+        <div role="alert" className="space-y-3 border-l-2 border-[var(--color-accent)] pl-4">
+          <p className="font-ui text-sm text-[var(--color-accent)]">
+            This story journey has already been used or has expired.
+          </p>
+          <a
+            ref={flowConflictRef}
+            href="/begin"
+            className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
+          >
+            Start a fresh story
+          </a>
+        </div>
+      ) : null}
+
+      {!noCloseMatch && !flowConflict ? (
         <button
           type="submit"
           disabled={!canSubmit}

@@ -28,6 +28,10 @@ import {
 } from "../lib/alternate-story-types";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { handleIntake } from "../lib/intake";
+import { createTelemetryFlowId, recordProductEvent } from "../lib/telemetry";
+import { resolveOwnedTelemetryFlowForSession } from "../lib/telemetry-flow-binding";
+import { registerMemoryTelemetryFlow } from "../lib/telemetry-flow-binding-memory";
+import { listMemoryProductEvents } from "../lib/telemetry-store-memory";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import {
   _listResonanceFeedback,
@@ -101,7 +105,7 @@ async function main(): Promise<void> {
   console.log("PASS empty/low coverage stops honestly; operational failures retry twice");
   console.log("PASS live second leases hydrate before exhaustion; claim TTL is start-by");
   console.log("PASS no public rate unit, alternate chain, or sensitive flow payload");
-  console.log("PASS root expiry cascades alternate, artifact, feedback, and flow state");
+  console.log("PASS alternate deletion preserves root telemetry; root expiry cascades all flow state");
 }
 
 async function checkIntakeValidationParity(failures: string[]): Promise<void> {
@@ -110,15 +114,27 @@ async function checkIntakeValidationParity(failures: string[]): Promise<void> {
   try {
     const fractional = await handleIntake(
       { age: 25.5, feeling: "I feel uncertain about my direction." },
-      { userId: LOCAL_DEV_USER_ID, ipHash: "parity-fractional" },
+      {
+        userId: LOCAL_DEV_USER_ID,
+        ipHash: "parity-fractional",
+        telemetryFlowId: createTelemetryFlowId(),
+      },
     );
     const shortAfterNormalization = await handleIntake(
       { age: 25, feeling: "e\u0301".repeat(5) },
-      { userId: LOCAL_DEV_USER_ID, ipHash: "parity-unicode-short" },
+      {
+        userId: LOCAL_DEV_USER_ID,
+        ipHash: "parity-unicode-short",
+        telemetryFlowId: createTelemetryFlowId(),
+      },
     );
     const validAfterNormalization = await handleIntake(
       { age: 25, feeling: "e\u0301".repeat(10) },
-      { userId: LOCAL_DEV_USER_ID, ipHash: "parity-unicode-valid" },
+      {
+        userId: LOCAL_DEV_USER_ID,
+        ipHash: "parity-unicode-valid",
+        telemetryFlowId: createTelemetryFlowId(),
+      },
     );
     if (
       !("error" in fractional) ||
@@ -474,6 +490,14 @@ async function checkHappyConcurrentFlow(
   const alternateKey = alternate
     ? storySpecStageKey(alternate.figureKey, alternate.stageId)
     : priorKey;
+  const rootTelemetry = await resolveOwnedTelemetryFlowForSession(
+    root.sessionId,
+    LOCAL_DEV_USER_ID,
+  );
+  const alternateTelemetry = await resolveOwnedTelemetryFlowForSession(
+    alternateSessionId,
+    LOCAL_DEV_USER_ID,
+  );
   if (
     !source ||
     !alternate ||
@@ -491,7 +515,10 @@ async function checkHappyConcurrentFlow(
     !storyProfileAllowed(artifact.contentProfile, BOUNDARIES) ||
     flow?.status !== "ready" ||
     flow.attemptCount !== 1 ||
-    flow.resultSessionId !== alternateSessionId
+    flow.resultSessionId !== alternateSessionId ||
+    !rootTelemetry ||
+    alternateTelemetry?.flowId !== rootTelemetry.flowId ||
+    alternateTelemetry.rootSessionId !== root.sessionId
   ) {
     failures.push(
       `alternate lineage, partial framing, boundaries, or flow was invalid: ${JSON.stringify({
@@ -1000,6 +1027,33 @@ async function checkSourceCascade(
   happy: RootFixture & { alternateSessionId: string; alternateArtifactId: string },
   failures: string[],
 ): Promise<void> {
+  const telemetry = await resolveOwnedTelemetryFlowForSession(
+    happy.sessionId,
+    LOCAL_DEV_USER_ID,
+  );
+  if (!telemetry) {
+    failures.push("root flow mapping was missing before cascade check");
+    return;
+  }
+  await recordProductEvent({
+    flowId: telemetry.flowId,
+    event: { event: "source_opened", storyRole: "initial" },
+  });
+  const alternateRow = globalThis.__onwardSessions?.get(happy.alternateSessionId);
+  if (alternateRow) alternateRow.createdAt = Date.now() - 2 * 60 * 60 * 1000;
+  await getSession(happy.alternateSessionId);
+  const rootAfterAlternateDelete = await resolveOwnedTelemetryFlowForSession(
+    happy.sessionId,
+    LOCAL_DEV_USER_ID,
+  );
+  if (
+    rootAfterAlternateDelete?.flowId !== telemetry.flowId ||
+    !listMemoryProductEvents().some(
+      (event) => event.flowId === telemetry.flowId,
+    )
+  ) {
+    failures.push("alternate-only deletion retired the root telemetry flow");
+  }
   const source = globalThis.__onwardSessions?.get(happy.sessionId);
   if (source) source.createdAt = Date.now() - 2 * 60 * 60 * 1000;
   await getSession(happy.sessionId);
@@ -1019,7 +1073,15 @@ async function checkSourceCascade(
     ) ||
     _listAlternateStoryFlows().some(
       (flow) => flow.sourceSessionId === happy.sessionId,
-    )
+    ) ||
+    (await resolveOwnedTelemetryFlowForSession(
+      happy.sessionId,
+      LOCAL_DEV_USER_ID,
+    )) !== null ||
+    listMemoryProductEvents().some(
+      (event) => event.flowId === telemetry.flowId,
+    ) ||
+    registerMemoryTelemetryFlow(telemetry.flowId) !== "revoked"
   ) {
     failures.push("source expiry did not cascade alternate session, artifact, and flow");
   }
@@ -1139,6 +1201,7 @@ async function makeRoot(options: {
   });
   const sessionId = await createSession({
     userId,
+    telemetryFlowId: createTelemetryFlowId(),
     figureKey: stage.figureKey,
     stageId: stage.stageId,
     framing: "partial",

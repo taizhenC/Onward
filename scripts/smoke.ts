@@ -34,6 +34,7 @@ import {
   SAFE_BRIDGE_DISTANCE_LINE,
 } from "../lib/story-privacy";
 import type { BeatBlueprint, Session } from "../lib/types";
+import { createTelemetryFlowId } from "../lib/telemetry";
 
 // Smoke always runs in stub mode (provider matrix). getLLM() resolves lazily on the
 // first match call, so setting this before main() runs is sufficient.
@@ -48,14 +49,23 @@ delete process.env.RETRIEVAL_MODE;
 // Fixed request identity for every intake in this run. The whole run shares one
 // user, so the rate-limit assertion (which exhausts the 5/hour budget) MUST stay
 // last among the intake-driven assertions.
-const SMOKE_CTX: IntakeContext = { userId: "smoke-user", ipHash: "smoke-ip" };
+const SMOKE_USER_ID = "smoke-user";
+function createSmokeContext(): IntakeContext {
+  return {
+    userId: SMOKE_USER_ID,
+    ipHash: "smoke-ip",
+    telemetryFlowId: createTelemetryFlowId(),
+  };
+}
 const PROGRESS_CTX: IntakeContext = {
   userId: "smoke-progress-user",
   ipHash: "smoke-progress-ip",
+  telemetryFlowId: createTelemetryFlowId(),
 };
 const ARTIFACT_CTX: IntakeContext = {
   userId: "smoke-artifact-user",
   ipHash: "smoke-artifact-ip",
+  telemetryFlowId: createTelemetryFlowId(),
 };
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
@@ -102,7 +112,7 @@ async function runMatchAssertion(
   expectedFigureKey: string,
 ): Promise<AssertionResult> {
   const before = await _sessionCount();
-  const result = await handleIntake(input, SMOKE_CTX);
+  const result = await handleIntake(input, createSmokeContext());
 
   if ("error" in result) {
     return { name: label, ok: false, detail: `validation error: ${result.error}` };
@@ -196,7 +206,7 @@ async function runCrisisAssertion(): Promise<AssertionResult> {
       age: 22,
       feeling: "I want to kill myself",
     },
-    SMOKE_CTX,
+    createSmokeContext(),
   );
   const after = await _sessionCount();
 
@@ -355,6 +365,7 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
   try {
     await createSession({
       userId: session.userId,
+      telemetryFlowId: createTelemetryFlowId(),
       figureKey: session.figureKey,
       stageId: session.stageId,
       framing: session.framing,
@@ -362,9 +373,10 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
       feeling: session.feeling ?? "",
       storyRequestContext:
         session.storyRequestContext ?? {
-          schemaVersion: "story-request-context-v1-2026-07",
+          schemaVersion: "story-request-context-v2-2026-07",
           boundaries: null,
           clarification: null,
+          acceptedAdjacent: false,
         },
       matchRecipe: session.matchRecipe,
       artifact,
@@ -397,6 +409,7 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
   try {
     await createSession({
       userId: session.userId,
+      telemetryFlowId: createTelemetryFlowId(),
       figureKey: session.figureKey,
       stageId: session.stageId,
       framing: session.framing,
@@ -404,9 +417,10 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
       feeling: session.feeling ?? "",
       storyRequestContext:
         session.storyRequestContext ?? {
-          schemaVersion: "story-request-context-v1-2026-07",
+          schemaVersion: "story-request-context-v2-2026-07",
           boundaries: null,
           clarification: null,
+          acceptedAdjacent: false,
         },
       matchRecipe: session.matchRecipe,
       artifact: freshArtifact,
@@ -497,18 +511,19 @@ async function runLegacyPlaybackAssertion(): Promise<AssertionResult> {
 // indistinguishable from a missing session.
 async function runOwnershipAssertion(): Promise<AssertionResult> {
   const name = "ownership: foreign/absent user cannot read a session";
+  const ctx = createSmokeContext();
   const result = await handleIntake(
     {
       age: 28,
       feeling: "I keep getting rejected and I don't know if I should keep trying",
     },
-    SMOKE_CTX,
+    ctx,
   );
   if (!("sessionId" in result)) {
     return { name, ok: false, detail: "intake did not create a session" };
   }
 
-  const owned = await getOwnedSession(result.sessionId, SMOKE_CTX.userId);
+  const owned = await getOwnedSession(result.sessionId, ctx.userId);
   if (!owned) {
     return { name, ok: false, detail: "owner could not read their own session" };
   }
@@ -583,7 +598,11 @@ async function runAtomicProgressAssertion(): Promise<AssertionResult> {
 async function runStoryCreationKillSwitchAssertion(): Promise<AssertionResult> {
   const name = "safety: story kill switch preserves crisis support and persists nothing";
   const previous = process.env.STORY_CREATION_ENABLED;
-  const ctx = { userId: "smoke-disabled-user", ipHash: "smoke-disabled-ip" };
+  const ctx: IntakeContext = {
+    userId: "smoke-disabled-user",
+    ipHash: "smoke-disabled-ip",
+    telemetryFlowId: createTelemetryFlowId(),
+  };
   const before = await _sessionCount();
   try {
     process.env.STORY_CREATION_ENABLED = "false";
@@ -684,7 +703,7 @@ async function runRateLimitAssertion(): Promise<AssertionResult> {
     feeling: "I keep getting rejected and I don't know if I should keep trying",
   };
 
-  const fifth = await handleIntake(input, SMOKE_CTX);
+  const fifth = await handleIntake(input, createSmokeContext());
   if (!("sessionId" in fifth)) {
     return {
       name,
@@ -694,7 +713,7 @@ async function runRateLimitAssertion(): Promise<AssertionResult> {
   }
 
   const before = await _sessionCount();
-  const sixth = await handleIntake(input, SMOKE_CTX);
+  const sixth = await handleIntake(input, createSmokeContext());
   const after = await _sessionCount();
   if (!("rateLimited" in sixth)) {
     return { name, ok: false, detail: "over-budget intake was not rate-limited" };
@@ -709,7 +728,7 @@ async function runRateLimitAssertion(): Promise<AssertionResult> {
 
   const crisis = await handleIntake(
     { age: 22, feeling: "I want to kill myself" },
-    SMOKE_CTX,
+    createSmokeContext(),
   );
   if (!("crisis" in crisis)) {
     return {

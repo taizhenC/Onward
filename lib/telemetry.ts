@@ -12,20 +12,29 @@ import {
   issueTelemetryEventId,
   issueTelemetryFlowId,
   issueTelemetryOccurrenceId,
-  parseTelemetryFlowId,
+  issueTelemetryOutboxLeaseId,
 } from "./telemetry-id";
 import {
+  ackMemoryProductEventOutbox,
   appendMemoryGenerationAttempt,
   appendMemoryProductEvent,
-  deleteMemoryProductEventsForFlow,
+  claimMemoryProductEventOutbox,
+  nackMemoryProductEventOutbox,
   type TelemetryWriteResult,
 } from "./telemetry-store-memory";
 import {
+  ackSupabaseProductEventOutbox,
   appendSupabaseGenerationAttempt,
   appendSupabaseProductEvent,
-  deleteSupabaseProductEventsForFlow,
+  claimSupabaseProductEventOutbox,
+  nackSupabaseProductEventOutbox,
 } from "./telemetry-store-supabase";
+import {
+  registerTelemetryFlow,
+  revokeTelemetryFlow,
+} from "./telemetry-flow-lifecycle";
 import type {
+  ClaimedProductEvent,
   DeletionCorrelationId,
   GenerationAttempt,
   GenerationAttemptId,
@@ -33,6 +42,10 @@ import type {
   TelemetryEventId,
   TelemetryFlowId,
   TelemetryOccurrenceId,
+  TelemetryOutboxLeaseId,
+  TelemetryErrorClass,
+  TelemetryOutboxAckResult,
+  TelemetryOutboxNackResult,
 } from "./telemetry-types";
 
 export async function recordProductEvent(input: {
@@ -41,6 +54,10 @@ export async function recordProductEvent(input: {
   occurrenceId?: TelemetryOccurrenceId;
 }): Promise<TelemetryWriteResult> {
   const event = parseProductEvent(input.event);
+  if (input.flowId !== null) {
+    const registration = await registerTelemetryFlow(input.flowId);
+    if (registration !== "registered") return "conflict";
+  }
   const record = createProductEventRecord({
     event,
     flowId: input.flowId,
@@ -66,11 +83,41 @@ export async function recordGenerationAttempt(input: {
 
 export async function deleteProductEventsForFlow(
   flowId: TelemetryFlowId,
+  userId: string | null = null,
 ): Promise<number> {
-  const safeFlowId = parseTelemetryFlowId(flowId);
+  const result = await revokeTelemetryFlow(flowId, userId);
+  if (result === "conflict") {
+    throw new Error("telemetry flow revocation owner conflicted");
+  }
+  return result === "revoked" ? 1 : 0;
+}
+
+export async function claimProductEventOutbox(input: {
+  leaseId: TelemetryOutboxLeaseId;
+  limit: number;
+}): Promise<ReadonlyArray<Readonly<ClaimedProductEvent>>> {
   return persistenceMode() === "supabase"
-    ? deleteSupabaseProductEventsForFlow(safeFlowId)
-    : deleteMemoryProductEventsForFlow(safeFlowId);
+    ? claimSupabaseProductEventOutbox(input)
+    : claimMemoryProductEventOutbox(input);
+}
+
+export async function ackProductEventOutbox(input: {
+  eventId: TelemetryEventId;
+  leaseId: TelemetryOutboxLeaseId;
+}): Promise<TelemetryOutboxAckResult> {
+  return persistenceMode() === "supabase"
+    ? ackSupabaseProductEventOutbox(input)
+    : ackMemoryProductEventOutbox(input);
+}
+
+export async function nackProductEventOutbox(input: {
+  eventId: TelemetryEventId;
+  leaseId: TelemetryOutboxLeaseId;
+  errorClass: Exclude<TelemetryErrorClass, "none">;
+}): Promise<TelemetryOutboxNackResult> {
+  return persistenceMode() === "supabase"
+    ? nackSupabaseProductEventOutbox(input)
+    : nackMemoryProductEventOutbox(input);
 }
 
 export function createTelemetryFlowId(): TelemetryFlowId {
@@ -91,4 +138,8 @@ export function createTelemetryEventId(): TelemetryEventId {
 
 export function createTelemetryOccurrenceId(): TelemetryOccurrenceId {
   return issueTelemetryOccurrenceId();
+}
+
+export function createTelemetryOutboxLeaseId(): TelemetryOutboxLeaseId {
+  return issueTelemetryOutboxLeaseId();
 }

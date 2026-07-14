@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 import type { StoryAdvance } from "@/lib/types";
@@ -167,11 +167,61 @@ export function StoryBeat({
     }
   }, [skipped, totalTokens]);
 
-  function handleSkip() {
+  // Stable across reveal ticks so the global-listener effect below doesn't
+  // re-attach every 40ms (canSkip and totalTokens only change on new chunks
+  // or when the reveal finishes).
+  const handleSkip = useCallback(() => {
     if (!canSkip) return;
     setSkipped(true);
     setRevealedCount(totalTokens);
-  }
+  }, [canSkip, totalTokens]);
+
+  // Global click & space-to-skip handling during animation
+  useEffect(() => {
+    if (!canSkip) return;
+
+    function handleGlobalClick(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      // Do not skip if user clicks on a button, link, or input fields
+      if (
+        target.closest("button") ||
+        target.closest("a") ||
+        target.closest("input") ||
+        target.closest("textarea")
+      ) {
+        return;
+      }
+      handleSkip();
+    }
+
+    function handleGlobalKeyDown(event: KeyboardEvent) {
+      if (event.key === " ") {
+        const target = event.target as HTMLElement;
+        // Do not skip if user is typing in an input, textarea, or contenteditable
+        // element, or activating a focused button/link (preventDefault would
+        // swallow space-activation, e.g. the failure Refresh button).
+        if (
+          target.closest("button") ||
+          target.closest("a") ||
+          target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable
+        ) {
+          return;
+        }
+        event.preventDefault(); // prevent scrolling the page
+        handleSkip();
+      }
+    }
+
+    document.addEventListener("click", handleGlobalClick);
+    window.addEventListener("keydown", handleGlobalKeyDown);
+
+    return () => {
+      document.removeEventListener("click", handleGlobalClick);
+      window.removeEventListener("keydown", handleGlobalKeyDown);
+    };
+  }, [canSkip, handleSkip]);
 
   async function handleAdvance() {
     if (advancing || nextStep === null || !revealComplete) return;
@@ -224,7 +274,8 @@ export function StoryBeat({
       {failure ? <BeatFailure kind={failure} /> : null}
 
       {/* Progress changes only after the complete passage is visible and the
-          reader deliberately acknowledges it. */}
+          reader deliberately acknowledges it. Clicking anywhere or pressing space
+          skips the animation, which is what makes this button appear. */}
       {!failure && !ended && revealComplete && nextStep !== null ? (
         <button
           type="button"

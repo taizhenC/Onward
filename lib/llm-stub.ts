@@ -1,5 +1,5 @@
 import "server-only";
-import type { BeatBlueprint, OpeningCopy, Pick, PickInput, Session } from "./types";
+import type { BeatBlueprint, OpeningCopy, Pick, PickInput } from "./types";
 import { pickByKeywordHybrid } from "./keyword-match";
 import { PARTIAL_FRAMING_THRESHOLD } from "./match-config";
 import {
@@ -7,9 +7,9 @@ import {
   DEFAULT_PREFACE_LINES,
   type OpeningCopyInput,
 } from "./opening-copy";
+import { sanitizeLegacyDisclosurePlaceholder } from "./story-privacy";
 
 export type StreamBeatInput = {
-  session: Session;
   beat: BeatBlueprint;
   textOverride?: string;
 };
@@ -20,15 +20,13 @@ export type StreamBeatInput = {
 // passage. The prose is deterministic DB text, so the old server-side delay was
 // purely cosmetic; moving it client-side is what makes "show everything" possible.
 export async function* streamBeat({
-  session,
   beat,
   textOverride,
 }: StreamBeatInput): AsyncIterable<string> {
-  const rawText = textOverride ?? beat.text;
-  const text =
-    beat.kind === "bridge"
-      ? rawText.replaceAll("{feeling}", session.feeling)
-      : rawText;
+  // Old database rows may still contain the Phase-0 `{feeling}` line. Sanitize
+  // it at the final prose boundary so an un-reseeded deployment cannot render a
+  // literal placeholder or restore verbatim intake interpolation.
+  const text = sanitizeLegacyDisclosurePlaceholder(textOverride ?? beat.text);
 
   for (const chunk of toWordChunks(text)) {
     yield chunk;

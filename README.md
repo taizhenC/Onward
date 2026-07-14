@@ -58,6 +58,7 @@ See `.env.example` for the documented template. Summary:
 | `EMBEDDING_PROVIDER` | `stub` (default) or `gemini` |
 | `GEMINI_API_KEY` | for `EMBEDDING_PROVIDER=gemini` |
 | `RETRIEVAL_MODE` | `keyword` (approved/default) / `facetsrag` (challenger) / `auto` (local only; rejected in production) |
+| `STORY_CREATION_ENABLED` | Optional emergency kill switch; set `false` to pause new stories while leaving crisis resources available. |
 
 ## Deploying
 

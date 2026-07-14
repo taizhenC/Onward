@@ -75,7 +75,7 @@ This is the most important beat. It has four parts, in this order:
 
 1. **The reveal.** Open with `Her name was [Full Name].` or `His name was [Full Name].` Exactly that, on its own line.
 2. **One or two plain-spoken legacy sentences.** What they became known for. Phrased so a person who has never heard of them understands why they matter. End with something like: "None of that had happened yet on the morning we just sat with him." or "She did all of this after spending the first half of her life being told she couldn't."
-3. **Quote the user back to themselves.** Include the literal placeholder `{feeling}` inside a sentence. Example: `You wrote: "{feeling}"`. The placeholder will be substituted with the user's exact intake words at stream time. Never paraphrase the user. Never interpret. Just quote.
+3. **Keep the reader's disclosure private.** Never quote, paraphrase, or include a placeholder for the user's intake. Bridge only at the level of a broad human shape, and state that the two lives are not the same. A safe pattern is: `Your life is not theirs. But a piece of this story may still sit beside you.`
 4. **One short permission sentence.** A line that gives the reader permission to be where they are. Examples: "You don't have to know how it ends to keep going. She didn't either." / "You don't have to be early. You just have to begin." / "You don't have to know who you are yet. He didn't either."
 
 Do NOT lecture the user. Do NOT say "you should." Do NOT compare them to the figure directly ("just like Frederick, you..."). Do NOT promise them they'll succeed. The figure's story already does the work — the bridge just opens a door.
@@ -145,7 +145,7 @@ Return a single JSON array of exactly 7 objects in this order. No prose outside 
   { "kind": "narrative", "role": "struggle",      "text": "...", "sourceNotes": "..." },
   { "kind": "narrative", "role": "turning_point", "text": "...", "sourceNotes": "..." },
   { "kind": "narrative", "role": "became",        "text": "...", "sourceNotes": "..." },
-  { "kind": "bridge",    "role": "bridge",        "text": "Their name was ...\n\n...{feeling}...", "sourceNotes": "..." }
+  { "kind": "bridge",    "role": "bridge",        "text": "Their name was ...\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\n...", "sourceNotes": "..." }
 ]
 ```
 
@@ -161,7 +161,7 @@ Before you emit the JSON, check each beat against these:
 - [ ] No sentence runs longer than ~25 words
 - [ ] No literary phrase that would feel out of place in a 1am conversation with a friend
 - [ ] The bridge opens with "Her/His/Their name was [Full Name]."
-- [ ] The bridge contains the literal placeholder `{feeling}`
+- [ ] The bridge contains no user-intake placeholder, quote, or paraphrase
 - [ ] The bridge ends with a short permission sentence, not a lecture
 - [ ] Total word count is between 750 and 1000
 - [ ] `sourceNotes` is honest about what is dramatized

@@ -209,7 +209,7 @@ async function selectMatchPool(
     if (mode === "facetsrag") {
       throw new Error(
         `FacetsRAG retrieval unavailable (RETRIEVAL_MODE=facetsrag): ${reason}. ` +
-          "Seed embeddings and set EMBEDDING_PROVIDER=gemini, or run with RETRIEVAL_MODE=auto.",
+          "Seed embeddings and set EMBEDDING_PROVIDER=gemini, or run with RETRIEVAL_MODE=keyword.",
       );
     }
     // auto: degrade to keyword (recovery-asymmetry — a degraded match beats no match).

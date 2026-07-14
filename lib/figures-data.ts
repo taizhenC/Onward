@@ -9,8 +9,9 @@ import type { FigureStageRow } from "./types";
 // Phase 1 reintroduces user agency via prototype + RAG regeneration, not via
 // branching decision beats.
 //
-// Bridge-beat text contains the literal placeholder `{feeling}` which the LLM stub
-// substitutes with `session.feeling` at stream time (see lib/llm-stub.ts).
+// Bridge beats reflect only a broad human parallel. They never quote or interpolate
+// the user's disclosure; session-specific bridges belong behind the validated
+// composition and privacy gates described in the public-release roadmap.
 
 const douglass: FigureStageRow = {
   figureKey: "douglass",
@@ -160,7 +161,7 @@ He started in a chair in a borrowed room, with nothing but the papers in his shi
 
 He became one of the most important voices in American history. He had escaped from slavery as a young man, and he spent the rest of his life — fifty years — fighting to end it, and then fighting for everyone the country still wouldn't make room for. His books are still read. His words are still quoted. None of that had happened yet on the morning we just sat with him.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 When he sat in that chair, four days free, he didn't have a name yet. He didn't have a plan. He didn't know if the woman he loved would come. He didn't know that the voice he would become known for was already inside him, waiting.
 
@@ -315,7 +316,7 @@ She kept writing.`,
 
 She became one of the most important science fiction writers of the last hundred years — the first Black woman widely read in the genre, and the first sci-fi writer to win a MacArthur Fellowship. People read her books in classrooms now. None of that had happened yet on the morning we just sat with her.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The morning at the table was hers before any of the books. Before any of the awards. Before anyone knew her name. It was just her, getting up before everyone else, sitting down at the table, and writing the next page.
 
@@ -473,7 +474,7 @@ None of the buildings, none of the libraries had her name on them. She had insis
 
 She is one of the founders of modern forensic science. She built the first formal program in the country, paid for it herself, and trained the people who trained everyone after them. The miniatures she built by hand are still used to teach homicide investigators. She did all of this in her fifties and sixties, after spending the first half of her life being told she couldn't.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She had been waiting since she was seventeen. The desk did not know what she had given up. The room at the school, when the books finally arrived, did not ask her to be younger than she was. It only needed her to start.
 
@@ -637,7 +638,7 @@ He never stopped being soft. It turned out the softness was the whole point.`,
 
 For more than thirty years he made a television show for children — just him, talking quietly, with a few hand puppets and a cardigan and a pair of sneakers he changed into at the start of every visit. He told a whole country of kids that they were liked just the way they were. When people in the government wanted to cut the money that paid for it, he spoke to them for six minutes and they changed their minds. He is one of the most beloved public figures in the country.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The boy who became that man spent his own childhood sick, alone, and chased home from school. He thought his soft heart was the thing that was wrong with him. It turned out to be the thing the world needed most from him.
 
@@ -806,7 +807,7 @@ She just got a late start. That was all.`,
 
 She taught America how to cook. The huge French cookbook she spent a decade on is still in kitchens everywhere, and her television show made her one of the most loved people in the country. She didn't learn to cook until she was almost forty, didn't publish that book until she was forty-nine, and didn't become famous until her fifties.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 For the whole first half of her life, she thought maybe she just wasn't built for a calling — that some people get one and some people don't, and she was one of the ones who don't. She was wrong. It hadn't passed her by. It simply hadn't started yet.
 
@@ -969,7 +970,7 @@ He didn't fix his grief. He just refused to lie about it. That turned out to be 
 
 He was one of the most famous writers of his century — beloved children's books about a magical land, and works of faith that millions still read. He had even written, years before his wife died, a confident book explaining how to bear suffering. Then he had to actually bear it, and the small, honest book he wrote in his grief — first published under a false name — has comforted more hurting people than perhaps anything else he made.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He was past sixty, at the height of his fame, with all the answers, and grief knocked every one of them out of his hands. He didn't get them back the same. He got something quieter instead. He kept going anyway — not because it stopped hurting, but because the hurting slowly began to move.
 
@@ -1135,7 +1136,7 @@ He just had to be dared, one time, to let it out.`,
 
 The boy who couldn't speak grew up to have one of the most famous voices in the history of the world. He was the voice of Darth Vader in Star Wars. He was Mufasa in The Lion King. For decades, on stage and screen, that deep, unmistakable voice was one of the most beloved sounds anywhere — and it belonged to a man who, as a child, was so ashamed of his voice that he went almost completely silent for years.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He didn't fix it alone. It took one teacher who refused to believe the silence was the end of the story, and one poem he had written when he thought no one would ever hear it. The voice was always in there. It just needed one safe place to come out.
 
@@ -1302,7 +1303,7 @@ The girl who couldn't walk had decided, again, that the rules about what she was
 
 At the 1960 Olympics in Rome she won three gold medals and was called the fastest woman in the world. The girl who had been told she would never walk became the most famous runner on the planet — and then spent the rest of her life coaching kids and opening doors for the athletes who came after her.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 None of it arrived in one heroic leap. It came from a little girl, a stubborn mother, a family that rubbed a dead leg back to life four times a day, and years of small steps that didn't look like much from the outside.
 
@@ -1470,7 +1471,7 @@ She did all of it while believing, for a long time, that she wasn't enough. She 
 
 She became one of the most beloved writers of the last hundred years. Her first book, about surviving a hard childhood, is read all over the world. She wrote and recited a poem at a President's inauguration. And she did it as a woman who had started out a terrified teenager, alone with a baby, certain she would fail him.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She raised that son her whole life. The fear that she wasn't enough didn't go away because someone reassured her. It went away slowly, because she kept showing up for him until the showing up became the proof.
 
@@ -1634,7 +1635,7 @@ The young man who sat in that hall convinced he was finished had more than half 
 
 He became one of the most beloved composers in the world. The piece he wrote after three years of being unable to put down a single note — his Second Piano Concerto — is still one of the most played, most loved works in all of music. Even the disastrous symphony that nearly ended him is performed now, and admired.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He didn't claw his way out alone. It took years, and his family, and a patient doctor who believed in his music out loud, every day, until he could believe in it himself again. The talent never left. Only the faith did — and faith can be borrowed from someone else until yours comes back.
 
@@ -1794,7 +1795,7 @@ A handful of clear hours a day, for a handful of years, was enough to make somet
 
 She is one of the greatest short-story writers in the history of American letters. She wrote nearly all of it in two or three morning hours a day, on her mother's farm, on crutches, dying slowly of an illness she had carried since she was twenty-five. She never got the long, open future she had planned. She made something permanent out of the short, hard one she got instead.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She didn't pretend it wasn't bad. She didn't promise herself it would get better. She just took the few good hours each day handed her and put everything she had into them.
 
@@ -1947,7 +1948,7 @@ Sometimes the whole room is wrong. Sometimes the person they are laughing at is 
 
 He proved that most stomach ulcers are caused by a bacterium, not by stress — and that they can be cured with antibiotics. For years the medical world mocked him, until he drank a flask of the bacteria himself to prove it. In 2005 he and his colleague won the Nobel Prize. Because of them, an illness that ruined millions of lives is now a quick fix.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 For a long time, being right got him nothing but pity and closed doors. He didn't have power, or fame, or important friends. He just had the truth, and enough stubbornness to keep holding it up until the world finally looked.
 
@@ -2101,7 +2102,7 @@ The country took everything from her. And in the taking, it forced her to find t
 
 She is one of the most widely read writers in the Spanish language — tens of millions of books, in dozens of languages. And she didn't begin until she was almost forty, in exile, after a coup tore apart her country and forced her family to flee. The novel that started it all began as a letter to her dying grandfather, written in a country that wasn't hers.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She lost her home, her work, and her sense of who she was. For years she was nobody, in a place that wasn't hers. And it was exactly there, with everything familiar stripped away, that she finally found what she was made to do.
 
@@ -2268,7 +2269,7 @@ He stayed sober the rest of his life. And he did it the same way he had that fir
 
 He founded Alcoholics Anonymous. The thing he discovered — that people who have hit bottom can stay sober by helping each other, one day at a time — has saved the lives of many millions of people, and the fellowship he started is now all over the world. He kept his last name private on purpose, because he believed the help mattered more than any one person's fame.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He didn't beat the thing that was destroying him by being strong. He beat it by admitting he couldn't do it alone, and then by reaching for someone else who was struggling too.
 
@@ -2434,7 +2435,7 @@ Her moment hadn't come yet. That was all.`,
 
 She is one of the most famous fashion designers in the world, known above all for her wedding dresses. And she didn't design her first one until she was forty. Before that, she had failed to make the Olympic figure-skating team as a young woman, and then spent seventeen years at a magazine only to be passed over for the top job. Both of those heartbreaks became the foundation of the career that made her famous.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 Twice she gave everything to a path and watched it close. She could have decided, very reasonably, that her chances were behind her. Instead she started over, at forty, at something new — and that one was hers all along.
 
@@ -2600,7 +2601,7 @@ The end of his old life turned out to be the beginning of the only one that matt
 
 He became one of the greatest crime writers who ever lived — the man who turned detective stories into real literature, and created the legendary private eye Philip Marlowe. Writers and filmmakers still imitate him today. And he didn't publish his first novel until he was fifty-one, after getting fired from his executive job at forty-four, broke and middle-aged in the Great Depression.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He had every reason to believe his best years were behind him. He'd had a career and wrecked it. He was too old, by all the usual rules, to begin again. So he began anyway, from scratch, at an age when you're supposed to be done.
 
@@ -2761,7 +2762,7 @@ She had been underestimated her whole life — most of all by herself. It turned
 
 She ran The Washington Post for more than two decades. She made the call to publish the Pentagon Papers, and she backed the reporters whose work brought down a president. She became one of the most powerful and respected people in America — and she did it after her husband's death forced her, at forty-six, into a job she was certain she would fail at, having spent her whole life being treated, and treating herself, as just a wife.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 Nobody believed she could do it. She least of all. The doubt didn't disappear. She just kept walking into the room anyway, until one day she looked up and discovered she had become the strongest person in it.
 
@@ -2922,7 +2923,7 @@ She had spent the lonely decades doing exactly what she would have done if she h
 
 She discovered "jumping genes" — that the genetic code can move and rearrange itself — one of the most important findings in all of biology. Her field dismissed it for decades. She stopped publishing rather than beg them to listen, and just kept working. More than thirty years later, science caught up, and in 1983 she won the Nobel Prize, alone — the first woman ever to win that prize unshared.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 For most of her life, the very people who should have understood her work simply didn't. She didn't let that make her bitter, and she didn't let it make her stop. She trusted what she had seen, and she kept doing the work in the dark, for as long as it took.
 
@@ -3088,7 +3089,7 @@ He had done the work without it. But it was right that it finally came.`,
 
 He was the chief organizer of the March on Washington in 1963 — the day of the most famous speech in American history. He was a genius of nonviolent organizing who helped shape the entire civil rights movement. And he was pushed to the background for decades, denied the credit he had earned, because he was a gay man. Long after his death, the country awarded him its Presidential Medal of Freedom.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He did some of the most important work of his century and watched other people take the credit for it, because of who he was. He didn't stop. He decided the work itself was worth doing, seen or unseen.
 
@@ -3247,7 +3248,7 @@ Not despite starting late. Because he was willing to start at all, when everythi
 
 After a new highway killed his roadside restaurant and left him broke at sixty-five, he drove around the country selling his fried chicken recipe one handshake at a time. It became Kentucky Fried Chicken — KFC — one of the most famous food brands in the world. His face is still on it.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He was sixty-five and wiped out, at the exact age when you're supposed to be done. He had every reason to call it a life and sit down. Instead he took the one thing he had left and started over, and built the biggest thing he would ever build.
 
@@ -3404,7 +3405,7 @@ And the family he had left at fourteen, so they'd have one less mouth to feed? H
 
 He wrote "White Christmas" and "God Bless America" — two of the most famous songs in American history — and about fifteen hundred others. There is a fair chance one of his songs is playing somewhere in the world right now. None of that had happened yet when he was fourteen, lying on a rented cot, adding himself up and getting almost zero.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He honestly believed his family was better off without him at the table. He was wrong about what he was worth — wildly, historically wrong — but he couldn't have known it yet. The proof only came from staying alive and doing the one small thing he could do, over and over, until it grew.
 
@@ -3563,7 +3564,7 @@ He toured the world. He won every prize his field had to give. He played for pre
 
 He invented soul music — the fusing of gospel and blues that half of everything on the radio still descends from. His version of "Georgia on My Mind" became the official song of the state he was born in. He did all of it blind, and he never once performed as a man to be pitied. None of it had happened yet when he was fourteen, standing at his mother's funeral with no home to go back to.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He lost the person who had taught him how to survive at exactly the moment the surviving started. What she left him wasn't money — there wasn't any. It was the stubborn idea that he could do for himself. It turned out that was enough to cross the whole map with.
 
@@ -3726,7 +3727,7 @@ And every door her student ever walked through had been unlocked first by the te
 
 She was Helen Keller's teacher — the one who spelled water into Helen's hand at the pump and cracked the world open for her. They called her the Miracle Worker. They still do. None of that had happened yet when she was a half-blind girl in a poorhouse, holding onto one overheard word.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She spent years as the person nobody came for — behind everyone, ashamed of it, starting from zero at an age when starting felt impossible. She caught up anyway. And then she turned around and taught someone else the way out.
 
@@ -3894,7 +3895,7 @@ The girl who froze before the dance became, by nearly everyone's account, the gr
 
 The First Lady of Song. Thirteen Grammys, a voice musicians still study like scripture, and the definitive recordings of the American songbook. All of it runs back to one night when a homeless seventeen-year-old meant to dance, froze, and opened her mouth instead. None of it had happened yet while she was sleeping wherever the day left her.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She was about as alone as a person can be. No family holding her, no address, no plan that had survived contact with her life. What she had was one thing she could do — and the nerve to put her name in.
 
@@ -4057,7 +4058,7 @@ The young man marched off a stage for how he read had become, by most reckonings
 
 In 1964 he became the first Black man to win the Academy Award for Best Actor. He broke the color line of American movies and stood, for fifty years, for a kind of dignity the screen had never been allowed to show. He was knighted. Presidents honored him. And once, a man threw him out of an audition and told him to go wash dishes. None of the rest had happened yet that night on the sidewalk.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 A stranger measured him in ninety seconds, and the measurement was accurate — that day. So he went home and changed what was true, quietly, at night, with a radio and a borrowed newspaper, until the measurement was wrong.
 
@@ -4225,7 +4226,7 @@ Late is late. But by then, even they knew exactly who they had turned away.`,
 
 The High Priestess of Soul — one of the most original voices in the history of American music, and later one of the fiercest voices of the civil rights movement. The name she invented to hide a bar job from her mother is the name the whole world knows her by. None of that existed yet on the afternoon the envelope came and the plan died.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The door she had aimed her entire life at stayed shut, and it broke something in her that never fully healed. The life she actually got came through a side door she took half in shame, under a fake name, just to pay for things. The side door turned out to be hers.
 
@@ -4392,7 +4393,7 @@ Every story kind to the laughed-at came from somewhere. He knew exactly where.`,
 
 He wrote The Little Mermaid, The Emperor's New Clothes, The Snow Queen, Thumbelina — fairy tales told in every language on earth. And he said himself that one of them, The Ugly Duckling — the odd, mocked bird who was never a duck at all — was his own story. None of it existed yet in the years when a grown man made a classroom laugh at him every day.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He spent five years being told, daily, by the person with all the power in the room, exactly what he was worth. He half believed it — that's what those voices do. But only half. The other half wrote a poem in secret.
 
@@ -4557,7 +4558,7 @@ They had told her it was a small thing to change. She had understood it was the 
 
 A citizen of the Osage Nation, and America's first prima ballerina. Balanchine created Firebird on her; she was the first American to dance at the Paris Opera; and she did all of it after refusing to become "Tallchieva" — after refusing to trade her father's name for an easier road. None of that had happened yet when she was seventeen, at the bottom of the company, being told what she was needed fixing.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 Everyone with power over her career agreed the smart move was to erase a little of herself — just a few letters, just the surface. She bet her whole future the other way: that she could be undeniable as exactly what she was.
 
@@ -4721,7 +4722,7 @@ People often asked where her fierce tenderness for children came from. The reade
 
 She wrote Pippi Longstocking — and dozens of other books that made her one of the most beloved and translated children's authors in history. Whole generations, in nearly every language, grew up on her fierce, funny, free children. None of that existed yet when she was eighteen and pregnant in a town with no secrets, refusing the one respectable exit on offer.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She was young, ashamed, and terrified she was failing her child — all three at once, for years. She did the impossible thing anyway: she refused the life that would have fixed her reputation and broken her, and she kept her promise to her son on a typist's wage.
 
@@ -4888,7 +4889,7 @@ The first of her kind to stand in the front rank of her art — that is what the
 
 She was the first sculptor of African-American and Native American heritage to win international fame. Her masterpiece, The Death of Cleopatra, is in the Smithsonian now. Colleges teach her work — including, these days, the one that turned her away. None of that had happened yet when she was lying in bed, beaten for a lie, waiting for a trial.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She learned the hardest version of the lesson: you can be completely innocent, proven innocent, and still lose the place. What she did next is the part worth keeping — she stopped asking the closed door for justice and built a life where her work answered for her.
 
@@ -5056,7 +5057,7 @@ The girl who studied her nursery wallpaper had signed her own life after all. It
 
 The first woman in modern Europe to earn a doctorate in mathematics, and the first to hold a full professorship in it in northern Europe. The Cauchy-Kovalevskaya theorem — hers — is still taught in every serious mathematics program on earth. None of that existed yet when she was eighteen, staring at a life other people had fully furnished for her.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 Every legitimate door was locked, so she studied the locks. A paper marriage for a signature. A private study instead of a lecture hall. She never got permission — not once, at any step. She got results instead, and eventually the world had to catch up to them.
 
@@ -5221,7 +5222,7 @@ The engineering money would have run out in four years. The poems are still payi
 
 He became the defining poet of the Harlem Renaissance and one of the most beloved American poets of the twentieth century. "The Negro Speaks of Rivers" — the poem he wrote on that envelope at eighteen — is now carved in stone and taught everywhere. None of that had happened yet when he sat in his father's house, listening to the terms.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The money came with one condition: be someone else. He walked away from it into years of ships and dish pits, carrying nothing but the notebook — and the notebook turned out to be the career, the legacy, the whole point.
 
@@ -5386,7 +5387,7 @@ She had lost almost everything by twenty-five. What she made afterward outlived 
 
 The book was Frankenstein. She wrote it at eighteen, published it at twenty, and it became one of the most famous novels ever written — the birth of science fiction, the monster everyone on earth can picture. She also, almost single-handedly, built the reputation of her husband, the poet Percy Bysshe Shelley. None of that fame had reached her yet in the years when she was burying her children and then her husband, far from home.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 Grief came for her again and again before she was twenty-five — faster than any heart can process it. She didn't transcend it; her journals say plainly that some days she didn't want to be alive. She just kept one small boy fed, one pen moving, one page turning.
 
@@ -5557,7 +5558,7 @@ Good for keeping house, the column had said. She never did learn to stay in the 
 
 Ten Days in a Mad-House made her famous and made asylum reform a national cause; her seventy-two-day race around the world beat Jules Verne's fiction and made her a legend. She more or less invented undercover investigative journalism. None of that existed yet the morning she read, in print, that girls like her were good for keeping house and nothing else.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 Every institution she met agreed on her ceiling — the paper that hired her kept demoting her back under it. Her answer, twice, was to walk out of the room where the ceiling was and go find a bigger room.
 
@@ -5725,7 +5726,7 @@ He'd seen exactly what titles were worth, from the outside of the coach.`,
 
 He discovered electromagnetic induction, invented the electric motor and the generator, and laid the foundations of field theory — Einstein kept his portrait on the study wall. He did it with no degree and no mathematics to speak of, a blacksmith's son who learned science from the books he bound. None of that had happened yet on the cold nights he rode outside the coach, wondering if he should quit.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The people above him never did decide he belonged. He got into the room at a humiliating price, paid it with his eyes open, and let the work — eventually — outrank everyone who had looked down on him.
 
@@ -5886,7 +5887,7 @@ The man once turned away from a college door on sight became, in his lifetime, t
 
 The peanut scientist — though that phrase sells him short. He revolutionized Southern farming, taught a generation out of poverty, advised presidents, and became one of the most honored scientists in American history. None of that had happened yet on the day a college looked at his face and took back its yes.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He was refused at the door with no home behind him — the kind of moment that ends most stories. His answer was three years alone in a dirt house, keeping himself and his aim alive, until he could try another door.
 
@@ -6055,7 +6056,7 @@ He had been right about himself. That's the plainest way to say it. In the years
 
 He is one of the greatest mathematicians who ever lived — the self-taught clerk whose letter to G. H. Hardy at Cambridge became the most famous cold letter in the history of science. His notebooks are still producing new mathematics today, a hundred years on. None of that had happened yet in the years he was failing exams and filling slates, unsure himself if any of it was worth anything.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 Every official measure of his life said worthless: failed, degreeless, unemployable. He had no way to prove the measures wrong — no one around him could even read the evidence. So he kept making the evidence, and kept mailing it, until it found the one reader who could.
 
@@ -6225,7 +6226,7 @@ Not the greatest woman fossilist. The greatest — full stop — working from a 
 
 She found the first complete plesiosaur, Britain's first pterosaur, and the great ichthyosaurs — discoveries that helped found the science of paleontology and paved the road to Darwin. The Geological Society that wouldn't let her in the room now celebrates her; the Natural History Museum displays her finds by name. None of that acknowledgment existed in the winter when the world's greatest expert was calling her a probable fraud.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 She did the work and watched the credit walk away in gentlemen's coats, over and over, for years. She answered by getting so undeniably good that the field had to route itself through her door — titles or no titles, room or no room.
 
@@ -6391,7 +6392,7 @@ Four medals you can't eat. It turned out they were never the treasure anyway. Th
 
 His four gold medals at the 1936 Berlin Olympics, in front of Hitler, remain the most famous rebuke in sports history. What most people never learn is what came after: banned from his sport within weeks, abandoned by the sponsors, racing horses at fairs to feed his family. The Presidential Medal of Freedom came forty years later. None of that redemption was visible yet when he was pumping gas as the fastest man alive.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He did everything right, better than anyone on earth had ever done it — and the reward was taken away by men with pens, almost overnight. What he kept was the part no ruling could touch: how he carried himself while he rebuilt.
 
@@ -6563,7 +6564,7 @@ But here is the thing his story proves: an unreturned love did not get to decide
 
 He won the Nobel Prize in Literature and is commonly called the greatest poet of his age. "When You Are Old" and "He wishes for the Cloths of Heaven" — the poems read at weddings by people who never learn they were written to a woman named Maud Gonne, who said no to him for forty years — came out of exactly the heartbreak we just walked through. None of the glory existed yet when he was twenty-six, freshly refused, wondering what to do with a feeling that size.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The person he wanted most never wanted him back, and no amount of brilliance changed it. What he controlled was what the love became instead — and he chose to build with it rather than be buried by it.
 
@@ -6731,7 +6732,7 @@ Every barrier they'd built for her, she made a runway. It's what she was best at
 
 The first Black woman — and the first woman of Native American descent — ever licensed to fly, years before American aviation would have allowed it. "Queen Bess," the barnstormer who refused to perform for segregated crowds. The airport road at Chicago O'Hare bears her name today. None of that existed yet in the years when every school in her country was telling her no.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The system around her wasn't merely discouraging — it was unanimous. Her answer wasn't to argue with it. It was to learn French at night after ten-hour shifts and go around the entire country.
 
@@ -6904,7 +6905,7 @@ It took fifty years, which is a long time to be right without credit. She had sp
 
 Hollywood's "most beautiful woman in the world" — and the co-inventor, with composer George Antheil, of the frequency-hopping system whose descendants underpin Wi-Fi, Bluetooth, and GPS. The Navy shelved it and told her to sell war bonds instead; the Inventors Hall of Fame inducted her seventy years later. None of the recognition existed while she sat with her drafting table, filed under decorative.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The people with the power to say yes had decided what she was before she said a word, and no brilliance on the page could get past it. She couldn't force them to see her. She kept building anyway, and let the decades argue her case.
 
@@ -7071,7 +7072,7 @@ The woman who was too late for high school wrote a permanent classic — on the 
 
 She wrote Their Eyes Were Watching God, became the queen of the Harlem Renaissance, and preserved Black Southern folklore that would otherwise be gone. She fell into obscurity at the end — and then Alice Walker went looking for her unmarked grave in 1973, marked it "Genius of the South," and led the revival that put her permanently in the American canon. All of it began the day a twenty-six-year-old maid told a school clerk she was sixteen.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The calendar said she'd missed it — a decade gone, every door aged shut. She treated the calendar as negotiable and the hunger as the real fact. It's the boldest move in this whole library: she just refused the arithmetic.
 
@@ -7240,7 +7241,7 @@ Nearly all of it traces back through one man's changed life — and the changed 
 
 Father of the national parks, founder of the Sierra Club, the writer whose books made wilderness a thing America protects. Yosemite was the valley his friends read to him about while he lay blind. None of it existed yet — not one essay, not one acre saved — when he was lying in that darkened room at twenty-eight, bargaining for his sight.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 It took losing the light completely for him to see what he'd been doing with it — spending it on a life that was impressive and wasn't his. The darkness didn't give him anything new. It just made him stop postponing what was already true.
 
@@ -7401,7 +7402,7 @@ His waiting room, it turned out, had never been empty. It had the whole future i
 
 He discovered insulin — with Charles Best, in one borrowed summer — and turned diabetes from a childhood death sentence into a livable condition. The Nobel came at thirty-one; the patent was sold for a dollar so the medicine would belong to everyone. None of that existed yet during the twenty-eight days he sat by the door, waiting for a single patient.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 By every visible measure he was failing — the empty room, the debts, the experts' shrugs. But the failure had left him with open hours and nothing to protect, and into that emptiness came the idea of his life. He just had to be stubborn enough to stay in the room with it.
 
@@ -7569,7 +7570,7 @@ It has never been out of print. Not for one day, across nearly two centuries. Th
 
 The book was Jane Eyre. The poet laureate who told her literature could never be a woman's business is remembered today mostly for having said that to her. None of the fame existed yet in the year her poems sold two copies and her first novel came home from every publisher in London.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The verdict on her work was unanimous for years — eminent, repeated, reasonable-sounding, and wrong. What saved her wasn't a thicker skin. It was that she kept producing the next thing while the last thing was still being refused, so that when one door opened an inch, she had the masterpiece ready to put through it.
 
@@ -7741,7 +7742,7 @@ Today the leader's cultural pronouncements are historical curiosities. The compo
 
 The article was "Muddle Instead of Music," in Pravda, after Stalin walked out of his opera; the answer was the Fifth Symphony, premiered at the height of the Terror to half an hour of weeping ovation. He is now regarded as one of the greatest composers of the twentieth century. None of that safety existed on the nights he waited by the elevator with a packed suitcase, so his family wouldn't see the arrest.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 He fell from the top of his world in forty-eight hours, by decree, with no appeal. He couldn't fight it openly and he refused to disappear into it — so he found the narrow way through: keep working, survive the surface demands, and smuggle the truth inside the work.
 
@@ -7912,7 +7913,7 @@ The habit took two years of his greatness. The small room gave back the rest.`,
 
 The bandleader who fired him was Miles Davis; the album of thanks was A Love Supreme. In its liner notes he wrote it himself: "During the year 1957, I experienced, by the grace of God, a spiritual awakening which was to lead me to a richer, fuller, more productive life." None of that existed yet in the spring when he was thirty, fired, and out of road.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The thing he couldn't control cost him the chance he'd spent ten years earning, in front of everyone. The turn didn't come from willpower alone — it came when the bottom arrived and he chose the small room over the long slide, one terrible week at a time.
 
@@ -8086,7 +8087,7 @@ The woman whose life collapsed at thirty-six built, on the far side of it, the l
 
 The best-selling novelist in history — two billion books, Poirot and Marple, and Murder on the Orient Express, written about the very train she boarded alone after the divorce. The eleven days she vanished in 1926 remain one of the century's famous mysteries; she took the answer with her. None of the triumph existed yet in the year she lost her mother and her husband within months of each other.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The two people holding up her world went in one year — one to death, one to someone else — and the weight briefly took even her memory of herself. What brought her back wasn't a rescue. It was a ticket she bought alone, toward a life nobody had planned for her.
 
@@ -8262,7 +8263,7 @@ She did her greatest work at one-tenth power. It was still ten times enough.`,
 
 The Lady with the Lamp — founder of modern nursing, inventor of the mortality diagrams that founded medical statistics, the first woman awarded the Order of Merit. What the legend leaves out is that she did nearly all of it after her health collapsed at thirty-six — from a couch, at a fraction of her old capacity, for fifty years. The lamp years broke her. The couch years changed the world.
 
-You wrote: "{feeling}"
+Your life is not theirs. But a piece of this story may still sit beside you.
 
 The engine she'd built her whole identity on burned out and never came back — and she had to learn, in grief, that she was not the engine. She was the aim. The aim survived at any speed.
 

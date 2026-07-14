@@ -5,12 +5,19 @@ import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { CrisisCard } from "./CrisisCard";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
+import type { CrisisResource } from "@/lib/types";
 
 type MatchSuccess = { sessionId: string };
-type MatchCrisis = { crisis: true; resources: string[] };
+type MatchCrisis = { crisis: true; resources: CrisisResource[] };
 type MatchRateLimited = { rateLimited: true };
+type MatchUnavailable = { temporarilyUnavailable: true };
 type MatchError = { error: string };
-type MatchPayload = MatchSuccess | MatchCrisis | MatchRateLimited | MatchError;
+type MatchPayload =
+  | MatchSuccess
+  | MatchCrisis
+  | MatchRateLimited
+  | MatchUnavailable
+  | MatchError;
 
 // Invisible anonymous-first auth: make sure this browser holds an auth session
 // (anonymous or permanent) before posting the intake. Signing in at SUBMIT, not page
@@ -31,7 +38,9 @@ export function IntakeForm() {
   const [feeling, setFeeling] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [crisisResources, setCrisisResources] = useState<string[] | null>(null);
+  const [crisisResources, setCrisisResources] = useState<
+    CrisisResource[] | null
+  >(null);
   const [rateLimited, setRateLimited] = useState(false);
 
   const ageNum = Number.parseInt(age, 10);
@@ -86,6 +95,14 @@ export function IntakeForm() {
     // A gentle terminal state, not an error: the 429 means "come back in a while".
     if (response.status === 429 || "rateLimited" in payload) {
       setRateLimited(true);
+      return;
+    }
+
+    if (response.status === 503 || "temporarilyUnavailable" in payload) {
+      setError(
+        "Onward is pausing new stories for a little while. What you wrote was not saved. Please try again later.",
+      );
+      setSubmitting(false);
       return;
     }
 

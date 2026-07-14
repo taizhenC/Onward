@@ -19,6 +19,11 @@ import {
 } from "../lib/match-config";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
+import { streamBeat } from "../lib/llm";
+import {
+  containsDisclosureEcho,
+  SAFE_BRIDGE_DISTANCE_LINE,
+} from "../lib/story-privacy";
 import type { BeatBlueprint } from "../lib/types";
 
 // Smoke always runs in stub mode (provider matrix). getLLM() resolves lazily on the
@@ -309,6 +314,39 @@ async function runAtomicProgressAssertion(): Promise<AssertionResult> {
     ok: true,
     detail: "advanced once; retry idempotent; stale/foreign writes rejected",
   };
+}
+
+async function runStoryCreationKillSwitchAssertion(): Promise<AssertionResult> {
+  const name = "safety: story kill switch preserves crisis support and persists nothing";
+  const previous = process.env.STORY_CREATION_ENABLED;
+  const ctx = { userId: "smoke-disabled-user", ipHash: "smoke-disabled-ip" };
+  const before = await _sessionCount();
+  try {
+    process.env.STORY_CREATION_ENABLED = "false";
+    const blocked = await handleIntake(
+      { age: 28, feeling: "I feel rejected and uncertain about what comes next" },
+      ctx,
+    );
+    const crisis = await handleIntake(
+      { age: 22, feeling: "I want to kill myself" },
+      ctx,
+    );
+    const after = await _sessionCount();
+    const ok =
+      "temporarilyUnavailable" in blocked &&
+      "crisis" in crisis &&
+      after === before;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "new story blocked; crisis resources still returned; no session created"
+        : `blocked=${JSON.stringify(blocked)}, crisis=${"crisis" in crisis}, sessions=${before}/${after}`,
+    };
+  } finally {
+    if (previous === undefined) delete process.env.STORY_CREATION_ENABLED;
+    else process.env.STORY_CREATION_ENABLED = previous;
+  }
 }
 
 function runApprovedRecipeAssertion(): AssertionResult {
@@ -649,6 +687,97 @@ function runChunkIntegrityAssertion(): AssertionResult {
   };
 }
 
+async function runStoryPrivacyAssertion(): Promise<AssertionResult> {
+  const name = "story privacy: canonical and legacy paths never echo disclosure";
+  const disclosure =
+    "I moved across the country and now I feel completely alone every night";
+
+  for (const stage of FIGURE_STAGES) {
+    const text = stage.beats.map((beat) => beat.text).join("\n");
+    if (
+      text.includes("{feeling}") ||
+      /You wrote:/i.test(text) ||
+      containsDisclosureEcho(text, disclosure)
+    ) {
+      return {
+        name,
+        ok: false,
+        detail: `figure=${stage.figureKey} contains a disclosure echo surface`,
+      };
+    }
+  }
+
+  const legacyBeat: BeatBlueprint = {
+    kind: "bridge",
+    role: "bridge",
+    text: 'You wrote: "{feeling}"\n\nThe story continues.',
+  };
+  let rendered = "";
+  for await (const token of streamBeat({ beat: legacyBeat })) rendered += token;
+
+  if (
+    rendered.includes("{feeling}") ||
+    /You wrote:/i.test(rendered) ||
+    !rendered.includes(SAFE_BRIDGE_DISTANCE_LINE)
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: "legacy bridge sanitizer did not replace the disclosure surface",
+    };
+  }
+
+  if (
+    !containsDisclosureEcho(
+      `A preface. ${disclosure}. A coda.`,
+      disclosure,
+    ) ||
+    containsDisclosureEcho(SAFE_BRIDGE_DISTANCE_LINE, disclosure)
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: "disclosure overlap guard is not classifying exact/safe copy correctly",
+    };
+  }
+
+  // Word-boundary regression: a disclosure that is a substring of different
+  // words ("ice person waits" inside "nice person waits") is not an echo.
+  if (
+    containsDisclosureEcho("They said a nice person waits", "ice person waits") ||
+    !containsDisclosureEcho("They said a nice person waits", "nice person waits")
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: "overlap guard is not matching on whole-word boundaries",
+    };
+  }
+
+  // Backstop: a bare placeholder outside the canonical legacy line must never
+  // render literally.
+  let bareRendered = "";
+  const bareBeat: BeatBlueprint = {
+    kind: "bridge",
+    role: "bridge",
+    text: "They kept going through {feeling} and worse.",
+  };
+  for await (const token of streamBeat({ beat: bareBeat })) bareRendered += token;
+  if (bareRendered.includes("{feeling}")) {
+    return {
+      name,
+      ok: false,
+      detail: "bare legacy placeholder reached rendered prose",
+    };
+  }
+
+  return {
+    name,
+    ok: true,
+    detail: `${FIGURE_STAGES.length} stages clean; legacy placeholder sanitized`,
+  };
+}
+
 function runChunkBehaviorAssertion(): AssertionResult {
   const grouped = chunkBeatText({
     kind: "narrative",
@@ -764,11 +893,13 @@ async function main(): Promise<void> {
     await runCrisisAssertion(),
     await runOwnershipAssertion(),
     await runAtomicProgressAssertion(),
+    await runStoryCreationKillSwitchAssertion(),
     runApprovedRecipeAssertion(),
     runOutlineAssertion(),
     runRerankCandidateAssertion(),
     runEyebrowGuardAssertion(),
     runArcShapeAssertion(),
+    await runStoryPrivacyAssertion(),
     runChunkIntegrityAssertion(),
     runChunkBehaviorAssertion(),
     // Last on purpose — exhausts smoke-user's hourly budget (see the comment above).

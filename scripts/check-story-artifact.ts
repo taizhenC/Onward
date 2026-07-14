@@ -10,6 +10,7 @@ import {
   validateStoryArtifact,
 } from "../lib/story-artifact";
 import {
+  RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION,
   BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
   LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
 } from "../lib/story-artifact-types";
@@ -64,7 +65,15 @@ function main(): void {
     if (!validateStoredStoryArtifact(reverseObjectKeys(artifact))) {
       failures.push(`${label}: jsonb-style key reorder broke the content hash`);
     }
-    const boundaryArtifact = structuredClone(artifact);
+    const resonanceArtifact = structuredClone(artifact);
+    resonanceArtifact.schemaVersion = RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION;
+    delete resonanceArtifact.recipe.hybridTemplatePolicyVersion;
+    delete resonanceArtifact.composition.attemptCount;
+    resonanceArtifact.contentHash = storyArtifactContentHash(resonanceArtifact);
+    if (!validateStoredStoryArtifact(resonanceArtifact)) {
+      failures.push(`${label}: resonance-era artifact schema no longer replays`);
+    }
+    const boundaryArtifact = structuredClone(resonanceArtifact);
     boundaryArtifact.schemaVersion = BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION;
     delete boundaryArtifact.recipe.resonanceBriefVersion;
     boundaryArtifact.contentHash = storyArtifactContentHash(boundaryArtifact);

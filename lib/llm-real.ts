@@ -16,6 +16,10 @@ import {
   type OpeningCopyInput,
 } from "./opening-copy";
 import { containsResonanceEcho } from "./resonance-brief";
+import {
+  HybridPlanProviderError,
+  type HybridPlanRequest,
+} from "./hybrid-composition";
 
 // Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
@@ -377,6 +381,96 @@ async function generateEyebrowLine(
       choices?: Array<{ message?: { content?: string } }>;
     };
     return envelope.choices?.[0]?.message?.content ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// ── Hybrid composition plan ──────────────────────────────────────────────────
+// The model chooses only from server-supplied roles and template IDs. It never
+// authors story prose, facts, entities, dates, quotes, or reader-derived text.
+
+const HYBRID_PLAN_SYSTEM_PROMPT = [
+  "You choose a bounded personalization plan for a true historical story.",
+  "Return only one JSON object using values from the supplied allowlists.",
+  "Do not write prose, add fields, infer a diagnosis, or repeat the emotional summary.",
+  "Choose one transition role, one transition template ID, and one bridge template ID.",
+].join("\n");
+
+export async function requestHybridPlanReal(
+  input: HybridPlanRequest,
+): Promise<unknown> {
+  const key = apiKey();
+  if (!key) {
+    throw new HybridPlanProviderError(
+      "provider_error",
+      "hybrid plan provider key is not configured",
+    );
+  }
+  const body = {
+    model: proseModel(),
+    temperature: 0,
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: HYBRID_PLAN_SYSTEM_PROMPT },
+      {
+        role: "user",
+        content: [
+          `Plan schema: ${input.schemaVersion}`,
+          `Primary pressure: ${input.resonance.primaryPressure}`,
+          `Emotional shape: ${input.resonance.emotionalCore}`,
+          `Situation shape: ${input.resonance.situationShape}`,
+          `Desired distance: ${input.resonance.desiredDistance}`,
+          `Historical episode shape: ${input.episodeShape}`,
+          `Allowed transition roles: ${input.allowedTransitionRoles.join(", ")}`,
+          `Allowed transition template IDs: ${input.allowedTransitionTemplateIds.join(", ")}`,
+          `Allowed bridge template IDs: ${input.allowedBridgeTemplateIds.join(", ")}`,
+          `Prior validation failures: ${input.priorFailureReasons.join(", ") || "none"}`,
+          "Return keys schemaVersion, transitionRole, transitionTemplateId, bridgeTemplateId.",
+        ].join("\n"),
+      },
+    ],
+  };
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), proseTimeoutMs());
+  let response: Response;
+  try {
+    response = await fetch(`${baseUrl()}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } catch {
+    if (controller.signal.aborted) {
+      throw new HybridPlanProviderError(
+        "provider_timeout",
+        "hybrid plan provider timed out",
+      );
+    }
+    throw new HybridPlanProviderError(
+      "provider_error",
+      "hybrid plan provider request failed",
+    );
+  } finally {
+    clearTimeout(timer);
+  }
+  if (!response.ok) {
+    throw new HybridPlanProviderError(
+      "provider_error",
+      `hybrid plan provider returned HTTP ${response.status}`,
+    );
+  }
+  try {
+    const envelope = (await response.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+    const content = envelope.choices?.[0]?.message?.content;
+    return typeof content === "string" ? JSON.parse(content) : null;
   } catch {
     return null;
   }

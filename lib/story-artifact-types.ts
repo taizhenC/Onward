@@ -1,7 +1,9 @@
 import type { BeatKind, BeatRole, Framing, MatchRecipe, OpeningCopy } from "./types";
 import type { ContentFlag } from "./story-spec-types";
+import type { HybridTemplateId } from "./hybrid-composition";
 
-export const STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v3-2026-07";
+export const STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v4-2026-07";
+export const RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v3-2026-07";
 export const BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v2-2026-07";
 export const LEGACY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v1-2026-07";
 export const STORY_COMPOSER_VERSION = "canonical-composer-v1-2026-07";
@@ -12,6 +14,8 @@ export type ArtifactValidationFailure =
   | "story_spec_invalid"
   | "resonance_brief_invalid"
   | "recipe_invalid"
+  | "personalization_invalid"
+  | "composition_invalid"
   | "identity_mismatch"
   | "role_order_invalid"
   | "empty_passage"
@@ -43,6 +47,10 @@ export type StoryArtifactBeat = {
   factIds: string[];
   entityIds: string[];
   quoteIds: string[];
+  personalization?: {
+    templateId: HybridTemplateId;
+    policyVersion: string;
+  };
 };
 
 export type StoryArtifact = {
@@ -74,10 +82,13 @@ export type StoryArtifact = {
     validatorVersion: string;
     boundaryPolicyVersion?: string;
     resonanceBriefVersion?: string;
+    hybridTemplatePolicyVersion?: string;
   };
   composition: {
     mode: "canonical_fallback" | "hybrid";
     fallbackReason?: ArtifactFallbackReason;
+    attemptCount?: number;
+    planVersion?: string;
   };
   beats: StoryArtifactBeat[];
   validation: {

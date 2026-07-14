@@ -8,6 +8,10 @@ import {
   type OpeningCopyInput,
 } from "./opening-copy";
 import { sanitizeLegacyDisclosurePlaceholder } from "./story-privacy";
+import {
+  HYBRID_PLAN_SCHEMA_VERSION,
+  type HybridPlanRequest,
+} from "./hybrid-composition";
 
 export type StreamBeatInput = {
   beat: BeatBlueprint;
@@ -66,5 +70,19 @@ export async function writeOpeningCopyStub(
   return {
     eyebrow: curatedEyebrow(input.stage.figureKey, input.stage.stageId),
     prefaceLines: DEFAULT_PREFACE_LINES,
+  };
+}
+
+export async function requestHybridPlanStub(
+  input: HybridPlanRequest,
+): Promise<unknown> {
+  const transitionRole = input.allowedTransitionRoles.includes("turning_point")
+    ? "turning_point"
+    : input.allowedTransitionRoles[0];
+  return {
+    schemaVersion: HYBRID_PLAN_SCHEMA_VERSION,
+    transitionRole,
+    transitionTemplateId: input.allowedTransitionTemplateIds[0],
+    bridgeTemplateId: input.allowedBridgeTemplateIds[0],
   };
 }

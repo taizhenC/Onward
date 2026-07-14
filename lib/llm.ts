@@ -2,12 +2,15 @@ import "server-only";
 import type { OpeningCopy, Pick, PickInput } from "./types";
 import type { OpeningCopyInput } from "./opening-copy";
 import { pickFigureStub, writeOpeningCopyStub } from "./llm-stub";
+import { requestHybridPlanStub } from "./llm-stub";
 import {
   pickFigureReal,
   proseModelId,
   rerankModelId,
   writeOpeningCopyReal,
+  requestHybridPlanReal,
 } from "./llm-real";
+import type { HybridPlanRequest } from "./hybrid-composition";
 
 // The single LLM boundary. Everything outside lib/ imports from here — never from
 // llm-stub / llm-real directly (CLAUDE.md: the provider is invisible outside lib/).
@@ -49,6 +52,12 @@ export function writeOpeningCopy(input: OpeningCopyInput): Promise<OpeningCopy> 
   return resolveProvider() === "real"
     ? writeOpeningCopyReal(input)
     : writeOpeningCopyStub(input);
+}
+
+export function requestHybridPlan(input: HybridPlanRequest): Promise<unknown> {
+  return resolveProvider() === "real"
+    ? requestHybridPlanReal(input)
+    : requestHybridPlanStub(input);
 }
 
 // The LLM half of a session's match recipe (frozen at intake for replay): provider + the

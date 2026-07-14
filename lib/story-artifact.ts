@@ -1,10 +1,10 @@
 import "server-only";
 import { createHash, randomBytes } from "node:crypto";
 import { chunkBeatText } from "./chunks";
-import { containsDisclosureEcho } from "./story-privacy";
 import { validateStorySpec } from "./story-spec";
 import {
   STORY_ARTIFACT_SCHEMA_VERSION,
+  BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
   LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
   STORY_ARTIFACT_VALIDATOR_VERSION,
   STORY_COMPOSER_VERSION,
@@ -18,6 +18,12 @@ import {
   storyProfileAllowed,
   type StoryBoundaries,
 } from "./story-boundaries";
+import {
+  RESONANCE_BRIEF_VERSION,
+  containsResonanceEcho,
+  validateResonanceBrief,
+  type ResonanceBrief,
+} from "./resonance-brief";
 import type {
   ClientFigureOutline,
   FigureStageRow,
@@ -42,7 +48,7 @@ export type ComposeCanonicalArtifactInput = {
   matchRecipe: MatchRecipe;
   openingCopy: OpeningCopy;
   framing: Framing;
-  disclosure: string;
+  resonanceBrief: ResonanceBrief;
   boundaries?: StoryBoundaries;
   fallbackReason?: StoryArtifact["composition"]["fallbackReason"];
   allowDraftSpec?: boolean;
@@ -64,12 +70,15 @@ export function composeCanonicalStoryArtifact({
   matchRecipe,
   openingCopy,
   framing,
-  disclosure,
+  resonanceBrief,
   boundaries,
   fallbackReason = "canonical_only",
   allowDraftSpec = false,
   now = new Date(),
 }: ComposeCanonicalArtifactInput): StoryArtifact {
+  if (!validateResonanceBrief(resonanceBrief)) {
+    throw new StoryCompositionError(["resonance_brief_invalid"]);
+  }
   const specValidation = validateStorySpec(storySpec, {
     forPublish: !allowDraftSpec,
   });
@@ -104,6 +113,7 @@ export function composeCanonicalStoryArtifact({
       composerVersion: STORY_COMPOSER_VERSION,
       validatorVersion: STORY_ARTIFACT_VALIDATOR_VERSION,
       boundaryPolicyVersion: STORY_BOUNDARY_POLICY_VERSION,
+      resonanceBriefVersion: resonanceBrief.version,
     },
     composition: {
       mode: "canonical_fallback",
@@ -136,7 +146,7 @@ export function composeCanonicalStoryArtifact({
   const validation = validateStoryArtifact(
     artifact,
     storySpec,
-    disclosure,
+    resonanceBrief,
     boundaries,
   );
   if (!validation.valid) throw new StoryCompositionError(validation.failureReasons);
@@ -146,7 +156,7 @@ export function composeCanonicalStoryArtifact({
 export function validateStoryArtifact(
   artifact: StoryArtifact,
   storySpec: StorySpec,
-  disclosure: string,
+  resonanceBrief: ResonanceBrief,
   boundaries?: StoryBoundaries,
 ): StoryArtifactValidation {
   const failures = new Set<ArtifactValidationFailure>();
@@ -162,8 +172,19 @@ export function validateStoryArtifact(
     failures.add("identity_mismatch");
   }
   if (artifact.beats.length !== EXPECTED_ROLES.length) failures.add("role_order_invalid");
+  if (
+    artifact.recipe.composerVersion !== STORY_COMPOSER_VERSION ||
+    artifact.recipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
+    artifact.recipe.boundaryPolicyVersion !== STORY_BOUNDARY_POLICY_VERSION ||
+    artifact.recipe.resonanceBriefVersion !== resonanceBrief.version
+  ) {
+    failures.add("recipe_invalid");
+  }
 
-  validateOpeningCopy(artifact.openingCopy, disclosure, failures);
+  if (!validateResonanceBrief(resonanceBrief)) {
+    failures.add("resonance_brief_invalid");
+  }
+  validateOpeningCopy(artifact.openingCopy, resonanceBrief, failures);
   const expectedProfileReviewed =
     storySpec.status === "published" &&
     storySpec.review.contentProfileReviewed === true;
@@ -202,7 +223,9 @@ export function validateStoryArtifact(
     if (!sameSet(beat.entityIds, specBeat.entityIds)) failures.add("entity_mismatch");
     if (!sameSet(beat.quoteIds, specBeat.quoteIds)) failures.add("quote_mismatch");
     if (/\{feeling\}|You wrote:/i.test(beat.text)) failures.add("forbidden_placeholder");
-    if (containsDisclosureEcho(beat.text, disclosure)) failures.add("disclosure_echo");
+    if (containsResonanceEcho(beat.text, resonanceBrief)) {
+      failures.add("disclosure_echo");
+    }
   });
 
   if (artifact.contentHash !== storyArtifactContentHash(artifact)) {
@@ -220,6 +243,7 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   const candidate = value as Partial<StoryArtifact>;
   if (
     (candidate.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION &&
+      candidate.schemaVersion !== BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION &&
       candidate.schemaVersion !== LEGACY_STORY_ARTIFACT_SCHEMA_VERSION) ||
     typeof candidate.artifactId !== "string" ||
     typeof candidate.storySpecId !== "string" ||
@@ -244,8 +268,11 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     return null;
   }
   const artifact = candidate as StoryArtifact;
+  const boundaryAwareSchema =
+    artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION ||
+    artifact.schemaVersion === BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION;
   const openingFailures = new Set<ArtifactValidationFailure>();
-  validateOpeningCopy(artifact.openingCopy, "", openingFailures);
+  validateOpeningCopy(artifact.openingCopy, null, openingFailures);
   if (
     openingFailures.size > 0 ||
     typeof artifact.figure.displayName !== "string" ||
@@ -260,14 +287,16 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
         CONTENT_FLAGS.includes(flag as (typeof CONTENT_FLAGS)[number]),
     ) ||
     typeof artifact.contentProfile.contentNote !== "string" ||
-    (artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION &&
+    (boundaryAwareSchema &&
       typeof artifact.contentProfile.reviewed !== "boolean") ||
     !isRecord(artifact.recipe.match) ||
     typeof artifact.recipe.match.recipeId !== "string" ||
     artifact.recipe.composerVersion !== STORY_COMPOSER_VERSION ||
     artifact.recipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
-    (artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION &&
+    (boundaryAwareSchema &&
       artifact.recipe.boundaryPolicyVersion !== STORY_BOUNDARY_POLICY_VERSION) ||
+    (artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION &&
+      artifact.recipe.resonanceBriefVersion !== RESONANCE_BRIEF_VERSION) ||
     !["canonical_fallback", "hybrid"].includes(artifact.composition.mode) ||
     (artifact.composition.fallbackReason !== undefined &&
       ![
@@ -364,7 +393,7 @@ function normalizeText(value: string): string {
 
 function validateOpeningCopy(
   openingCopy: OpeningCopy,
-  disclosure: string,
+  resonanceBrief: ResonanceBrief | null,
   failures: Set<ArtifactValidationFailure>,
 ): void {
   const eyebrow =
@@ -387,7 +416,8 @@ function validateOpeningCopy(
   if (
     lines.some(
       (line) =>
-        /\{feeling\}|You wrote:/i.test(line) || containsDisclosureEcho(line, disclosure),
+        /\{feeling\}|You wrote:/i.test(line) ||
+        (resonanceBrief !== null && containsResonanceEcho(line, resonanceBrief)),
     )
   ) {
     failures.add("disclosure_echo");

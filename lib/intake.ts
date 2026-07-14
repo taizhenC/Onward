@@ -21,6 +21,10 @@ import {
   type StoryBoundaries,
 } from "./story-boundaries";
 import type { StorySpec } from "./story-spec-types";
+import {
+  RESONANCE_BRIEF_VERSION,
+  createResonanceBrief,
+} from "./resonance-brief";
 
 export type IntakeInput = {
   age: number;
@@ -116,6 +120,10 @@ export async function handleIntake(
   }
 
   let result;
+  const resonanceBrief = createResonanceBrief(
+    validated.feeling,
+    validated.boundaries,
+  );
   try {
     result = await match({
       age: validated.age,
@@ -142,6 +150,7 @@ export async function handleIntake(
     ...activeRecipe(),
     embeddingModelId: embeddingModelId(),
     retrievalMode,
+    resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
   };
 
   // The selected spec comes from the already validated and boundary-filtered
@@ -152,7 +161,7 @@ export async function handleIntake(
   if (!storySpec) return { temporarilyUnavailable: true };
 
   const generatedOpeningCopy = await writeOpeningCopy({
-    feeling: validated.feeling,
+    resonanceBrief,
     stage,
   });
 
@@ -164,7 +173,7 @@ export async function handleIntake(
       matchRecipe,
       openingCopy: generatedOpeningCopy,
       framing: result.framing,
-      disclosure: validated.feeling,
+      resonanceBrief,
       boundaries: validated.boundaries,
       allowDraftSpec: process.env.PERSISTENCE !== "supabase",
     });
@@ -179,7 +188,7 @@ export async function handleIntake(
           prefaceLines: DEFAULT_PREFACE_LINES,
         },
         framing: result.framing,
-        disclosure: validated.feeling,
+        resonanceBrief,
         boundaries: validated.boundaries,
         fallbackReason: "validator_rejected",
         allowDraftSpec: process.env.PERSISTENCE !== "supabase",

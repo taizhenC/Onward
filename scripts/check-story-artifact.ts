@@ -9,12 +9,20 @@ import {
   validateStoredStoryArtifact,
   validateStoryArtifact,
 } from "../lib/story-artifact";
-import { LEGACY_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
+import {
+  BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
+  LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
+} from "../lib/story-artifact-types";
 import { buildDraftStorySpec } from "../lib/story-spec";
+import {
+  RESONANCE_BRIEF_VERSION,
+  createResonanceBrief,
+} from "../lib/resonance-brief";
 import type { MatchRecipe } from "../lib/types";
 
 const disclosure =
   "My private cobalt compass stopped pointing anywhere after the thing I cannot describe.";
+const resonanceBrief = createResonanceBrief(disclosure);
 
 const recipe: MatchRecipe = {
   recipeId: "artifact-contract-test-recipe",
@@ -43,7 +51,7 @@ function main(): void {
         prefaceLines: ["This story is true.", "Your life is not theirs."],
       },
       framing: "partial",
-      disclosure,
+      resonanceBrief,
       allowDraftSpec: true,
       now: new Date("2026-07-10T12:00:00.000Z"),
     });
@@ -56,7 +64,14 @@ function main(): void {
     if (!validateStoredStoryArtifact(reverseObjectKeys(artifact))) {
       failures.push(`${label}: jsonb-style key reorder broke the content hash`);
     }
-    const legacy = structuredClone(artifact);
+    const boundaryArtifact = structuredClone(artifact);
+    boundaryArtifact.schemaVersion = BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION;
+    delete boundaryArtifact.recipe.resonanceBriefVersion;
+    boundaryArtifact.contentHash = storyArtifactContentHash(boundaryArtifact);
+    if (!validateStoredStoryArtifact(boundaryArtifact)) {
+      failures.push(`${label}: boundary-era artifact schema no longer replays`);
+    }
+    const legacy = structuredClone(boundaryArtifact);
     legacy.schemaVersion = LEGACY_STORY_ARTIFACT_SCHEMA_VERSION;
     delete legacy.recipe.boundaryPolicyVersion;
     delete legacy.contentProfile.reviewed;
@@ -67,6 +82,16 @@ function main(): void {
     if (JSON.stringify(artifact).includes(disclosure)) {
       failures.push(`${label}: raw disclosure entered artifact JSON`);
     }
+    const serializedArtifact = JSON.stringify(artifact);
+    if (
+      artifact.recipe.resonanceBriefVersion !== RESONANCE_BRIEF_VERSION ||
+      serializedArtifact.includes('"forbiddenEchoHashes"') ||
+      serializedArtifact.includes('"sourceSpanHash"') ||
+      serializedArtifact.includes('"emotionalCore"') ||
+      serializedArtifact.includes('"situationShape"')
+    ) {
+      failures.push(`${label}: artifact omitted analyzer version or retained ephemeral brief data`);
+    }
     if (artifact.beats.length !== 7 || artifact.beats.some((beat) => beat.chunks.length === 0)) {
       failures.push(`${label}: incomplete reader payload`);
     }
@@ -76,7 +101,7 @@ function main(): void {
     if (validateStoredStoryArtifact(tampered)) {
       failures.push(`${label}: content-hash tamper was accepted`);
     }
-    const detailed = validateStoryArtifact(tampered, spec, disclosure);
+    const detailed = validateStoryArtifact(tampered, spec, resonanceBrief);
     if (
       detailed.valid ||
       !detailed.failureReasons.includes("canonical_copy_mismatch") ||
@@ -105,7 +130,7 @@ function main(): void {
         prefaceLines: ["This story is true."],
       },
       framing: "partial",
-      disclosure,
+      resonanceBrief,
       allowDraftSpec: true,
     });
     failures.push("opening privacy: disclosure echo was accepted");
@@ -154,7 +179,7 @@ function main(): void {
         prefaceLines: ["You should do what they did."],
       },
       framing: "partial",
-      disclosure,
+      resonanceBrief,
       allowDraftSpec: true,
     });
     failures.push("opening tone: prescriptive promise was accepted");

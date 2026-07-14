@@ -19,6 +19,7 @@ import {
 } from "../lib/story-artifact";
 import { getStoryPlayback } from "../lib/story-playback";
 import { buildDraftStorySpec } from "../lib/story-spec";
+import { createResonanceBrief } from "../lib/resonance-brief";
 import { MATCH_LIMITS } from "../lib/rate-limit";
 import { match, resolveRetrievalMode } from "../lib/matching";
 import {
@@ -371,7 +372,7 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
     matchRecipe: session.matchRecipe,
     openingCopy: artifact.openingCopy,
     framing: session.framing,
-    disclosure,
+    resonanceBrief: createResonanceBrief(disclosure),
     allowDraftSpec: true,
   });
   const memorySessions = globalThis.__onwardSessions;

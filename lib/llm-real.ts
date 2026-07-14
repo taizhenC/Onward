@@ -9,11 +9,13 @@ import type {
 } from "./types";
 import {
   DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
   sanitizeEyebrow,
   toEyebrowSurface,
   type EyebrowPromptSurface,
   type OpeningCopyInput,
 } from "./opening-copy";
+import { containsResonanceEcho } from "./resonance-brief";
 
 // Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
@@ -287,8 +289,8 @@ function coerceConfidence(value: unknown): Confidence {
 
 const EYEBROW_SYSTEM_PROMPT = [
   "You write one quiet line for the top of a page in a small, gentle book.",
-  "Someone has just shared what they are going through. A real life story has been chosen to sit beside theirs, but its subject is not named here.",
-  "Write a single short line that gestures at the kind of pressure in what they wrote — like a chapter eyebrow, not a full sentence.",
+  "A privacy-safe emotional shape has been derived from what someone shared. A real life story has been chosen to sit beside theirs, but its subject is not named here.",
+  "Write a single short line that gestures at that pressure — like a chapter eyebrow, not a full sentence.",
   "",
   "Rules:",
   "- No diagnosis. No advice. No reassurance and no promises.",
@@ -299,10 +301,11 @@ const EYEBROW_SYSTEM_PROMPT = [
 
 function buildEyebrowPrompt(surface: EyebrowPromptSurface): string {
   return [
-    "They wrote:",
-    '"""',
-    surface.feeling,
-    '"""',
+    "A privacy boundary reduced the reader's disclosure to these governed fields:",
+    `Primary pressure: ${surface.resonance.primaryPressure}`,
+    `Emotional shape: ${surface.resonance.emotionalCore}`,
+    `Situation shape: ${surface.resonance.situationShape}`,
+    `Desired distance: ${surface.resonance.desiredDistance}`,
     "",
     "The chosen life carries this emotional through-line (do not quote it, do not name its subject):",
     surface.throughLine,
@@ -318,9 +321,12 @@ export async function writeOpeningCopyReal(
   const raw = await generateEyebrowLine(surface);
   // sanitizeEyebrow turns null / blank / preamble / too-long / name-leak into the neutral
   // fallback, so this always returns a usable line.
+  const eyebrow = sanitizeEyebrow(raw, surface.displayName);
   return {
-    eyebrow: sanitizeEyebrow(raw, surface.displayName),
-    // Preface per-feeling personalization is deferred. Until it lands, real mode serves the
+    eyebrow: containsResonanceEcho(eyebrow, input.resonanceBrief)
+      ? NEUTRAL_EYEBROW
+      : eyebrow,
+    // Preface per-brief personalization is deferred. Until it lands, real mode serves the
     // same hand-authored universal lines as the stub (which will become the failure fallback
     // for the eventual generated preface, mirroring the eyebrow's neutral fallback).
     prefaceLines: DEFAULT_PREFACE_LINES,
@@ -328,7 +334,7 @@ export async function writeOpeningCopyReal(
 }
 
 // Returns the raw model line, or null on any failure. Never throws, and never logs the
-// prompt/feeling or the raw error (privacy floor).
+// prompt, derived brief, or raw error (privacy floor).
 async function generateEyebrowLine(
   surface: EyebrowPromptSurface,
 ): Promise<string | null> {

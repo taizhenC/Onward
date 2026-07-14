@@ -58,7 +58,7 @@ export async function pickFigureStub(input: PickInput): Promise<Pick> {
 
 // Stub opening copy: the hand-authored per-stage eyebrow (curatedEyebrow falls back to
 // the neutral line for any uncurated stage) plus the universal hand-authored preface. The
-// real generator in lib/llm-real.ts tailors the eyebrow per user feeling when
+// real generator in lib/llm-real.ts tailors the eyebrow from a bounded brief when
 // LLM_PROVIDER=real; preface personalization is deferred in both modes.
 export async function writeOpeningCopyStub(
   input: OpeningCopyInput,

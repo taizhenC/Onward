@@ -18,8 +18,8 @@
 |---|---|---|---|
 | P0-01 | External gate | Existing 104-case match eval and trust gate. | End-to-end consented benchmark, blind holdout, reviewer rubric, and full-artifact release gate. |
 | P0-02 | In progress | Versioned StorySpec contract, atomic facts, sentence-level evidence maps, source-scope gates, entity/quote links, chronology checks, dramatization limits, reviewer metadata, immutable database versions, fail-closed runtime loading, protected draft seeding, and independent per-stage publish/retire operations are implemented. All 50 legacy stages convert to valid review drafts, and all 50 are rejected when publication is attempted. | The generated drafts intentionally retain broad evidence references and empty beat-to-fact links. Editorial researchers must create exact/bounded locators, resolve quotes/entities/causal claims, and record real reviews for the launch subset before any stage is publicly eligible. |
-| P0-03 | In progress | New sessions compose a complete seven-beat StoryArtifact before persistence; the v2 artifact includes validated opening copy, framing, reviewed content profile, evidence IDs, precomputed chunks, full match/composer/validator/boundary-policy recipe, canonical JSON hash, and closed fallback/validation enums. Memory and Supabase stores atomically bind one owner/session to one immutable artifact; playback uses stored bytes, and v1 artifacts remain replayable. Fifty artifact fixtures pass integrity/privacy checks and fifty tamper attempts fail. | Add the ephemeral ResonanceBrief, bounded hybrid personalization, one structured provider retry, claim/entity/chronology/tone/safety validation for generated prose, real Postgres transaction/JSONB round-trip evidence, production latency/fallback gates, and an editorially safe migration plan for permanent pre-0005 sessions. |
-| P0-04 | In progress | All 50 canonical bridges and the demo no longer repeat intake; legacy placeholders are sanitized before chunking; generated opening copy now lives inside the immutable artifact and is rejected for exact/eight-word disclosure overlap, placeholders, promises, diagnosis, or prescription before persistence. Artifact JSON never stores the raw disclosure. | Add the ResonanceBrief bridge, named-detail checks, closed telemetry reductions, provider-capture/privacy tests, and explicit derived-data retention classes before `Complete`. |
+| P0-03 | In progress | New sessions create a strict, deeply frozen, short-lived ResonanceBrief with governed pressure/emotional/situation projections, HMAC provenance/echo fingerprints, explicit sensitivity, desired distance, and a reduced provider surface. The prose provider and composer no longer receive raw disclosure text. Complete seven-beat v3 StoryArtifacts pin analyzer/match/composer/validator/boundary versions while persisting none of the brief, its anchors, or fingerprints; v1/v2 artifacts remain replayable. Fifty artifact fixtures pass integrity/privacy checks and fifty tamper attempts fail. | Add bounded hybrid personalization, one structured provider retry, claim/entity/chronology/tone/safety validation for generated prose, real Postgres transaction/JSONB round-trip evidence, production latency/fallback gates, and an editorially safe migration plan for permanent pre-0005 sessions. |
+| P0-04 | In progress | All 50 canonical bridges and the demo no longer repeat intake; legacy placeholders are sanitized before chunking. Generated opening copy now receives only the governed ResonanceBrief projection and is rejected through HMAC exact/eight-word/named-detail/Unicode fingerprints plus placeholder, promise, diagnosis, and prescription gates before persistence. Mock provider capture proves raw text, names, dates, anchors, and hashes do not enter the prose request; artifact JSON stores none of them. | Use the brief for a bounded generated bridge, add closed telemetry reductions and explicit derived-data retention classes, and audit every future prose/provider capture path before `Complete`. |
 | P0-05 | Partial | Reranker produces confidence and session stores `framing`. | Calibration, client-visible adjacent framing, one clarification, and no-close-match recovery. |
 | P0-06 | Partial | Functional age/free-text intake, just-in-time privacy copy, optional non-clinical story limits, retained in-memory draft on no-eligible recovery, and gentle error states. | Stronger guided prompt/context, retry across navigation/reload without unsafe persistence, and browser usability/accessibility evidence. |
 | P0-07 | In progress | Reader is book-like; current branch adds visible reveal control and explicit Continue/Finish. | Full coda sequencing, orientation, browser usability/accessibility coverage, and responsive QA. |
@@ -127,6 +127,20 @@ Branch: `roadmap-implementation`
 | `npm run check-story-spec` | Pass; 50/50 safe drafts, 50/50 unsafe publish attempts rejected, and closed content-profile enums enforced |
 | `npm run check-story-artifact` | Pass; 50/50 complete artifacts, 50/50 privacy checks, and 50/50 tamper attempts rejected |
 | `npm run check-story-boundaries` | Pass; strict parsing, full intensity/topic matrix, retrieval and artifact enforcement, non-persistence, no-eligible recovery, and unauthenticated crisis precedence |
+| `npm run eval-crisis` | Pass, 26/26 critical positives |
+| `npm run smoke` | Pass, 19/19 regressions |
+| `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 routes compiled/generated |
+
+### Stacked branch: `roadmap-resonance-brief`
+
+| Command | Result |
+|---|---|
+| `npm run lint` | Pass, zero warnings |
+| `npm run typecheck` | Pass |
+| `npm run check-resonance-brief` | Pass; 9/9 governed projections, strict/frozen schema, HMAC phrase/name/date/Unicode guards, and mocked provider-capture privacy |
+| `npm run check-story-spec` | Pass; 50/50 safe drafts and 50/50 unsafe publish attempts rejected |
+| `npm run check-story-artifact` | Pass; 50/50 complete v3 artifacts, v1/v2 replay, disclosure exclusion, and tamper rejection |
+| `npm run check-story-boundaries` | Pass; retrieval/composition exclusions and no-persistence recovery remain enforced |
 | `npm run eval-crisis` | Pass, 26/26 critical positives |
 | `npm run smoke` | Pass, 19/19 regressions |
 | `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 routes compiled/generated |

@@ -117,9 +117,9 @@ export type CrisisResource = {
 // LLM-generated opening copy, stored on the session at intake and shown to the user.
 //   - eyebrow: the line above the (still anonymous) figure; replaced the framing label.
 //   - prefaceLines: the comfort card shown before any figure name or prose on first visit.
-// Both are derived from the user's feeling → sensitive: fine to show the user, never logged.
-// Phase 1A: eyebrow is real-generated in real mode; prefaceLines is hand-authored in both
-// modes (real per-feeling personalization deferred — see lib/opening-copy.ts).
+// Both are derived from the ephemeral ResonanceBrief → sensitive: fine to show the user,
+// never logged. The prose provider does not receive the raw disclosure. Preface lines remain
+// hand-authored in both modes (per-brief preface generation is deferred).
 export type OpeningCopy = {
   eyebrow: string;
   prefaceLines: readonly string[];
@@ -139,6 +139,9 @@ export type MatchRecipe = {
   proseModelId: string;
   embeddingModelId: string;
   retrievalMode: RetrievalMode;
+  // Optional only for replaying sessions created before the short-lived
+  // ResonanceBrief boundary existed. Every new intake pins this version.
+  resonanceBriefVersion?: string;
 };
 
 export type Session = {

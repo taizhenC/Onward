@@ -17,7 +17,7 @@
 | ID | Status | Current evidence | Missing proof / next dependency |
 |---|---|---|---|
 | P0-01 | External gate | Existing 104-case match eval and trust gate. | End-to-end consented benchmark, blind holdout, reviewer rubric, and full-artifact release gate. |
-| P0-02 | Not started | Stages have biography, sources, and free-text source notes. | Versioned `StorySpec`, fact IDs, exact source refs, entity/quote rules, immutable publishing, and migration. |
+| P0-02 | In progress | Versioned StorySpec contract, atomic facts, sentence-level evidence maps, source-scope gates, entity/quote links, chronology checks, dramatization limits, reviewer metadata, immutable database versions, fail-closed runtime loading, protected draft seeding, and independent per-stage publish/retire operations are implemented. All 50 legacy stages convert to valid review drafts, and all 50 are rejected when publication is attempted. | The generated drafts intentionally retain broad evidence references and empty beat-to-fact links. Editorial researchers must create exact/bounded locators, resolve quotes/entities/causal claims, and record real reviews for the launch subset before any stage is publicly eligible. |
 | P0-03 | Not started | Canonical beats and provider boundaries exist. | Resonance brief, bounded composer, validation stack, immutable artifact, retry/fallback, persistence. |
 | P0-04 | In progress | All 50 canonical bridges and the demo no longer repeat intake; the final prose boundary sanitizes legacy DB placeholders; smoke covers canonical, legacy, exact, and eight-word overlap cases. | Extend the same rejection contract to future artifact persistence, telemetry, provider-error, and generated-copy schemas before `Complete`. |
 | P0-05 | Partial | Reranker produces confidence and session stores `framing`. | Calibration, client-visible adjacent framing, one clarification, and no-close-match recovery. |
@@ -32,7 +32,7 @@
 | P0-14 | Partial | Guest cleanup and 60-day raw-disclosure nulling exist. | Story/account deletion, derived-data retention classes, consent UI, privacy page, cascade tests, market/youth review. |
 | P0-15 | In progress | Current branch adds strict non-interactive ESLint, clean isolated production build, deterministic system fonts, configurable build directory, and CI workflow. | Route/integration matrix, migration preflight/rollback, health checks, kill switches, and a green remote CI run. |
 | P0-16 | Partial | Landing/auth typography, reduced motion, and several keyboard affordances exist. | Shared primitives, all-flow copy system, complete manual accessibility/usability audit. |
-| P0-17 | Not started | Architecture contract documented. | Story content flags/intensity, user boundary input, hard eligibility filter, reviewed content notes, recovery tests. |
+| P0-17 | In progress | StorySpec drafts now carry intensity, inferred content flags, spoiler-light draft notes, and an explicit content-review gate. | Replace inferred profiles with reviewed profiles, then add user boundary input, hard eligibility filtering, boundary-safe fallback, and recovery tests. |
 
 ## P1 ledger
 
@@ -91,6 +91,18 @@ Branch: `roadmap-implementation`
 | `npm run check-figure` | Pass, 50/50 stages and no disclosure placeholders |
 | `npm run eval-crisis` | Pass, 26/26 critical positives; review-only over-trigger IDs reported |
 | `npm run smoke` | Pass, 16/16 including disclosure, crisis persistence, and kill-switch assertions |
+| `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 routes compiled/generated |
+
+### Stacked branch: `roadmap-storyspec`
+
+| Command | Result |
+|---|---|
+| `npm run lint` | Pass, zero warnings |
+| `npm run typecheck` | Pass |
+| `npm run check-story-spec` | Pass; 50/50 drafts valid and 50/50 unsafe publish attempts rejected |
+| `npm run check-figure` | Pass, 50/50 stages |
+| `npm run eval-crisis` | Pass, 26/26 critical positives |
+| `npm run smoke` | Pass, 16/16 regressions |
 | `NEXT_DIST_DIR=.next-ci npm run build` | Pass; 11 routes compiled/generated |
 
 ## Completion audit rule

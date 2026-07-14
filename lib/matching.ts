@@ -10,6 +10,7 @@ import { listAll, listByAge } from "./figures";
 import {
   APPROVED_PRODUCTION_RECIPE,
   framingFromConfidence,
+  requireApprovedProductionRecipe,
   RERANK_TOP_K,
 } from "./match-config";
 import { pickFigure, RerankError } from "./llm";
@@ -77,12 +78,20 @@ export async function match(input: MatchInput): Promise<MatchResult> {
 }
 
 export type IntakeMatchResult = MatchResult &
-  Pick<MatchDebug, "confidence" | "chosenBy" | "ageFallback">;
+  Pick<
+    MatchDebug,
+    "confidence" | "chosenBy" | "ageFallback" | "retrievalMode"
+  >;
 
 export async function matchForIntake(
   input: MatchInput,
 ): Promise<IntakeMatchResult> {
   const result = await matchWithDebug(input);
+  // Public story creation is pinned to the recipe that cleared the current
+  // trust gate. Keep challenger retrieval available through matchWithDebug()
+  // for evals, but never let it acquire the approved keyword recipe identity
+  // when an intake is persisted or measured.
+  requireApprovedProductionRecipe(result.retrievalMode);
   return {
     figureKey: result.figureKey,
     stageId: result.stageId,
@@ -90,6 +99,7 @@ export async function matchForIntake(
     confidence: result.confidence,
     chosenBy: result.chosenBy,
     ageFallback: result.ageFallback,
+    retrievalMode: result.retrievalMode,
   };
 }
 
@@ -199,8 +209,10 @@ function keywordFallback(
 }
 
 // The configured retrieval mode. The evaluated keyword recipe is the default;
-// `auto` is a local/eval convenience and is rejected in production. Exported so
-// lib/intake.ts can freeze the resolved path into the session recipe.
+// `auto` and FacetsRAG remain local/eval challengers; production rejects every
+// explicit non-keyword or unknown value. The actual path is frozen on MatchDebug
+// and IntakeMatchResult, while intake uses this resolver only before a no-run
+// no-eligible telemetry outcome.
 export function resolveRetrievalMode(
   explicit?: string,
   environment = process.env.NODE_ENV,
@@ -208,16 +220,16 @@ export function resolveRetrievalMode(
   const configured = explicit ?? process.env.RETRIEVAL_MODE;
   const raw = configured?.trim().toLowerCase();
 
-  // No implicit provider-dependent behavior: an unset or unknown value resolves
-  // to the approved baseline. Local/eval callers may still explicitly request
-  // `auto`; a public production process must name its evaluated recipe.
+  // No implicit provider-dependent behavior: an unset value resolves to the
+  // approved baseline. Local/eval callers may still explicitly request `auto` or
+  // FacetsRAG; a public production process must name its evaluated keyword recipe.
   if (!raw) return APPROVED_PRODUCTION_RECIPE.retrievalMode;
+  if (environment === "production" && raw !== "keyword") {
+    throw new Error(
+      `RETRIEVAL_MODE=${raw} is not approved for production; set RETRIEVAL_MODE=keyword.`,
+    );
+  }
   if (raw === "auto") {
-    if (environment === "production") {
-      throw new Error(
-        "RETRIEVAL_MODE=auto is not approved for production; set RETRIEVAL_MODE=keyword.",
-      );
-    }
     return "auto";
   }
   return raw === "facetsrag" || raw === "keyword"

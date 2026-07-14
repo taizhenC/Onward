@@ -399,6 +399,72 @@ async function checkTelemetryLifecycleSchema(): Promise<Step> {
   }
 }
 
+async function checkMatchTelemetryProducerSchema(): Promise<Step> {
+  const name = "transactional match telemetry producer RPCs installed";
+  try {
+    const userId = "00000000-0000-0000-0000-000000000000";
+    const invalidEventId = "invalid";
+    const schemaVersion = "product-event-v1-2026-07";
+    const limiter = await getSupabase().rpc("consume_match_rate_limit_v2", {
+      p_user_key: `u:${userId}`,
+      p_ip_key: `ip:${"0".repeat(64)}`,
+      p_user_hour_max: 5,
+      p_user_day_max: 30,
+      p_ip_hour_max: 15,
+      p_ip_day_max: 60,
+      p_event_id: invalidEventId,
+      p_schema_version: schemaVersion,
+    });
+    requireRpcValidationError("match limiter telemetry", limiter.error);
+
+    const recovery = await getSupabase().rpc(
+      "issue_match_recovery_flow_v2",
+      {
+        p_token_hash: "0".repeat(64),
+        p_user_id: userId,
+        p_input_hash: "0".repeat(64),
+        p_purpose: "clarification",
+        p_expires_at: new Date(Date.now() + 60_000).toISOString(),
+        p_telemetry_flow_id: "invalid",
+        p_match_event_id: invalidEventId,
+        p_clarification_event_id: invalidEventId,
+        p_schema_version: schemaVersion,
+        p_recipe_id: "probe",
+        p_confidence_bucket: "low",
+        p_match_path: "not_run",
+        p_age_fallback: false,
+        p_boundary_outcome: "not_set",
+      },
+    );
+    requireRpcValidationError("match recovery telemetry", recovery.error);
+
+    const session = await getSupabase().rpc("create_story_session_v4", {
+      p_session_id: "0".repeat(32),
+      p_user_id: userId,
+      p_figure_key: "probe",
+      p_stage_id: "probe",
+      p_framing: "partial",
+      p_age: 22,
+      p_feeling: "non-mutating producer probe",
+      p_story_request_context: {},
+      p_match_recipe: {},
+      p_artifact: {},
+      p_telemetry_flow_id: "invalid",
+      p_artifact_event_id: invalidEventId,
+      p_telemetry_schema_version: schemaVersion,
+    });
+    requireRpcValidationError("initial artifact telemetry", session.error);
+
+    return {
+      name,
+      ok: true,
+      detail: "rate-limit, recovery, and artifact producer signatures reject before any write",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0012` };
+  }
+}
+
 function requireRpcValidationError(
   label: string,
   error: { code?: string; message: string } | null,
@@ -490,6 +556,7 @@ async function main(): Promise<void> {
     await checkAlternateStorySchema(),
     await checkTelemetrySchema(),
     await checkTelemetryLifecycleSchema(),
+    await checkMatchTelemetryProducerSchema(),
     await checkCrisisPersistsNothing(),
   ];
 

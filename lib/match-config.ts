@@ -1,4 +1,4 @@
-import type { Confidence, FacetType, Framing } from "./types";
+import type { Confidence, FacetType, Framing, RetrievalMode } from "./types";
 
 export const matchConfigVersion = "figure-library-50-2026-07-02";
 
@@ -12,6 +12,17 @@ export const APPROVED_PRODUCTION_RECIPE = {
   matchConfigVersion,
   datasetVersion: "match-104-2026-07-02",
 } as const;
+
+export function requireApprovedProductionRecipe(
+  retrievalMode: RetrievalMode,
+): typeof APPROVED_PRODUCTION_RECIPE {
+  if (retrievalMode !== APPROVED_PRODUCTION_RECIPE.retrievalMode) {
+    throw new Error(
+      `Retrieval path ${retrievalMode} is not approved for story creation.`,
+    );
+  }
+  return APPROVED_PRODUCTION_RECIPE;
+}
 
 // ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in
 // the cron job). SQL can't read TS, so migration 0003's pg_cron schedules are the LIVE

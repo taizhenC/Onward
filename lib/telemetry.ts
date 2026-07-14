@@ -20,6 +20,7 @@ import {
   appendMemoryProductEvent,
   claimMemoryProductEventOutbox,
   nackMemoryProductEventOutbox,
+  reconcileMemoryMatchEventFirstWriteWins as reconcileMemoryMatchEventRecord,
   type TelemetryWriteResult,
 } from "./telemetry-store-memory";
 import {
@@ -39,6 +40,7 @@ import type {
   GenerationAttempt,
   GenerationAttemptId,
   ProductEvent,
+  ProductEventCapture,
   TelemetryEventId,
   TelemetryFlowId,
   TelemetryOccurrenceId,
@@ -47,6 +49,27 @@ import type {
   TelemetryOutboxAckResult,
   TelemetryOutboxNackResult,
 } from "./telemetry-types";
+
+// Builds the exact, HMAC-authenticated capture passed into a domain RPC that
+// commits telemetry in the same database transaction as its authoritative
+// state change. Unlike recordProductEvent(), this does not register or write a
+// flow; the receiving RPC must verify the active owner/root binding itself.
+export function prepareProductEventCapture(input: {
+  event: ProductEvent;
+  flowId: TelemetryFlowId | null;
+  occurrenceId?: TelemetryOccurrenceId;
+}): Readonly<ProductEventCapture> {
+  const event = parseProductEvent(input.event);
+  const record = createProductEventRecord({
+    event,
+    flowId: input.flowId,
+    eventId: deriveProductEventId(event, input.flowId, input.occurrenceId),
+  });
+  const { occurredAt, expiresAt, ...capture } = record;
+  void occurredAt;
+  void expiresAt;
+  return Object.freeze(capture);
+}
 
 export async function recordProductEvent(input: {
   event: ProductEvent;
@@ -66,6 +89,27 @@ export async function recordProductEvent(input: {
   return persistenceMode() === "supabase"
     ? appendSupabaseProductEvent(record)
     : appendMemoryProductEvent(record);
+}
+
+// Memory-backed domain transactions use this only when the durable product
+// action must survive a retry whose non-identity measurements have drifted.
+// Supabase equivalents belong inside their owning SQL transaction.
+export async function reconcileMemoryMatchEventFirstWriteWins(input: {
+  event: Extract<ProductEvent, { event: "match_completed" }>;
+  flowId: TelemetryFlowId;
+}): Promise<TelemetryWriteResult> {
+  if (persistenceMode() !== "memory") {
+    throw new Error("first-write-wins memory reconciliation requires memory mode");
+  }
+  const event = parseProductEvent(input.event);
+  const registration = await registerTelemetryFlow(input.flowId);
+  if (registration !== "registered") return "conflict";
+  const record = createProductEventRecord({
+    event,
+    flowId: input.flowId,
+    eventId: deriveProductEventId(event, input.flowId),
+  });
+  return reconcileMemoryMatchEventRecord(record);
 }
 
 export async function recordGenerationAttempt(input: {

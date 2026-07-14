@@ -2,8 +2,8 @@ import "server-only";
 import { activeRecipe, writeOpeningCopy } from "./llm";
 import { embeddingModelId } from "./embeddings";
 import { getByKey, listAll } from "./figures";
-import { APPROVED_PRODUCTION_RECIPE, matchConfigVersion } from "./match-config";
-import { resolveRetrievalMode, type IntakeMatchResult } from "./matching";
+import { requireApprovedProductionRecipe } from "./match-config";
+import type { IntakeMatchResult } from "./matching";
 import { crisisRegexVersion } from "./safety";
 import { buildDraftStorySpec } from "./story-spec";
 import {
@@ -101,7 +101,7 @@ export async function prepareStory(input: {
     input.boundaries,
     input.clarification,
   );
-  const matchRecipe = activeMatchRecipe(input.mode);
+  const matchRecipe = activeMatchRecipe(input.match, input.mode);
   const generatedOpeningCopy = await writeOpeningCopy({ resonanceBrief, stage });
   const artifact = await composeStoryArtifact({
     storySpec,
@@ -127,14 +127,21 @@ export async function prepareStory(input: {
   };
 }
 
-function activeMatchRecipe(mode: "initial" | "alternate"): MatchRecipe {
+function activeMatchRecipe(
+  match: IntakeMatchResult,
+  mode: "initial" | "alternate",
+): MatchRecipe {
+  const approvedRecipe = requireApprovedProductionRecipe(match.retrievalMode);
   return {
-    recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
-    matchConfigVersion,
+    recipeId: approvedRecipe.recipeId,
+    matchConfigVersion: approvedRecipe.matchConfigVersion,
     crisisRegexVersion,
     ...activeRecipe(),
     embeddingModelId: embeddingModelId(),
-    retrievalMode: resolveRetrievalMode(),
+    // The path that actually produced this match is authoritative. Never
+    // re-read mutable process configuration after matching and accidentally
+    // assign a different recipe identity to the persisted session.
+    retrievalMode: match.retrievalMode,
     resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
     matchRecoveryPolicyVersion: MATCH_RECOVERY_POLICY_VERSION,
     ...(mode === "alternate"

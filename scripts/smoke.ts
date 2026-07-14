@@ -629,24 +629,43 @@ async function runStoryCreationKillSwitchAssertion(): Promise<AssertionResult> {
 function runApprovedRecipeAssertion(): AssertionResult {
   const name = "recipe: production retrieval is explicit and approved";
   const defaultMode = resolveRetrievalMode(undefined, "development");
+  const developmentChallenger = resolveRetrievalMode(
+    "facetsrag",
+    "development",
+  );
   const productionMode = resolveRetrievalMode("keyword", "production");
   let autoRejected = false;
+  let facetsRagRejected = false;
+  let unknownRejected = false;
   try {
     resolveRetrievalMode("auto", "production");
   } catch {
     autoRejected = true;
   }
+  try {
+    resolveRetrievalMode("facetsrag", "production");
+  } catch {
+    facetsRagRejected = true;
+  }
+  try {
+    resolveRetrievalMode("unexpected-mode", "production");
+  } catch {
+    unknownRejected = true;
+  }
 
   const ok =
     defaultMode === APPROVED_PRODUCTION_RECIPE.retrievalMode &&
+    developmentChallenger === "facetsrag" &&
     productionMode === "keyword" &&
-    autoRejected;
+    autoRejected &&
+    facetsRagRejected &&
+    unknownRejected;
   return {
     name,
     ok,
     detail: ok
-      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production auto rejected`
-      : `default=${defaultMode}, production=${productionMode}, autoRejected=${autoRejected}`,
+      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production challengers rejected`
+      : `default=${defaultMode}, developmentChallenger=${developmentChallenger}, production=${productionMode}, autoRejected=${autoRejected}, facetsRagRejected=${facetsRagRejected}, unknownRejected=${unknownRejected}`,
   };
 }
 

@@ -32,6 +32,8 @@ import {
   deleteMemoryTelemetryFlowBindingForRoot,
   getMemoryTelemetryFlowBindingByFlow,
 } from "./telemetry-flow-binding-memory";
+import { recordProductEvent } from "./telemetry";
+import { artifactCreatedEvent } from "./telemetry-producers";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -96,6 +98,22 @@ async function createSession(input: CreateSessionInput): Promise<string> {
           input.storyRequestContext,
         )
       ) {
+        const persistedArtifact = existing.storyArtifactId
+          ? getOwnedMemoryStoryArtifactSync(
+              existing.storyArtifactId,
+              existing.userId,
+              existing.sessionId,
+            )
+          : null;
+        if (!persistedArtifact) {
+          throw new Error("persisted initial story artifact is unavailable");
+        }
+        // Match the v4 SQL replay rule: the committed artifact owns the
+        // first-write-wins dimensions, never a newly recomposed retry payload.
+        await reconcileInitialArtifactEvent(
+          persistedArtifact,
+          existingBinding.flowId,
+        );
         return existing.sessionId;
       }
       // A response-loss retry may reuse the root only for the exact disclosure
@@ -145,6 +163,7 @@ async function createSession(input: CreateSessionInput): Promise<string> {
           `telemetry flow binding failed: ${binding}`,
         );
       }
+      await reconcileInitialArtifactEvent(input.artifact, input.telemetryFlowId);
     }
   } catch (error) {
     sessions.delete(sessionId);
@@ -152,6 +171,19 @@ async function createSession(input: CreateSessionInput): Promise<string> {
     throw error;
   }
   return sessionId;
+}
+
+async function reconcileInitialArtifactEvent(
+  artifact: StoryArtifact,
+  telemetryFlowId: NonNullable<CreateSessionInput["telemetryFlowId"]>,
+): Promise<void> {
+  const result = await recordProductEvent({
+    event: artifactCreatedEvent(artifact, "initial"),
+    flowId: telemetryFlowId,
+  });
+  if (result === "conflict") {
+    throw new Error("initial artifact telemetry conflicted");
+  }
 }
 
 export function createMemoryAlternateSession(input: {

@@ -14,6 +14,8 @@ import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import { getSupabase } from "./db";
 import { parseStoryRequestContext } from "./story-request-context";
 import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
+import { prepareProductEventCapture } from "./telemetry";
+import { artifactCreatedEvent } from "./telemetry-producers";
 
 // Durable session store (PERSISTENCE=supabase). Survives restarts and works across
 // serverless instances. getSupabase() is called inside the methods, never at import, so this
@@ -43,6 +45,12 @@ type SessionRow = {
 };
 
 async function createSession(input: CreateSessionInput): Promise<string> {
+  const artifactCapture = input.telemetryFlowId
+    ? prepareProductEventCapture({
+        event: artifactCreatedEvent(input.artifact, "initial"),
+        flowId: input.telemetryFlowId,
+      })
+    : null;
   for (let attempt = 0; attempt < MAX_SESSION_ID_INSERT_ATTEMPTS; attempt += 1) {
     const sessionId = randomBytes(16).toString("hex");
     const common = {
@@ -58,9 +66,11 @@ async function createSession(input: CreateSessionInput): Promise<string> {
       p_artifact: input.artifact,
     };
     const { data, error } = input.telemetryFlowId
-      ? await getSupabase().rpc("create_story_session_v3", {
+      ? await getSupabase().rpc("create_story_session_v4", {
           ...common,
           p_telemetry_flow_id: input.telemetryFlowId,
+          p_artifact_event_id: artifactCapture!.eventId,
+          p_telemetry_schema_version: artifactCapture!.schemaVersion,
         })
       : await getSupabase().rpc("create_story_session_v2", common);
     if (error) {

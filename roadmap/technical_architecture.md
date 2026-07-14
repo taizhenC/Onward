@@ -414,40 +414,49 @@ type ApprovedStoryRecipe = {
 };
 ```
 
-Production should refuse `auto` selection. `auto` may remain a local-development convenience, but public deployments need one approved recipe ID. A session stores that ID plus resolved component versions.
+Production refuses every retrieval value other than the currently approved keyword path. Challenger modes remain available through the eval/debug matcher, but the story-creation matcher carries its actual resolved path and rejects it before persistence when it is not approved. Session construction uses that returned path rather than rereading mutable environment configuration. Match/artifact producers and the transactional SQL boundary independently require the approved recipe ID, retrieval path, and match-config version, so a challenger cannot be counted under the production calibration cohort.
 
 ## P0-11 — [Feature] Safe observability architecture
 
-The event API should reject arbitrary strings. A proposed event envelope:
+The implemented boundary is an exact 22-event discriminated union. Every
+event has an event-specific scalar schema; there is no index signature, generic
+metadata field, JSON payload column, figure/stage identifier, disclosure,
+candidate list, prompt/response, prose, semantic tag, feedback reason, or raw
+exception. Operational attempts use a separate unlinkable exact schema and
+discard source exceptions after reduction.
 
-```ts
-type ProductEvent = {
-  event:
-    | "intake_submitted"
-    | "crisis_intercepted"
-    | "match_completed"
-    | "clarification_shown"
-    | "artifact_validated"
-    | "artifact_fallback"
-    | "first_content"
-    | "passage_acknowledged"
-    | "story_completed"
-    | "feedback_submitted"
-    | "story_saved"
-    | "story_deleted";
-  recipeId?: ApprovedId;
-  figureKey?: ApprovedFigureKey;
-  confidenceBucket?: "high" | "medium" | "low";
-  latencyBucket?: "lt1s" | "1to3s" | "3to6s" | "6to10s" | "gt10s";
-  count?: number;
-  ok?: boolean;
-  errorClass?: ApprovedErrorClass;
-};
-```
+New journeys use signed, time-bounded `tfl_` flow capabilities. The database
+advances each flow from issued to owner-claimed to root-bound and maps alternate
+stories back to that root. HMAC-derived `tev_` event IDs provide semantic
+idempotency; purpose-separated `toc_`, `gat_`, and `tdl_` identifiers prevent an
+ID from being laundered across occurrence, attempt, and deletion boundaries.
+Root/account deletion cascades linked events and outbox pointers, while an
+opaque revocation tombstone prevents recreation before the original signed
+expiry.
 
-Use opaque constructors for approved IDs/enums and prohibit index signatures. Tests must reject keys such as `feeling`, `prompt`, `response`, `rationaleText`, `themes`, `embedding`, `candidateKeys`, `error`, or any free-form payload.
+`product_events` is append-only behind `capture_product_event_v1`. A typed,
+pointer-only outbox leases event IDs with capped retry/backoff and contains no
+copy of event content. Domain milestones that already have a durable state must
+capture in that transaction: migration `0012` does this for recovery-token
+issuance, rate-limit denial, and the initial artifact/session commit. Plain
+computation milestones such as validated intake and match disposition use the
+same exact server boundary and deterministic IDs. Progress, feedback, alternate,
+and client-visibility producers remain subsequent slices.
 
-Operational logs should be similarly reduced at provider boundaries. A caught provider exception becomes `{ provider, operation, errorClass, statusBucket, latencyBucket }`; the original exception object is discarded before it can reach application logging.
+The match limiter also stores a two-day, default-deny replay row containing
+only the occurrence-derived event ID and its closed decision. An ambiguous RPC
+retry reuses that ID, reads the committed result before incrementing any
+counter, and therefore cannot both record a denial and continue into provider
+work. Recovery issuance similarly treats closed calibration dimensions as
+first-write-wins: a response-loss retry may issue a fresh token for the same
+flow/role/disposition while retaining the original match row and outbox state.
+
+The crisis route is intentionally stricter than the event reservation: reviewed
+resources return before flow parsing, auth, rate limiting, providers, and every
+application write. No durable `crisis_intercepted` row is currently emitted.
+Changing that rule requires an explicit safety/privacy decision rather than an
+observability shortcut. The full registry, retention, producer ownership, and
+delivery restrictions are in [`telemetry_contract.md`](telemetry_contract.md).
 
 ## P0-14 — [Feature] Data model and retention classes
 
@@ -461,6 +470,7 @@ Operational logs should be similarly reduced at provider boundaries. A caught pr
 | `sessions` | Ownership, match, raw disclosure, progress | Raw sensitive + safe identifiers | Guest TTL; raw disclosure nulled on stated schedule |
 | `story_feedback` | Rating and bounded reason enums; optional free text separately | Enums may be sensitive-derived; free text is raw sensitive | Short documented retention; user-deletable |
 | `product_events` | Closed non-semantic events | Safe operational | Short operational retention |
+| `match_rate_limit_decisions` | Occurrence ID plus closed allow/deny result; no request/user/IP key | Safe unlinkable operational | Two days |
 | `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Short operational retention |
 | `content_reports` | Fact ID and bounded issue reason | Curated identifiers | Until resolution plus audit period |
 | `carry_forward_cards` | User-selected fact/line plus optional user-authored sentence | Raw sensitive user content | Saved until user deletion under explicit consent |

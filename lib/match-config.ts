@@ -13,6 +13,15 @@ export const APPROVED_PRODUCTION_RECIPE = {
   datasetVersion: "match-104-2026-07-02",
 } as const;
 
+// The recipe id frozen into a session must describe the path that actually ran.
+// A dev/eval session on `facetsrag` or `auto` stamping the approved keyword id
+// would corrupt the replay/audit trail the id exists for.
+export function recipeIdForRetrievalMode(mode: string): string {
+  return mode === APPROVED_PRODUCTION_RECIPE.retrievalMode
+    ? APPROVED_PRODUCTION_RECIPE.recipeId
+    : `unapproved-${mode}-${matchConfigVersion}`;
+}
+
 // ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in
 // the cron job). SQL can't read TS, so migration 0003's pg_cron schedules are the LIVE
 // copies of these values; change both together.

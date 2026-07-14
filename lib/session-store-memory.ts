@@ -6,7 +6,6 @@ import type {
   CreateSessionInput,
   OpeningCopy,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
@@ -153,31 +152,6 @@ function migrateOpeningCopy(openingCopy: unknown): OpeningCopy {
   };
 }
 
-async function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  const existing = sessions.get(sessionId);
-  if (!existing) return null;
-  if (isExpired(existing)) {
-    if (existing.storyArtifactId) deleteMemoryStoryArtifact(existing.storyArtifactId);
-    sessions.delete(sessionId);
-    return null;
-  }
-  const next: Session = {
-    ...existing,
-    ...(patch.nextBeatIndex !== undefined
-      ? { nextBeatIndex: patch.nextBeatIndex }
-      : {}),
-    ...(patch.nextChunkIndex !== undefined
-      ? { nextChunkIndex: patch.nextChunkIndex }
-      : {}),
-    updatedAt: Date.now(),
-  };
-  sessions.set(sessionId, next);
-  return next;
-}
-
 async function acknowledgePosition(
   input: AcknowledgeSessionPositionInput,
 ): Promise<AcknowledgeSessionPositionResult> {
@@ -228,7 +202,6 @@ async function sessionCount(): Promise<number> {
 export const memorySessionStore: SessionStore = {
   createSession,
   getSession,
-  updateSession,
   acknowledgePosition,
   listSessionsByUser,
   _sessionCount: sessionCount,

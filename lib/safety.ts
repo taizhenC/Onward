@@ -45,8 +45,9 @@ export function classifyCrisis(feeling: string): CrisisResult {
   return { crisisDetected: detected, crisisRegexVersion, latencyMs };
 }
 
-// Reviewed against the linked provider pages on 2026-07-10. Each region has
-// its own number; never collapse the affiliates into one misleading action.
+// Reviewed against the linked provider pages on 2026-07-10. Each region links
+// its service's OWN official page (a person in crisis should not have to find
+// their country in an affiliate directory) and uses that page's stated action.
 export const CRISIS_RESOURCES: CrisisResource[] = [
   {
     id: "us-988",
@@ -60,28 +61,28 @@ export const CRISIS_RESOURCES: CrisisResource[] = [
     region: "United States",
     label: "Crisis Text Line",
     action: "Text HOME to 741741",
-    href: "https://www.crisistextline.org/about-us/where-we-are/",
+    href: "https://www.crisistextline.org/",
   },
   {
     id: "uk-shout",
     region: "United Kingdom",
     label: "Shout",
     action: "Text SHOUT to 85258",
-    href: "https://www.crisistextline.org/about-us/where-we-are/",
+    href: "https://giveusashout.org/",
   },
   {
     id: "ca-khp",
     region: "Canada",
     label: "Kids Help Phone",
     action: "Text CONNECT to 686868",
-    href: "https://www.crisistextline.org/about-us/where-we-are/",
+    href: "https://kidshelpphone.ca/",
   },
   {
     id: "ie-text-about-it",
     region: "Ireland",
     label: "Text About It",
-    action: "Text HOME to 50808",
-    href: "https://www.crisistextline.org/about-us/where-we-are/",
+    action: "Text TALK to 50808",
+    href: "https://www.textaboutit.ie/",
   },
   {
     id: "international-findahelpline",

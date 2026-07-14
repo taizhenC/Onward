@@ -57,6 +57,7 @@ export default async function StoryPage({
           sessionId={sessionId}
           outline={outline}
           openingCopy={playback.openingCopy}
+          contentNote={playback.contentNote}
           initialBeatIndex={session.nextBeatIndex}
           initialChunkIndex={session.nextChunkIndex}
         />

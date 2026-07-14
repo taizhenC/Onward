@@ -5,9 +5,11 @@ import { FIGURE_STAGES } from "../lib/figures-data";
 import {
   composeCanonicalStoryArtifact,
   StoryCompositionError,
+  storyArtifactContentHash,
   validateStoredStoryArtifact,
   validateStoryArtifact,
 } from "../lib/story-artifact";
+import { LEGACY_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import type { MatchRecipe } from "../lib/types";
 
@@ -53,6 +55,14 @@ function main(): void {
     }
     if (!validateStoredStoryArtifact(reverseObjectKeys(artifact))) {
       failures.push(`${label}: jsonb-style key reorder broke the content hash`);
+    }
+    const legacy = structuredClone(artifact);
+    legacy.schemaVersion = LEGACY_STORY_ARTIFACT_SCHEMA_VERSION;
+    delete legacy.recipe.boundaryPolicyVersion;
+    delete legacy.contentProfile.reviewed;
+    legacy.contentHash = storyArtifactContentHash(legacy);
+    if (!validateStoredStoryArtifact(legacy)) {
+      failures.push(`${label}: prior artifact schema no longer replays`);
     }
     if (JSON.stringify(artifact).includes(disclosure)) {
       failures.push(`${label}: raw disclosure entered artifact JSON`);

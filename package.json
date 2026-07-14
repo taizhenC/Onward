@@ -12,6 +12,7 @@
     "check-figure": "tsx scripts/check-figure.ts",
     "check-story-spec": "tsx scripts/check-story-spec.ts",
     "check-story-artifact": "tsx scripts/check-story-artifact.ts",
+    "check-story-boundaries": "tsx scripts/check-story-boundaries.ts",
     "health": "tsx scripts/check-provider.ts",
     "eval": "tsx scripts/eval-match.ts",
     "eval-retrieval": "tsx scripts/eval-retrieval.ts",

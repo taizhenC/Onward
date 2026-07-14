@@ -2,6 +2,7 @@ import "server-only";
 import type { FigureStageRow } from "./types";
 import {
   STORY_SPEC_SCHEMA_VERSION,
+  CONTENT_FLAGS,
   type AllowedEntity,
   type ContentFlag,
   type FactAtom,
@@ -130,6 +131,17 @@ export function validateStorySpec(
   if (quoteIds.size !== spec.quotes.length) errors.push("quote IDs must be unique");
   if (spec.sources.length === 0 || spec.facts.length === 0) {
     errors.push("at least one source and fact are required");
+  }
+  if (
+    !["gentle", "moderate", "direct"].includes(spec.contentProfile.intensity) ||
+    !Array.isArray(spec.contentProfile.flags) ||
+    spec.contentProfile.flags.some(
+      (flag) => !CONTENT_FLAGS.includes(flag as (typeof CONTENT_FLAGS)[number]),
+    ) ||
+    new Set(spec.contentProfile.flags).size !== spec.contentProfile.flags.length ||
+    typeof spec.contentProfile.contentNote !== "string"
+  ) {
+    errors.push("content profile intensity, flags, or note are invalid");
   }
   if (spec.dramatizationLimits.length === 0 || spec.avoidRules.length === 0) {
     errors.push("dramatizationLimits and avoidRules must be explicit");
@@ -300,7 +312,10 @@ export function validateStorySpec(
     if (!spec.review.contentProfileReviewed) {
       errors.push("content profile must be reviewed before publish");
     }
-    if (!spec.contentProfile.contentNote.trim()) {
+    if (
+      typeof spec.contentProfile.contentNote !== "string" ||
+      !spec.contentProfile.contentNote.trim()
+    ) {
       errors.push("a reviewed, spoiler-light content note is required before publish");
     }
     if (

@@ -118,6 +118,15 @@ function main(): void {
     true,
     "sentence-level evidence",
   );
+  expectRejected(
+    failures,
+    "invalid content profile",
+    mutate(fixture, (spec) => {
+      (spec.contentProfile as { intensity: string }).intensity = "extreme";
+    }),
+    false,
+    "content profile intensity",
+  );
 
   console.log("Onward StorySpec validator");
   console.log("==========================");

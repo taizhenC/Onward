@@ -208,6 +208,7 @@ export interface SessionStore {
 export type MatchResponse =
   | { crisis: true; resources: CrisisResource[] }
   | { temporarilyUnavailable: true }
+  | { noEligibleStory: true }
   | { rateLimited: true }
   | { error: string }
   | { sessionId: string };

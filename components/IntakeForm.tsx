@@ -1,22 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { motion } from "motion/react";
 import { CrisisCard } from "./CrisisCard";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
 import type { CrisisResource } from "@/lib/types";
+import {
+  BOUNDARY_TOPICS,
+  type StoryBoundaries,
+  type StoryIntensity,
+} from "@/lib/story-boundaries";
+import type { ContentFlag } from "@/lib/story-spec-types";
 
 type MatchSuccess = { sessionId: string };
 type MatchCrisis = { crisis: true; resources: CrisisResource[] };
 type MatchRateLimited = { rateLimited: true };
 type MatchUnavailable = { temporarilyUnavailable: true };
+type MatchNoEligible = { noEligibleStory: true };
 type MatchError = { error: string };
 type MatchPayload =
   | MatchSuccess
   | MatchCrisis
   | MatchRateLimited
   | MatchUnavailable
+  | MatchNoEligible
   | MatchError;
 
 // Invisible anonymous-first auth: make sure this browser holds an auth session
@@ -24,12 +33,19 @@ type MatchPayload =
 // mount, means bouncing visitors mint no users. Without Supabase env (offline/memory
 // dev) there's no client and the server falls back to its local dev user.
 async function ensureAuthSession(): Promise<boolean> {
-  const supabase = getSupabaseBrowser();
-  if (!supabase) return true;
-  const { data } = await supabase.auth.getSession();
-  if (data.session) return true;
-  const { error } = await supabase.auth.signInAnonymously();
-  return !error;
+  try {
+    const supabase = getSupabaseBrowser();
+    if (!supabase) return true;
+    const { data, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) return false;
+    if (data.session) return true;
+    const { error } = await supabase.auth.signInAnonymously();
+    return !error;
+  } catch {
+    // Still post the intake: the route can return crisis resources without an
+    // auth cookie, while every non-crisis path remains owner-gated.
+    return false;
+  }
 }
 
 export function IntakeForm() {
@@ -42,6 +58,17 @@ export function IntakeForm() {
     CrisisResource[] | null
   >(null);
   const [rateLimited, setRateLimited] = useState(false);
+  const [boundaryEnabled, setBoundaryEnabled] = useState(false);
+  const [maxIntensity, setMaxIntensity] =
+    useState<StoryIntensity>("moderate");
+  const [excludedFlags, setExcludedFlags] = useState<ContentFlag[]>([]);
+  const [noEligibleStory, setNoEligibleStory] = useState(false);
+  const boundaryRef = useRef<HTMLFieldSetElement>(null);
+  const noEligibleRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (noEligibleStory) noEligibleRef.current?.focus();
+  }, [noEligibleStory]);
 
   const ageNum = Number.parseInt(age, 10);
   const ageValid =
@@ -56,22 +83,27 @@ export function IntakeForm() {
     if (!canSubmit) return;
     setSubmitting(true);
     setError(null);
+    setNoEligibleStory(false);
 
     const authed = await ensureAuthSession();
-    if (!authed) {
-      setError(
-        "We couldn't start a private session. Your browser may be blocking cookies — they're needed to keep your story yours.",
-      );
-      setSubmitting(false);
-      return;
-    }
 
     let response: Response;
     try {
       response = await fetch("/api/match", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ age: ageNum, feeling }),
+        body: JSON.stringify({
+          age: ageNum,
+          feeling,
+          ...(boundaryEnabled
+            ? {
+                boundaries: {
+                  maxIntensity,
+                  excludedFlags,
+                } satisfies StoryBoundaries,
+              }
+            : {}),
+        }),
       });
     } catch {
       setError("The connection dropped. Please try again.");
@@ -106,6 +138,20 @@ export function IntakeForm() {
       return;
     }
 
+    if ("noEligibleStory" in payload) {
+      setNoEligibleStory(true);
+      setSubmitting(false);
+      return;
+    }
+
+    if (!authed && response.status === 401) {
+      setError(
+        "We couldn't start a private session. Your browser may be blocking cookies — they're needed to keep your story yours.",
+      );
+      setSubmitting(false);
+      return;
+    }
+
     if (!response.ok) {
       const message =
         "error" in payload ? payload.error : "Something went wrong.";
@@ -124,6 +170,20 @@ export function IntakeForm() {
     }
     setError("Unexpected response from the matcher.");
     setSubmitting(false);
+  }
+
+  function toggleExcludedFlag(flag: ContentFlag) {
+    setNoEligibleStory(false);
+    setExcludedFlags((current) =>
+      current.includes(flag)
+        ? current.filter((candidate) => candidate !== flag)
+        : [...current, flag],
+    );
+  }
+
+  function focusBoundaries() {
+    setNoEligibleStory(false);
+    requestAnimationFrame(() => boundaryRef.current?.focus());
   }
 
   if (crisisResources) {
@@ -175,7 +235,10 @@ export function IntakeForm() {
           min={13}
           max={100}
           value={age}
-          onChange={(event) => setAge(event.target.value)}
+          onChange={(event) => {
+            setAge(event.target.value);
+            setNoEligibleStory(false);
+          }}
           disabled={submitting}
           className="w-32 bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2"
         />
@@ -187,7 +250,10 @@ export function IntakeForm() {
         </span>
         <textarea
           value={feeling}
-          onChange={(event) => setFeeling(event.target.value)}
+          onChange={(event) => {
+            setFeeling(event.target.value);
+            setNoEligibleStory(false);
+          }}
           disabled={submitting}
           rows={6}
           maxLength={1000}
@@ -197,10 +263,150 @@ export function IntakeForm() {
         <span className="block font-ui text-xs text-[var(--color-ink-soft)]/70 text-right">
           {feeling.length}/1000
         </span>
+        <span className="block text-sm leading-relaxed text-[var(--color-ink-soft)]">
+          What you write stays private and is not repeated back in the story.
+        </span>
       </label>
 
+      <fieldset
+        ref={boundaryRef}
+        tabIndex={-1}
+        disabled={submitting}
+        className="space-y-5 border border-[var(--color-ink-soft)]/35 p-5 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
+      >
+        <legend className="px-2 font-ui text-xs font-medium uppercase tracking-widest text-[var(--color-ink-soft)]">
+          Keep this story…
+        </legend>
+
+        <label className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            checked={boundaryEnabled}
+            onChange={(event) => {
+              setBoundaryEnabled(event.target.checked);
+              setNoEligibleStory(false);
+            }}
+            className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
+          />
+          <span>
+            <span className="block font-ui text-sm font-medium">
+              Set limits for this story
+            </span>
+            <span className="mt-1 block text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Optional. These limits are used only to choose this story and are
+              not added to it.
+            </span>
+          </span>
+        </label>
+
+        {boundaryEnabled ? (
+          <div className="space-y-6 border-t border-[var(--color-ink-soft)]/20 pt-5">
+            <fieldset className="space-y-3">
+              <legend className="font-ui text-sm font-medium">Level of detail</legend>
+              {[
+                {
+                  value: "gentle" as const,
+                  label: "Gentle",
+                  note: "Keep difficult events at a greater distance.",
+                },
+                {
+                  value: "moderate" as const,
+                  label: "Balanced",
+                  note: "Name difficult events without dwelling on them.",
+                },
+                {
+                  value: "direct" as const,
+                  label: "More direct",
+                  note: "Still non-graphic, with less distance from hard facts.",
+                },
+              ].map((option) => (
+                <label key={option.value} className="flex items-start gap-3">
+                  <input
+                    type="radio"
+                    name="story-intensity"
+                    value={option.value}
+                    checked={maxIntensity === option.value}
+                    onChange={() => {
+                      setMaxIntensity(option.value);
+                      setNoEligibleStory(false);
+                    }}
+                    className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
+                  />
+                  <span>
+                    <span className="block font-ui text-sm font-medium">
+                      {option.label}
+                    </span>
+                    <span className="block text-sm text-[var(--color-ink-soft)]">
+                      {option.note}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </fieldset>
+
+            <fieldset className="space-y-3">
+              <legend className="font-ui text-sm font-medium">
+                Topics to leave out
+              </legend>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {BOUNDARY_TOPICS.map((topic) => (
+                  <label key={topic.flag} className="flex items-start gap-3">
+                    <input
+                      type="checkbox"
+                      checked={excludedFlags.includes(topic.flag)}
+                      onChange={() => toggleExcludedFlag(topic.flag)}
+                      className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
+                    />
+                    <span>
+                      <span className="block font-ui text-sm font-medium">
+                        {topic.label}
+                      </span>
+                      <span className="block text-xs leading-relaxed text-[var(--color-ink-soft)]">
+                        {topic.description}
+                      </span>
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+        ) : null}
+      </fieldset>
+
+      {noEligibleStory ? (
+        <div
+          ref={noEligibleRef}
+          tabIndex={-1}
+          role="status"
+          className="space-y-4 border-l-2 border-[var(--color-accent)] pl-4 focus:outline-none"
+        >
+          <p className="font-ui text-sm font-medium">No reviewed story fits those limits yet.</p>
+          <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            Nothing was saved. You can change the limits, edit what you wrote,
+            or leave this here.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={focusBoundaries}
+              className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
+            >
+              Change limits
+            </button>
+            <Link
+              href="/"
+              className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
+            >
+              Leave
+            </Link>
+          </div>
+        </div>
+      ) : null}
+
       {error ? (
-        <p className="font-ui text-sm text-[var(--color-accent)]">{error}</p>
+        <p role="alert" className="font-ui text-sm text-[var(--color-accent)]">
+          {error}
+        </p>
       ) : null}
 
       <button

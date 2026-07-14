@@ -5,6 +5,7 @@ import { containsDisclosureEcho } from "./story-privacy";
 import { validateStorySpec } from "./story-spec";
 import {
   STORY_ARTIFACT_SCHEMA_VERSION,
+  LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
   STORY_ARTIFACT_VALIDATOR_VERSION,
   STORY_COMPOSER_VERSION,
   type ArtifactValidationFailure,
@@ -12,6 +13,11 @@ import {
   type StoryArtifactValidation,
 } from "./story-artifact-types";
 import { CONTENT_FLAGS, type StorySpec } from "./story-spec-types";
+import {
+  STORY_BOUNDARY_POLICY_VERSION,
+  storyProfileAllowed,
+  type StoryBoundaries,
+} from "./story-boundaries";
 import type {
   ClientFigureOutline,
   FigureStageRow,
@@ -37,6 +43,7 @@ export type ComposeCanonicalArtifactInput = {
   openingCopy: OpeningCopy;
   framing: Framing;
   disclosure: string;
+  boundaries?: StoryBoundaries;
   fallbackReason?: StoryArtifact["composition"]["fallbackReason"];
   allowDraftSpec?: boolean;
   now?: Date;
@@ -58,6 +65,7 @@ export function composeCanonicalStoryArtifact({
   openingCopy,
   framing,
   disclosure,
+  boundaries,
   fallbackReason = "canonical_only",
   allowDraftSpec = false,
   now = new Date(),
@@ -83,13 +91,19 @@ export function composeCanonicalStoryArtifact({
       ageMin: storySpec.episode.ageMin,
       ageMax: storySpec.episode.ageMax,
     },
-    contentProfile: structuredClone(storySpec.contentProfile),
+    contentProfile: {
+      ...structuredClone(storySpec.contentProfile),
+      reviewed:
+        storySpec.status === "published" &&
+        storySpec.review.contentProfileReviewed === true,
+    },
     openingCopy: structuredClone(openingCopy),
     framing,
     recipe: {
       match: structuredClone(matchRecipe),
       composerVersion: STORY_COMPOSER_VERSION,
       validatorVersion: STORY_ARTIFACT_VALIDATOR_VERSION,
+      boundaryPolicyVersion: STORY_BOUNDARY_POLICY_VERSION,
     },
     composition: {
       mode: "canonical_fallback",
@@ -117,9 +131,14 @@ export function composeCanonicalStoryArtifact({
   };
   const artifact: StoryArtifact = {
     ...artifactWithoutHash,
-    contentHash: artifactContentHash(artifactWithoutHash),
+    contentHash: storyArtifactContentHash(artifactWithoutHash),
   };
-  const validation = validateStoryArtifact(artifact, storySpec, disclosure);
+  const validation = validateStoryArtifact(
+    artifact,
+    storySpec,
+    disclosure,
+    boundaries,
+  );
   if (!validation.valid) throw new StoryCompositionError(validation.failureReasons);
   return deepFreeze(artifact);
 }
@@ -128,6 +147,7 @@ export function validateStoryArtifact(
   artifact: StoryArtifact,
   storySpec: StorySpec,
   disclosure: string,
+  boundaries?: StoryBoundaries,
 ): StoryArtifactValidation {
   const failures = new Set<ArtifactValidationFailure>();
 
@@ -144,6 +164,26 @@ export function validateStoryArtifact(
   if (artifact.beats.length !== EXPECTED_ROLES.length) failures.add("role_order_invalid");
 
   validateOpeningCopy(artifact.openingCopy, disclosure, failures);
+  const expectedProfileReviewed =
+    storySpec.status === "published" &&
+    storySpec.review.contentProfileReviewed === true;
+  if (
+    artifact.contentProfile.intensity !== storySpec.contentProfile.intensity ||
+    artifact.contentProfile.contentNote !== storySpec.contentProfile.contentNote ||
+    artifact.contentProfile.reviewed !== expectedProfileReviewed ||
+    !sameSet(artifact.contentProfile.flags, storySpec.contentProfile.flags)
+  ) {
+    failures.add("content_profile_mismatch");
+  }
+  // The StorySpec remains authoritative during composition. Checking both
+  // surfaces prevents a caller from laundering an ineligible profile by
+  // changing only the artifact metadata before validation.
+  if (
+    !storyProfileAllowed(storySpec.contentProfile, boundaries) ||
+    !storyProfileAllowed(artifact.contentProfile, boundaries)
+  ) {
+    failures.add("boundary_violation");
+  }
 
   artifact.beats.forEach((beat, index) => {
     const specBeat = storySpec.arc[index];
@@ -165,7 +205,7 @@ export function validateStoryArtifact(
     if (containsDisclosureEcho(beat.text, disclosure)) failures.add("disclosure_echo");
   });
 
-  if (artifact.contentHash !== artifactContentHash(artifact)) {
+  if (artifact.contentHash !== storyArtifactContentHash(artifact)) {
     failures.add("content_hash_mismatch");
   }
 
@@ -179,7 +219,8 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   if (!isRecord(value)) return null;
   const candidate = value as Partial<StoryArtifact>;
   if (
-    candidate.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION ||
+    (candidate.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION &&
+      candidate.schemaVersion !== LEGACY_STORY_ARTIFACT_SCHEMA_VERSION) ||
     typeof candidate.artifactId !== "string" ||
     typeof candidate.storySpecId !== "string" ||
     typeof candidate.storySpecVersion !== "number" ||
@@ -219,10 +260,14 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
         CONTENT_FLAGS.includes(flag as (typeof CONTENT_FLAGS)[number]),
     ) ||
     typeof artifact.contentProfile.contentNote !== "string" ||
+    (artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION &&
+      typeof artifact.contentProfile.reviewed !== "boolean") ||
     !isRecord(artifact.recipe.match) ||
     typeof artifact.recipe.match.recipeId !== "string" ||
     artifact.recipe.composerVersion !== STORY_COMPOSER_VERSION ||
     artifact.recipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
+    (artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION &&
+      artifact.recipe.boundaryPolicyVersion !== STORY_BOUNDARY_POLICY_VERSION) ||
     !["canonical_fallback", "hybrid"].includes(artifact.composition.mode) ||
     (artifact.composition.fallbackReason !== undefined &&
       ![
@@ -259,7 +304,7 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
       return null;
     }
   }
-  if (artifact.contentHash !== artifactContentHash(artifact)) return null;
+  if (artifact.contentHash !== storyArtifactContentHash(artifact)) return null;
   return deepFreeze(artifact);
 }
 
@@ -275,7 +320,7 @@ export function toClientArtifactOutline(artifact: StoryArtifact): ClientFigureOu
   };
 }
 
-function artifactContentHash(
+export function storyArtifactContentHash(
   artifact: Omit<StoryArtifact, "contentHash"> | StoryArtifact,
 ): string {
   const contentSurface = {

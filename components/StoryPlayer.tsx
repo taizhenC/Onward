@@ -11,6 +11,7 @@ type Props = {
   sessionId: string;
   outline: ClientFigureOutline;
   openingCopy: OpeningCopy;
+  contentNote: string | null;
   initialBeatIndex: number;
   initialChunkIndex: number;
 };
@@ -21,6 +22,7 @@ export function StoryPlayer({
   sessionId,
   outline,
   openingCopy,
+  contentNote,
   initialBeatIndex,
   initialChunkIndex,
 }: Props) {
@@ -74,6 +76,7 @@ export function StoryPlayer({
         {phase === "preface" ? (
           <PrefaceCard
             lines={openingCopy.prefaceLines}
+            contentNote={contentNote}
             onBegin={() => setPhase("playing")}
           />
         ) : phase === "playing" && currentBeat ? (

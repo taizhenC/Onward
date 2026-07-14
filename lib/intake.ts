@@ -3,7 +3,7 @@ import type { MatchRecipe, MatchResponse } from "./types";
 import { CRISIS_RESOURCES, classifyCrisis, crisisRegexVersion } from "./safety";
 import { createSession } from "./session";
 import { match, resolveRetrievalMode } from "./matching";
-import { APPROVED_PRODUCTION_RECIPE, matchConfigVersion } from "./match-config";
+import { matchConfigVersion, recipeIdForRetrievalMode } from "./match-config";
 import { getByKey, listAll } from "./figures";
 import { activeRecipe, writeOpeningCopy } from "./llm";
 import { embeddingModelId } from "./embeddings";
@@ -134,13 +134,14 @@ export async function handleIntake(
   // Freeze the active config/model versions on the session for auditable replay. activeRecipe()
   // stays LLM-only; the embedder id and configured retrieval mode are merged here so the embedding
   // and LLM provider boundaries stay decoupled.
+  const retrievalMode = resolveRetrievalMode();
   const matchRecipe: MatchRecipe = {
-    recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+    recipeId: recipeIdForRetrievalMode(retrievalMode),
     matchConfigVersion,
     crisisRegexVersion,
     ...activeRecipe(),
     embeddingModelId: embeddingModelId(),
-    retrievalMode: resolveRetrievalMode(),
+    retrievalMode,
   };
 
   // The selected spec comes from the already validated and boundary-filtered

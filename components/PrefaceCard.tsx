@@ -1,17 +1,18 @@
 "use client";
 
 import { motion } from "motion/react";
+import type { Framing } from "@/lib/types";
 
 type Props = {
   lines: readonly string[];
   contentNote: string | null;
+  framing: Framing;
   onBegin: () => void;
 };
 
-// The preface copy is supplied by the opening-copy layer (lib/opening-copy.ts →
-// DEFAULT_PREFACE_LINES today). Phase 1 personalizes those lines from the user's intake
-// language in lib/llm-real.ts; this component just renders whatever it is handed.
-export function PrefaceCard({ lines, contentNote, onBegin }: Props) {
+// The preface copy is supplied by the opening-copy layer. This component also
+// makes partial-match distance explicit before any story text is revealed.
+export function PrefaceCard({ lines, contentNote, framing, onBegin }: Props) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -24,6 +25,21 @@ export function PrefaceCard({ lines, contentNote, onBegin }: Props) {
           <p key={index}>{line}</p>
         ))}
       </div>
+
+      {framing === "partial" ? (
+        <aside
+          aria-label="How this story relates"
+          className="border-l-2 border-[var(--color-accent)] pl-4 text-[var(--color-ink-soft)]"
+        >
+          <p className="font-ui text-xs font-medium uppercase tracking-widest">
+            A partial parallel
+          </p>
+          <p className="mt-2 text-base leading-relaxed">
+            This is not the same situation. One part of this life may still rhyme
+            with what you are carrying.
+          </p>
+        </aside>
+      ) : null}
 
       {contentNote ? (
         <aside

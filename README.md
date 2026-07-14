@@ -1,6 +1,6 @@
 # Onward
 
-An emotional-companion web app. You write a few sentences about what you're going through. Onward finds a real historical figure who, at about your age, lived through a genuinely similar emotional episode — and walks you through that episode as a quiet, linear 7-beat narrative that ends by bridging back to you.
+An emotional-companion web app. You write a few sentences about what you're going through. Onward looks for a grounded point of contact in a real historical life, says when the parallel is only adjacent, and walks you through the episode as a quiet linear narrative.
 
 The product is for hurting people. Tone, pacing, and prose quality matter more than features.
 
@@ -9,13 +9,14 @@ The product is for hurting people. Tone, pacing, and prose quality matter more t
 Deploy slice (2026-06-10). The matching engine is real and validated:
 
 - **Library**: 50 hand-authored figure stages (weighted toward ages 15-30), seeded to Supabase.
-- **Retrieval**: FacetsRAG six-lane semantic retrieval (Gemini embeddings, in-memory cosine) with a keyword fallback; head-to-head eval beats keyword 95.1% vs 90.2% top-1.
+- **Retrieval**: the latest fifty-figure gate approves keyword retrieval; FacetsRAG remains a six-lane semantic shadow challenger until it proves superiority.
 - **Rerank**: GPT-OSS 120B on Cerebras, trust-gated by eval.
 - **Auth**: anonymous-first via Supabase Auth — no login wall; sessions are owned and private; an email upgrade keeps stories permanently. Guests and their stories are deleted ~6 hours after last activity.
 - **Safety**: deterministic crisis regex before any LLM call; crisis input is never persisted and never rate-limited.
 - **Story boundaries**: optional detail/topic limits are hard eligibility rules before retrieval and composition; selections are not persisted.
 - **Resonance boundary**: prose composition receives a short-lived governed brief, not the raw disclosure; HMAC fingerprints reject copied phrases and named details without persisting them.
 - **Hybrid Story Composer**: the model selects only allowlisted placement/template IDs; deterministic rendering preserves canonical facts, retries once, and always returns a validated canonical fallback on failure.
+- **Honest match recovery**: uncertain matches ask at most one bounded question; unresolved fits persist nothing, and an accepted adjacent story is labeled before playback.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres.
 - **Retention**: user disclosures are NULL'd 60 days after creation by a scheduled job.
 
@@ -43,6 +44,7 @@ npm run check-story-artifact # validate complete replay payloads, privacy, and t
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
+npm run check-match-recovery # validate one-question and adjacent-match recovery
 npm run seed-story-specs  # seed review drafts; never overwrites reviewed/published content
 npm run check-db          # Supabase acceptance check (after seed)
 npm run seed-embeddings   # embed shape/facet texts (requires EMBEDDING_PROVIDER=gemini)
@@ -61,6 +63,7 @@ See `.env.example` for the documented template. Summary:
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public; browser uses it for **auth endpoints only** (RLS default-deny) |
 | `SUPABASE_SERVICE_ROLE_KEY` | **secret**, server-only, bypasses RLS |
 | `IP_HASH_SALT` | **secret**; required with `PERSISTENCE=supabase`; `openssl rand -hex 32` |
+| `MATCH_RECOVERY_TOKEN_SECRET` | Optional dedicated HMAC secret for single-use recovery fingerprints; production falls back to `IP_HASH_SALT`. |
 | `LLM_PROVIDER` | `stub` (default) or `real` (Cerebras) |
 | `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL` | for `LLM_PROVIDER=real` |
 | `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE` | default `gpt-oss-120b` |
@@ -74,7 +77,7 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable, evidence-bound StorySpec versions; `0005` adds immutable, owner-scoped StoryArtifacts and atomic session creation.
+1. Apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits.
 2. Authentication → Sign In/Up → enable **anonymous sign-ins**.
 3. Authentication → URL Configuration → set **Site URL** to the production URL; add `http://localhost:3000/**` to the redirect allowlist (a separate Supabase project for local dev is cleaner — Site URL is single-valued).
 4. Authentication → Emails → configure **custom SMTP** (Resend's free tier works). The built-in sender is limited to ~2 emails/hour **and only delivers to project team members** — without custom SMTP, real users' save/sign-in emails silently fail.
@@ -95,6 +98,7 @@ Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL
 - The text a user writes is NULL'd from our side 60 days after creation (`FEELING_RETENTION_DAYS`), saved or not.
 - Crisis input is detected by a deterministic regex before any LLM call and is never persisted.
 - Optional story intensity/topic limits are applied in memory before retrieval and are not stored in the session or StoryArtifact.
+- Clarification choices are not stored. Recovery keeps only an opaque-token hash and keyed input fingerprint; the key is usable for ten minutes and expired rows are removed by the 15-minute cleanup job.
 - No prompt/response bodies, feelings, raw IPs, or raw errors are ever logged.
 
 ## Architecture

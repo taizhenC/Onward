@@ -35,6 +35,7 @@ jobs:
       - run: npm run check-story-boundaries
       - run: npm run check-resonance-brief
       - run: npm run check-story-composer
+      - run: npm run check-match-recovery
       - run: npm run eval-crisis
       - run: npm run smoke
       - run: npm run build

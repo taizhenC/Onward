@@ -2,7 +2,7 @@ import "server-only";
 import type { MatchRecipe, MatchResponse } from "./types";
 import { CRISIS_RESOURCES, classifyCrisis, crisisRegexVersion } from "./safety";
 import { createSession } from "./session";
-import { match, resolveRetrievalMode } from "./matching";
+import { matchForIntake, resolveRetrievalMode } from "./matching";
 import { matchConfigVersion, recipeIdForRetrievalMode } from "./match-config";
 import { getByKey, listAll } from "./figures";
 import { activeRecipe, writeOpeningCopy } from "./llm";
@@ -25,11 +25,26 @@ import {
   RESONANCE_BRIEF_VERSION,
   createResonanceBrief,
 } from "./resonance-brief";
+import {
+  MATCH_RECOVERY_POLICY_VERSION,
+  decideMatchDisposition,
+  parseMatchClarification,
+  type MatchClarification,
+} from "./match-recovery";
+import {
+  consumeMatchRecoveryToken,
+  issueMatchRecoveryToken,
+  parseMatchRecoveryToken,
+  type MatchRecoveryIdentity,
+} from "./match-recovery-flow";
 
 export type IntakeInput = {
   age: number;
   feeling: string;
   boundaries?: StoryBoundaries;
+  clarification?: MatchClarification;
+  acceptAdjacent?: boolean;
+  recoveryToken?: string;
 };
 
 // Request identity, composed by the caller (the route pairs the authenticated user
@@ -48,12 +63,18 @@ type CoreIntakeInput = {
   age: number;
   feeling: string;
   boundariesRaw: unknown;
+  clarificationRaw: unknown;
+  acceptAdjacentRaw: unknown;
+  recoveryTokenRaw: unknown;
 };
 
 type ValidatedIntakeInput = {
   age: number;
   feeling: string;
   boundaries: StoryBoundaries | undefined;
+  clarification: MatchClarification | undefined;
+  acceptAdjacent: boolean;
+  recoveryToken: string | undefined;
 };
 
 const MIN_AGE = 13;
@@ -79,10 +100,30 @@ export async function handleIntake(
   if ("error" in core) return core;
   const parsedBoundaries = parseStoryBoundaries(core.boundariesRaw);
   if ("error" in parsedBoundaries) return parsedBoundaries;
+  const parsedClarification = parseMatchClarification(core.clarificationRaw);
+  if ("error" in parsedClarification) return parsedClarification;
+  if (
+    core.acceptAdjacentRaw !== undefined &&
+    typeof core.acceptAdjacentRaw !== "boolean"
+  ) {
+    return { error: "Adjacent-match preference must be a boolean." };
+  }
+  const parsedRecoveryToken = parseMatchRecoveryToken(core.recoveryTokenRaw);
+  if ("error" in parsedRecoveryToken) return parsedRecoveryToken;
+  if (
+    parsedRecoveryToken.value &&
+    parsedClarification.value === undefined &&
+    core.acceptAdjacentRaw !== true
+  ) {
+    return { error: "Choose an answer or accept the adjacent story to continue." };
+  }
   const validated: ValidatedIntakeInput = {
     age: core.age,
     feeling: core.feeling,
     boundaries: parsedBoundaries.value,
+    clarification: parsedClarification.value,
+    acceptAdjacent: core.acceptAdjacentRaw === true,
+    recoveryToken: parsedRecoveryToken.value,
   };
 
   // Operational kill switch for a safety, privacy, or content incident. Crisis
@@ -112,27 +153,103 @@ export async function handleIntake(
   if (eligibleCatalog.size === 0) return { noEligibleStory: true };
   const eligibleStageKeys = new Set(eligibleCatalog.keys());
 
+  const recoveryIdentity: MatchRecoveryIdentity = {
+    age: validated.age,
+    feeling: validated.feeling,
+    ...(validated.boundaries ? { boundaries: validated.boundaries } : {}),
+  };
+
   // Rate limit before matching/providers, but after the cheap content-readiness
   // gate so an editorial outage never consumes a reader's attempt budget.
-  const allowed = await consumeMatchRateLimit(ctx.userId, ctx.ipHash);
-  if (!allowed) {
-    return { rateLimited: true };
+  if (validated.recoveryToken) {
+    let recoveryPurpose: "clarification" | "adjacent_acceptance" | null = null;
+    try {
+      recoveryPurpose = await consumeMatchRecoveryToken(
+        validated.recoveryToken,
+        ctx.userId,
+        recoveryIdentity,
+      );
+    } catch {
+      return { temporarilyUnavailable: true };
+    }
+    if (!recoveryPurpose) {
+      return { error: "This match step expired. Please revise and try again." };
+    }
+    if (
+      recoveryPurpose === "adjacent_acceptance" &&
+      !validated.acceptAdjacent
+    ) {
+      return {
+        error: "This final recovery step can only open the clearly labeled adjacent story.",
+      };
+    }
+  } else {
+    const allowed = await consumeMatchRateLimit(ctx.userId, ctx.ipHash);
+    if (!allowed) {
+      return { rateLimited: true };
+    }
   }
 
   let result;
-  const resonanceBrief = createResonanceBrief(
-    validated.feeling,
-    validated.boundaries,
-  );
   try {
-    result = await match({
+    result = await matchForIntake({
       age: validated.age,
       feeling: validated.feeling,
       eligibleStageKeys,
+      clarification: validated.clarification,
     });
   } catch {
     return { temporarilyUnavailable: true };
   }
+
+  const disposition = decideMatchDisposition({
+    confidence: result.confidence,
+    framing: result.framing,
+    ageFallback: result.ageFallback,
+    clarificationProvided: validated.clarification !== undefined,
+    acceptAdjacent: validated.acceptAdjacent,
+  });
+  if (disposition === "clarification_needed") {
+    let recoveryToken: string;
+    try {
+      recoveryToken = await issueMatchRecoveryToken(
+        ctx.userId,
+        recoveryIdentity,
+        "clarification",
+      );
+    } catch {
+      return { temporarilyUnavailable: true };
+    }
+    return {
+      clarificationNeeded: true,
+      policyVersion: MATCH_RECOVERY_POLICY_VERSION,
+      recoveryToken,
+    };
+  }
+  if (disposition === "no_close_match") {
+    let recoveryToken: string;
+    try {
+      recoveryToken = await issueMatchRecoveryToken(
+        ctx.userId,
+        recoveryIdentity,
+        "adjacent_acceptance",
+      );
+    } catch {
+      return { temporarilyUnavailable: true };
+    }
+    return {
+      noCloseMatch: true,
+      policyVersion: MATCH_RECOVERY_POLICY_VERSION,
+      recoveryToken,
+    };
+  }
+  const selectedFraming =
+    disposition === "close_match" ? result.framing : "partial";
+  const resonanceBrief = createResonanceBrief(
+    validated.feeling,
+    validated.boundaries,
+    validated.clarification,
+  );
 
   // The chosen content must still resolve after matching; a concurrent editorial
   // retirement fails closed before prose generation or persistence.
@@ -151,6 +268,7 @@ export async function handleIntake(
     embeddingModelId: embeddingModelId(),
     retrievalMode,
     resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
+    matchRecoveryPolicyVersion: MATCH_RECOVERY_POLICY_VERSION,
   };
 
   // The selected spec comes from the already validated and boundary-filtered
@@ -176,7 +294,7 @@ export async function handleIntake(
         eyebrow: NEUTRAL_EYEBROW,
         prefaceLines: DEFAULT_PREFACE_LINES,
       },
-      framing: result.framing,
+      framing: selectedFraming,
       resonanceBrief,
       boundaries: validated.boundaries,
       allowDraftSpec: process.env.PERSISTENCE !== "supabase",
@@ -192,7 +310,7 @@ export async function handleIntake(
       userId: ctx.userId,
       figureKey: result.figureKey,
       stageId: result.stageId,
-      framing: result.framing,
+      framing: selectedFraming,
       age: validated.age,
       feeling: validated.feeling,
       matchRecipe,
@@ -231,7 +349,14 @@ function validateCoreIntake(input: unknown): CoreIntakeInput | IntakeValidationE
     return { error: "Feeling must be between 10 and 1000 characters." };
   }
 
-  return { age, feeling, boundariesRaw: candidate.boundaries };
+  return {
+    age,
+    feeling,
+    boundariesRaw: candidate.boundaries,
+    clarificationRaw: candidate.clarification,
+    acceptAdjacentRaw: candidate.acceptAdjacent,
+    recoveryTokenRaw: candidate.recoveryToken,
+  };
 }
 
 function feelingForSafety(input: unknown): string | null {

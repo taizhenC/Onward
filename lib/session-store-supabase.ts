@@ -24,6 +24,7 @@ type SessionRow = {
   user_id: string;
   figure_key: string;
   stage_id: string;
+  story_artifact_id: string | null;
   framing: string;
   opening_copy: unknown;
   age: number;
@@ -38,21 +39,19 @@ type SessionRow = {
 async function createSession(input: CreateSessionInput): Promise<string> {
   for (let attempt = 0; attempt < MAX_SESSION_ID_INSERT_ATTEMPTS; attempt += 1) {
     const sessionId = randomBytes(16).toString("hex");
-    const { error } = await getSupabase().from(TABLE).insert({
-      session_id: sessionId,
-      user_id: input.userId,
-      figure_key: input.figureKey,
-      stage_id: input.stageId,
-      framing: input.framing,
-      opening_copy: input.openingCopy,
-      age: input.age,
-      feeling: input.feeling,
-      match_recipe: input.matchRecipe,
-      next_beat_index: 0,
-      next_chunk_index: 0,
+    const { error } = await getSupabase().rpc("create_story_session", {
+      p_session_id: sessionId,
+      p_user_id: input.userId,
+      p_figure_key: input.figureKey,
+      p_stage_id: input.stageId,
+      p_framing: input.framing,
+      p_age: input.age,
+      p_feeling: input.feeling,
+      p_match_recipe: input.matchRecipe,
+      p_artifact: input.artifact,
     });
     if (!error) return sessionId;
-    if (!isUniqueConstraintViolation(error)) {
+    if (!isSessionIdCollision(error)) {
       throw new Error(`createSession insert failed: ${error.message}`);
     }
   }
@@ -132,6 +131,7 @@ function rowToSession(row: SessionRow): Session {
     userId: row.user_id,
     figureKey: row.figure_key,
     stageId: row.stage_id,
+    storyArtifactId: row.story_artifact_id,
     framing: row.framing === "definitive" ? "definitive" : "partial",
     openingCopy: normalizeOpeningCopy(row.opening_copy),
     age: row.age,
@@ -166,8 +166,8 @@ function normalizeOpeningCopy(value: unknown): OpeningCopy {
   };
 }
 
-function isUniqueConstraintViolation(error: { code?: string }): boolean {
-  return error.code === "23505";
+function isSessionIdCollision(error: { code?: string; message?: string }): boolean {
+  return error.code === "23505" && /sessions_pkey/i.test(error.message ?? "");
 }
 
 export const supabaseSessionStore: SessionStore = {

@@ -8,11 +8,19 @@ import { toRerankCandidate } from "../lib/llm";
 import {
   _sessionCount,
   acknowledgeOwnedSessionPosition,
+  createSession,
   getOwnedSession,
   getSession,
 } from "../lib/session";
+import { _storyArtifactCount, getOwnedStoryArtifact } from "../lib/story-artifacts";
+import {
+  composeCanonicalStoryArtifact,
+  validateStoredStoryArtifact,
+} from "../lib/story-artifact";
+import { getStoryPlayback } from "../lib/story-playback";
+import { buildDraftStorySpec } from "../lib/story-spec";
 import { MATCH_LIMITS } from "../lib/rate-limit";
-import { resolveRetrievalMode } from "../lib/matching";
+import { match, resolveRetrievalMode } from "../lib/matching";
 import {
   APPROVED_PRODUCTION_RECIPE,
   recipeIdForRetrievalMode,
@@ -24,7 +32,7 @@ import {
   containsDisclosureEcho,
   SAFE_BRIDGE_DISTANCE_LINE,
 } from "../lib/story-privacy";
-import type { BeatBlueprint } from "../lib/types";
+import type { BeatBlueprint, Session } from "../lib/types";
 
 // Smoke always runs in stub mode (provider matrix). getLLM() resolves lazily on the
 // first match call, so setting this before main() runs is sufficient.
@@ -42,6 +50,10 @@ const SMOKE_CTX: IntakeContext = { userId: "smoke-user", ipHash: "smoke-ip" };
 const PROGRESS_CTX: IntakeContext = {
   userId: "smoke-progress-user",
   ipHash: "smoke-progress-ip",
+};
+const ARTIFACT_CTX: IntakeContext = {
+  userId: "smoke-artifact-user",
+  ipHash: "smoke-artifact-ip",
 };
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
@@ -229,6 +241,241 @@ async function runCrisisAssertion(): Promise<AssertionResult> {
   };
 }
 
+async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
+  const name = "artifact: immutable, private, atomic replay payload";
+  const beforeSessions = await _sessionCount();
+  const beforeArtifacts = await _storyArtifactCount();
+  const disclosure =
+    "My private cobalt compass stopped pointing anywhere after a rejection I cannot explain.";
+  const result = await handleIntake({ age: 28, feeling: disclosure }, ARTIFACT_CTX);
+  if (!("sessionId" in result)) return { name, ok: false, detail: "intake created no session" };
+
+  const session = await getSession(result.sessionId);
+  if (!session?.storyArtifactId) {
+    return { name, ok: false, detail: "new session has no artifact pointer" };
+  }
+  const artifact = await getOwnedStoryArtifact(
+    session.storyArtifactId,
+    ARTIFACT_CTX.userId,
+    session.sessionId,
+  );
+  const foreign = await getOwnedStoryArtifact(
+    session.storyArtifactId,
+    "foreign-user",
+    session.sessionId,
+  );
+  const wrongSession = await getOwnedStoryArtifact(
+    session.storyArtifactId,
+    ARTIFACT_CTX.userId,
+    "wrong-session",
+  );
+  if (!artifact || foreign || wrongSession) {
+    return { name, ok: false, detail: "artifact ownership boundary failed" };
+  }
+  if (
+    (await _sessionCount()) !== beforeSessions + 1 ||
+    (await _storyArtifactCount()) !== beforeArtifacts + 1
+  ) {
+    return { name, ok: false, detail: "session/artifact counts did not advance together" };
+  }
+  if (
+    JSON.stringify(artifact).includes(disclosure) ||
+    !Object.isFrozen(artifact) ||
+    !Object.isFrozen(artifact.beats) ||
+    !Object.isFrozen(artifact.beats[0]) ||
+    !Object.isFrozen(artifact.beats[0].chunks) ||
+    !Object.isFrozen(artifact.openingCopy) ||
+    !Object.isFrozen(artifact.recipe)
+  ) {
+    return { name, ok: false, detail: "artifact retained disclosure or was mutable" };
+  }
+
+  const tampered = structuredClone(artifact);
+  tampered.beats[0].text += " Tampered.";
+  if (validateStoredStoryArtifact(tampered)) {
+    return { name, ok: false, detail: "tampered artifact passed replay validation" };
+  }
+
+  const memoryArtifacts = globalThis.__onwardStoryArtifacts;
+  const originalOwnedArtifact = memoryArtifacts?.get(artifact.artifactId);
+  if (!memoryArtifacts || !originalOwnedArtifact) {
+    return { name, ok: false, detail: "memory artifact store unavailable" };
+  }
+  const corruptedStored = structuredClone(artifact);
+  corruptedStored.contentProfile.contentNote += " corrupted";
+  let storageBoundaryRejected = false;
+  memoryArtifacts.set(artifact.artifactId, {
+    ...originalOwnedArtifact,
+    artifact: corruptedStored,
+  });
+  try {
+    await getOwnedStoryArtifact(
+      artifact.artifactId,
+      ARTIFACT_CTX.userId,
+      session.sessionId,
+    );
+  } catch {
+    storageBoundaryRejected = true;
+  } finally {
+    memoryArtifacts.set(artifact.artifactId, originalOwnedArtifact);
+  }
+  if (!storageBoundaryRejected) {
+    return { name, ok: false, detail: "storage boundary served a corrupt artifact" };
+  }
+
+  const stage = FIGURE_STAGES.find(
+    (candidate) =>
+      candidate.figureKey === session.figureKey && candidate.stageId === session.stageId,
+  );
+  if (!stage) return { name, ok: false, detail: "matched stage missing from fixture" };
+  const originalStageText = stage.beats[0].text;
+  const immutableText = artifact.beats[0].text;
+  let playback;
+  try {
+    stage.beats[0].text = "MUTABLE STAGE SENTINEL";
+    playback = await getStoryPlayback(session);
+  } finally {
+    stage.beats[0].text = originalStageText;
+  }
+  if (
+    playback?.source !== "artifact" ||
+    normalizeChunkText(playback.beats[0].chunks.join(" ")) !==
+      normalizeChunkText(immutableText)
+  ) {
+    return { name, ok: false, detail: "playback changed with mutable stage prose" };
+  }
+
+  const beforeDuplicate = await _sessionCount();
+  let duplicateRejected = false;
+  try {
+    await createSession({
+      userId: session.userId,
+      figureKey: session.figureKey,
+      stageId: session.stageId,
+      framing: session.framing,
+      age: session.age,
+      feeling: session.feeling,
+      matchRecipe: session.matchRecipe,
+      artifact,
+    });
+  } catch {
+    duplicateRejected = true;
+  }
+  if (!duplicateRejected || (await _sessionCount()) !== beforeDuplicate) {
+    return { name, ok: false, detail: "failed artifact insert left a session behind" };
+  }
+
+  const freshArtifact = composeCanonicalStoryArtifact({
+    storySpec: buildDraftStorySpec(stage),
+    stage,
+    matchRecipe: session.matchRecipe,
+    openingCopy: artifact.openingCopy,
+    framing: session.framing,
+    disclosure,
+    allowDraftSpec: true,
+  });
+  const memorySessions = globalThis.__onwardSessions;
+  if (!memorySessions) return { name, ok: false, detail: "memory session map unavailable" };
+  const originalSet = memorySessions.set;
+  const beforeInjectedSessions = await _sessionCount();
+  const beforeInjectedArtifacts = await _storyArtifactCount();
+  let injectedFailureObserved = false;
+  memorySessions.set = (() => {
+    throw new Error("injected session persistence failure");
+  }) as typeof memorySessions.set;
+  try {
+    await createSession({
+      userId: session.userId,
+      figureKey: session.figureKey,
+      stageId: session.stageId,
+      framing: session.framing,
+      age: session.age,
+      feeling: session.feeling,
+      matchRecipe: session.matchRecipe,
+      artifact: freshArtifact,
+    });
+  } catch {
+    injectedFailureObserved = true;
+  } finally {
+    memorySessions.set = originalSet;
+  }
+  if (
+    !injectedFailureObserved ||
+    (await _sessionCount()) !== beforeInjectedSessions ||
+    (await _storyArtifactCount()) !== beforeInjectedArtifacts
+  ) {
+    return { name, ok: false, detail: "session failure did not roll back artifact insert" };
+  }
+
+  return {
+    name,
+    ok: true,
+    detail: `artifact=${artifact.artifactId.slice(0, 8)}…; tamper/foreign/mutation rejected`,
+  };
+}
+
+async function runLegacyPlaybackAssertion(): Promise<AssertionResult> {
+  const name = "playback: pre-artifact session compatibility is explicit";
+  const sessions = globalThis.__onwardSessions;
+  const stage = FIGURE_STAGES[0];
+  if (!sessions || !stage) return { name, ok: false, detail: "legacy fixture unavailable" };
+  const sessionId = `legacy-${Date.now()}`;
+  const now = Date.now();
+  const rawLegacy = {
+    sessionId,
+    userId: "legacy-user",
+    figureKey: stage.figureKey,
+    stageId: stage.stageId,
+    framing: "partial",
+    openingCopy: {
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: ["This story is true."],
+    },
+    age: stage.ageMin,
+    feeling: "legacy private text",
+    matchRecipe: {
+      recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+      matchConfigVersion: "legacy",
+      crisisRegexVersion: "legacy",
+      llmProvider: "stub",
+      rerankModelId: "stub",
+      proseModelId: "stub",
+      embeddingModelId: "stub",
+      retrievalMode: "keyword",
+    },
+    nextBeatIndex: 0,
+    nextChunkIndex: 0,
+    createdAt: now,
+    updatedAt: now,
+  } as unknown as Session;
+  const originalBridge = stage.beats[6].text;
+  sessions.set(sessionId, rawLegacy);
+  try {
+    stage.beats[6].text = 'You wrote: "{feeling}"';
+    const normalized = await getSession(sessionId);
+    const foreign = await getOwnedSession(sessionId, "foreign-user");
+    if (!normalized || normalized.storyArtifactId !== null || foreign) {
+      return { name, ok: false, detail: "legacy ownership/normalization failed" };
+    }
+    const playback = await getStoryPlayback(normalized);
+    const bridge = playback?.beats[6].chunks.join(" ") ?? "";
+    const ok =
+      playback?.source === "legacy_stage" &&
+      bridge.includes(SAFE_BRIDGE_DISTANCE_LINE) &&
+      !bridge.includes("{feeling}");
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "missing pointer normalized to null; legacy prose sanitized"
+        : "legacy playback did not sanitize or identify its source",
+    };
+  } finally {
+    stage.beats[6].text = originalBridge;
+    sessions.delete(sessionId);
+  }
+}
+
 // Ownership chokepoint: a foreign or absent user must read null (the routes' 404),
 // indistinguishable from a missing session.
 async function runOwnershipAssertion(): Promise<AssertionResult> {
@@ -378,6 +625,34 @@ function runApprovedRecipeAssertion(): AssertionResult {
     detail: ok
       ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production auto rejected; unapproved modes stamped`
       : `default=${defaultMode}, production=${productionMode}, autoRejected=${autoRejected}, ids=${approvedId}/${challengerId}`,
+  };
+}
+
+async function runPublishedEligibilityAssertion(): Promise<AssertionResult> {
+  const name = "matching: publication eligibility survives age fallback";
+  const butlerKey = "butler\u00001974-1975-pre-patternmaster";
+  const selected = await match({
+    age: 99,
+    feeling: "I escaped and do not know where I belong now",
+    eligibleStageKeys: new Set([butlerKey]),
+  });
+  let emptyRejected = false;
+  try {
+    await match({
+      age: 28,
+      feeling: "I keep getting rejected and do not know whether to continue",
+      eligibleStageKeys: new Set(),
+    });
+  } catch {
+    emptyRejected = true;
+  }
+  const ok = selected.figureKey === "butler" && emptyRejected;
+  return {
+    name,
+    ok,
+    detail: ok
+      ? "only eligible stage selected through fallback; empty catalog failed closed"
+      : `selected=${selected.figureKey}, emptyRejected=${emptyRejected}`,
   };
 }
 
@@ -892,9 +1167,12 @@ async function main(): Promise<void> {
     ),
     await runCrisisAssertion(),
     await runOwnershipAssertion(),
+    await runArtifactPersistenceAssertion(),
+    await runLegacyPlaybackAssertion(),
     await runAtomicProgressAssertion(),
     await runStoryCreationKillSwitchAssertion(),
     runApprovedRecipeAssertion(),
+    await runPublishedEligibilityAssertion(),
     runOutlineAssertion(),
     runRerankCandidateAssertion(),
     runEyebrowGuardAssertion(),

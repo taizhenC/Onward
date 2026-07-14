@@ -149,6 +149,9 @@ export type Session = {
   userId: string;
   figureKey: string;
   stageId: string;
+  // New sessions point to one immutable, owner-scoped artifact. Null exists
+  // only for rows created before migration 0005 and follows the legacy path.
+  storyArtifactId: string | null;
   framing: Framing;
   openingCopy: OpeningCopy;
   age: number;
@@ -171,10 +174,10 @@ export type CreateSessionInput = {
   figureKey: string;
   stageId: string;
   framing: Framing;
-  openingCopy: OpeningCopy;
   age: number;
   feeling: string;
   matchRecipe: MatchRecipe;
+  artifact: import("./story-artifact-types").StoryArtifact;
 };
 
 export type AcknowledgeSessionPositionInput = {

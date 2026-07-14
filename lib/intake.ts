@@ -8,6 +8,12 @@ import { getByKey } from "./figures";
 import { activeRecipe, writeOpeningCopy } from "./llm";
 import { embeddingModelId } from "./embeddings";
 import { consumeMatchRateLimit } from "./rate-limit";
+import { buildDraftStorySpec } from "./story-spec";
+import {
+  getPublishedStorySpec,
+  listPublishedStorySpecKeys,
+} from "./story-spec-repository";
+import { composeCanonicalStoryArtifact } from "./story-artifact";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 
 export type IntakeInput = {
@@ -55,23 +61,34 @@ export async function handleIntake(
     return { temporarilyUnavailable: true };
   }
 
-  // Rate limit BEFORE matching, so limited requests never spend the query embedding
-  // or the Cerebras rerank/opening-copy calls.
+  let eligibleStageKeys: ReadonlySet<string> | undefined;
+  if (process.env.PERSISTENCE === "supabase") {
+    try {
+      eligibleStageKeys = await listPublishedStorySpecKeys();
+    } catch {
+      return { temporarilyUnavailable: true };
+    }
+    if (eligibleStageKeys.size === 0) return { temporarilyUnavailable: true };
+  }
+
+  // Rate limit before matching/providers, but after the cheap content-readiness
+  // gate so an editorial outage never consumes a reader's attempt budget.
   const allowed = await consumeMatchRateLimit(ctx.userId, ctx.ipHash);
   if (!allowed) {
     return { rateLimited: true };
   }
 
-  const result = await match(validated);
+  let result;
+  try {
+    result = await match({ ...validated, eligibleStageKeys });
+  } catch {
+    return { temporarilyUnavailable: true };
+  }
 
-  // Generate the opening eyebrow from the user's feeling + the chosen stage. Best-effort:
-  // writeOpeningCopy never throws (it degrades to a neutral line), and a missing stage
-  // (shouldn't happen — match() validates in-pool) also falls back, so intake never fails
-  // on copy.
+  // The chosen content must still resolve after matching; a concurrent editorial
+  // retirement fails closed before prose generation or persistence.
   const stage = await getByKey(result.figureKey, result.stageId);
-  const openingCopy = stage
-    ? await writeOpeningCopy({ feeling: validated.feeling, stage })
-    : { eyebrow: NEUTRAL_EYEBROW, prefaceLines: DEFAULT_PREFACE_LINES };
+  if (!stage) return { temporarilyUnavailable: true };
 
   // Freeze the active config/model versions on the session for auditable replay. activeRecipe()
   // stays LLM-only; the embedder id and configured retrieval mode are merged here so the embedding
@@ -86,16 +103,72 @@ export async function handleIntake(
     retrievalMode,
   };
 
-  const sessionId = await createSession({
-    userId: ctx.userId,
-    figureKey: result.figureKey,
-    stageId: result.stageId,
-    framing: result.framing,
-    openingCopy,
-    age: validated.age,
+  // Production fails closed until editorial publishes an evidence-bound spec.
+  // Generated opening copy is inside the same immutable validation boundary;
+  // a rejected line gets one deterministic canonical fallback, never exposure.
+  let storySpec;
+  try {
+    storySpec =
+      process.env.PERSISTENCE === "supabase"
+        ? await getPublishedStorySpec(result.figureKey, result.stageId)
+        : buildDraftStorySpec(stage);
+  } catch {
+    return { temporarilyUnavailable: true };
+  }
+  if (!storySpec) return { temporarilyUnavailable: true };
+
+  const generatedOpeningCopy = await writeOpeningCopy({
     feeling: validated.feeling,
-    matchRecipe,
+    stage,
   });
+
+  let artifact;
+  try {
+    artifact = composeCanonicalStoryArtifact({
+      storySpec,
+      stage,
+      matchRecipe,
+      openingCopy: generatedOpeningCopy,
+      framing: result.framing,
+      disclosure: validated.feeling,
+      allowDraftSpec: process.env.PERSISTENCE !== "supabase",
+    });
+  } catch {
+    try {
+      artifact = composeCanonicalStoryArtifact({
+        storySpec,
+        stage,
+        matchRecipe,
+        openingCopy: {
+          eyebrow: NEUTRAL_EYEBROW,
+          prefaceLines: DEFAULT_PREFACE_LINES,
+        },
+        framing: result.framing,
+        disclosure: validated.feeling,
+        fallbackReason: "validator_rejected",
+        allowDraftSpec: process.env.PERSISTENCE !== "supabase",
+      });
+    } catch {
+      // Never reflect or log composition detail: it may contain curated prose.
+      return { temporarilyUnavailable: true };
+    }
+  }
+
+  let sessionId: string;
+  try {
+    sessionId = await createSession({
+      userId: ctx.userId,
+      figureKey: result.figureKey,
+      stageId: result.stageId,
+      framing: result.framing,
+      age: validated.age,
+      feeling: validated.feeling,
+      matchRecipe,
+      artifact,
+    });
+  } catch {
+    return { temporarilyUnavailable: true };
+  }
 
   return { sessionId };
 }

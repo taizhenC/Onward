@@ -7,8 +7,13 @@ import { getSupabase } from "../lib/db";
 import { handleIntake } from "../lib/intake";
 import { _sessionCount } from "../lib/session";
 import type { FigureStageRow } from "../lib/types";
+import {
+  listPublishedStorySpecKeys,
+  storySpecStageKey,
+} from "../lib/story-spec-repository";
 
-// Supabase-mode acceptance check. Run AFTER `npm run seed`, as a SEPARATE process so the
+// Supabase-mode release check. Run after migrations, seeding, and publishing the launch
+// subset, as a SEPARATE process so the
 // load-once figure cache reflects current DB state. Pins PERSISTENCE=supabase so it exercises
 // the real DB paths (figure serving + session store); LLM stays stub (the crisis probe returns
 // before any match/LLM call, so no LLM provider key is needed).
@@ -51,15 +56,28 @@ async function checkServingParity(): Promise<Step> {
   try {
     _resetFigureCache(); // separate process from seed, but reset anyway so the cache can't lie.
     const dbStages = await listAll();
-    if (dbStages.length !== FIGURE_STAGES.length) {
+    const statusResult = await getSupabase()
+      .from("figure_stages")
+      .select("figure_key,stage_id")
+      .eq("status", "published");
+    if (statusResult.error) throw new Error(statusResult.error.message);
+    const publishedKeys = new Set(
+      (statusResult.data ?? []).map((row) =>
+        storySpecStageKey(row.figure_key, row.stage_id),
+      ),
+    );
+    const expectedStages = FIGURE_STAGES.filter((stage) =>
+      publishedKeys.has(storySpecStageKey(stage.figureKey, stage.stageId)),
+    );
+    if (dbStages.length !== expectedStages.length) {
       return {
         name,
         ok: false,
-        detail: `served ${dbStages.length} stage(s), authored ${FIGURE_STAGES.length}`,
+        detail: `served ${dbStages.length} stage(s), expected ${expectedStages.length} published authored stage(s)`,
       };
     }
     const dbSorted = sortByKey(dbStages);
-    const authoredSorted = sortByKey(FIGURE_STAGES);
+    const authoredSorted = sortByKey(expectedStages);
     for (let i = 0; i < authoredSorted.length; i += 1) {
       if (!isDeepStrictEqual(dbSorted[i], authoredSorted[i])) {
         return {
@@ -72,6 +90,49 @@ async function checkServingParity(): Promise<Step> {
     return { name, ok: true, detail: `${dbStages.length} stage(s) deep-equal the const` };
   } catch (error) {
     return { name, ok: false, detail: message(error) };
+  }
+}
+
+async function checkPublishedStorySpecs(): Promise<Step> {
+  const name = "public stages have valid published StorySpecs";
+  try {
+    const keys = await listPublishedStorySpecKeys();
+    const served = await listAll();
+    const servedKeys = new Set(
+      served.map((stage) => storySpecStageKey(stage.figureKey, stage.stageId)),
+    );
+    const missing = [...keys].filter((key) => !servedKeys.has(key));
+    const ok = keys.size > 0 && missing.length === 0;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `${keys.size} valid published StorySpec(s) eligible for matching`
+        : keys.size === 0
+          ? "no valid published StorySpecs; review and publish the launch subset"
+          : `${missing.length} published StorySpec stage(s) are disabled/missing`,
+    };
+  } catch (error) {
+    return { name, ok: false, detail: message(error) };
+  }
+}
+
+async function checkArtifactSchema(): Promise<Step> {
+  const name = "StoryArtifact schema installed";
+  try {
+    const artifacts = await tableCount("story_artifacts");
+    const sessions = await getSupabase()
+      .from("sessions")
+      .select("story_artifact_id")
+      .limit(1);
+    if (sessions.error) throw new Error(sessions.error.message);
+    return {
+      name,
+      ok: true,
+      detail: `story_artifacts reachable (${artifacts} row(s)); session pointer present`,
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} — apply migration 0005` };
   }
 }
 
@@ -136,6 +197,8 @@ async function main(): Promise<void> {
   const steps = [
     await checkSeeded(),
     await checkServingParity(),
+    await checkPublishedStorySpecs(),
+    await checkArtifactSchema(),
     await checkCrisisPersistsNothing(),
   ];
 

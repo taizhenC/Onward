@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getByKey, toClientOutline } from "@/lib/figures";
 import { getAuthUserId } from "@/lib/auth";
 import { getOwnedSession } from "@/lib/session";
 import { StoryPlayer } from "@/components/StoryPlayer";
+import { getStoryPlayback } from "@/lib/story-playback";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,10 +26,9 @@ export default async function StoryPage({
   const session = await getOwnedSession(sessionId, await getAuthUserId());
   if (!session) notFound();
 
-  const stage = await getByKey(session.figureKey, session.stageId);
-  if (!stage) notFound();
-
-  const outline = toClientOutline(stage);
+  const playback = await getStoryPlayback(session);
+  if (!playback) notFound();
+  const outline = playback.outline;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -57,7 +56,7 @@ export default async function StoryPage({
         <StoryPlayer
           sessionId={sessionId}
           outline={outline}
-          openingCopy={session.openingCopy}
+          openingCopy={playback.openingCopy}
           initialBeatIndex={session.nextBeatIndex}
           initialChunkIndex={session.nextChunkIndex}
         />

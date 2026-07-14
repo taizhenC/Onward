@@ -2,7 +2,7 @@ import "server-only";
 import { activeRecipe, writeOpeningCopy } from "./llm";
 import { embeddingModelId } from "./embeddings";
 import { getByKey, listAll } from "./figures";
-import { APPROVED_PRODUCTION_RECIPE, matchConfigVersion } from "./match-config";
+import { matchConfigVersion, recipeIdForRetrievalMode } from "./match-config";
 import { resolveRetrievalMode, type IntakeMatchResult } from "./matching";
 import { crisisRegexVersion } from "./safety";
 import { buildDraftStorySpec } from "./story-spec";
@@ -128,13 +128,14 @@ export async function prepareStory(input: {
 }
 
 function activeMatchRecipe(mode: "initial" | "alternate"): MatchRecipe {
+  const retrievalMode = resolveRetrievalMode();
   return {
-    recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+    recipeId: recipeIdForRetrievalMode(retrievalMode),
     matchConfigVersion,
     crisisRegexVersion,
     ...activeRecipe(),
     embeddingModelId: embeddingModelId(),
-    retrievalMode: resolveRetrievalMode(),
+    retrievalMode,
     resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
     matchRecoveryPolicyVersion: MATCH_RECOVERY_POLICY_VERSION,
     ...(mode === "alternate"

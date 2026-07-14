@@ -58,6 +58,69 @@ export function appendMemoryProductEvent(
   return appendMemoryProductEventWithPolicy(record, false);
 }
 
+// Memory-mode domain transitions need the same all-or-nothing behavior as a
+// Postgres RPC. Validate the complete batch before mutating either the event
+// map or pointer-only outbox; duplicate replays still restore a missing
+// pointer without requeueing one already marked delivered.
+export function appendMemoryProductEventsAtomically(
+  records: ReadonlyArray<Readonly<ProductEventRecord>>,
+  now = Date.now(),
+): TelemetryWriteResult {
+  pruneMemoryTelemetry(now);
+  const batchIds = new Map<string, Readonly<ProductEventRecord>>();
+  const batchSemanticKeys = new Map<string, Readonly<ProductEventRecord>>();
+
+  for (const record of records) {
+    if (
+      record.flowId !== null &&
+      !isActiveMemoryTelemetryFlow(record.flowId, now)
+    ) {
+      return "conflict";
+    }
+    const duplicateBatchId = batchIds.get(record.eventId);
+    if (duplicateBatchId && !sameProductEvent(duplicateBatchId, record)) {
+      return "conflict";
+    }
+    batchIds.set(record.eventId, record);
+
+    const existing = productEvents.get(record.eventId);
+    if (existing && !sameProductEvent(existing, record)) return "conflict";
+
+    const semanticKey = deriveProductEventSemanticKey(record, record.flowId);
+    if (semanticKey === null) continue;
+    const duplicateBatchSemantic = batchSemanticKeys.get(semanticKey);
+    if (
+      duplicateBatchSemantic &&
+      duplicateBatchSemantic.eventId !== record.eventId
+    ) {
+      return "conflict";
+    }
+    batchSemanticKeys.set(semanticKey, record);
+    const semanticExisting = [...productEvents.values()].find((candidate) => {
+      if (candidate.flowId === null) return false;
+      return (
+        deriveProductEventSemanticKey(candidate, candidate.flowId) ===
+        semanticKey
+      );
+    });
+    if (semanticExisting && semanticExisting.eventId !== record.eventId) {
+      return "conflict";
+    }
+  }
+
+  let created = false;
+  for (const record of records) {
+    if (!productEvents.has(record.eventId)) {
+      productEvents.set(record.eventId, freezeClone(record));
+      created = true;
+    }
+    if (!productEventOutbox.has(record.eventId)) {
+      productEventOutbox.set(record.eventId, pendingPointer(record));
+    }
+  }
+  return created ? "created" : "duplicate";
+}
+
 // Domain transactions may need to complete after a response-loss retry has
 // recomputed different measured dimensions for the same semantic event. This
 // narrow path preserves the first accepted measurement while still proving

@@ -8,6 +8,8 @@ import {
   RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION,
   BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
   LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
+  LEGACY_STORY_ARTIFACT_VALIDATOR_VERSION,
+  MAX_STORY_PASSAGES,
   STORY_ARTIFACT_VALIDATOR_VERSION,
   STORY_COMPOSER_VERSION,
   type ArtifactValidationFailure,
@@ -310,13 +312,21 @@ export function validateStoryArtifact(
 
   let transitionPersonalizationCount = 0;
   let bridgePersonalizationCount = 0;
+  let passageCount = 0;
   artifact.beats.forEach((beat, index) => {
     const specBeat = storySpec.arc[index];
     if (!specBeat || beat.role !== EXPECTED_ROLES[index] || beat.role !== specBeat.role) {
       failures.add("role_order_invalid");
       return;
     }
-    if (!beat.text.trim() || beat.chunks.length === 0) failures.add("empty_passage");
+    passageCount += beat.chunks.length;
+    if (
+      !beat.text.trim() ||
+      beat.chunks.length === 0 ||
+      beat.chunks.some((chunk) => !chunk.trim())
+    ) {
+      failures.add("empty_passage");
+    }
     if (normalizeText(beat.chunks.join(" ")) !== normalizeText(beat.text)) {
       failures.add("chunk_mismatch");
     }
@@ -372,6 +382,9 @@ export function validateStoryArtifact(
       failures.add("tone_invalid");
     }
   });
+  if (passageCount > MAX_STORY_PASSAGES) {
+    failures.add("passage_limit_exceeded");
+  }
 
   if (
     (artifact.composition.mode === "hybrid" &&
@@ -479,7 +492,10 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     !isRecord(artifact.recipe.match) ||
     typeof artifact.recipe.match.recipeId !== "string" ||
     artifact.recipe.composerVersion !== STORY_COMPOSER_VERSION ||
-    artifact.recipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
+    ![
+      STORY_ARTIFACT_VALIDATOR_VERSION,
+      LEGACY_STORY_ARTIFACT_VALIDATOR_VERSION,
+    ].includes(artifact.recipe.validatorVersion) ||
     (boundaryAwareSchema &&
       artifact.recipe.boundaryPolicyVersion !== STORY_BOUNDARY_POLICY_VERSION) ||
     (resonanceAwareSchema &&
@@ -527,6 +543,7 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   }
   let storedTransitionPersonalizationCount = 0;
   let storedBridgePersonalizationCount = 0;
+  let storedPassageCount = 0;
   for (const [index, beat] of artifact.beats.entries()) {
     if (
       !isRecord(beat) ||
@@ -536,7 +553,9 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
       !beat.text.trim() ||
       !Array.isArray(beat.chunks) ||
       beat.chunks.length === 0 ||
-      beat.chunks.some((chunk) => typeof chunk !== "string") ||
+      beat.chunks.some(
+        (chunk) => typeof chunk !== "string" || !chunk.trim(),
+      ) ||
       !isStringArray(beat.factIds) ||
       !isStringArray(beat.entityIds) ||
       !isStringArray(beat.quoteIds) ||
@@ -545,6 +564,8 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     ) {
       return null;
     }
+    storedPassageCount += beat.chunks.length;
+    if (storedPassageCount > MAX_STORY_PASSAGES) return null;
     if (!hybridAwareSchema && beat.personalization !== undefined) return null;
     if (beat.personalization !== undefined) {
       if (

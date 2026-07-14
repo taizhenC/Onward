@@ -37,8 +37,9 @@ export function getOwnedMemoryTelemetryFlowByFlow(
 export function getOwnedMemoryTelemetryFlowBindingByRoot(
   rootSessionId: string,
   userId: string,
+  now = Date.now(),
 ): MemoryTelemetryFlowBinding | null {
-  const flow = getMemoryTelemetryFlowByRoot(rootSessionId);
+  const flow = getMemoryTelemetryFlowByRoot(rootSessionId, now);
   return flow?.userId === userId ? asBinding(flow) : null;
 }
 

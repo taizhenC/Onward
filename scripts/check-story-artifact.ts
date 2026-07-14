@@ -11,6 +11,7 @@ import {
 } from "../lib/story-artifact";
 import {
   HYBRID_STORY_ARTIFACT_SCHEMA_VERSION,
+  LEGACY_STORY_ARTIFACT_VALIDATOR_VERSION,
   RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION,
   BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION,
   LEGACY_STORY_ARTIFACT_SCHEMA_VERSION,
@@ -65,6 +66,16 @@ function main(): void {
     }
     if (!validateStoredStoryArtifact(reverseObjectKeys(artifact))) {
       failures.push(`${label}: jsonb-style key reorder broke the content hash`);
+    }
+    if (stage === FIGURE_STAGES[0]) {
+      const validatorV1Artifact = structuredClone(artifact);
+      validatorV1Artifact.recipe.validatorVersion =
+        LEGACY_STORY_ARTIFACT_VALIDATOR_VERSION;
+      validatorV1Artifact.contentHash =
+        storyArtifactContentHash(validatorV1Artifact);
+      if (!validateStoredStoryArtifact(validatorV1Artifact)) {
+        failures.push(`${label}: bounded validator-v1 artifact no longer replays`);
+      }
     }
     if (
       artifact.transparency?.provenance.status !== "review_draft" ||
@@ -142,6 +153,32 @@ function main(): void {
     malformed.openingCopy.prefaceLines = [42];
     if (validateStoredStoryArtifact(malformed)) {
       failures.push(`${label}: malformed opening-copy JSON was accepted`);
+    }
+
+    if (stage === FIGURE_STAGES[0]) {
+      const oversized = structuredClone(artifact);
+      for (const beat of oversized.beats) {
+        beat.chunks = beat.text.match(/\S+/g) ?? [];
+      }
+      oversized.contentHash = storyArtifactContentHash(oversized);
+      const oversizedValidation = validateStoryArtifact(
+        oversized,
+        spec,
+        resonanceBrief,
+      );
+      if (
+        oversizedValidation.valid ||
+        !oversizedValidation.failureReasons.includes(
+          "passage_limit_exceeded",
+        ) ||
+        oversizedValidation.failureReasons.includes("empty_passage") ||
+        oversizedValidation.failureReasons.includes("chunk_mismatch") ||
+        validateStoredStoryArtifact(oversized)
+      ) {
+        failures.push(
+          `${label}: artifact exceeding the 64-passage telemetry ceiling was accepted`,
+        );
+      }
     }
   }
 

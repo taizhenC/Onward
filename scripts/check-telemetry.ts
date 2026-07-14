@@ -290,7 +290,7 @@ function checkExactSchemas(): void {
 }
 
 function checkEnvelopeAndRetention(): void {
-  const now = new Date("2026-07-12T12:00:00.000Z");
+  const now = new Date();
   validEvents.forEach((event) => {
     const record = createProductEventRecord({
       event,
@@ -534,7 +534,7 @@ function checkGenerationSchema(): void {
 
 function checkMemoryStore(): void {
   assert.notEqual(registerMemoryTelemetryFlow(flowId), "revoked");
-  const now = new Date("2026-07-12T12:00:00.000Z");
+  const now = new Date();
   const event = createProductEventRecord({
     eventId: createTelemetryEventId(),
     flowId,
@@ -583,11 +583,10 @@ function checkMemoryStore(): void {
 
   const expired = createProductEventRecord({
     eventId: createTelemetryEventId(),
-    flowId: createTelemetryFlowId(),
-    event: { event: "intake_submitted" },
+    flowId: null,
+    event: { event: "crisis_intercepted" },
     now: new Date("2025-01-01T00:00:00.000Z"),
   });
-  assert.notEqual(registerMemoryTelemetryFlow(expired.flowId!), "revoked");
   assert.equal(appendMemoryProductEvent(expired), "created");
   pruneMemoryTelemetry(Date.parse("2025-02-01T00:00:00.001Z"));
   assert(!listMemoryProductEvents().some((item) => item.eventId === expired.eventId));
@@ -596,12 +595,13 @@ function checkMemoryStore(): void {
 function checkMetricFixture(): void {
   const flowA = createTelemetryFlowId();
   const flowB = createTelemetryFlowId();
+  const now = new Date();
   const record = (flow: typeof flowA, event: ProductEvent): ProductEventRecord =>
     createProductEventRecord({
       eventId: createTelemetryEventId(),
       flowId: flow,
       event,
-      now: new Date("2026-07-12T12:00:00.000Z"),
+      now,
     });
   const records = [
     record(flowA, { event: "artifact_created", recipeId, storyRole: "initial", compositionMode: "hybrid", fallbackReason: "none", attemptBucket: "first" }),

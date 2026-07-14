@@ -244,7 +244,9 @@ export type TelemetryOutboxNackResult =
   | "stale"
   | "not_found";
 
-export type ProductEventCapture = ProductEvent & {
+export type ProductEventCapture<
+  Event extends ProductEvent = ProductEvent,
+> = Event & {
   eventId: TelemetryEventId;
   schemaVersion: typeof PRODUCT_EVENT_SCHEMA_VERSION;
   flowId: TelemetryFlowId | null;

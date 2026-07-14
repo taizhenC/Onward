@@ -3,8 +3,9 @@ import { getSupabase } from "./db";
 import { persistenceMode } from "./persistence";
 import { getOwnedSession } from "./session";
 import { getOwnedMemoryTelemetryFlowBindingByRoot } from "./telemetry-flow-binding-memory";
-import { parseTelemetryFlowId } from "./telemetry-id";
+import { authenticateTelemetryFlowId } from "./telemetry-id";
 import type { TelemetryFlowId } from "./telemetry-types";
+import type { Session } from "./types";
 
 export type OwnedTelemetryFlowBinding = Readonly<{
   flowId: TelemetryFlowId;
@@ -21,6 +22,17 @@ export async function resolveOwnedTelemetryFlowForSession(
 ): Promise<OwnedTelemetryFlowBinding | null> {
   const session = await getOwnedSession(sessionId, userId);
   if (!session || !userId) return null;
+  return resolveOwnedTelemetryFlowForKnownSession(session, userId);
+}
+
+// The reader route has already crossed getOwnedSession and loaded the owned
+// artifact. Reuse that projection so one Continue does not repeat a session
+// read merely to discover the immutable root ID.
+export async function resolveOwnedTelemetryFlowForKnownSession(
+  session: Session,
+  userId: string,
+): Promise<OwnedTelemetryFlowBinding | null> {
+  if (session.userId !== userId) return null;
   const rootSessionId = session.alternateOfSessionId ?? session.sessionId;
 
   if (persistenceMode() === "memory") {
@@ -45,7 +57,7 @@ export async function resolveOwnedTelemetryFlowForSession(
 
   try {
     return Object.freeze({
-      flowId: parseTelemetryFlowId(data),
+      flowId: authenticateTelemetryFlowId(data),
       rootSessionId,
     });
   } catch {

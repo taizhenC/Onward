@@ -18,6 +18,7 @@ import {
   ackMemoryProductEventOutbox,
   appendMemoryGenerationAttempt,
   appendMemoryProductEvent,
+  appendMemoryProductEventsAtomically,
   claimMemoryProductEventOutbox,
   nackMemoryProductEventOutbox,
   reconcileMemoryMatchEventFirstWriteWins as reconcileMemoryMatchEventRecord,
@@ -34,6 +35,7 @@ import {
   registerTelemetryFlow,
   revokeTelemetryFlow,
 } from "./telemetry-flow-lifecycle";
+import { PRODUCT_EVENT_SCHEMA_VERSION } from "./telemetry-types";
 import type {
   ClaimedProductEvent,
   DeletionCorrelationId,
@@ -41,6 +43,7 @@ import type {
   GenerationAttemptId,
   ProductEvent,
   ProductEventCapture,
+  ProductEventRecord,
   TelemetryEventId,
   TelemetryFlowId,
   TelemetryOccurrenceId,
@@ -54,12 +57,12 @@ import type {
 // commits telemetry in the same database transaction as its authoritative
 // state change. Unlike recordProductEvent(), this does not register or write a
 // flow; the receiving RPC must verify the active owner/root binding itself.
-export function prepareProductEventCapture(input: {
-  event: ProductEvent;
+export function prepareProductEventCapture<Event extends ProductEvent>(input: {
+  event: Event;
   flowId: TelemetryFlowId | null;
   occurrenceId?: TelemetryOccurrenceId;
-}): Readonly<ProductEventCapture> {
-  const event = parseProductEvent(input.event);
+}): Readonly<ProductEventCapture<Event>> {
+  const event = parseProductEvent(input.event) as Readonly<Event>;
   const record = createProductEventRecord({
     event,
     flowId: input.flowId,
@@ -68,7 +71,7 @@ export function prepareProductEventCapture(input: {
   const { occurredAt, expiresAt, ...capture } = record;
   void occurredAt;
   void expiresAt;
-  return Object.freeze(capture);
+  return Object.freeze(capture) as Readonly<ProductEventCapture<Event>>;
 }
 
 export async function recordProductEvent(input: {
@@ -89,6 +92,31 @@ export async function recordProductEvent(input: {
   return persistenceMode() === "supabase"
     ? appendSupabaseProductEvent(record)
     : appendMemoryProductEvent(record);
+}
+
+// A memory-backed domain store calls this immediately before its infallible
+// state-map mutation. The complete event batch is preflighted and committed
+// together, mirroring the transaction used by the Supabase domain RPC.
+export function recordPreparedMemoryProductEventsAtomically(
+  captures: ReadonlyArray<Readonly<ProductEventCapture>>,
+  now = Date.now(),
+): TelemetryWriteResult {
+  if (persistenceMode() !== "memory") {
+    throw new Error("prepared memory event transaction requires memory mode");
+  }
+  const records: Readonly<ProductEventRecord>[] = captures.map((capture) => {
+    const { eventId, schemaVersion, flowId, ...event } = capture;
+    if (schemaVersion !== PRODUCT_EVENT_SCHEMA_VERSION) {
+      throw new Error("prepared product-event schema version is unsupported");
+    }
+    return createProductEventRecord({
+      eventId,
+      flowId,
+      event,
+      now: new Date(now),
+    });
+  });
+  return appendMemoryProductEventsAtomically(records, now);
 }
 
 // Memory-backed domain transactions use this only when the durable product

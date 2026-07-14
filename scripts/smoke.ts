@@ -18,6 +18,8 @@ import {
   validateStoredStoryArtifact,
 } from "../lib/story-artifact";
 import { getStoryPlayback } from "../lib/story-playback";
+import { deriveStoryPassageLayout } from "../lib/story-progress";
+import { prepareStoryProgressTelemetry } from "../lib/story-progress-telemetry";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import { MATCH_LIMITS } from "../lib/rate-limit";
@@ -546,20 +548,38 @@ async function runAtomicProgressAssertion(): Promise<AssertionResult> {
     return { name, ok: false, detail: "intake did not create a progress session" };
   }
 
+  const owned = await getOwnedSession(result.sessionId, PROGRESS_CTX.userId);
+  const playback = owned ? await getStoryPlayback(owned) : null;
+  const layout = playback
+    ? deriveStoryPassageLayout(playback.beats, {
+        beatIndex: 0,
+        chunkIndex: 0,
+      })
+    : null;
+  if (!owned || !layout) {
+    return { name, ok: false, detail: "progress artifact was unavailable" };
+  }
+  const telemetry = await prepareStoryProgressTelemetry({
+    session: owned,
+    userId: PROGRESS_CTX.userId,
+    layout,
+  });
+
   const input = {
     sessionId: result.sessionId,
     userId: PROGRESS_CTX.userId,
+    storyArtifactId: owned.storyArtifactId,
+    telemetry,
     expectedBeatIndex: 0,
     expectedChunkIndex: 0,
-    nextBeatIndex: 0,
-    nextChunkIndex: 1,
+    nextBeatIndex: layout.nextBeatIndex,
+    nextChunkIndex: layout.nextChunkIndex,
   } as const;
   const first = await acknowledgeOwnedSessionPosition(input);
   const repeated = await acknowledgeOwnedSessionPosition(input);
   const stale = await acknowledgeOwnedSessionPosition({
     ...input,
-    nextBeatIndex: 1,
-    nextChunkIndex: 0,
+    nextBeatIndex: layout.nextBeatIndex + 1,
   });
   const foreign = await acknowledgeOwnedSessionPosition({
     ...input,
@@ -572,8 +592,8 @@ async function runAtomicProgressAssertion(): Promise<AssertionResult> {
     repeated !== "already_advanced" ||
     stale !== "conflict" ||
     foreign !== "not_found" ||
-    session?.nextBeatIndex !== 0 ||
-    session.nextChunkIndex !== 1
+    session?.nextBeatIndex !== layout.nextBeatIndex ||
+    session.nextChunkIndex !== layout.nextChunkIndex
   ) {
     return {
       name,

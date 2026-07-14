@@ -15,7 +15,7 @@ The stacked codebase has moved well beyond the original barebones MVP. It now
 has evidence-addressable story contracts, bounded personalization, honest weak-
 match recovery, story limits, source transparency, explicit progress writes,
 resonance feedback, one controlled alternate-story recovery, and a privacy-safe
-telemetry lifecycle with initial match-journey producers. Those are meaningful
+telemetry lifecycle with initial match-journey and durable reader-progress producers. Those are meaningful
 product and architecture advances.
 
 It is still **not a viable public release**. The current fifty-figure StorySpecs
@@ -23,7 +23,7 @@ are review drafts rather than a researcher-approved launch set; end-to-end
 relatability has not been validated with target readers; reader/client telemetry,
 dispatch, dashboards, and alerts are not operating; browser accessibility and
 critical-flow evidence remain incomplete; and the configured Supabase project
-does not yet contain migrations `0004` through `0012`. Local green checks do not
+does not yet contain migrations `0004` through `0013`. Local green checks do not
 substitute for those editorial, safety, user-research, and production gates.
 
 ## What the product does

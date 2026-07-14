@@ -5,7 +5,10 @@ import {
 } from "./match-config";
 import type { IntakeMatchResult } from "./matching";
 import type { MatchDisposition } from "./match-recovery";
-import type { StoryArtifact } from "./story-artifact-types";
+import {
+  MAX_STORY_PASSAGES,
+  type StoryArtifact,
+} from "./story-artifact-types";
 import type { StoryBoundaries } from "./story-boundaries";
 import { recordProductEvent } from "./telemetry";
 import type { RetrievalMode } from "./types";
@@ -123,6 +126,26 @@ export function artifactCreatedEvent(
     fallbackReason,
     attemptBucket: notAttempted ? "not_attempted" : "exhausted",
   };
+}
+
+export function passageAcknowledgedEvent(
+  storyRole: StoryRole,
+  passageOrdinal: number,
+): Extract<ProductEvent, { event: "passage_acknowledged" }> {
+  if (
+    !Number.isInteger(passageOrdinal) ||
+    passageOrdinal < 0 ||
+    passageOrdinal >= MAX_STORY_PASSAGES
+  ) {
+    throw new Error("passage telemetry ordinal exceeds the artifact contract");
+  }
+  return { event: "passage_acknowledged", storyRole, passageOrdinal };
+}
+
+export function storyCompletedEvent(
+  storyRole: StoryRole,
+): Extract<ProductEvent, { event: "story_completed" }> {
+  return { event: "story_completed", storyRole };
 }
 
 // Pure observability must not turn a valid non-crisis product response into an

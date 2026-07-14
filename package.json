@@ -18,6 +18,7 @@
     "check-telemetry": "tsx scripts/check-telemetry.ts",
     "check-telemetry-lifecycle": "tsx scripts/check-telemetry-lifecycle.ts",
     "check-telemetry-producers": "tsx scripts/check-telemetry-producers.ts",
+    "check-story-progress-telemetry": "tsx scripts/check-story-progress-telemetry.ts",
     "check-story-boundaries": "tsx scripts/check-story-boundaries.ts",
     "check-resonance-brief": "tsx scripts/check-resonance-brief.ts",
     "check-story-composer": "tsx scripts/check-story-composer.ts",

@@ -204,11 +204,31 @@ export type SessionPatch = {
 export type AcknowledgeSessionPositionInput = {
   sessionId: string;
   userId: string;
+  // Server-owned context loaded before the store call. The Supabase provider
+  // avoids re-reading the immutable session/artifact solely to prepare event
+  // IDs; migration 0013 independently verifies every value.
+  storyArtifactId: string | null;
+  telemetry: StoryProgressTelemetryCapture | null;
   expectedBeatIndex: number;
   expectedChunkIndex: number;
   nextBeatIndex: number;
   nextChunkIndex: number;
 };
+
+export type StoryProgressTelemetryCapture = Readonly<{
+  passage: Readonly<
+    Extract<
+      import("./telemetry-types").ProductEventCapture,
+      { event: "passage_acknowledged" }
+    >
+  >;
+  completion: Readonly<
+    Extract<
+      import("./telemetry-types").ProductEventCapture,
+      { event: "story_completed" }
+    >
+  > | null;
+}>;
 
 export type AcknowledgeSessionPositionResult =
   | "advanced"

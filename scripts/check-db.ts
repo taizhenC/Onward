@@ -465,6 +465,40 @@ async function checkMatchTelemetryProducerSchema(): Promise<Step> {
   }
 }
 
+async function checkStoryProgressTelemetrySchema(): Promise<Step> {
+  const name = "transactional story progress telemetry RPC installed";
+  try {
+    const probe = await getSupabase().rpc(
+      "acknowledge_story_position_v1",
+      {
+        p_session_id: "0".repeat(32),
+        p_user_id: "00000000-0000-0000-0000-000000000000",
+        p_expected_beat_index: 0,
+        p_expected_chunk_index: 0,
+        p_next_beat_index: 0,
+        p_next_chunk_index: 1,
+        p_telemetry_flow_id: null,
+        p_passage_event_id: null,
+        p_completion_event_id: null,
+        p_schema_version: null,
+        p_story_role: null,
+        p_passage_ordinal: null,
+      },
+    );
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "owner-first acknowledgement signature is reachable without writes"
+        : "a nonexistent progress probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0013` };
+  }
+}
+
 function requireRpcValidationError(
   label: string,
   error: { code?: string; message: string } | null,
@@ -557,6 +591,7 @@ async function main(): Promise<void> {
     await checkTelemetrySchema(),
     await checkTelemetryLifecycleSchema(),
     await checkMatchTelemetryProducerSchema(),
+    await checkStoryProgressTelemetrySchema(),
     await checkCrisisPersistsNothing(),
   ];
 

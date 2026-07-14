@@ -81,7 +81,7 @@ export function deriveProductEventId(
     correlationId =
       event.event === "deletion_requested" || event.event === "deletion_completed"
         ? parseDeletionCorrelationId(event.deletionId)
-        : parseTelemetryFlowId(flowId);
+        : authenticateTelemetryFlowId(flowId);
     nonceDomain = PRODUCT_EVENT_ID_DOMAIN;
   }
   const signingKey = signingKeyForId(correlationId);
@@ -109,7 +109,7 @@ export function deriveProductEventSemanticKey(
 ): string | null {
   if (flowId === null || event.event === "flow_failed") return null;
   return JSON.stringify([
-    parseTelemetryFlowId(flowId),
+    authenticateTelemetryFlowId(flowId),
     productEventSemanticUnit(event),
   ]);
 }
@@ -150,6 +150,16 @@ export function parseTelemetryFlowId(
 // authenticate the opaque identifier, but must not let the normal age guard
 // prevent deletion while database cleanup is catching up.
 export function parseTelemetryFlowIdForRetirement(
+  value: unknown,
+): TelemetryFlowId {
+  return authenticateTelemetryFlowId(value);
+}
+
+// Deterministic identity construction and transaction-prepared captures must
+// remain valid at an expiry boundary. They authenticate the server-issued ID
+// here; the owning store/RPC is the single authority that decides whether the
+// flow is still active at the domain transaction timestamp.
+export function authenticateTelemetryFlowId(
   value: unknown,
 ): TelemetryFlowId {
   const flowId = parseSignedId(

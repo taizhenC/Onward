@@ -9,7 +9,14 @@ export const RESONANCE_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v3-2026-0
 export const BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v2-2026-07";
 export const LEGACY_STORY_ARTIFACT_SCHEMA_VERSION = "story-artifact-v1-2026-07";
 export const STORY_COMPOSER_VERSION = "canonical-composer-v1-2026-07";
-export const STORY_ARTIFACT_VALIDATOR_VERSION = "artifact-validator-v1-2026-07";
+export const STORY_ARTIFACT_VALIDATOR_VERSION = "artifact-validator-v2-2026-07";
+export const LEGACY_STORY_ARTIFACT_VALIDATOR_VERSION =
+  "artifact-validator-v1-2026-07";
+// Product telemetry stores flattened passage ordinals in the closed 0..63
+// range. Keep the artifact boundary aligned so every validated story can be
+// acknowledged through its final passage without turning measurement into a
+// reader-facing availability failure.
+export const MAX_STORY_PASSAGES = 64;
 
 export type ArtifactValidationFailure =
   | "schema_invalid"
@@ -22,6 +29,7 @@ export type ArtifactValidationFailure =
   | "role_order_invalid"
   | "empty_passage"
   | "chunk_mismatch"
+  | "passage_limit_exceeded"
   | "evidence_mismatch"
   | "entity_mismatch"
   | "quote_mismatch"

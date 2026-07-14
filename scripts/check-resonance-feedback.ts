@@ -15,9 +15,9 @@ import {
   RESONANCE_MISS_REASONS,
 } from "../lib/resonance-feedback-types";
 import {
+  acknowledgeOwnedSessionPosition,
   createSession,
   getSession,
-  updateSession,
 } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { buildDraftStorySpec } from "../lib/story-spec";
@@ -321,10 +321,19 @@ async function makeSession(userId: string, completed: boolean) {
     artifact,
   });
   if (completed) {
-    await updateSession(sessionId, {
+    // A fresh session sits at (0, 0); acknowledge straight to the end so the
+    // fixture advances through the same atomic compare-and-swap the reader does.
+    const result = await acknowledgeOwnedSessionPosition({
+      sessionId,
+      userId,
+      expectedBeatIndex: 0,
+      expectedChunkIndex: 0,
       nextBeatIndex: artifact.beats.length,
       nextChunkIndex: 0,
     });
+    if (result !== "advanced") {
+      throw new Error(`could not complete fixture session: ${result}`);
+    }
   }
   return { sessionId, artifact };
 }

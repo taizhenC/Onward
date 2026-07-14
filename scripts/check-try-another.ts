@@ -39,9 +39,9 @@ import {
   getResonanceFeedbackPresentation,
 } from "../lib/resonance-feedback";
 import {
+  acknowledgeOwnedSessionPosition,
   createSession,
   getSession,
-  updateSession,
 } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { getOwnedStoryArtifact } from "../lib/story-artifacts";
@@ -582,10 +582,11 @@ async function checkHappyConcurrentFlow(
     failures.push("capability refresh endpoint did not restore the ready alternate");
   }
 
-  await updateSession(alternateSessionId, {
-    nextBeatIndex: artifact?.beats.length ?? 7,
-    nextChunkIndex: 0,
-  });
+  await completeSession(
+    alternateSessionId,
+    LOCAL_DEV_USER_ID,
+    artifact?.beats.length ?? 7,
+  );
   const alternateFeedback = await requestFeedback({
     sessionId: alternateSessionId,
     verdict: "not_close",
@@ -1217,12 +1218,32 @@ async function makeRoot(options: {
     artifact,
   });
   if (options.completed !== false) {
-    await updateSession(sessionId, {
-      nextBeatIndex: artifact.beats.length,
-      nextChunkIndex: 0,
-    });
+    await completeSession(sessionId, userId, artifact.beats.length);
   }
   return { sessionId, artifact, stage };
+}
+
+// Advance a fixture session to the end of its story through the same atomic
+// compare-and-swap the reader uses; the blind-update path this replaced was
+// removed as dead code.
+async function completeSession(
+  sessionId: string,
+  userId: string,
+  beatCount: number,
+): Promise<void> {
+  const session = await getSession(sessionId);
+  if (!session) throw new Error(`fixture session ${sessionId} not found`);
+  const result = await acknowledgeOwnedSessionPosition({
+    sessionId,
+    userId,
+    expectedBeatIndex: session.nextBeatIndex,
+    expectedChunkIndex: session.nextChunkIndex,
+    nextBeatIndex: beatCount,
+    nextChunkIndex: 0,
+  });
+  if (result !== "advanced" && result !== "already_advanced") {
+    throw new Error(`could not complete fixture session ${sessionId}: ${result}`);
+  }
 }
 
 function chooseNonRejectionSource(): FigureStageRow {

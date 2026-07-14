@@ -1,30 +1,13 @@
 import "server-only";
-import type { MatchRecipe, MatchResponse } from "./types";
-import { CRISIS_RESOURCES, classifyCrisis, crisisRegexVersion } from "./safety";
+import type { MatchResponse } from "./types";
+import { CRISIS_RESOURCES, classifyCrisis } from "./safety";
 import { createSession } from "./session";
-import { matchForIntake, resolveRetrievalMode } from "./matching";
-import { matchConfigVersion, recipeIdForRetrievalMode } from "./match-config";
-import { getByKey, listAll } from "./figures";
-import { activeRecipe, writeOpeningCopy } from "./llm";
-import { embeddingModelId } from "./embeddings";
+import { matchForIntake } from "./matching";
 import { consumeMatchRateLimit } from "./rate-limit";
-import { buildDraftStorySpec } from "./story-spec";
 import {
-  listPublishedStorySpecCatalog,
-  storySpecStageKey,
-} from "./story-spec-repository";
-import { composeStoryArtifact } from "./story-composer";
-import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
-import {
-  filterStorySpecCatalog,
   parseStoryBoundaries,
   type StoryBoundaries,
 } from "./story-boundaries";
-import type { StorySpec } from "./story-spec-types";
-import {
-  RESONANCE_BRIEF_VERSION,
-  createResonanceBrief,
-} from "./resonance-brief";
 import {
   MATCH_RECOVERY_POLICY_VERSION,
   decideMatchDisposition,
@@ -37,6 +20,16 @@ import {
   parseMatchRecoveryToken,
   type MatchRecoveryIdentity,
 } from "./match-recovery-flow";
+import { createStoryRequestContext } from "./story-request-context";
+import {
+  loadEligibleStoryCatalog,
+  prepareStory,
+} from "./story-generation";
+import {
+  isValidIntakeAge,
+  isValidIntakeFeeling,
+  normalizeIntakeFeeling,
+} from "./intake-constraints";
 
 export type IntakeInput = {
   age: number;
@@ -76,11 +69,6 @@ type ValidatedIntakeInput = {
   acceptAdjacent: boolean;
   recoveryToken: string | undefined;
 };
-
-const MIN_AGE = 13;
-const MAX_AGE = 100;
-const MIN_FEELING_LENGTH = 10;
-const MAX_FEELING_LENGTH = 1000;
 
 export async function handleIntake(
   input: unknown,
@@ -133,24 +121,14 @@ export async function handleIntake(
     return { temporarilyUnavailable: true };
   }
 
-  let catalog: ReadonlyMap<string, StorySpec>;
-  try {
-    catalog =
-      process.env.PERSISTENCE === "supabase"
-        ? await listPublishedStorySpecCatalog()
-        : new Map(
-            (await listAll()).map((stage) => [
-              storySpecStageKey(stage.figureKey, stage.stageId),
-              buildDraftStorySpec(stage),
-            ]),
-          );
-  } catch {
+  const catalogResult = await loadEligibleStoryCatalog({
+    boundaries: validated.boundaries,
+  });
+  if (catalogResult.status === "unavailable") {
     return { temporarilyUnavailable: true };
   }
-  if (catalog.size === 0) return { temporarilyUnavailable: true };
-
-  const eligibleCatalog = filterStorySpecCatalog(catalog, validated.boundaries);
-  if (eligibleCatalog.size === 0) return { noEligibleStory: true };
+  if (catalogResult.status === "no_eligible") return { noEligibleStory: true };
+  const eligibleCatalog = catalogResult.catalog;
   const eligibleStageKeys = new Set(eligibleCatalog.keys());
 
   const recoveryIdentity: MatchRecoveryIdentity = {
@@ -245,76 +223,39 @@ export async function handleIntake(
   }
   const selectedFraming =
     disposition === "close_match" ? result.framing : "partial";
-  const resonanceBrief = createResonanceBrief(
-    validated.feeling,
-    validated.boundaries,
-    validated.clarification,
-  );
-
-  // The chosen content must still resolve after matching; a concurrent editorial
-  // retirement fails closed before prose generation or persistence.
-  const stage = await getByKey(result.figureKey, result.stageId);
-  if (!stage) return { temporarilyUnavailable: true };
-
-  // Freeze the active config/model versions on the session for auditable replay. activeRecipe()
-  // stays LLM-only; the embedder id and configured retrieval mode are merged here so the embedding
-  // and LLM provider boundaries stay decoupled.
-  const retrievalMode = resolveRetrievalMode();
-  const matchRecipe: MatchRecipe = {
-    recipeId: recipeIdForRetrievalMode(retrievalMode),
-    matchConfigVersion,
-    crisisRegexVersion,
-    ...activeRecipe(),
-    embeddingModelId: embeddingModelId(),
-    retrievalMode,
-    resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
-    matchRecoveryPolicyVersion: MATCH_RECOVERY_POLICY_VERSION,
-  };
-
-  // The selected spec comes from the already validated and boundary-filtered
-  // catalog. The persistence RPC rechecks publication under a row lock.
-  const storySpec = eligibleCatalog.get(
-    storySpecStageKey(result.figureKey, result.stageId),
-  );
-  if (!storySpec) return { temporarilyUnavailable: true };
-
-  const generatedOpeningCopy = await writeOpeningCopy({
-    resonanceBrief,
-    stage,
-  });
-
-  let artifact;
+  let prepared;
   try {
-    artifact = await composeStoryArtifact({
-      storySpec,
-      stage,
-      matchRecipe,
-      openingCopy: generatedOpeningCopy,
-      fallbackOpeningCopy: {
-        eyebrow: NEUTRAL_EYEBROW,
-        prefaceLines: DEFAULT_PREFACE_LINES,
-      },
-      framing: selectedFraming,
-      resonanceBrief,
+    prepared = await prepareStory({
+      age: validated.age,
+      feeling: validated.feeling,
       boundaries: validated.boundaries,
-      allowDraftSpec: process.env.PERSISTENCE !== "supabase",
+      clarification: validated.clarification,
+      match: result,
+      catalog: eligibleCatalog,
+      framing: selectedFraming,
+      mode: "initial",
     });
   } catch {
     // Never reflect or log composition detail: it may contain curated prose.
     return { temporarilyUnavailable: true };
   }
+  if (!prepared) return { temporarilyUnavailable: true };
 
   let sessionId: string;
   try {
     sessionId = await createSession({
       userId: ctx.userId,
-      figureKey: result.figureKey,
-      stageId: result.stageId,
-      framing: selectedFraming,
+      figureKey: prepared.figureKey,
+      stageId: prepared.stageId,
+      framing: prepared.framing,
       age: validated.age,
       feeling: validated.feeling,
-      matchRecipe,
-      artifact,
+      storyRequestContext: createStoryRequestContext({
+        boundaries: validated.boundaries,
+        clarification: validated.clarification,
+      }),
+      matchRecipe: prepared.matchRecipe,
+      artifact: prepared.artifact,
     });
   } catch {
     return { temporarilyUnavailable: true };
@@ -334,24 +275,23 @@ function validateCoreIntake(input: unknown): CoreIntakeInput | IntakeValidationE
 
   if (
     typeof age !== "number" ||
-    !Number.isFinite(age) ||
-    age < MIN_AGE ||
-    age > MAX_AGE
+    !isValidIntakeAge(age)
   ) {
-    return { error: "Age must be a number between 13 and 100." };
+    return { error: "Age must be a whole number between 13 and 100." };
   }
 
+  const normalizedFeeling =
+    typeof feeling === "string" ? normalizeIntakeFeeling(feeling) : null;
   if (
-    typeof feeling !== "string" ||
-    feeling.trim().length < MIN_FEELING_LENGTH ||
-    feeling.length > MAX_FEELING_LENGTH
+    normalizedFeeling === null ||
+    !isValidIntakeFeeling(normalizedFeeling)
   ) {
     return { error: "Feeling must be between 10 and 1000 characters." };
   }
 
   return {
     age,
-    feeling,
+    feeling: normalizedFeeling,
     boundariesRaw: candidate.boundaries,
     clarificationRaw: candidate.clarification,
     acceptAdjacentRaw: candidate.acceptAdjacent,

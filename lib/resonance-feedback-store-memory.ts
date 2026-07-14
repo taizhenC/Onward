@@ -61,6 +61,14 @@ export function listMemoryResonanceFeedback(): StoredResonanceFeedback[] {
   return [...feedback.values()].map((item) => structuredClone(item));
 }
 
+export function getMemoryResonanceFeedbackForSession(
+  sessionId: string,
+): StoredResonanceFeedback | null {
+  pruneMemoryResonanceFeedback();
+  const item = feedback.get(sessionId);
+  return item ? structuredClone(item) : null;
+}
+
 export function deleteMemoryResonanceFeedbackForSession(
   sessionId: string,
 ): void {

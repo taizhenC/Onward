@@ -29,6 +29,14 @@ export async function getOwnedMemoryStoryArtifact(
   userId: string,
   sessionId: string,
 ): Promise<StoryArtifact | null> {
+  return getOwnedMemoryStoryArtifactSync(artifactId, userId, sessionId);
+}
+
+export function getOwnedMemoryStoryArtifactSync(
+  artifactId: string,
+  userId: string,
+  sessionId: string,
+): StoryArtifact | null {
   const owned = artifacts.get(artifactId);
   return owned?.userId === userId && owned.sessionId === sessionId
     ? owned.artifact

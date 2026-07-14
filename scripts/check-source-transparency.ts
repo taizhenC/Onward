@@ -22,6 +22,7 @@ import {
   type PrimaryPressure,
 } from "../lib/resonance-brief";
 import { createSession } from "../lib/session";
+import { createStoryRequestContext } from "../lib/story-request-context";
 import {
   composeCanonicalStoryArtifact,
   composeHybridStoryArtifact,
@@ -288,6 +289,10 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
     framing: owner.artifact.framing,
     age: 30,
     feeling: PRIVATE_DISCLOSURE,
+    storyRequestContext: createStoryRequestContext({
+      boundaries: undefined,
+      clarification: undefined,
+    }),
     matchRecipe: recipe,
     artifact: owner.artifact,
   });
@@ -372,6 +377,10 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
     framing: foreign.artifact.framing,
     age: 30,
     feeling: "foreign private input",
+    storyRequestContext: createStoryRequestContext({
+      boundaries: undefined,
+      clarification: undefined,
+    }),
     matchRecipe: recipe,
     artifact: foreign.artifact,
   });
@@ -412,6 +421,10 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
     framing: legacy.framing,
     age: 30,
     feeling: "legacy private input",
+    storyRequestContext: createStoryRequestContext({
+      boundaries: undefined,
+      clarification: undefined,
+    }),
     matchRecipe: recipe,
     artifact: legacy,
   });

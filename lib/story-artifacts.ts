@@ -1,5 +1,6 @@
 import "server-only";
 import { getSupabase } from "./db";
+import { persistenceMode } from "./persistence";
 import {
   getOwnedMemoryStoryArtifact,
   memoryStoryArtifactCount,
@@ -12,7 +13,7 @@ export async function getOwnedStoryArtifact(
   userId: string,
   sessionId: string,
 ): Promise<StoryArtifact | null> {
-  if (process.env.PERSISTENCE !== "supabase") {
+  if (persistenceMode() === "memory") {
     const stored = await getOwnedMemoryStoryArtifact(artifactId, userId, sessionId);
     if (!stored) return null;
     const artifact = validateStoredStoryArtifact(stored);
@@ -35,7 +36,7 @@ export async function getOwnedStoryArtifact(
 }
 
 export async function _storyArtifactCount(): Promise<number> {
-  if (process.env.PERSISTENCE !== "supabase") return memoryStoryArtifactCount();
+  if (persistenceMode() === "memory") return memoryStoryArtifactCount();
   const result = await getSupabase()
     .from("story_artifacts")
     .select("*", { count: "exact", head: true });

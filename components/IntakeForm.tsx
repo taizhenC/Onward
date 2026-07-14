@@ -17,6 +17,15 @@ import {
   MATCH_CLARIFICATION_OPTIONS,
   type MatchClarification,
 } from "@/lib/match-recovery";
+import {
+  INTAKE_MAX_AGE,
+  INTAKE_MAX_FEELING_LENGTH,
+  INTAKE_MIN_AGE,
+  intakeFeelingLength,
+  isValidIntakeAge,
+  isValidIntakeFeeling,
+  normalizeIntakeFeeling,
+} from "@/lib/intake-constraints";
 
 type MatchSuccess = { sessionId: string };
 type MatchCrisis = { crisis: true; resources: CrisisResource[] };
@@ -97,12 +106,10 @@ export function IntakeForm() {
     else if (noEligibleStory) noEligibleRef.current?.focus();
   }, [clarificationNeeded, noCloseMatch, noEligibleStory]);
 
-  const ageNum = Number.parseInt(age, 10);
-  const ageValid =
-    Number.isInteger(ageNum) && ageNum >= 13 && ageNum <= 100;
-  const trimmedFeeling = feeling.trim();
-  const feelingValid =
-    trimmedFeeling.length >= 10 && feeling.length <= 1000;
+  const ageNum = Number(age);
+  const ageValid = isValidIntakeAge(ageNum);
+  const feelingLength = intakeFeelingLength(feeling);
+  const feelingValid = isValidIntakeFeeling(feeling);
   const baseCanSubmit = ageValid && feelingValid && !submitting;
   const canSubmit =
     baseCanSubmit && (!clarificationNeeded || clarification !== null);
@@ -317,8 +324,9 @@ export function IntakeForm() {
         </span>
         <input
           type="number"
-          min={13}
-          max={100}
+          min={INTAKE_MIN_AGE}
+          max={INTAKE_MAX_AGE}
+          step={1}
           value={age}
           onChange={(event) => {
             setAge(event.target.value);
@@ -337,17 +345,19 @@ export function IntakeForm() {
           ref={feelingRef}
           value={feeling}
           onChange={(event) => {
-            setFeeling(event.target.value);
+            const next = normalizeIntakeFeeling(event.target.value);
+            if (intakeFeelingLength(next) <= INTAKE_MAX_FEELING_LENGTH) {
+              setFeeling(next);
+            }
             resetMatchRecovery();
           }}
           disabled={submitting}
           rows={6}
-          maxLength={1000}
           placeholder="A few sentences. Whatever feels honest."
           className="block w-full bg-transparent border border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none p-4 resize-none"
         />
         <span className="block font-ui text-xs text-[var(--color-ink-soft)]/70 text-right">
-          {feeling.length}/1000
+          {feelingLength}/{INTAKE_MAX_FEELING_LENGTH}
         </span>
         <span className="block text-sm leading-relaxed text-[var(--color-ink-soft)]">
           What you write stays private and is not repeated back in the story.

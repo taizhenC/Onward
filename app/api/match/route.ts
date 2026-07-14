@@ -30,7 +30,12 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   // Non-crisis stories need an owner before matching or persistence.
-  const userId = await getAuthUserId();
+  let userId: string | null;
+  try {
+    userId = await getAuthUserId();
+  } catch {
+    return unavailableResponse();
+  }
   if (!userId) {
     return jsonError(
       "We couldn't start a private session. Cookies are needed to keep your story yours.",
@@ -38,10 +43,15 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  const result = await handleIntake(body, {
-    userId,
-    ipHash: hashRequestIp(request),
-  });
+  let result: Awaited<ReturnType<typeof handleIntake>>;
+  try {
+    result = await handleIntake(body, {
+      userId,
+      ipHash: hashRequestIp(request),
+    });
+  } catch {
+    return unavailableResponse();
+  }
 
   if ("error" in result) {
     return jsonError(result.error, 400);
@@ -64,4 +74,14 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   return Response.json(result);
+}
+
+function unavailableResponse(): Response {
+  return Response.json(
+    { temporarilyUnavailable: true },
+    {
+      status: 503,
+      headers: { "cache-control": "no-store", "retry-after": "900" },
+    },
+  );
 }

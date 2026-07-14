@@ -143,6 +143,7 @@ export type MatchRecipe = {
   // ResonanceBrief boundary existed. Every new intake pins this version.
   resonanceBriefVersion?: string;
   matchRecoveryPolicyVersion?: string;
+  alternateStoryPolicyVersion?: string;
 };
 
 export type Session = {
@@ -158,8 +159,13 @@ export type Session = {
   storyArtifactId: string | null;
   framing: Framing;
   openingCopy: OpeningCopy;
-  age: number;
-  feeling: string;
+  age: number | null;
+  feeling: string | null;
+  // SQL/null context identifies legacy, expired, and alternate rows. It must
+  // never be interpreted as an affirmative selection of "no boundaries".
+  storyRequestContext: import("./story-request-context").StoryRequestContext | null;
+  disclosureExpiresAt: number;
+  alternateOfSessionId: string | null;
   matchRecipe: MatchRecipe;
   nextBeatIndex: number;
   nextChunkIndex: number;
@@ -180,6 +186,7 @@ export type CreateSessionInput = {
   framing: Framing;
   age: number;
   feeling: string;
+  storyRequestContext: import("./story-request-context").StoryRequestContext;
   matchRecipe: MatchRecipe;
   artifact: import("./story-artifact-types").StoryArtifact;
 };

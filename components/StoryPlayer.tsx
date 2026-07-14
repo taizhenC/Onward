@@ -9,6 +9,7 @@ import type {
   StoryAdvance,
 } from "@/lib/types";
 import type { StoryTransparency } from "@/lib/story-transparency-types";
+import type { ResonanceFeedbackPresentation } from "@/lib/resonance-feedback-types";
 import { PrefaceCard } from "./PrefaceCard";
 import { SaveStoriesCard } from "./SaveStoriesCard";
 import { StoryAfterword } from "./StoryAfterword";
@@ -26,6 +27,7 @@ type Props = {
   initialChunkIndex: number;
   completedBridgeText: string | null;
   feedbackAvailable: boolean;
+  initialFeedback: ResonanceFeedbackPresentation;
 };
 
 type Phase = "preface" | "playing" | "ended";
@@ -41,6 +43,7 @@ export function StoryPlayer({
   initialChunkIndex,
   completedBridgeText,
   feedbackAvailable,
+  initialFeedback,
 }: Props) {
   const totalBeats = outline.beats.length;
   const [phase, setPhase] = useState<Phase>(() => {
@@ -137,11 +140,13 @@ export function StoryPlayer({
           <StoryAfterword sessionId={sessionId} transparency={transparency} />
           {feedbackAvailable ? (
             <ResonanceFeedbackCard
+              key={feedbackPresentationKey(initialFeedback)}
               sessionId={sessionId}
               historicalReportingAvailable={
                 transparency?.provenance.status === "editorially_reviewed" &&
                 transparency.facts.length > 0
               }
+              initialFeedback={initialFeedback}
             />
           ) : null}
           <SaveStoriesCard />
@@ -149,6 +154,15 @@ export function StoryPlayer({
       ) : null}
     </div>
   );
+}
+
+function feedbackPresentationKey(
+  presentation: ResonanceFeedbackPresentation,
+): string {
+  if (presentation.status !== "not_close") return presentation.status;
+  const offer = presentation.alternate;
+  if (offer.status === "ready") return `not_close:ready:${offer.sessionId}`;
+  return `not_close:${offer.status}`;
 }
 
 function Header({

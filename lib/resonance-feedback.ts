@@ -4,12 +4,19 @@ import type { StoryArtifact } from "./story-artifact-types";
 import {
   RESONANCE_FEEDBACK_POLICY_VERSION,
   type ResonanceFeedbackInput,
+  type ResonanceFeedbackPresentation,
 } from "./resonance-feedback-types";
 import {
+  getMemoryResonanceFeedbackForSession,
   listMemoryResonanceFeedback,
   submitMemoryResonanceFeedback,
 } from "./resonance-feedback-store-memory";
-import { submitSupabaseResonanceFeedback } from "./resonance-feedback-store-supabase";
+import {
+  getSupabaseResonanceFeedbackForSession,
+  submitSupabaseResonanceFeedback,
+} from "./resonance-feedback-store-supabase";
+import { issueAlternateStoryCapability } from "./alternate-story-flow";
+import { persistenceMode } from "./persistence";
 
 export class ResonanceFeedbackTargetError extends Error {}
 export class ResonanceFeedbackIncompleteError extends Error {}
@@ -36,7 +43,7 @@ export async function submitResonanceFeedback(input: {
   }
   const reason = feedback.verdict === "not_close" ? feedback.reason : null;
   const result =
-    process.env.PERSISTENCE === "supabase"
+    persistenceMode() === "supabase"
       ? await submitSupabaseResonanceFeedback({
           userId,
           sessionId: session.sessionId,
@@ -66,8 +73,55 @@ export async function submitResonanceFeedback(input: {
 }
 
 export function _listResonanceFeedback() {
-  if (process.env.PERSISTENCE === "supabase") {
+  if (persistenceMode() === "supabase") {
     throw new Error("feedback test projection is memory-only");
   }
   return listMemoryResonanceFeedback();
+}
+
+export async function getResonanceFeedbackPresentation(input: {
+  userId: string;
+  session: Session;
+  artifact: StoryArtifact;
+}): Promise<ResonanceFeedbackPresentation> {
+  const { userId, session, artifact } = input;
+  if (
+    session.userId !== userId ||
+    session.storyArtifactId !== artifact.artifactId ||
+    session.figureKey !== artifact.figureKey ||
+    session.stageId !== artifact.stageId
+  ) {
+    return { status: "unanswered" };
+  }
+  const feedback =
+    persistenceMode() === "supabase"
+      ? await getSupabaseResonanceFeedbackForSession({
+          userId,
+          sessionId: session.sessionId,
+          artifactId: artifact.artifactId,
+        })
+      : getMemoryResonanceFeedbackForSession(session.sessionId);
+  if (
+    !feedback ||
+    feedback.userId !== userId ||
+    feedback.artifactId !== artifact.artifactId
+  ) {
+    return { status: "unanswered" };
+  }
+  if (feedback.verdict === "felt_close") return { status: "felt_close" };
+  try {
+    return {
+      status: "not_close",
+      alternate: await issueAlternateStoryCapability({
+        userId,
+        session,
+        artifact,
+      }),
+    };
+  } catch {
+    return {
+      status: "not_close",
+      alternate: { status: "temporarily_unavailable", retryAfterMs: 15_000 },
+    };
+  }
 }

@@ -6,6 +6,7 @@ import { LOCAL_DEV_USER_ID } from "../lib/auth";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { _listHistoricalConcerns } from "../lib/historical-concerns";
 import { createResonanceBrief } from "../lib/resonance-brief";
+import { createStoryRequestContext } from "../lib/story-request-context";
 import { _listResonanceFeedback } from "../lib/resonance-feedback";
 import { parseResonanceFeedbackRequest } from "../lib/resonance-feedback-request";
 import {
@@ -309,6 +310,10 @@ async function makeSession(userId: string, completed: boolean) {
     framing: artifact.framing,
     age: 30,
     feeling: PRIVATE_DISCLOSURE,
+    storyRequestContext: createStoryRequestContext({
+      boundaries: undefined,
+      clarification: undefined,
+    }),
     matchRecipe: recipe,
     artifact,
   });

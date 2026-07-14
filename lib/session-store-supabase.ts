@@ -11,6 +11,7 @@ import type {
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import { getSupabase } from "./db";
+import { parseStoryRequestContext } from "./story-request-context";
 
 // Durable session store (PERSISTENCE=supabase). Survives restarts and works across
 // serverless instances. getSupabase() is called inside the methods, never at import, so this
@@ -27,8 +28,11 @@ type SessionRow = {
   story_artifact_id: string | null;
   framing: string;
   opening_copy: unknown;
-  age: number;
+  age: number | null;
   feeling: string | null;
+  story_request_context: unknown | null;
+  disclosure_expires_at: string;
+  alternate_of_session_id: string | null;
   match_recipe: unknown;
   next_beat_index: number;
   next_chunk_index: number;
@@ -39,7 +43,7 @@ type SessionRow = {
 async function createSession(input: CreateSessionInput): Promise<string> {
   for (let attempt = 0; attempt < MAX_SESSION_ID_INSERT_ATTEMPTS; attempt += 1) {
     const sessionId = randomBytes(16).toString("hex");
-    const { error } = await getSupabase().rpc("create_story_session", {
+    const { error } = await getSupabase().rpc("create_story_session_v2", {
       p_session_id: sessionId,
       p_user_id: input.userId,
       p_figure_key: input.figureKey,
@@ -47,6 +51,7 @@ async function createSession(input: CreateSessionInput): Promise<string> {
       p_framing: input.framing,
       p_age: input.age,
       p_feeling: input.feeling,
+      p_story_request_context: input.storyRequestContext,
       p_match_recipe: input.matchRecipe,
       p_artifact: input.artifact,
     });
@@ -126,6 +131,12 @@ async function sessionCount(): Promise<number> {
 }
 
 function rowToSession(row: SessionRow): Session {
+  const storyRequestContext =
+    row.story_request_context === null
+      ? null
+      : parseStoryRequestContext(row.story_request_context);
+  // Optional recovery context fails closed without making the immutable story
+  // unreadable when a row is malformed or uses an unsupported future version.
   return {
     sessionId: row.session_id,
     userId: row.user_id,
@@ -135,9 +146,10 @@ function rowToSession(row: SessionRow): Session {
     framing: row.framing === "definitive" ? "definitive" : "partial",
     openingCopy: normalizeOpeningCopy(row.opening_copy),
     age: row.age,
-    // feeling is nullable (the retention job NULLs it after 60 days). A NULLed session is
-    // months old and not mid-story; reconstruct as "" rather than widen Session.feeling.
-    feeling: row.feeling ?? "",
+    feeling: row.feeling,
+    storyRequestContext,
+    disclosureExpiresAt: parseTimestamp(row.disclosure_expires_at),
+    alternateOfSessionId: row.alternate_of_session_id,
     matchRecipe: row.match_recipe as MatchRecipe,
     nextBeatIndex: row.next_beat_index,
     nextChunkIndex: row.next_chunk_index,

@@ -33,3 +33,11 @@ export type ResonanceFeedbackInput =
       verdict: "not_close";
       reason: ResonanceMissReason;
     };
+
+export type ResonanceFeedbackPresentation =
+  | { status: "unanswered" }
+  | { status: "felt_close" }
+  | {
+      status: "not_close";
+      alternate: import("./alternate-story-types").AlternateStoryOffer;
+    };

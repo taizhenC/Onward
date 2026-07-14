@@ -8,6 +8,8 @@ import {
 import { parseResonanceFeedbackRequest } from "@/lib/resonance-feedback-request";
 import { getOwnedSession } from "@/lib/session";
 import { getOwnedStoryArtifact } from "@/lib/story-artifacts";
+import { issueAlternateStoryCapability } from "@/lib/alternate-story-flow";
+import type { AlternateStoryOffer } from "@/lib/alternate-story-types";
 
 export const runtime = "nodejs";
 
@@ -24,16 +26,28 @@ export async function POST(request: Request): Promise<Response> {
   const parsed = parseResonanceFeedbackRequest(body);
   if ("error" in parsed) return errorResponse(parsed.error, 400);
 
-  const userId = await getAuthUserId();
-  const session = await getOwnedSession(parsed.sessionId, userId);
-  if (!userId || !session?.storyArtifactId) return notFoundResponse();
-  const artifact = await getOwnedStoryArtifact(
-    session.storyArtifactId,
-    userId,
-    session.sessionId,
-  );
-  if (!artifact) return notFoundResponse();
+  let target;
+  try {
+    const userId = await getAuthUserId();
+    const session = await getOwnedSession(parsed.sessionId, userId);
+    if (!userId || !session?.storyArtifactId) return notFoundResponse();
+    const artifact = await getOwnedStoryArtifact(
+      session.storyArtifactId,
+      userId,
+      session.sessionId,
+    );
+    if (!artifact) return notFoundResponse();
+    target = { userId, session, artifact };
+  } catch {
+    return errorResponse(
+      "Story feedback is temporarily unavailable. Please try again.",
+      503,
+      { "retry-after": "15" },
+    );
+  }
+  const { userId, session, artifact } = target;
 
+  let alternate: AlternateStoryOffer = { status: "not_offered" };
   try {
     await submitResonanceFeedback({
       userId,
@@ -44,16 +58,40 @@ export async function POST(request: Request): Promise<Response> {
   } catch (error) {
     if (error instanceof ResonanceFeedbackTargetError) return notFoundResponse();
     if (error instanceof ResonanceFeedbackIncompleteError) {
-      return errorResponse("Finish the story before sharing feedback.", 409);
+      return errorResponse(
+        "Finish the story before sharing feedback.",
+        409,
+        {},
+        "story_incomplete",
+      );
     }
     if (error instanceof ResonanceFeedbackConflictError) {
-      return errorResponse("Feedback has already been recorded for this story.", 409);
+      return errorResponse(
+        "Feedback has already been recorded for this story.",
+        409,
+        {},
+        "feedback_conflict",
+      );
     }
     return errorResponse("Feedback could not be saved. Please try again.", 503);
   }
 
+  if (parsed.verdict === "not_close") {
+    try {
+      alternate = await issueAlternateStoryCapability({
+        userId,
+        session,
+        artifact,
+      });
+    } catch {
+      // Feedback is already durable; only the optional recovery capability is
+      // temporarily unavailable.
+      alternate = { status: "temporarily_unavailable", retryAfterMs: 15_000 };
+    }
+  }
+
   return Response.json(
-    { accepted: true },
+    { accepted: true, alternate },
     { status: 202, headers: { "cache-control": "no-store" } },
   );
 }
@@ -72,9 +110,14 @@ function notFoundResponse(): Response {
   return errorResponse("Story feedback target not found.", 404);
 }
 
-function errorResponse(message: string, status: number): Response {
+function errorResponse(
+  message: string,
+  status: number,
+  headers: Record<string, string> = {},
+  code?: "story_incomplete" | "feedback_conflict",
+): Response {
   return Response.json(
-    { error: message },
-    { status, headers: { "cache-control": "no-store" } },
+    { error: message, ...(code ? { code } : {}) },
+    { status, headers: { "cache-control": "no-store", ...headers } },
   );
 }

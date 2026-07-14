@@ -12,9 +12,18 @@ import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import { LOCAL_DEV_USER_ID } from "./auth";
 import {
   deleteMemoryStoryArtifact,
+  getOwnedMemoryStoryArtifactSync,
   putMemoryStoryArtifact,
 } from "./story-artifact-store-memory";
 import { deleteMemoryResonanceFeedbackForSession } from "./resonance-feedback-store-memory";
+import { FEELING_RETENTION_DAYS } from "./match-config";
+import {
+  deleteMemoryAlternateStoryFlow,
+  markMemoryAlternateResultDeleted,
+} from "./alternate-story-store-memory";
+import { ALTERNATE_STORY_POLICY_VERSION } from "./alternate-story-types";
+import { storyProfileAllowed } from "./story-boundaries";
+import type { StoryArtifact } from "./story-artifact-types";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -38,24 +47,22 @@ function isExpired(session: Session, now = Date.now()): boolean {
 function pruneExpiredSessions(now = Date.now()): void {
   for (const [sessionId, session] of sessions) {
     if (isExpired(session, now)) {
-      if (session.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
-      deleteMemoryResonanceFeedbackForSession(sessionId);
-      sessions.delete(sessionId);
+      deleteMemorySessionCascade(sessionId);
     }
   }
 }
 
-async function createSession(input: CreateSessionInput): Promise<string> {
-  pruneExpiredSessions();
-  let sessionId = "";
+function allocateSessionId(): string {
   for (let attempt = 0; attempt < MAX_SESSION_ID_ATTEMPTS; attempt += 1) {
     const candidate = randomBytes(16).toString("hex");
-    if (!sessions.has(candidate)) {
-      sessionId = candidate;
-      break;
-    }
+    if (!sessions.has(candidate)) return candidate;
   }
-  if (!sessionId) throw new Error("could not allocate a unique session ID");
+  throw new Error("could not allocate a unique session ID");
+}
+
+async function createSession(input: CreateSessionInput): Promise<string> {
+  pruneExpiredSessions();
+  const sessionId = allocateSessionId();
   const now = Date.now();
   const session: Session = {
     sessionId,
@@ -67,7 +74,82 @@ async function createSession(input: CreateSessionInput): Promise<string> {
     openingCopy: input.artifact.openingCopy,
     age: input.age,
     feeling: input.feeling,
+    storyRequestContext: structuredClone(input.storyRequestContext),
+    disclosureExpiresAt:
+      now + FEELING_RETENTION_DAYS * 24 * 60 * 60 * 1000,
+    alternateOfSessionId: null,
     matchRecipe: input.matchRecipe,
+    nextBeatIndex: 0,
+    nextChunkIndex: 0,
+    createdAt: now,
+    updatedAt: now,
+  };
+  putMemoryStoryArtifact(sessionId, input.userId, input.artifact);
+  try {
+    sessions.set(sessionId, session);
+  } catch (error) {
+    deleteMemoryStoryArtifact(input.artifact.artifactId);
+    throw error;
+  }
+  return sessionId;
+}
+
+export function createMemoryAlternateSession(input: {
+  userId: string;
+  sourceSessionId: string;
+  sourceArtifactId: string;
+  artifact: StoryArtifact;
+}): string {
+  pruneExpiredSessions();
+  const source = sessions.get(input.sourceSessionId);
+  if (!source || source.userId !== input.userId) {
+    throw new Error("alternate source not found");
+  }
+  expireSensitiveContext(source);
+  const existing = [...sessions.values()].find(
+    (session) => session.alternateOfSessionId === source.sessionId,
+  );
+  if (existing) return existing.sessionId;
+  const sourceArtifact = getOwnedMemoryStoryArtifactSync(
+    input.sourceArtifactId,
+    input.userId,
+    input.sourceSessionId,
+  );
+  const boundaries = source.storyRequestContext?.boundaries ?? undefined;
+  if (
+    source.alternateOfSessionId !== null ||
+    source.storyArtifactId !== input.sourceArtifactId ||
+    source.feeling === null ||
+    source.storyRequestContext === null ||
+    source.disclosureExpiresAt <= Date.now() ||
+    !sourceArtifact ||
+    source.nextBeatIndex < sourceArtifact.beats.length ||
+    (source.figureKey === input.artifact.figureKey &&
+      source.stageId === input.artifact.stageId) ||
+    input.artifact.framing !== "partial" ||
+    input.artifact.recipe.match.alternateStoryPolicyVersion !==
+      ALTERNATE_STORY_POLICY_VERSION ||
+    !storyProfileAllowed(input.artifact.contentProfile, boundaries)
+  ) {
+    throw new Error("alternate session invariants failed");
+  }
+
+  const sessionId = allocateSessionId();
+  const now = Date.now();
+  const session: Session = {
+    sessionId,
+    userId: source.userId,
+    figureKey: input.artifact.figureKey,
+    stageId: input.artifact.stageId,
+    storyArtifactId: input.artifact.artifactId,
+    framing: "partial",
+    openingCopy: input.artifact.openingCopy,
+    age: null,
+    feeling: null,
+    storyRequestContext: null,
+    disclosureExpiresAt: source.disclosureExpiresAt,
+    alternateOfSessionId: source.sessionId,
+    matchRecipe: input.artifact.recipe.match,
     nextBeatIndex: 0,
     nextChunkIndex: 0,
     createdAt: now,
@@ -87,11 +169,10 @@ async function getSession(sessionId: string): Promise<Session | null> {
   const session = sessions.get(sessionId);
   if (!session) return null;
   if (isExpired(session)) {
-    if (session.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
-    deleteMemoryResonanceFeedbackForSession(sessionId);
-    sessions.delete(sessionId);
+    deleteMemorySessionCascade(sessionId);
     return null;
   }
+  expireSensitiveContext(session);
   // Hot-reload safety for in-memory sessions created before these fields existed.
   const openingCopy = migrateOpeningCopy(session.openingCopy);
   const legacySession = session as unknown as {
@@ -99,12 +180,18 @@ async function getSession(sessionId: string): Promise<Session | null> {
     userId?: string;
     updatedAt?: number;
     storyArtifactId?: string | null;
+    storyRequestContext?: Session["storyRequestContext"];
+    disclosureExpiresAt?: number;
+    alternateOfSessionId?: string | null;
   };
   if (
     legacySession.nextChunkIndex === undefined ||
     legacySession.userId === undefined ||
     legacySession.updatedAt === undefined ||
     legacySession.storyArtifactId === undefined ||
+    legacySession.storyRequestContext === undefined ||
+    legacySession.disclosureExpiresAt === undefined ||
+    legacySession.alternateOfSessionId === undefined ||
     openingCopy !== session.openingCopy
   ) {
     const migrated: Session = {
@@ -116,12 +203,25 @@ async function getSession(sessionId: string): Promise<Session | null> {
       userId: legacySession.userId ?? LOCAL_DEV_USER_ID,
       updatedAt: legacySession.updatedAt ?? session.createdAt,
       storyArtifactId: legacySession.storyArtifactId ?? null,
+      // Legacy hot-reload rows did not capture exact boundaries/clarification.
+      storyRequestContext: legacySession.storyRequestContext ?? null,
+      disclosureExpiresAt:
+        legacySession.disclosureExpiresAt ??
+        session.createdAt + FEELING_RETENTION_DAYS * 24 * 60 * 60 * 1000,
+      alternateOfSessionId: legacySession.alternateOfSessionId ?? null,
       openingCopy,
     };
     sessions.set(sessionId, migrated);
     return migrated;
   }
   return session;
+}
+
+function expireSensitiveContext(session: Session, now = Date.now()): void {
+  if (session.disclosureExpiresAt <= now) {
+    session.feeling = null;
+    session.storyRequestContext = null;
+  }
 }
 
 // Backfill opening copy for sessions created before a field existed (first eyebrow, then
@@ -161,9 +261,7 @@ async function acknowledgePosition(
   const existing = sessions.get(input.sessionId);
   if (!existing || isExpired(existing) || existing.userId !== input.userId) {
     if (existing && isExpired(existing)) {
-      if (existing.storyArtifactId) deleteMemoryStoryArtifact(existing.storyArtifactId);
-      deleteMemoryResonanceFeedbackForSession(input.sessionId);
-      sessions.delete(input.sessionId);
+      deleteMemorySessionCascade(input.sessionId);
     }
     return "not_found";
   }
@@ -189,6 +287,20 @@ async function acknowledgePosition(
     updatedAt: Date.now(),
   });
   return "advanced";
+}
+
+function deleteMemorySessionCascade(sessionId: string): void {
+  for (const child of [...sessions.values()]) {
+    if (child.alternateOfSessionId === sessionId) {
+      deleteMemorySessionCascade(child.sessionId);
+    }
+  }
+  const session = sessions.get(sessionId);
+  markMemoryAlternateResultDeleted(sessionId);
+  if (session?.storyArtifactId) deleteMemoryStoryArtifact(session.storyArtifactId);
+  deleteMemoryResonanceFeedbackForSession(sessionId);
+  deleteMemoryAlternateStoryFlow(sessionId);
+  sessions.delete(sessionId);
 }
 
 async function listSessionsByUser(userId: string): Promise<Session[]> {

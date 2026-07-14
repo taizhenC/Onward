@@ -34,6 +34,7 @@ import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-type
 import { validateStorySpec } from "../lib/story-spec";
 import type { StorySpec, StoryBeatSpec } from "../lib/story-spec-types";
 import { createTelemetryFlowId } from "../lib/telemetry";
+import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import type { MatchRecipe } from "../lib/types";
 
 process.env.PERSISTENCE = "memory";
@@ -43,8 +44,8 @@ const PRIVATE_DISCLOSURE =
   "Avery left Montréal in 2025 with a private vermilion astrolabe after the eighth closed door.";
 
 const recipe: MatchRecipe = {
-  recipeId: "source-transparency-contract",
-  matchConfigVersion: "test",
+  recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+  matchConfigVersion: APPROVED_PRODUCTION_RECIPE.matchConfigVersion,
   crisisRegexVersion: "test",
   llmProvider: "stub",
   rerankModelId: "stub",

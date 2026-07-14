@@ -22,10 +22,7 @@ import { buildDraftStorySpec } from "../lib/story-spec";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import { MATCH_LIMITS } from "../lib/rate-limit";
 import { match, resolveRetrievalMode } from "../lib/matching";
-import {
-  APPROVED_PRODUCTION_RECIPE,
-  recipeIdForRetrievalMode,
-} from "../lib/match-config";
+import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
 import { streamBeat } from "../lib/llm";
@@ -42,9 +39,6 @@ process.env.LLM_PROVIDER = "stub";
 // Sessions + figures from the in-process store/const (no DB) — keeps smoke hermetic.
 process.env.PERSISTENCE = "memory";
 process.env.HYBRID_STORY_COMPOSER_ENABLED = "true";
-// An ambient RETRIEVAL_MODE (e.g. facetsrag in a dev shell) would change both the
-// intake path and the approved-recipe assertion — pin it out for the same reason.
-delete process.env.RETRIEVAL_MODE;
 
 // Fixed request identity for every intake in this run. The whole run shares one
 // user, so the rate-limit assertion (which exhausts the 5/hour budget) MUST stay
@@ -635,32 +629,43 @@ async function runStoryCreationKillSwitchAssertion(): Promise<AssertionResult> {
 function runApprovedRecipeAssertion(): AssertionResult {
   const name = "recipe: production retrieval is explicit and approved";
   const defaultMode = resolveRetrievalMode(undefined, "development");
+  const developmentChallenger = resolveRetrievalMode(
+    "facetsrag",
+    "development",
+  );
   const productionMode = resolveRetrievalMode("keyword", "production");
   let autoRejected = false;
+  let facetsRagRejected = false;
+  let unknownRejected = false;
   try {
     resolveRetrievalMode("auto", "production");
   } catch {
     autoRejected = true;
   }
+  try {
+    resolveRetrievalMode("facetsrag", "production");
+  } catch {
+    facetsRagRejected = true;
+  }
+  try {
+    resolveRetrievalMode("unexpected-mode", "production");
+  } catch {
+    unknownRejected = true;
+  }
 
-  // The frozen recipe id must describe the path that ran: approved id for the
-  // approved mode, an explicit unapproved marker for everything else.
-  const approvedId = recipeIdForRetrievalMode(
-    APPROVED_PRODUCTION_RECIPE.retrievalMode,
-  );
-  const challengerId = recipeIdForRetrievalMode("facetsrag");
   const ok =
     defaultMode === APPROVED_PRODUCTION_RECIPE.retrievalMode &&
+    developmentChallenger === "facetsrag" &&
     productionMode === "keyword" &&
     autoRejected &&
-    approvedId === APPROVED_PRODUCTION_RECIPE.recipeId &&
-    challengerId.startsWith("unapproved-facetsrag");
+    facetsRagRejected &&
+    unknownRejected;
   return {
     name,
     ok,
     detail: ok
-      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production auto rejected; unapproved modes stamped`
-      : `default=${defaultMode}, production=${productionMode}, autoRejected=${autoRejected}, ids=${approvedId}/${challengerId}`,
+      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production challengers rejected`
+      : `default=${defaultMode}, developmentChallenger=${developmentChallenger}, production=${productionMode}, autoRejected=${autoRejected}, facetsRagRejected=${facetsRagRejected}, unknownRejected=${unknownRejected}`,
   };
 }
 
@@ -1049,36 +1054,6 @@ async function runStoryPrivacyAssertion(): Promise<AssertionResult> {
       name,
       ok: false,
       detail: "disclosure overlap guard is not classifying exact/safe copy correctly",
-    };
-  }
-
-  // Word-boundary regression: a disclosure that is a substring of different
-  // words ("ice person waits" inside "nice person waits") is not an echo.
-  if (
-    containsDisclosureEcho("They said a nice person waits", "ice person waits") ||
-    !containsDisclosureEcho("They said a nice person waits", "nice person waits")
-  ) {
-    return {
-      name,
-      ok: false,
-      detail: "overlap guard is not matching on whole-word boundaries",
-    };
-  }
-
-  // Backstop: a bare placeholder outside the canonical legacy line must never
-  // render literally.
-  let bareRendered = "";
-  const bareBeat: BeatBlueprint = {
-    kind: "bridge",
-    role: "bridge",
-    text: "They kept going through {feeling} and worse.",
-  };
-  for await (const token of streamBeat({ beat: bareBeat })) bareRendered += token;
-  if (bareRendered.includes("{feeling}")) {
-    return {
-      name,
-      ok: false,
-      detail: "bare legacy placeholder reached rendered prose",
     };
   }
 

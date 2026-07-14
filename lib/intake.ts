@@ -3,7 +3,7 @@ import { isDeepStrictEqual } from "node:util";
 import type { MatchResponse } from "./types";
 import { CRISIS_RESOURCES, classifyCrisis } from "./safety";
 import { createSession, getOwnedSession } from "./session";
-import { matchForIntake } from "./matching";
+import { matchForIntake, resolveRetrievalMode } from "./matching";
 import { consumeMatchRateLimit } from "./rate-limit";
 import {
   parseStoryBoundaries,
@@ -38,6 +38,11 @@ import {
   telemetryFlowBindingEnabled,
 } from "./telemetry-flow-lifecycle";
 import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
+import {
+  matchCompletedEvent,
+  noEligibleMatchCompletedEvent,
+  recordLinkedProductEventBestEffort,
+} from "./telemetry-producers";
 
 export type IntakeInput = {
   age: number;
@@ -153,6 +158,14 @@ export async function handleIntake(
         if (activation !== "active") return { flowConflict: true };
       }
 
+      // The request has passed the exact intake, boundary, recovery-control,
+      // kill-switch, and owner checks. The event is a singleton for the root
+      // flow, so recovery submissions and response-loss retries reconcile it.
+      await recordLinkedProductEventBestEffort(
+        { event: "intake_submitted" },
+        telemetryFlowId,
+      );
+
       // A committed response-loss retry resolves before catalog, rate limit,
       // recovery-token consumption, matching, or composition. Only the exact
       // private request identity may recover the prior story.
@@ -185,7 +198,19 @@ export async function handleIntake(
   if (catalogResult.status === "unavailable") {
     return { temporarilyUnavailable: true };
   }
-  if (catalogResult.status === "no_eligible") return { noEligibleStory: true };
+  if (catalogResult.status === "no_eligible") {
+    let noEligibleEvent;
+    try {
+      noEligibleEvent = noEligibleMatchCompletedEvent(resolveRetrievalMode());
+    } catch {
+      return { temporarilyUnavailable: true };
+    }
+    await recordLinkedProductEventBestEffort(
+      noEligibleEvent,
+      telemetryFlowId,
+    );
+    return { noEligibleStory: true };
+  }
   const eligibleCatalog = catalogResult.catalog;
   const eligibleStageKeys = new Set(eligibleCatalog.keys());
 
@@ -254,6 +279,12 @@ export async function handleIntake(
     clarificationProvided: validated.clarification !== undefined,
     acceptAdjacent: validated.acceptAdjacent,
   });
+  const matchEvent = matchCompletedEvent({
+    result,
+    disposition,
+    storyRole: "initial",
+    boundaries: validated.boundaries,
+  });
   if (disposition === "clarification_needed") {
     let recoveryToken: string;
     try {
@@ -261,6 +292,16 @@ export async function handleIntake(
         ctx.userId,
         recoveryIdentity,
         "clarification",
+        telemetryFlowId
+          ? {
+              flowId: telemetryFlowId,
+              matchEvent,
+              clarificationEvent: {
+                event: "clarification_shown",
+                policyVersion: MATCH_RECOVERY_POLICY_VERSION,
+              },
+            }
+          : undefined,
       );
     } catch {
       return { temporarilyUnavailable: true };
@@ -278,6 +319,9 @@ export async function handleIntake(
         ctx.userId,
         recoveryIdentity,
         "adjacent_acceptance",
+        telemetryFlowId
+          ? { flowId: telemetryFlowId, matchEvent }
+          : undefined,
       );
     } catch {
       return { temporarilyUnavailable: true };
@@ -288,6 +332,7 @@ export async function handleIntake(
       recoveryToken,
     };
   }
+  await recordLinkedProductEventBestEffort(matchEvent, telemetryFlowId);
   const selectedFraming =
     disposition === "close_match" ? result.framing : "partial";
   let prepared;

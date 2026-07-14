@@ -15,14 +15,15 @@ The stacked codebase has moved well beyond the original barebones MVP. It now
 has evidence-addressable story contracts, bounded personalization, honest weak-
 match recovery, story limits, source transparency, explicit progress writes,
 resonance feedback, one controlled alternate-story recovery, and a privacy-safe
-telemetry foundation. Those are meaningful product and architecture advances.
+telemetry lifecycle with initial match-journey producers. Those are meaningful
+product and architecture advances.
 
 It is still **not a viable public release**. The current fifty-figure StorySpecs
 are review drafts rather than a researcher-approved launch set; end-to-end
-relatability has not been validated with target readers; broad telemetry
-producers, dashboards, and alerts are not operating; browser accessibility and
+relatability has not been validated with target readers; reader/client telemetry,
+dispatch, dashboards, and alerts are not operating; browser accessibility and
 critical-flow evidence remain incomplete; and the configured Supabase project
-does not yet contain migrations `0004` through `0011`. Local green checks do not
+does not yet contain migrations `0004` through `0012`. Local green checks do not
 substitute for those editorial, safety, user-research, and production gates.
 
 ## What the product does
@@ -65,7 +66,7 @@ The current product loop is:
 | Resonance feedback and one alternate | Gives readers a recovery path and creates a closed, privacy-safe learning signal. |
 | Anonymous-first ownership and retention | Reduces the cost of being honest while keeping sessions private and time-bounded. |
 | Crisis-first safety boundary | Keeps emergency support independent of cookies, rate limits, database state, and providers. |
-| Typed telemetry lifecycle | Creates a path to product learning without storing disclosure, prompts, prose, or open-ended analytics payloads. |
+| Typed telemetry lifecycle and initial producers | Captures closed intake/match/recovery/artifact milestones without storing disclosure, prompts, prose, or open-ended analytics payloads. |
 
 ## Unique value proposition
 

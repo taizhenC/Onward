@@ -1,4 +1,4 @@
-import type { Confidence, FacetType, Framing } from "./types";
+import type { Confidence, FacetType, Framing, RetrievalMode } from "./types";
 
 export const matchConfigVersion = "figure-library-50-2026-07-02";
 
@@ -13,13 +13,15 @@ export const APPROVED_PRODUCTION_RECIPE = {
   datasetVersion: "match-104-2026-07-02",
 } as const;
 
-// The recipe id frozen into a session must describe the path that actually ran.
-// A dev/eval session on `facetsrag` or `auto` stamping the approved keyword id
-// would corrupt the replay/audit trail the id exists for.
-export function recipeIdForRetrievalMode(mode: string): string {
-  return mode === APPROVED_PRODUCTION_RECIPE.retrievalMode
-    ? APPROVED_PRODUCTION_RECIPE.recipeId
-    : `unapproved-${mode}-${matchConfigVersion}`;
+export function requireApprovedProductionRecipe(
+  retrievalMode: RetrievalMode,
+): typeof APPROVED_PRODUCTION_RECIPE {
+  if (retrievalMode !== APPROVED_PRODUCTION_RECIPE.retrievalMode) {
+    throw new Error(
+      `Retrieval path ${retrievalMode} is not approved for story creation.`,
+    );
+  }
+  return APPROVED_PRODUCTION_RECIPE;
 }
 
 // ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in

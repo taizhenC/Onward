@@ -28,6 +28,7 @@ import {
 } from "../lib/alternate-story-types";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { handleIntake } from "../lib/intake";
+import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import { createTelemetryFlowId, recordProductEvent } from "../lib/telemetry";
 import { resolveOwnedTelemetryFlowForSession } from "../lib/telemetry-flow-binding";
 import { registerMemoryTelemetryFlow } from "../lib/telemetry-flow-binding-memory";
@@ -67,8 +68,8 @@ const BOUNDARIES: StoryBoundaries = {
   excludedFlags: ["abuse_or_violence"],
 };
 const recipe: MatchRecipe = {
-  recipeId: "try-another-contract",
-  matchConfigVersion: "test",
+  recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+  matchConfigVersion: APPROVED_PRODUCTION_RECIPE.matchConfigVersion,
   crisisRegexVersion: "test",
   llmProvider: "stub",
   rerankModelId: "stub",
@@ -738,6 +739,7 @@ async function checkTerminalAndRetryPolicies(failures: string[]): Promise<void> 
           confidence: "low",
           chosenBy: "rerank",
           ageFallback: false,
+          retrievalMode: "keyword",
         };
       },
     },
@@ -797,6 +799,7 @@ async function checkTerminalAndRetryPolicies(failures: string[]): Promise<void> 
           confidence: "high",
           chosenBy: "rerank",
           ageFallback: false,
+          retrievalMode: "keyword",
         };
       },
       prepare: async () => {

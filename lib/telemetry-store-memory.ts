@@ -55,13 +55,41 @@ const productEventOutbox =
 export function appendMemoryProductEvent(
   record: Readonly<ProductEventRecord>,
 ): TelemetryWriteResult {
+  return appendMemoryProductEventWithPolicy(record, false);
+}
+
+// Domain transactions may need to complete after a response-loss retry has
+// recomputed different measured dimensions for the same semantic event. This
+// narrow path preserves the first accepted measurement while still proving
+// that the existing row owns the same flow-scoped semantic unit.
+export function reconcileMemoryMatchEventFirstWriteWins(
+  record: Readonly<ProductEventRecord>,
+): TelemetryWriteResult {
+  if (record.event !== "match_completed") {
+    throw new Error("first-write-wins reconciliation requires a match event");
+  }
+  return appendMemoryProductEventWithPolicy(record, true);
+}
+
+function appendMemoryProductEventWithPolicy(
+  record: Readonly<ProductEventRecord>,
+  preserveFirstMeasurement: boolean,
+): TelemetryWriteResult {
   pruneMemoryTelemetry();
   if (record.flowId !== null && !isActiveMemoryTelemetryFlow(record.flowId)) {
     return "conflict";
   }
+  const semanticKey = deriveProductEventSemanticKey(record, record.flowId);
   const existing = productEvents.get(record.eventId);
   if (existing) {
-    if (!sameProductEvent(existing, record)) return "conflict";
+    if (
+      !sameProductEvent(existing, record) &&
+      (!preserveFirstMeasurement ||
+        semanticKey === null ||
+        deriveProductEventSemanticKey(existing, existing.flowId) !== semanticKey)
+    ) {
+      return "conflict";
+    }
     // Reconcile an older in-memory event that predates the pointer map. A
     // delivered pointer is never removed, so normal duplicate capture cannot
     // requeue an acknowledged event.
@@ -70,17 +98,23 @@ export function appendMemoryProductEvent(
     }
     return "duplicate";
   }
-  const semanticKey = deriveProductEventSemanticKey(record, record.flowId);
-  if (
-    semanticKey !== null &&
-    [...productEvents.values()].some(
+  if (semanticKey !== null) {
+    const semanticExisting = [...productEvents.values()].find(
       (candidate) =>
         candidate.flowId !== null &&
         deriveProductEventSemanticKey(candidate, candidate.flowId) ===
           semanticKey,
-    )
-  ) {
-    return "conflict";
+    );
+    if (semanticExisting) {
+      if (!preserveFirstMeasurement) return "conflict";
+      if (!productEventOutbox.has(semanticExisting.eventId)) {
+        productEventOutbox.set(
+          semanticExisting.eventId,
+          pendingPointer(semanticExisting),
+        );
+      }
+      return "duplicate";
+    }
   }
   productEvents.set(record.eventId, freezeClone(record));
   productEventOutbox.set(record.eventId, pendingPointer(record));

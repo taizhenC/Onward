@@ -23,6 +23,7 @@ import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import type { MatchRecipe } from "../lib/types";
 import { createTelemetryFlowId } from "../lib/telemetry";
+import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -32,8 +33,8 @@ const PRIVATE_DISCLOSURE =
 const STORY_CANARY = "STORY-PROSE-MUST-NOT-ENTER-FEEDBACK";
 
 const recipe: MatchRecipe = {
-  recipeId: "resonance-feedback-contract",
-  matchConfigVersion: "test",
+  recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+  matchConfigVersion: APPROVED_PRODUCTION_RECIPE.matchConfigVersion,
   crisisRegexVersion: "test",
   llmProvider: "stub",
   rerankModelId: "stub",

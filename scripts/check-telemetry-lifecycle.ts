@@ -873,7 +873,7 @@ function checkMigrationAndRuntimeBoundary(): void {
     "the client must reach crisis classification before anonymous auth",
   );
   assert.match(intakeForm, /I need immediate help/);
-  assert.match(sessionStore, /create_story_session_v3/);
+  assert.match(sessionStore, /create_story_session_v4/);
   assert.match(sessionStore, /create_story_session_v2/);
   assert.doesNotMatch(
     telemetryStore,

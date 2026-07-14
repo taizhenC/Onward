@@ -5,7 +5,13 @@ import type { StoryBoundaries } from "./story-boundaries";
 import { persistenceMode } from "./persistence";
 import { readStrongSecret } from "./secret-config";
 import type { TelemetryFlowId } from "./telemetry-types";
+import type { ProductEvent } from "./telemetry-types";
 import { parseTelemetryFlowId } from "./telemetry-id";
+import {
+  prepareProductEventCapture,
+  recordProductEvent,
+  reconcileMemoryMatchEventFirstWriteWins,
+} from "./telemetry";
 
 export const MATCH_RECOVERY_FLOW_TTL_MINUTES = 10;
 
@@ -19,6 +25,15 @@ export type MatchRecoveryIdentity = {
 export type MatchRecoveryPurpose =
   | "clarification"
   | "adjacent_acceptance";
+
+export type MatchRecoveryTelemetry = {
+  flowId: TelemetryFlowId;
+  matchEvent: Extract<ProductEvent, { event: "match_completed" }>;
+  clarificationEvent?: Extract<
+    ProductEvent,
+    { event: "clarification_shown" }
+  >;
+};
 
 type MemoryRecoveryFlow = {
   userId: string;
@@ -56,21 +71,52 @@ export async function issueMatchRecoveryToken(
   userId: string,
   identity: MatchRecoveryIdentity,
   purpose: MatchRecoveryPurpose,
+  telemetry?: MatchRecoveryTelemetry,
 ): Promise<string> {
   const token = randomBytes(32).toString("base64url");
   const tokenHash = hashToken(token);
   const inputHash = hashIdentity(identity);
   const expiresAt = Date.now() + MATCH_RECOVERY_FLOW_TTL_MINUTES * 60_000;
 
+  const captures = telemetry
+    ? recoveryTelemetryCaptures(identity, purpose, telemetry)
+    : null;
+
   if (persistenceMode() === "supabase") {
-    const { error } = await getSupabase().from("match_recovery_flows").insert({
-      token_hash: tokenHash,
-      user_id: userId,
-      input_hash: inputHash,
-      purpose,
-      expires_at: new Date(expiresAt).toISOString(),
-    });
-    if (error) throw new Error("match recovery flow could not be issued");
+    if (captures) {
+      const { data, error } = await getSupabase().rpc(
+        "issue_match_recovery_flow_v2",
+        {
+          p_token_hash: tokenHash,
+          p_user_id: userId,
+          p_input_hash: inputHash,
+          p_purpose: purpose,
+          p_expires_at: new Date(expiresAt).toISOString(),
+          p_telemetry_flow_id: telemetry!.flowId,
+          p_match_event_id: captures.match.eventId,
+          p_clarification_event_id:
+            captures.clarification?.eventId ?? null,
+          p_schema_version: captures.match.schemaVersion,
+          p_recipe_id: telemetry!.matchEvent.recipeId,
+          p_confidence_bucket: telemetry!.matchEvent.confidenceBucket,
+          p_match_path: telemetry!.matchEvent.matchPath,
+          p_age_fallback: telemetry!.matchEvent.ageFallback,
+          p_boundary_outcome: telemetry!.matchEvent.boundaryOutcome,
+        },
+      );
+      if (error || data !== "created") {
+        throw new Error("match recovery flow could not be issued");
+      }
+    } else {
+      const { error } = await getSupabase().from("match_recovery_flows").insert({
+        token_hash: tokenHash,
+        user_id: userId,
+        input_hash: inputHash,
+        purpose,
+        expires_at: new Date(expiresAt).toISOString(),
+      });
+      if (error) throw new Error("match recovery flow could not be issued");
+    }
   } else {
     pruneMemoryFlows();
     memoryFlows.set(tokenHash, {
@@ -80,8 +126,62 @@ export async function issueMatchRecoveryToken(
       expiresAt,
       consumedAt: null,
     });
+    if (telemetry) {
+      try {
+        const matchResult = await reconcileMemoryMatchEventFirstWriteWins({
+          event: telemetry.matchEvent,
+          flowId: telemetry.flowId,
+        });
+        if (matchResult === "conflict") {
+          throw new Error("match recovery telemetry conflicted");
+        }
+        if (telemetry.clarificationEvent) {
+          const clarificationResult = await recordProductEvent({
+            event: telemetry.clarificationEvent,
+            flowId: telemetry.flowId,
+          });
+          if (clarificationResult === "conflict") {
+            throw new Error("match recovery telemetry conflicted");
+          }
+        }
+      } catch (error) {
+        memoryFlows.delete(tokenHash);
+        throw error;
+      }
+    }
   }
   return token;
+}
+
+function recoveryTelemetryCaptures(
+  identity: MatchRecoveryIdentity,
+  purpose: MatchRecoveryPurpose,
+  telemetry: MatchRecoveryTelemetry,
+) {
+  if (
+    identity.telemetryFlowId === null ||
+    identity.telemetryFlowId !== telemetry.flowId ||
+    telemetry.matchEvent.storyRole !== "initial" ||
+    (purpose === "clarification" &&
+      (telemetry.matchEvent.disposition !== "clarification_required" ||
+        telemetry.clarificationEvent === undefined)) ||
+    (purpose === "adjacent_acceptance" &&
+      (telemetry.matchEvent.disposition !== "no_close_match" ||
+        telemetry.clarificationEvent !== undefined))
+  ) {
+    throw new Error("match recovery telemetry identity is invalid");
+  }
+  const match = prepareProductEventCapture({
+    event: telemetry.matchEvent,
+    flowId: telemetry.flowId,
+  });
+  const clarification = telemetry.clarificationEvent
+    ? prepareProductEventCapture({
+        event: telemetry.clarificationEvent,
+        flowId: telemetry.flowId,
+      })
+    : null;
+  return { match, clarification };
 }
 
 export async function consumeMatchRecoveryToken(

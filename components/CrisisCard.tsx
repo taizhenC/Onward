@@ -1,20 +1,33 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import type { CrisisResource } from "@/lib/types";
 
 export function CrisisCard({ resources }: { resources: CrisisResource[] }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    cardRef.current?.focus();
+  }, []);
+
   return (
     <motion.div
+      ref={cardRef}
+      role="alert"
+      aria-live="assertive"
+      aria-labelledby="crisis-heading"
+      tabIndex={-1}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="space-y-6"
+      className="space-y-6 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
     >
-      <h2 className="text-2xl">If you might be in danger, please reach out.</h2>
+      <h1 id="crisis-heading" className="text-2xl">
+        If you might be in danger, please reach out.
+      </h1>
       <p className="text-[var(--color-ink-soft)]">
-        These lines are staffed by people trained for exactly this. They will
-        not judge you.
+        These services can connect you with trained crisis support.
       </p>
       <ul className="space-y-3">
         {resources.map((resource) => (

@@ -181,6 +181,8 @@ export type Session = {
 // signature; the in-memory impl is trivially async.
 export type CreateSessionInput = {
   userId: string;
+  telemetryFlowId: import("./telemetry-types").TelemetryFlowId | null;
+  telemetryFlowOwnerClaimed?: boolean;
   figureKey: string;
   stageId: string;
   framing: Framing;
@@ -232,6 +234,7 @@ export type MatchResponse =
   | { clarificationNeeded: true; policyVersion: string; recoveryToken: string }
   | { noCloseMatch: true; policyVersion: string; recoveryToken: string }
   | { rateLimited: true }
+  | { flowConflict: true }
   | { error: string }
   | { sessionId: string };
 

@@ -340,7 +340,7 @@
 
 ## P0-12 — [Bug Fix] Safety flow, regression suite, and reviewed resource handling
 
-**Problem:** The deterministic pre-LLM check is a good floor, but the current system has a small static pattern set, known negation/third-person false positives, no implemented crisis eval corpus, and broad static resource copy. A vulnerable-audience product needs a reviewed system and operational process.
+**Problem:** The deterministic pre-LLM check and versioned regression corpus are a good floor, but the current system still has known negation/third-person false positives, broad resource coverage, and no qualified launch-market review. A vulnerable-audience product needs a reviewed system and operational process, not only a green synthetic gate.
 
 **Scope**
 

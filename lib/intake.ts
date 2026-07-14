@@ -1,7 +1,8 @@
 import "server-only";
+import { isDeepStrictEqual } from "node:util";
 import type { MatchResponse } from "./types";
 import { CRISIS_RESOURCES, classifyCrisis } from "./safety";
-import { createSession } from "./session";
+import { createSession, getOwnedSession } from "./session";
 import { matchForIntake } from "./matching";
 import { consumeMatchRateLimit } from "./rate-limit";
 import {
@@ -30,6 +31,13 @@ import {
   isValidIntakeFeeling,
   normalizeIntakeFeeling,
 } from "./intake-constraints";
+import type { TelemetryFlowId } from "./telemetry-types";
+import {
+  activateTelemetryFlowForOwner,
+  resolveOwnedTelemetryRootForFlow,
+  telemetryFlowBindingEnabled,
+} from "./telemetry-flow-lifecycle";
+import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
 
 export type IntakeInput = {
   age: number;
@@ -46,6 +54,8 @@ export type IntakeInput = {
 export type IntakeContext = {
   userId: string;
   ipHash: string;
+  telemetryFlowId: TelemetryFlowId | null;
+  telemetryFlowOwnerClaimed?: boolean;
 };
 
 export type IntakeValidationError = {
@@ -98,10 +108,14 @@ export async function handleIntake(
   }
   const parsedRecoveryToken = parseMatchRecoveryToken(core.recoveryTokenRaw);
   if ("error" in parsedRecoveryToken) return parsedRecoveryToken;
+  const recoveryChoiceProvided =
+    parsedClarification.value !== undefined || core.acceptAdjacentRaw === true;
+  if (recoveryChoiceProvided && parsedRecoveryToken.value === undefined) {
+    return { error: "This match step expired. Please revise and try again." };
+  }
   if (
     parsedRecoveryToken.value &&
-    parsedClarification.value === undefined &&
-    core.acceptAdjacentRaw !== true
+    !recoveryChoiceProvided
   ) {
     return { error: "Choose an answer or accept the adjacent story to continue." };
   }
@@ -121,6 +135,50 @@ export async function handleIntake(
     return { temporarilyUnavailable: true };
   }
 
+  const requestContext = createStoryRequestContext({
+    boundaries: validated.boundaries,
+    clarification: validated.clarification,
+    acceptedAdjacent: validated.acceptAdjacent,
+  });
+  const telemetryFlowId = telemetryFlowBindingEnabled()
+    ? ctx.telemetryFlowId
+    : null;
+  if (telemetryFlowId) {
+    try {
+      if (ctx.telemetryFlowOwnerClaimed !== true) {
+        const activation = await activateTelemetryFlowForOwner(
+          telemetryFlowId,
+          ctx.userId,
+        );
+        if (activation !== "active") return { flowConflict: true };
+      }
+
+      // A committed response-loss retry resolves before catalog, rate limit,
+      // recovery-token consumption, matching, or composition. Only the exact
+      // private request identity may recover the prior story.
+      const rootSessionId = await resolveOwnedTelemetryRootForFlow(
+        telemetryFlowId,
+        ctx.userId,
+      );
+      if (rootSessionId) {
+        const existing = await getOwnedSession(rootSessionId, ctx.userId);
+        if (
+          existing &&
+          existing.alternateOfSessionId === null &&
+          existing.age === validated.age &&
+          existing.feeling === validated.feeling &&
+          existing.storyRequestContext !== null &&
+          isDeepStrictEqual(existing.storyRequestContext, requestContext)
+        ) {
+          return { sessionId: existing.sessionId };
+        }
+        return { flowConflict: true };
+      }
+    } catch {
+      return { temporarilyUnavailable: true };
+    }
+  }
+
   const catalogResult = await loadEligibleStoryCatalog({
     boundaries: validated.boundaries,
   });
@@ -134,6 +192,7 @@ export async function handleIntake(
   const recoveryIdentity: MatchRecoveryIdentity = {
     age: validated.age,
     feeling: validated.feeling,
+    telemetryFlowId,
     ...(validated.boundaries ? { boundaries: validated.boundaries } : {}),
   };
 
@@ -152,6 +211,14 @@ export async function handleIntake(
     }
     if (!recoveryPurpose) {
       return { error: "This match step expired. Please revise and try again." };
+    }
+    if (
+      recoveryPurpose === "clarification" &&
+      (validated.clarification === undefined || validated.acceptAdjacent)
+    ) {
+      return {
+        error: "This match step can only answer the clarifying question.",
+      };
     }
     if (
       recoveryPurpose === "adjacent_acceptance" &&
@@ -245,19 +312,21 @@ export async function handleIntake(
   try {
     sessionId = await createSession({
       userId: ctx.userId,
+      telemetryFlowId,
+      telemetryFlowOwnerClaimed: telemetryFlowId !== null,
       figureKey: prepared.figureKey,
       stageId: prepared.stageId,
       framing: prepared.framing,
       age: validated.age,
       feeling: validated.feeling,
-      storyRequestContext: createStoryRequestContext({
-        boundaries: validated.boundaries,
-        clarification: validated.clarification,
-      }),
+      storyRequestContext: requestContext,
       matchRecipe: prepared.matchRecipe,
       artifact: prepared.artifact,
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof TelemetryFlowConflictError) {
+      return { flowConflict: true };
+    }
     return { temporarilyUnavailable: true };
   }
 

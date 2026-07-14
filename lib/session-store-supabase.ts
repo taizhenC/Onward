@@ -13,6 +13,7 @@ import type {
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import { getSupabase } from "./db";
 import { parseStoryRequestContext } from "./story-request-context";
+import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
 
 // Durable session store (PERSISTENCE=supabase). Survives restarts and works across
 // serverless instances. getSupabase() is called inside the methods, never at import, so this
@@ -44,7 +45,7 @@ type SessionRow = {
 async function createSession(input: CreateSessionInput): Promise<string> {
   for (let attempt = 0; attempt < MAX_SESSION_ID_INSERT_ATTEMPTS; attempt += 1) {
     const sessionId = randomBytes(16).toString("hex");
-    const { error } = await getSupabase().rpc("create_story_session_v2", {
+    const common = {
       p_session_id: sessionId,
       p_user_id: input.userId,
       p_figure_key: input.figureKey,
@@ -55,10 +56,45 @@ async function createSession(input: CreateSessionInput): Promise<string> {
       p_story_request_context: input.storyRequestContext,
       p_match_recipe: input.matchRecipe,
       p_artifact: input.artifact,
-    });
-    if (!error) return sessionId;
-    if (!isSessionIdCollision(error)) {
+    };
+    const { data, error } = input.telemetryFlowId
+      ? await getSupabase().rpc("create_story_session_v3", {
+          ...common,
+          p_telemetry_flow_id: input.telemetryFlowId,
+        })
+      : await getSupabase().rpc("create_story_session_v2", common);
+    if (error) {
+      if (!input.telemetryFlowId && error.code === "23505") continue;
       throw new Error(`createSession insert failed: ${error.message}`);
+    }
+
+    if (!input.telemetryFlowId) return sessionId;
+
+    const result = asRecord(data);
+    if (result?.status === "conflict") {
+      throw new TelemetryFlowConflictError();
+    }
+    if (
+      (result?.status === "created" || result?.status === "existing") &&
+      isSessionId(result.sessionId)
+    ) {
+      if (result.status === "created" && result.sessionId !== sessionId) {
+        throw new Error("createSession returned an invalid created session");
+      }
+      return result.sessionId;
+    }
+    if (
+      result?.status === "flow_not_found" ||
+      result?.status === "unclaimed" ||
+      result?.status === "revoked" ||
+      result?.status === "expired"
+    ) {
+      throw new TelemetryFlowConflictError(
+        `createSession flow failed: ${result.status}`,
+      );
+    }
+    if (result?.status !== "collision") {
+      throw new Error("createSession returned an invalid disposition");
     }
   }
 
@@ -201,8 +237,14 @@ function normalizeOpeningCopy(value: unknown): OpeningCopy {
   };
 }
 
-function isSessionIdCollision(error: { code?: string; message?: string }): boolean {
-  return error.code === "23505" && /sessions_pkey/i.test(error.message ?? "");
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function isSessionId(value: unknown): value is string {
+  return typeof value === "string" && /^[0-9a-f]{32}$/.test(value);
 }
 
 export const supabaseSessionStore: SessionStore = {

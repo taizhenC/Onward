@@ -6,7 +6,7 @@ The product is for hurting people. Tone, pacing, and prose quality matter more t
 
 ## Status
 
-Deploy slice (2026-06-10). The matching engine is real and validated:
+Roadmap-stack snapshot (2026-07-13; these slices are not assumed to be on the June production deployment). The matching engine is real and validated:
 
 - **Library**: 50 hand-authored figure stages (weighted toward ages 15-30), seeded to Supabase.
 - **Retrieval**: the latest fifty-figure gate approves keyword retrieval; FacetsRAG remains a six-lane semantic shadow challenger until it proves superiority.
@@ -49,6 +49,7 @@ npm run check-source-transparency # validate rationale, evidence, sources, and b
 npm run check-resonance-feedback # validate bounded post-story feedback and privacy gates
 npm run check-try-another   # validate one-use alternate, exclusion, retry, and retention gates
 npm run check-telemetry     # validate exact safe events, reductions, retention, and SQL privacy
+npm run check-telemetry-lifecycle # memory lifecycle + SQL/runtime static invariants (not a real-Postgres v3 proof)
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
@@ -72,8 +73,9 @@ See `.env.example` for the documented template. Summary:
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public; browser uses it for **auth endpoints only** (RLS default-deny) |
 | `SUPABASE_SERVICE_ROLE_KEY` | **secret**, server-only, bypasses RLS |
 | `IP_HASH_SALT` | **secret**; required with `PERSISTENCE=supabase`; minimum 32 bytes, generated with `openssl rand -hex 32` |
-| `TELEMETRY_ID_SECRET` | Optional dedicated HMAC secret for authenticated telemetry identifiers; minimum 32 bytes; production falls back to `IP_HASH_SALT`. Set it independently to permit isolated rotation. |
+| `TELEMETRY_ID_SECRET` | **Dedicated secret required in Supabase and production modes** for authenticated telemetry identifiers; minimum 32 bytes. There is no `IP_HASH_SALT` fallback and the values must be different. |
 | `TELEMETRY_ID_PREVIOUS_SECRETS` | Optional comma-separated verification ring of up to eight prior telemetry secrets. Retain each previous key for at least 30 days after its last issuance and until its outbox retries are drained. |
+| `TELEMETRY_FLOW_BINDING_ENABLED` | Temporary schema/config availability kill switch. Defaults enabled; set `false` only to keep stories on the legacy v2 session path without telemetry-flow registration/binding while `0011` or its configuration is unavailable. |
 | `MATCH_RECOVERY_TOKEN_SECRET` | Optional dedicated HMAC secret for single-use recovery fingerprints; minimum 32 bytes; production falls back to `IP_HASH_SALT`. |
 | `ALTERNATE_STORY_TOKEN_SECRET` | Optional dedicated HMAC secret for post-story alternate capabilities; minimum 32 bytes; falls back to the recovery secret, then `IP_HASH_SALT`. |
 | `LLM_PROVIDER` | `stub` (default) or `real` (Cerebras) |
@@ -89,9 +91,62 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. For a fresh project, apply migrations in order from `supabase/migrations/` (SQL editor): `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010`. Before `0003`: enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. **`0003` deletes existing dev session rows on purpose.** Migration `0004` adds immutable StorySpecs; `0005` adds immutable owner-scoped StoryArtifacts and atomic session creation; `0006` adds short-lived single-use match-recovery credits; `0007` requires v5 provenance on new artifacts and adds the bounded historical-concern queue; `0008` adds immutable 90-day resonance feedback; `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning. Pre-`0009` sessions are deliberately ineligible because their original limits cannot be reconstructed safely.
+1. For a fresh project, apply every file from `supabase/migrations/` in numeric order in the Supabase SQL editor: `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010` → `0011`. Before `0003`, enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. Apply each migration exactly once and stop on the first error. **`0003` deletes existing development session rows on purpose.** Migration `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning; `0011` adds the telemetry-flow registry, transactional `create_story_session_v3` binding, typed capture RPC, and leased product-event outbox. Pre-`0009` sessions remain deliberately ineligible because their original limits cannot be reconstructed safely.
 
-For an existing deployment, set `STORY_CREATION_ENABLED=false`, apply `0009`, deploy and verify the version that calls `create_story_session_v2`, then re-enable creation. Apply `0010` after `0009`; it is additive and does not activate producers by itself. Keep the legacy RPC through the rollback window. Only after every instance uses v2, production verification passes, and rollback compatibility is no longer required should an operator manually apply `supabase/rollout/remove_legacy_story_session_rpc.sql`. That cleanup intentionally lives outside the automatic migration stream.
+Before applying `0011`, validate the release commit locally:
+
+```powershell
+npm run typecheck
+npm run check-telemetry
+npm run check-telemetry-lifecycle
+npm run build
+```
+
+For an existing deployment, use a schema-first rollout. Create a database restore point and validate `0011_transactional_telemetry_outbox.sql` against staging first. Keep the currently deployed v2-calling application in place, apply `0011` to production, and run `npm run check-db` with the production Supabase URL, service-role key, and a dedicated `TELEMETRY_ID_SECRET`. Only after that gate passes should you deploy the application version that calls `create_story_session_v3`; deploying that application first makes every new story write fail because the RPC does not exist yet. Confirm before the window that the running v2 build does not require direct `product_events` writes for a request to succeed, because `0011` revokes both inserts and deletes as soon as it is applied. If a maintenance window is needed, set `STORY_CREATION_ENABLED=false` before the migration and restore it only after the v3 live-flow check passes. `TELEMETRY_FLOW_BINDING_ENABLED=false` is an explicit temporary escape hatch for schema/config incidents: it keeps story creation on v2 without flow registration or binding, but it does not replace the migration-first rollout. Remove it or set it to `true` only after `0011` and the database gate pass. Migration `0011` is also the prerequisite for any outbox consumer: do not start a consumer until the capture and claim/ack/nack RPCs have been verified.
+
+Migration `0011` revokes both direct `INSERT` and direct `DELETE` on
+`product_events` from `service_role`. Capture must use
+`capture_product_event_v1`; privacy deletion must use
+`revoke_telemetry_flow_v1`, which removes linked events and leaves the opaque
+revocation tombstone that prevents recreation.
+
+The post-migration database gate must confirm `register_telemetry_flow_v1`, `claim_telemetry_flow_owner_v1`, `revoke_telemetry_flow_v1`, `resolve_owned_telemetry_flow_v1`, `resolve_owned_telemetry_root_v1`, `capture_product_event_v1`, `claim_product_event_outbox_v1`, `ack_product_event_outbox_v1`, `nack_product_event_outbox_v1`, and `create_story_session_v3` are reachable, and that the `onward-telemetry-flow-cleanup` cron job is active. `npm run check-db` safely resolves the exact lifecycle, capture, outbox, and v3 signatures with invalid or nonexistent identifiers and requires each expected validation/not-found disposition, proving the service-role execution grants without creating rows. It does not inspect `pg_proc`, cron, anon/authenticated revocation, forced RLS, concurrency, or cascades. The following read-only SQL-editor preflight and staging exercises are therefore mandatory, not optional:
+
+```sql
+select p.proname
+from pg_proc p
+join pg_namespace n on n.oid = p.pronamespace
+where n.nspname = 'public'
+  and p.proname = any (array[
+    'register_telemetry_flow_v1',
+    'claim_telemetry_flow_owner_v1',
+    'revoke_telemetry_flow_v1',
+    'resolve_owned_telemetry_flow_v1',
+    'resolve_owned_telemetry_root_v1',
+    'capture_product_event_v1',
+    'claim_product_event_outbox_v1',
+    'ack_product_event_outbox_v1',
+    'nack_product_event_outbox_v1',
+    'create_story_session_v3'
+  ])
+order by p.proname;
+
+select jobname, schedule, active
+from cron.job
+where jobname in (
+  'onward-privacy-safe-telemetry-cleanup',
+  'onward-telemetry-flow-cleanup'
+)
+order by jobname;
+```
+
+Rollback compatibility is deliberately narrow. Migration `0011` keeps `create_story_session_v2`, so the session-writing application can roll back while the new schema remains installed. It does **not** restore the pre-`0011` direct-write telemetry paths: `0011` revokes direct `product_events` inserts and deletes in favor of `capture_product_event_v1` and `revoke_telemetry_flow_v1`, and a v2 rollback does not register, claim, or bind telemetry flows. Do not roll back to an application that requires direct product-event writes; use a rollback build that retains typed capture, performs privacy deletion through flow revocation, and treats telemetry failure as non-blocking, or roll forward. Keep `0011` installed during the normal application rollback window rather than dropping its tables, functions, or cron job.
+
+A rollback build must retain the typed capture path and perform privacy deletion
+through `revoke_telemetry_flow_v1`; a build that directly inserts or deletes
+`product_events` is not compatible with schema `0011`.
+
+The older `0009` cleanup rule still applies: keep the unsuffixed `create_story_session` RPC through the v2 rollback window. Only after every instance uses v2 or newer, production verification passes, and that rollback compatibility is no longer required should an operator manually apply `supabase/rollout/remove_legacy_story_session_rpc.sql`. That cleanup intentionally lives outside the automatic migration stream.
 
 The alternate capability expiry is a **start-by** deadline: a claim must begin before it, while an already-started claim may finish only within its separate two-minute lease and the original disclosure-retention deadline.
 2. Authentication → Sign In/Up → enable **anonymous sign-ins**.
@@ -104,9 +159,9 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
 
 ### 2. Vercel
 
-Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET` and `ALTERNATE_STORY_TOKEN_SECRET`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. Production rejects retrieval `auto`: the July 2 fifty-figure holdout approved keyword retrieval, while FacetsRAG remains a shadow/eval challenger. Promote hybrid independently by setting its flag to `true`; rollback requires only restoring `false`. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
+Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, a separate required `TELEMETRY_ID_SECRET`, `TELEMETRY_FLOW_BINDING_ENABLED=true` after `0011` passes verification, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET` and `ALTERNATE_STORY_TOKEN_SECRET`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. Production rejects retrieval `auto`: the July 2 fifty-figure holdout approved keyword retrieval, while FacetsRAG remains a shadow/eval challenger. Promote hybrid independently by setting its flag to `true`; rollback requires only restoring `false`. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
 
-For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys for at least 30 days and until their outbox retries are drained.
+For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`; Supabase/production mode has no fallback to `IP_HASH_SALT`, and reusing the salt is not supported. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys until every associated flow, event, and outbox retry is deleted or drained. Configure Vercel, proxy, and APM logging to redact `x-onward-telemetry-flow-id`; the application does not log it, but infrastructure retention must also stay within the reviewed lifecycle.
 
 ## Privacy posture (plain words, enforced in code)
 
@@ -120,7 +175,7 @@ For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`. During rotatio
 - Historical concerns retain only curated StorySpec/stage/fact identifiers, a closed reason/status, aggregate count, and timestamps. They do not retain the reporter, session, artifact, rationale, disclosure, or prose.
 - Resonance feedback is owner-linked for deletion but contains only story/recipe identifiers and a closed verdict/reason. It expires after 90 days; no optional note field exists until separate consent, encryption, reviewer access, and shorter deletion are implemented.
 - Alternate flow rows contain only owner/content identifiers, a token hash, closed state, bounded attempt count, lease, and timestamps. The browser sends no age, disclosure, boundaries, clarification, feedback reason, candidate list, or prose; the alternate session stores none of the original sensitive context.
-- Product telemetry accepts only exact closed events and HMAC-authenticated, purpose-separated opaque IDs; raw session/artifact IDs and flow-derived IDs at unlinkable boundaries are rejected. Outbox-only repeatable-occurrence tokens are never stored. IDs carry a non-secret key ID so current and retained previous keys can verify deletion and outbox retries across rotation. Crisis, rate-limit, and deletion events are unlinkable. Operational attempts contain no flow/user/session/story ID. Product events expire within 30 days, attempts within 14 days, and a known linked flow can be deleted early; full owner-to-flow deletion mapping remains part of P0-14. See [`roadmap/telemetry_contract.md`](./roadmap/telemetry_contract.md).
+- Product telemetry accepts only exact closed events and HMAC-authenticated, purpose-separated opaque IDs; raw session/artifact IDs and flow-derived IDs at unlinkable boundaries are rejected. Outbox-only repeatable-occurrence tokens are never stored. IDs carry a non-secret key ID so current and retained previous keys can verify deletion and outbox retries across rotation. Crisis, rate-limit, and deletion events are unlinkable. Operational attempts contain no flow/user/session/story ID. Product events expire within 30 days and attempts within 14 days. New flows have an issued/owner-claimed/root-bound mapping with root/account cascades and opaque revocation tombstones; P0-14 still must expose the user-facing delete/save/consent actions and intentionally does not backfill legacy sessions. No external raw-event consumer may launch until its in-flight deletion/retraction behavior passes privacy review. See [`roadmap/telemetry_contract.md`](./roadmap/telemetry_contract.md).
 - No prompt/response bodies, feelings, raw IPs, or raw errors are ever logged.
 
 ## Architecture

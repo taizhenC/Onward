@@ -26,6 +26,7 @@ import { createResonanceBrief } from "../lib/resonance-brief";
 import type { StorySpec } from "../lib/story-spec-types";
 import type { MatchRecipe } from "../lib/types";
 import { POST as matchRoutePost } from "../app/api/match/route";
+import { createTelemetryFlowId } from "../lib/telemetry";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -215,7 +216,11 @@ async function checkRetrievalAndArtifactDefense(failures: string[]): Promise<voi
 }
 
 async function checkIntakeRecovery(failures: string[]): Promise<void> {
-  const ctx = { userId: "boundary-check-user", ipHash: "boundary-check-ip" };
+  const ctx = {
+    userId: "boundary-check-user",
+    ipHash: "boundary-check-ip",
+    telemetryFlowId: createTelemetryFlowId(),
+  };
   const beforeSessions = await _sessionCount();
   const beforeArtifacts = await _storyArtifactCount();
   const noEligible = await handleIntake(

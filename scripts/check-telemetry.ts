@@ -9,6 +9,7 @@ import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import {
   deriveProductEventId,
   parseTelemetryFlowId,
+  parseTelemetryFlowIdForRetirement,
 } from "../lib/telemetry-id";
 import {
   createGenerationAttemptRecord,
@@ -39,6 +40,7 @@ import {
   pruneMemoryTelemetry,
 } from "../lib/telemetry-store-memory";
 import { toProductEventRow } from "../lib/telemetry-store-supabase";
+import { registerMemoryTelemetryFlow } from "../lib/telemetry-flow-binding-memory";
 import {
   GENERATION_ATTEMPT_RETENTION_DAYS,
   PRODUCT_EVENT_NAMES,
@@ -531,6 +533,7 @@ function checkGenerationSchema(): void {
 }
 
 function checkMemoryStore(): void {
+  assert.notEqual(registerMemoryTelemetryFlow(flowId), "revoked");
   const now = new Date("2026-07-12T12:00:00.000Z");
   const event = createProductEventRecord({
     eventId: createTelemetryEventId(),
@@ -584,6 +587,7 @@ function checkMemoryStore(): void {
     event: { event: "intake_submitted" },
     now: new Date("2025-01-01T00:00:00.000Z"),
   });
+  assert.notEqual(registerMemoryTelemetryFlow(expired.flowId!), "revoked");
   assert.equal(appendMemoryProductEvent(expired), "created");
   pruneMemoryTelemetry(Date.parse("2025-02-01T00:00:00.001Z"));
   assert(!listMemoryProductEvents().some((item) => item.eventId === expired.eventId));
@@ -807,6 +811,10 @@ function checkSigningKeyRotation(): void {
     expectReject(
       () => parseTelemetryFlowId(oldFlow),
       "retired signing key accepted outside the verification ring",
+    );
+    expectReject(
+      () => parseTelemetryFlowIdForRetirement(oldFlow),
+      "retirement parser accepted a flow signed by a retired key",
     );
   } finally {
     if (oldCurrent === undefined) delete process.env.TELEMETRY_ID_SECRET;

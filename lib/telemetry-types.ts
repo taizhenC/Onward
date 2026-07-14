@@ -5,6 +5,7 @@ export const PRODUCT_EVENT_SCHEMA_VERSION = "product-event-v1-2026-07";
 export const GENERATION_ATTEMPT_SCHEMA_VERSION =
   "generation-attempt-v1-2026-07";
 export const PRODUCT_EVENT_RETENTION_DAYS = 30;
+export const TELEMETRY_FLOW_RETENTION_DAYS = 30;
 export const GENERATION_ATTEMPT_RETENTION_DAYS = 14;
 
 export const APPROVED_TELEMETRY_RECIPE_IDS = [
@@ -71,6 +72,7 @@ export type TelemetryArtifactFallbackReason =
 declare const telemetryFlowIdBrand: unique symbol;
 declare const telemetryEventIdBrand: unique symbol;
 declare const telemetryOccurrenceIdBrand: unique symbol;
+declare const telemetryOutboxLeaseIdBrand: unique symbol;
 declare const generationAttemptIdBrand: unique symbol;
 declare const deletionCorrelationIdBrand: unique symbol;
 export type TelemetryFlowId = string & {
@@ -81,6 +83,9 @@ export type TelemetryEventId = string & {
 };
 export type TelemetryOccurrenceId = string & {
   readonly [telemetryOccurrenceIdBrand]: "TelemetryOccurrenceId";
+};
+export type TelemetryOutboxLeaseId = string & {
+  readonly [telemetryOutboxLeaseIdBrand]: "TelemetryOutboxLeaseId";
 };
 export type GenerationAttemptId = string & {
   readonly [generationAttemptIdBrand]: "GenerationAttemptId";
@@ -216,6 +221,48 @@ export type ProductEventRecord = ProductEvent & {
   flowId: TelemetryFlowId | null;
   occurredAt: string;
   expiresAt: string;
+};
+
+export const PRODUCT_EVENT_OUTBOX_STATUSES = [
+  "pending",
+  "leased",
+  "delivered",
+  "exhausted",
+] as const;
+export type ProductEventOutboxStatus =
+  (typeof PRODUCT_EVENT_OUTBOX_STATUSES)[number];
+export type TelemetryOutboxAckResult =
+  | "acknowledged"
+  | "duplicate"
+  | "exhausted"
+  | "stale"
+  | "not_found";
+export type TelemetryOutboxNackResult =
+  | "released"
+  | "exhausted"
+  | "delivered"
+  | "stale"
+  | "not_found";
+
+export type ProductEventCapture = ProductEvent & {
+  eventId: TelemetryEventId;
+  schemaVersion: typeof PRODUCT_EVENT_SCHEMA_VERSION;
+  flowId: TelemetryFlowId | null;
+};
+
+export type ProductEventOutboxPointer = {
+  eventId: TelemetryEventId;
+  status: ProductEventOutboxStatus;
+  attemptCount: number;
+  nextAttemptAt: string;
+  leaseId: TelemetryOutboxLeaseId | null;
+  leaseExpiresAt: string | null;
+  lastErrorClass: Exclude<TelemetryErrorClass, "none"> | null;
+};
+
+export type ClaimedProductEvent = ProductEventRecord & {
+  attemptCount: number;
+  leaseId: TelemetryOutboxLeaseId;
 };
 
 export const PRODUCT_EVENT_NAMES = [

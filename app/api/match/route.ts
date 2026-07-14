@@ -3,6 +3,13 @@ import { getAuthUserId } from "@/lib/auth";
 import { handleIntake } from "@/lib/intake";
 import { hashRequestIp } from "@/lib/rate-limit";
 import { CRISIS_RESOURCES, classifyCrisis } from "@/lib/safety";
+import { parseTelemetryFlowId } from "@/lib/telemetry-id";
+import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
+import {
+  activateTelemetryFlowForOwner,
+  telemetryFlowBindingEnabled,
+} from "@/lib/telemetry-flow-lifecycle";
+import type { TelemetryFlowId } from "@/lib/telemetry-types";
 
 export const runtime = "nodejs";
 // Rerank + opening copy on a slow provider day can stack past Vercel's default
@@ -29,6 +36,36 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ crisis: true, resources: CRISIS_RESOURCES });
   }
 
+  // Stop every non-crisis story before flow parsing, auth, registration, or any
+  // other durable work. The deeper intake guard remains a defense for scripts
+  // and non-route callers, but this boundary preserves the public no-write
+  // contract while an operator has paused story creation.
+  if (process.env.STORY_CREATION_ENABLED?.trim().toLowerCase() === "false") {
+    return unavailableResponse();
+  }
+
+  // Parse the opaque flow only after the crisis branch. Missing or forged flow
+  // IDs must never make reviewed crisis resources depend on UI state.
+  let telemetryFlowId: TelemetryFlowId | null = null;
+  const flowHeader = request.headers.get(TELEMETRY_FLOW_HEADER);
+  if (flowHeader !== null) {
+    try {
+      telemetryFlowId = parseTelemetryFlowId(flowHeader);
+    } catch (error) {
+      // Signature verification happens before the age check, so this branch is
+      // safe only for an authentic capability whose fixed lifetime elapsed.
+      // The client can recover by starting a fresh story; forged, future, or
+      // wrong-purpose values remain generic bad requests.
+      if (
+        error instanceof Error &&
+        error.message === "telemetry flow ID has expired"
+      ) {
+        return flowConflictResponse();
+      }
+      return jsonError("Story flow is invalid. Please refresh and try again.", 400);
+    }
+  }
+
   // Non-crisis stories need an owner before matching or persistence.
   let userId: string | null;
   try {
@@ -43,11 +80,33 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
+  // Claim the authenticated owner before validation, matching, providers, or
+  // writes. Missing flow/config or the explicit kill switch uses v2; a failure
+  // after a valid capability is present stays unavailable until schema/config
+  // is repaired or the operator deliberately enables the kill switch.
+  if (telemetryFlowId && telemetryFlowBindingEnabled()) {
+    try {
+      const activation = await activateTelemetryFlowForOwner(
+        telemetryFlowId,
+        userId,
+      );
+      if (activation !== "active") {
+        return flowConflictResponse();
+      }
+    } catch {
+      return unavailableResponse();
+    }
+  } else {
+    telemetryFlowId = null;
+  }
+
   let result: Awaited<ReturnType<typeof handleIntake>>;
   try {
     result = await handleIntake(body, {
       userId,
       ipHash: hashRequestIp(request),
+      telemetryFlowId,
+      telemetryFlowOwnerClaimed: telemetryFlowId !== null,
     });
   } catch {
     return unavailableResponse();
@@ -56,6 +115,8 @@ export async function POST(request: Request): Promise<Response> {
   if ("error" in result) {
     return jsonError(result.error, 400);
   }
+
+  if ("flowConflict" in result) return flowConflictResponse();
 
   if ("rateLimited" in result) {
     // Honest for the hour window; the day window is rarer and self-explains.
@@ -83,5 +144,12 @@ function unavailableResponse(): Response {
       status: 503,
       headers: { "cache-control": "no-store", "retry-after": "900" },
     },
+  );
+}
+
+function flowConflictResponse(): Response {
+  return Response.json(
+    { flowConflict: true },
+    { status: 409, headers: { "cache-control": "no-store" } },
   );
 }

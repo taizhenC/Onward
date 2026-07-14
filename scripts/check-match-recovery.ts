@@ -15,8 +15,12 @@ import {
   _storyArtifactCount,
   getOwnedStoryArtifact,
 } from "../lib/story-artifacts";
-import { _matchRecoveryFlowCount } from "../lib/match-recovery-flow";
+import {
+  _matchRecoveryFlowCount,
+  issueMatchRecoveryToken,
+} from "../lib/match-recovery-flow";
 import { MATCH_LIMITS } from "../lib/rate-limit";
+import { createTelemetryFlowId } from "../lib/telemetry";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -57,6 +61,7 @@ async function checkFinalTokenCannotRematch(
   const ctx: IntakeContext = {
     userId: "match-recovery-final-purpose",
     ipHash: "match-recovery-final-purpose-ip",
+    telemetryFlowId: createTelemetryFlowId(),
   };
   const before = await _sessionCount();
   const initial = await handleIntake(
@@ -259,6 +264,7 @@ async function checkClarificationAndNoCloseFlow(
   const ctx: IntakeContext = {
     userId: "match-recovery-ambiguous",
     ipHash: "match-recovery-ambiguous-ip",
+    telemetryFlowId: createTelemetryFlowId(),
   };
   const beforeSessions = await _sessionCount();
   const beforeArtifacts = await _storyArtifactCount();
@@ -327,7 +333,11 @@ async function checkClarificationAndNoCloseFlow(
       acceptAdjacent: true,
       recoveryToken: secondToken,
     },
-    { userId: "match-recovery-foreign", ipHash: "match-recovery-foreign-ip" },
+    {
+      userId: "match-recovery-foreign",
+      ipHash: "match-recovery-foreign-ip",
+      telemetryFlowId: createTelemetryFlowId(),
+    },
   );
   if (!("error" in replay) || !("error" in foreign)) {
     failures.push("single-use recovery token replay or foreign use was accepted");
@@ -346,6 +356,22 @@ async function checkClarificationAndNoCloseFlow(
   if (!("sessionId" in accepted)) {
     failures.push("explicit adjacent acceptance did not create a story");
     return;
+  }
+  const committedReplay = await handleIntake(
+    {
+      age: 34,
+      feeling: AMBIGUOUS_DISCLOSURE,
+      clarification: "uncertainty",
+      acceptAdjacent: true,
+      recoveryToken: secondToken,
+    },
+    ctx,
+  );
+  if (
+    !("sessionId" in committedReplay) ||
+    committedReplay.sessionId !== accepted.sessionId
+  ) {
+    failures.push("committed adjacent response-loss retry did not reconcile early");
   }
   const session = await getOwnedSession(accepted.sessionId, ctx.userId);
   const artifact = session?.storyArtifactId
@@ -369,6 +395,7 @@ async function checkClarificationAndNoCloseFlow(
     session.matchRecipe.matchRecoveryPolicyVersion !==
       MATCH_RECOVERY_POLICY_VERSION ||
     session.storyRequestContext?.clarification !== "uncertainty" ||
+    session.storyRequestContext?.acceptedAdjacent !== true ||
     serialized.includes("controlled choice") ||
     serialized.includes("uncertain unsure identity next step which direction") ||
     serialized.includes('"acceptAdjacent"') ||
@@ -394,13 +421,19 @@ async function checkClarificationAndNoCloseFlow(
     feeling: "I keep getting rejected and do not know whether to keep trying.",
   };
   for (let index = 0; index < MATCH_LIMITS.userPerHour - 1; index += 1) {
-    const ordinary = await handleIntake(ordinaryInput, ctx);
+    const ordinary = await handleIntake(ordinaryInput, {
+      ...ctx,
+      telemetryFlowId: createTelemetryFlowId(),
+    });
     if (!("sessionId" in ordinary)) {
       failures.push(`recovery credit incorrectly consumed ordinary rate slot ${index + 2}`);
       break;
     }
   }
-  const overBudget = await handleIntake(ordinaryInput, ctx);
+  const overBudget = await handleIntake(ordinaryInput, {
+    ...ctx,
+    telemetryFlowId: createTelemetryFlowId(),
+  });
   if (!("rateLimited" in overBudget)) {
     failures.push("recovery chain bypassed or over-consumed the bounded hourly budget");
   }
@@ -412,11 +445,21 @@ async function checkClarificationImprovesMatch(
   const ctx: IntakeContext = {
     userId: "match-recovery-improved",
     ipHash: "match-recovery-improved-ip",
+    telemetryFlowId: createTelemetryFlowId(),
   };
   const feeling =
     "I keep sending my work out and every door stays closed without explanation.";
+  const recoveryToken = await issueMatchRecoveryToken(
+    ctx.userId,
+    {
+      age: 28,
+      feeling,
+      telemetryFlowId: ctx.telemetryFlowId,
+    },
+    "clarification",
+  );
   const result = await handleIntake(
-    { age: 28, feeling, clarification: "rejection" },
+    { age: 28, feeling, clarification: "rejection", recoveryToken },
     ctx,
   );
   if ("clarificationNeeded" in result) {
@@ -455,6 +498,7 @@ async function checkInvalidAndCrisisPrecedence(
   const ctx: IntakeContext = {
     userId: "match-recovery-validation",
     ipHash: "match-recovery-validation-ip",
+    telemetryFlowId: createTelemetryFlowId(),
   };
   const before = await _sessionCount();
   const invalidClarification = await handleIntake(
@@ -473,6 +517,40 @@ async function checkInvalidAndCrisisPrecedence(
     },
     ctx,
   );
+  const clarificationWithoutToken = await handleIntake(
+    {
+      age: 30,
+      feeling: AMBIGUOUS_DISCLOSURE,
+      clarification: "uncertainty",
+    },
+    ctx,
+  );
+  const acceptanceWithoutToken = await handleIntake(
+    {
+      age: 30,
+      feeling: AMBIGUOUS_DISCLOSURE,
+      acceptAdjacent: true,
+    },
+    ctx,
+  );
+  const clarificationToken = await issueMatchRecoveryToken(
+    ctx.userId,
+    {
+      age: 30,
+      feeling: AMBIGUOUS_DISCLOSURE,
+      telemetryFlowId: ctx.telemetryFlowId,
+    },
+    "clarification",
+  );
+  const wrongPurposeChoice = await handleIntake(
+    {
+      age: 30,
+      feeling: AMBIGUOUS_DISCLOSURE,
+      acceptAdjacent: true,
+      recoveryToken: clarificationToken,
+    },
+    ctx,
+  );
   const crisis = await handleIntake(
     {
       age: 30,
@@ -485,6 +563,9 @@ async function checkInvalidAndCrisisPrecedence(
   if (
     !("error" in invalidClarification) ||
     !("error" in invalidAcceptance) ||
+    !("error" in clarificationWithoutToken) ||
+    !("error" in acceptanceWithoutToken) ||
+    !("error" in wrongPurposeChoice) ||
     !("crisis" in crisis) ||
     (await _sessionCount()) !== before
   ) {

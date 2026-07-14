@@ -15,11 +15,13 @@ export type StoryRequestContext = {
   schemaVersion: typeof STORY_REQUEST_CONTEXT_VERSION;
   boundaries: StoryBoundaries | null;
   clarification: MatchClarification | null;
+  acceptedAdjacent: boolean;
 };
 
 export function createStoryRequestContext(input: {
   boundaries: StoryBoundaries | undefined;
   clarification: MatchClarification | undefined;
+  acceptedAdjacent?: boolean;
 }): StoryRequestContext {
   return {
     schemaVersion: STORY_REQUEST_CONTEXT_VERSION,
@@ -30,6 +32,7 @@ export function createStoryRequestContext(input: {
         }
       : null,
     clarification: input.clarification ?? null,
+    acceptedAdjacent: input.acceptedAdjacent === true,
   };
 }
 
@@ -40,11 +43,15 @@ export function parseStoryRequestContext(
     return null;
   }
   const candidate = value as Record<string, unknown>;
-  if (
-    Object.keys(candidate).sort().join(",") !==
-      "boundaries,clarification,schemaVersion" ||
-    candidate.schemaVersion !== STORY_REQUEST_CONTEXT_VERSION
-  ) {
+  const keys = Object.keys(candidate).sort().join(",");
+  const current =
+    keys === "acceptedAdjacent,boundaries,clarification,schemaVersion" &&
+    candidate.schemaVersion === STORY_REQUEST_CONTEXT_VERSION &&
+    typeof candidate.acceptedAdjacent === "boolean";
+  const legacy =
+    keys === "boundaries,clarification,schemaVersion" &&
+    candidate.schemaVersion === LEGACY_STORY_REQUEST_CONTEXT_VERSION;
+  if (!current && !legacy) {
     return null;
   }
 
@@ -69,5 +76,9 @@ export function parseStoryRequestContext(
     schemaVersion: STORY_REQUEST_CONTEXT_VERSION,
     boundaries,
     clarification,
+    acceptedAdjacent: current ? candidate.acceptedAdjacent === true : false,
   };
 }
+
+const LEGACY_STORY_REQUEST_CONTEXT_VERSION =
+  "story-request-context-v1-2026-07";

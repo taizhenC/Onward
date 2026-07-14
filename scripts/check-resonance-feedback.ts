@@ -22,6 +22,7 @@ import {
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import type { MatchRecipe } from "../lib/types";
+import { createTelemetryFlowId } from "../lib/telemetry";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -305,6 +306,7 @@ async function makeSession(userId: string, completed: boolean) {
   });
   const sessionId = await createSession({
     userId,
+    telemetryFlowId: createTelemetryFlowId(),
     figureKey: artifact.figureKey,
     stageId: artifact.stageId,
     framing: artifact.framing,

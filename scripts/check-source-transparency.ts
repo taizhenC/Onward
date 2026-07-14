@@ -33,6 +33,7 @@ import {
 import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { validateStorySpec } from "../lib/story-spec";
 import type { StorySpec, StoryBeatSpec } from "../lib/story-spec-types";
+import { createTelemetryFlowId } from "../lib/telemetry";
 import type { MatchRecipe } from "../lib/types";
 
 process.env.PERSISTENCE = "memory";
@@ -284,6 +285,7 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
   const owner = makeFixture();
   const ownerSessionId = await createSession({
     userId: LOCAL_DEV_USER_ID,
+    telemetryFlowId: createTelemetryFlowId(),
     figureKey: owner.artifact.figureKey,
     stageId: owner.artifact.stageId,
     framing: owner.artifact.framing,
@@ -372,6 +374,7 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
   const foreign = makeFixture("uncertainty");
   const foreignSessionId = await createSession({
     userId: "foreign-user",
+    telemetryFlowId: createTelemetryFlowId(),
     figureKey: foreign.artifact.figureKey,
     stageId: foreign.artifact.stageId,
     framing: foreign.artifact.framing,
@@ -416,6 +419,7 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
   legacy.contentHash = storyArtifactContentHash(legacy);
   const legacySessionId = await createSession({
     userId: LOCAL_DEV_USER_ID,
+    telemetryFlowId: createTelemetryFlowId(),
     figureKey: legacy.figureKey,
     stageId: legacy.stageId,
     framing: legacy.framing,

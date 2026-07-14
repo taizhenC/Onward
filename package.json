@@ -16,6 +16,7 @@
     "check-resonance-feedback": "tsx scripts/check-resonance-feedback.ts",
     "check-try-another": "tsx scripts/check-try-another.ts",
     "check-telemetry": "tsx scripts/check-telemetry.ts",
+    "check-telemetry-lifecycle": "tsx scripts/check-telemetry-lifecycle.ts",
     "check-story-boundaries": "tsx scripts/check-story-boundaries.ts",
     "check-resonance-brief": "tsx scripts/check-resonance-brief.ts",
     "check-story-composer": "tsx scripts/check-story-composer.ts",

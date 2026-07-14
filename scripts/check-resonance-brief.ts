@@ -76,7 +76,13 @@ function checkClassification(failures: string[]): void {
 
 function checkClosedContract(failures: string[]): void {
   const brief = createResonanceBrief(PRIVATE_DISCLOSURE);
-  const serialized = JSON.stringify(brief);
+  // Elide the keyed HMAC digests before scanning for retained text. "2024" is
+  // four hex characters, so a random digest contains it in ~1.6% of processes
+  // (the key is ephemeral per process) and would trip a false privacy alarm.
+  // Only exactly-64-char hex runs are elided, and validateResonanceBrief below
+  // proves every digest field has that shape — so no retained disclosure can
+  // hide in the elided span.
+  const serialized = JSON.stringify(brief).replace(/[0-9a-f]{64}/gi, "<digest>");
   const forbiddenRawValues = [
     PRIVATE_DISCLOSURE,
     "Priya",

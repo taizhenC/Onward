@@ -64,10 +64,9 @@ export function StoryPlayer({
         setChunkIndex(0);
         break;
       case "end":
-        // Intentional no-op. Per StoryBeat's contract, when next === "end"
-        // the Continue button is hidden and the final chunk stays visible
-        // with "The journey ends here." underneath (the in-flow finish is
-        // signalled via onEnd, not onComplete). This branch only runs if a
+        // Intentional no-op. Per StoryBeat's contract the acknowledged finish
+        // arrives via onEnd, never onComplete — the final chunk stays visible
+        // and the save card renders below it. This branch only runs if a
         // future caller misuses the contract. The "ended" phase is entered
         // exclusively via the refresh path (initialBeatIndex >= total).
         break;

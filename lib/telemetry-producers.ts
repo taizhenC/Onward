@@ -42,6 +42,15 @@ export function intakeStartedEvent(
   return { event: "intake_started", viewportBucket };
 }
 
+export function authEstablishedEvent(
+  authMethod: Extract<
+    ProductEvent,
+    { event: "auth_established" }
+  >["authMethod"],
+): Extract<ProductEvent, { event: "auth_established" }> {
+  return { event: "auth_established", authMethod };
+}
+
 export function matchCompletedEvent(input: {
   result: IntakeMatchResult;
   disposition: MatchDisposition;

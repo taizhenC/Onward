@@ -22,7 +22,7 @@ Roadmap-stack snapshot (2026-07-14; these slices are not assumed to be on the Ju
 - **Resonance recovery**: completed-story readers can answer one bounded close/not-close question without linking an email. An explicitly rejected root story can use one short-lived capability to produce a different, always-partial story without resending the disclosure, relaxing its limits, or consuming another public rate-limit unit.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres; denials carry only an unlinkable user/IP scope event committed with the counter update.
 - **Retention**: the disclosure and its closed boundary/clarification context are kept only on the original session and NULL'd together at its immutable 60-day deadline; an alternate never resets that clock.
-- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; entry, initial/alternate match and artifact, reader progress/completion/visibility, bounded feedback, and alternate demand/resolution now use narrow authoritative producers.
+- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; entry, flow-bound anonymous auth, initial/alternate match and artifact, reader progress/completion/visibility, bounded feedback, and alternate demand/resolution now use narrow authoritative producers.
 
 ## Run locally
 
@@ -56,6 +56,7 @@ npm run check-feedback-telemetry # validate atomic feedback producer, replay, ro
 npm run check-alternate-request-telemetry # validate claim-only alternate demand telemetry
 npm run check-alternate-resolution-telemetry # validate terminal/match/artifact alternate telemetry
 npm run check-entry-telemetry # validate landing-to-intake handoff and first interaction telemetry
+npm run check-auth-telemetry # validate flow-bound anonymous-auth proof, singleton capture, and silence rules
 npm run check-reader-visibility-telemetry # validate first-content, passage-presentation, and source-open telemetry
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
@@ -82,7 +83,7 @@ See `.env.example` for the documented template. Summary:
 | `IP_HASH_SALT` | **secret**; required with `PERSISTENCE=supabase`; minimum 32 bytes, generated with `openssl rand -hex 32` |
 | `TELEMETRY_ID_SECRET` | **Dedicated secret required in Supabase and production modes** for authenticated telemetry identifiers; minimum 32 bytes. There is no `IP_HASH_SALT` fallback and the values must be different. |
 | `TELEMETRY_ID_PREVIOUS_SECRETS` | Optional comma-separated verification ring of up to eight prior telemetry secrets. Retain each previous key for at least 30 days after its last issuance and until its outbox retries are drained. |
-| `TELEMETRY_FLOW_BINDING_ENABLED` | Temporary schema/config availability kill switch. Defaults enabled; set `false` only to keep stories on legacy v2, reader progress on the prior CAS, feedback on the legacy RPC, and alternate claim/completion on the legacy RPCs while `0011`-`0016` or their configuration is unavailable. This incident mode intentionally loses linked telemetry. |
+| `TELEMETRY_FLOW_BINDING_ENABLED` | Temporary schema/config availability kill switch. Defaults enabled; set `false` only to keep stories on legacy v2, reader progress on the prior CAS, feedback on the legacy RPC, and alternate claim/completion on the legacy RPCs while `0011`-`0016` or their configuration is unavailable. This incident mode intentionally loses linked telemetry, including story-flow auth measurement. |
 | `MATCH_RECOVERY_TOKEN_SECRET` | Optional dedicated HMAC secret for single-use recovery fingerprints; minimum 32 bytes; production falls back to `IP_HASH_SALT`. |
 | `ALTERNATE_STORY_TOKEN_SECRET` | Optional dedicated HMAC secret for post-story alternate capabilities; minimum 32 bytes; falls back to the recovery secret, then `IP_HASH_SALT`. |
 | `LLM_PROVIDER` | `stub` (default) or `real` (Cerebras) |
@@ -112,6 +113,7 @@ npm run check-feedback-telemetry
 npm run check-alternate-request-telemetry
 npm run check-alternate-resolution-telemetry
 npm run check-entry-telemetry
+npm run check-auth-telemetry
 npm run check-reader-visibility-telemetry
 npm run build
 ```
@@ -186,7 +188,18 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
 
 Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, a separate required `TELEMETRY_ID_SECRET`, `TELEMETRY_FLOW_BINDING_ENABLED=true` after `0011`-`0016` pass verification, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET` and `ALTERNATE_STORY_TOKEN_SECRET`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. Production rejects every non-keyword retrieval value, and story creation independently rejects a challenger result before persistence or telemetry; the July 2 fifty-figure holdout approved keyword retrieval while FacetsRAG remains an eval challenger. Promote hybrid independently by setting its flag to `true`; rollback requires only restoring `false`. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
 
-For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`; Supabase/production mode has no fallback to `IP_HASH_SALT`, and reusing the salt is not supported. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys until every associated flow, event, and outbox retry is deleted or drained. Configure Vercel, proxy, and APM logging to redact `x-onward-telemetry-flow-id` and the short-lived `onward_entry_flow` cookie; the application does not log either value, but infrastructure retention must also stay within the reviewed lifecycle.
+For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`; Supabase/production mode has no fallback to `IP_HASH_SALT`, and reusing the salt is not supported. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys until every associated flow, event, and outbox retry is deleted or drained. Configure Vercel, proxy, and APM logging to redact `x-onward-telemetry-flow-id`, the short-lived `onward_entry_flow` handoff cookie, and the two-minute `onward_auth_retry` challenge cookie; the application does not log any of them, but infrastructure retention must also stay within the reviewed lifecycle.
+
+In staging, verify story-flow auth from a fresh signed-out browser: submit one
+valid non-crisis intake, confirm the first `/api/match` response is `401` with an
+HttpOnly `onward_auth_retry` cookie, and confirm the anonymous-auth retry creates
+exactly one `auth_established:anonymous` row plus one outbox pointer. Replaying
+the same request must not create a second unit. A second intake from the now
+authenticated browser, standalone `/signin`, email confirmation/upgrade,
+password setting, and saved-story access must create none. Repeat the crisis and
+`STORY_CREATION_ENABLED=false` canaries and confirm they set no auth challenge,
+register no flow, and emit no event. This check requires no migration beyond the
+existing `0011` lifecycle/capture/outbox schema.
 
 ## Privacy posture (plain words, enforced in code)
 

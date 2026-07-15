@@ -76,7 +76,7 @@ type CoreIntakeInput = {
   recoveryTokenRaw: unknown;
 };
 
-type ValidatedIntakeInput = {
+export type ValidatedIntakeInput = {
   age: number;
   feeling: string;
   boundaries: StoryBoundaries | undefined;
@@ -99,39 +99,8 @@ export async function handleIntake(
     }
   }
 
-  const core = validateCoreIntake(input);
-  if ("error" in core) return core;
-  const parsedBoundaries = parseStoryBoundaries(core.boundariesRaw);
-  if ("error" in parsedBoundaries) return parsedBoundaries;
-  const parsedClarification = parseMatchClarification(core.clarificationRaw);
-  if ("error" in parsedClarification) return parsedClarification;
-  if (
-    core.acceptAdjacentRaw !== undefined &&
-    typeof core.acceptAdjacentRaw !== "boolean"
-  ) {
-    return { error: "Adjacent-match preference must be a boolean." };
-  }
-  const parsedRecoveryToken = parseMatchRecoveryToken(core.recoveryTokenRaw);
-  if ("error" in parsedRecoveryToken) return parsedRecoveryToken;
-  const recoveryChoiceProvided =
-    parsedClarification.value !== undefined || core.acceptAdjacentRaw === true;
-  if (recoveryChoiceProvided && parsedRecoveryToken.value === undefined) {
-    return { error: "This match step expired. Please revise and try again." };
-  }
-  if (
-    parsedRecoveryToken.value &&
-    !recoveryChoiceProvided
-  ) {
-    return { error: "Choose an answer or accept the adjacent story to continue." };
-  }
-  const validated: ValidatedIntakeInput = {
-    age: core.age,
-    feeling: core.feeling,
-    boundaries: parsedBoundaries.value,
-    clarification: parsedClarification.value,
-    acceptAdjacent: core.acceptAdjacentRaw === true,
-    recoveryToken: parsedRecoveryToken.value,
-  };
+  const validated = validateIntakeInput(input);
+  if ("error" in validated) return validated;
 
   // Operational kill switch for a safety, privacy, or content incident. Crisis
   // support remains available because it is evaluated above this branch. The
@@ -376,6 +345,44 @@ export async function handleIntake(
   }
 
   return { sessionId };
+}
+
+// Pure exact validation shared by the route's pre-auth boundary and the domain
+// handler. Keeping it free of auth, persistence, rate limits, and providers lets
+// malformed requests fail before they can mint an auth-funnel milestone.
+export function validateIntakeInput(
+  input: unknown,
+): ValidatedIntakeInput | IntakeValidationError {
+  const core = validateCoreIntake(input);
+  if ("error" in core) return core;
+  const parsedBoundaries = parseStoryBoundaries(core.boundariesRaw);
+  if ("error" in parsedBoundaries) return parsedBoundaries;
+  const parsedClarification = parseMatchClarification(core.clarificationRaw);
+  if ("error" in parsedClarification) return parsedClarification;
+  if (
+    core.acceptAdjacentRaw !== undefined &&
+    typeof core.acceptAdjacentRaw !== "boolean"
+  ) {
+    return { error: "Adjacent-match preference must be a boolean." };
+  }
+  const parsedRecoveryToken = parseMatchRecoveryToken(core.recoveryTokenRaw);
+  if ("error" in parsedRecoveryToken) return parsedRecoveryToken;
+  const recoveryChoiceProvided =
+    parsedClarification.value !== undefined || core.acceptAdjacentRaw === true;
+  if (recoveryChoiceProvided && parsedRecoveryToken.value === undefined) {
+    return { error: "This match step expired. Please revise and try again." };
+  }
+  if (parsedRecoveryToken.value && !recoveryChoiceProvided) {
+    return { error: "Choose an answer or accept the adjacent story to continue." };
+  }
+  return {
+    age: core.age,
+    feeling: core.feeling,
+    boundaries: parsedBoundaries.value,
+    clarification: parsedClarification.value,
+    acceptAdjacent: core.acceptAdjacentRaw === true,
+    recoveryToken: parsedRecoveryToken.value,
+  };
 }
 
 function validateCoreIntake(input: unknown): CoreIntakeInput | IntakeValidationError {

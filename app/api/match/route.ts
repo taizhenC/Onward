@@ -1,14 +1,31 @@
 import { jsonError } from "@/lib/api-utils";
-import { getAuthUserId } from "@/lib/auth";
-import { handleIntake } from "@/lib/intake";
+import {
+  getAuthUserId,
+  getAuthUserContext,
+  hasFreshAnonymousAuthentication,
+} from "@/lib/auth";
+import { handleIntake, validateIntakeInput } from "@/lib/intake";
 import { hashRequestIp } from "@/lib/rate-limit";
 import { CRISIS_RESOURCES, classifyCrisis } from "@/lib/safety";
-import { parseTelemetryFlowId } from "@/lib/telemetry-id";
+import {
+  issueAnonymousStoryFlowAuthChallenge,
+  parseTelemetryFlowId,
+  verifyAnonymousStoryFlowAuthChallenge,
+} from "@/lib/telemetry-id";
 import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
+import {
+  readStoryFlowAuthChallengeCookie,
+  retireStoryFlowAuthChallengeCookie,
+  setStoryFlowAuthChallengeCookie,
+} from "@/lib/telemetry-auth-challenge-cookie";
 import {
   activateTelemetryFlowForOwner,
   telemetryFlowBindingEnabled,
 } from "@/lib/telemetry-flow-lifecycle";
+import {
+  authEstablishedEvent,
+  recordLinkedProductEventBestEffort,
+} from "@/lib/telemetry-producers";
 import type { TelemetryFlowId } from "@/lib/telemetry-types";
 
 export const runtime = "nodejs";
@@ -17,6 +34,7 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: Request): Promise<Response> {
+  const requestUrl = new URL(request.url);
   let body: unknown;
 
   try {
@@ -66,24 +84,65 @@ export async function POST(request: Request): Promise<Response> {
     }
   }
 
-  // Non-crisis stories need an owner before matching or persistence.
+  // The shared pure parser keeps malformed intake, boundary, and recovery
+  // requests out of both authentication and its funnel telemetry. handleIntake
+  // repeats this check as a defense for non-route callers.
+  const validated = validateIntakeInput(body);
+  if ("error" in validated) return jsonError(validated.error, 400);
+
+  const authChallenge = readStoryFlowAuthChallengeCookie(request);
+  let authProof: ReturnType<
+    typeof verifyAnonymousStoryFlowAuthChallenge
+  > | null = null;
+  if (telemetryFlowId && telemetryFlowBindingEnabled() && authChallenge) {
+    try {
+      authProof = verifyAnonymousStoryFlowAuthChallenge(
+        authChallenge,
+        telemetryFlowId,
+      );
+    } catch {
+      authProof = null;
+    }
+  }
+
+  // Ordinary authenticated story starts need only the validated Auth user.
+  // Claims/AMR verification is requested only after a valid same-flow challenge
+  // proves that method telemetry could be accepted.
+  let authUser: Awaited<ReturnType<typeof getAuthUserContext>> = null;
   let userId: string | null;
   try {
-    userId = await getAuthUserId();
+    if (authProof) {
+      authUser = await getAuthUserContext();
+      userId = authUser?.userId ?? null;
+    } else {
+      userId = await getAuthUserId();
+    }
   } catch {
     return unavailableResponse();
   }
   if (!userId) {
-    return jsonError(
-      "We couldn't start a private session. Cookies are needed to keep your story yours.",
-      401,
-    );
+    return privateSessionRequiredResponse(telemetryFlowId, requestUrl);
   }
+  let preserveAuthChallenge = false;
+  const finish = (response: Response): Response =>
+    authChallenge && !preserveAuthChallenge && response.status !== 503
+      ? retireStoryFlowAuthChallengeCookie(response, requestUrl)
+      : response;
 
-  // Claim the authenticated owner before validation, matching, providers, or
-  // writes. Missing flow/config or the explicit kill switch uses v2; a failure
-  // after a valid capability is present stays unavailable until schema/config
-  // is repaired or the operator deliberately enables the kill switch.
+  // The HttpOnly challenge is minted only after this same flow reached a prior
+  // unauthenticated 401. Its signed purpose is anonymous auth; the fresh AMR
+  // entry comes from a verified Supabase JWT, never from the browser. Invalid,
+  // expired, cross-flow, or unverifiable measurement remains silent.
+  const anonymousAuthEstablished = Boolean(
+    authProof &&
+      authUser &&
+      hasFreshAnonymousAuthentication(authUser, authProof.issuedAtSeconds),
+  );
+
+  // Claim the authenticated owner after exact validation but before matching,
+  // providers, or writes. Missing flow/config or the explicit kill switch uses
+  // v2; a failure after a valid capability is present stays unavailable until
+  // schema/config is repaired or the operator enables the incident switch.
   if (telemetryFlowId && telemetryFlowBindingEnabled()) {
     try {
       const activation = await activateTelemetryFlowForOwner(
@@ -91,7 +150,14 @@ export async function POST(request: Request): Promise<Response> {
         userId,
       );
       if (activation !== "active") {
-        return flowConflictResponse();
+        return finish(flowConflictResponse());
+      }
+      if (anonymousAuthEstablished) {
+        const capture = await recordLinkedProductEventBestEffort(
+          authEstablishedEvent("anonymous"),
+          telemetryFlowId,
+        );
+        preserveAuthChallenge = capture === "unavailable";
       }
     } catch {
       return unavailableResponse();
@@ -113,18 +179,20 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   if ("error" in result) {
-    return jsonError(result.error, 400);
+    return finish(jsonError(result.error, 400));
   }
 
-  if ("flowConflict" in result) return flowConflictResponse();
+  if ("flowConflict" in result) return finish(flowConflictResponse());
 
   if ("rateLimited" in result) {
     // Honest for the hour window; the day window is rarer and self-explains.
     const retryAfterSeconds = 3600 - (Math.floor(Date.now() / 1000) % 3600);
-    return Response.json(result, {
-      status: 429,
-      headers: { "retry-after": String(retryAfterSeconds) },
-    });
+    return finish(
+      Response.json(result, {
+        status: 429,
+        headers: { "retry-after": String(retryAfterSeconds) },
+      }),
+    );
   }
 
   if ("temporarilyUnavailable" in result) {
@@ -134,7 +202,32 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
-  return Response.json(result);
+  return finish(Response.json(result));
+}
+
+function privateSessionRequiredResponse(
+  telemetryFlowId: TelemetryFlowId | null,
+  requestUrl: URL,
+): Response {
+  const response = Response.json(
+    {
+      error:
+        "We couldn't start a private session. Cookies are needed to keep your story yours.",
+    },
+    { status: 401, headers: { "cache-control": "no-store" } },
+  );
+  if (telemetryFlowId && telemetryFlowBindingEnabled()) {
+    try {
+      return setStoryFlowAuthChallengeCookie(
+        response,
+        issueAnonymousStoryFlowAuthChallenge(telemetryFlowId),
+        requestUrl,
+      );
+    } catch {
+      // Authentication and crisis support never depend on observability.
+    }
+  }
+  return response;
 }
 
 function unavailableResponse(): Response {

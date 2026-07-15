@@ -1,6 +1,7 @@
 # Privacy-safe telemetry contract
 
-**Status:** Implemented foundation; production instrumentation and reporting are separate follow-up work.
+**Status:** Implemented foundation and core producer set; sanitized failure
+capture, production delivery, aggregation, and reporting remain follow-up work.
 
 **Contract version:** `product-event-v1-2026-07` / `generation-attempt-v1-2026-07`
 
@@ -97,7 +98,38 @@ Latency buckets are `[0,250ms)`, `[250ms,500ms]`, `(500ms,1s)`, `[1s,3s)`, `[3s,
 
 `first_content_shown` starts on the client's monotonic clock immediately before dispatching the story-creation request that the server ultimately accepts (initial intake or an alternate attempt) and ends after the preface is committed, laid out, and fully visible. `passage_presented` starts when the user activates Continue, before the compare-and-set/network request, and ends when the returned stored passage is committed, laid out, and fully visible. Both measures include network, database, and render time and exclude optional word-reveal animation. If the originating monotonic timestamp is unavailable after reload, navigation, or cached re-entry, emit nothing rather than fabricate latency.
 
-`auth_established` is emitted only for authentication performed inside an active story-creation root flow. Standalone sign-in or saved-story access must never fabricate a story flow; general auth reliability requires a separately scoped future operational stream.
+`auth_established` is one first-write-wins unit per root flow and is emitted only
+for authentication performed inside that story-creation flow. The current
+producer supports `anonymous` only: an exactly validated, unauthenticated,
+non-crisis `/api/match` request with a valid flow receives a two-minute,
+flow-bound HMAC challenge in an
+HttpOnly `SameSite=Strict` cookie scoped to `/api/match`. The signed purpose is
+anonymous authentication and the value exposes neither the flow nor a user. On
+the retry, the server verifies the challenge, requires a fresh timestamped
+`anonymous` AMR entry from verified Supabase claims, activates the same owner,
+and then attempts deterministic event capture. Exact and concurrent retries
+deduplicate and can restore a missing outbox pointer; a changed method can never
+rewrite the first row.
+
+Already-authenticated visits without that challenge remain silent. Standalone
+`/signin`, email confirmation/change, the post-story email upgrade, password
+enrollment/change, `/stories`, saved-story reopening, and alternate creation do
+not mint or consume this proof. `email_link` and `password` remain reserved until
+each has an explicit flow-bound story-creation continuation and server-verified
+method proof. Invalid, expired, cross-flow, or unverifiable challenges suppress
+measurement without blocking a story. The cookie is retired after a consumed
+non-transient response and otherwise expires quickly; transient `503` responses
+preserve it for a safe retry. Parallel intake tabs may overwrite this single
+path-scoped cookie and undercount one journey, but cannot cross-attribute an
+event because the signature is bound to the exact flow.
+
+Supabase Auth and product telemetry are separate systems, so this observability
+producer is intentionally availability-first rather than transactionally coupled
+to authentication. A capture outage after successful authentication may
+undercount; it must never strand a reader or roll back auth. The owner claim and
+existing `capture_product_event_v1` singleton/outbox path still make every
+successful capture owner-scoped and retry-idempotent. General auth reliability
+outside story creation requires a separately scoped future operational stream.
 
 The landing CTA is a fixed same-origin POST, not a generic analytics call. The
 server issues and registers one opaque flow only after that click, captures the
@@ -107,8 +139,9 @@ script-readable browser storage. Direct `/begin` visits receive an unregistered
 in-memory capability and create no row until a valid intake interaction or
 submission. The first trusted form change sends only `small`/`large` to a
 separate exact-shape endpoint; the intake text, age, boundaries, and element
-identity never enter that request. Infrastructure must redact both the flow
-header and handoff cookie even though neither contains reader content.
+identity never enter that request. Infrastructure must redact the flow header,
+entry handoff cookie, and `onward_auth_retry` challenge cookie even though none
+contains reader content.
 
 Reader visibility uses three separate same-origin, owner-scoped endpoints rather
 than a generic event receiver. The browser sends a session lookup, an already-closed
@@ -150,6 +183,7 @@ after response binding suppresses the event instead of manufacturing latency.
 
 - Never spread a request, `Session`, `StoryArtifact`, match debug object, provider response, feedback row, or exception into telemetry.
 - Durable transition events must be written transactionally with the domain change or through a transactional outbox. On an idempotent domain replay (`duplicate`/`already_advanced`), reconcile the same deterministic telemetry ID instead of incrementing twice or permanently losing the event.
+- `auth_established` is the narrow cross-system exception: Supabase Auth has already committed before the application can claim/capture the flow, so the event is best-effort pure observability after verified success. Capture failure may undercount but must not roll back auth or block a story; a later same-proof retry reuses the deterministic singleton.
 - Feedback corresponds to the one durable feedback row; passage/completion corresponds to the one durable compare-and-set transition.
 - Emit alternate request/terminal events only on durable state transitions, never on polling/hydration.
 - Telemetry failure must not delay or suppress crisis resources.
@@ -159,4 +193,4 @@ after response binding suppresses the event instead of manufacturing latency.
 
 ## Remaining release work
 
-This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry handoff, reader-visibility endpoints, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, and first-write-wins terminal resolution are implemented. P0-11 remains in progress until story-flow auth and one sanitized failure owner capture their approved events; outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.
+This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry and story-flow-auth handoffs, reader-visibility endpoints, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, and first-write-wins terminal resolution are implemented. P0-11 remains in progress until one sanitized failure owner captures its approved event; outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.

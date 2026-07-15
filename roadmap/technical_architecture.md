@@ -446,6 +446,21 @@ narrow reader-visibility routes accept only closed client measurements, then
 verify bounded caller coordinates against reached durable progress and derive role
 plus flattened passage ordinal from the owned immutable story before capture.
 
+Story-flow authentication uses no generic auth analytics hook. An exactly
+validated unauthenticated match attempt mints a two-minute, exact-flow HMAC challenge in an
+HttpOnly `SameSite=Strict` cookie scoped to `/api/match`. The client performs its
+existing anonymous sign-in without reading the token. Claims verification is
+skipped for ordinary authenticated starts. On retry, the server validates the
+cookie, a fresh `anonymous` AMR entry from verified Supabase claims,
+and the owner claim before best-effort deterministic capture. Existing sessions
+and standalone sign-in, confirmation, account upgrade, password setting, saved
+stories, and alternates remain silent; email-link/password values are reserved
+until those methods have explicit story-flow continuations. Auth is external to
+Postgres, so no database RPC can make the two systems atomic. A telemetry outage
+may undercount this pure-observability milestone but cannot block a valid story;
+flow/event singleton constraints and the outbox make successful retries
+idempotent.
+
 The match limiter also stores a two-day, default-deny replay row containing
 only the occurrence-derived event ID and its closed decision. An ambiguous RPC
 retry reuses that ID, reads the committed result before incrementing any

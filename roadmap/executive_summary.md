@@ -22,8 +22,8 @@ architecture advances.
 
 It is still **not a viable public release**. The current fifty-figure StorySpecs
 are review drafts rather than a researcher-approved launch set; end-to-end
-relatability has not been validated with target readers; reader/client telemetry,
-dispatch, dashboards, and alerts are not operating; browser accessibility and
+relatability has not been validated with target readers; telemetry dispatch,
+dashboards, and alerts are not operating; browser accessibility and
 critical-flow evidence remain incomplete; and the configured Supabase project
 does not yet contain migrations `0004` through `0016`. Local green checks do not
 substitute for those editorial, safety, user-research, and production gates.
@@ -68,7 +68,7 @@ The current product loop is:
 | Resonance feedback and one alternate | Gives readers a recovery path and creates a closed, privacy-safe learning signal. |
 | Anonymous-first ownership and retention | Reduces the cost of being honest while keeping sessions private and time-bounded. |
 | Crisis-first safety boundary | Keeps emergency support independent of cookies, rate limits, database state, and providers. |
-| Typed telemetry lifecycle and authoritative producers | Captures closed intake/match/recovery/artifact/reader/feedback/alternate milestones without storing disclosure, prompts, prose, miss reasons, or open-ended analytics payloads. |
+| Typed telemetry lifecycle and authoritative producers | Captures closed entry/auth/intake/match/recovery/artifact/reader/feedback/alternate milestones without storing disclosure, prompts, prose, miss reasons, or open-ended analytics payloads. |
 
 ## Unique value proposition
 
@@ -148,7 +148,7 @@ and market-policy review is a public-release gate, not an implementation detail.
 | Reader UX | Materially improved, not fully proven | Complete browser, keyboard, screen-reader, zoom, mobile, refresh, back, offline, and multi-tab evidence. |
 | Safety | Deterministic gate and CI corpus exist | Obtain qualified safety review, launch-market approval, and an explicit over-trigger policy. |
 | Privacy | Strong ownership/retention foundations | Ship user-facing story/account deletion and consent controls; prove all cascades and cron behavior on real Postgres. |
-| Observability | Contract, lifecycle, outbox, entry funnel, server-owned story journey, and reader-visibility producers exist | Add story-flow auth and sanitized failure producers; operate a privacy-reviewed sink; and build minimum-cell dashboards and alerts. |
+| Observability | Contract, lifecycle, outbox, entry funnel, flow-bound anonymous-auth, server-owned story journey, and reader-visibility producers exist | Add the sanitized failure producer; operate a privacy-reviewed sink; and build minimum-cell dashboards and alerts. |
 | Release engineering | Local CI and production build are green | Apply and exercise migrations in staging/production, verify RLS/concurrency/rollback, and collect remote canary evidence. |
 
 ## Public-release definition

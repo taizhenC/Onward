@@ -22,7 +22,7 @@ Roadmap-stack snapshot (2026-07-14; these slices are not assumed to be on the Ju
 - **Resonance recovery**: completed-story readers can answer one bounded close/not-close question without linking an email. An explicitly rejected root story can use one short-lived capability to produce a different, always-partial story without resending the disclosure, relaxing its limits, or consuming another public rate-limit unit.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres; denials carry only an unlinkable user/IP scope event committed with the counter update.
 - **Retention**: the disclosure and its closed boundary/clarification context are kept only on the original session and NULL'd together at its immutable 60-day deadline; an alternate never resets that clock.
-- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; initial intake/match/recovery/artifact, reader progress/completion, bounded feedback, and first alternate claims now use server-owned producers committed with their domain transition.
+- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; entry, initial/alternate match and artifact, reader progress/completion/visibility, bounded feedback, and alternate demand/resolution now use narrow authoritative producers.
 
 ## Run locally
 
@@ -56,6 +56,7 @@ npm run check-feedback-telemetry # validate atomic feedback producer, replay, ro
 npm run check-alternate-request-telemetry # validate claim-only alternate demand telemetry
 npm run check-alternate-resolution-telemetry # validate terminal/match/artifact alternate telemetry
 npm run check-entry-telemetry # validate landing-to-intake handoff and first interaction telemetry
+npm run check-reader-visibility-telemetry # validate first-content, passage-presentation, and source-open telemetry
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
@@ -111,6 +112,7 @@ npm run check-feedback-telemetry
 npm run check-alternate-request-telemetry
 npm run check-alternate-resolution-telemetry
 npm run check-entry-telemetry
+npm run check-reader-visibility-telemetry
 npm run build
 ```
 

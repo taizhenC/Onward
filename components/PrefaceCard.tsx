@@ -8,16 +8,24 @@ type Props = {
   contentNote: string | null;
   framing: Framing;
   onBegin: () => void;
+  onVisible: () => void;
 };
 
 // The preface copy is supplied by the opening-copy layer. This component also
 // makes partial-match distance explicit before any story text is revealed.
-export function PrefaceCard({ lines, contentNote, framing, onBegin }: Props) {
+export function PrefaceCard({
+  lines,
+  contentNote,
+  framing,
+  onBegin,
+  onVisible,
+}: Props) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
+      onAnimationComplete={onVisible}
       className="space-y-8 pt-8"
     >
       <div className="space-y-5 text-xl leading-relaxed">
@@ -55,7 +63,12 @@ export function PrefaceCard({ lines, contentNote, framing, onBegin }: Props) {
 
       <button
         type="button"
-        onClick={onBegin}
+        onClick={() => {
+          // A very fast reader can activate Begin before the fade completes;
+          // that interaction itself proves the preface was readable.
+          onVisible();
+          onBegin();
+        }}
         className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] transition-colors"
       >
         Begin

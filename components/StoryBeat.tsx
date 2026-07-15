@@ -4,6 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
 import type { StoryAdvance } from "@/lib/types";
+import {
+  elapsedLatencyBucket,
+  monotonicEpochMs,
+  sendPassagePresented,
+} from "@/lib/story-visibility-client";
 
 // Client-owned reveal pacing (the server no longer delays — see lib/llm-stub.ts).
 // Mirrors the landing-page StoryDemo's word-by-word feel. The reveal is a plain
@@ -16,7 +21,12 @@ type Props = {
   sessionId: string;
   beatIndex: number;
   chunkIndex: number;
-  onComplete: (next: StoryAdvance) => void;
+  presentationStartedAt: number | null;
+  presentationVisible: boolean;
+  onComplete: (
+    next: StoryAdvance,
+    presentationStartedAt: number | null,
+  ) => void;
   // Fired once after the reader explicitly acknowledges the final passage.
   // Separate channel from onComplete, whose contract excludes "end".
   onEnd?: () => void;
@@ -28,6 +38,8 @@ export function StoryBeat({
   sessionId,
   beatIndex,
   chunkIndex,
+  presentationStartedAt,
+  presentationVisible,
   onComplete,
   onEnd,
 }: Props) {
@@ -42,6 +54,7 @@ export function StoryBeat({
   // so repeat clicks during the fade can't push the position past the ack'd
   // session position — the cause of the /api/beat 409.
   const [advancing, setAdvancing] = useState(false);
+  const presentationReportedRef = useRef(false);
 
   // Ref so the streaming effect below doesn't list onEnd as a dependency — a parent
   // re-render handing in a fresh closure must not abort and restart the stream.
@@ -140,6 +153,52 @@ export function StoryBeat({
     };
   }, [sessionId, beatIndex, chunkIndex]);
 
+  // The complete stored passage is already committed to the DOM (including
+  // its height-reserving hidden tail). Two frames allow layout/paint before we
+  // stop the transition clock; the optional word reveal is deliberately not
+  // part of the latency SLO.
+  useEffect(() => {
+    if (
+      presentationReportedRef.current ||
+      presentationStartedAt === null ||
+      !presentationVisible ||
+      !streamDone ||
+      fullText.length === 0 ||
+      failure
+    ) {
+      return;
+    }
+    let firstFrame = 0;
+    let secondFrame = 0;
+    firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => {
+        if (presentationReportedRef.current) return;
+        const latencyBucket = elapsedLatencyBucket(presentationStartedAt);
+        if (!latencyBucket) return;
+        presentationReportedRef.current = true;
+        void sendPassagePresented({
+          sessionId,
+          beatIndex,
+          chunkIndex,
+          latencyBucket,
+        });
+      });
+    });
+    return () => {
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
+    };
+  }, [
+    beatIndex,
+    chunkIndex,
+    failure,
+    fullText,
+    presentationStartedAt,
+    presentationVisible,
+    sessionId,
+    streamDone,
+  ]);
+
   // Reveal pacing: a local timer walks revealedCount toward the buffered token
   // count. It pauses when caught up (no-op until more text lands) and stops once
   // the reveal is complete. Skipping bypasses it via the sync effect below.
@@ -170,6 +229,7 @@ export function StoryBeat({
   async function handleAdvance() {
     if (advancing || nextStep === null || !revealComplete) return;
     setAdvancing(true);
+    const startedAt = monotonicEpochMs();
     const acknowledged = await acknowledgeBeat({
       sessionId,
       beatIndex,
@@ -185,7 +245,7 @@ export function StoryBeat({
       onEndRef.current?.();
       return;
     }
-    onComplete(acknowledged);
+    onComplete(acknowledged, startedAt);
   }
 
   return (

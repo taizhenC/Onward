@@ -440,8 +440,11 @@ copy of event content. Domain milestones that already have a durable state must
 capture in that transaction: migration `0012` does this for recovery-token
 issuance, rate-limit denial, and the initial artifact/session commit. Plain
 computation milestones such as validated intake and match disposition use the
-same exact server boundary and deterministic IDs. Progress, feedback, alternate,
-and client-visibility producers remain subsequent slices.
+same exact server boundary and deterministic IDs. Progress, feedback, and
+alternate milestones are now coupled to their authoritative transitions. Three
+narrow reader-visibility routes accept only closed client measurements, then
+verify bounded caller coordinates against reached durable progress and derive role
+plus flattened passage ordinal from the owned immutable story before capture.
 
 The match limiter also stores a two-day, default-deny replay row containing
 only the occurrence-derived event ID and its closed decision. An ambiguous RPC

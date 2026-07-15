@@ -13,6 +13,7 @@ import type { StoryBoundaries } from "./story-boundaries";
 import { recordProductEvent } from "./telemetry";
 import type { RetrievalMode } from "./types";
 import type {
+  LatencyBucket,
   ProductEvent,
   StoryRole,
   TelemetryFlowId,
@@ -157,6 +158,39 @@ export function passageAcknowledgedEvent(
     throw new Error("passage telemetry ordinal exceeds the artifact contract");
   }
   return { event: "passage_acknowledged", storyRole, passageOrdinal };
+}
+
+export function firstContentShownEvent(
+  storyRole: StoryRole,
+  latencyBucket: LatencyBucket,
+): Extract<ProductEvent, { event: "first_content_shown" }> {
+  return { event: "first_content_shown", storyRole, latencyBucket };
+}
+
+export function passagePresentedEvent(
+  storyRole: StoryRole,
+  passageOrdinal: number,
+  latencyBucket: LatencyBucket,
+): Extract<ProductEvent, { event: "passage_presented" }> {
+  if (
+    !Number.isInteger(passageOrdinal) ||
+    passageOrdinal < 0 ||
+    passageOrdinal >= MAX_STORY_PASSAGES
+  ) {
+    throw new Error("passage telemetry ordinal exceeds the artifact contract");
+  }
+  return {
+    event: "passage_presented",
+    storyRole,
+    passageOrdinal,
+    latencyBucket,
+  };
+}
+
+export function sourceOpenedEvent(
+  storyRole: StoryRole,
+): Extract<ProductEvent, { event: "source_opened" }> {
+  return { event: "source_opened", storyRole };
 }
 
 export function storyCompletedEvent(

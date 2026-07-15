@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import type {
   ClientFigureOutline,
@@ -15,6 +15,10 @@ import { SaveStoriesCard } from "./SaveStoriesCard";
 import { StoryAfterword } from "./StoryAfterword";
 import { ResonanceFeedbackCard } from "./ResonanceFeedbackCard";
 import { StoryBeat } from "./StoryBeat";
+import {
+  consumeFirstContentLatencyBucket,
+  sendFirstContentShown,
+} from "@/lib/story-visibility-client";
 
 type Props = {
   sessionId: string;
@@ -53,6 +57,13 @@ export function StoryPlayer({
   });
   const [beatIndex, setBeatIndex] = useState(initialBeatIndex);
   const [chunkIndex, setChunkIndex] = useState(initialChunkIndex);
+  const [presentationStartedAt, setPresentationStartedAt] = useState<
+    number | null
+  >(null);
+  const [visiblePassageKey, setVisiblePassageKey] = useState<string | null>(
+    null,
+  );
+  const firstContentReportedRef = useRef(false);
   // In-flow story finish (StoryBeat's onEnd). The refresh path lands in phase
   // "ended" instead; the save card below covers both.
   const [reachedEnd, setReachedEnd] = useState(false);
@@ -60,7 +71,28 @@ export function StoryPlayer({
   const isPastEnd = beatIndex >= totalBeats;
   const currentBeat = isPastEnd ? null : outline.beats[beatIndex];
 
-  function handleComplete(next: StoryAdvance) {
+  function handlePrefaceVisible() {
+    if (
+      firstContentReportedRef.current ||
+      initialBeatIndex !== 0 ||
+      initialChunkIndex !== 0
+    ) {
+      return;
+    }
+    firstContentReportedRef.current = true;
+    requestAnimationFrame(() => {
+      const latencyBucket = consumeFirstContentLatencyBucket(sessionId);
+      if (latencyBucket) {
+        void sendFirstContentShown(sessionId, latencyBucket);
+      }
+    });
+  }
+
+  function handleComplete(
+    next: StoryAdvance,
+    nextPresentationStartedAt: number | null,
+  ) {
+    setPresentationStartedAt(nextPresentationStartedAt);
     switch (next) {
       case "chunk":
         setChunkIndex((current) => current + 1);
@@ -85,6 +117,9 @@ export function StoryPlayer({
   }
 
   const revealName = currentBeat?.kind === "bridge";
+  const passageKey = currentBeat
+    ? `${currentBeat.kind}-${beatIndex}-${chunkIndex}`
+    : null;
 
   return (
     <div className="space-y-12">
@@ -98,20 +133,24 @@ export function StoryPlayer({
             lines={openingCopy.prefaceLines}
             contentNote={contentNote}
             framing={framing}
+            onVisible={handlePrefaceVisible}
             onBegin={() => setPhase("playing")}
           />
         ) : phase === "playing" && currentBeat ? (
           <motion.div
-            key={`${currentBeat.kind}-${beatIndex}-${chunkIndex}`}
+            key={passageKey}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
+            onAnimationComplete={() => setVisiblePassageKey(passageKey)}
           >
             <StoryBeat
               sessionId={sessionId}
               beatIndex={beatIndex}
               chunkIndex={chunkIndex}
+              presentationStartedAt={presentationStartedAt}
+              presentationVisible={visiblePassageKey === passageKey}
               onComplete={handleComplete}
               onEnd={() => setReachedEnd(true)}
             />

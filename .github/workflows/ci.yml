@@ -44,6 +44,7 @@ jobs:
       - run: npm run check-alternate-request-telemetry
       - run: npm run check-alternate-resolution-telemetry
       - run: npm run check-entry-telemetry
+      - run: npm run check-reader-visibility-telemetry
       - run: npm run check-story-boundaries
       - run: npm run check-resonance-brief
       - run: npm run check-story-composer

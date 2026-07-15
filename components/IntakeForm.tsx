@@ -28,6 +28,11 @@ import {
 } from "@/lib/intake-constraints";
 import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
 import type { TelemetryFlowId } from "@/lib/telemetry-types";
+import {
+  bindFirstContentStory,
+  clearFirstContentRequestStarted,
+  markFirstContentRequestStarted,
+} from "@/lib/story-visibility-client";
 
 type MatchSuccess = { sessionId: string };
 type MatchCrisis = { crisis: true; resources: CrisisResource[] };
@@ -188,6 +193,9 @@ export function IntakeForm({
         "content-type": "application/json",
       };
       if (telemetryFlowId) headers[TELEMETRY_FLOW_HEADER] = telemetryFlowId;
+      // Overwrite before every dispatch so a 401/auth retry measures from the
+      // request the server ultimately accepts, not from the rejected attempt.
+      markFirstContentRequestStarted();
       return fetch("/api/match", { method: "POST", headers, body });
     };
     try {
@@ -198,6 +206,7 @@ export function IntakeForm({
         response = await postMatch();
       }
     } catch {
+      clearFirstContentRequestStarted();
       setError("The connection dropped. Please try again.");
       finishSubmitting();
       return;
@@ -207,6 +216,7 @@ export function IntakeForm({
     try {
       payload = (await response.json()) as MatchPayload;
     } catch {
+      clearFirstContentRequestStarted();
       setError(
         response.ok
           ? "Couldn't read the response."
@@ -214,6 +224,13 @@ export function IntakeForm({
       );
       finishSubmitting();
       return;
+    }
+
+    // A timestamp survives only for a successful story navigation. Crisis,
+    // recovery, rate-limit, conflict, and failure paths cannot leak a stale
+    // measurement into a later saved-story visit.
+    if (!(response.ok && "sessionId" in payload)) {
+      clearFirstContentRequestStarted();
     }
 
     if (response.status === 409 || "flowConflict" in payload) {
@@ -281,6 +298,7 @@ export function IntakeForm({
       return;
     }
     if ("sessionId" in payload) {
+      bindFirstContentStory(payload.sessionId);
       router.push(`/story/${payload.sessionId}`);
       return;
     }

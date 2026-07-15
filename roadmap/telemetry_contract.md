@@ -95,7 +95,7 @@ Eligible-story availability begins when `match_completed` records `close` or `ad
 
 Latency buckets are `[0,250ms)`, `[250ms,500ms]`, `(500ms,1s)`, `[1s,3s)`, `[3s,6s)`, `[6s,8s]`, `(8s,15s]`, and `>15s`. Therefore exactly 500 ms and exactly 8 seconds satisfy their release gates. Dashboards must show bucketed distributions and must not claim a more precise percentile than the buckets support.
 
-`first_content_shown` starts on the client's monotonic clock immediately before dispatching an intake request that the server ultimately accepts and ends after the preface is committed, laid out, and visible. `passage_presented` starts when the user activates Continue, before the compare-and-set/network request, and ends when the returned stored passage is committed, laid out, and visible. Both measures include network, database, and render time and exclude optional reveal animation. If the originating monotonic timestamp is unavailable after reload, navigation, or cached re-entry, emit nothing rather than fabricate latency.
+`first_content_shown` starts on the client's monotonic clock immediately before dispatching the story-creation request that the server ultimately accepts (initial intake or an alternate attempt) and ends after the preface is committed, laid out, and fully visible. `passage_presented` starts when the user activates Continue, before the compare-and-set/network request, and ends when the returned stored passage is committed, laid out, and fully visible. Both measures include network, database, and render time and exclude optional word-reveal animation. If the originating monotonic timestamp is unavailable after reload, navigation, or cached re-entry, emit nothing rather than fabricate latency.
 
 `auth_established` is emitted only for authentication performed inside an active story-creation root flow. Standalone sign-in or saved-story access must never fabricate a story flow; general auth reliability requires a separately scoped future operational stream.
 
@@ -109,6 +109,27 @@ submission. The first trusted form change sends only `small`/`large` to a
 separate exact-shape endpoint; the intake text, age, boundaries, and element
 identity never enter that request. Infrastructure must redact both the flow
 header and handoff cookie even though neither contains reader content.
+
+Reader visibility uses three separate same-origin, owner-scoped endpoints rather
+than a generic event receiver. The browser sends a session lookup, an already-closed
+latency bucket where required, and only for passage presentation the bounded current
+beat/chunk coordinates. The server loads the owned immutable story, derives
+initial/alternate role and the flattened passage ordinal, and uses forward-only
+persisted progress to prove that the reported passage has been reached. Delayed
+fire-and-forget delivery remains valid after a later acknowledgement, while future
+positions are rejected. Source opening is accepted only after story completion when
+a persisted transparency record exists. Event IDs deduplicate retries, reloads, and
+a changed latency bucket by each event's flow/role semantic unit, adding ordinal only
+for passage presentation.
+
+The match-to-preface bridge is an ephemeral client-module value, not browser
+storage. Every dispatch overwrites its monotonic timestamp; only an accepted match
+response binds it in memory to that returned session before App Router navigation.
+A reload/new tab loses it, and a different story cannot consume it. Every non-story
+response clears it. The bridge never carries a flow, disclosure, age, boundary, or
+story content, and it cannot outlive the JavaScript runtime. Missing, mismatched,
+reversed, over-one-hour total timing, or a preface arriving more than 30 seconds
+after response binding suppresses the event instead of manufacturing latency.
 
 ## Storage, access, and deletion
 
@@ -138,4 +159,4 @@ header and handoff cookie even though neither contains reader content.
 
 ## Remaining release work
 
-This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry handoff, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, and first-write-wins terminal resolution are implemented. P0-11 remains in progress until narrow story-visibility and story-flow-auth endpoints plus one sanitized failure owner capture their approved events; outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.
+This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry handoff, reader-visibility endpoints, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, and first-write-wins terminal resolution are implemented. P0-11 remains in progress until story-flow auth and one sanitized failure owner capture their approved events; outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.

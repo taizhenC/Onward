@@ -134,6 +134,33 @@ export function reconcileMemoryMatchEventFirstWriteWins(
   return appendMemoryProductEventWithPolicy(record, true);
 }
 
+export function reconcileMemoryAlternateResolvedEventFirstWriteWins(
+  record: Readonly<ProductEventRecord>,
+): TelemetryWriteResult {
+  if (record.event !== "alternate_resolved") {
+    throw new Error(
+      "first-write-wins alternate reconciliation requires a resolution event",
+    );
+  }
+  pruneMemoryTelemetry();
+  if (record.flowId !== null && !isActiveMemoryTelemetryFlow(record.flowId)) {
+    return "conflict";
+  }
+  const existing = productEvents.get(record.eventId);
+  if (!existing) return appendMemoryProductEventWithPolicy(record, false);
+  const semanticKey = deriveProductEventSemanticKey(record, record.flowId);
+  if (
+    semanticKey === null ||
+    deriveProductEventSemanticKey(existing, existing.flowId) !== semanticKey
+  ) {
+    return "conflict";
+  }
+  if (!productEventOutbox.has(existing.eventId)) {
+    productEventOutbox.set(existing.eventId, pendingPointer(existing));
+  }
+  return "duplicate";
+}
+
 function appendMemoryProductEventWithPolicy(
   record: Readonly<ProductEventRecord>,
   preserveFirstMeasurement: boolean,

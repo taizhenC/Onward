@@ -559,6 +559,103 @@ async function checkAlternateRequestTelemetrySchema(): Promise<Step> {
   }
 }
 
+async function checkAlternateResolutionTelemetrySchema(): Promise<Step> {
+  const name = "transactional alternate-resolution telemetry RPCs installed";
+  try {
+    const userId = "00000000-0000-0000-0000-000000000000";
+    const sourceSessionId = "0".repeat(32);
+    const sourceArtifactId = "0".repeat(32);
+    const leaseId = "0".repeat(32);
+
+    const claim = await getSupabase().rpc("claim_alternate_story_flow_v3", {
+      p_user_id: userId,
+      p_source_session_id: sourceSessionId,
+      p_source_artifact_id: sourceArtifactId,
+      p_token_hash: "0".repeat(64),
+      p_policy_version: "alternate-story-v1-2026-07",
+      p_lease_id: leaseId,
+      p_telemetry_flow_id: null,
+      p_alternate_requested_event_id: null,
+      p_alternate_resolved_event_id: null,
+      p_telemetry_schema_version: null,
+    });
+    if (claim.error) throw new Error(claim.error.message);
+
+    const release = await getSupabase().rpc(
+      "release_alternate_story_claim_v2",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_telemetry_flow_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (release.error) throw new Error(release.error.message);
+
+    const unavailable = await getSupabase().rpc(
+      "complete_alternate_story_unavailable_v2",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_telemetry_flow_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (unavailable.error) throw new Error(unavailable.error.message);
+
+    const expired = await getSupabase().rpc(
+      "complete_alternate_story_expired_v1",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_telemetry_flow_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (expired.error) throw new Error(expired.error.message);
+
+    const ready = await getSupabase().rpc(
+      "complete_alternate_story_session_v2",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_session_id: sourceSessionId,
+        p_artifact: {},
+        p_telemetry_flow_id: null,
+        p_artifact_event_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (ready.error) throw new Error(ready.error.message);
+
+    const claimData = claim.data as { status?: unknown } | null;
+    const readyData = ready.data as { status?: unknown } | null;
+    const ok =
+      claimData?.status === "not_found" &&
+      release.data === false &&
+      unavailable.data === false &&
+      expired.data === false &&
+      readyData?.status === "rejected";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "claim/release/unavailable/expired/ready signatures are reachable without writes"
+        : "a nonexistent alternate terminal probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0016` };
+  }
+}
+
 function requireRpcValidationError(
   label: string,
   error: { code?: string; message: string } | null,
@@ -654,6 +751,7 @@ async function main(): Promise<void> {
     await checkStoryProgressTelemetrySchema(),
     await checkStoryFeedbackTelemetrySchema(),
     await checkAlternateRequestTelemetrySchema(),
+    await checkAlternateResolutionTelemetrySchema(),
     await checkCrisisPersistsNothing(),
   ];
 

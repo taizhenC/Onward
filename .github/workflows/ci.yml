@@ -38,6 +38,11 @@ jobs:
       - run: npm run check-try-another
       - run: npm run check-telemetry
       - run: npm run check-telemetry-lifecycle
+      - run: npm run check-telemetry-producers
+      - run: npm run check-story-progress-telemetry
+      - run: npm run check-feedback-telemetry
+      - run: npm run check-alternate-request-telemetry
+      - run: npm run check-alternate-resolution-telemetry
       - run: npm run check-story-boundaries
       - run: npm run check-resonance-brief
       - run: npm run check-story-composer

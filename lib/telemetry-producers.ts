@@ -47,6 +47,7 @@ export function matchCompletedEvent(input: {
 
 export function noEligibleMatchCompletedEvent(
   configuredRetrievalMode: RetrievalMode,
+  storyRole: StoryRole = "initial",
 ): Extract<
   ProductEvent,
   { event: "match_completed" }
@@ -55,7 +56,7 @@ export function noEligibleMatchCompletedEvent(
   return {
     event: "match_completed",
     recipeId: recipe.recipeId,
-    storyRole: "initial",
+    storyRole,
     disposition: "no_close_match",
     confidenceBucket: "not_applicable",
     matchPath: "not_run",
@@ -163,6 +164,15 @@ export function alternateRequestedEvent(): Extract<
   { event: "alternate_requested" }
 > {
   return { event: "alternate_requested" };
+}
+
+export function alternateResolvedEvent(
+  outcome: Extract<
+    ProductEvent,
+    { event: "alternate_resolved" }
+  >["outcome"],
+): Extract<ProductEvent, { event: "alternate_resolved" }> {
+  return { event: "alternate_resolved", outcome };
 }
 
 // Pure observability must not turn a valid non-crisis product response into an

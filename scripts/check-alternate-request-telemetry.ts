@@ -142,6 +142,7 @@ async function checkCaptureFailureRollsBackClaim(): Promise<void> {
           leaseId: "a".repeat(32),
           leaseExpiresAt: Date.now() + 120_000,
           telemetry: null,
+          resolutionTelemetry: null,
         }),
       ),
     "missing active-flow capture did not reject",
@@ -162,6 +163,7 @@ async function checkCaptureFailureRollsBackClaim(): Promise<void> {
           leaseId: "b".repeat(32),
           leaseExpiresAt: Date.now() + 120_000,
           telemetry: wrongCapture,
+          resolutionTelemetry: null,
         }),
       ),
     "wrong-flow capture did not reject",
@@ -193,6 +195,7 @@ async function checkCaptureFailureRollsBackClaim(): Promise<void> {
           leaseId: "c".repeat(32),
           leaseExpiresAt: Date.now() + 120_000,
           telemetry: correctCapture,
+          resolutionTelemetry: null,
         }),
       ),
     "semantic-key collision did not reject",
@@ -302,6 +305,10 @@ function checkStaticContracts(): void {
   const store = source("../lib/alternate-story-store-supabase.ts");
   const memory = source("../lib/alternate-story-store-memory.ts");
   const helper = source("../lib/alternate-story-telemetry.ts");
+  const requestHelper = helper.slice(
+    helper.indexOf("export async function prepareAlternateRequestedTelemetry"),
+    helper.indexOf("export function prepareAlternateResolvedTelemetry"),
+  );
   assert(
     migration.includes("claim_alternate_story_flow_v2") &&
       migration.includes("public.claim_alternate_story_flow(") &&
@@ -317,18 +324,18 @@ function checkStaticContracts(): void {
   );
   assert(
     store.includes('telemetryFlowBindingEnabled()') &&
-      store.includes('"claim_alternate_story_flow_v2"') &&
+    store.includes('"claim_alternate_story_flow_v3"') &&
       store.includes('"claim_alternate_story_flow"') &&
-      !/claim_alternate_story_flow_v2[\s\S]*?catch\s*\{/m.test(store),
+      !/claim_alternate_story_flow_v3[\s\S]*?catch\s*\{/m.test(store),
     "Supabase claim store can ambiguously retry or bypass the incident switch",
   );
   assert(
     memory.includes("recordPreparedMemoryProductEventsAtomically") &&
-      memory.indexOf("captureAlternateRequested(input") <
-        memory.indexOf('flow.status = "preparing"') &&
+      memory.indexOf("captureAlternateClaimTelemetry(input") <
+      memory.indexOf('flow.status = "preparing"') &&
       helper.includes("resolveOwnedTelemetryFlowForKnownSession") &&
-      !helper.includes("token") &&
-      !helper.includes("artifact:"),
+      !requestHelper.includes("token") &&
+      !requestHelper.includes("artifact:"),
     "memory/helper request producer lacks atomic or privacy boundaries",
   );
 }

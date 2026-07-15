@@ -22,6 +22,7 @@ import {
   claimMemoryProductEventOutbox,
   nackMemoryProductEventOutbox,
   reconcileMemoryMatchEventFirstWriteWins as reconcileMemoryMatchEventRecord,
+  reconcileMemoryAlternateResolvedEventFirstWriteWins as reconcileMemoryAlternateResolvedEventRecord,
   type TelemetryWriteResult,
 } from "./telemetry-store-memory";
 import {
@@ -138,6 +139,31 @@ export async function reconcileMemoryMatchEventFirstWriteWins(input: {
     eventId: deriveProductEventId(event, input.flowId),
   });
   return reconcileMemoryMatchEventRecord(record);
+}
+
+export function reconcilePreparedMemoryAlternateResolvedEventFirstWriteWins(
+  capture: Readonly<
+    Extract<ProductEventCapture, { event: "alternate_resolved" }>
+  >,
+  now = Date.now(),
+): TelemetryWriteResult {
+  if (persistenceMode() !== "memory") {
+    throw new Error(
+      "alternate-resolution memory reconciliation requires memory mode",
+    );
+  }
+  const { eventId, schemaVersion, flowId, ...event } = capture;
+  if (schemaVersion !== PRODUCT_EVENT_SCHEMA_VERSION) {
+    throw new Error("prepared product-event schema version is unsupported");
+  }
+  return reconcileMemoryAlternateResolvedEventRecord(
+    createProductEventRecord({
+      eventId,
+      flowId,
+      event,
+      now: new Date(now),
+    }),
+  );
 }
 
 export async function recordGenerationAttempt(input: {

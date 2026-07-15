@@ -13,7 +13,10 @@ import {
   completeMemoryAlternateStoryUnavailable,
   releaseMemoryAlternateStoryFlow,
 } from "../lib/alternate-story-store-memory";
-import { prepareAlternateRequestedTelemetry } from "../lib/alternate-story-telemetry";
+import {
+  prepareAlternateRequestedTelemetry,
+  prepareAlternateResolvedTelemetry,
+} from "../lib/alternate-story-telemetry";
 import { createAlternateStory } from "../lib/alternate-story";
 import {
   parseAlternateCapabilityRequest,
@@ -178,25 +181,30 @@ async function checkLeaseHydrationAndExpiryParity(
     ...identity,
     leaseId: firstLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
-    telemetry: await alternateRequestedCapture(
+    ...(await alternateClaimTelemetry(
       identity.userId,
       identity.sourceSessionId,
-    ),
+    )),
   });
   releaseMemoryAlternateStoryFlow({
     userId: identity.userId,
     sourceSessionId: identity.sourceSessionId,
     leaseId: firstLeaseId,
+    telemetry: await alternateResolutionCapture(
+      identity.userId,
+      identity.sourceSessionId,
+      "failed",
+    ),
   });
   activeFlow.nextAttemptAt = Date.now() - 1;
   const secondClaim = claimMemoryAlternateStoryFlow({
     ...identity,
     leaseId: secondLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
-    telemetry: await alternateRequestedCapture(
+    ...(await alternateClaimTelemetry(
       identity.userId,
       identity.sourceSessionId,
-    ),
+    )),
   });
   const hydrated = await requestCapability(activeSecond.sessionId);
   const hydratedBody = await hydrated.json();
@@ -230,10 +238,10 @@ async function checkLeaseHydrationAndExpiryParity(
     policyVersion: startByFlow.policyVersion,
     leaseId,
     leaseExpiresAt: Date.now() + 120_000,
-    telemetry: await alternateRequestedCapture(
+    ...(await alternateClaimTelemetry(
       startByFlow.userId,
       startByFlow.sourceSessionId,
-    ),
+    )),
   });
   startByFlow.expiresAt = Date.now() - 1;
   const activeAfterStartBy = await requestCapability(startBy.sessionId);
@@ -242,6 +250,11 @@ async function checkLeaseHydrationAndExpiryParity(
     userId: startByFlow.userId,
     sourceSessionId: startByFlow.sourceSessionId,
     leaseId,
+    telemetry: await alternateResolutionCapture(
+      startByFlow.userId,
+      startByFlow.sourceSessionId,
+      "unavailable",
+    ),
   });
   if (
     claim.status !== "claimed" ||
@@ -274,16 +287,21 @@ async function checkLeaseHydrationAndExpiryParity(
     policyVersion: retentionFlow.policyVersion,
     leaseId: retentionLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
-    telemetry: await alternateRequestedCapture(
+    ...(await alternateClaimTelemetry(
       retentionFlow.userId,
       retentionFlow.sourceSessionId,
-    ),
+    )),
   });
   retentionFlow.contextExpiresAt = Date.now() - 1;
   const retentionCompleted = completeMemoryAlternateStoryUnavailable({
     userId: retentionFlow.userId,
     sourceSessionId: retentionFlow.sourceSessionId,
     leaseId: retentionLeaseId,
+    telemetry: await alternateResolutionCapture(
+      retentionFlow.userId,
+      retentionFlow.sourceSessionId,
+      "unavailable",
+    ),
   });
   if (retentionClaim.status !== "claimed" || retentionCompleted) {
     failures.push(
@@ -1248,6 +1266,26 @@ async function alternateRequestedCapture(userId: string, sessionId: string) {
     throw new Error("alternate-request telemetry fixture is unavailable");
   }
   return prepareAlternateRequestedTelemetry({ session, userId });
+}
+
+async function alternateClaimTelemetry(userId: string, sessionId: string) {
+  const telemetry = await alternateRequestedCapture(userId, sessionId);
+  return {
+    telemetry,
+    resolutionTelemetry: prepareAlternateResolvedTelemetry(
+      telemetry?.flowId ?? null,
+      "exhausted",
+    ),
+  };
+}
+
+async function alternateResolutionCapture(
+  userId: string,
+  sessionId: string,
+  outcome: "ready" | "unavailable" | "expired" | "exhausted" | "failed",
+) {
+  const telemetry = await alternateRequestedCapture(userId, sessionId);
+  return prepareAlternateResolvedTelemetry(telemetry?.flowId ?? null, outcome);
 }
 
 function chooseNonRejectionSource(): FigureStageRow {

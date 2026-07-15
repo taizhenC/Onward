@@ -61,6 +61,16 @@ function Diamond() {
 const filledButton =
   "inline-block font-ui text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-bg)] bg-[var(--color-ink)] border border-[var(--color-ink)] px-[30px] py-[14px] transition-colors hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)]";
 
+function StoryStartButton({ label }: { label: string }) {
+  return (
+    <form action="/api/telemetry/landing-cta" method="post">
+      <button type="submit" className={filledButton}>
+        {label}
+      </button>
+    </form>
+  );
+}
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -129,9 +139,7 @@ export default function Home() {
           className="mt-[38px] flex flex-wrap items-center justify-center gap-[22px]"
           style={settle(1.5)}
         >
-          <Link href="/begin" className={filledButton}>
-            Read a story
-          </Link>
+          <StoryStartButton label="Read a story" />
           <a
             href="#how"
             className="border-b border-[var(--color-ink)]/40 pb-[3px] font-ui text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
@@ -228,9 +236,7 @@ export default function Home() {
         </Reveal>
         <Reveal delay={0.3}>
           <div className="mt-[42px]">
-            <Link href="/begin" className={filledButton}>
-              Begin
-            </Link>
+            <StoryStartButton label="Begin" />
           </div>
         </Reveal>
       </section>

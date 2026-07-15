@@ -99,6 +99,17 @@ Latency buckets are `[0,250ms)`, `[250ms,500ms]`, `(500ms,1s)`, `[1s,3s)`, `[3s,
 
 `auth_established` is emitted only for authentication performed inside an active story-creation root flow. Standalone sign-in or saved-story access must never fabricate a story flow; general auth reliability requires a separately scoped future operational stream.
 
+The landing CTA is a fixed same-origin POST, not a generic analytics call. The
+server issues and registers one opaque flow only after that click, captures the
+fixed `home_primary` surface, and hands the flow to `/begin` in a 30-second
+HttpOnly cookie scoped only to that path. The identifier never enters a URL or
+script-readable browser storage. Direct `/begin` visits receive an unregistered
+in-memory capability and create no row until a valid intake interaction or
+submission. The first trusted form change sends only `small`/`large` to a
+separate exact-shape endpoint; the intake text, age, boundaries, and element
+identity never enter that request. Infrastructure must redact both the flow
+header and handoff cookie even though neither contains reader content.
+
 ## Storage, access, and deletion
 
 - `telemetry_flows`: maximum 30 days; pre-session rows contain only a signed opaque flow, while a committed root story binds owner and root together behind default-deny RLS. Initial and alternate stories resolve through that one root. Root/account deletion cascades the mapping, linked events, and queued delivery pointers. Legacy sessions are deliberately not backfilled.
@@ -127,4 +138,4 @@ Latency buckets are `[0,250ms)`, `[250ms,500ms]`, `(500ms,1s)`, `[1s,3s)`, `[3s,
 
 ## Remaining release work
 
-This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, and first-write-wins terminal resolution are implemented. P0-11 remains in progress until the pre-click client handoff, narrow visibility/auth endpoints, and one sanitized failure owner capture their approved events; outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.
+This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry handoff, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, and first-write-wins terminal resolution are implemented. P0-11 remains in progress until narrow story-visibility and story-flow-auth endpoints plus one sanitized failure owner capture their approved events; outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.

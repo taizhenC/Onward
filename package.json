@@ -17,6 +17,7 @@
     "check-feedback-telemetry": "tsx scripts/check-feedback-telemetry.ts",
     "check-alternate-request-telemetry": "tsx scripts/check-alternate-request-telemetry.ts",
     "check-alternate-resolution-telemetry": "tsx scripts/check-alternate-resolution-telemetry.ts",
+    "check-entry-telemetry": "tsx scripts/check-entry-telemetry.ts",
     "check-try-another": "tsx scripts/check-try-another.ts",
     "check-telemetry": "tsx scripts/check-telemetry.ts",
     "check-telemetry-lifecycle": "tsx scripts/check-telemetry-lifecycle.ts",

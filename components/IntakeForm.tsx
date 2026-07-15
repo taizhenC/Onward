@@ -111,6 +111,7 @@ export function IntakeForm({
   const feelingRef = useRef<HTMLTextAreaElement>(null);
   const flowConflictRef = useRef<HTMLAnchorElement>(null);
   const submittingRef = useRef(false);
+  const intakeStartedRef = useRef(false);
 
   useEffect(() => {
     if (flowConflict) flowConflictRef.current?.focus();
@@ -133,6 +134,21 @@ export function IntakeForm({
     event.preventDefault();
     if (noCloseMatch || flowConflict) return;
     await submitMatch(false);
+  }
+
+  function markIntakeStarted(event: React.FormEvent<HTMLFormElement>) {
+    if (
+      intakeStartedRef.current ||
+      !telemetryFlowId ||
+      !event.nativeEvent.isTrusted
+    ) {
+      return;
+    }
+    intakeStartedRef.current = true;
+    const viewportBucket = window.matchMedia("(max-width: 767px)").matches
+      ? "small"
+      : "large";
+    void sendIntakeStarted(telemetryFlowId, viewportBucket);
   }
 
   async function submitMatch(acceptAdjacent: boolean) {
@@ -334,6 +350,7 @@ export function IntakeForm({
   return (
     <motion.form
       onSubmit={handleSubmit}
+      onChange={markIntakeStarted}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -677,4 +694,32 @@ export function IntakeForm({
       ) : null}
     </motion.form>
   );
+}
+
+async function sendIntakeStarted(
+  flowId: TelemetryFlowId,
+  viewportBucket: "small" | "large",
+): Promise<void> {
+  const request = () =>
+    fetch("/api/telemetry/intake-started", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        [TELEMETRY_FLOW_HEADER]: flowId,
+      },
+      body: JSON.stringify({ viewportBucket }),
+      cache: "no-store",
+      keepalive: true,
+    });
+  try {
+    const response = await request();
+    if (response.ok) return;
+    await request();
+  } catch {
+    try {
+      await request();
+    } catch {
+      // Visibility telemetry never changes form behavior.
+    }
+  }
 }

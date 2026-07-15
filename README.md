@@ -55,6 +55,7 @@ npm run check-story-progress-telemetry # validate atomic passage/completion prod
 npm run check-feedback-telemetry # validate atomic feedback producer, replay, roles, and privacy
 npm run check-alternate-request-telemetry # validate claim-only alternate demand telemetry
 npm run check-alternate-resolution-telemetry # validate terminal/match/artifact alternate telemetry
+npm run check-entry-telemetry # validate landing-to-intake handoff and first interaction telemetry
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
 npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
@@ -109,6 +110,7 @@ npm run check-story-progress-telemetry
 npm run check-feedback-telemetry
 npm run check-alternate-request-telemetry
 npm run check-alternate-resolution-telemetry
+npm run check-entry-telemetry
 npm run build
 ```
 
@@ -182,7 +184,7 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
 
 Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, a separate required `TELEMETRY_ID_SECRET`, `TELEMETRY_FLOW_BINDING_ENABLED=true` after `0011`-`0016` pass verification, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET` and `ALTERNATE_STORY_TOKEN_SECRET`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. Production rejects every non-keyword retrieval value, and story creation independently rejects a challenger result before persistence or telemetry; the July 2 fifty-figure holdout approved keyword retrieval while FacetsRAG remains an eval challenger. Promote hybrid independently by setting its flag to `true`; rollback requires only restoring `false`. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories`, and confirm a foreign story URL 404s. Check `cron.job_run_details` in Supabase after the first cron firings.
 
-For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`; Supabase/production mode has no fallback to `IP_HASH_SALT`, and reusing the salt is not supported. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys until every associated flow, event, and outbox retry is deleted or drained. Configure Vercel, proxy, and APM logging to redact `x-onward-telemetry-flow-id`; the application does not log it, but infrastructure retention must also stay within the reviewed lifecycle.
+For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`; Supabase/production mode has no fallback to `IP_HASH_SALT`, and reusing the salt is not supported. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys until every associated flow, event, and outbox retry is deleted or drained. Configure Vercel, proxy, and APM logging to redact `x-onward-telemetry-flow-id` and the short-lived `onward_entry_flow` cookie; the application does not log either value, but infrastructure retention must also stay within the reviewed lifecycle.
 
 ## Privacy posture (plain words, enforced in code)
 

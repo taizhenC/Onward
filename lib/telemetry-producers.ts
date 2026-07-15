@@ -25,6 +25,22 @@ export type LinkedTelemetryWriteResult =
   | "unavailable"
   | "skipped";
 
+export function landingCtaClickedEvent(): Extract<
+  ProductEvent,
+  { event: "landing_cta_clicked" }
+> {
+  return { event: "landing_cta_clicked", surface: "home_primary" };
+}
+
+export function intakeStartedEvent(
+  viewportBucket: Extract<
+    ProductEvent,
+    { event: "intake_started" }
+  >["viewportBucket"],
+): Extract<ProductEvent, { event: "intake_started" }> {
+  return { event: "intake_started", viewportBucket };
+}
+
 export function matchCompletedEvent(input: {
   result: IntakeMatchResult;
   disposition: MatchDisposition;

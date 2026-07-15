@@ -16,8 +16,9 @@ has evidence-addressable story contracts, bounded personalization, honest weak-
 match recovery, story limits, source transparency, explicit progress writes,
 resonance feedback, one controlled alternate-story recovery, and a privacy-safe
 telemetry lifecycle with initial match-journey, durable reader-progress,
-bounded-feedback, and alternate demand/match/artifact/terminal producers. Those
-are meaningful product and architecture advances.
+bounded-feedback, alternate demand/match/artifact/terminal producers, and a
+privacy-safe landing-to-intake funnel. Those are meaningful product and
+architecture advances.
 
 It is still **not a viable public release**. The current fifty-figure StorySpecs
 are review drafts rather than a researcher-approved launch set; end-to-end
@@ -147,7 +148,7 @@ and market-policy review is a public-release gate, not an implementation detail.
 | Reader UX | Materially improved, not fully proven | Complete browser, keyboard, screen-reader, zoom, mobile, refresh, back, offline, and multi-tab evidence. |
 | Safety | Deterministic gate and CI corpus exist | Obtain qualified safety review, launch-market approval, and an explicit over-trigger policy. |
 | Privacy | Strong ownership/retention foundations | Ship user-facing story/account deletion and consent controls; prove all cascades and cron behavior on real Postgres. |
-| Observability | Contract, lifecycle, outbox, and server-owned story journey producers exist | Add the pre-click client handoff/visibility surfaces and sanitized failure owner, operate a privacy-reviewed sink, and build minimum-cell dashboards and alerts. |
+| Observability | Contract, lifecycle, outbox, entry funnel, and server-owned story journey producers exist | Add story visibility, story-flow auth, and sanitized failure producers; operate a privacy-reviewed sink; and build minimum-cell dashboards and alerts. |
 | Release engineering | Local CI and production build are green | Apply and exercise migrations in staging/production, verify RLS/concurrency/rollback, and collect remote canary evidence. |
 
 ## Public-release definition

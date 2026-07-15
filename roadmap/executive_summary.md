@@ -148,7 +148,7 @@ and market-policy review is a public-release gate, not an implementation detail.
 | Reader UX | Materially improved, not fully proven | Complete browser, keyboard, screen-reader, zoom, mobile, refresh, back, offline, and multi-tab evidence. |
 | Safety | Deterministic gate and CI corpus exist | Obtain qualified safety review, launch-market approval, and an explicit over-trigger policy. |
 | Privacy | Strong ownership/retention foundations | Ship user-facing story/account deletion and consent controls; prove all cascades and cron behavior on real Postgres. |
-| Observability | Contract, lifecycle, outbox, entry funnel, flow-bound anonymous-auth, server-owned story journey, and reader-visibility producers exist | Add the sanitized failure producer; operate a privacy-reviewed sink; and build minimum-cell dashboards and alerts. |
+| Observability | Contract, lifecycle, outbox, entry funnel, flow-bound anonymous-auth, server-owned story journey, reader visibility, and one bounded initial-composition failure owner exist | Operate a privacy-reviewed sink; build minimum-cell dashboards and alerts; expand failure domains only where an authoritative owner and runbook exist. |
 | Release engineering | Local CI and production build are green | Apply and exercise migrations in staging/production, verify RLS/concurrency/rollback, and collect remote canary evidence. |
 
 ## Public-release definition

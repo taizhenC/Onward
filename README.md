@@ -22,7 +22,7 @@ Roadmap-stack snapshot (2026-07-14; these slices are not assumed to be on the Ju
 - **Resonance recovery**: completed-story readers can answer one bounded close/not-close question without linking an email. An explicitly rejected root story can use one short-lived capability to produce a different, always-partial story without resending the disclosure, relaxing its limits, or consuming another public rate-limit unit.
 - **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres; denials carry only an unlinkable user/IP scope event committed with the counter update.
 - **Retention**: the disclosure and its closed boundary/clarification context are kept only on the original session and NULL'd together at its immutable 60-day deadline; an alternate never resets that clock.
-- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; entry, flow-bound anonymous auth, initial/alternate match and artifact, reader progress/completion/visibility, bounded feedback, and alternate demand/resolution now use narrow authoritative producers.
+- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; entry, flow-bound anonymous auth, initial/alternate match and artifact, reader progress/completion/visibility, bounded feedback, alternate demand/resolution, and one bounded eligible initial-composition failure now use narrow authoritative producers.
 
 ## Run locally
 
@@ -57,6 +57,7 @@ npm run check-alternate-request-telemetry # validate claim-only alternate demand
 npm run check-alternate-resolution-telemetry # validate terminal/match/artifact alternate telemetry
 npm run check-entry-telemetry # validate landing-to-intake handoff and first interaction telemetry
 npm run check-auth-telemetry # validate flow-bound anonymous-auth proof, singleton capture, and silence rules
+npm run check-flow-failure-telemetry # validate bounded initial-composition failure capture and privacy
 npm run check-reader-visibility-telemetry # validate first-content, passage-presentation, and source-open telemetry
 npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
 npm run check-resonance-brief # validate bounded derived input and provider privacy
@@ -114,9 +115,14 @@ npm run check-alternate-request-telemetry
 npm run check-alternate-resolution-telemetry
 npm run check-entry-telemetry
 npm run check-auth-telemetry
+npm run check-flow-failure-telemetry
 npm run check-reader-visibility-telemetry
 npm run build
 ```
+
+The bounded initial-composition failure producer is an application-only slice:
+it adds no `0017` migration and reuses the exact `flow_failed` columns from
+`0010` plus the active-flow capture/outbox transaction from `0011`.
 
 For an existing deployment, use a schema-first rollout. Create a database restore point and validate `0011_transactional_telemetry_outbox.sql`, `0012_match_telemetry_producers.sql`, `0013_story_progress_telemetry.sql`, `0014_story_feedback_telemetry.sql`, `0015_alternate_request_telemetry.sql`, and `0016_alternate_resolution_telemetry.sql` against staging first. Migration `0013` deliberately aborts if any validator-v1 artifact has blank chunks or more than 64 passages; repair or explicitly retire every reported legacy row before retrying, so rollout cannot silently strand an old reader. Keep the currently deployed application in place, apply all six migrations to production, and run `npm run check-db` with the production Supabase URL, service-role key, and a dedicated `TELEMETRY_ID_SECRET`. Only after that gate passes should you deploy the application version that calls `create_story_session_v4`, `issue_match_recovery_flow_v2`, `consume_match_rate_limit_v2`, `acknowledge_story_position_v1`, `submit_story_feedback_v2`, `claim_alternate_story_flow_v3`, `release_alternate_story_claim_v2`, `complete_alternate_story_unavailable_v2`, `complete_alternate_story_expired_v1`, and `complete_alternate_story_session_v2`; deploying that application first makes the corresponding new story, recovery, Continue, feedback, or alternate writes fail because those RPCs do not exist yet. Confirm before the window that the running build does not require direct `product_events` writes for a request to succeed, because `0011` revokes both inserts and deletes as soon as it is applied. If a maintenance window is needed, set `STORY_CREATION_ENABLED=false` before the migrations and restore it only after the live-flow check passes. `TELEMETRY_FLOW_BINDING_ENABLED=false` is an explicit temporary escape hatch for schema/config incidents: it keeps story creation on v2 without flow registration or binding, uses the prior owner-scoped progress CAS, retains the legacy feedback RPC, and keeps all alternate claim/completion paths on their legacy RPCs, deliberately creating a telemetry gap; it does not replace the migration-first rollout. Remove it or set it to `true` only after `0011`-`0016` and the database gate pass. Migration `0011` is also the prerequisite for any outbox consumer: do not start a consumer until the capture and claim/ack/nack RPCs have been verified.
 

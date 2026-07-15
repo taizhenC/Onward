@@ -1,7 +1,8 @@
 # Privacy-safe telemetry contract
 
-**Status:** Implemented foundation and core producer set; sanitized failure
-capture, production delivery, aggregation, and reporting remain follow-up work.
+**Status:** Implemented foundation, core producer set, and one bounded sanitized
+failure owner; production delivery, aggregation, and reporting remain follow-up
+work.
 
 **Contract version:** `product-event-v1-2026-07` / `generation-attempt-v1-2026-07`
 
@@ -58,7 +59,7 @@ All linked events expire after 30 days. New flows advance through issued, owner-
 | `saved_story_reopened` | Seven-to-thirty-day return value | Server read after durable save | story role, `<7d`/`7-30d` | Product / retention | Flow delete or 30-day TTL |
 | `deletion_requested` | Deletion SLA denominator | Server after accepting a valid deletion request | random deletion correlation ID and scope; unlinkable | Privacy/Platform / trust | 30-day TTL; deliberately unlinked |
 | `deletion_completed` | Deletion SLA completion | Server after confirmed successful cascade | same deletion correlation ID, scope, latency; unlinkable | Privacy/Platform / trust | 30-day TTL; deliberately unlinked |
-| `flow_failed` | Availability and failure alerts | Sanitized server boundary | domain, closed error/status/latency buckets | Platform / reliability | Flow delete or 30-day TTL |
+| `flow_failed` | Availability and failure alerts | Eligible initial-story preparation boundary; other failure domains remain reserved | domain, closed error/status/latency buckets | Platform / reliability | Flow delete or 30-day TTL |
 
 `story_saved` and `saved_story_reopened` are contract reservations, not authorization to instrument the current email-upgrade UI as a saved story. They remain disabled until P0-14 defines the durable save state. The eventual producer must compute age from authoritative persisted timestamps, emit at most the first qualifying reopen in each bucket, and suppress reopens after 30 days; callers may not choose a bucket.
 
@@ -93,6 +94,21 @@ Core story-outcome metrics are denominator-cohorted by `artifact_created` and us
 | Unsupported claims, critical tone, safety false negatives | Offline editorial/safety evaluation; product telemetry cannot prove these |
 
 Eligible-story availability begins when `match_completed` records `close` or `adjacent` for a flow/role. An `artifact_created` for that same unit within 120 seconds is successful. A post-eligibility `flow_failed` followed by the artifact inside 120 seconds is recovered success; an artifact after 120 seconds is a late recovery and remains an SLO failure. No artifact by 120 seconds is unavailable even when no `flow_failed` row exists. `clarification_required`, `no_eligible`, and `no_close_match` are excluded and reported separately. Pre-eligibility auth and matching reliability are reported independently from `intake_submitted` and failure-domain events. Release scorecards finalize only after the common 24-hour reconciliation window; operational views may remain provisional.
+
+The only active `flow_failed` producer is the terminal preparation attempt for
+an eligible initial story, after its `match_completed` disposition and before
+session persistence. It fixes `domain=composition`; a thrown value is reduced
+through the string-hostile error boundary, while a `null` preparation uses one
+fixed `conflict` sentinel for disappeared catalog/stage identity. The server
+mints one `toc_` occurrence and starts a monotonic clock immediately before that
+attempt. An ambiguous capture is replayed once with the same occurrence-derived
+event ID inside a strict one-second total capture budget; a later HTTP attempt
+that actually reruns preparation is a new occurrence. A canonical fallback that
+produces a valid artifact is success, not `flow_failed`. Crisis, the story kill
+switch, malformed/auth/rate-limit/conflict responses, clarification, no-close,
+no-eligible, persistence failure, alternates, reader, and feedback paths remain
+silent. There is intentionally no generic route-level 503 producer: the route
+cannot safely infer a failure domain from that public status.
 
 Latency buckets are `[0,250ms)`, `[250ms,500ms]`, `(500ms,1s)`, `[1s,3s)`, `[3s,6s)`, `[6s,8s]`, `(8s,15s]`, and `>15s`. Therefore exactly 500 ms and exactly 8 seconds satisfy their release gates. Dashboards must show bucketed distributions and must not claim a more precise percentile than the buckets support.
 
@@ -187,10 +203,10 @@ after response binding suppresses the event instead of manufacturing latency.
 - Feedback corresponds to the one durable feedback row; passage/completion corresponds to the one durable compare-and-set transition.
 - Emit alternate request/terminal events only on durable state transitions, never on polling/hydration.
 - Telemetry failure must not delay or suppress crisis resources.
-- The telemetry module derives deterministic IDs from the domain-separated flow and the event's closed semantic unit for linked milestones. Measured dimensions are excluded so a conflicting retry is rejected instead of double-counted. Producers never pass session/artifact IDs as event IDs. Repeatable crisis, rate-limit, and failure occurrences receive a purpose-separated `toc_` token minted once by the transactional outbox; it derives the stored `tev_` ID and every ambiguous retry reuses it. Reduced attempts similarly receive one caller-stable `gat_` ID.
+- The telemetry module derives deterministic IDs from the domain-separated flow and the event's closed semantic unit for linked milestones. Measured dimensions are excluded so a conflicting retry is rejected instead of double-counted. Producers never pass session/artifact IDs as event IDs. Repeatable crisis, rate-limit, and failure occurrences receive a purpose-separated `toc_` token minted once by their owning server boundary; it derives the stored `tev_` ID, the capture transaction creates the pointer-only outbox row, and every ambiguous capture retry reuses it. Reduced attempts similarly receive one caller-stable `gat_` ID.
 - A recovery-token retry may recompute different closed match measurements for the same flow/role/disposition. Its domain transaction must retain the first accepted calibration row and reconcile that row's outbox pointer while committing the fresh token; it must not overwrite the measurement or reject the user-visible recovery solely because those dimensions drifted.
 - Rotate telemetry keys by adding the outgoing key to `TELEMETRY_ID_PREVIOUS_SECRETS` before changing the current key. Retain it for at least 30 days and until all associated outbox work is drained so early deletion, deletion completion, and retries keep working.
 
 ## Remaining release work
 
-This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry and story-flow-auth handoffs, reader-visibility endpoints, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, and first-write-wins terminal resolution are implemented. P0-11 remains in progress until one sanitized failure owner captures its approved event; outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.
+This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry and story-flow-auth handoffs, reader-visibility endpoints, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, first-write-wins terminal resolution, and the bounded initial-composition failure owner are implemented. P0-11 remains in progress until outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. Additional `flow_failed` domains require an explicit authoritative owner and runbook rather than a generic catch-all. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.

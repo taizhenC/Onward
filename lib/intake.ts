@@ -43,6 +43,10 @@ import {
   noEligibleMatchCompletedEvent,
   recordLinkedProductEventBestEffort,
 } from "./telemetry-producers";
+import {
+  beginInitialStoryPreparationFailureRecorder,
+  type InitialStoryPreparationFailureDependencies,
+} from "./flow-failure-telemetry";
 
 export type IntakeInput = {
   age: number;
@@ -61,6 +65,11 @@ export type IntakeContext = {
   ipHash: string;
   telemetryFlowId: TelemetryFlowId | null;
   telemetryFlowOwnerClaimed?: boolean;
+};
+
+export type IntakeDependencies = {
+  prepare?: typeof prepareStory;
+  failureTelemetry?: InitialStoryPreparationFailureDependencies;
 };
 
 export type IntakeValidationError = {
@@ -88,6 +97,7 @@ export type ValidatedIntakeInput = {
 export async function handleIntake(
   input: unknown,
   ctx: IntakeContext,
+  dependencies: IntakeDependencies = {},
 ): Promise<MatchResponse> {
   // Crisis detection uses any string feeling before age/boundary validation and
   // is never rate-limited. Malformed optional controls cannot hide resources.
@@ -304,9 +314,13 @@ export async function handleIntake(
   await recordLinkedProductEventBestEffort(matchEvent, telemetryFlowId);
   const selectedFraming =
     disposition === "close_match" ? result.framing : "partial";
+  const preparationFailure = beginInitialStoryPreparationFailureRecorder(
+    telemetryFlowId,
+    dependencies.failureTelemetry,
+  );
   let prepared;
   try {
-    prepared = await prepareStory({
+    prepared = await (dependencies.prepare ?? prepareStory)({
       age: validated.age,
       feeling: validated.feeling,
       boundaries: validated.boundaries,
@@ -316,11 +330,17 @@ export async function handleIntake(
       framing: selectedFraming,
       mode: "initial",
     });
-  } catch {
+  } catch (error) {
     // Never reflect or log composition detail: it may contain curated prose.
+    await preparationFailure.capture(error);
     return { temporarilyUnavailable: true };
   }
-  if (!prepared) return { temporarilyUnavailable: true };
+  if (!prepared) {
+    // prepareStory returns null only when its matched catalog/stage identity
+    // disappeared before composition (for example, concurrent retirement).
+    await preparationFailure.captureContentConflict();
+    return { temporarilyUnavailable: true };
+  }
 
   let sessionId: string;
   try {

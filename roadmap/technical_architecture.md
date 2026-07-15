@@ -476,6 +476,20 @@ Changing that rule requires an explicit safety/privacy decision rather than an
 observability shortcut. The full registry, retention, producer ownership, and
 delivery restrictions are in [`telemetry_contract.md`](telemetry_contract.md).
 
+`flow_failed` is likewise bounded to one authoritative owner rather than wired
+to generic catches. Immediately before an eligible initial story enters
+`prepareStory`, the server fixes `domain=composition`, mints one purpose-separated
+occurrence, and starts a monotonic clock. A thrown value is inspected only by the
+string-hostile reducer; a `null` preparation maps to a fixed conflict sentinel
+for disappeared catalog/stage identity. The capture RPC commits the exact closed
+row and pointer-only outbox, and one ambiguous replay reuses the same event ID
+inside a strict one-second total budget, bounding the added observability wait.
+Valid canonical fallback is a successful artifact and remains silent.
+Persistence and the other reserved
+failure domains are not inferred from a public 503. This slice needs no migration:
+the exact `0010` columns and `0011` active-flow capture transaction already
+provide shape enforcement, idempotency, retention, and deletion cascade.
+
 ## P0-14 — [Feature] Data model and retention classes
 
 ### Proposed tables

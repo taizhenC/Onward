@@ -499,6 +499,37 @@ async function checkStoryProgressTelemetrySchema(): Promise<Step> {
   }
 }
 
+async function checkStoryFeedbackTelemetrySchema(): Promise<Step> {
+  const name = "transactional story feedback telemetry RPC installed";
+  try {
+    const probe = await getSupabase().rpc("submit_story_feedback_v2", {
+      p_feedback_id: "0".repeat(32),
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_session_id: "0".repeat(32),
+      p_artifact_id: "0".repeat(32),
+      p_policy_version: "resonance-feedback-v1-2026-07",
+      p_verdict: "felt_close",
+      p_reason: null,
+      p_telemetry_flow_id: null,
+      p_feedback_event_id: null,
+      p_telemetry_schema_version: null,
+      p_story_role: null,
+      p_feedback_verdict: null,
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "owner-first feedback signature is reachable without writes"
+        : "a nonexistent feedback probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0014` };
+  }
+}
+
 function requireRpcValidationError(
   label: string,
   error: { code?: string; message: string } | null,
@@ -592,6 +623,7 @@ async function main(): Promise<void> {
     await checkTelemetryLifecycleSchema(),
     await checkMatchTelemetryProducerSchema(),
     await checkStoryProgressTelemetrySchema(),
+    await checkStoryFeedbackTelemetrySchema(),
     await checkCrisisPersistsNothing(),
   ];
 

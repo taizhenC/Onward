@@ -5,6 +5,10 @@ import {
   ALTERNATE_STORY_RETRY_COOLDOWN_MS,
   type AlternateStoryFlowStatus,
 } from "./alternate-story-types";
+import type { AlternateRequestedTelemetryCapture } from "./alternate-story-telemetry";
+import { getOwnedMemoryTelemetryFlowBindingByRoot } from "./telemetry-flow-binding-memory";
+import { telemetryFlowBindingEnabled } from "./telemetry-flow-lifecycle";
+import { recordPreparedMemoryProductEventsAtomically } from "./telemetry";
 
 export type StoredAlternateStoryFlow = {
   userId: string;
@@ -141,31 +145,53 @@ export function claimMemoryAlternateStoryFlow(input: {
   policyVersion: string;
   leaseId: string;
   leaseExpiresAt: number;
+  telemetry: AlternateRequestedTelemetryCapture | null;
 }): AlternateFlowClaimResult {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
   const flow = flows.get(input.sourceSessionId);
   if (!flow || !sameIdentity(flow, input)) return { status: "not_found" };
   const now = Date.now();
   if (flow.status === "ready" && flow.resultSessionId) {
+    captureAlternateRequested(input, flow, telemetryEnabled, now, true);
     return { status: "ready", sessionId: flow.resultSessionId };
   }
-  if (flow.status === "unavailable") return { status: "unavailable" };
+  if (flow.status === "unavailable") {
+    captureAlternateRequested(input, flow, telemetryEnabled, now, true);
+    return { status: "unavailable" };
+  }
   if (
     flow.status === "preparing" &&
     flow.leaseExpiresAt !== null &&
     flow.leaseExpiresAt > now
   ) {
+    captureAlternateRequested(input, flow, telemetryEnabled, now, true);
     return {
       status: "preparing",
       retryAfterMs: flow.leaseExpiresAt - now,
     };
   }
-  if (flow.expiresAt <= now) return { status: "expired" };
+  if (flow.expiresAt <= now) {
+    captureAlternateRequested(
+      input,
+      flow,
+      telemetryEnabled,
+      now,
+      flow.attemptCount > 0,
+    );
+    return { status: "expired" };
+  }
   if (flow.attemptCount >= ALTERNATE_STORY_MAX_ATTEMPTS) {
+    captureAlternateRequested(input, flow, telemetryEnabled, now, true);
     return { status: "exhausted" };
   }
   if (flow.nextAttemptAt !== null && flow.nextAttemptAt > now) {
+    captureAlternateRequested(input, flow, telemetryEnabled, now, true);
     return { status: "cooldown", retryAfterMs: flow.nextAttemptAt - now };
   }
+  captureAlternateRequested(input, flow, telemetryEnabled, now, true);
   flow.status = "preparing";
   flow.attemptCount += 1;
   flow.leaseId = input.leaseId;
@@ -173,6 +199,46 @@ export function claimMemoryAlternateStoryFlow(input: {
   flow.nextAttemptAt = null;
   flow.updatedAt = now;
   return { status: "claimed" };
+}
+
+function captureAlternateRequested(
+  input: {
+    userId: string;
+    sourceSessionId: string;
+    telemetry: AlternateRequestedTelemetryCapture | null;
+  },
+  flow: StoredAlternateStoryFlow,
+  telemetryEnabled: boolean,
+  now: number,
+  claimEvidenced: boolean,
+): void {
+  if (!claimEvidenced || !telemetryEnabled) return;
+  const session = globalThis.__onwardSessions?.get(input.sourceSessionId);
+  const binding =
+    session &&
+    session.userId === input.userId &&
+    session.alternateOfSessionId === null &&
+    session.storyArtifactId === flow.sourceArtifactId
+      ? getOwnedMemoryTelemetryFlowBindingByRoot(
+          session.sessionId,
+          session.userId,
+          now,
+        )
+      : null;
+  if (!binding) return;
+  if (
+    !input.telemetry ||
+    input.telemetry.event !== "alternate_requested" ||
+    input.telemetry.flowId !== binding.flowId
+  ) {
+    throw new Error("active alternate-request telemetry capture is invalid");
+  }
+  if (
+    recordPreparedMemoryProductEventsAtomically([input.telemetry], now) ===
+    "conflict"
+  ) {
+    throw new Error("alternate-request telemetry conflicted");
+  }
 }
 
 export function releaseMemoryAlternateStoryFlow(input: {

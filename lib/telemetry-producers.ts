@@ -158,6 +158,13 @@ export function feedbackSubmittedEvent(
   return { event: "feedback_submitted", storyRole, verdict };
 }
 
+export function alternateRequestedEvent(): Extract<
+  ProductEvent,
+  { event: "alternate_requested" }
+> {
+  return { event: "alternate_requested" };
+}
+
 // Pure observability must not turn a valid non-crisis product response into an
 // error. Transaction-coupled events use prepareProductEventCapture() instead;
 // this helper is only for milestones whose durable state is the event itself.

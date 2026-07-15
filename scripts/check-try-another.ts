@@ -13,6 +13,7 @@ import {
   completeMemoryAlternateStoryUnavailable,
   releaseMemoryAlternateStoryFlow,
 } from "../lib/alternate-story-store-memory";
+import { prepareAlternateRequestedTelemetry } from "../lib/alternate-story-telemetry";
 import { createAlternateStory } from "../lib/alternate-story";
 import {
   parseAlternateCapabilityRequest,
@@ -177,6 +178,10 @@ async function checkLeaseHydrationAndExpiryParity(
     ...identity,
     leaseId: firstLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    telemetry: await alternateRequestedCapture(
+      identity.userId,
+      identity.sourceSessionId,
+    ),
   });
   releaseMemoryAlternateStoryFlow({
     userId: identity.userId,
@@ -188,6 +193,10 @@ async function checkLeaseHydrationAndExpiryParity(
     ...identity,
     leaseId: secondLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    telemetry: await alternateRequestedCapture(
+      identity.userId,
+      identity.sourceSessionId,
+    ),
   });
   const hydrated = await requestCapability(activeSecond.sessionId);
   const hydratedBody = await hydrated.json();
@@ -221,6 +230,10 @@ async function checkLeaseHydrationAndExpiryParity(
     policyVersion: startByFlow.policyVersion,
     leaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    telemetry: await alternateRequestedCapture(
+      startByFlow.userId,
+      startByFlow.sourceSessionId,
+    ),
   });
   startByFlow.expiresAt = Date.now() - 1;
   const activeAfterStartBy = await requestCapability(startBy.sessionId);
@@ -261,6 +274,10 @@ async function checkLeaseHydrationAndExpiryParity(
     policyVersion: retentionFlow.policyVersion,
     leaseId: retentionLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    telemetry: await alternateRequestedCapture(
+      retentionFlow.userId,
+      retentionFlow.sourceSessionId,
+    ),
   });
   retentionFlow.contextExpiresAt = Date.now() - 1;
   const retentionCompleted = completeMemoryAlternateStoryUnavailable({
@@ -1223,6 +1240,14 @@ async function makeRoot(options: {
     });
   }
   return { sessionId, artifact, stage };
+}
+
+async function alternateRequestedCapture(userId: string, sessionId: string) {
+  const session = await getSession(sessionId);
+  if (!session || session.userId !== userId) {
+    throw new Error("alternate-request telemetry fixture is unavailable");
+  }
+  return prepareAlternateRequestedTelemetry({ session, userId });
 }
 
 function chooseNonRejectionSource(): FigureStageRow {

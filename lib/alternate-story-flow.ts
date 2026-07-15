@@ -33,6 +33,7 @@ import {
 import { createMemoryAlternateSession } from "./session-store-memory";
 import { persistenceMode } from "./persistence";
 import { readStrongSecret } from "./secret-config";
+import { prepareAlternateRequestedTelemetry } from "./alternate-story-telemetry";
 
 declare global {
   var __onwardAlternateStorySecret: Buffer | undefined;
@@ -138,6 +139,10 @@ export async function claimAlternateStoryFlow(input: {
     input.artifact.artifactId,
   );
   if (!safeTokenEqual(input.token, expected)) return { status: "not_found" };
+  const telemetry = await prepareAlternateRequestedTelemetry({
+    userId: input.userId,
+    session: input.session,
+  });
   const tokenHash = hashToken(input.token);
   const leaseId = randomBytes(16).toString("hex");
   const leaseExpiresAt =
@@ -151,6 +156,7 @@ export async function claimAlternateStoryFlow(input: {
           tokenHash,
           policyVersion: ALTERNATE_STORY_POLICY_VERSION,
           leaseId,
+          telemetry,
         })
       : claimMemoryAlternateStoryFlow({
           userId: input.userId,
@@ -160,6 +166,7 @@ export async function claimAlternateStoryFlow(input: {
           policyVersion: ALTERNATE_STORY_POLICY_VERSION,
           leaseId,
           leaseExpiresAt,
+          telemetry,
         });
   return result.status === "claimed"
     ? { status: "claimed", sourceSessionId: input.session.sessionId, leaseId }

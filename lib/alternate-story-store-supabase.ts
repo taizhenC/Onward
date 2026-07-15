@@ -6,6 +6,8 @@ import type {
   AlternateFlowClaimResult,
   AlternateFlowIssueResult,
 } from "./alternate-story-store-memory";
+import type { AlternateRequestedTelemetryCapture } from "./alternate-story-telemetry";
+import { telemetryFlowBindingEnabled } from "./telemetry-flow-lifecycle";
 
 export async function issueSupabaseAlternateStoryFlow(input: {
   userId: string;
@@ -37,18 +39,32 @@ export async function claimSupabaseAlternateStoryFlow(input: {
   tokenHash: string;
   policyVersion: string;
   leaseId: string;
+  telemetry: AlternateRequestedTelemetryCapture | null;
 }): Promise<AlternateFlowClaimResult> {
-  const { data, error } = await getSupabase().rpc(
-    "claim_alternate_story_flow",
-    {
-      p_user_id: input.userId,
-      p_source_session_id: input.sourceSessionId,
-      p_source_artifact_id: input.sourceArtifactId,
-      p_token_hash: input.tokenHash,
-      p_policy_version: input.policyVersion,
-      p_lease_id: input.leaseId,
-    },
-  );
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
+  const { data, error } = telemetryEnabled
+    ? await getSupabase().rpc("claim_alternate_story_flow_v2", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_source_artifact_id: input.sourceArtifactId,
+        p_token_hash: input.tokenHash,
+        p_policy_version: input.policyVersion,
+        p_lease_id: input.leaseId,
+        p_telemetry_flow_id: input.telemetry?.flowId ?? null,
+        p_alternate_requested_event_id: input.telemetry?.eventId ?? null,
+        p_telemetry_schema_version: input.telemetry?.schemaVersion ?? null,
+      })
+    : await getSupabase().rpc("claim_alternate_story_flow", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_source_artifact_id: input.sourceArtifactId,
+        p_token_hash: input.tokenHash,
+        p_policy_version: input.policyVersion,
+        p_lease_id: input.leaseId,
+      });
   if (error) throw new Error("alternate story flow could not be claimed");
   return parseClaimResult(data);
 }

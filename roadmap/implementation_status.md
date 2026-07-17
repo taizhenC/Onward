@@ -26,7 +26,7 @@
 | P0-08 | In progress | Immutable v5 artifacts now carry a closed disclosure-safe rationale and explicit gap, pinned StorySpec identity/version, reviewed-vs-draft provenance, safe source projection, only referenced fact/quote evidence, qualified/interpretive/reader-bridge labels, and hybrid-connective disclosure. The end-state reader exposes the rationale plus native source/evidence drawers. An exact three-field owner-scoped API validates fact membership; migration `0007` atomically writes only safe content identifiers and closed reasons into a default-deny, idempotent editorial queue with service-only triage and existing rapid retirement. Synthetic public evidence covers verbatim/paraphrase/disputed quotes; all 50 current drafts are honestly labeled as drafts; v1-v4 replay exposes no fabricated provenance. | Publish a real launch StorySpec with researcher-authored exact/bounded evidence and exercise its quote/source projection; run the migration, RLS/concurrency, triage, and retirement drill against real Postgres; complete keyboard/screen-reader/mobile/zoom testing and target-user trust comprehension before `Complete`. |
 | P0-09 | In progress | Progress moves only on explicit Continue/Finish. Migration `0013` locks the owned session, independently validates the immutable artifact's complete passage layout, derives the only legal next position, and atomically captures the bounded flattened passage ordinal plus final completion. Response-loss replay restores deterministic events/outbox pointers without advancing twice; memory mode mirrors the transaction. Artifact validator v2 caps every public story at 64 passages, while the migration fails safe unless every persisted validator-v1 artifact already satisfies the same passage contract. | Real-Postgres concurrency/RLS/rollback evidence plus browser-level refresh, back-button, offline, double-click, and multi-tab E2E evidence before `Complete`. |
 | P0-10 | In progress | Completed-story readers—including anonymous owners—can answer one close/not-close question with exactly one of seven closed miss reasons. After a durable rejection, a root story can issue one owner/session/artifact-bound capability and generate one different, always-partial story without browser replay of age, disclosure, limits, clarification, reason, candidates, or prose and without a public rate unit. The exact previous stage is removed before age fallback, keyword/Facets retrieval, reranking, fallback, and composition. The original closed context exists only on the root, has an immutable expiry, and is reused under the same hard boundaries; the alternate stores only lineage/deadline and no age, disclosure, limits, or clarification. Empty/low coverage stops honestly; operational failures get two leased attempts with a server-enforced cooldown; concurrent clicks converge; a live second lease hydrates as preparing rather than exhausted; the one-hour capability TTL is consistently start-by while the two-minute lease and original disclosure deadline remain finish-by. SQL finalization rechecks feedback/completion/publication/authoritative content profile/boundaries atomically. Owner-scoped SSR and a separate exact capability-refresh endpoint restore available, preparing, ready, unavailable, expired, exhausted, and timed transient states after reload/back without resending the miss reason. Terminal outcomes and local Back/Stay transitions restore focus, and cross-tab feedback refresh remounts from the durable projection. | Add separate consented/encrypted short-retention optional notes or record an explicit product/privacy decision not to collect them; prove anonymous Supabase migration/RPC/RLS/cross-instance lease/cron/deletion behavior, browser accessibility/navigation, and aggregate learning with P0-11. |
-| P0-11 | In progress | The exact 22-event product union and unlinkable attempt stream reject sensitive/unbounded shapes and reduce failures to closed buckets. Purpose-separated HMAC IDs are retry-stable; signed flows have an immutable 30-day lifetime. Migrations `0011`-`0013` implement the owner/root lifecycle, leased outbox, initial intake/match/recovery/artifact producers, and transactional passage/completion capture. Migration `0014` commits bounded feedback with a persisted-verdict event and no miss reason. Migration `0015` captures `alternate_requested` only after a durable claim. Migration `0016` adds alternate match calibration and atomically derives the alternate artifact denominator plus first-write-wins terminal outcomes from authoritative state. Fixed entry endpoints capture CTA and first interaction without a tracking SDK. Three exact reader-visibility endpoints capture match-to-preface and Continue-to-passage latency plus first source opening. The match boundary proves story-flow anonymous authentication with a short-lived HttpOnly flow challenge plus verified fresh AMR before owner-scoped singleton capture. Eligible initial-story preparation now owns one bounded `flow_failed:composition` occurrence: its server-minted ID and monotonic bucket survive one ambiguous capture replay, while raw errors, expected recovery states, valid canonical fallbacks, persistence, and other reserved domains remain silent. Direct story/reload visits without bound timing, invalid auth proofs, cross-origin/malformed calls, and incident-disabled telemetry remain silent. Exact retries reconcile or deduplicate by semantic unit; transaction-coupled capture conflicts roll back their domain transitions, while auth and failure observation are documented availability-first exceptions; and null/revoked flows preserve the product without fabricated telemetry. Memory mode mirrors these transaction and privacy semantics. Crisis resources still return before the match route parses the flow, reads an auth challenge, or writes a crisis event. | Operate a privacy-reviewed dispatcher/reconciler (including in-flight deletion); add temporal aggregates, dashboards, alerts/on-call, minimum-cell rollups, generation-attempt producers, and real Postgres migration/RLS/concurrency/cron/cascade/idempotency proof. |
+| P0-11 | In progress | The exact 22-event product union and unlinkable attempt stream reject sensitive/unbounded shapes and reduce failures to closed buckets. Purpose-separated HMAC IDs are retry-stable; signed flows have an immutable 30-day lifetime. Migrations `0011`-`0013` implement the owner/root lifecycle, leased outbox, initial intake/match/recovery/artifact producers, and transactional passage/completion capture. Migration `0014` commits bounded feedback with a persisted-verdict event and no miss reason. Migration `0015` captures `alternate_requested` only after a durable claim. Migration `0016` adds alternate match calibration and atomically derives the alternate artifact denominator plus first-write-wins terminal outcomes from authoritative state. Fixed entry endpoints capture CTA and first interaction without a tracking SDK. Three exact reader-visibility endpoints capture match-to-preface and Continue-to-passage latency plus first source opening. The match boundary proves story-flow anonymous authentication with a short-lived HttpOnly flow challenge plus verified fresh AMR before owner-scoped singleton capture. Eligible initial-story preparation owns one bounded `flow_failed:composition` occurrence, while raw errors and expected recovery states remain silent. Migration `0017` adds a pure-Postgres, ID-only dispatcher that locks the source before its pointer, atomically folds it into identifier-free UTC-day marginal counts, and then marks delivery. Dispatch defaults off behind a dedicated database control. A hardened 28-day/`k>=10` daily-read candidate withholds immature, missing-pointer, unsettled, and complementary-count-unsafe cells but has no caller grant; rollups expire within 30 days. Queue health exposes the control state, counts, and a closed oldest-actionable age bucket, while schema health verifies effective grants, private helpers, forced RLS, and exact cron definitions with booleans only. Raw external delivery remains prohibited. Exact retries reconcile or deduplicate by semantic unit; transaction-coupled capture conflicts roll back their domain transitions, while auth and failure observation are documented availability-first exceptions; and null/revoked flows preserve the product without fabricated telemetry. Memory mode mirrors producer transaction and privacy semantics. Crisis resources still return before the match route parses the flow, reads an auth challenge, or writes a crisis event. | Apply, check, explicitly enable, and exercise `0017` on real Postgres, including cron, RLS/grants, concurrent dispatch, lease recovery, deletion races, retention, and exhaustion. Complete dashboard privacy review before granting any read; add flow-linked 24-hour cohort and generation-attempt aggregates, dashboards, alerts/runbooks, named on-call ownership, and live-data proof. Marginal rollups alone cannot satisfy every release metric. |
 | P0-12 | External gate | Deterministic pre-provider gate; versioned 39-case corpus passes 26/26 critical positives; resource actions are region-specific, linked, and dated; crisis persistence/kill-switch behavior is smoke-tested; the route returns resources before flow/auth/age validation, the client reaches that route before anonymous sign-in, and intake exposes an always-available reviewed-resource action without requiring a valid age/disclosure. | Qualified safety review, launch-market approval, browser proof that crisis never invokes anonymous sign-in, and a deliberate policy for context/negation over-triggers remain required before `Complete`. |
 | P0-13 | In progress | Approved recipe ID, keyword default, and fail-closed recipe identity are implemented. Production rejects every non-keyword/unknown retrieval value; story creation carries the matcher's actual path and rejects challengers before persistence; match/artifact telemetry and the v4 SQL boundary require the approved recipe ID, retrieval mode, and match-config version. Eval-only `matchWithDebug` still exercises FacetsRAG. Each immutable artifact pins the complete match recipe plus analyzer, match-recovery, composer, validator, boundary, hybrid-plan, and template-policy versions. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
 | P0-14 | Partial | Guest cleanup and root-only disclosure/context expiry exist. Artifacts, feedback, concerns, recovery, and alternate state are owner-scoped/bounded. Migration `0011` adds a default-deny new-session owner/root flow mapping, exact root/flow lookups, account/root cascades, owner-scoped explicit retirement, and opaque revocation tombstones so linked events/outbox work cannot be recreated after deletion. Alternates resolve through the original root; legacy sessions are deliberately not backfilled. | User-facing story/account deletion and consent controls, durable save semantics, full derived-rationale/artifact retention classes, optional-note consent/encryption decision, privacy page, real cascade/cron tests, and market/youth review. |
@@ -459,8 +459,8 @@ scope, verified-method freshness, exact and concurrent
 replay, outbox singleton behavior, missing/forged/stale/cross-flow proofs,
 foreign/revoked owners, crisis and incident switches, static silence across every
 standalone auth surface, and forbidden-field absence. Production evidence still
-requires a live Supabase anonymous-auth canary and the open dispatcher, aggregate,
-dashboard, alert, and real-Postgres gates. Typecheck, zero-warning lint, telemetry
+requires a live Supabase anonymous-auth canary plus real-Postgres dispatcher,
+cohort/dashboard, alert/on-call, and migration gates. Typecheck, zero-warning lint, telemetry
 lifecycle/producer checks, story-boundary checks, the 19-case smoke suite, and the
 isolated production build all pass; the build still generates 19 routes and keeps
 `/api/match` server-only.
@@ -497,9 +497,71 @@ dimension conflict, a second occurrence, capture outage, null/revoked/expired an
 incident-disabled flows, crisis/malformed/kill-switch silence, latency boundaries,
 exact-schema rejection, and static SQL/owner restrictions. Typecheck and
 zero-warning lint pass. Production still requires a synthetic real-Postgres
-concurrency/RLS/revocation canary plus the open dispatcher, reconciliation,
-aggregate, dashboard, alert, minimum-cell, on-call, and live-data gates; P0-11
-therefore remains `In progress`.
+concurrency/RLS/revocation canary plus the dispatcher, dashboard, alert, cohort,
+on-call, and live-data gates; P0-11 therefore remains `In progress`.
+
+### Stacked branch: `roadmap-observability-outbox-dispatcher`
+
+Migration `0017` implements the first gated destination candidate for the product-event
+outbox without adding an HTTP worker or external analytics sink. A v2 claim
+returns only event ID, attempt count, and lease ID to the private
+security-definer dispatcher. Settlement locks the immutable source event before
+its cascade-owned pointer, rechecks source/flow lifetime, and in one transaction
+folds the event then marks the pointer delivered. If deletion commits first,
+there is no source to aggregate; if settlement commits first, later deletion
+leaves only unlinkable counts. The atomic cutover first creates missing pointers
+for every still-live pre-outbox source, performs a one-time fold of still-live
+pointers previously marked delivered, then revokes service-role execution
+of the v1 full-row claim and plain ACK so the atomic fold cannot be bypassed. A
+default-deny singleton control starts `false`, so applying the migration and
+installing its cron never begins queue consumption by itself.
+
+`telemetry_event_daily_rollups` contains exactly UTC date, product schema
+version, event name, one closed marginal dimension name/value, and count. Each
+event contributes one fixed `all/all` cell plus one independent cell for every
+applicable populated dimension; it never stores a dimension cross-product or
+any event, flow, deletion, user, session, artifact, lease, exact timestamp, or
+content identifier. The table is default-deny. Its private read candidate
+accepts at most 28 retained UTC days, excludes the two newest dates and dates
+with missing-pointer or unsettled sources, and withholds every child partition containing a
+positive cell below `k=10` plus the corresponding parent. It has no service-role
+grant in this slice; dashboard privacy review is still open. Daily pruning caps
+retention at 30 calendar days. Queue health returns the dispatch-enabled flag,
+pending/leased/delivered/exhausted counts, dispatcher-actionable live-source counts,
+and one closed oldest-actionable age bucket. Schema health returns closed booleans
+for forced RLS, effective denial of raw/direct/private paths to every browser
+role and `service_role`, granted service-only operational boundaries, and exact
+active cron schedules and commands.
+
+The dispatcher cron runs inside Supabase every minute with a 25-row batch but
+returns zero counts while the control is false. An operator enables it through
+`set_telemetry_rollup_dispatch_enabled_v1(true)` only after staging and the
+target environment's `check-db` gates, and disables it before rollback or an
+incident. Dispatch holds a shared control-row lock for its transaction, so a
+successful disable waits for already-running batches to drain. Each row has its
+own exception subtransaction; any fold failure is
+reduced to a fixed `database` NACK, preserving the existing 60-second lease,
+20-attempt cap, expired-lease recovery, and bounded backoff. No raw SQL exception
+is logged or returned. The daily prune job is separately scheduled. Raw external
+event delivery, webhooks, third-party analytics SDKs, and public cron endpoints
+remain prohibited.
+
+`npm run check-telemetry-dispatcher` validates the exact table/allowlists,
+ID-only claim, complete legacy-pointer cutover, source-first atomic settlement,
+marginal-only emission, fixed
+NACK, retry/exhaustion policy, default-off control, hardened private read
+candidate, 30-day retention, closed queue/schema-health shapes, RLS/grants, cron
+definitions, and absence of external runtime paths. `npm run check-db` probes
+the public dispatcher, control-independent queue health, and schema health
+without dispatching live rows; it does not receive aggregate-read permission.
+These checks are hermetic/static evidence only. P0-11 remains `In progress`
+until staging and production explicitly enable and prove real concurrent
+`SKIP LOCKED`, lease recovery, source/pointer deletion races, RLS/grants,
+exact-once folding, cron execution, pruning, and queue drain; a separate privacy
+review must approve any dashboard grant. Dashboards, alerts/runbooks, named
+on-call ownership, flow-linked 24-hour cohort aggregates, and
+generation-attempt aggregates also remain open. The normalized marginal rollup
+must not be used to infer flow-linked conversion or outcome cohorts.
 
 ## Completion audit rule
 

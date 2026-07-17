@@ -1,8 +1,10 @@
 # Privacy-safe telemetry contract
 
-**Status:** Implemented foundation, core producer set, and one bounded sanitized
-failure owner; production delivery, aggregation, and reporting remain follow-up
-work.
+**Status:** Implemented foundation, core producer set, one bounded sanitized
+failure owner, and a gated first-party Postgres rollup dispatcher. Dispatch is
+disabled by default and the candidate aggregate read has no caller grant.
+Production cron, RLS, concurrency, deletion-race, dashboard-privacy, alert, and
+on-call evidence remain release work.
 
 **Contract version:** `product-event-v1-2026-07` / `generation-attempt-v1-2026-07`
 
@@ -34,7 +36,7 @@ Unknown keys are rejected before storage. SQL uses typed columns and an event-sp
 
 ## Product event registry
 
-All linked events expire after 30 days. New flows advance through issued, owner-claimed, and root-bound states; root-story/account deletion or explicit owner-scoped retirement cascades events/outbox pointers and preserves only an opaque tombstone through the flow's original signed expiry. Deleted or expired capabilities cannot be re-registered. Legacy sessions are intentionally not backfilled. P0-14 still must expose the user-facing story/account deletion authorities that invoke this substrate. Unlinkable events expire on the same schedule and cannot be traced back to a person. Dashboard consumers must use aggregate queries; raw-row access is restricted to approved Platform/Data service boundaries for incident diagnosis.
+All linked events expire after 30 days. New flows advance through issued, owner-claimed, and root-bound states; root-story/account deletion or explicit owner-scoped retirement cascades events/outbox pointers and preserves only an opaque tombstone through the flow's original signed expiry. Deleted or expired capabilities cannot be re-registered. Legacy sessions are intentionally not backfilled. P0-14 still must expose the user-facing story/account deletion authorities that invoke this substrate. Unlinkable events expire on the same schedule and cannot be traced back to a person. Raw-row access is restricted to approved Platform/Data service boundaries for incident diagnosis. No dashboard read is approved in migration `0017`; its private candidate requires a separate privacy review and explicit future grant.
 
 | Event | Purpose | Authoritative producer | Allowed dimensions | Owner / consumer | Deletion behavior |
 |---|---|---|---|---|---|
@@ -74,6 +76,17 @@ Producers are provider/persistence boundaries after an attempt terminates. Platf
 ## Metric coverage
 
 Core story-outcome metrics are denominator-cohorted by `artifact_created` and use one flow/role as the story-session unit. Completion, feedback, source-open, and alternate behavior count only when they occur from the denominator timestamp through 24 hours later. A cohort is final only after that 24-hour observation window; later events are reported separately and never rewrite the finalized launch cohort. Intake abandonment similarly matures 24 hours after `intake_started`. Raw-data reporting must use a lookback safely below the 30-day TTL (at most 28 days) or a separately retained, privacy-reviewed, minimum-cell-suppressed aggregate. Deletion can reduce any cohort and is never delayed to preserve analytics.
+
+Migration `0017` supplies only single-event marginal counts. For each source
+event it emits one unsegmented `all` cell and one separate cell for each
+applicable closed dimension. It never emits a cross-product of dimensions and
+never retains a flow, event, deletion, user, session, artifact, or exact-time
+identifier. Those cells support event volume and closed one-dimensional
+distributions, but they cannot compute a flow/role intersection, sequence,
+conversion, 24-hour outcome cohort, or cost-per-completed-story denominator.
+No dashboard may substitute ratios of unrelated marginal cells for the
+flow-linked definitions below. A later cohort aggregate requires a separate
+privacy review and migration.
 
 | Release question | Source |
 |---|---|
@@ -185,15 +198,80 @@ after response binding suppresses the event instead of manufacturing latency.
 - `telemetry_flows`: maximum 30 days; pre-session rows contain only a signed opaque flow, while a committed root story binds owner and root together behind default-deny RLS. Initial and alternate stories resolve through that one root. Root/account deletion cascades the mapping, linked events, and queued delivery pointers. Legacy sessions are deliberately not backfilled.
 - `telemetry_flow_revocations`: only the opaque flow ID and its original signed expiry; prevents early deletion from being reversed and is pruned at that expiry.
 - `product_events`: maximum 30 days; new linked rows require a registered flow. A root/account cascade or explicit known-flow deletion removes them immediately.
-- `product_event_outbox`: pointer-only delivery state retained no longer than its product event. It contains no copied event payload or subject/story identifiers; delivery uses the immutable `event_id` as its sink idempotency key.
+- `product_event_outbox`: pointer-only delivery state retained no longer than its product event. It contains no copied event payload or subject/story identifiers. The approved v2 claim exposes only event/lease identity and bounded attempt state to the private database dispatcher; service-role access to the v1 raw-row claim and plain ACK is revoked after the one-time `0017` backfill.
+- `telemetry_event_daily_rollups`: maximum 30 UTC calendar days; each row contains only UTC date, schema version, event name, one closed marginal dimension name/value, and count. The table is default-deny and has no direct service-role table grant. Its hardened read candidate remains private with no service-role execute grant in this slice.
+- `telemetry_rollup_dispatch_control`: one default-deny singleton boolean, initialized `false`. The minute cron is installed but claims nothing until an operator uses the dedicated service-role control RPC after staging and production preflight.
 - `match_rate_limit_decisions`: maximum two days; stores only an occurrence-derived event ID plus the closed allow/deny result and optional `user`/`ip` scope. It stores no user key, IP hash, flow, session, or request value. The limiter locks this ID and returns the first committed decision before touching counters, so an ambiguous transport retry cannot both record a denial and allow the provider call.
 - `generation_attempts`: maximum 14 days; unlinkable and pruned by TTL.
-- Product-event and generation-attempt payloads are immutable. Flow identity and expiry are immutable; owner and root are write-once through the controlled issued -> owner-claimed -> bound RPC transitions. Outbox state mutates only through claim/ACK/NACK leases. All lifecycle tables are default-deny under RLS and accessible only through approved service-role modules/RPCs.
+- Product-event and generation-attempt payloads are immutable. Flow identity and expiry are immutable; owner and root are write-once through the controlled issued -> owner-claimed -> bound RPC transitions. The approved `0017` delivery path mutates outbox state only through private claim, atomic settle, and fixed-class NACK transitions. All lifecycle tables are default-deny under RLS and accessible only through approved service-role modules/RPCs.
 - SQL constrains identifier shape; HMAC authenticity is enforced before insert by the server-only telemetry module. Operational policy prohibits direct service-role telemetry inserts outside that boundary.
 - A daily scheduled job deletes expired rows. Production rollout must verify the job and RLS with real Postgres.
-- No external raw-event sink may be enabled yet. A claimed row can be deleted between claim and delivery; any future consumer must either revalidate/retract immediately before delivery or process only into privacy-reviewed unlinkable aggregates that cannot preserve a deleted subject's row. This is a release precondition, not behavior supplied by the pointer queue alone.
-- Longer-lived aggregates are not part of this branch. If introduced, they must be unlinkable, minimum-cell suppressed (recommended `k >= 10`), versioned, separately retained, and privacy-reviewed.
+- The only implemented P0 destination candidate is the gated first-party Postgres rollup. Its settlement locks the still-live source before the cascade-owned pointer, validates any active flow, folds identifier-free marginal cells, and marks the pointer delivered in one transaction. If privacy deletion commits first, there is no source to fold. If settlement commits first, later deletion leaves only unlinkable counts. Per-row database failures roll back any partial fold and NACK with the fixed closed `database` class; no SQL message, state, detail, or context is retained. Migration installation alone does not authorize or start queue consumption.
+- Raw external sinks, HTTP dispatch, webhooks, and third-party analytics SDKs remain prohibited. There is no external deletion/retraction protocol, and the first-party aggregate does not authorize raw-event export.
+- Longer-lived aggregates are not part of this branch. The daily rollup has the same 30-day maximum as product events. Any extension must remain unlinkable, minimum-cell suppressed (`k >= 10`), versioned, separately retained, and privacy-reviewed.
 - Guest deletion may remove the only live flow before a 30-day cohort matures. Product reporting must not weaken the six-hour guest deletion promise to preserve analytics.
+
+## First-party dispatch and reporting boundary
+
+`claim_product_event_outbox_v2` preserves the existing 60-second lease,
+20-attempt ceiling, expired-lease recovery, `FOR UPDATE SKIP LOCKED` concurrency,
+and 5-second/30-second/2-minute/10-minute/1-hour retry schedule, but returns no
+event payload. `settle_product_event_outbox_rollup_v1` locks the source first,
+then its pointer, and performs fold plus delivery atomically.
+`dispatch_product_event_rollups_v1` processes at most 100 rows per call; the
+private minute cron uses a batch of 25. Its result contains counts only. A row
+failure is isolated in a subtransaction and uses the existing NACK policy.
+
+During the transactional `0017` cutover, every still-live pre-outbox source is
+given a missing pointer before delivered-pointer backfill and legacy grant
+revocation. A linked legacy source without a registered active flow remains
+unclaimable and expires with its pending pointer; reporting treats that date as
+incomplete instead of silently undercounting it.
+
+`read_telemetry_event_rollups_v1` is a private SQL candidate, not an approved
+consumer boundary. It accepts only fixed UTC-day ranges within the retained
+window, rejects spans longer than 28 days, withholds the two newest UTC dates
+and any date with missing-pointer or unsettled source work, suppresses every dimension partition
+containing a positive cell below `k=10`, and withholds an event's `all/all`
+parent when any child partition is unsafe. Range selection does not change
+grouping. These defenses address current-day and complementary-count attacks,
+but the threshold counts events rather than distinct contributors. It is not
+contributor-level k-anonymity. No role—including `service_role`—receives execute
+permission until a later dashboard privacy review adds contribution bounds or
+approves and replaces the disclosure-control model.
+
+`telemetry_outbox_health_v1` returns the dispatch-enabled flag plus pending,
+leased, delivered, exhausted, and currently dispatcher-actionable counts and one age
+bucket: `none`, `<1m`, `1-5m`, `5-15m`, `15-60m`, or `>60m`. Actionability joins
+to a still-live source event and, for linked rows, a still-active flow, matching
+what the dispatcher can claim or terminalize. Health returns no event, flow, lease,
+timestamp, or error detail.
+
+The dispatch result's `settlement_exhausted_count` covers only claimed rows
+that exhaust during settle/NACK. Attempt-20 rows terminalized before claim are
+reflected in health's total `exhausted_count`, not that per-call settlement count.
+
+The authored cron jobs are `onward-dispatch-product-event-rollups` every minute
+and `onward-prune-product-event-rollups` daily. The dispatch job is installed
+active but returns zero counts while `telemetry_rollup_dispatch_control` is
+false. An operator may call
+`set_telemetry_rollup_dispatch_enabled_v1(true)` only after staging and the
+target environment's `check-db`/schema-health gates pass, and must call it with
+`false` before rollback or an incident. Dispatch holds a shared lock on the
+control row, so the disabling update returns only after in-flight batches drain.
+Cron definitions or passing static
+checks are not operational proof. Staging and production must show enabled job
+runs in `cron.job_run_details`, concurrent-dispatch idempotency, lease recovery,
+forced NACK/exhaustion, RLS/grants, source/pointer lock ordering, and
+deletion-race behavior.
+
+`telemetry_rollup_schema_health_v1` returns closed booleans only. It verifies
+forced RLS on both new tables, effective `anon`/`authenticated`/`service_role`
+denial on raw claim/plain ACK, direct-table, and private helper/read paths;
+service-only dispatch/control/health/pruning boundaries; and the exact active
+cron schedules and commands. It also reports the control state.
+This is schema/configuration evidence, not a substitute for concurrency,
+deletion, cron-execution, dashboard privacy, alerts, or named on-call proof.
 
 ## Required producer rules
 
@@ -209,4 +287,4 @@ after response binding suppresses the event instead of manufacturing latency.
 
 ## Remaining release work
 
-This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry and story-flow-auth handoffs, reader-visibility endpoints, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, first-write-wins terminal resolution, and the bounded initial-composition failure owner are implemented. P0-11 remains in progress until outbox delivery/reconciliation is operated; aggregate queries/dashboards/alerts exist; real Postgres concurrency/RLS/retention/cascade behavior is verified; ownership/on-call is named; and live data proves the release metrics without sensitive leakage. Additional `flow_failed` domains require an explicit authoritative owner and runbook rather than a generic catch-all. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.
+This contract, signed flow lifecycle, semantic idempotency, typed pointer-only outbox, privacy-safe entry and story-flow-auth handoffs, reader-visibility endpoints, initial intake/match/recovery producers, transactional rate-limit denial, transactional initial and alternate artifact capture, transactional passage/completion capture, transactional bounded-feedback capture, claim-only alternate demand, alternate match calibration, first-write-wins terminal resolution, the bounded initial-composition failure owner, and the gated first-party daily-rollup dispatcher are implemented. P0-11 remains in progress until migration `0017` is exercised and explicitly enabled on real Postgres; a dashboard privacy review approves and grants an aggregate boundary; flow-linked 24-hour cohort and generation-attempt aggregates exist; dashboards and alerts run from approved boundaries; ownership/on-call is named; and live data proves release metrics without sensitive leakage. Additional `flow_failed` domains require an explicit authoritative owner and runbook rather than a generic catch-all. P0-14 still needs the user-facing save/delete authorities; the lifecycle here supplies their new-session discovery and cascade substrate but does not invent those product actions or backfill legacy sessions.

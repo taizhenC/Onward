@@ -17,15 +17,18 @@ match recovery, story limits, source transparency, explicit progress writes,
 resonance feedback, one controlled alternate-story recovery, and a privacy-safe
 telemetry lifecycle with initial match-journey, durable reader-progress,
 bounded-feedback, alternate demand/match/artifact/terminal producers, and a
-privacy-safe landing-to-intake funnel. Those are meaningful product and
-architecture advances.
+privacy-safe landing-to-intake funnel. Migration `0017` now supplies a gated
+first-party Postgres dispatcher for identifier-free daily marginals without
+exporting raw rows; it installs disabled and exposes no dashboard read yet.
+Those are meaningful product and architecture advances.
 
 It is still **not a viable public release**. The current fifty-figure StorySpecs
 are review drafts rather than a researcher-approved launch set; end-to-end
-relatability has not been validated with target readers; telemetry dispatch,
-dashboards, and alerts are not operating; browser accessibility and
+relatability has not been validated with target readers; the authored telemetry
+dispatcher has not been exercised in production, and cohort dashboards, alerts,
+and on-call ownership are not operating; browser accessibility and
 critical-flow evidence remain incomplete; and the configured Supabase project
-does not yet contain migrations `0004` through `0016`. Local green checks do not
+does not yet contain migrations `0004` through `0017`. Local green checks do not
 substitute for those editorial, safety, user-research, and production gates.
 
 ## What the product does
@@ -68,7 +71,7 @@ The current product loop is:
 | Resonance feedback and one alternate | Gives readers a recovery path and creates a closed, privacy-safe learning signal. |
 | Anonymous-first ownership and retention | Reduces the cost of being honest while keeping sessions private and time-bounded. |
 | Crisis-first safety boundary | Keeps emergency support independent of cookies, rate limits, database state, and providers. |
-| Typed telemetry lifecycle and authoritative producers | Captures closed entry/auth/intake/match/recovery/artifact/reader/feedback/alternate milestones without storing disclosure, prompts, prose, miss reasons, or open-ended analytics payloads. |
+| Typed telemetry lifecycle, authoritative producers, and gated first-party rollups | Captures closed entry/auth/intake/match/recovery/artifact/reader/feedback/alternate milestones and provides a default-off atomic path to identifier-free UTC-day marginals without storing or exporting disclosure, prompts, prose, miss reasons, or open-ended analytics payloads. |
 
 ## Unique value proposition
 
@@ -148,7 +151,7 @@ and market-policy review is a public-release gate, not an implementation detail.
 | Reader UX | Materially improved, not fully proven | Complete browser, keyboard, screen-reader, zoom, mobile, refresh, back, offline, and multi-tab evidence. |
 | Safety | Deterministic gate and CI corpus exist | Obtain qualified safety review, launch-market approval, and an explicit over-trigger policy. |
 | Privacy | Strong ownership/retention foundations | Ship user-facing story/account deletion and consent controls; prove all cascades and cron behavior on real Postgres. |
-| Observability | Contract, lifecycle, outbox, entry funnel, flow-bound anonymous-auth, server-owned story journey, reader visibility, and one bounded initial-composition failure owner exist | Operate a privacy-reviewed sink; build minimum-cell dashboards and alerts; expand failure domains only where an authoritative owner and runbook exist. |
+| Observability | Contract, lifecycle, outbox, entry funnel, flow-bound anonymous-auth, server-owned story journey, reader visibility, one bounded initial-composition failure owner, and a default-off pure-Postgres daily-marginal dispatcher exist; the hardened read candidate remains private | Prove and explicitly enable `0017` cron/RLS/concurrency/deletion behavior in staging and production; complete dashboard privacy review before any read grant; add flow-linked cohort and attempt aggregates, dashboards, alerts/runbooks, and named on-call ownership. Expand failure domains only where an authoritative owner exists. |
 | Release engineering | Local CI and production build are green | Apply and exercise migrations in staging/production, verify RLS/concurrency/rollback, and collect remote canary evidence. |
 
 ## Public-release definition

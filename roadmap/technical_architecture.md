@@ -490,6 +490,66 @@ failure domains are not inferred from a public 503. This slice needs no migratio
 the exact `0010` columns and `0011` active-flow capture transaction already
 provide shape enforcement, idempotency, retention, and deletion cascade.
 
+Migration `0017` gives that pointer-only outbox a deliberately first-party
+destination. There is no application worker, public cron route, webhook, or
+third-party analytics SDK. Supabase `pg_cron` invokes a private security-definer
+dispatcher each minute, but an RLS-protected singleton control defaults to
+`false`, making every scheduled call a no-op until an operator explicitly
+enables it after environment gates. Its v2 claim returns only event and lease
+identifiers; the v1 full-event claim and plain ACK are no longer executable by
+`service_role`, so a later worker cannot bypass the reviewed fold.
+
+Settlement is source-first and atomic. It locks the still-live immutable
+`product_events` row before the cascade-owned outbox pointer, verifies the flow
+has not expired or been revoked, writes the aggregate cells, and marks the
+pointer delivered in one transaction. A deletion that commits first leaves
+nothing to fold. A settlement that commits first leaves only unlinkable counts
+after later deletion. A per-row exception rolls back that row's partial fold and
+uses the existing NACK transition with the fixed `database` error class; no raw
+SQL exception reaches storage or logs. Existing 60-second leases, capped
+20-attempt retry, expired-lease recovery, and backoff remain authoritative.
+
+The transactional cutover first creates a pointer for every still-live legacy
+source. A pre-registry linked source without an active registered flow remains
+unclaimable and expires naturally; its pending pointer prevents the reporting
+candidate from declaring that UTC date complete.
+
+The aggregate is intentionally normalized and marginal rather than a copied
+event. `telemetry_event_daily_rollups` stores only UTC date, schema version,
+event name, one closed dimension name/value, and count. Each source event adds
+one `all/all` denominator cell and one independent cell for each applicable
+dimension; no cell crosses two dimensions, and no row contains an event, flow,
+deletion, account, session, artifact, lease, exact timestamp, or content
+identifier. Table access is default-deny. The private read candidate accepts at
+most 28 retained UTC days, withholds the two newest dates and dates with
+unsettled source work, and suppresses unsafe child partitions and their parent
+cells. It remains a private candidate with no service-role grant in this slice;
+the pruning job enforces a maximum of 30 calendar days. A later dashboard
+privacy review must approve and grant or replace that candidate.
+Its threshold counts events, not distinct contributors, so it is not a claim of
+contributor-level k-anonymity and cannot be granted without contribution bounds
+or another approved disclosure-control model.
+
+This read model supports event volumes and one-dimensional closed
+distributions. It does **not** support flow/role intersections, ordered funnels,
+24-hour completion/resonance cohorts, or cost per completed story. Those must
+not be approximated from unrelated marginals. A future cohort read model and
+the generation-attempt aggregate require separate privacy-reviewed migrations.
+Queue operations expose the dispatch-control state, state counts, and a closed
+oldest-actionable age bucket. Dispatcher-actionable work counts only still-live
+sources and active linked flows and includes due final-attempt terminalization.
+A separate schema-health RPC exposes closed booleans for
+forced RLS, effective privilege denial on private/raw paths, service-only
+operational boundaries, and exact active cron schedules and commands. Operators enable through
+`set_telemetry_rollup_dispatch_enabled_v1(true)` only after staging and
+environment checks, and disable with `false` before rollback or incident
+response. The disabling update waits for any batch holding the shared control
+lock, making a successful `false` response the drain barrier. Dashboards,
+alerts, and on-call runbooks remain downstream work, and
+the dispatcher is not production-operated until real Postgres proves enabled
+cron execution, RLS, concurrent `SKIP LOCKED`, lease recovery, deletion races,
+retention, and atomic idempotency.
+
 ## P0-14 — [Feature] Data model and retention classes
 
 ### Proposed tables
@@ -502,6 +562,7 @@ provide shape enforcement, idempotency, retention, and deletion cascade.
 | `sessions` | Ownership, match, raw disclosure, progress | Raw sensitive + safe identifiers | Guest TTL; raw disclosure nulled on stated schedule |
 | `story_feedback` | Rating and bounded reason enums; optional free text separately | Enums may be sensitive-derived; free text is raw sensitive | Short documented retention; user-deletable |
 | `product_events` | Closed non-semantic events | Safe operational | Short operational retention |
+| `telemetry_event_daily_rollups` | UTC day, event, one closed marginal dimension, count | Identifier-free aggregate candidate | Maximum 30 UTC calendar days; no caller grant pending dashboard privacy review |
 | `match_rate_limit_decisions` | Occurrence ID plus closed allow/deny result; no request/user/IP key | Safe unlinkable operational | Two days |
 | `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Short operational retention |
 | `content_reports` | Fact ID and bounded issue reason | Curated identifiers | Until resolution plus audit period |

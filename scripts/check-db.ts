@@ -6,9 +6,7 @@ import { _resetFigureCache, listAll } from "../lib/figures";
 import { getSupabase } from "../lib/db";
 import { handleIntake } from "../lib/intake";
 import {
-  createTelemetryEventId,
   createTelemetryFlowId,
-  createTelemetryOutboxLeaseId,
 } from "../lib/telemetry";
 import { _sessionCount } from "../lib/session";
 import type { FigureStageRow } from "../lib/types";
@@ -328,17 +326,6 @@ async function checkTelemetryLifecycleSchema(): Promise<Step> {
       },
     );
     requireRpcValidationError("typed event capture", captureValidation.error);
-    const outboxClaimValidation = await getSupabase().rpc(
-      "claim_product_event_outbox_v1",
-      {
-        p_lease_id: "invalid",
-        p_limit: 1,
-      },
-    );
-    requireRpcValidationError(
-      "outbox claim",
-      outboxClaimValidation.error,
-    );
     const byRoot = await getSupabase().rpc("resolve_owned_telemetry_flow_v1", {
       p_user_id: userId,
       p_root_session_id: rootSessionId,
@@ -354,17 +341,6 @@ async function checkTelemetryLifecycleSchema(): Promise<Step> {
       p_user_id: userId,
     });
     if (claim.error) throw new Error(claim.error.message);
-    const ack = await getSupabase().rpc("ack_product_event_outbox_v1", {
-      p_event_id: createTelemetryEventId(),
-      p_lease_id: createTelemetryOutboxLeaseId(),
-    });
-    if (ack.error) throw new Error(ack.error.message);
-    const nack = await getSupabase().rpc("nack_product_event_outbox_v1", {
-      p_event_id: createTelemetryEventId(),
-      p_lease_id: createTelemetryOutboxLeaseId(),
-      p_error_class: "unknown",
-    });
-    if (nack.error) throw new Error(nack.error.message);
     const v3 = await getSupabase().rpc("create_story_session_v3", {
       p_session_id: rootSessionId,
       p_user_id: userId,
@@ -384,18 +360,84 @@ async function checkTelemetryLifecycleSchema(): Promise<Step> {
       byRoot.data === null &&
       byFlow.data === null &&
       claim.data === "not_found" &&
-      ack.data === "not_found" &&
-      nack.data === "not_found" &&
       v3Data?.status === "flow_not_found";
     return {
       name,
       ok,
       detail: ok
-        ? "all lifecycle/capture/outbox signatures and service-role grants are reachable without writes"
+        ? "all lifecycle/capture signatures and service-role grants are reachable without writes"
         : "a nonexistent lifecycle probe returned an unsafe disposition",
     };
   } catch (error) {
     return { name, ok: false, detail: `${message(error)} - apply migration 0011` };
+  }
+}
+
+async function checkTelemetryRollupDispatcherSchema(): Promise<Step> {
+  const name = "first-party telemetry rollup dispatcher installed";
+  try {
+    const invalidDispatch = await getSupabase().rpc(
+      "dispatch_product_event_rollups_v1",
+      { p_limit: 0 },
+    );
+    requireRpcValidationError(
+      "telemetry rollup dispatcher",
+      invalidDispatch.error,
+    );
+
+    const health = await getSupabase().rpc("telemetry_outbox_health_v1");
+    if (health.error) throw new Error(health.error.message);
+    const row = Array.isArray(health.data) ? health.data[0] : null;
+    const healthShapeOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") ===
+        [
+          "delivered_count",
+          "dispatch_enabled",
+          "actionable_count",
+          "exhausted_count",
+          "leased_count",
+          "oldest_actionable_age_bucket",
+          "pending_count",
+        ]
+          .sort()
+          .join(",");
+    const schemaHealth = await getSupabase().rpc(
+      "telemetry_rollup_schema_health_v1",
+    );
+    if (schemaHealth.error) throw new Error(schemaHealth.error.message);
+    const schemaRow = Array.isArray(schemaHealth.data)
+      ? schemaHealth.data[0]
+      : null;
+    const expectedSchemaKeys = [
+      "boundaries_granted",
+      "cron_jobs_active",
+      "dispatch_enabled",
+      "helpers_private",
+      "ok",
+      "raw_paths_revoked",
+      "tables_forced_rls",
+    ].sort();
+    const schemaOk =
+      schemaRow !== null &&
+      typeof schemaRow === "object" &&
+      !Array.isArray(schemaRow) &&
+      "ok" in schemaRow &&
+      Object.keys(schemaRow).sort().join(",") === expectedSchemaKeys.join(",") &&
+      Object.values(schemaRow).every((value) => typeof value === "boolean") &&
+      schemaRow.ok === true;
+    const ok = healthShapeOk && schemaOk;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "count-only dispatch, closed queue health, private helpers, grants, RLS, and cron definitions are reachable"
+        : "dispatcher schema health or queue-health shape is unsafe",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0017` };
   }
 }
 
@@ -747,6 +789,7 @@ async function main(): Promise<void> {
     await checkAlternateStorySchema(),
     await checkTelemetrySchema(),
     await checkTelemetryLifecycleSchema(),
+    await checkTelemetryRollupDispatcherSchema(),
     await checkMatchTelemetryProducerSchema(),
     await checkStoryProgressTelemetrySchema(),
     await checkStoryFeedbackTelemetrySchema(),

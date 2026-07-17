@@ -29,7 +29,7 @@
 | P0-11 | In progress | The exact 22-event product union and unlinkable attempt stream reject sensitive/unbounded shapes and reduce failures to closed buckets. Purpose-separated HMAC IDs are retry-stable; signed flows have an immutable 30-day lifetime. Migrations `0011`-`0013` implement the owner/root lifecycle, leased outbox, initial intake/match/recovery/artifact producers, and transactional passage/completion capture. Migration `0014` commits bounded feedback with a persisted-verdict event and no miss reason. Migration `0015` captures `alternate_requested` only after a durable claim. Migration `0016` adds alternate match calibration and atomically derives the alternate artifact denominator plus first-write-wins terminal outcomes from authoritative state. Fixed entry endpoints capture CTA and first interaction without a tracking SDK. Three exact reader-visibility endpoints capture match-to-preface and Continue-to-passage latency plus first source opening. The match boundary proves story-flow anonymous authentication with a short-lived HttpOnly flow challenge plus verified fresh AMR before owner-scoped singleton capture. Eligible initial-story preparation owns one bounded `flow_failed:composition` occurrence, while raw errors and expected recovery states remain silent. Migration `0017` adds a pure-Postgres, ID-only dispatcher that locks the source before its pointer, atomically folds it into identifier-free UTC-day marginal counts, and then marks delivery. Dispatch defaults off behind a dedicated database control. A hardened 28-day/`k>=10` daily-read candidate withholds immature, missing-pointer, unsettled, and complementary-count-unsafe cells but has no caller grant; rollups expire within 30 days. Queue health exposes the control state, counts, and a closed oldest-actionable age bucket, while schema health verifies effective grants, private helpers, forced RLS, and exact cron definitions with booleans only. Raw external delivery remains prohibited. Exact retries reconcile or deduplicate by semantic unit; transaction-coupled capture conflicts roll back their domain transitions, while auth and failure observation are documented availability-first exceptions; and null/revoked flows preserve the product without fabricated telemetry. Memory mode mirrors producer transaction and privacy semantics. Crisis resources still return before the match route parses the flow, reads an auth challenge, or writes a crisis event. | Apply, check, explicitly enable, and exercise `0017` on real Postgres, including cron, RLS/grants, concurrent dispatch, lease recovery, deletion races, retention, and exhaustion. Complete dashboard privacy review before granting any read; add flow-linked 24-hour cohort and generation-attempt aggregates, dashboards, alerts/runbooks, named on-call ownership, and live-data proof. Marginal rollups alone cannot satisfy every release metric. |
 | P0-12 | External gate | Deterministic pre-provider gate; versioned 39-case corpus passes 26/26 critical positives; resource actions are region-specific, linked, and dated; crisis persistence/kill-switch behavior is smoke-tested; the route returns resources before flow/auth/age validation, the client reaches that route before anonymous sign-in, and intake exposes an always-available reviewed-resource action without requiring a valid age/disclosure. | Qualified safety review, launch-market approval, browser proof that crisis never invokes anonymous sign-in, and a deliberate policy for context/negation over-triggers remain required before `Complete`. |
 | P0-13 | In progress | Approved recipe ID, keyword default, and fail-closed recipe identity are implemented. Production rejects every non-keyword/unknown retrieval value; story creation carries the matcher's actual path and rejects challengers before persistence; match/artifact telemetry and the v4 SQL boundary require the approved recipe ID, retrieval mode, and match-config version. Eval-only `matchWithDebug` still exercises FacetsRAG. Each immutable artifact pins the complete match recipe plus analyzer, match-recovery, composer, validator, boundary, hybrid-plan, and template-policy versions. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
-| P0-14 | Partial | Guest cleanup and root-only disclosure/context expiry exist. Artifacts, feedback, concerns, recovery, and alternate state are owner-scoped/bounded. Migration `0011` adds a default-deny new-session owner/root flow mapping, exact root/flow lookups, account/root cascades, owner-scoped explicit retirement, and opaque revocation tombstones so linked events/outbox work cannot be recreated after deletion. Alternates resolve through the original root; legacy sessions are deliberately not backfilled. | User-facing story/account deletion and consent controls, durable save semantics, full derived-rationale/artifact retention classes, optional-note consent/encryption decision, privacy page, real cascade/cron tests, and market/youth review. |
+| P0-14 | Partial | Guest cleanup and root-only disclosure/context expiry exist. Artifacts, feedback, recovery, and alternate state are owner-scoped and/or time-bounded. Concern submission is owner-authorized, but the resulting shared editorial record retains only curated identifiers and currently has no TTL. Migration `0011` adds the owner/root flow mapping and revocation substrate. Migration `0018` plus the paginated `/stories` confirmation flow now let an owner hard-delete any saved story without JavaScript or support: root deletion cascades its alternate, alternate deletion preserves the original and consumed tombstone, either scope transactionally retires the shared raw telemetry flow, and unknown/foreign targets remain indistinguishable. A short-lived owner/session-bound CSRF token and retry-stable unlinkable best-effort request/completion events protect and measure the action. Save and intake copy now state the six-hour guest, 60-day disclosure, provider-processing, and until-deletion story periods. | Add account deletion, a complete privacy page and account retention UI, durable save-state semantics, full derived-rationale/artifact retention classes, optional-note consent/encryption decision, real Postgres cascade/deadlock/grant tests, browser accessibility evidence, and market/youth review. |
 | P0-15 | In progress | Strict non-interactive ESLint, isolated production build, deterministic fonts, CI, approved-recipe fail-closed behavior, story kill switch, independent hybrid-composer flag, four-path provider health check, and migrations for immutable StorySpecs/StoryArtifacts, atomic pre-story recovery, current provenance, bounded editorial concerns, immutable completed-story feedback, root-only request context, and leased/atomic alternate finalization exist. All persistence/auth boundaries use one parser that rejects memory in served production even when the build-only override is copied. IP-hash/recovery/alternate secrets share a minimum 32-byte fail-closed parser. The story kill switch blocks new capability issuance/claims without hiding terminal ready results. Migration `0009` is deploy-before-app compatible; destructive removal of the legacy RPC is outside the automatic migration stream until the rollback window closes. | Complete route/integration matrix, real migration preflight/rollback and atomic-RPC tests, broader health/readiness checks, remaining kill switches, and green remote CI evidence. |
 | P0-16 | Partial | Landing/auth typography, reduced motion, several keyboard affordances, native boundary/clarification/source/report/feedback controls, focused no-eligible/no-close and feedback-reason states, visible partial framing, labeled content notes, safe external-link treatment, and announced report/feedback outcomes exist. | Shared primitives, all-flow copy system, and complete keyboard/screen-reader/zoom/manual usability audit. |
 | P0-17 | In progress | Strict optional boundary input, reviewed StorySpec catalog, hard pre-retrieval intensity/topic filtering, age-fallback protection, artifact-level `boundary_violation`, identical canonical-fallback enforcement, honest no-eligible recovery, native accessible controls, and reviewed-only content-note projection are implemented. A rejected completed story can now request one alternate without re-entering disclosure; the exact stored boundaries are applied before every retrieval/fallback path and rechecked by composition, memory persistence, and SQL finalization. | Replace inferred draft profiles with human-reviewed launch profiles; add an active-reader control to change boundaries before requesting recovery; complete keyboard, screen-reader, reflow, and safety/editorial review before `Complete`. |
@@ -43,7 +43,7 @@
 | P1-03 | Partial | P0 hybrid composition now personalizes only approved transition/bridge templates while preserving canonical beats and evidence. | Full-beat free-prose challenger behind the same StorySpec/validation contract and a blind comparison. |
 | P1-04 | Partial | Seed/check scripts, database draft/published status, a privacy-safe historical-concern queue, service-only triage, and rapid StorySpec retirement exist. | Internal research/review/preview/publish/report/rollback workbench and audited editor identity/action history. |
 | P1-05 | Partial | Fifty one-stage figures and content validation exist. | Demand-led coverage data, additional stage support in product workflow, measured coverage improvement. |
-| P1-06 | Partial | Basic private saved-story list exists. | Privacy status, sources, delete, progress, filters, and cross-device usability. |
+| P1-06 | Partial | The paginated private saved-story list now shows reading status when available, keeps every row openable and deletable when optional details time out, and links every story to a progressive owner-scoped delete confirmation. | Richer privacy status, source access, filters, and cross-device usability. |
 | P1-07 | Partial | Provider toggles, recipe metadata, and offline eval exist. | Challenger registry, safe assignment, stopping rules, automatic guardrail shutdown. |
 | P1-08 | Not started | English copy and static broad resources. | Externalized copy/resources, market policy, native editorial review. |
 | P1-09 | Not started | Saved stories can be reopened. | Explicit private reflection mode with consent/deletion and non-clinical guardrails. |
@@ -562,6 +562,70 @@ review must approve any dashboard grant. Dashboards, alerts/runbooks, named
 on-call ownership, flow-linked 24-hour cohort aggregates, and
 generation-attempt aggregates also remain open. The normalized marginal rollup
 must not be used to infer flow-linked conversion or outcome cohorts.
+
+### Stacked branch: `roadmap-privacy-story-deletion`
+
+Migration `0018` adds the only service-role authority for individual story
+deletion and revokes direct service-role `sessions` DELETE. Its security-definer
+RPC discovers lineage without an existence oracle, takes the alternate-flow
+advisory lock, locks every existing owned family session in deterministic order,
+then locks and removes the shared telemetry flow before deleting the requested
+session. Root deletion cascades alternate content; alternate-only deletion keeps
+the root and consumed recovery tombstone. Either scope retires the shared raw
+telemetry family because role-less recovery events cannot be separated safely.
+Previously settled identifier-free daily counts are not decremented. Historical
+concern reports remain attached to their shared editorial StorySpec/fact record,
+without reporter/account/session/artifact/disclosure/prose, and currently have no
+automatic expiry or user-controlled deletion; the user-facing copy says so.
+
+The private saved-story library is now stably paginated beyond 100 rows. Every
+row keeps independent Open and Delete links, a contextual accessible delete
+name, 44-pixel targets, and visible keyboard focus. Optional playback enrichment
+has a 500 ms deadline and can fall back to a disclosure-free label without
+hiding either control. The confirmation itself depends only on the owned session,
+identifies the target with its date/time and initial/alternate role, requires an exact
+same-origin three-field native POST, and uses a ten-minute owner/session-bound
+HMAC token with one minute of clock-skew tolerance. Expired forms return to the
+confirmation surface; tampering remains a generic 403. Post/Redirect/Get status
+is focused for announcement, private story pages are explicitly no-store, and a
+global `frame-ancestors 'none'` plus `X-Frame-Options: DENY` blocks framing.
+
+Deletion telemetry is unlinkable and best effort. A form token derives one
+retry-stable deletion correlation ID, so response-loss and concurrent
+same-form retries converge. The owner-scoped mutation completes before telemetry
+is started; configuration errors, rejected writes, or a hung store cannot retain
+content. Completion waits at most 100 ms, and its closed latency bucket freezes
+at storage confirmation rather than including telemetry delivery time. Save and
+intake copy now states the six-hour guest cleanup, provider processing, 60-day
+raw-disclosure schedule, saved-until-deleted period, and the exact residual
+aggregate/editorial-record boundaries without claiming infrastructure or provider
+logs have already been verified.
+
+A local in-app browser walkthrough created disposable same-figure stories,
+confirmed their date/time plus page-position accessible names are distinct,
+submitted the native confirmation form, observed the 303 result, verified focus
+on the `Story deleted.` status, and reached the gentle stale-link state. Measured
+Open/Delete/Keep/confirm targets were at least 50 px high. Live local responses
+returned `Cache-Control: no-store`, `frame-ancestors 'none'`, and
+`X-Frame-Options: DENY`. This is useful interaction evidence, not a substitute
+for JavaScript-disabled, mobile/reflow, assistive-technology, or deployed-header
+coverage in the supported-browser matrix.
+
+`npm run check-story-deletion` covers owner/foreign behavior, root and alternate
+cascades, artifact/feedback/recovery cleanup, flow revocation, outbox retirement,
+signed-token binding/skew/expiry/tampering, same-origin and exact-body gates,
+signed-out behavior, Post/Redirect/Get replay, concurrent double-submit,
+retry-stable events, hung/rejected telemetry, frozen SLA latency, a never-resolving
+playback lookup, pagination beyond 100 rows, SQL lock/grant shape, accessibility
+markup, cache/framing headers, and misleading-copy canaries. The complete local
+CI command matrix, 19-case smoke suite, zero-warning lint, typecheck, and isolated
+production build pass. This is not real-Postgres or deployed-browser-matrix proof. Before release,
+apply `0018` schema-first in staging; run two-connection root-delete versus
+alternate-progress/feedback deadlock tests plus cascade, revocation, RLS, and
+effective-grant checks; then verify no-JavaScript submission, expiry recovery,
+screen-reader announcements, mobile reflow, touch/keyboard behavior, and
+effective no-store/framing headers in supported browsers. P0-14 remains `Partial` until those gates and
+account deletion plus the complete privacy/retention surface are finished.
 
 ## Completion audit rule
 

@@ -5,6 +5,8 @@ import type {
   AcknowledgeSessionPositionInput,
   AcknowledgeSessionPositionResult,
   CreateSessionInput,
+  DeleteOwnedSessionResult,
+  ListSessionsByUserOptions,
   OpeningCopy,
   Session,
   SessionPatch,
@@ -509,11 +511,36 @@ function deleteMemorySessionCascade(sessionId: string): void {
   sessions.delete(sessionId);
 }
 
-async function listSessionsByUser(userId: string): Promise<Session[]> {
+async function listSessionsByUser(
+  userId: string,
+  options: ListSessionsByUserOptions,
+): Promise<Session[]> {
   pruneExpiredSessions();
   return [...sessions.values()]
     .filter((session) => session.userId === userId)
-    .sort((a, b) => b.createdAt - a.createdAt);
+    .sort(
+      (a, b) =>
+        b.createdAt - a.createdAt || b.sessionId.localeCompare(a.sessionId),
+    )
+    .slice(options.offset, options.offset + options.limit);
+}
+
+async function deleteOwnedSession(
+  sessionId: string,
+  userId: string,
+): Promise<DeleteOwnedSessionResult> {
+  pruneExpiredSessions();
+  const session = sessions.get(sessionId);
+  if (!session || session.userId !== userId) return "not_found";
+
+  // Initial and alternate stories share one flow. Retire it for either scope;
+  // otherwise an alternate-only delete would leave role-less recovery events
+  // live and deterministically recreatable.
+  deleteMemoryTelemetryFlowBindingForRoot(
+    session.alternateOfSessionId ?? session.sessionId,
+  );
+  deleteMemorySessionCascade(sessionId);
+  return "deleted";
 }
 
 async function sessionCount(): Promise<number> {
@@ -527,5 +554,6 @@ export const memorySessionStore: SessionStore = {
   updateSession,
   acknowledgePosition,
   listSessionsByUser,
+  deleteOwnedSession,
   _sessionCount: sessionCount,
 };

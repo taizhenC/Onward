@@ -61,6 +61,25 @@ export function issueDeletionCorrelationId(): DeletionCorrelationId {
   return issueId("tdl") as DeletionCorrelationId;
 }
 
+// Retry-stable deletion correlation without persisting or exposing the story,
+// account, or session. The seed is a short-lived server-signed form token; only
+// its one-way HMAC-derived nonce reaches telemetry storage.
+export function deriveDeletionCorrelationId(
+  seed: string,
+): DeletionCorrelationId {
+  if (typeof seed !== "string" || seed.length < 32 || seed.length > 512) {
+    throw new Error("deletion correlation seed is invalid");
+  }
+  const key = telemetryIdKeys()[0];
+  const nonce = createHmac("sha256", key.secret)
+    .update("onward:story-deletion-correlation:v1")
+    .update("\0")
+    .update(seed)
+    .digest("hex")
+    .slice(0, 32);
+  return signedId("tdl", nonce, key) as DeletionCorrelationId;
+}
+
 export function deriveProductEventId(
   event: Readonly<ProductEvent>,
   flowId: TelemetryFlowId | null,

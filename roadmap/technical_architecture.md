@@ -82,7 +82,7 @@ flowchart LR
 - Raw disclosure, derived copy, persisted story, feedback, and event retention are not modeled as explicit data classes in code.
 - The planned taint wrappers and string-hostile trace schema are documented but not implemented.
 - Safety regression, reviewed market resource configuration, and operational incident controls are missing.
-- Account and story deletion are absent.
+- Owner-scoped individual story deletion now exists through migration `0018`; account deletion and the complete retention/privacy surface remain absent.
 
 ## Target architecture
 
@@ -124,7 +124,7 @@ flowchart TD
 | Move acknowledgement to explicit Continue and make it atomic | P0 | [Bug Fix] | P0-09 | Corrects resume and concurrency semantics. |
 | Implement a closed telemetry schema | P0 | [Feature] | P0-11 | Enables learning without logging intimate text. |
 | Pin production retrieval to an approved manifest | P0 | [Bug Fix] | P0-13 | Prevents configuration drift from selecting a weaker matcher. |
-| Add explicit retention classes and deletion | P0 | [Feature] | P0-14 | Extends privacy from policy text into data lifecycle. |
+| Finish explicit retention classes and account deletion | P0 | [Feature] | P0-14 | Extends the shipped story-delete authority into the complete data lifecycle. |
 | Enforce user-selected content boundaries before matching | P0 | [Feature] | P0-17 | A reader's explicit safety boundary must never be overridden by relevance scoring. |
 | Add facet projections only as a shadow challenger | P1 | [Refactor] | P1-01 | Retrieval sophistication must earn promotion through measured gains. |
 | Persist stable reading preferences only through explicit consent | P1 | [Feature] | P1-14 | Repeat utility does not justify silently retaining a psychological profile. |
@@ -565,7 +565,7 @@ retention, and atomic idempotency.
 | `telemetry_event_daily_rollups` | UTC day, event, one closed marginal dimension, count | Identifier-free aggregate candidate | Maximum 30 UTC calendar days; no caller grant pending dashboard privacy review |
 | `match_rate_limit_decisions` | Occurrence ID plus closed allow/deny result; no request/user/IP key | Safe unlinkable operational | Two days |
 | `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Short operational retention |
-| `content_reports` | Fact ID and bounded issue reason | Curated identifiers | Until resolution plus audit period |
+| `historical_concern_reports` | StorySpec/fact ID and bounded issue reason | Curated identifiers | Current: no automatic TTL; define a bounded resolved-report audit period or explicitly approve indefinite editorial retention before launch |
 | `carry_forward_cards` | User-selected fact/line plus optional user-authored sentence | Raw sensitive user content | Saved until user deletion under explicit consent |
 | `user_story_preferences` | Opt-in length, distance, boundaries, and prior stage IDs | Sensitive preferences | Until consent withdrawal/account deletion |
 

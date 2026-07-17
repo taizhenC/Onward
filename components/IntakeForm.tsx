@@ -438,7 +438,9 @@ export function IntakeForm({
           {feelingLength}/{INTAKE_MAX_FEELING_LENGTH}
         </span>
         <span className="block text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          What you write stays private and is not repeated back in the story.
+          What you write is used to find and shape one story. It may be processed
+          by our model providers and is removed from your saved session after 60
+          days. It is not repeated back in the story.
         </span>
       </label>
 

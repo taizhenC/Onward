@@ -261,6 +261,38 @@ async function checkAlternateStorySchema(): Promise<Step> {
   }
 }
 
+async function checkOwnedStoryDeletionSchema(): Promise<Step> {
+  const name = "owner-scoped story deletion boundary installed";
+  try {
+    const probe = await getSupabase().rpc("delete_owned_story_v1", {
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_session_id: "0".repeat(32),
+    });
+    if (probe.error) throw new Error(probe.error.message);
+
+    const directDelete = await getSupabase()
+      .from("sessions")
+      .delete()
+      .eq("session_id", "0".repeat(32));
+    const directDenied =
+      directDelete.error !== null && directDelete.error.code === "42501";
+    const ok = probe.data === false && directDenied;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "nonexistent owner probe is closed; direct service-role delete is denied"
+        : "RPC accepted a nonexistent target or direct session delete remains available",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0018`,
+    };
+  }
+}
+
 async function checkTelemetrySchema(): Promise<Step> {
   const name = "privacy-safe telemetry schemas installed";
   try {
@@ -787,6 +819,7 @@ async function main(): Promise<void> {
     await checkHistoricalConcernSchema(),
     await checkStoryFeedbackSchema(),
     await checkAlternateStorySchema(),
+    await checkOwnedStoryDeletionSchema(),
     await checkTelemetrySchema(),
     await checkTelemetryLifecycleSchema(),
     await checkTelemetryRollupDispatcherSchema(),

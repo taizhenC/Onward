@@ -7,6 +7,7 @@ import {
 } from "./telemetry-schema";
 import {
   deriveProductEventId,
+  deriveDeletionCorrelationId,
   issueDeletionCorrelationId,
   issueGenerationAttemptId,
   issueTelemetryEventId,
@@ -224,6 +225,12 @@ export function createTelemetryFlowId(): TelemetryFlowId {
 
 export function createDeletionCorrelationId(): DeletionCorrelationId {
   return issueDeletionCorrelationId();
+}
+
+export function createDeletionCorrelationIdForRequest(
+  seed: string,
+): DeletionCorrelationId {
+  return deriveDeletionCorrelationId(seed);
 }
 
 export function createGenerationAttemptId(): GenerationAttemptId {

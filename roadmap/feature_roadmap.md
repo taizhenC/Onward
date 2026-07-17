@@ -387,7 +387,7 @@
 
 ## P0-14 — [Feature] Story deletion, account deletion, consent, and retention controls
 
-**Problem:** The app explains guest expiry and raw-feeling retention, but users cannot delete a story or account, and the retention contract for future personalized artifacts is undefined. “Keep this story” needs an explicit, technically enforced meaning.
+**Problem:** The app now lets owners permanently delete an individual story and explains the guest/disclosure/story periods at save, but account deletion, the full retention surface, and the durable meaning of “Keep this story” remain incomplete.
 
 **Scope**
 

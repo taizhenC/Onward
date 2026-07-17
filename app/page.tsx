@@ -34,7 +34,7 @@ const STEPS = [
   {
     n: 1,
     title: "Say what you're carrying",
-    body: "A failed exam, a lonely move, a door that just closed. A few honest sentences — and no one reading over your shoulder.",
+    body: "A failed exam, a lonely move, a door that just closed. A few honest sentences, kept out of public view.",
   },
   {
     n: 2,

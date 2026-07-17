@@ -100,26 +100,33 @@ export function SaveStoriesCard() {
           </Link>
         </p>
       ) : mode === "sent" ? (
-        <>
+        <div role="status" className="space-y-4">
           <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
             Check your email
           </p>
           <p className="leading-relaxed">
-            One click on the link we sent and this story is yours to keep.
+            One click on the link we sent and this story stays with your account
+            until you delete it.
           </p>
-        </>
+        </div>
       ) : (
         <>
           <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
             Keep this story
           </p>
           <p className="leading-relaxed">
-            Right now you&apos;re anonymous. This story fades about six hours
-            after you stop reading. Add an email and it stays — and a password,
-            if you&apos;d like to skip the email next time.
+            Right now you&apos;re anonymous. This story is automatically deleted
+            about six hours after your last activity. Add an email and the story
+            stays until you delete it from Your stories. What you wrote before
+            the story is removed after 60 days. A password is optional if
+            you&apos;d like to skip the email next time.
           </p>
           {emailExists ? (
-            <p className="font-ui text-sm text-[var(--color-accent)]">
+            <p
+              id="save-story-error"
+              role="alert"
+              className="font-ui text-sm text-[var(--color-accent)]"
+            >
               That email already has an account.{" "}
               <Link href="/signin" className="underline underline-offset-4">
                 Sign in instead
@@ -128,7 +135,11 @@ export function SaveStoriesCard() {
             </p>
           ) : null}
           {error ? (
-            <p className="font-ui text-sm text-[var(--color-accent)]">
+            <p
+              id="save-story-error"
+              role="alert"
+              className="font-ui text-sm text-[var(--color-accent)]"
+            >
               {error}
             </p>
           ) : null}
@@ -142,6 +153,9 @@ export function SaveStoriesCard() {
                 disabled={mode === "sending"}
                 placeholder="you@example.com"
                 autoComplete="email"
+                aria-describedby={
+                  emailExists || error ? "save-story-error" : undefined
+                }
                 className="block w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2 font-ui text-sm"
               />
             </label>
@@ -154,6 +168,7 @@ export function SaveStoriesCard() {
                 disabled={mode === "sending"}
                 placeholder="Password (optional, 6+ characters)"
                 autoComplete="new-password"
+                aria-describedby={error ? "save-story-error" : undefined}
                 className="block w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2 font-ui text-sm"
               />
             </label>

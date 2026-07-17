@@ -236,6 +236,13 @@ export type AcknowledgeSessionPositionResult =
   | "conflict"
   | "not_found";
 
+export type DeleteOwnedSessionResult = "deleted" | "not_found";
+
+export type ListSessionsByUserOptions = Readonly<{
+  offset: number;
+  limit: number;
+}>;
+
 export interface SessionStore {
   createSession(input: CreateSessionInput): Promise<string>;
   getSession(sessionId: string): Promise<Session | null>;
@@ -243,7 +250,14 @@ export interface SessionStore {
   acknowledgePosition(
     input: AcknowledgeSessionPositionInput,
   ): Promise<AcknowledgeSessionPositionResult>;
-  listSessionsByUser(userId: string): Promise<Session[]>;
+  listSessionsByUser(
+    userId: string,
+    options: ListSessionsByUserOptions,
+  ): Promise<Session[]>;
+  deleteOwnedSession(
+    sessionId: string,
+    userId: string,
+  ): Promise<DeleteOwnedSessionResult>;
   _sessionCount(): Promise<number>;
 }
 

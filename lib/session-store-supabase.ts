@@ -4,6 +4,8 @@ import type {
   AcknowledgeSessionPositionInput,
   AcknowledgeSessionPositionResult,
   CreateSessionInput,
+  DeleteOwnedSessionResult,
+  ListSessionsByUserOptions,
   MatchRecipe,
   OpeningCopy,
   Session,
@@ -246,15 +248,41 @@ async function acknowledgeLegacyPosition(
   return "conflict";
 }
 
-async function listSessionsByUser(userId: string): Promise<Session[]> {
+async function listSessionsByUser(
+  userId: string,
+  options: ListSessionsByUserOptions,
+): Promise<Session[]> {
   const { data, error } = await getSupabase()
     .from(TABLE)
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
-    .limit(100);
+    .order("session_id", { ascending: false })
+    .range(options.offset, options.offset + options.limit - 1);
   if (error) throw new Error(`listSessionsByUser failed: ${error.message}`);
   return ((data ?? []) as SessionRow[]).map(rowToSession);
+}
+
+async function deleteOwnedSession(
+  sessionId: string,
+  userId: string,
+): Promise<DeleteOwnedSessionResult> {
+  const { data, error } = await getSupabase().rpc("delete_owned_story_v1", {
+    p_user_id: userId,
+    p_session_id: sessionId,
+  });
+  if (error) {
+    // The RPC may have committed even when its response was lost. Reconcile
+    // through the owner-blind internal read: absence means the requested
+    // privacy state already holds; a still-owned row means retry is required.
+    const current = await getSession(sessionId);
+    if (!current) return "deleted";
+    if (current.userId !== userId) return "not_found";
+    throw new Error("deleteOwnedSession failed");
+  }
+  if (data === true) return "deleted";
+  if (data === false) return "not_found";
+  throw new Error("deleteOwnedSession returned an invalid disposition");
 }
 
 async function sessionCount(): Promise<number> {
@@ -329,5 +357,6 @@ export const supabaseSessionStore: SessionStore = {
   updateSession,
   acknowledgePosition,
   listSessionsByUser,
+  deleteOwnedSession,
   _sessionCount: sessionCount,
 };

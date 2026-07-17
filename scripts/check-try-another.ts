@@ -110,7 +110,7 @@ async function main(): Promise<void> {
   console.log("PASS empty/low coverage stops honestly; operational failures retry twice");
   console.log("PASS live second leases hydrate before exhaustion; claim TTL is start-by");
   console.log("PASS no public rate unit, alternate chain, or sensitive flow payload");
-  console.log("PASS alternate deletion preserves root telemetry; root expiry cascades all flow state");
+  console.log("PASS internal alternate cleanup preserves root telemetry; owner deletion is separately gated");
 }
 
 async function checkIntakeValidationParity(failures: string[]): Promise<void> {

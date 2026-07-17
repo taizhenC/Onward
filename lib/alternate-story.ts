@@ -16,9 +16,12 @@ import {
   isAlternateStoryTokenValid,
   issueAlternateStoryCapability,
   releaseAlternateStoryFlow,
+  type AlternateStoryClaim,
   type ClaimedAlternateStoryFlow,
 } from "./alternate-story-flow";
 import type { AlternateStoryRequest } from "./alternate-story-request";
+import type { Session } from "./types";
+import type { StoryArtifact } from "./story-artifact-types";
 import type { IntakeMatchResult } from "./matching";
 import type { PreparedStory } from "./story-generation";
 import {
@@ -59,7 +62,9 @@ export async function createAlternateStory(
   if (session.nextBeatIndex < sourceArtifact.beats.length) {
     return { status: "invalid_state" };
   }
-  if (session.disclosureExpiresAt <= Date.now()) return { status: "expired" };
+  if (session.disclosureExpiresAt <= Date.now()) {
+    return finishExpiredPreClaim(userId, session, sourceArtifact, request.token);
+  }
   if (
     session.alternateOfSessionId !== null ||
     session.age === null ||
@@ -236,6 +241,37 @@ export async function createAlternateStory(
     await releaseQuietly(userId, claim);
     return { status: "temporarily_unavailable" };
   }
+}
+
+// An abandoned claim can outlive the disclosure deadline, and the pre-claim
+// expiry guard would then answer before any ClaimedAlternateStoryFlow exists,
+// leaving the earlier alternate_requested event without a terminal
+// alternate_resolved=expired. Route the request through the claim path — its
+// terminal completion captures expired for flows with prior attempts — before
+// returning the expired response. An expired flow can never be leased, so the
+// claim call is capture-only; "claimed" is only reachable under clock skew and
+// is finished through the same expiry completion as a held claim.
+async function finishExpiredPreClaim(
+  userId: string,
+  session: Session,
+  artifact: StoryArtifact,
+  token: string,
+): Promise<CreateAlternateStoryResult> {
+  let claimResult: AlternateStoryClaim;
+  try {
+    claimResult = await claimAlternateStoryFlow({
+      userId,
+      session,
+      artifact,
+      token,
+    });
+  } catch {
+    return { status: "temporarily_unavailable" };
+  }
+  if (claimResult.status === "claimed") {
+    return finishExpired(userId, claimResult);
+  }
+  return { status: "expired" };
 }
 
 async function finishExpired(

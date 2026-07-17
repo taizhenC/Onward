@@ -86,6 +86,7 @@ async function main(): Promise<void> {
   await checkFailedAndExhaustedFirstWrite();
   await checkAbandonedLeaseExhaustion();
   await checkPostClaimExpiry();
+  await checkPreClaimExpiry();
   await checkNullRevokedAndDisabledFlows();
   await checkAlternateMatchIntegration();
   checkPrivacyShape();
@@ -98,6 +99,7 @@ async function main(): Promise<void> {
   console.log("PASS final operational failure is first-write-wins over later exhaustion");
   console.log("PASS abandoned final lease resolves as exhausted on the next claim");
   console.log("PASS post-claim retention expiry commits the expired terminal outcome");
+  console.log("PASS pre-claim disclosure expiry resolves the abandoned claim as expired");
   console.log("PASS null, revoked, and incident-disabled flows fabricate no terminal row");
   console.log("PASS alternate eligible/no-eligible match calibration is root-linked");
   console.log("PASS migration 0016 derives all terminal/artifact dimensions privately");
@@ -261,6 +263,30 @@ async function checkPostClaimExpiry(): Promise<void> {
       storedFlow(fixture).status === "available" &&
       storedFlow(fixture).leaseId === null,
     "expired resolution did not clear the lease or preserve its outcome",
+  );
+}
+
+async function checkPreClaimExpiry(): Promise<void> {
+  const fixture = await makeFixture();
+  await requireClaim(fixture);
+  const abandoned = storedFlowMutable(fixture);
+  abandoned.leaseExpiresAt = Date.now() - 1;
+  abandoned.expiresAt = Date.now() - 1;
+  abandoned.contextExpiresAt = Date.now() - 1;
+  const stored = globalThis.__onwardSessions?.get(fixture.session.sessionId);
+  assert(stored, "pre-claim expiry fixture session is unavailable");
+  stored.disclosureExpiresAt = Date.now() - 1;
+  const result = await createAlternateStory(
+    { sessionId: fixture.session.sessionId, token: fixture.token },
+    fixture.session.userId,
+  );
+  assert(
+    result.status === "expired",
+    "abandoned claim past the disclosure deadline did not answer expired",
+  );
+  assert(
+    singleResolutionEvent(requireFlow(fixture)).outcome === "expired",
+    "pre-claim disclosure expiry did not resolve the abandoned claim",
   );
 }
 

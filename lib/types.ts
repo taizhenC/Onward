@@ -106,12 +106,20 @@ export type RerankFailureReason =
 
 export type StoryAdvance = "chunk" | "beat" | "end";
 
+export type CrisisResource = {
+  id: string;
+  region: string;
+  label: string;
+  action: string;
+  href: string;
+};
+
 // LLM-generated opening copy, stored on the session at intake and shown to the user.
 //   - eyebrow: the line above the (still anonymous) figure; replaced the framing label.
 //   - prefaceLines: the comfort card shown before any figure name or prose on first visit.
-// Both are derived from the user's feeling → sensitive: fine to show the user, never logged.
-// Phase 1A: eyebrow is real-generated in real mode; prefaceLines is hand-authored in both
-// modes (real per-feeling personalization deferred — see lib/opening-copy.ts).
+// Both are derived from the ephemeral ResonanceBrief → sensitive: fine to show the user,
+// never logged. The prose provider does not receive the raw disclosure. Preface lines remain
+// hand-authored in both modes (per-brief preface generation is deferred).
 export type OpeningCopy = {
   eyebrow: string;
   prefaceLines: readonly string[];
@@ -123,6 +131,7 @@ export type OpeningCopy = {
 // skeleton so replay reconstructs which embedder/retrieval path produced the match. Stored as
 // jsonb, so new fields need no migration; tagger/projection fields slot in the same way later.
 export type MatchRecipe = {
+  recipeId: string;
   matchConfigVersion: string;
   crisisRegexVersion: string;
   llmProvider: string;
@@ -130,6 +139,11 @@ export type MatchRecipe = {
   proseModelId: string;
   embeddingModelId: string;
   retrievalMode: RetrievalMode;
+  // Optional only for replaying sessions created before the short-lived
+  // ResonanceBrief boundary existed. Every new intake pins this version.
+  resonanceBriefVersion?: string;
+  matchRecoveryPolicyVersion?: string;
+  alternateStoryPolicyVersion?: string;
 };
 
 export type Session = {
@@ -140,16 +154,24 @@ export type Session = {
   userId: string;
   figureKey: string;
   stageId: string;
+  // New sessions point to one immutable, owner-scoped artifact. Null exists
+  // only for rows created before migration 0005 and follows the legacy path.
+  storyArtifactId: string | null;
   framing: Framing;
   openingCopy: OpeningCopy;
-  age: number;
-  feeling: string;
+  age: number | null;
+  feeling: string | null;
+  // SQL/null context identifies legacy, expired, and alternate rows. It must
+  // never be interpreted as an affirmative selection of "no boundaries".
+  storyRequestContext: import("./story-request-context").StoryRequestContext | null;
+  disclosureExpiresAt: number;
+  alternateOfSessionId: string | null;
   matchRecipe: MatchRecipe;
   nextBeatIndex: number;
   nextChunkIndex: number;
   createdAt: number;
   // Last progress write (ms). The activity signal for the anonymous-guest retention job
-  // (migration 0003); bumped on every updateSession.
+  // (migration 0003); bumped on every acknowledged position advance.
   updatedAt: number;
 };
 
@@ -159,34 +181,51 @@ export type Session = {
 // signature; the in-memory impl is trivially async.
 export type CreateSessionInput = {
   userId: string;
+  telemetryFlowId: import("./telemetry-types").TelemetryFlowId | null;
+  telemetryFlowOwnerClaimed?: boolean;
   figureKey: string;
   stageId: string;
   framing: Framing;
-  openingCopy: OpeningCopy;
   age: number;
   feeling: string;
+  storyRequestContext: import("./story-request-context").StoryRequestContext;
   matchRecipe: MatchRecipe;
+  artifact: import("./story-artifact-types").StoryArtifact;
 };
 
-// The only mutable session fields (story progress). Optional so a patch can move either one.
-// (A standalone type rather than Pick<Session,...> because `Pick` is shadowed in this file by
-// the reranker's local Pick type above.)
-export type SessionPatch = {
-  nextBeatIndex?: number;
-  nextChunkIndex?: number;
+export type AcknowledgeSessionPositionInput = {
+  sessionId: string;
+  userId: string;
+  expectedBeatIndex: number;
+  expectedChunkIndex: number;
+  nextBeatIndex: number;
+  nextChunkIndex: number;
 };
+
+export type AcknowledgeSessionPositionResult =
+  | "advanced"
+  | "already_advanced"
+  | "conflict"
+  | "not_found";
 
 export interface SessionStore {
   createSession(input: CreateSessionInput): Promise<string>;
   getSession(sessionId: string): Promise<Session | null>;
-  updateSession(sessionId: string, patch: SessionPatch): Promise<Session | null>;
+  acknowledgePosition(
+    input: AcknowledgeSessionPositionInput,
+  ): Promise<AcknowledgeSessionPositionResult>;
   listSessionsByUser(userId: string): Promise<Session[]>;
   _sessionCount(): Promise<number>;
 }
 
 export type MatchResponse =
-  | { crisis: true; resources: string[] }
+  | { crisis: true; resources: CrisisResource[] }
+  | { temporarilyUnavailable: true }
+  | { noEligibleStory: true }
+  | { clarificationNeeded: true; policyVersion: string; recoveryToken: string }
+  | { noCloseMatch: true; policyVersion: string; recoveryToken: string }
   | { rateLimited: true }
+  | { flowConflict: true }
   | { error: string }
   | { sessionId: string };
 

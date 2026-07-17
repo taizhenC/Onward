@@ -5,22 +5,62 @@ import { classifyCrisis } from "../lib/safety";
 import { toClientOutline } from "../lib/figures";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { toRerankCandidate } from "../lib/llm";
-import { _sessionCount, getOwnedSession, getSession } from "../lib/session";
+import {
+  _sessionCount,
+  acknowledgeOwnedSessionPosition,
+  createSession,
+  getOwnedSession,
+  getSession,
+} from "../lib/session";
+import { _storyArtifactCount, getOwnedStoryArtifact } from "../lib/story-artifacts";
+import {
+  composeCanonicalStoryArtifact,
+  validateStoredStoryArtifact,
+} from "../lib/story-artifact";
+import { getStoryPlayback } from "../lib/story-playback";
+import { buildDraftStorySpec } from "../lib/story-spec";
+import { createResonanceBrief } from "../lib/resonance-brief";
 import { MATCH_LIMITS } from "../lib/rate-limit";
+import { match, resolveRetrievalMode } from "../lib/matching";
+import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import { CHUNK_CHAR_LIMIT, chunkBeatText } from "../lib/chunks";
 import { NEUTRAL_EYEBROW, sanitizeEyebrow } from "../lib/opening-copy";
-import type { BeatBlueprint } from "../lib/types";
+import { streamBeat } from "../lib/llm";
+import {
+  containsDisclosureEcho,
+  SAFE_BRIDGE_DISTANCE_LINE,
+} from "../lib/story-privacy";
+import type { BeatBlueprint, Session } from "../lib/types";
+import { createTelemetryFlowId } from "../lib/telemetry";
 
 // Smoke always runs in stub mode (provider matrix). getLLM() resolves lazily on the
 // first match call, so setting this before main() runs is sufficient.
 process.env.LLM_PROVIDER = "stub";
 // Sessions + figures from the in-process store/const (no DB) — keeps smoke hermetic.
 process.env.PERSISTENCE = "memory";
+process.env.HYBRID_STORY_COMPOSER_ENABLED = "true";
 
 // Fixed request identity for every intake in this run. The whole run shares one
 // user, so the rate-limit assertion (which exhausts the 5/hour budget) MUST stay
 // last among the intake-driven assertions.
-const SMOKE_CTX: IntakeContext = { userId: "smoke-user", ipHash: "smoke-ip" };
+const SMOKE_USER_ID = "smoke-user";
+function createSmokeContext(): IntakeContext {
+  return {
+    userId: SMOKE_USER_ID,
+    ipHash: "smoke-ip",
+    telemetryFlowId: createTelemetryFlowId(),
+  };
+}
+const PROGRESS_CTX: IntakeContext = {
+  userId: "smoke-progress-user",
+  ipHash: "smoke-progress-ip",
+  telemetryFlowId: createTelemetryFlowId(),
+};
+const ARTIFACT_CTX: IntakeContext = {
+  userId: "smoke-artifact-user",
+  ipHash: "smoke-artifact-ip",
+  telemetryFlowId: createTelemetryFlowId(),
+};
 
 type AssertionResult = { name: string; ok: boolean; detail: string };
 
@@ -66,7 +106,7 @@ async function runMatchAssertion(
   expectedFigureKey: string,
 ): Promise<AssertionResult> {
   const before = await _sessionCount();
-  const result = await handleIntake(input, SMOKE_CTX);
+  const result = await handleIntake(input, createSmokeContext());
 
   if ("error" in result) {
     return { name: label, ok: false, detail: `validation error: ${result.error}` };
@@ -160,7 +200,7 @@ async function runCrisisAssertion(): Promise<AssertionResult> {
       age: 22,
       feeling: "I want to kill myself",
     },
-    SMOKE_CTX,
+    createSmokeContext(),
   );
   const after = await _sessionCount();
 
@@ -207,22 +247,277 @@ async function runCrisisAssertion(): Promise<AssertionResult> {
   };
 }
 
+async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
+  const name = "artifact: immutable, private, atomic replay payload";
+  const beforeSessions = await _sessionCount();
+  const beforeArtifacts = await _storyArtifactCount();
+  const disclosure =
+    "My private cobalt compass stopped pointing anywhere after a rejection I cannot explain.";
+  const result = await handleIntake({ age: 28, feeling: disclosure }, ARTIFACT_CTX);
+  if (!("sessionId" in result)) return { name, ok: false, detail: "intake created no session" };
+
+  const session = await getSession(result.sessionId);
+  if (!session?.storyArtifactId) {
+    return { name, ok: false, detail: "new session has no artifact pointer" };
+  }
+  const artifact = await getOwnedStoryArtifact(
+    session.storyArtifactId,
+    ARTIFACT_CTX.userId,
+    session.sessionId,
+  );
+  const foreign = await getOwnedStoryArtifact(
+    session.storyArtifactId,
+    "foreign-user",
+    session.sessionId,
+  );
+  const wrongSession = await getOwnedStoryArtifact(
+    session.storyArtifactId,
+    ARTIFACT_CTX.userId,
+    "wrong-session",
+  );
+  if (!artifact || foreign || wrongSession) {
+    return { name, ok: false, detail: "artifact ownership boundary failed" };
+  }
+  if (
+    (await _sessionCount()) !== beforeSessions + 1 ||
+    (await _storyArtifactCount()) !== beforeArtifacts + 1
+  ) {
+    return { name, ok: false, detail: "session/artifact counts did not advance together" };
+  }
+  if (
+    JSON.stringify(artifact).includes(disclosure) ||
+    artifact.composition.mode !== "hybrid" ||
+    artifact.composition.attemptCount !== 1 ||
+    artifact.beats.filter((beat) => beat.personalization).length !== 2 ||
+    !Object.isFrozen(artifact) ||
+    !Object.isFrozen(artifact.beats) ||
+    !Object.isFrozen(artifact.beats[0]) ||
+    !Object.isFrozen(artifact.beats[0].chunks) ||
+    !Object.isFrozen(artifact.openingCopy) ||
+    !Object.isFrozen(artifact.recipe)
+  ) {
+    return { name, ok: false, detail: "artifact retained disclosure or was mutable" };
+  }
+
+  const tampered = structuredClone(artifact);
+  tampered.beats[0].text += " Tampered.";
+  if (validateStoredStoryArtifact(tampered)) {
+    return { name, ok: false, detail: "tampered artifact passed replay validation" };
+  }
+
+  const memoryArtifacts = globalThis.__onwardStoryArtifacts;
+  const originalOwnedArtifact = memoryArtifacts?.get(artifact.artifactId);
+  if (!memoryArtifacts || !originalOwnedArtifact) {
+    return { name, ok: false, detail: "memory artifact store unavailable" };
+  }
+  const corruptedStored = structuredClone(artifact);
+  corruptedStored.contentProfile.contentNote += " corrupted";
+  let storageBoundaryRejected = false;
+  memoryArtifacts.set(artifact.artifactId, {
+    ...originalOwnedArtifact,
+    artifact: corruptedStored,
+  });
+  try {
+    await getOwnedStoryArtifact(
+      artifact.artifactId,
+      ARTIFACT_CTX.userId,
+      session.sessionId,
+    );
+  } catch {
+    storageBoundaryRejected = true;
+  } finally {
+    memoryArtifacts.set(artifact.artifactId, originalOwnedArtifact);
+  }
+  if (!storageBoundaryRejected) {
+    return { name, ok: false, detail: "storage boundary served a corrupt artifact" };
+  }
+
+  const stage = FIGURE_STAGES.find(
+    (candidate) =>
+      candidate.figureKey === session.figureKey && candidate.stageId === session.stageId,
+  );
+  if (!stage) return { name, ok: false, detail: "matched stage missing from fixture" };
+  const originalStageText = stage.beats[0].text;
+  const immutableText = artifact.beats[0].text;
+  let playback;
+  try {
+    stage.beats[0].text = "MUTABLE STAGE SENTINEL";
+    playback = await getStoryPlayback(session);
+  } finally {
+    stage.beats[0].text = originalStageText;
+  }
+  if (
+    playback?.source !== "artifact" ||
+    normalizeChunkText(playback.beats[0].chunks.join(" ")) !==
+      normalizeChunkText(immutableText)
+  ) {
+    return { name, ok: false, detail: "playback changed with mutable stage prose" };
+  }
+
+  const beforeDuplicate = await _sessionCount();
+  let duplicateRejected = false;
+  try {
+    await createSession({
+      userId: session.userId,
+      telemetryFlowId: createTelemetryFlowId(),
+      figureKey: session.figureKey,
+      stageId: session.stageId,
+      framing: session.framing,
+      age: session.age ?? 13,
+      feeling: session.feeling ?? "",
+      storyRequestContext:
+        session.storyRequestContext ?? {
+          schemaVersion: "story-request-context-v2-2026-07",
+          boundaries: null,
+          clarification: null,
+          acceptedAdjacent: false,
+        },
+      matchRecipe: session.matchRecipe,
+      artifact,
+    });
+  } catch {
+    duplicateRejected = true;
+  }
+  if (!duplicateRejected || (await _sessionCount()) !== beforeDuplicate) {
+    return { name, ok: false, detail: "failed artifact insert left a session behind" };
+  }
+
+  const freshArtifact = composeCanonicalStoryArtifact({
+    storySpec: buildDraftStorySpec(stage),
+    stage,
+    matchRecipe: session.matchRecipe,
+    openingCopy: artifact.openingCopy,
+    framing: session.framing,
+    resonanceBrief: createResonanceBrief(disclosure),
+    allowDraftSpec: true,
+  });
+  const memorySessions = globalThis.__onwardSessions;
+  if (!memorySessions) return { name, ok: false, detail: "memory session map unavailable" };
+  const originalSet = memorySessions.set;
+  const beforeInjectedSessions = await _sessionCount();
+  const beforeInjectedArtifacts = await _storyArtifactCount();
+  let injectedFailureObserved = false;
+  memorySessions.set = (() => {
+    throw new Error("injected session persistence failure");
+  }) as typeof memorySessions.set;
+  try {
+    await createSession({
+      userId: session.userId,
+      telemetryFlowId: createTelemetryFlowId(),
+      figureKey: session.figureKey,
+      stageId: session.stageId,
+      framing: session.framing,
+      age: session.age ?? 13,
+      feeling: session.feeling ?? "",
+      storyRequestContext:
+        session.storyRequestContext ?? {
+          schemaVersion: "story-request-context-v2-2026-07",
+          boundaries: null,
+          clarification: null,
+          acceptedAdjacent: false,
+        },
+      matchRecipe: session.matchRecipe,
+      artifact: freshArtifact,
+    });
+  } catch {
+    injectedFailureObserved = true;
+  } finally {
+    memorySessions.set = originalSet;
+  }
+  if (
+    !injectedFailureObserved ||
+    (await _sessionCount()) !== beforeInjectedSessions ||
+    (await _storyArtifactCount()) !== beforeInjectedArtifacts
+  ) {
+    return { name, ok: false, detail: "session failure did not roll back artifact insert" };
+  }
+
+  return {
+    name,
+    ok: true,
+    detail: `artifact=${artifact.artifactId.slice(0, 8)}…; tamper/foreign/mutation rejected`,
+  };
+}
+
+async function runLegacyPlaybackAssertion(): Promise<AssertionResult> {
+  const name = "playback: pre-artifact session compatibility is explicit";
+  const sessions = globalThis.__onwardSessions;
+  const stage = FIGURE_STAGES[0];
+  if (!sessions || !stage) return { name, ok: false, detail: "legacy fixture unavailable" };
+  const sessionId = `legacy-${Date.now()}`;
+  const now = Date.now();
+  const rawLegacy = {
+    sessionId,
+    userId: "legacy-user",
+    figureKey: stage.figureKey,
+    stageId: stage.stageId,
+    framing: "partial",
+    openingCopy: {
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: ["This story is true."],
+    },
+    age: stage.ageMin,
+    feeling: "legacy private text",
+    matchRecipe: {
+      recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+      matchConfigVersion: "legacy",
+      crisisRegexVersion: "legacy",
+      llmProvider: "stub",
+      rerankModelId: "stub",
+      proseModelId: "stub",
+      embeddingModelId: "stub",
+      retrievalMode: "keyword",
+    },
+    nextBeatIndex: 0,
+    nextChunkIndex: 0,
+    createdAt: now,
+    updatedAt: now,
+  } as unknown as Session;
+  const originalBridge = stage.beats[6].text;
+  sessions.set(sessionId, rawLegacy);
+  try {
+    stage.beats[6].text = 'You wrote: "{feeling}"';
+    const normalized = await getSession(sessionId);
+    const foreign = await getOwnedSession(sessionId, "foreign-user");
+    if (!normalized || normalized.storyArtifactId !== null || foreign) {
+      return { name, ok: false, detail: "legacy ownership/normalization failed" };
+    }
+    const playback = await getStoryPlayback(normalized);
+    const bridge = playback?.beats[6].chunks.join(" ") ?? "";
+    const ok =
+      playback?.source === "legacy_stage" &&
+      bridge.includes(SAFE_BRIDGE_DISTANCE_LINE) &&
+      !bridge.includes("{feeling}");
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "missing pointer normalized to null; legacy prose sanitized"
+        : "legacy playback did not sanitize or identify its source",
+    };
+  } finally {
+    stage.beats[6].text = originalBridge;
+    sessions.delete(sessionId);
+  }
+}
+
 // Ownership chokepoint: a foreign or absent user must read null (the routes' 404),
 // indistinguishable from a missing session.
 async function runOwnershipAssertion(): Promise<AssertionResult> {
   const name = "ownership: foreign/absent user cannot read a session";
+  const ctx = createSmokeContext();
   const result = await handleIntake(
     {
       age: 28,
       feeling: "I keep getting rejected and I don't know if I should keep trying",
     },
-    SMOKE_CTX,
+    ctx,
   );
   if (!("sessionId" in result)) {
     return { name, ok: false, detail: "intake did not create a session" };
   }
 
-  const owned = await getOwnedSession(result.sessionId, SMOKE_CTX.userId);
+  const owned = await getOwnedSession(result.sessionId, ctx.userId);
   if (!owned) {
     return { name, ok: false, detail: "owner could not read their own session" };
   }
@@ -238,6 +533,170 @@ async function runOwnershipAssertion(): Promise<AssertionResult> {
   return { name, ok: true, detail: "owner reads; foreign and absent users get null" };
 }
 
+async function runAtomicProgressAssertion(): Promise<AssertionResult> {
+  const name = "progress: explicit acknowledgement is atomic and owner-scoped";
+  const result = await handleIntake(
+    {
+      age: 28,
+      feeling: "I keep getting rejected and I don't know if I should keep trying",
+    },
+    PROGRESS_CTX,
+  );
+  if (!("sessionId" in result)) {
+    return { name, ok: false, detail: "intake did not create a progress session" };
+  }
+
+  const input = {
+    sessionId: result.sessionId,
+    userId: PROGRESS_CTX.userId,
+    expectedBeatIndex: 0,
+    expectedChunkIndex: 0,
+    nextBeatIndex: 0,
+    nextChunkIndex: 1,
+  } as const;
+  const first = await acknowledgeOwnedSessionPosition(input);
+  const repeated = await acknowledgeOwnedSessionPosition(input);
+  const stale = await acknowledgeOwnedSessionPosition({
+    ...input,
+    nextBeatIndex: 1,
+    nextChunkIndex: 0,
+  });
+  const foreign = await acknowledgeOwnedSessionPosition({
+    ...input,
+    userId: "someone-else",
+  });
+  const session = await getOwnedSession(result.sessionId, PROGRESS_CTX.userId);
+
+  if (
+    first !== "advanced" ||
+    repeated !== "already_advanced" ||
+    stale !== "conflict" ||
+    foreign !== "not_found" ||
+    session?.nextBeatIndex !== 0 ||
+    session.nextChunkIndex !== 1
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: `first=${first}, repeat=${repeated}, stale=${stale}, foreign=${foreign}, position=${session?.nextBeatIndex}/${session?.nextChunkIndex}`,
+    };
+  }
+
+  return {
+    name,
+    ok: true,
+    detail: "advanced once; retry idempotent; stale/foreign writes rejected",
+  };
+}
+
+async function runStoryCreationKillSwitchAssertion(): Promise<AssertionResult> {
+  const name = "safety: story kill switch preserves crisis support and persists nothing";
+  const previous = process.env.STORY_CREATION_ENABLED;
+  const ctx: IntakeContext = {
+    userId: "smoke-disabled-user",
+    ipHash: "smoke-disabled-ip",
+    telemetryFlowId: createTelemetryFlowId(),
+  };
+  const before = await _sessionCount();
+  try {
+    process.env.STORY_CREATION_ENABLED = "false";
+    const blocked = await handleIntake(
+      { age: 28, feeling: "I feel rejected and uncertain about what comes next" },
+      ctx,
+    );
+    const crisis = await handleIntake(
+      { age: 22, feeling: "I want to kill myself" },
+      ctx,
+    );
+    const after = await _sessionCount();
+    const ok =
+      "temporarilyUnavailable" in blocked &&
+      "crisis" in crisis &&
+      after === before;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "new story blocked; crisis resources still returned; no session created"
+        : `blocked=${JSON.stringify(blocked)}, crisis=${"crisis" in crisis}, sessions=${before}/${after}`,
+    };
+  } finally {
+    if (previous === undefined) delete process.env.STORY_CREATION_ENABLED;
+    else process.env.STORY_CREATION_ENABLED = previous;
+  }
+}
+
+function runApprovedRecipeAssertion(): AssertionResult {
+  const name = "recipe: production retrieval is explicit and approved";
+  const defaultMode = resolveRetrievalMode(undefined, "development");
+  const developmentChallenger = resolveRetrievalMode(
+    "facetsrag",
+    "development",
+  );
+  const productionMode = resolveRetrievalMode("keyword", "production");
+  let autoRejected = false;
+  let facetsRagRejected = false;
+  let unknownRejected = false;
+  try {
+    resolveRetrievalMode("auto", "production");
+  } catch {
+    autoRejected = true;
+  }
+  try {
+    resolveRetrievalMode("facetsrag", "production");
+  } catch {
+    facetsRagRejected = true;
+  }
+  try {
+    resolveRetrievalMode("unexpected-mode", "production");
+  } catch {
+    unknownRejected = true;
+  }
+
+  const ok =
+    defaultMode === APPROVED_PRODUCTION_RECIPE.retrievalMode &&
+    developmentChallenger === "facetsrag" &&
+    productionMode === "keyword" &&
+    autoRejected &&
+    facetsRagRejected &&
+    unknownRejected;
+  return {
+    name,
+    ok,
+    detail: ok
+      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production challengers rejected`
+      : `default=${defaultMode}, developmentChallenger=${developmentChallenger}, production=${productionMode}, autoRejected=${autoRejected}, facetsRagRejected=${facetsRagRejected}, unknownRejected=${unknownRejected}`,
+  };
+}
+
+async function runPublishedEligibilityAssertion(): Promise<AssertionResult> {
+  const name = "matching: publication eligibility survives age fallback";
+  const butlerKey = "butler\u00001974-1975-pre-patternmaster";
+  const selected = await match({
+    age: 99,
+    feeling: "I escaped and do not know where I belong now",
+    eligibleStageKeys: new Set([butlerKey]),
+  });
+  let emptyRejected = false;
+  try {
+    await match({
+      age: 28,
+      feeling: "I keep getting rejected and do not know whether to continue",
+      eligibleStageKeys: new Set(),
+    });
+  } catch {
+    emptyRejected = true;
+  }
+  const ok = selected.figureKey === "butler" && emptyRejected;
+  return {
+    name,
+    ok,
+    detail: ok
+      ? "only eligible stage selected through fallback; empty catalog failed closed"
+      : `selected=${selected.figureKey}, emptyRejected=${emptyRejected}`,
+  };
+}
+
 // MUST run last among intake assertions: it spends the rest of smoke-user's hourly
 // budget. Earlier assertions consumed 4 (3 matches + 1 ownership); the 5th here
 // still passes, the 6th must come back rate-limited — without a session and without
@@ -249,7 +708,7 @@ async function runRateLimitAssertion(): Promise<AssertionResult> {
     feeling: "I keep getting rejected and I don't know if I should keep trying",
   };
 
-  const fifth = await handleIntake(input, SMOKE_CTX);
+  const fifth = await handleIntake(input, createSmokeContext());
   if (!("sessionId" in fifth)) {
     return {
       name,
@@ -259,7 +718,7 @@ async function runRateLimitAssertion(): Promise<AssertionResult> {
   }
 
   const before = await _sessionCount();
-  const sixth = await handleIntake(input, SMOKE_CTX);
+  const sixth = await handleIntake(input, createSmokeContext());
   const after = await _sessionCount();
   if (!("rateLimited" in sixth)) {
     return { name, ok: false, detail: "over-budget intake was not rate-limited" };
@@ -274,7 +733,7 @@ async function runRateLimitAssertion(): Promise<AssertionResult> {
 
   const crisis = await handleIntake(
     { age: 22, feeling: "I want to kill myself" },
-    SMOKE_CTX,
+    createSmokeContext(),
   );
   if (!("crisis" in crisis)) {
     return {
@@ -544,6 +1003,67 @@ function runChunkIntegrityAssertion(): AssertionResult {
   };
 }
 
+async function runStoryPrivacyAssertion(): Promise<AssertionResult> {
+  const name = "story privacy: canonical and legacy paths never echo disclosure";
+  const disclosure =
+    "I moved across the country and now I feel completely alone every night";
+
+  for (const stage of FIGURE_STAGES) {
+    const text = stage.beats.map((beat) => beat.text).join("\n");
+    if (
+      text.includes("{feeling}") ||
+      /You wrote:/i.test(text) ||
+      containsDisclosureEcho(text, disclosure)
+    ) {
+      return {
+        name,
+        ok: false,
+        detail: `figure=${stage.figureKey} contains a disclosure echo surface`,
+      };
+    }
+  }
+
+  const legacyBeat: BeatBlueprint = {
+    kind: "bridge",
+    role: "bridge",
+    text: 'You wrote: "{feeling}"\n\nThe story continues.',
+  };
+  let rendered = "";
+  for await (const token of streamBeat({ beat: legacyBeat })) rendered += token;
+
+  if (
+    rendered.includes("{feeling}") ||
+    /You wrote:/i.test(rendered) ||
+    !rendered.includes(SAFE_BRIDGE_DISTANCE_LINE)
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: "legacy bridge sanitizer did not replace the disclosure surface",
+    };
+  }
+
+  if (
+    !containsDisclosureEcho(
+      `A preface. ${disclosure}. A coda.`,
+      disclosure,
+    ) ||
+    containsDisclosureEcho(SAFE_BRIDGE_DISTANCE_LINE, disclosure)
+  ) {
+    return {
+      name,
+      ok: false,
+      detail: "disclosure overlap guard is not classifying exact/safe copy correctly",
+    };
+  }
+
+  return {
+    name,
+    ok: true,
+    detail: `${FIGURE_STAGES.length} stages clean; legacy placeholder sanitized`,
+  };
+}
+
 function runChunkBehaviorAssertion(): AssertionResult {
   const grouped = chunkBeatText({
     kind: "narrative",
@@ -658,10 +1178,17 @@ async function main(): Promise<void> {
     ),
     await runCrisisAssertion(),
     await runOwnershipAssertion(),
+    await runArtifactPersistenceAssertion(),
+    await runLegacyPlaybackAssertion(),
+    await runAtomicProgressAssertion(),
+    await runStoryCreationKillSwitchAssertion(),
+    runApprovedRecipeAssertion(),
+    await runPublishedEligibilityAssertion(),
     runOutlineAssertion(),
     runRerankCandidateAssertion(),
     runEyebrowGuardAssertion(),
     runArcShapeAssertion(),
+    await runStoryPrivacyAssertion(),
     runChunkIntegrityAssertion(),
     runChunkBehaviorAssertion(),
     // Last on purpose — exhausts smoke-user's hourly budget (see the comment above).

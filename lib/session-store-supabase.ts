@@ -1,15 +1,20 @@
 import "server-only";
 import { randomBytes } from "node:crypto";
 import type {
+  AcknowledgeSessionPositionInput,
+  AcknowledgeSessionPositionResult,
   CreateSessionInput,
   MatchRecipe,
   OpeningCopy,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import { getSupabase } from "./db";
+import { parseStoryRequestContext } from "./story-request-context";
+import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
+import { prepareProductEventCapture } from "./telemetry";
+import { artifactCreatedEvent } from "./telemetry-producers";
 
 // Durable session store (PERSISTENCE=supabase). Survives restarts and works across
 // serverless instances. getSupabase() is called inside the methods, never at import, so this
@@ -23,10 +28,14 @@ type SessionRow = {
   user_id: string;
   figure_key: string;
   stage_id: string;
+  story_artifact_id: string | null;
   framing: string;
   opening_copy: unknown;
-  age: number;
+  age: number | null;
   feeling: string | null;
+  story_request_context: unknown | null;
+  disclosure_expires_at: string;
+  alternate_of_session_id: string | null;
   match_recipe: unknown;
   next_beat_index: number;
   next_chunk_index: number;
@@ -35,24 +44,66 @@ type SessionRow = {
 };
 
 async function createSession(input: CreateSessionInput): Promise<string> {
+  const artifactCapture = input.telemetryFlowId
+    ? prepareProductEventCapture({
+        event: artifactCreatedEvent(input.artifact, "initial"),
+        flowId: input.telemetryFlowId,
+      })
+    : null;
   for (let attempt = 0; attempt < MAX_SESSION_ID_INSERT_ATTEMPTS; attempt += 1) {
     const sessionId = randomBytes(16).toString("hex");
-    const { error } = await getSupabase().from(TABLE).insert({
-      session_id: sessionId,
-      user_id: input.userId,
-      figure_key: input.figureKey,
-      stage_id: input.stageId,
-      framing: input.framing,
-      opening_copy: input.openingCopy,
-      age: input.age,
-      feeling: input.feeling,
-      match_recipe: input.matchRecipe,
-      next_beat_index: 0,
-      next_chunk_index: 0,
-    });
-    if (!error) return sessionId;
-    if (!isUniqueConstraintViolation(error)) {
+    const common = {
+      p_session_id: sessionId,
+      p_user_id: input.userId,
+      p_figure_key: input.figureKey,
+      p_stage_id: input.stageId,
+      p_framing: input.framing,
+      p_age: input.age,
+      p_feeling: input.feeling,
+      p_story_request_context: input.storyRequestContext,
+      p_match_recipe: input.matchRecipe,
+      p_artifact: input.artifact,
+    };
+    const { data, error } = input.telemetryFlowId
+      ? await getSupabase().rpc("create_story_session_v4", {
+          ...common,
+          p_telemetry_flow_id: input.telemetryFlowId,
+          p_artifact_event_id: artifactCapture!.eventId,
+          p_telemetry_schema_version: artifactCapture!.schemaVersion,
+        })
+      : await getSupabase().rpc("create_story_session_v2", common);
+    if (error) {
+      if (!input.telemetryFlowId && error.code === "23505") continue;
       throw new Error(`createSession insert failed: ${error.message}`);
+    }
+
+    if (!input.telemetryFlowId) return sessionId;
+
+    const result = asRecord(data);
+    if (result?.status === "conflict") {
+      throw new TelemetryFlowConflictError();
+    }
+    if (
+      (result?.status === "created" || result?.status === "existing") &&
+      isSessionId(result.sessionId)
+    ) {
+      if (result.status === "created" && result.sessionId !== sessionId) {
+        throw new Error("createSession returned an invalid created session");
+      }
+      return result.sessionId;
+    }
+    if (
+      result?.status === "flow_not_found" ||
+      result?.status === "unclaimed" ||
+      result?.status === "revoked" ||
+      result?.status === "expired"
+    ) {
+      throw new TelemetryFlowConflictError(
+        `createSession flow failed: ${result.status}`,
+      );
+    }
+    if (result?.status !== "collision") {
+      throw new Error("createSession returned an invalid disposition");
     }
   }
 
@@ -71,26 +122,39 @@ async function getSession(sessionId: string): Promise<Session | null> {
   return data ? rowToSession(data as SessionRow) : null;
 }
 
-async function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  const update: Record<string, number | string> = {};
-  if (patch.nextBeatIndex !== undefined) update.next_beat_index = patch.nextBeatIndex;
-  if (patch.nextChunkIndex !== undefined) update.next_chunk_index = patch.nextChunkIndex;
-  if (Object.keys(update).length === 0) return getSession(sessionId);
-
-  // Last-activity signal for the anonymous-guest retention job (migration 0003).
-  update.updated_at = new Date().toISOString();
-
+// Atomic compare-and-set for reader progress. The expected-position predicates
+// are part of the UPDATE, so concurrent tabs cannot both advance from the same
+// passage. A follow-up owner-scoped read classifies idempotent retries without
+// exposing whether a foreign session exists.
+async function acknowledgePosition(
+  input: AcknowledgeSessionPositionInput,
+): Promise<AcknowledgeSessionPositionResult> {
   const { data, error } = await getSupabase()
     .from(TABLE)
-    .update(update)
-    .eq("session_id", sessionId)
-    .select("*")
+    .update({
+      next_beat_index: input.nextBeatIndex,
+      next_chunk_index: input.nextChunkIndex,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("session_id", input.sessionId)
+    .eq("user_id", input.userId)
+    .eq("next_beat_index", input.expectedBeatIndex)
+    .eq("next_chunk_index", input.expectedChunkIndex)
+    .select("session_id")
     .maybeSingle();
-  if (error) throw new Error(`updateSession failed: ${error.message}`);
-  return data ? rowToSession(data as SessionRow) : null;
+
+  if (error) throw new Error(`acknowledgePosition failed: ${error.message}`);
+  if (data) return "advanced";
+
+  const current = await getSession(input.sessionId);
+  if (!current || current.userId !== input.userId) return "not_found";
+  if (
+    current.nextBeatIndex === input.nextBeatIndex &&
+    current.nextChunkIndex === input.nextChunkIndex
+  ) {
+    return "already_advanced";
+  }
+  return "conflict";
 }
 
 async function listSessionsByUser(userId: string): Promise<Session[]> {
@@ -113,17 +177,25 @@ async function sessionCount(): Promise<number> {
 }
 
 function rowToSession(row: SessionRow): Session {
+  const storyRequestContext =
+    row.story_request_context === null
+      ? null
+      : parseStoryRequestContext(row.story_request_context);
+  // Optional recovery context fails closed without making the immutable story
+  // unreadable when a row is malformed or uses an unsupported future version.
   return {
     sessionId: row.session_id,
     userId: row.user_id,
     figureKey: row.figure_key,
     stageId: row.stage_id,
+    storyArtifactId: row.story_artifact_id,
     framing: row.framing === "definitive" ? "definitive" : "partial",
     openingCopy: normalizeOpeningCopy(row.opening_copy),
     age: row.age,
-    // feeling is nullable (the retention job NULLs it after 60 days). A NULLed session is
-    // months old and not mid-story; reconstruct as "" rather than widen Session.feeling.
-    feeling: row.feeling ?? "",
+    feeling: row.feeling,
+    storyRequestContext,
+    disclosureExpiresAt: parseTimestamp(row.disclosure_expires_at),
+    alternateOfSessionId: row.alternate_of_session_id,
     matchRecipe: row.match_recipe as MatchRecipe,
     nextBeatIndex: row.next_beat_index,
     nextChunkIndex: row.next_chunk_index,
@@ -152,14 +224,20 @@ function normalizeOpeningCopy(value: unknown): OpeningCopy {
   };
 }
 
-function isUniqueConstraintViolation(error: { code?: string }): boolean {
-  return error.code === "23505";
+function asRecord(value: unknown): Record<string, unknown> | null {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : null;
+}
+
+function isSessionId(value: unknown): value is string {
+  return typeof value === "string" && /^[0-9a-f]{32}$/.test(value);
 }
 
 export const supabaseSessionStore: SessionStore = {
   createSession,
   getSession,
-  updateSession,
+  acknowledgePosition,
   listSessionsByUser,
   _sessionCount: sessionCount,
 };

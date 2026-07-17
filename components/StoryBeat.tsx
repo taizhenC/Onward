@@ -17,9 +17,11 @@ type Props = {
   beatIndex: number;
   chunkIndex: number;
   onComplete: (next: StoryAdvance) => void;
-  // Fired once when the ack resolves next === "end" (the in-flow story finish).
-  // Separate channel from onComplete, whose contract excludes "end".
-  onEnd?: () => void;
+  // Fired once after the reader explicitly acknowledges the final passage.
+  // Separate channel from onComplete, whose contract excludes "end". Required:
+  // without a handler the acknowledged finish would have nowhere to go and the
+  // reader would be left on a dead button.
+  onEnd: () => void;
 };
 
 type FailureKind = "notfound" | "conflict" | "connection" | "generic";
@@ -35,7 +37,6 @@ export function StoryBeat({
   const [revealedCount, setRevealedCount] = useState(0);
   const [skipped, setSkipped] = useState(false);
   const [streamDone, setStreamDone] = useState(false);
-  const [done, setDone] = useState(false);
   const [failure, setFailure] = useState<FailureKind | null>(null);
   const [nextStep, setNextStep] = useState<StoryAdvance | null>(null);
   // Guards the Continue advance so it fires exactly once per passage. The exiting
@@ -43,6 +44,9 @@ export function StoryBeat({
   // so repeat clicks during the fade can't push the position past the ack'd
   // session position — the cause of the /api/beat 409.
   const [advancing, setAdvancing] = useState(false);
+  // The final passage was acknowledged. Hides Finish story so the closing text
+  // stands alone next to whatever the parent renders for the story's end.
+  const [ended, setEnded] = useState(false);
 
   // Ref so the streaming effect below doesn't list onEnd as a dependency — a parent
   // re-render handing in a fresh closure must not abort and restart the stream.
@@ -72,16 +76,17 @@ export function StoryBeat({
   const canSkip = !skipped && hasMoreToReveal && totalTokens > 0;
   const showCaret = hasMoreToReveal && totalTokens > 0;
 
-  // Network: stream the chunk, then ack to advance the session.
+  // Network: deliver the current chunk without changing durable progress. The
+  // reader's explicit Continue/Finish action below owns acknowledgement.
   useEffect(() => {
     setFullText("");
     setRevealedCount(0);
     setSkipped(false);
     setStreamDone(false);
-    setDone(false);
     setFailure(null);
     setNextStep(null);
     setAdvancing(false);
+    setEnded(false);
 
     const controller = new AbortController();
     let cancelled = false;
@@ -123,25 +128,10 @@ export function StoryBeat({
         if (lastChunk.length > 0) {
           setFullText((previous) => previous + lastChunk);
         }
-        if (!cancelled) setStreamDone(true);
-
-        const next = await acknowledgeBeat({
-          sessionId,
-          beatIndex,
-          chunkIndex,
-          fallbackNext: headerNext,
-          signal: controller.signal,
-        });
-        if (cancelled) return;
-        if (next === null) {
-          // The ack didn't land (position conflict / lost place). Offer a refresh,
-          // which re-reads the true session position server-side.
-          setFailure("conflict");
-          return;
+        if (!cancelled) {
+          setNextStep(headerNext);
+          setStreamDone(true);
         }
-        setNextStep(next);
-        setDone(true);
-        if (next === "end") onEndRef.current?.();
       } catch (caught) {
         if (cancelled || (caught as Error).name === "AbortError") return;
         setFailure("connection");
@@ -233,33 +223,31 @@ export function StoryBeat({
     };
   }, [canSkip, handleSkip]);
 
-  function handleAdvance() {
-    if (advancing || nextStep === null || nextStep === "end") return;
+  async function handleAdvance() {
+    if (advancing || nextStep === null || !revealComplete) return;
     setAdvancing(true);
-    onComplete(nextStep);
+    const result = await acknowledgeBeat({
+      sessionId,
+      beatIndex,
+      chunkIndex,
+      fallbackNext: nextStep,
+    });
+    if (!result.ok) {
+      setFailure(result.failure);
+      setAdvancing(false);
+      return;
+    }
+    if (result.next === "end") {
+      setEnded(true);
+      onEndRef.current();
+      return;
+    }
+    onComplete(result.next);
   }
 
   return (
     <div className="space-y-8">
-      <div
-        onDoubleClick={canSkip ? handleSkip : undefined}
-        onKeyDown={
-          canSkip
-            ? (event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  handleSkip();
-                }
-              }
-            : undefined
-        }
-        role={canSkip ? "button" : undefined}
-        tabIndex={canSkip ? 0 : -1}
-        aria-label={canSkip ? "Show the rest of this passage" : undefined}
-        className={`focus-visible:outline-offset-4 focus-visible:[outline:2px_solid_var(--color-accent)]${
-          canSkip ? " select-none" : ""
-        }`}
-      >
+      <div>
         <p className="whitespace-pre-wrap">
           {revealedText}
           {showCaret ? (
@@ -273,11 +261,22 @@ export function StoryBeat({
         </p>
       </div>
 
+      {canSkip ? (
+        <button
+          type="button"
+          onClick={handleSkip}
+          className="font-ui text-xs tracking-wide text-[var(--color-ink-soft)] underline decoration-[var(--color-ink-soft)]/40 underline-offset-4 hover:text-[var(--color-ink)]"
+        >
+          Show full passage
+        </button>
+      ) : null}
+
       {failure ? <BeatFailure kind={failure} /> : null}
 
-      {/* Continue appears as soon as the ack lands and the reveal is complete (or skipped) —
-          clicking anywhere on screen or hitting space skips the animation to show this. */}
-      {!failure && done && nextStep !== null && nextStep !== "end" && revealComplete ? (
+      {/* Progress changes only after the complete passage is visible and the
+          reader deliberately acknowledges it. Clicking anywhere or pressing space
+          skips the animation, which is what makes this button appear. */}
+      {!failure && !ended && revealComplete && nextStep !== null ? (
         <button
           type="button"
           onClick={handleAdvance}
@@ -288,14 +287,8 @@ export function StoryBeat({
               : "hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]"
           }`}
         >
-          Continue
+          {nextStep === "end" ? "Finish story" : "Continue"}
         </button>
-      ) : null}
-
-      {!failure && done && nextStep === "end" && revealComplete ? (
-        <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)] pt-4">
-          The journey ends here.
-        </p>
       ) : null}
     </div>
   );
@@ -350,8 +343,15 @@ type AcknowledgeBeatInput = {
   beatIndex: number;
   chunkIndex: number;
   fallbackNext: StoryAdvance;
-  signal: AbortSignal;
+  signal?: AbortSignal;
 };
+
+// Distinguishes why an ack failed so the reader sees the right recovery copy:
+// a dropped connection is not "we lost your place", and a 404 means the story
+// itself is gone, not the position.
+type AcknowledgeBeatResult =
+  | { ok: true; next: StoryAdvance }
+  | { ok: false; failure: FailureKind };
 
 async function acknowledgeBeat({
   sessionId,
@@ -359,7 +359,7 @@ async function acknowledgeBeat({
   chunkIndex,
   fallbackNext,
   signal,
-}: AcknowledgeBeatInput): Promise<StoryAdvance | null> {
+}: AcknowledgeBeatInput): Promise<AcknowledgeBeatResult> {
   let response: Response;
   try {
     response = await fetch("/api/beat/ack", {
@@ -369,23 +369,28 @@ async function acknowledgeBeat({
       signal,
     });
   } catch {
-    return null;
+    return { ok: false, failure: "connection" };
   }
 
-  if (!response.ok) return null;
+  if (!response.ok) {
+    return { ok: false, failure: failureFromStatus(response.status) };
+  }
 
   let body: unknown;
   try {
     body = await response.json();
   } catch {
-    return fallbackNext;
+    return { ok: true, next: fallbackNext };
   }
 
   if (body !== null && typeof body === "object" && "next" in body) {
-    return parseNextStep((body as { next: unknown }).next, fallbackNext);
+    return {
+      ok: true,
+      next: parseNextStep((body as { next: unknown }).next, fallbackNext),
+    };
   }
 
-  return fallbackNext;
+  return { ok: true, next: fallbackNext };
 }
 
 function parseNextStep(value: unknown, fallback: StoryAdvance = "end"): StoryAdvance {

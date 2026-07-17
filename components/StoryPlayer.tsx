@@ -2,17 +2,32 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import type { ClientFigureOutline, OpeningCopy, StoryAdvance } from "@/lib/types";
+import type {
+  ClientFigureOutline,
+  Framing,
+  OpeningCopy,
+  StoryAdvance,
+} from "@/lib/types";
+import type { StoryTransparency } from "@/lib/story-transparency-types";
+import type { ResonanceFeedbackPresentation } from "@/lib/resonance-feedback-types";
 import { PrefaceCard } from "./PrefaceCard";
 import { SaveStoriesCard } from "./SaveStoriesCard";
+import { StoryAfterword } from "./StoryAfterword";
+import { ResonanceFeedbackCard } from "./ResonanceFeedbackCard";
 import { StoryBeat } from "./StoryBeat";
 
 type Props = {
   sessionId: string;
   outline: ClientFigureOutline;
   openingCopy: OpeningCopy;
+  contentNote: string | null;
+  transparency: StoryTransparency | null;
+  framing: Framing;
   initialBeatIndex: number;
   initialChunkIndex: number;
+  completedBridgeText: string | null;
+  feedbackAvailable: boolean;
+  initialFeedback: ResonanceFeedbackPresentation;
 };
 
 type Phase = "preface" | "playing" | "ended";
@@ -21,8 +36,14 @@ export function StoryPlayer({
   sessionId,
   outline,
   openingCopy,
+  contentNote,
+  transparency,
+  framing,
   initialBeatIndex,
   initialChunkIndex,
+  completedBridgeText,
+  feedbackAvailable,
+  initialFeedback,
 }: Props) {
   const totalBeats = outline.beats.length;
   const [phase, setPhase] = useState<Phase>(() => {
@@ -49,10 +70,9 @@ export function StoryPlayer({
         setChunkIndex(0);
         break;
       case "end":
-        // Intentional no-op. Per StoryBeat's contract, when next === "end"
-        // the Continue button is hidden and the final chunk stays visible
-        // with "The journey ends here." underneath (the in-flow finish is
-        // signalled via onEnd, not onComplete). This branch only runs if a
+        // Intentional no-op. Per StoryBeat's contract the acknowledged finish
+        // arrives via onEnd, never onComplete — the final chunk stays visible
+        // and the save card renders below it. This branch only runs if a
         // future caller misuses the contract. The "ended" phase is entered
         // exclusively via the refresh path (initialBeatIndex >= total).
         break;
@@ -75,6 +95,8 @@ export function StoryPlayer({
         {phase === "preface" ? (
           <PrefaceCard
             lines={openingCopy.prefaceLines}
+            contentNote={contentNote}
+            framing={framing}
             onBegin={() => setPhase("playing")}
           />
         ) : phase === "playing" && currentBeat ? (
@@ -94,23 +116,53 @@ export function StoryPlayer({
             />
           </motion.div>
         ) : (
-          <motion.p
+          <motion.div
             key="ended"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="text-[var(--color-ink-soft)]"
+            className="space-y-6"
           >
-            The journey ends here.
-          </motion.p>
+            {completedBridgeText ? (
+              <p className="whitespace-pre-line text-lg leading-relaxed">
+                {completedBridgeText}
+              </p>
+            ) : null}
+            <p className="text-[var(--color-ink-soft)]">The journey ends here.</p>
+          </motion.div>
         )}
       </AnimatePresence>
 
       {/* Sibling of the AnimatePresence region on purpose — inside the mode="wait"
           block it would unmount the final bridge text. Covers both end paths. */}
-      {reachedEnd || phase === "ended" ? <SaveStoriesCard /> : null}
+      {reachedEnd || phase === "ended" ? (
+        <>
+          <StoryAfterword sessionId={sessionId} transparency={transparency} />
+          {feedbackAvailable ? (
+            <ResonanceFeedbackCard
+              key={feedbackPresentationKey(initialFeedback)}
+              sessionId={sessionId}
+              historicalReportingAvailable={
+                transparency?.provenance.status === "editorially_reviewed" &&
+                transparency.facts.length > 0
+              }
+              initialFeedback={initialFeedback}
+            />
+          ) : null}
+          <SaveStoriesCard />
+        </>
+      ) : null}
     </div>
   );
+}
+
+function feedbackPresentationKey(
+  presentation: ResonanceFeedbackPresentation,
+): string {
+  if (presentation.status !== "not_close") return presentation.status;
+  const offer = presentation.alternate;
+  if (offer.status === "ready") return `not_close:ready:${offer.sessionId}`;
+  return `not_close:${offer.status}`;
 }
 
 function Header({

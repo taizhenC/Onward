@@ -1,5 +1,5 @@
 import "server-only";
-import type { BeatBlueprint, OpeningCopy, Pick, PickInput, Session } from "./types";
+import type { BeatBlueprint, OpeningCopy, Pick, PickInput } from "./types";
 import { pickByKeywordHybrid } from "./keyword-match";
 import { PARTIAL_FRAMING_THRESHOLD } from "./match-config";
 import {
@@ -7,9 +7,13 @@ import {
   DEFAULT_PREFACE_LINES,
   type OpeningCopyInput,
 } from "./opening-copy";
+import { sanitizeLegacyDisclosurePlaceholder } from "./story-privacy";
+import {
+  HYBRID_PLAN_SCHEMA_VERSION,
+  type HybridPlanRequest,
+} from "./hybrid-composition";
 
 export type StreamBeatInput = {
-  session: Session;
   beat: BeatBlueprint;
   textOverride?: string;
 };
@@ -20,15 +24,13 @@ export type StreamBeatInput = {
 // passage. The prose is deterministic DB text, so the old server-side delay was
 // purely cosmetic; moving it client-side is what makes "show everything" possible.
 export async function* streamBeat({
-  session,
   beat,
   textOverride,
 }: StreamBeatInput): AsyncIterable<string> {
-  const rawText = textOverride ?? beat.text;
-  const text =
-    beat.kind === "bridge"
-      ? rawText.replaceAll("{feeling}", session.feeling)
-      : rawText;
+  // Old database rows may still contain the Phase-0 `{feeling}` line. Sanitize
+  // it at the final prose boundary so an un-reseeded deployment cannot render a
+  // literal placeholder or restore verbatim intake interpolation.
+  const text = sanitizeLegacyDisclosurePlaceholder(textOverride ?? beat.text);
 
   for (const chunk of toWordChunks(text)) {
     yield chunk;
@@ -60,7 +62,7 @@ export async function pickFigureStub(input: PickInput): Promise<Pick> {
 
 // Stub opening copy: the hand-authored per-stage eyebrow (curatedEyebrow falls back to
 // the neutral line for any uncurated stage) plus the universal hand-authored preface. The
-// real generator in lib/llm-real.ts tailors the eyebrow per user feeling when
+// real generator in lib/llm-real.ts tailors the eyebrow from a bounded brief when
 // LLM_PROVIDER=real; preface personalization is deferred in both modes.
 export async function writeOpeningCopyStub(
   input: OpeningCopyInput,
@@ -68,5 +70,19 @@ export async function writeOpeningCopyStub(
   return {
     eyebrow: curatedEyebrow(input.stage.figureKey, input.stage.stageId),
     prefaceLines: DEFAULT_PREFACE_LINES,
+  };
+}
+
+export async function requestHybridPlanStub(
+  input: HybridPlanRequest,
+): Promise<unknown> {
+  const transitionRole = input.allowedTransitionRoles.includes("turning_point")
+    ? "turning_point"
+    : input.allowedTransitionRoles[0];
+  return {
+    schemaVersion: HYBRID_PLAN_SCHEMA_VERSION,
+    transitionRole,
+    transitionTemplateId: input.allowedTransitionTemplateIds[0],
+    bridgeTemplateId: input.allowedBridgeTemplateIds[0],
   };
 }

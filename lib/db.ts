@@ -19,7 +19,6 @@ if (typeof window !== "undefined") {
 // talk to Supabase. This is the single createClient chokepoint.
 
 declare global {
-  // eslint-disable-next-line no-var
   var __onwardSupabase: SupabaseClient | undefined;
 }
 

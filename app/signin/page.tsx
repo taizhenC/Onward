@@ -43,9 +43,16 @@ export default async function SignInPage({
         <p className="border-t border-[var(--color-ink)]/10 pt-[22px] font-ui text-[12px] leading-[1.7] text-[var(--color-ink-faint)]">
           In crisis right now? Please reach for people who can help —{" "}
           {CRISIS_RESOURCES.map((resource, index) => (
-            <span key={resource}>
+            <span key={resource.id}>
               {index > 0 ? " · " : null}
-              <span className="text-[var(--color-ink-soft)]">{resource}</span>
+              <a
+                href={resource.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-ink-soft)] underline underline-offset-2"
+              >
+                {resource.region}: {resource.action}
+              </a>
             </span>
           ))}
         </p>

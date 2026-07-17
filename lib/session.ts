@@ -1,12 +1,20 @@
 import "server-only";
 import type {
+  AcknowledgeSessionPositionInput,
+  AcknowledgeSessionPositionResult,
   CreateSessionInput,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { memorySessionStore } from "./session-store-memory";
 import { supabaseSessionStore } from "./session-store-supabase";
+import { persistenceMode } from "./persistence";
+import { parseTelemetryFlowId } from "./telemetry-id";
+import {
+  activateTelemetryFlowForOwner,
+  telemetryFlowBindingEnabled,
+} from "./telemetry-flow-lifecycle";
+import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
 
 // The single session-storage boundary. Everything outside lib/ imports from here — never
 // from the store modules directly (mirrors the lib/llm.ts provider switch).
@@ -24,15 +32,33 @@ let store: SessionStore | undefined;
 function resolveStore(): SessionStore {
   if (store === undefined) {
     store =
-      process.env.PERSISTENCE === "supabase"
+      persistenceMode() === "supabase"
         ? supabaseSessionStore
         : memorySessionStore;
   }
   return store;
 }
 
-export function createSession(input: CreateSessionInput): Promise<string> {
-  return resolveStore().createSession(input);
+export async function createSession(input: CreateSessionInput): Promise<string> {
+  let telemetryFlowId = input.telemetryFlowId;
+  if (telemetryFlowId !== null && telemetryFlowBindingEnabled()) {
+    // Internal callers receive the same owner-claim backstop as the route.
+    telemetryFlowId = parseTelemetryFlowId(telemetryFlowId);
+    if (input.telemetryFlowOwnerClaimed !== true) {
+      const activation = await activateTelemetryFlowForOwner(
+        telemetryFlowId,
+        input.userId,
+      );
+      if (activation !== "active") {
+        throw new TelemetryFlowConflictError(
+          `telemetry flow activation failed: ${activation}`,
+        );
+      }
+    }
+  } else {
+    telemetryFlowId = null;
+  }
+  return resolveStore().createSession({ ...input, telemetryFlowId });
 }
 
 // Owner-blind read. For scripts and internal plumbing only — request-scoped code
@@ -60,11 +86,10 @@ export function listSessionsByUser(userId: string): Promise<Session[]> {
   return resolveStore().listSessionsByUser(userId);
 }
 
-export function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  return resolveStore().updateSession(sessionId, patch);
+export function acknowledgeOwnedSessionPosition(
+  input: AcknowledgeSessionPositionInput,
+): Promise<AcknowledgeSessionPositionResult> {
+  return resolveStore().acknowledgePosition(input);
 }
 
 export function _sessionCount(): Promise<number> {

@@ -3,6 +3,7 @@ import type { ClientBeat, ClientFigureOutline, FigureStageRow } from "./types";
 import { AGE_TOLERANCE_YEARS } from "./match-config";
 import { loadConstStages } from "./figures-source-const";
 import { loadDbStages, resetDbFigureCache } from "./figures-source-db";
+import { persistenceMode } from "./persistence";
 
 if (typeof window !== "undefined") {
   throw new Error("lib/figures.ts must not be imported on the client");
@@ -12,7 +13,7 @@ if (typeof window !== "undefined") {
 // supabase serves the load-once DB cache. listAll/listByAge/getByKey are async (the DB source
 // may need a fetch); ageDistance and toClientOutline stay sync — they're pure transforms.
 function loadStages(): Promise<FigureStageRow[]> {
-  return process.env.PERSISTENCE === "supabase"
+  return persistenceMode() === "supabase"
     ? loadDbStages()
     : loadConstStages();
 }

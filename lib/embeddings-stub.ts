@@ -10,7 +10,8 @@ export function embedDocumentsStub(texts: string[]): Promise<number[][]> {
   return Promise.resolve(texts.map(() => zeroVector()));
 }
 
-export function embedQueryStub(_text: string): Promise<number[]> {
+export function embedQueryStub(text: string): Promise<number[]> {
+  void text;
   return Promise.resolve(zeroVector());
 }
 

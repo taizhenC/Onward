@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getAuthUserId } from "@/lib/auth";
-import { getByKey } from "@/lib/figures";
 import { listSessionsByUser } from "@/lib/session";
+import { getStoryPlayback } from "@/lib/story-playback";
 import { SignOutButton } from "@/components/SignOutButton";
 import { SetPasswordForm } from "@/components/SetPasswordForm";
 
@@ -36,13 +36,13 @@ export default async function StoriesPage() {
   const items = (
     await Promise.all(
       sessions.map(async (session): Promise<StoryListItem | null> => {
-        const stage = await getByKey(session.figureKey, session.stageId);
-        if (!stage) return null;
+        const playback = await getStoryPlayback(session);
+        if (!playback) return null;
         return {
           sessionId: session.sessionId,
-          displayName: stage.displayName,
+          displayName: playback.outline.displayName,
           startedAt: session.createdAt,
-          finished: session.nextBeatIndex >= stage.beats.length,
+          finished: session.nextBeatIndex >= playback.beats.length,
         };
       }),
     )

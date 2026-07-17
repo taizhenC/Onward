@@ -2,6 +2,14 @@ import { jsonError } from "@/lib/api-utils";
 import { getAuthUserId } from "@/lib/auth";
 import { handleIntake } from "@/lib/intake";
 import { hashRequestIp } from "@/lib/rate-limit";
+import { CRISIS_RESOURCES, classifyCrisis } from "@/lib/safety";
+import { parseTelemetryFlowId } from "@/lib/telemetry-id";
+import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
+import {
+  activateTelemetryFlowForOwner,
+  telemetryFlowBindingEnabled,
+} from "@/lib/telemetry-flow-lifecycle";
+import type { TelemetryFlowId } from "@/lib/telemetry-types";
 
 export const runtime = "nodejs";
 // Rerank + opening copy on a slow provider day can stack past Vercel's default
@@ -9,17 +17,6 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 export async function POST(request: Request): Promise<Response> {
-  // Auth gate: the client signs in (anonymously) before posting, so a missing user
-  // means a misconfigured or cookie-blocking client — 401, not 404 (there's no
-  // session resource to hide yet; 404-over-500 governs session-scoped reads).
-  const userId = await getAuthUserId();
-  if (!userId) {
-    return jsonError(
-      "We couldn't start a private session. Cookies are needed to keep your story yours.",
-      401,
-    );
-  }
-
   let body: unknown;
 
   try {
@@ -32,14 +29,94 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError("Request body must be an object.", 400);
   }
 
-  const result = await handleIntake(body, {
-    userId,
-    ipHash: hashRequestIp(request),
-  });
+  // Crisis support precedes auth as well as every provider/write. A reader whose
+  // browser blocks cookies must still receive reviewed resources.
+  const safetyText = (body as Record<string, unknown>).feeling;
+  if (typeof safetyText === "string" && classifyCrisis(safetyText).crisisDetected) {
+    return Response.json({ crisis: true, resources: CRISIS_RESOURCES });
+  }
+
+  // Stop every non-crisis story before flow parsing, auth, registration, or any
+  // other durable work. The deeper intake guard remains a defense for scripts
+  // and non-route callers, but this boundary preserves the public no-write
+  // contract while an operator has paused story creation.
+  if (process.env.STORY_CREATION_ENABLED?.trim().toLowerCase() === "false") {
+    return unavailableResponse();
+  }
+
+  // Parse the opaque flow only after the crisis branch. Missing or forged flow
+  // IDs must never make reviewed crisis resources depend on UI state.
+  let telemetryFlowId: TelemetryFlowId | null = null;
+  const flowHeader = request.headers.get(TELEMETRY_FLOW_HEADER);
+  if (flowHeader !== null) {
+    try {
+      telemetryFlowId = parseTelemetryFlowId(flowHeader);
+    } catch (error) {
+      // Signature verification happens before the age check, so this branch is
+      // safe only for an authentic capability whose fixed lifetime elapsed.
+      // The client can recover by starting a fresh story; forged, future, or
+      // wrong-purpose values remain generic bad requests.
+      if (
+        error instanceof Error &&
+        error.message === "telemetry flow ID has expired"
+      ) {
+        return flowConflictResponse();
+      }
+      return jsonError("Story flow is invalid. Please refresh and try again.", 400);
+    }
+  }
+
+  // Non-crisis stories need an owner before matching or persistence.
+  let userId: string | null;
+  try {
+    userId = await getAuthUserId();
+  } catch {
+    return unavailableResponse();
+  }
+  if (!userId) {
+    return jsonError(
+      "We couldn't start a private session. Cookies are needed to keep your story yours.",
+      401,
+    );
+  }
+
+  // Claim the authenticated owner before validation, matching, providers, or
+  // writes. Missing flow/config or the explicit kill switch uses v2; a failure
+  // after a valid capability is present stays unavailable until schema/config
+  // is repaired or the operator deliberately enables the kill switch.
+  if (telemetryFlowId && telemetryFlowBindingEnabled()) {
+    try {
+      const activation = await activateTelemetryFlowForOwner(
+        telemetryFlowId,
+        userId,
+      );
+      if (activation !== "active") {
+        return flowConflictResponse();
+      }
+    } catch {
+      return unavailableResponse();
+    }
+  } else {
+    telemetryFlowId = null;
+  }
+
+  let result: Awaited<ReturnType<typeof handleIntake>>;
+  try {
+    result = await handleIntake(body, {
+      userId,
+      ipHash: hashRequestIp(request),
+      telemetryFlowId,
+      telemetryFlowOwnerClaimed: telemetryFlowId !== null,
+    });
+  } catch {
+    return unavailableResponse();
+  }
 
   if ("error" in result) {
     return jsonError(result.error, 400);
   }
+
+  if ("flowConflict" in result) return flowConflictResponse();
 
   if ("rateLimited" in result) {
     // Honest for the hour window; the day window is rarer and self-explains.
@@ -50,5 +127,29 @@ export async function POST(request: Request): Promise<Response> {
     });
   }
 
+  if ("temporarilyUnavailable" in result) {
+    return Response.json(result, {
+      status: 503,
+      headers: { "retry-after": "900" },
+    });
+  }
+
   return Response.json(result);
+}
+
+function unavailableResponse(): Response {
+  return Response.json(
+    { temporarilyUnavailable: true },
+    {
+      status: 503,
+      headers: { "cache-control": "no-store", "retry-after": "900" },
+    },
+  );
+}
+
+function flowConflictResponse(): Response {
+  return Response.json(
+    { flowConflict: true },
+    { status: 409, headers: { "cache-control": "no-store" } },
+  );
 }

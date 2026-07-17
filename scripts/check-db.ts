@@ -5,10 +5,20 @@ import { FIGURE_STAGES } from "../lib/figures-data";
 import { _resetFigureCache, listAll } from "../lib/figures";
 import { getSupabase } from "../lib/db";
 import { handleIntake } from "../lib/intake";
+import {
+  createTelemetryEventId,
+  createTelemetryFlowId,
+  createTelemetryOutboxLeaseId,
+} from "../lib/telemetry";
 import { _sessionCount } from "../lib/session";
 import type { FigureStageRow } from "../lib/types";
+import {
+  listPublishedStorySpecKeys,
+  storySpecStageKey,
+} from "../lib/story-spec-repository";
 
-// Supabase-mode acceptance check. Run AFTER `npm run seed`, as a SEPARATE process so the
+// Supabase-mode release check. Run after migrations, seeding, and publishing the launch
+// subset, as a SEPARATE process so the
 // load-once figure cache reflects current DB state. Pins PERSISTENCE=supabase so it exercises
 // the real DB paths (figure serving + session store); LLM stays stub (the crisis probe returns
 // before any match/LLM call, so no LLM provider key is needed).
@@ -51,15 +61,28 @@ async function checkServingParity(): Promise<Step> {
   try {
     _resetFigureCache(); // separate process from seed, but reset anyway so the cache can't lie.
     const dbStages = await listAll();
-    if (dbStages.length !== FIGURE_STAGES.length) {
+    const statusResult = await getSupabase()
+      .from("figure_stages")
+      .select("figure_key,stage_id")
+      .eq("status", "published");
+    if (statusResult.error) throw new Error(statusResult.error.message);
+    const publishedKeys = new Set(
+      (statusResult.data ?? []).map((row) =>
+        storySpecStageKey(row.figure_key, row.stage_id),
+      ),
+    );
+    const expectedStages = FIGURE_STAGES.filter((stage) =>
+      publishedKeys.has(storySpecStageKey(stage.figureKey, stage.stageId)),
+    );
+    if (dbStages.length !== expectedStages.length) {
       return {
         name,
         ok: false,
-        detail: `served ${dbStages.length} stage(s), authored ${FIGURE_STAGES.length}`,
+        detail: `served ${dbStages.length} stage(s), expected ${expectedStages.length} published authored stage(s)`,
       };
     }
     const dbSorted = sortByKey(dbStages);
-    const authoredSorted = sortByKey(FIGURE_STAGES);
+    const authoredSorted = sortByKey(expectedStages);
     for (let i = 0; i < authoredSorted.length; i += 1) {
       if (!isDeepStrictEqual(dbSorted[i], authoredSorted[i])) {
         return {
@@ -75,6 +98,383 @@ async function checkServingParity(): Promise<Step> {
   }
 }
 
+async function checkPublishedStorySpecs(): Promise<Step> {
+  const name = "public stages have valid published StorySpecs";
+  try {
+    const keys = await listPublishedStorySpecKeys();
+    const served = await listAll();
+    const servedKeys = new Set(
+      served.map((stage) => storySpecStageKey(stage.figureKey, stage.stageId)),
+    );
+    const missing = [...keys].filter((key) => !servedKeys.has(key));
+    const ok = keys.size > 0 && missing.length === 0;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `${keys.size} valid published StorySpec(s) eligible for matching`
+        : keys.size === 0
+          ? "no valid published StorySpecs; review and publish the launch subset"
+          : `${missing.length} published StorySpec stage(s) are disabled/missing`,
+    };
+  } catch (error) {
+    return { name, ok: false, detail: message(error) };
+  }
+}
+
+async function checkArtifactSchema(): Promise<Step> {
+  const name = "StoryArtifact schema installed";
+  try {
+    const artifacts = await tableCount("story_artifacts");
+    const sessions = await getSupabase()
+      .from("sessions")
+      .select("story_artifact_id")
+      .limit(1);
+    if (sessions.error) throw new Error(sessions.error.message);
+    return {
+      name,
+      ok: true,
+      detail: `story_artifacts reachable (${artifacts} row(s)); session pointer present`,
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} — apply migration 0005` };
+  }
+}
+
+async function checkMatchRecoverySchema(): Promise<Step> {
+  const name = "single-use match recovery schema installed";
+  try {
+    const flows = await tableCount("match_recovery_flows");
+    const probe = await getSupabase().rpc("consume_match_recovery_flow", {
+      p_token_hash: "0".repeat(64),
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_input_hash: "0".repeat(64),
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === null;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `table/RPC reachable (${flows} active or recently consumed row(s))`
+        : "consume RPC accepted a nonexistent recovery flow",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} 鈥?apply migration 0006` };
+  }
+}
+
+async function checkHistoricalConcernSchema(): Promise<Step> {
+  const name = "privacy-safe historical concern queue installed";
+  try {
+    const reports = await tableCount("historical_concern_reports");
+    const probe = await getSupabase().rpc("submit_historical_concern", {
+      p_report_id: "0".repeat(32),
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_session_id: "0".repeat(32),
+      p_artifact_id: "0".repeat(32),
+      p_fact_id: "fact-probe",
+      p_reason: "incorrect_fact",
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === null;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `queue/RPC reachable (${reports} bounded report row(s))`
+        : "submission RPC accepted a nonexistent owned artifact",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} — apply migration 0007`,
+    };
+  }
+}
+
+async function checkStoryFeedbackSchema(): Promise<Step> {
+  const name = "bounded story feedback schema installed";
+  try {
+    const feedback = await tableCount("story_feedback");
+    const probe = await getSupabase().rpc("submit_story_feedback", {
+      p_feedback_id: "0".repeat(32),
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_session_id: "0".repeat(32),
+      p_artifact_id: "0".repeat(32),
+      p_policy_version: "resonance-feedback-v1-2026-07",
+      p_verdict: "felt_close",
+      p_reason: null,
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `table/RPC reachable (${feedback} bounded row(s))`
+        : "feedback RPC accepted a nonexistent owned story",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} — apply migration 0008`,
+    };
+  }
+}
+
+async function checkAlternateStorySchema(): Promise<Step> {
+  const name = "one-use alternate story schema installed";
+  try {
+    const flows = await tableCount("alternate_story_flows");
+    const sessions = await getSupabase()
+      .from("sessions")
+      .select(
+        "story_request_context,disclosure_expires_at,alternate_of_session_id",
+      )
+      .limit(1);
+    if (sessions.error) throw new Error(sessions.error.message);
+    const probe = await getSupabase().rpc("issue_alternate_story_flow", {
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_source_session_id: "0".repeat(32),
+      p_source_artifact_id: "0".repeat(32),
+      p_token_hash: "0".repeat(64),
+      p_policy_version: "alternate-story-v1-2026-07",
+      p_allow_create: false,
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const data = probe.data as { status?: unknown } | null;
+    const ok = data?.status === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? `context columns and flow RPC reachable (${flows} bounded row(s))`
+        : "alternate issue RPC accepted a nonexistent owned story",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0009`,
+    };
+  }
+}
+
+async function checkTelemetrySchema(): Promise<Step> {
+  const name = "privacy-safe telemetry schemas installed";
+  try {
+    const productEvents = await tableCount("product_events");
+    const generationAttempts = await tableCount("generation_attempts");
+    const productProjection = await getSupabase()
+      .from("product_events")
+      .select(
+        "event_id,schema_version,flow_id,event_name,latency_bucket,error_class,occurred_at,expires_at",
+      )
+      .limit(1);
+    if (productProjection.error) throw new Error(productProjection.error.message);
+    const attemptProjection = await getSupabase()
+      .from("generation_attempts")
+      .select(
+        "attempt_id,schema_version,operation,recipe_id,provider,outcome,latency_bucket,cost_micros,occurred_at,expires_at",
+      )
+      .limit(1);
+    if (attemptProjection.error) throw new Error(attemptProjection.error.message);
+    return {
+      name,
+      ok: true,
+      detail: `typed tables reachable (${productEvents} product event(s), ${generationAttempts} reduced attempt(s))`,
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0010`,
+    };
+  }
+}
+
+async function checkTelemetryLifecycleSchema(): Promise<Step> {
+  const name = "transactional telemetry lifecycle RPCs installed";
+  try {
+    const userId = "00000000-0000-0000-0000-000000000000";
+    const rootSessionId = "0".repeat(32);
+    const flowId = createTelemetryFlowId();
+    const registerValidation = await getSupabase().rpc(
+      "register_telemetry_flow_v1",
+      {
+        p_flow_id: "invalid",
+        p_expires_at: new Date(Date.now() + 86_400_000).toISOString(),
+      },
+    );
+    requireRpcValidationError("flow registration", registerValidation.error);
+    const revokeValidation = await getSupabase().rpc(
+      "revoke_telemetry_flow_v1",
+      {
+        p_flow_id: "invalid",
+        p_user_id: userId,
+      },
+    );
+    requireRpcValidationError("flow revocation", revokeValidation.error);
+    const captureValidation = await getSupabase().rpc(
+      "capture_product_event_v1",
+      {
+        p_event_id: "invalid",
+        p_schema_version: "product-event-v1-2026-07",
+        p_flow_id: null,
+        p_event_name: "intake_started",
+      },
+    );
+    requireRpcValidationError("typed event capture", captureValidation.error);
+    const outboxClaimValidation = await getSupabase().rpc(
+      "claim_product_event_outbox_v1",
+      {
+        p_lease_id: "invalid",
+        p_limit: 1,
+      },
+    );
+    requireRpcValidationError(
+      "outbox claim",
+      outboxClaimValidation.error,
+    );
+    const byRoot = await getSupabase().rpc("resolve_owned_telemetry_flow_v1", {
+      p_user_id: userId,
+      p_root_session_id: rootSessionId,
+    });
+    if (byRoot.error) throw new Error(byRoot.error.message);
+    const byFlow = await getSupabase().rpc("resolve_owned_telemetry_root_v1", {
+      p_user_id: userId,
+      p_flow_id: flowId,
+    });
+    if (byFlow.error) throw new Error(byFlow.error.message);
+    const claim = await getSupabase().rpc("claim_telemetry_flow_owner_v1", {
+      p_flow_id: flowId,
+      p_user_id: userId,
+    });
+    if (claim.error) throw new Error(claim.error.message);
+    const ack = await getSupabase().rpc("ack_product_event_outbox_v1", {
+      p_event_id: createTelemetryEventId(),
+      p_lease_id: createTelemetryOutboxLeaseId(),
+    });
+    if (ack.error) throw new Error(ack.error.message);
+    const nack = await getSupabase().rpc("nack_product_event_outbox_v1", {
+      p_event_id: createTelemetryEventId(),
+      p_lease_id: createTelemetryOutboxLeaseId(),
+      p_error_class: "unknown",
+    });
+    if (nack.error) throw new Error(nack.error.message);
+    const v3 = await getSupabase().rpc("create_story_session_v3", {
+      p_session_id: rootSessionId,
+      p_user_id: userId,
+      p_figure_key: "probe",
+      p_stage_id: "probe",
+      p_framing: "partial",
+      p_age: 22,
+      p_feeling: "non-mutating lifecycle probe",
+      p_story_request_context: {},
+      p_match_recipe: {},
+      p_artifact: {},
+      p_telemetry_flow_id: flowId,
+    });
+    if (v3.error) throw new Error(v3.error.message);
+    const v3Data = v3.data as { status?: unknown } | null;
+    const ok =
+      byRoot.data === null &&
+      byFlow.data === null &&
+      claim.data === "not_found" &&
+      ack.data === "not_found" &&
+      nack.data === "not_found" &&
+      v3Data?.status === "flow_not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "all lifecycle/capture/outbox signatures and service-role grants are reachable without writes"
+        : "a nonexistent lifecycle probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0011` };
+  }
+}
+
+async function checkMatchTelemetryProducerSchema(): Promise<Step> {
+  const name = "transactional match telemetry producer RPCs installed";
+  try {
+    const userId = "00000000-0000-0000-0000-000000000000";
+    const invalidEventId = "invalid";
+    const schemaVersion = "product-event-v1-2026-07";
+    const limiter = await getSupabase().rpc("consume_match_rate_limit_v2", {
+      p_user_key: `u:${userId}`,
+      p_ip_key: `ip:${"0".repeat(64)}`,
+      p_user_hour_max: 5,
+      p_user_day_max: 30,
+      p_ip_hour_max: 15,
+      p_ip_day_max: 60,
+      p_event_id: invalidEventId,
+      p_schema_version: schemaVersion,
+    });
+    requireRpcValidationError("match limiter telemetry", limiter.error);
+
+    const recovery = await getSupabase().rpc(
+      "issue_match_recovery_flow_v2",
+      {
+        p_token_hash: "0".repeat(64),
+        p_user_id: userId,
+        p_input_hash: "0".repeat(64),
+        p_purpose: "clarification",
+        p_expires_at: new Date(Date.now() + 60_000).toISOString(),
+        p_telemetry_flow_id: "invalid",
+        p_match_event_id: invalidEventId,
+        p_clarification_event_id: invalidEventId,
+        p_schema_version: schemaVersion,
+        p_recipe_id: "probe",
+        p_confidence_bucket: "low",
+        p_match_path: "not_run",
+        p_age_fallback: false,
+        p_boundary_outcome: "not_set",
+      },
+    );
+    requireRpcValidationError("match recovery telemetry", recovery.error);
+
+    const session = await getSupabase().rpc("create_story_session_v4", {
+      p_session_id: "0".repeat(32),
+      p_user_id: userId,
+      p_figure_key: "probe",
+      p_stage_id: "probe",
+      p_framing: "partial",
+      p_age: 22,
+      p_feeling: "non-mutating producer probe",
+      p_story_request_context: {},
+      p_match_recipe: {},
+      p_artifact: {},
+      p_telemetry_flow_id: "invalid",
+      p_artifact_event_id: invalidEventId,
+      p_telemetry_schema_version: schemaVersion,
+    });
+    requireRpcValidationError("initial artifact telemetry", session.error);
+
+    return {
+      name,
+      ok: true,
+      detail: "rate-limit, recovery, and artifact producer signatures reject before any write",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0012` };
+  }
+}
+
+function requireRpcValidationError(
+  label: string,
+  error: { code?: string; message: string } | null,
+): void {
+  if (error?.code === "P0001") return;
+  throw new Error(
+    `${label} RPC signature/grant probe failed: ${error?.message ?? "expected a validation error"}`,
+  );
+}
+
 // Gate 3 — a crisis intake writes no session row (handleIntake returns before createSession).
 // The fixed ctx is safe in supabase mode: crisis short-circuits before the rate limiter and
 // the store, so this non-uuid user id never reaches Postgres.
@@ -87,7 +487,11 @@ async function checkCrisisPersistsNothing(): Promise<Step> {
         age: 22,
         feeling: "I want to kill myself",
       },
-      { userId: "check-db", ipHash: "check-db" },
+      {
+        userId: "check-db",
+        ipHash: "check-db",
+        telemetryFlowId: createTelemetryFlowId(),
+      },
     );
     const after = await _sessionCount();
 
@@ -132,10 +536,27 @@ async function main(): Promise<void> {
     console.log("FAIL  Supabase env missing (NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY).");
     process.exit(1);
   }
+  if (
+    !process.env.TELEMETRY_ID_SECRET ||
+    Buffer.byteLength(process.env.TELEMETRY_ID_SECRET.trim(), "utf8") < 32
+  ) {
+    console.log("");
+    console.log("FAIL  TELEMETRY_ID_SECRET must be a dedicated secret of at least 32 bytes.");
+    process.exit(1);
+  }
 
   const steps = [
     await checkSeeded(),
     await checkServingParity(),
+    await checkPublishedStorySpecs(),
+    await checkArtifactSchema(),
+    await checkMatchRecoverySchema(),
+    await checkHistoricalConcernSchema(),
+    await checkStoryFeedbackSchema(),
+    await checkAlternateStorySchema(),
+    await checkTelemetrySchema(),
+    await checkTelemetryLifecycleSchema(),
+    await checkMatchTelemetryProducerSchema(),
     await checkCrisisPersistsNothing(),
   ];
 

@@ -18,8 +18,10 @@ type Props = {
   chunkIndex: number;
   onComplete: (next: StoryAdvance) => void;
   // Fired once after the reader explicitly acknowledges the final passage.
-  // Separate channel from onComplete, whose contract excludes "end".
-  onEnd?: () => void;
+  // Separate channel from onComplete, whose contract excludes "end". Required:
+  // without a handler the acknowledged finish would have nowhere to go and the
+  // reader would be left on a dead button.
+  onEnd: () => void;
 };
 
 type FailureKind = "notfound" | "conflict" | "connection" | "generic";
@@ -42,6 +44,9 @@ export function StoryBeat({
   // so repeat clicks during the fade can't push the position past the ack'd
   // session position — the cause of the /api/beat 409.
   const [advancing, setAdvancing] = useState(false);
+  // The final passage was acknowledged. Hides Finish story so the closing text
+  // stands alone next to whatever the parent renders for the story's end.
+  const [ended, setEnded] = useState(false);
 
   // Ref so the streaming effect below doesn't list onEnd as a dependency — a parent
   // re-render handing in a fresh closure must not abort and restart the stream.
@@ -81,6 +86,7 @@ export function StoryBeat({
     setFailure(null);
     setNextStep(null);
     setAdvancing(false);
+    setEnded(false);
 
     const controller = new AbortController();
     let cancelled = false;
@@ -170,22 +176,23 @@ export function StoryBeat({
   async function handleAdvance() {
     if (advancing || nextStep === null || !revealComplete) return;
     setAdvancing(true);
-    const acknowledged = await acknowledgeBeat({
+    const result = await acknowledgeBeat({
       sessionId,
       beatIndex,
       chunkIndex,
       fallbackNext: nextStep,
     });
-    if (acknowledged === null) {
-      setFailure("conflict");
+    if (!result.ok) {
+      setFailure(result.failure);
       setAdvancing(false);
       return;
     }
-    if (acknowledged === "end") {
-      onEndRef.current?.();
+    if (result.next === "end") {
+      setEnded(true);
+      onEndRef.current();
       return;
     }
-    onComplete(acknowledged);
+    onComplete(result.next);
   }
 
   return (
@@ -218,7 +225,7 @@ export function StoryBeat({
 
       {/* Progress changes only after the complete passage is visible and the
           reader deliberately acknowledges it. */}
-      {!failure && revealComplete && nextStep !== null ? (
+      {!failure && !ended && revealComplete && nextStep !== null ? (
         <button
           type="button"
           onClick={handleAdvance}
@@ -288,13 +295,20 @@ type AcknowledgeBeatInput = {
   signal?: AbortSignal;
 };
 
+// Distinguishes why an ack failed so the reader sees the right recovery copy:
+// a dropped connection is not "we lost your place", and a 404 means the story
+// itself is gone, not the position.
+type AcknowledgeBeatResult =
+  | { ok: true; next: StoryAdvance }
+  | { ok: false; failure: FailureKind };
+
 async function acknowledgeBeat({
   sessionId,
   beatIndex,
   chunkIndex,
   fallbackNext,
   signal,
-}: AcknowledgeBeatInput): Promise<StoryAdvance | null> {
+}: AcknowledgeBeatInput): Promise<AcknowledgeBeatResult> {
   let response: Response;
   try {
     response = await fetch("/api/beat/ack", {
@@ -304,23 +318,28 @@ async function acknowledgeBeat({
       signal,
     });
   } catch {
-    return null;
+    return { ok: false, failure: "connection" };
   }
 
-  if (!response.ok) return null;
+  if (!response.ok) {
+    return { ok: false, failure: failureFromStatus(response.status) };
+  }
 
   let body: unknown;
   try {
     body = await response.json();
   } catch {
-    return fallbackNext;
+    return { ok: true, next: fallbackNext };
   }
 
   if (body !== null && typeof body === "object" && "next" in body) {
-    return parseNextStep((body as { next: unknown }).next, fallbackNext);
+    return {
+      ok: true,
+      next: parseNextStep((body as { next: unknown }).next, fallbackNext),
+    };
   }
 
-  return fallbackNext;
+  return { ok: true, next: fallbackNext };
 }
 
 function parseNextStep(value: unknown, fallback: StoryAdvance = "end"): StoryAdvance {

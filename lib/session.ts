@@ -4,7 +4,6 @@ import type {
   AcknowledgeSessionPositionResult,
   CreateSessionInput,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { memorySessionStore } from "./session-store-memory";
@@ -85,13 +84,6 @@ export async function getOwnedSession(
 // the authenticated user id only.
 export function listSessionsByUser(userId: string): Promise<Session[]> {
   return resolveStore().listSessionsByUser(userId);
-}
-
-export function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  return resolveStore().updateSession(sessionId, patch);
 }
 
 export function acknowledgeOwnedSessionPosition(

@@ -39,9 +39,9 @@ import {
   getResonanceFeedbackPresentation,
 } from "../lib/resonance-feedback";
 import {
+  acknowledgeOwnedSessionPosition,
   createSession,
   getSession,
-  updateSession,
 } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { getOwnedStoryArtifact } from "../lib/story-artifacts";
@@ -49,6 +49,8 @@ import {
   storyProfileAllowed,
   type StoryBoundaries,
 } from "../lib/story-boundaries";
+import { deriveStoryPassageLayout } from "../lib/story-progress";
+import { prepareStoryProgressTelemetry } from "../lib/story-progress-telemetry";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import {
   createStoryRequestContext,
@@ -582,10 +584,11 @@ async function checkHappyConcurrentFlow(
     failures.push("capability refresh endpoint did not restore the ready alternate");
   }
 
-  await updateSession(alternateSessionId, {
-    nextBeatIndex: artifact?.beats.length ?? 7,
-    nextChunkIndex: 0,
-  });
+  await completeSession(
+    alternateSessionId,
+    LOCAL_DEV_USER_ID,
+    artifact?.beats.length ?? 7,
+  );
   const alternateFeedback = await requestFeedback({
     sessionId: alternateSessionId,
     verdict: "not_close",
@@ -1217,12 +1220,61 @@ async function makeRoot(options: {
     artifact,
   });
   if (options.completed !== false) {
-    await updateSession(sessionId, {
-      nextBeatIndex: artifact.beats.length,
-      nextChunkIndex: 0,
-    });
+    await completeSession(sessionId, userId, artifact.beats.length);
   }
   return { sessionId, artifact, stage };
+}
+
+// Advance a fixture session to the end of its story through the same atomic
+// compare-and-swap the reader uses. Artifact-backed sessions only accept the
+// single legal next position derived from the artifact, so the fixture walks
+// passage by passage instead of jumping to the end.
+async function completeSession(
+  sessionId: string,
+  userId: string,
+  beatCount: number,
+): Promise<void> {
+  for (;;) {
+    const session = await getSession(sessionId);
+    if (!session) throw new Error(`fixture session ${sessionId} not found`);
+    if (session.nextBeatIndex >= beatCount) return;
+    if (!session.storyArtifactId) {
+      throw new Error(`fixture session ${sessionId} has no story artifact`);
+    }
+    const artifact = await getOwnedStoryArtifact(
+      session.storyArtifactId,
+      userId,
+      sessionId,
+    );
+    if (!artifact) {
+      throw new Error(`fixture artifact for ${sessionId} was unavailable`);
+    }
+    const layout = deriveStoryPassageLayout(artifact.beats, {
+      beatIndex: session.nextBeatIndex,
+      chunkIndex: session.nextChunkIndex,
+    });
+    if (!layout) {
+      throw new Error(`fixture session ${sessionId} has an invalid position`);
+    }
+    const telemetry = await prepareStoryProgressTelemetry({
+      session,
+      userId,
+      layout,
+    });
+    const result = await acknowledgeOwnedSessionPosition({
+      sessionId,
+      userId,
+      storyArtifactId: session.storyArtifactId,
+      telemetry,
+      expectedBeatIndex: session.nextBeatIndex,
+      expectedChunkIndex: session.nextChunkIndex,
+      nextBeatIndex: layout.nextBeatIndex,
+      nextChunkIndex: layout.nextChunkIndex,
+    });
+    if (result !== "advanced" && result !== "already_advanced") {
+      throw new Error(`could not complete fixture session ${sessionId}: ${result}`);
+    }
+  }
 }
 
 function chooseNonRejectionSource(): FigureStageRow {

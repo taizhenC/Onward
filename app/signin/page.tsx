@@ -47,6 +47,8 @@ export default async function SignInPage({
               {index > 0 ? " · " : null}
               <a
                 href={resource.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-[var(--color-ink-soft)] underline underline-offset-2"
               >
                 {resource.region}: {resource.action}

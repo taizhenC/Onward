@@ -5,7 +5,6 @@ import { getAuthUserId } from "@/lib/auth";
 import { listSessionsByUser } from "@/lib/session";
 import { getStoryPlaybackBeforeDeadline } from "@/lib/story-playback-deadline";
 import { SignOutButton } from "@/components/SignOutButton";
-import { SetPasswordForm } from "@/components/SetPasswordForm";
 import { NavigationStatus } from "@/components/NavigationStatus";
 
 export const runtime = "nodejs";
@@ -70,7 +69,15 @@ export default async function StoriesPage({ searchParams }: Props) {
       <div className="space-y-12">
         <header className="space-y-3 pb-6 border-b border-[var(--color-ink-soft)]/30 flex items-baseline justify-between">
           <h1 className="text-3xl">Your stories</h1>
-          <SignOutButton />
+          <div className="flex flex-wrap items-center gap-5">
+            <Link
+              href="/account"
+              className="font-ui inline-flex min-h-11 items-center text-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            >
+              Account
+            </Link>
+            <SignOutButton />
+          </div>
         </header>
 
         {query.deletion === "complete" ? (
@@ -152,8 +159,6 @@ export default async function StoriesPage({ searchParams }: Props) {
             Begin another
           </Link>
         </footer>
-
-        <SetPasswordForm />
       </div>
     </main>
   );

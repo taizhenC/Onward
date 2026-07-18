@@ -114,7 +114,7 @@ These are proposed go/no-go thresholds. Establish the baseline during private al
 - Zero persistence or provider calls for intercepted crisis inputs in integration tests.
 - Safety copy/resources reviewed and dated for the launch market.
 - Youth/age policy, terms, privacy, content rights, and non-clinical positioning reviewed for the initial market.
-- Story deletion, account deletion, guest TTL, disclosure TTL, derived-artifact retention, and event pruning pass end-to-end tests.
+- Story deletion, account deletion, guest TTL, disclosure TTL, derived-artifact retention, event pruning, and backup/PITR restore-deletion behavior pass end-to-end tests.
 - Privacy schema tests reject every forbidden raw/derived field and provider error object.
 
 ### UX and accessibility gate
@@ -219,7 +219,7 @@ Work packages:
 - **P0-09 [Bug Fix]** Implement explicit atomic acknowledgement and resume behavior.
 - **P0-10 [Feature]** Add resonance feedback and another-story recovery.
 - **P0-16 [UI/UX]** Apply shared design primitives and complete accessibility hardening.
-- **P0-14 [Feature]** Finish deletion, save consent, privacy page, and retention UI.
+- **P0-14 [Feature]** Finish save consent, derived-data classes, market-specific privacy notice, backup/restore deletion guarantees, and retention UI around the shipped active-database deletion controls.
 - **P0-17 [Feature]** Add optional emotional boundaries, reviewed content notes, and hard eligibility enforcement.
 
 Exit criteria:

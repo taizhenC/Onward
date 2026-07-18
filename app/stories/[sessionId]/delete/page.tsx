@@ -72,16 +72,27 @@ export default async function DeleteStoryPage({ params, searchParams }: Props) {
           </h2>
           <p className="leading-relaxed text-[var(--color-ink-soft)]">
             {isAlternate
-              ? "This permanently removes your saved copy of this alternate story, its reading place, and saved feedback. Your first story stays, and deleting this one does not make another alternate available."
-              : "This permanently removes your saved copy of this story, its reading place, private context, and saved feedback. Any alternate created from this story is removed too."}
+              ? "This hard-deletes from Onward's active database your saved copy of this alternate story, its reading place, and saved feedback. Your first story stays, and deleting this one does not make another alternate available."
+              : "This hard-deletes from Onward's active database your saved copy of this story, its reading place, private context, and saved feedback. Any alternate created from this story is removed too."}
           </p>
           <p className="leading-relaxed text-[var(--color-ink-soft)]">
-            This can&apos;t be undone. An unlinked record that deletion was
+            You cannot restore it in Onward. An unlinked record that deletion was
             requested or completed, and counts already combined into daily
-            totals, may remain for up to 30 days; neither contains your account,
-            session, or story ID. Historical concern reports stay with the shared
-            source and fact record, without your account or session ID, and
-            currently have no automatic expiry.
+            totals, follow a 30-day expiry schedule with physical removal by
+            daily cleanup; neither contains your account, session, or story ID.
+            Historical concern reports stay with shared historical-library
+            source, story-template, and fact identifiers, but contain no
+            account, session, saved-story, artifact, disclosure, or
+            generated-prose identifier and currently have no automatic expiry.
+            Provider processing and
+            infrastructure backups follow separate retention schedules. See the{" "}
+            <Link
+              href="/privacy#retention-after-deletion"
+              className="text-[var(--color-ink)] underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            >
+              privacy guide
+            </Link>
+            .
           </p>
         </section>
 
@@ -100,7 +111,7 @@ export default async function DeleteStoryPage({ params, searchParams }: Props) {
               type="submit"
               className="font-ui min-h-11 border border-[var(--color-accent)] px-5 py-3 text-sm uppercase tracking-wider text-[var(--color-accent)] transition-colors hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
             >
-              Permanently delete story
+              Delete story now
             </button>
           </form>
         </div>

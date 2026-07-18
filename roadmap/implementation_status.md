@@ -29,7 +29,7 @@
 | P0-11 | In progress | The exact 22-event product union and unlinkable attempt stream reject sensitive/unbounded shapes and reduce failures to closed buckets. Purpose-separated HMAC IDs are retry-stable; signed flows have an immutable 30-day lifetime. Migrations `0011`-`0013` implement the owner/root lifecycle, leased outbox, initial intake/match/recovery/artifact producers, and transactional passage/completion capture. Migration `0014` commits bounded feedback with a persisted-verdict event and no miss reason. Migration `0015` captures `alternate_requested` only after a durable claim. Migration `0016` adds alternate match calibration and atomically derives the alternate artifact denominator plus first-write-wins terminal outcomes from authoritative state. Fixed entry endpoints capture CTA and first interaction without a tracking SDK. Three exact reader-visibility endpoints capture match-to-preface and Continue-to-passage latency plus first source opening. The match boundary proves story-flow anonymous authentication with a short-lived HttpOnly flow challenge plus verified fresh AMR before owner-scoped singleton capture. Eligible initial-story preparation owns one bounded `flow_failed:composition` occurrence, while raw errors and expected recovery states remain silent. Migration `0017` adds a pure-Postgres, ID-only dispatcher that locks the source before its pointer, atomically folds it into identifier-free UTC-day marginal counts, and then marks delivery. Dispatch defaults off behind a dedicated database control. A hardened 28-day/`k>=10` daily-read candidate withholds immature, missing-pointer, unsettled, and complementary-count-unsafe cells but has no caller grant; rollups expire within 30 days. Queue health exposes the control state, counts, and a closed oldest-actionable age bucket, while schema health verifies effective grants, private helpers, forced RLS, and exact cron definitions with booleans only. Raw external delivery remains prohibited. Exact retries reconcile or deduplicate by semantic unit; transaction-coupled capture conflicts roll back their domain transitions, while auth and failure observation are documented availability-first exceptions; and null/revoked flows preserve the product without fabricated telemetry. Memory mode mirrors producer transaction and privacy semantics. Crisis resources still return before the match route parses the flow, reads an auth challenge, or writes a crisis event. | Apply, check, explicitly enable, and exercise `0017` on real Postgres, including cron, RLS/grants, concurrent dispatch, lease recovery, deletion races, retention, and exhaustion. Complete dashboard privacy review before granting any read; add flow-linked 24-hour cohort and generation-attempt aggregates, dashboards, alerts/runbooks, named on-call ownership, and live-data proof. Marginal rollups alone cannot satisfy every release metric. |
 | P0-12 | External gate | Deterministic pre-provider gate; versioned 39-case corpus passes 26/26 critical positives; resource actions are region-specific, linked, and dated; crisis persistence/kill-switch behavior is smoke-tested; the route returns resources before flow/auth/age validation, the client reaches that route before anonymous sign-in, and intake exposes an always-available reviewed-resource action without requiring a valid age/disclosure. | Qualified safety review, launch-market approval, browser proof that crisis never invokes anonymous sign-in, and a deliberate policy for context/negation over-triggers remain required before `Complete`. |
 | P0-13 | In progress | Approved recipe ID, keyword default, and fail-closed recipe identity are implemented. Production rejects every non-keyword/unknown retrieval value; story creation carries the matcher's actual path and rejects challengers before persistence; match/artifact telemetry and the v4 SQL boundary require the approved recipe ID, retrieval mode, and match-config version. Eval-only `matchWithDebug` still exercises FacetsRAG. Each immutable artifact pins the complete match recipe plus analyzer, match-recovery, composer, validator, boundary, hybrid-plan, and template-policy versions. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
-| P0-14 | Partial | Guest cleanup and root-only disclosure/context expiry exist. Artifacts, feedback, recovery, and alternate state are owner-scoped and/or time-bounded. Concern submission is owner-authorized, but the resulting shared editorial record retains only curated identifiers and currently has no TTL. Migration `0011` adds the owner/root flow mapping and revocation substrate. Migration `0018` plus the paginated `/stories` confirmation flow now let an owner hard-delete any saved story without JavaScript or support: root deletion cascades its alternate, alternate deletion preserves the original and consumed tombstone, either scope transactionally retires the shared raw telemetry flow, and unknown/foreign targets remain indistinguishable. A short-lived owner/session-bound CSRF token and retry-stable unlinkable best-effort request/completion events protect and measure the action. Save and intake copy now state the six-hour guest, 60-day disclosure, provider-processing, and until-deletion story periods. | Add account deletion, a complete privacy page and account retention UI, durable save-state semantics, full derived-rationale/artifact retention classes, optional-note consent/encryption decision, real Postgres cascade/deadlock/grant tests, browser accessibility evidence, and market/youth review. |
+| P0-14 | Partial | Guest cleanup and root-only disclosure/context expiry exist. Artifacts, feedback, recovery, and alternate state are owner-scoped and/or time-bounded. Concern submission is owner-authorized, but the resulting shared editorial record retains only curated identifiers and currently has no TTL. Migration `0018` plus the paginated `/stories` flow let an owner hard-delete any saved story from the active database without JavaScript or support. Migration `0019` plus dedicated `/account` and `/account/delete` surfaces now let a verified guest or recently reauthenticated permanent owner hard-delete the auth account and every FK-owned story/artifact/feedback/recovery/alternate/telemetry record. Purpose-bound ten-minute forms, same-device email-link continuation, a generated rate-limit ownership FK, retry/existence reconciliation, a locked guest-eligibility recheck, receipt-gated one-view success, and unlinkable best-effort request/completion events close the active-data account boundary. A public plain-language privacy guide now distinguishes the 60-day situation/context deadline from age/story retention and discloses provider, backup, shared-editorial, security, and unlinkable residuals. | Define durable save-state semantics and full derived-rationale/artifact retention classes; decide optional-note consent/encryption; prove real Postgres cascade/deadlock/limiter/grant/cron behavior and supported-browser accessibility/same/cross-device reauth. Add a backup/PITR lifecycle plus restore-time deletion replay or a bounded non-restoration guarantee, complete provider/infrastructure retention review, convert the preview guide into a market-specific legal notice with a named controller/contact and rights process, and complete market/youth review. |
 | P0-15 | In progress | Strict non-interactive ESLint, isolated production build, deterministic fonts, CI, approved-recipe fail-closed behavior, story kill switch, independent hybrid-composer flag, four-path provider health check, and migrations for immutable StorySpecs/StoryArtifacts, atomic pre-story recovery, current provenance, bounded editorial concerns, immutable completed-story feedback, root-only request context, and leased/atomic alternate finalization exist. All persistence/auth boundaries use one parser that rejects memory in served production even when the build-only override is copied. IP-hash/recovery/alternate secrets share a minimum 32-byte fail-closed parser. The story kill switch blocks new capability issuance/claims without hiding terminal ready results. Migration `0009` is deploy-before-app compatible; destructive removal of the legacy RPC is outside the automatic migration stream until the rollback window closes. | Complete route/integration matrix, real migration preflight/rollback and atomic-RPC tests, broader health/readiness checks, remaining kill switches, and green remote CI evidence. |
 | P0-16 | Partial | Landing/auth typography, reduced motion, several keyboard affordances, native boundary/clarification/source/report/feedback controls, focused no-eligible/no-close and feedback-reason states, visible partial framing, labeled content notes, safe external-link treatment, and announced report/feedback outcomes exist. | Shared primitives, all-flow copy system, and complete keyboard/screen-reader/zoom/manual usability audit. |
 | P0-17 | In progress | Strict optional boundary input, reviewed StorySpec catalog, hard pre-retrieval intensity/topic filtering, age-fallback protection, artifact-level `boundary_violation`, identical canonical-fallback enforcement, honest no-eligible recovery, native accessible controls, and reviewed-only content-note projection are implemented. A rejected completed story can now request one alternate without re-entering disclosure; the exact stored boundaries are applied before every retrieval/fallback path and rechecked by composition, memory persistence, and SQL finalization. | Replace inferred draft profiles with human-reviewed launch profiles; add an active-reader control to change boundaries before requesting recovery; complete keyboard, screen-reader, reflow, and safety/editorial review before `Complete`. |
@@ -624,8 +624,64 @@ apply `0018` schema-first in staging; run two-connection root-delete versus
 alternate-progress/feedback deadlock tests plus cascade, revocation, RLS, and
 effective-grant checks; then verify no-JavaScript submission, expiry recovery,
 screen-reader announcements, mobile reflow, touch/keyboard behavior, and
-effective no-store/framing headers in supported browsers. P0-14 remains `Partial` until those gates and
-account deletion plus the complete privacy/retention surface are finished.
+effective no-store/framing headers in supported browsers. Account deletion is
+implemented in the next stacked slice; P0-14 remains `Partial` until both
+deletion paths clear those gates and the complete privacy/retention surface is
+finished.
+
+### Stacked branch: `roadmap-privacy-account-deletion`
+
+Migration `0019_owned_account_deletion.sql` adds the service-only hard account
+authority. It takes an account advisory lock, every owned root advisory lock in
+stable order, all owned session locks, then every owned telemetry-flow lock
+before locking `auth.users`, optionally rechecking guest eligibility, explicitly
+retiring flows, and deleting the auth owner. Auth cascades remove
+sessions, artifacts, feedback, recovery and alternate state. `rate_limits` gains
+a generated nullable owner UUID with `ON DELETE CASCADE` plus a partial index,
+so a limiter UPSERT
+either commits before deletion and is removed or loses its FK race after the
+owner is gone. Scheduled anonymous cleanup now calls the same private boundary
+with one fixed cutoff; that boundary rechecks guest status, creation time, and
+saved progress only after all account/root/session/flow/auth locks are held. A
+queued candidate that confirmed an email or saved newer progress is skipped.
+Flow-owner claim and v2/v3/v4 initial-story RPCs take the same account advisory
+lock before flow/auth/session work; their renamed implementations are revoked,
+and an explicit PostgREST schema notification prevents a stale callable map.
+
+The dedicated `/account` surface is independent of story-list/content loading.
+Permanent accounts need a verified password/OTP AMR no older than ten minutes;
+stale sessions can send a native-form one-time link to the server-known email,
+with a signed HttpOnly same-device continuation through `/auth/confirm`. Guests
+can delete immediately because they have no separate reauthentication channel
+and already auto-expire. The final native form never accepts a user ID, requires
+an owner-bound purpose-specific token plus explicit acknowledgement, rechecks
+auth freshness, commits deletion before telemetry/sign-out, and redirects with
+a two-minute account-ID-free signed receipt. The success page verifies that
+receipt and the absence of another active account; edge middleware consumes the
+cookie in the response serving its first view, so the public URL cannot make a
+false deletion claim. Copy names the age/story distinction, shared
+historical concerns, provider terms, revocation tombstones, and unlinkable
+counts without promising provider or backup erasure. `/privacy` exposes the
+implemented lifecycle, provider categories, cleanup semantics, active-database
+deletion boundary, and preview/youth/legal gaps in plain language. Destructive
+and status text clears AA contrast, and status focus uses valid block markup.
+
+`npm run check-account-deletion`, lint, typecheck, and the structural database
+probe cover token purpose/owner/skew/expiry, one-view success receipts, AMR allowlisting, guest/stale/signed-
+out route behavior, exact same-origin body/PRG handling, memory graph cleanup,
+unbound flow revocation, recovery/rate-key deletion, post-confirmation bounded
+telemetry, RPC retry/Auth reconciliation, SQL lock/FK/grant/locked guest recheck,
+account-serialized writers, cache headers, semantic status markup,
+privacy-guide presence, and residual-copy
+canaries. This is not real-Postgres or deployed-
+browser evidence. Before release, apply `0019` schema-first and run two-connection
+account deletion against initial creation, progress, feedback, alternate claim/
+finalize, recovery issue/consume, limiter UPSERT, flow capture, story deletion,
+and dispatcher settlement. Verify FK cascades, old-JWT rejection, guest cron,
+RLS/grants, native no-JavaScript submission, same/cross-device email links,
+screen-reader focus, mobile/reflow, and deployed no-store/framing headers. Before
+an unqualified permanent-deletion promise, verify provider/backups and implement
+a restore-time deletion-replay strategy or prove deleted rows cannot be restored.
 
 ## Completion audit rule
 

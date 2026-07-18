@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
 
 // Set/change a password from the profile (/stories). The user is already signed
@@ -12,12 +12,18 @@ export function SetPasswordForm() {
   const [password, setPassword] = useState("");
   const [mode, setMode] = useState<Mode>("idle");
   const [error, setError] = useState<string | null>(null);
+  const feedbackRef = useRef<HTMLParagraphElement>(null);
   // Render nothing until mounted so server + first client render match (hardens the
   // browser-only auth gate below against hydration mismatch).
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
   }, []);
+  useEffect(() => {
+    if (mode === "saved" || error) {
+      feedbackRef.current?.focus({ preventScroll: true });
+    }
+  }, [mode, error]);
 
   if (!mounted) return null;
 
@@ -64,31 +70,47 @@ export function SetPasswordForm() {
       </div>
 
       {mode === "saved" ? (
-        <p className="font-ui text-sm text-[var(--color-ink-soft)]">
+        <p
+          ref={feedbackRef}
+          role="status"
+          tabIndex={-1}
+          className="font-ui text-sm text-[var(--color-ink-soft)] outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-4"
+        >
           Password saved. You can use it next time you sign in.
         </p>
       ) : null}
       {error ? (
-        <p className="font-ui text-sm text-[var(--color-accent)]">{error}</p>
+        <p
+          ref={feedbackRef}
+          id="password-save-error"
+          role="alert"
+          tabIndex={-1}
+          className="font-ui text-sm text-[var(--color-accent)] outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-4"
+        >
+          {error}
+        </p>
       ) : null}
 
       <form onSubmit={handleSubmit} className="flex items-end gap-4 flex-wrap">
         <label className="block grow space-y-2">
-          <span className="sr-only">New password</span>
+          <span className="font-ui block text-sm text-[var(--color-ink-soft)]">
+            New password
+          </span>
           <input
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             disabled={mode === "saving"}
             autoComplete="new-password"
-            placeholder="New password (6+ characters)"
-            className="block w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2 font-ui text-sm"
+            placeholder="At least 6 characters"
+            aria-describedby={error ? "password-save-error" : undefined}
+            className="font-ui block min-h-11 w-full border-b border-[var(--color-ink-soft)] bg-transparent px-1 py-2 text-sm focus:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
           />
         </label>
         <button
           type="submit"
           disabled={!valid || mode === "saving"}
-          className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-5 py-2 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="font-ui min-h-11 text-sm uppercase tracking-wider border border-[var(--color-ink)] px-5 py-2 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           {mode === "saving" ? "Saving…" : "Save password"}
         </button>

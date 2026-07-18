@@ -503,7 +503,9 @@ function checkStaticContracts(failures: string[]): void {
     !listPage.includes("Older stories") ||
     !confirmPage.includes('method="post"') ||
     !confirmPage.includes('name="csrfToken"') ||
-    !confirmPage.includes("Permanently delete story") ||
+    !confirmPage.includes("Delete story now") ||
+    !confirmPage.includes("hard-deletes from Onward's active database") ||
+    !confirmPage.includes('/privacy#retention-after-deletion') ||
     !confirmPage.includes('kind="alert"') ||
     confirmPage.includes("getStoryPlayback") ||
     !confirmPage.includes("formatStoryTimestamp(session.createdAt)") ||

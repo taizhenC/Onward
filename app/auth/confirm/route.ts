@@ -1,6 +1,11 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import type { NextRequest } from "next/server";
+import {
+  ACCOUNT_REAUTH_CONTINUATION_COOKIE,
+  accountReauthContinuationTokenDisposition,
+} from "@/lib/account-deletion-token";
 import { createSupabaseServer } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
@@ -22,11 +27,33 @@ export async function GET(request: NextRequest) {
 
   if (tokenHash && type) {
     const supabase = await createSupabaseServer();
-    const { error } = await supabase.auth.verifyOtp({
+    const { data, error } = await supabase.auth.verifyOtp({
       type,
       token_hash: tokenHash,
     });
-    if (!error) redirect(next);
+    if (!error) {
+      const cookieStore = await cookies();
+      const continuation = cookieStore.get(
+        ACCOUNT_REAUTH_CONTINUATION_COOKIE,
+      )?.value;
+      cookieStore.set(ACCOUNT_REAUTH_CONTINUATION_COOKIE, "", {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 0,
+        path: "/auth/confirm",
+      });
+      if (
+        data.user &&
+        accountReauthContinuationTokenDisposition(
+          continuation,
+          data.user.id,
+        ) === "valid"
+      ) {
+        redirect("/account/delete");
+      }
+      redirect(next);
+    }
   }
 
   // Expired, already used, or malformed link — /signin explains and offers a new one.

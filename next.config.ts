@@ -34,6 +34,24 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        source: "/account/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "private, no-store, max-age=0",
+          },
+        ],
+      },
+      {
+        source: "/account-deleted",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "private, no-store, max-age=0",
+          },
+        ],
+      },
     ];
   },
 };

@@ -15,33 +15,51 @@ export async function refreshAuthSession(
 ): Promise<NextResponse> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anonKey) return NextResponse.next(); // memory/offline dev: no-op
-
   let response = NextResponse.next({ request });
 
-  const supabase = createServerClient(url, anonKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
+  if (url && anonKey) {
+    const supabase = createServerClient(url, anonKey, {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          // Write-through BOTH sides: the mutated request (so the downstream handler
+          // in this same navigation sees fresh tokens) and a recreated response (so
+          // the browser persists them). Dropping either silently signs users out.
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value),
+          );
+          response = NextResponse.next({ request });
+          cookiesToSet.forEach(({ name, value, options }) =>
+            response.cookies.set(name, value, options),
+          );
+        },
       },
-      setAll(cookiesToSet) {
-        // Write-through BOTH sides: the mutated request (so the downstream handler
-        // in this same navigation sees fresh tokens) and a recreated response (so
-        // the browser persists them). Dropping either silently signs users out.
-        cookiesToSet.forEach(({ name, value }) =>
-          request.cookies.set(name, value),
-        );
-        response = NextResponse.next({ request });
-        cookiesToSet.forEach(({ name, value, options }) =>
-          response.cookies.set(name, value, options),
-        );
-      },
-    },
-  });
+    });
 
   // This call IS the refresh — it must run immediately after client creation.
   // No gating, no redirects here; pages and routes 404/401 themselves.
-  await supabase.auth.getUser();
+    await supabase.auth.getUser();
+  }
+
+  // Deliberately duplicated instead of importing the Node-only token module:
+  // this edge boundary may import nothing beyond Next and @supabase/ssr. Keep
+  // the name synchronized with ACCOUNT_DELETION_SUCCESS_COOKIE. The downstream
+  // Node page still sees and verifies the request cookie, while this response
+  // consumes it after the first render (also in memory/offline development).
+  if (
+    request.nextUrl.pathname === "/account-deleted" &&
+    request.cookies.has("onward_account_delete_success")
+  ) {
+    response.cookies.set("onward_account_delete_success", "", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 0,
+      path: "/account-deleted",
+    });
+  }
 
   return response;
 }

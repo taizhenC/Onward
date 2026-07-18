@@ -387,7 +387,7 @@
 
 ## P0-14 — [Feature] Story deletion, account deletion, consent, and retention controls
 
-**Problem:** The app now lets owners permanently delete an individual story and explains the guest/disclosure/story periods at save, but account deletion, the full retention surface, and the durable meaning of “Keep this story” remain incomplete.
+**Problem:** The app now lets owners hard-delete an individual story or the whole account from the active database, publishes a plain-language preview privacy guide, and explains the guest/disclosure/story periods at save. Durable save semantics, legal/provider/backup review, restore-time deletion handling, and real cascade proof remain incomplete.
 
 **Scope**
 
@@ -404,6 +404,7 @@
 - Database cascades and scheduled jobs are tested against every data class.
 - Saved-story behavior after raw-disclosure expiry is coherent and covered by tests.
 - Product copy, schema, cron jobs, provider retention settings, and event retention agree.
+- Backup/PITR restores cannot silently resurrect deleted owner data: either replay a durable privacy-safe deletion ledger during restore or prove a bounded backup policy that never returns deleted rows to service.
 
 **Dependencies:** P0-03 artifact model and P0-11 event model.  
 **Relative effort:** Large.  

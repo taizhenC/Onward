@@ -12,19 +12,19 @@ export function NavigationStatus({
   kind?: "status" | "alert";
   className?: string;
 }) {
-  const ref = useRef<HTMLParagraphElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     ref.current?.focus({ preventScroll: true });
   }, []);
 
   return (
-    <p
+    <div
       ref={ref}
       role={kind}
       tabIndex={-1}
       className={`${className ?? ""} outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)] focus-visible:ring-offset-4`}
     >
       {children}
-    </p>
+    </div>
   );
 }

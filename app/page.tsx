@@ -258,13 +258,19 @@ export default function Home() {
               </span>
             ))}
           </p>
-          <div className="flex items-baseline justify-between border-t border-[var(--color-ink)]/10 pt-[18px]">
+          <div className="flex flex-wrap items-baseline justify-between gap-4 border-t border-[var(--color-ink)]/10 pt-[18px]">
             <span className="text-[17px] font-semibold text-[var(--color-ink)]">
               Onward
             </span>
-            <span className="font-ui text-[11px] tracking-[0.06em] text-[#8a8378]">
-              Read one true story
-            </span>
+            <div className="flex items-center gap-5 font-ui text-[11px] tracking-[0.06em] text-[#8a8378]">
+              <Link
+                href="/privacy"
+                className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+              >
+                Privacy
+              </Link>
+              <span>Read one true story</span>
+            </div>
           </div>
         </div>
       </footer>

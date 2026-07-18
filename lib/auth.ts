@@ -26,6 +26,20 @@ export type AuthUserContext = Readonly<{
   authenticationMethods: ReadonlyArray<VerifiedAuthenticationMethod>;
 }>;
 
+export type AccountAuthContext = Readonly<{
+  userId: string;
+  isAnonymous: boolean;
+  email: string | null;
+  authenticationMethods: ReadonlyArray<VerifiedAuthenticationMethod>;
+  authenticationProofAvailable: boolean;
+}>;
+
+export type AccountDeletionAuthenticationStatus =
+  | "guest"
+  | "fresh"
+  | "stale"
+  | "unavailable";
+
 declare global {
   var __onwardMemoryAuthContextOverride:
     | AuthUserContext
@@ -83,6 +97,104 @@ export async function getAuthUserContext(): Promise<AuthUserContext | null> {
     isAnonymous: data.user.is_anonymous === true,
     authenticationMethods,
   });
+}
+
+// Account deletion needs more than ordinary ownership: permanent accounts must
+// show a recent allowlisted sign-in method, and an unavailable claims proof must
+// fail closed rather than look merely stale. Email is returned only to the
+// server-side reauthentication sender; it is never accepted from a form.
+export async function getAccountAuthContext(): Promise<AccountAuthContext | null> {
+  if (persistenceMode() === "memory") {
+    const context = memoryAuthUserContext();
+    return context
+      ? Object.freeze({
+          ...context,
+          email: null,
+          authenticationProofAvailable: true,
+        })
+      : null;
+  }
+
+  const { createSupabaseServer } = await import("./supabase/server");
+  const supabase = await createSupabaseServer();
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data.user) return null;
+
+  const isAnonymous = data.user.is_anonymous === true;
+  if (isAnonymous) {
+    return Object.freeze({
+      userId: data.user.id,
+      isAnonymous: true,
+      email: null,
+      authenticationMethods: Object.freeze([]),
+      authenticationProofAvailable: true,
+    });
+  }
+
+  try {
+    const { data: claimData, error: claimError } =
+      await supabase.auth.getClaims();
+    if (!claimError && claimData?.claims.sub === data.user.id) {
+      return Object.freeze({
+        userId: data.user.id,
+        isAnonymous: false,
+        email:
+          typeof data.user.email === "string" && data.user.email.length > 0
+            ? data.user.email
+            : null,
+        authenticationMethods: parseVerifiedAuthenticationMethods(
+          claimData.claims.amr,
+        ),
+        authenticationProofAvailable: true,
+      });
+    }
+  } catch {
+    // Fail closed below. Reauthentication cannot repair a claims outage.
+  }
+
+  return Object.freeze({
+    userId: data.user.id,
+    isAnonymous: false,
+    email:
+      typeof data.user.email === "string" && data.user.email.length > 0
+        ? data.user.email
+        : null,
+    authenticationMethods: Object.freeze([]),
+    authenticationProofAvailable: false,
+  });
+}
+
+export function accountDeletionAuthenticationStatus(
+  context: AccountAuthContext,
+  now = new Date(),
+): AccountDeletionAuthenticationStatus {
+  if (context.isAnonymous) return "guest";
+  if (!context.authenticationProofAvailable) return "unavailable";
+  const nowSeconds = Math.floor(now.getTime() / 1000);
+  const fresh = context.authenticationMethods.some(
+    (entry) =>
+      (entry.method === "password" || entry.method === "otp") &&
+      entry.timestamp >=
+        nowSeconds - ACCOUNT_DELETION_REAUTH_SECONDS -
+          AUTH_METHOD_CLOCK_SKEW_SECONDS &&
+      entry.timestamp <= nowSeconds + AUTH_METHOD_CLOCK_SKEW_SECONDS,
+  );
+  return fresh ? "fresh" : "stale";
+}
+
+export async function clearAuthSessionAfterAccountDeletion(): Promise<void> {
+  if (persistenceMode() === "memory") {
+    globalThis.__onwardMemoryAuthContextOverride = null;
+    return;
+  }
+  try {
+    const { createSupabaseServer } = await import("./supabase/server");
+    const supabase = await createSupabaseServer();
+    await supabase.auth.signOut({ scope: "local" });
+  } catch {
+    // The auth record is already gone. A stale cookie cannot authorize getUser()
+    // and middleware will clear/replace it on a later request.
+  }
 }
 
 export function hasFreshAnonymousAuthentication(
@@ -153,3 +265,4 @@ function memoryAuthUserContext(): AuthUserContext | null {
 }
 
 const AUTH_METHOD_CLOCK_SKEW_SECONDS = 30;
+const ACCOUNT_DELETION_REAUTH_SECONDS = 10 * 60;

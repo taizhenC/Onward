@@ -82,7 +82,7 @@ flowchart LR
 - Raw disclosure, derived copy, persisted story, feedback, and event retention are not modeled as explicit data classes in code.
 - The planned taint wrappers and string-hostile trace schema are documented but not implemented.
 - Safety regression, reviewed market resource configuration, and operational incident controls are missing.
-- Owner-scoped individual story deletion now exists through migration `0018`; account deletion and the complete retention/privacy surface remain absent.
+- Owner-scoped story and account deletion now exist through migrations `0018` and `0019`; the complete retention/privacy surface and real deployment proof remain absent.
 
 ## Target architecture
 
@@ -124,7 +124,7 @@ flowchart TD
 | Move acknowledgement to explicit Continue and make it atomic | P0 | [Bug Fix] | P0-09 | Corrects resume and concurrency semantics. |
 | Implement a closed telemetry schema | P0 | [Feature] | P0-11 | Enables learning without logging intimate text. |
 | Pin production retrieval to an approved manifest | P0 | [Bug Fix] | P0-13 | Prevents configuration drift from selecting a weaker matcher. |
-| Finish explicit retention classes and account deletion | P0 | [Feature] | P0-14 | Extends the shipped story-delete authority into the complete data lifecycle. |
+| Finish explicit retention classes around shipped story/account deletion | P0 | [Feature] | P0-14 | Extends both deletion authorities into a complete, reviewable data lifecycle. |
 | Enforce user-selected content boundaries before matching | P0 | [Feature] | P0-17 | A reader's explicit safety boundary must never be overridden by relevance scoring. |
 | Add facet projections only as a shadow challenger | P1 | [Refactor] | P1-01 | Retrieval sophistication must earn promotion through measured gains. |
 | Persist stable reading preferences only through explicit consent | P1 | [Feature] | P1-14 | Repeat utility does not justify silently retaining a psychological profile. |
@@ -568,6 +568,22 @@ retention, and atomic idempotency.
 | `historical_concern_reports` | StorySpec/fact ID and bounded issue reason | Curated identifiers | Current: no automatic TTL; define a bounded resolved-report audit period or explicitly approve indefinite editorial retention before launch |
 | `carry_forward_cards` | User-selected fact/line plus optional user-authored sentence | Raw sensitive user content | Saved until user deletion under explicit consent |
 | `user_story_preferences` | Opt-in length, distance, boundaries, and prior stage IDs | Sensitive preferences | Until consent withdrawal/account deletion |
+
+### Deletion and restore boundary
+
+Migrations `0018` and `0019` hard-delete owned rows from the active database,
+with deterministic root/session/flow locks and account-serialized initial-story
+writers protecting the active deletion boundary from concurrent resurrection,
+but the repository does not yet define how point-in-time recovery or provider
+backups preserve that privacy decision. The unlinkable deletion telemetry is
+deliberately incapable of identifying an account or story and therefore cannot
+serve as a restore ledger. Before an unqualified permanent-deletion promise,
+release engineering and privacy must choose and test one of two explicit
+postures: a separately protected, purpose-limited deletion ledger that is
+replayed before a restored database can serve traffic, or a provider-backed
+retention/non-restoration guarantee proving deleted rows cannot return to the
+active service. Provider logs and already-processed model/email requests remain
+outside the application transaction and require their own contractual review.
 
 ### Retention decision required before launch
 

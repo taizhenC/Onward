@@ -22,7 +22,7 @@ export function SignOutButton() {
       type="button"
       onClick={handleSignOut}
       disabled={signingOut}
-      className="font-ui text-sm text-[var(--color-ink-soft)] underline underline-offset-4 hover:text-[var(--color-ink)] disabled:opacity-30"
+      className="font-ui inline-flex min-h-11 items-center text-sm text-[var(--color-ink-soft)] underline underline-offset-4 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:opacity-30"
     >
       {signingOut ? "Signing out…" : "Sign out"}
     </button>

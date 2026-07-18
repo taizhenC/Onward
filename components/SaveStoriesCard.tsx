@@ -94,7 +94,7 @@ export function SaveStoriesCard() {
           This story is saved with your account.{" "}
           <Link
             href="/stories"
-            className="underline underline-offset-4 hover:text-[var(--color-ink)]"
+            className="underline underline-offset-4 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
           >
             See your stories
           </Link>
@@ -115,11 +115,14 @@ export function SaveStoriesCard() {
             Keep this story
           </p>
           <p className="leading-relaxed">
-            Right now you&apos;re anonymous. This story is automatically deleted
-            about six hours after your last activity. Add an email and the story
-            stays until you delete it from Your stories. What you wrote before
-            the story is removed after 60 days. A password is optional if
-            you&apos;d like to skip the email next time.
+            Right now you&apos;re using a temporary guest account. This guest
+            account and every story in it are deleted about six hours after the
+            latest story creation or saved reading progress in that account.
+            Add and confirm an email and the stories stay until you delete them
+            from Your stories. Daily cleanup removes what you wrote before a
+            story after its fixed 60-day deadline, unless deleting the guest
+            account, story, or account removes it earlier. A password is
+            optional if you&apos;d like to skip the email next time.
           </p>
           {emailExists ? (
             <p
@@ -128,7 +131,10 @@ export function SaveStoriesCard() {
               className="font-ui text-sm text-[var(--color-accent)]"
             >
               That email already has an account.{" "}
-              <Link href="/signin" className="underline underline-offset-4">
+              <Link
+                href="/signin"
+                className="underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+              >
                 Sign in instead
               </Link>{" "}
               — though signing in won&apos;t carry this anonymous story over.
@@ -156,7 +162,7 @@ export function SaveStoriesCard() {
                 aria-describedby={
                   emailExists || error ? "save-story-error" : undefined
                 }
-                className="block w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2 font-ui text-sm"
+                className="block min-h-11 w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] px-1 py-2 font-ui text-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
               />
             </label>
             <label className="block">
@@ -169,13 +175,13 @@ export function SaveStoriesCard() {
                 placeholder="Password (optional, 6+ characters)"
                 autoComplete="new-password"
                 aria-describedby={error ? "save-story-error" : undefined}
-                className="block w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2 font-ui text-sm"
+                className="block min-h-11 w-full bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] px-1 py-2 font-ui text-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
               />
             </label>
             <button
               type="submit"
               disabled={!canSave || mode === "sending"}
-              className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-5 py-2 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              className="font-ui min-h-11 text-sm uppercase tracking-wider border border-[var(--color-ink)] px-5 py-2 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
             >
               {mode === "sending" ? "Sending…" : "Save"}
             </button>

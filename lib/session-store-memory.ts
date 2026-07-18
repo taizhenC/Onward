@@ -543,6 +543,25 @@ async function deleteOwnedSession(
   return "deleted";
 }
 
+// Auth-user deletion cascades every owned session in Postgres. Keep the memory
+// adapter behaviorally equivalent so privacy tests exercise the same complete
+// account boundary rather than only clearing the currently visible page.
+export function deleteMemorySessionsForUser(userId: string): number {
+  pruneExpiredSessions();
+  const ownedIds = [...sessions.values()]
+    .filter((session) => session.userId === userId)
+    .map((session) => session.sessionId);
+  const roots = ownedIds.filter(
+    (sessionId) => sessions.get(sessionId)?.alternateOfSessionId === null,
+  );
+  for (const sessionId of roots) deleteMemorySessionCascade(sessionId);
+  // Defensive cleanup for malformed/hot-reload rows whose root disappeared.
+  for (const sessionId of ownedIds) {
+    if (sessions.has(sessionId)) deleteMemorySessionCascade(sessionId);
+  }
+  return ownedIds.length;
+}
+
 async function sessionCount(): Promise<number> {
   pruneExpiredSessions();
   return sessions.size;

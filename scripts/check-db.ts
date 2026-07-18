@@ -293,6 +293,35 @@ async function checkOwnedStoryDeletionSchema(): Promise<Step> {
   }
 }
 
+async function checkOwnedAccountDeletionSchema(): Promise<Step> {
+  const name = "owner-confirmed account deletion boundary installed";
+  try {
+    const probe = await getSupabase().rpc("delete_owned_account_v1", {
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const rateProjection = await getSupabase()
+      .from("rate_limits")
+      .select("bucket_key,owner_user_id")
+      .limit(1);
+    if (rateProjection.error) throw new Error(rateProjection.error.message);
+    const ok = probe.data === false;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "nonexistent auth owner is closed; rate-limit ownership FK is reachable"
+        : "account deletion accepted a nonexistent auth owner",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0019`,
+    };
+  }
+}
+
 async function checkTelemetrySchema(): Promise<Step> {
   const name = "privacy-safe telemetry schemas installed";
   try {
@@ -820,6 +849,7 @@ async function main(): Promise<void> {
     await checkStoryFeedbackSchema(),
     await checkAlternateStorySchema(),
     await checkOwnedStoryDeletionSchema(),
+    await checkOwnedAccountDeletionSchema(),
     await checkTelemetrySchema(),
     await checkTelemetryLifecycleSchema(),
     await checkTelemetryRollupDispatcherSchema(),

@@ -870,7 +870,7 @@ function validatePromptLines(value, label) {
     assert(
       typeof line === "string" &&
         Buffer.byteLength(line, "utf8") <= 1_024 &&
-        !/[\r\n]/.test(line),
+        !/[\p{Cc}\p{Cf}\p{Cs}\p{Zl}\p{Zp}]/u.test(line),
       `${label}[${index}] is invalid`,
     );
     totalBytes += Buffer.byteLength(line, "utf8");
@@ -2425,8 +2425,19 @@ function selfTest() {
     facetTaggerPromptArtifact,
     "self-test facet-tagger prompt artifact",
   );
+  const facetTaggerPromptCanonical =
+    '{"responseFormat":"json_object","schemaVersion":"facet-tagger-prompt-contract-v1","system":"Classify the disclosure using only the reviewed closed vocabulary.\\nReturn one JSON object and nothing else.","user":"The person wrote:\\n{{feeling}}\\nAllowed projection templates:\\n{{projectionTemplateCatalog}}"}';
+  assert(
+    canonical(facetTaggerPromptContract) === facetTaggerPromptCanonical,
+    "facet-tagger prompt normalization changed",
+  );
   const facetTaggerPromptDigest = sha256(
     canonical(facetTaggerPromptContract),
+  );
+  assert(
+    facetTaggerPromptDigest ===
+      "ac1567c14665f9283be036ba1e73073246b31819d486a6b6c9f608a3962c1f37",
+    "facet-tagger prompt golden digest changed",
   );
   assert(
     facetTaggerPromptArtifactPath(facetTaggerPromptDigest) ===
@@ -2494,6 +2505,47 @@ function selfTest() {
         "self-test facet-tagger prompt artifact",
       ),
     "prompt artifact embedded newline",
+  );
+  for (const hiddenCharacter of [
+    "\u0000",
+    "\u200b",
+    "\u2028",
+    "\u2029",
+    "\u202e",
+  ]) {
+    rejects(
+      () =>
+        validateFacetTaggerPromptArtifact(
+          {
+            ...facetTaggerPromptArtifact,
+            systemLines: [`visible${hiddenCharacter}hidden`],
+          },
+          "self-test facet-tagger prompt artifact",
+        ),
+      "prompt artifact hidden control character",
+    );
+  }
+  rejects(
+    () =>
+      validateFacetTaggerPromptArtifact(
+        {
+          ...facetTaggerPromptArtifact,
+          systemLines: ["{{feeling}}"],
+        },
+        "self-test facet-tagger prompt artifact",
+      ),
+    "prompt artifact system placeholder",
+  );
+  rejects(
+    () =>
+      validateFacetTaggerPromptArtifact(
+        {
+          ...facetTaggerPromptArtifact,
+          userLines: ["{{feeling}}"],
+        },
+        "self-test facet-tagger prompt artifact",
+      ),
+    "prompt artifact missing placeholder",
   );
 
   const v1Recipe = {

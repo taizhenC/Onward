@@ -610,7 +610,10 @@ function checkStaticIntegration(): void {
   assert(player.includes("consumeFirstContentLatencyBucket(sessionId)"));
   assert(preface.includes("onAnimationComplete={onVisible}"));
   assert(player.includes("onAnimationComplete={() => setVisiblePassageKey(passageKey)}"));
-  assert(beat.indexOf("const startedAt = monotonicEpochMs()") < beat.indexOf("await acknowledgeBeat({"));
+  assert(
+    beat.indexOf("const startedAt = monotonicEpochMs()") <
+      beat.indexOf("await acknowledgeStoryPassage({"),
+  );
   assert(beat.includes("elapsedLatencyBucket(presentationStartedAt)"));
   assert(beat.includes("!presentationVisible"));
   assert(afterword.includes("event.currentTarget.open"));

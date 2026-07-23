@@ -62,6 +62,7 @@ jobs:
       - run: npm run check-telemetry-dispatcher
       - run: npm run check-story-deletion
       - run: npm run check-account-deletion
+      - run: npm run check-story-beat-resilience
       - run: npm run check-reader-visibility-telemetry
       - run: npm run check-story-boundaries
       - run: npm run check-resonance-brief

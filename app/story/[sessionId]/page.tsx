@@ -68,13 +68,13 @@ export default async function StoryPage({
         <div className="flex items-center justify-between border-b border-[var(--color-ink)]/12 py-[17px]">
           <Link
             href="/"
-            className="text-[21px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]"
+            className="inline-flex min-h-11 items-center text-[21px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]"
           >
             Onward
           </Link>
           <Link
             href="/stories"
-            className="border-b border-[var(--color-ink)]/30 pb-[2px] font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-11 items-center border-b border-[var(--color-ink)]/30 font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             Your stories
           </Link>

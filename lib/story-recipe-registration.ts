@@ -3,6 +3,7 @@ import { getSupabase } from "./db";
 import {
   StoryRecipeRuntimeError,
   getStoryRecipePromotion,
+  isStoryRecipeManifestV2,
   type StoryRecipeManifest,
   type StoryRecipeRuntime,
 } from "./story-recipe";
@@ -88,7 +89,10 @@ export function registrationMatches(
   recipe: StoryRecipeManifest,
   promotion: Readonly<{ decisionId: string; promotedAt: string }>,
 ): value is RegistryRow {
-  if (!isRecord(value)) return false;
+  // The v1 database contract has no columns for the facet-tagger identity.
+  // Parsing v2 manifests ahead of that migration must not let a partial row
+  // appear to prove the stronger manifest was registered.
+  if (isStoryRecipeManifestV2(recipe) || !isRecord(value)) return false;
   if (
     Object.keys(value).sort().join(",") !==
     [...REGISTRY_COLUMNS].sort().join(",")

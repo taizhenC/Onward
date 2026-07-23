@@ -862,6 +862,23 @@ function validateMatchingOnly(baseRecipe, challenger) {
   }
 }
 
+function resolvePromotionDataset(datasets, decisionDataset) {
+  const dataset = datasets.get(decisionDataset.version);
+  assert(
+    dataset,
+    `promotion dataset ${decisionDataset.version} is not registered`,
+  );
+  assert(
+    canonical(dataset) === canonical(decisionDataset),
+    "decision dataset differs from registry",
+  );
+  assert(
+    dataset.visibility === "protected_holdout",
+    "promotion dataset is not protected holdout",
+  );
+  return dataset;
+}
+
 function parseEvidence(repository, commit, datasetVersion, recipeId, evidenceId) {
   assert(EVIDENCE_ID.test(evidenceId), "invalid evidence id");
   const path = `evals/history/${datasetVersion}/${recipeId}/${evidenceId}.json`;
@@ -1687,9 +1704,7 @@ async function mainAttest(repository, baseSha, headSha) {
   );
 
   const datasets = mapBy(head.datasets, "version", "datasets");
-  const dataset = record(datasets.get(challengerRecipe.datasetVersion), "promotion dataset");
-  assert(canonical(dataset) === canonical(decision.dataset), "decision dataset differs from registry");
-  assert(dataset.visibility === "protected_holdout", "promotion dataset is not protected holdout");
+  const dataset = resolvePromotionDataset(datasets, decision.dataset);
   envExact("RECIPE_PROMOTION_ATTESTED_DATASET_SHA256", dataset.sha256);
 
   const baselineIds = unique(array(decision.baselineEvidenceIds, "baseline evidence ids"), "baseline evidence ids");

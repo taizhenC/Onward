@@ -1,5 +1,6 @@
 import promptReleasesDocument from "../config/prompt-releases.json";
 import {
+  FACET_TAGGER_PROMPT_CONTRACT,
   RERANK_PROMPT_CONTRACT,
   STORY_PROMPT_CONTRACT,
   canonicalPromptContract,
@@ -46,6 +47,10 @@ export const DEFAULT_PROSE_TIMEOUT_MS = 8000;
 export const STORY_PROMPT_VERSION = activePromptRelease(
   "story",
   sha256Hex(canonicalPromptContract(STORY_PROMPT_CONTRACT)),
+);
+export const FACET_TAGGER_PROMPT_VERSION = activePromptRelease(
+  "facetTagger",
+  sha256Hex(canonicalPromptContract(FACET_TAGGER_PROMPT_CONTRACT)),
 );
 
 function activePromptRelease(

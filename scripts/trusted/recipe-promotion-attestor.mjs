@@ -22,6 +22,13 @@ const SHADOW_ID = /^sh_[a-f0-9]{64}$/;
 const DECISION_ID = /^rd_[a-f0-9]{64}$/;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/;
 const TRUSTED_BASE_REF = "main";
+const PROMPT_RELEASE_REGISTRY_V1 = "prompt-release-registry-v1";
+const PROMPT_RELEASE_REGISTRY_V2 = "prompt-release-registry-v2";
+const PROMPT_RELEASE_KINDS = Object.freeze([
+  "rerank",
+  "story",
+  "facetTagger",
+]);
 const STORY_RECIPE_MANIFEST_SCHEMA_V2 = "story-recipe-manifest-v2";
 const RECIPE_MANIFEST_V1_KEYS = Object.freeze([
   "recipeId",
@@ -616,26 +623,103 @@ function assertProtectedHistoryFilesAppendOnly(repository, baseSha, headSha) {
 function assertPromptReleaseHistoryAppendOnly(repository, baseSha, headSha) {
   const path = "config/prompt-releases.json";
   const baseText = git(repository, ["show", `${baseSha}:${path}`], true);
-  if (baseText === null) return;
   const headText = readAt(repository, headSha, path);
-  let base;
-  let head;
-  try {
-    base = record(JSON.parse(baseText), "base prompt release registry");
-    head = record(JSON.parse(headText), "head prompt release registry");
-  } catch {
-    fail("prompt release registry is not valid JSON");
-  }
-  exactKeys(base, ["schemaVersion", "rerank", "story"], "base prompt release registry");
-  exactKeys(head, ["schemaVersion", "rerank", "story"], "head prompt release registry");
-  assert(
-    base.schemaVersion === "prompt-release-registry-v1" &&
-      head.schemaVersion === base.schemaVersion,
-    "prompt release registry schema changed",
+  const head = parsePromptReleaseRegistryText(
+    headText,
+    "head prompt release registry",
   );
-  for (const kind of ["rerank", "story"]) {
-    const prior = array(base[kind], `base ${kind} prompt releases`);
-    const current = array(head[kind], `head ${kind} prompt releases`);
+  if (baseText === null) return;
+  const base = parsePromptReleaseRegistryText(
+    baseText,
+    "base prompt release registry",
+  );
+  assertPromptRegistryAppendOnly(base, head);
+}
+
+function parsePromptReleaseRegistryText(text, label) {
+  let value;
+  try {
+    value = JSON.parse(text);
+  } catch {
+    fail(`${label} is not valid JSON`);
+  }
+  return validatePromptReleaseRegistry(value, label);
+}
+
+function validatePromptReleaseRegistry(value, label) {
+  const registry = record(value, label);
+  const schemaVersion = registry.schemaVersion;
+  const isV1 = schemaVersion === PROMPT_RELEASE_REGISTRY_V1;
+  const isV2 = schemaVersion === PROMPT_RELEASE_REGISTRY_V2;
+  assert(
+    isV1 || isV2,
+    `${label}.schemaVersion is unknown`,
+  );
+  exactKeys(
+    registry,
+    isV1
+      ? ["schemaVersion", "rerank", "story"]
+      : ["schemaVersion", "rerank", "story", "facetTagger"],
+    label,
+  );
+
+  const versions = new Set();
+  const hashes = new Set();
+  const rerank = validatePromptReleaseLane(
+    registry.rerank,
+    `${label}.rerank`,
+    versions,
+    hashes,
+  );
+  const story = validatePromptReleaseLane(
+    registry.story,
+    `${label}.story`,
+    versions,
+    hashes,
+  );
+  const facetTagger = isV2
+    ? validatePromptReleaseLane(
+        registry.facetTagger,
+        `${label}.facetTagger`,
+        versions,
+        hashes,
+      )
+    : [];
+  return { schemaVersion, rerank, story, facetTagger };
+}
+
+function validatePromptReleaseLane(value, label, versions, hashes) {
+  const releases = array(value, label);
+  assert(releases.length > 0, `${label} is empty`);
+  return releases.map((value, index) => {
+    const release = record(value, `${label}[${index}]`);
+    exactKeys(
+      release,
+      ["version", "sha256"],
+      `${label}[${index}]`,
+    );
+    const version = registryId(
+      release.version,
+      `${label}[${index}].version`,
+    );
+    const digest = sha(release.sha256, `${label}[${index}].sha256`);
+    assert(!versions.has(version), `${label} repeats prompt version ${version}`);
+    assert(!hashes.has(digest), `${label} repeats prompt hash ${digest}`);
+    versions.add(version);
+    hashes.add(digest);
+    return { version, sha256: digest };
+  });
+}
+
+function assertPromptRegistryAppendOnly(base, head) {
+  assert(
+    base.schemaVersion === PROMPT_RELEASE_REGISTRY_V1 ||
+      head.schemaVersion === PROMPT_RELEASE_REGISTRY_V2,
+    "prompt release registry cannot downgrade from v2",
+  );
+  for (const kind of PROMPT_RELEASE_KINDS) {
+    const prior = base[kind];
+    const current = head[kind];
     assert(current.length >= prior.length, `${kind} prompt history was truncated`);
     for (let index = 0; index < prior.length; index += 1) {
       assert(
@@ -1952,6 +2036,157 @@ function selfTest() {
   rejects(
     () => deploymentId("deployment:1", "deployment id"),
     "deployment punctuation",
+  );
+
+  const promptV1 = validatePromptReleaseRegistry(
+    {
+      schemaVersion: PROMPT_RELEASE_REGISTRY_V1,
+      rerank: [
+        {
+          version: "rerank-prompt-v1",
+          sha256: "1".repeat(64),
+        },
+      ],
+      story: [
+        {
+          version: "story-prompt-v1",
+          sha256: "2".repeat(64),
+        },
+      ],
+    },
+    "self-test prompt registry v1",
+  );
+  const promptV2 = validatePromptReleaseRegistry(
+    {
+      schemaVersion: PROMPT_RELEASE_REGISTRY_V2,
+      rerank: structuredClone(promptV1.rerank),
+      story: structuredClone(promptV1.story),
+      facetTagger: [
+        {
+          version: "facet-tagger-prompt-v1",
+          sha256: "3".repeat(64),
+        },
+      ],
+    },
+    "self-test prompt registry v2",
+  );
+  assertPromptRegistryAppendOnly(promptV1, promptV1);
+  assertPromptRegistryAppendOnly(promptV1, promptV2);
+  assertPromptRegistryAppendOnly(promptV2, {
+    ...structuredClone(promptV2),
+    facetTagger: [
+      ...promptV2.facetTagger,
+      {
+        version: "facet-tagger-prompt-v2",
+        sha256: "4".repeat(64),
+      },
+    ],
+  });
+  rejects(
+    () => assertPromptRegistryAppendOnly(promptV2, promptV1),
+    "prompt registry v2 downgrade",
+  );
+  rejects(
+    () =>
+      assertPromptRegistryAppendOnly(promptV1, {
+        ...structuredClone(promptV1),
+        rerank: [],
+      }),
+    "prompt history truncation",
+  );
+  rejects(
+    () =>
+      assertPromptRegistryAppendOnly(promptV1, {
+        ...structuredClone(promptV1),
+        rerank: [
+          {
+            ...promptV1.rerank[0],
+            sha256: "5".repeat(64),
+          },
+        ],
+      }),
+    "prompt history mutation",
+  );
+  rejects(
+    () =>
+      validatePromptReleaseRegistry(
+        {
+          schemaVersion: PROMPT_RELEASE_REGISTRY_V1,
+          rerank: promptV1.rerank,
+          story: promptV1.story,
+          facetTagger: promptV2.facetTagger,
+        },
+        "self-test prompt registry",
+      ),
+    "prompt v1 unexpected tagger lane",
+  );
+  rejects(
+    () =>
+      validatePromptReleaseRegistry(
+        {
+          schemaVersion: PROMPT_RELEASE_REGISTRY_V2,
+          rerank: promptV1.rerank,
+          story: promptV1.story,
+          facetTagger: [],
+        },
+        "self-test prompt registry",
+      ),
+    "prompt v2 empty tagger lane",
+  );
+  rejects(
+    () =>
+      validatePromptReleaseRegistry(
+        {
+          schemaVersion: PROMPT_RELEASE_REGISTRY_V2,
+          rerank: promptV1.rerank,
+          story: promptV1.story,
+          facetTagger: [
+            {
+              version: promptV1.rerank[0].version,
+              sha256: "6".repeat(64),
+            },
+          ],
+        },
+        "self-test prompt registry",
+      ),
+    "cross-lane duplicate prompt version",
+  );
+  rejects(
+    () =>
+      validatePromptReleaseRegistry(
+        {
+          schemaVersion: PROMPT_RELEASE_REGISTRY_V2,
+          rerank: promptV1.rerank,
+          story: promptV1.story,
+          facetTagger: [
+            {
+              version: "facet-tagger-prompt-v1",
+              sha256: promptV1.story[0].sha256,
+            },
+          ],
+        },
+        "self-test prompt registry",
+      ),
+    "cross-lane duplicate prompt hash",
+  );
+  rejects(
+    () =>
+      validatePromptReleaseRegistry(
+        {
+          schemaVersion: PROMPT_RELEASE_REGISTRY_V2,
+          rerank: promptV1.rerank,
+          story: promptV1.story,
+          facetTagger: [
+            {
+              version: "Facet-Tagger",
+              sha256: "7".repeat(64),
+              extra: true,
+            },
+          ],
+        },
+        "self-test prompt registry",
+      ),
+    "malformed prompt release",
   );
 
   const v1Recipe = {

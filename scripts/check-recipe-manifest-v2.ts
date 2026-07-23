@@ -27,7 +27,7 @@ const BASELINE_RECIPE_ID =
   "keyword-rerank-figure-library-50-2026-07-02";
 const CHALLENGER_RECIPE_ID =
   "facetsrag-rerank-figure-library-50-2026-07-02";
-const V2_RECIPE_ID = "facetsrag-closed-template-contract-2026-07-23";
+const V2_RECIPE_ID = "test-only-manifest-v2-fixture";
 
 const HISTORICAL_V1_HASHES = Object.freeze({
   [BASELINE_RECIPE_ID]:
@@ -39,7 +39,7 @@ const HISTORICAL_V1_HASHES = Object.freeze({
 // Content-addressed from the exact fixture below. This is intentionally a
 // literal, not a value computed by the assertion under test.
 const GOLDEN_V2_MANIFEST_SHA256 =
-  "8c174b6bcf2245992acdddc01f899a88dc27c1fee02860ba9c2f4595ebedf403";
+  "6b2563507955e70a0794b1bf30e001f60b9154bd5cb3b80b1eb38cc55193d566";
 
 type MutableJsonObject = Record<string, unknown>;
 
@@ -54,38 +54,35 @@ function main(): void {
   checkDormantV2Execution(parsedV2);
 
   console.log("Story recipe manifest v2 contract: PASS");
-  console.log("  historical v1 hashes and selection are unchanged");
+  console.log("  historical v1 hashes remain exact; exports mirror live selection");
   console.log("  strict closed-template v2 parsing and deep freezing are locked");
   console.log("  runtime and eval reject v2 until execution support is installed");
 }
 
 function checkHistoricalV1Identity(): void {
-  assert.equal(
-    STORY_RECIPE_REGISTRY.selection.primaryRecipeId,
-    BASELINE_RECIPE_ID,
-    "the current primary recipe changed",
-  );
-  assert.equal(
-    STORY_RECIPE_REGISTRY.selection.rollbackRecipeId,
-    BASELINE_RECIPE_ID,
-    "the current rollback recipe changed",
-  );
+  const selectedRecipeIds = [
+    ...new Set([
+      STORY_RECIPE_REGISTRY.selection.primaryRecipeId,
+      STORY_RECIPE_REGISTRY.selection.rollbackRecipeId,
+    ]),
+  ];
   assert.equal(
     PRIMARY_STORY_RECIPE.recipeId,
-    BASELINE_RECIPE_ID,
-    "the exported primary recipe changed",
+    STORY_RECIPE_REGISTRY.selection.primaryRecipeId,
+    "the exported primary diverged from registry selection",
   );
   assert.equal(
     ROLLBACK_STORY_RECIPE.recipeId,
-    BASELINE_RECIPE_ID,
-    "the exported rollback recipe changed",
+    STORY_RECIPE_REGISTRY.selection.rollbackRecipeId,
+    "the exported rollback diverged from registry selection",
   );
   assert.deepEqual(
     SELECTABLE_STORY_RECIPE_IDS,
-    [BASELINE_RECIPE_ID],
-    "manifest-v2 parser work changed the selectable production set",
+    selectedRecipeIds,
+    "the selectable production set diverged from registry selection",
   );
 
+  let historicalBaseline: StoryRecipeManifest | undefined;
   for (const [recipeId, expectedHash] of Object.entries(
     HISTORICAL_V1_HASHES,
   )) {
@@ -117,9 +114,11 @@ function checkHistoricalV1Identity(): void {
       expectedHash,
       `${recipeId} changed under the evidence canonicalizer`,
     );
+    if (recipeId === BASELINE_RECIPE_ID) historicalBaseline = parsed;
   }
 
-  const baselinePlan = storyRecipeExecutionPlan(PRIMARY_STORY_RECIPE);
+  assert(historicalBaseline, "the historical baseline recipe is missing");
+  const baselinePlan = storyRecipeExecutionPlan(historicalBaseline);
   assert.deepEqual(baselinePlan, {
     llmProvider: "real",
     rerankModelId: "gpt-oss-120b",

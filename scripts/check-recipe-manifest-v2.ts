@@ -45,6 +45,7 @@ type MutableJsonObject = Record<string, unknown>;
 
 function main(): void {
   checkHistoricalV1Identity();
+  checkStrictV1Rejections();
 
   const rawV2 = validV2Fixture();
   const parsedV2 = parseStoryRecipeManifest(rawV2);
@@ -57,6 +58,31 @@ function main(): void {
   console.log("  historical v1 hashes remain exact; exports mirror live selection");
   console.log("  strict closed-template v2 parsing and deep freezing are locked");
   console.log("  runtime and eval reject v2 until execution support is installed");
+}
+
+function checkStrictV1Rejections(): void {
+  const keyword = STORY_RECIPE_REGISTRY.recipes.find(
+    (recipe) => recipe.recipeId === BASELINE_RECIPE_ID,
+  );
+  const facetsRag = STORY_RECIPE_REGISTRY.recipes.find(
+    (recipe) => recipe.recipeId === CHALLENGER_RECIPE_ID,
+  );
+  assert(keyword && facetsRag, "the historical v1 fixtures are incomplete");
+
+  expectRegistryInvalid(
+    "keyword v1 with an embedder",
+    cloneObject(keyword) as unknown as MutableJsonObject,
+    (candidate) => {
+      candidate.embeddingModelId = "gemini-embedding-001@d1536";
+    },
+  );
+  expectRegistryInvalid(
+    "FacetsRAG v1 without an embedder",
+    cloneObject(facetsRag) as unknown as MutableJsonObject,
+    (candidate) => {
+      candidate.embeddingModelId = null;
+    },
+  );
 }
 
 function checkHistoricalV1Identity(): void {

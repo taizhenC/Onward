@@ -723,6 +723,10 @@ function assertManifestBase(value: Record<string, unknown>): void {
     !modelId(value.rerankModelId) ||
     !modelId(value.proseModelId) ||
     (value.embeddingModelId !== null && !modelId(value.embeddingModelId)) ||
+    (value.retrievalMode === "keyword" &&
+      value.embeddingModelId !== null) ||
+    (value.retrievalMode === "facetsrag" &&
+      value.embeddingModelId === null) ||
     !registryVersionId(value.rerankPromptVersion) ||
     !registryVersionId(value.storyPromptVersion) ||
     typeof value.rerankTemperature !== "number" ||

@@ -444,10 +444,24 @@ set. A library, prompt, validator, schema, or composer change is a release and
 must ship its own rollback-compatible code/content; an old manifest is never
 pretended to be executable against a different installed corpus.
 Prompt release identity is content-derived, not a mutable label:
-`config/prompt-releases.json` is append-only and maps each rerank/story version
-to the SHA-256 of its exact canonical prompt contract. Edge and Node hashing are
-cross-checked, and runtime version identity fails when content and release hash
-diverge.
+`config/prompt-releases.json` is append-only and maps each rerank, story, and
+facet-tagger version to the SHA-256 of its exact canonical prompt contract.
+Facet-tagger prompt content is additionally stored as an inert,
+content-addressed artifact at
+`config/prompt-artifacts/facet-tagger/<sha256>.json`. Its hash is calculated
+after exact-schema validation and normalization of reviewed line arrays into
+`{schemaVersion, system, user, responseFormat}`. Runtime, CI, and the
+dependency-free protected-base attestor independently enforce that same
+normalization; Edge and Node hashing are cross-checked.
+
+The tagger renderer JSON-encodes the untrusted disclosure and serializes only a
+validated, canonical catalog of closed template IDs. It cannot place projection
+text in the request. Rerank and story release lanes remain frozen until they
+gain equivalent artifact binding. A new v2 recipe may reference a facet-tagger
+release only after that release exists on the protected base, so prompt content
+and its consuming recipe cannot self-authorize in one pull request. Registering
+the prompt does not execute it: provider wiring, FacetSignal parsing, shadow
+evaluation, and recipe promotion remain separate evidence-gated releases.
 
 Detailed eval trials remain local. Metrics-only results are append-only and
 content-addressed under `evals/history`, paired comparisons under

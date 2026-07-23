@@ -714,9 +714,16 @@ identifier. The selected manifest is the sole non-secret production source for
 provider/model/tuning/retrieval/embedder/composer behavior; stale local/eval
 environment values are ignored instead of creating a mixed recipe. The
 append-only prompt-release registry binds each version to the SHA-256 of its
-exact canonical prompt content, which is also verified by the runtime. Startup logs
-only safe recipe identity; invalid
-configuration keeps crisis resources available but stops every other story
+exact canonical prompt content, which is also verified by the runtime. Registry
+v2 now includes the first dormant facet-tagger release. Its reviewed prompt is
+stored under its normalized SHA-256, rejects untrusted disclosure instructions,
+accepts only JSON-encoded disclosure data and canonical closed-template IDs,
+and mirrors the strict FacetSignal anchor/fallback contract. Runtime, CI, and
+the protected-base attestor fail closed on schema, placeholder, Unicode,
+size, history, or content-path drift. No provider call, v2 production recipe,
+session identity, or retrieval behavior is enabled by this release; those
+remain later, independently reviewed gates. Startup logs only safe recipe
+identity; invalid configuration keeps crisis resources available but stops every other story
 before auth, rate limiting, providers, or durable work. New session recipes pin
 the manifest hash, dataset, deployment, prompt, model, composer, validator, and
 StorySpec versions, with `embeddingModelId=null` on keyword. Migration

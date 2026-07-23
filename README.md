@@ -174,9 +174,15 @@ change. A figure-library, prompt, validator, schema, or story-composer change is
 a code/content release, not a matching-recipe promotion; it requires its own
 forward/rollback release plan and cannot borrow this selector guarantee.
 Prompt version labels are not trusted by themselves: `config/prompt-releases.json`
-is append-only, and each active rerank/story version binds the exact canonical
-prompt-content SHA-256 that the runtime verifies. CI checks both current content
-identity and pull-request-base append-only history.
+is append-only, and each active rerank, story, and facet-tagger version binds
+the exact canonical prompt-content SHA-256 that the runtime verifies. Facet
+tagger contracts are inert JSON artifacts under
+`config/prompt-artifacts/facet-tagger/<sha256>.json`; the protected-base
+attestor checks their schema, bounds, placeholders, hidden characters, and
+content-derived path before accepting registry v2. CI also checks hostile-input
+JSON framing and pull-request-base append-only history. The registered tagger
+prompt remains dormant until a later reviewed v2 recipe wires the provider and
+retrieval path.
 
 Before the first challenger promotion, create a protected GitHub environment
 named `recipe-promotion`, require independent reviewers, and add a dedicated

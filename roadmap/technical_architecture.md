@@ -469,6 +469,14 @@ already exist byte-for-byte on protected `main`; the later promotion-only PR
 cannot change evidence, manifests, datasets, runtime code, workflows, or the
 attestor.
 
+The manifest's `datasetVersion` is the immutable default evaluation corpus and
+remains equal across selector-compatible baseline and challenger recipes.
+Protected promotion does not rewrite that release-bound axis. Instead,
+`EVAL_DATASET_VERSION` re-evaluates both exact manifests on one separately
+registered protected holdout; the decision, evidence, paired shadows, and
+base-owned attestor all bind that corpus byte-for-byte. This keeps rollback
+compatibility intact without letting a synthetic default authorize promotion.
+
 Ordinary CI performs structural validation without authority. The promotion
 detector and minimal dependency-free attestor are loaded from the protected base
 commit, read the candidate only through immutable Git objects, and execute no

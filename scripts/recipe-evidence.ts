@@ -384,6 +384,10 @@ export function datasetForEval(
   recipe: Pick<StoryRecipeManifest, "datasetVersion" | "recipeId">,
   explicitVersion = process.env.EVAL_DATASET_VERSION?.trim(),
 ): StoryRecipeRegistry["datasets"][number] {
+  // `datasetVersion` is the recipe's immutable default and remains
+  // release-bound for selector-only rollback compatibility. A protected
+  // promotion run explicitly overrides it so the unchanged baseline and
+  // challenger are evaluated on the same decision-bound holdout.
   const version = explicitVersion || recipe.datasetVersion;
   const dataset = registry.datasets.find((entry) => entry.version === version);
   if (!dataset) {

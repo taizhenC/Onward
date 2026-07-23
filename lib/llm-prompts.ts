@@ -1,12 +1,29 @@
-import facetTaggerPromptArtifactDocument from "../config/prompt-artifacts/facet-tagger/a68e57abeb7f92699ef8787004ec40f13dc918e518ccb8f8c8266bb534228c64.json";
+import facetTaggerPromptArtifactDocument from "../config/prompt-artifacts/facet-tagger/d20a7de18bd274b5b61ff69d288092b03a677ef8bf3e1cf869fd569e21f1b1cf.json";
 
 type TemplateValue = string | number | readonly string[];
+
+const FACET_TAGGER_FACETS = [
+  "emotional_core",
+  "decision_shape",
+  "trigger_event",
+  "agency_state",
+] as const;
+const FACET_TAGGER_TEMPLATE_ID = /^[a-z][a-z0-9_]{2,63}$/;
+
+type FacetTaggerFacet = (typeof FACET_TAGGER_FACETS)[number];
 
 export type FacetTaggerPromptContract = Readonly<{
   schemaVersion: "facet-tagger-prompt-contract-v1";
   system: string;
   user: string;
   responseFormat: "json_object";
+}>;
+
+export type PromptFacetTaggerSurface = Readonly<{
+  feeling: string;
+  projectionTemplateCatalog: Readonly<
+    Record<FacetTaggerFacet, readonly string[]>
+  >;
 }>;
 
 export type PromptRerankCandidate = Readonly<{
@@ -169,6 +186,17 @@ export function buildHybridPlanUserPrompt(
   });
 }
 
+export function buildFacetTaggerUserPrompt(
+  input: PromptFacetTaggerSurface,
+): string {
+  return renderTemplate(FACET_TAGGER_PROMPT_CONTRACT.user, {
+    feeling: JSON.stringify(input.feeling),
+    projectionTemplateCatalog: canonicalPromptContract(
+      normalizeFacetTaggerTemplateCatalog(input.projectionTemplateCatalog),
+    ),
+  });
+}
+
 export function canonicalPromptContract(value: unknown): string {
   if (Array.isArray(value)) {
     return `[${value.map((entry) => canonicalPromptContract(entry)).join(",")}]`;
@@ -232,6 +260,38 @@ function normalizeFacetTaggerPromptArtifact(
     user,
     responseFormat: "json_object",
   });
+}
+
+function normalizeFacetTaggerTemplateCatalog(
+  value: unknown,
+): Readonly<Record<FacetTaggerFacet, readonly string[]>> {
+  if (
+    !isRecord(value) ||
+    !hasExactKeys(value, FACET_TAGGER_FACETS)
+  ) {
+    throw new Error("Facet-tagger template catalog is invalid.");
+  }
+  const seen = new Set<string>();
+  const normalized = {} as Record<FacetTaggerFacet, readonly string[]>;
+  for (const facet of FACET_TAGGER_FACETS) {
+    const ids = value[facet];
+    if (!Array.isArray(ids) || ids.length === 0 || ids.length > 64) {
+      throw new Error("Facet-tagger template catalog is invalid.");
+    }
+    const lane = ids.map((id) => {
+      if (
+        typeof id !== "string" ||
+        !FACET_TAGGER_TEMPLATE_ID.test(id) ||
+        seen.has(id)
+      ) {
+        throw new Error("Facet-tagger template catalog is invalid.");
+      }
+      seen.add(id);
+      return id;
+    });
+    normalized[facet] = Object.freeze(lane);
+  }
+  return Object.freeze(normalized);
 }
 
 function validatePromptLines(value: unknown): string[] {

@@ -10,6 +10,8 @@ import { spawnSync } from "node:child_process";
 import { RERANK_TRUST_GATE } from "../lib/match-recipe-constants";
 
 export const RECIPE_REGISTRY_SCHEMA_VERSION = "story-recipe-registry-v1";
+export const STORY_RECIPE_MANIFEST_SCHEMA_V2 =
+  "story-recipe-manifest-v2";
 export const EVAL_EVIDENCE_SCHEMA_VERSION = "match-eval-evidence-v1";
 export const SHADOW_EVIDENCE_SCHEMA_VERSION = "recipe-shadow-evidence-v1";
 export const RECIPE_DECISION_SCHEMA_VERSION = "recipe-decision-v1";
@@ -49,7 +51,7 @@ export type JsonPrimitive = string | number | boolean | null;
 export type JsonValue = JsonPrimitive | JsonValue[] | { [key: string]: JsonValue };
 export type JsonObject = { [key: string]: JsonValue };
 
-export type StoryRecipeManifest = {
+type StoryRecipeManifestBase = {
   recipeId: string;
   manifestSha256: string;
   retrievalMode: "keyword" | "facetsrag";
@@ -74,6 +76,34 @@ export type StoryRecipeManifest = {
   boundaryPolicyVersion: string;
   resonanceBriefVersion: string;
 };
+
+export type StoryRecipeManifestV1 = StoryRecipeManifestBase & {
+  manifestSchemaVersion?: never;
+  facetTagger?: never;
+};
+
+export type ClosedTemplateFacetTaggerRecipe = {
+  mode: "closed_template";
+  modelId: string;
+  promptVersion: string;
+  temperature: 0;
+  reasoningEffort: string;
+  timeoutMs: 3000;
+  signalSchemaVersion: string;
+  projectionSchemaVersion: string;
+  queryMode: "raw" | "validated_projection";
+  weightingMode: "static" | "bounded_dynamic";
+  expansionEnabled: false;
+};
+
+export type StoryRecipeManifestV2 = StoryRecipeManifestBase & {
+  manifestSchemaVersion: typeof STORY_RECIPE_MANIFEST_SCHEMA_V2;
+  facetTagger: ClosedTemplateFacetTaggerRecipe;
+};
+
+export type StoryRecipeManifest =
+  | StoryRecipeManifestV1
+  | StoryRecipeManifestV2;
 
 export type StoryRecipeRegistry = {
   schemaVersion: typeof RECIPE_REGISTRY_SCHEMA_VERSION;
@@ -351,7 +381,7 @@ export function recipeForEval(
         `EVAL_RECIPE_ID ${explicitRecipeId} uses ${recipe.retrievalMode}, not ${retrievalMode}`,
       );
     }
-    return recipe;
+    return requireEvalSupportedRecipe(recipe);
   }
   const matches = registry.recipes.filter(
     (entry) => entry.retrievalMode === retrievalMode,
@@ -361,7 +391,21 @@ export function recipeForEval(
       `Set EVAL_RECIPE_ID; ${matches.length} recipes use retrievalMode=${retrievalMode}`,
     );
   }
-  return matches[0];
+  return requireEvalSupportedRecipe(matches[0]);
+}
+
+function requireEvalSupportedRecipe(
+  recipe: StoryRecipeManifest,
+): StoryRecipeManifestV1 {
+  if (
+    recipe.manifestSchemaVersion ===
+    STORY_RECIPE_MANIFEST_SCHEMA_V2
+  ) {
+    throw new Error(
+      `Recipe ${recipe.recipeId} uses manifest v2, but v2 execution support is not installed`,
+    );
+  }
+  return recipe;
 }
 
 export function datasetForRecipe(

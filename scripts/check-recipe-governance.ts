@@ -17,9 +17,11 @@ import {
   RECIPE_REGISTRY_PATH,
   RECIPE_REGISTRY_SCHEMA_VERSION,
   SHADOW_EVIDENCE_SCHEMA_VERSION,
+  STORY_RECIPE_MANIFEST_SCHEMA_V2,
   canonicalJson,
   contentId,
   manifestSha256,
+  recipeForEval,
   renderProductionRecipeDoc,
   sha256File,
   type DatasetVisibility,
@@ -28,6 +30,7 @@ import {
   type RecipeDecision,
   type ShadowEvidence,
   type StoryRecipeManifest,
+  type StoryRecipeManifestV2,
   type StoryRecipeRegistry,
 } from "./recipe-evidence";
 
@@ -213,33 +216,40 @@ function parseRegistry(value: unknown): StoryRecipeRegistry {
 
 function parseRecipe(value: unknown, path: string): StoryRecipeManifest {
   const item = record(value, path);
+  const commonKeys = [
+    "recipeId",
+    "manifestSha256",
+    "retrievalMode",
+    "matchConfigVersion",
+    "librarySnapshotSha256",
+    "datasetVersion",
+    "llmProvider",
+    "rerankModelId",
+    "proseModelId",
+    "embeddingModelId",
+    "rerankPromptVersion",
+    "storyPromptVersion",
+    "rerankTemperature",
+    "rerankReasoningEffort",
+    "rerankTopK",
+    "storyTemperature",
+    "storyComposerMode",
+    "hybridStoryComposerEnabled",
+    "composerVersion",
+    "validatorVersion",
+    "storySpecSchemaVersion",
+    "boundaryPolicyVersion",
+    "resonanceBriefVersion",
+  ] as const;
+  const isV2 = Object.prototype.hasOwnProperty.call(
+    item,
+    "manifestSchemaVersion",
+  );
   exactKeys(
     item,
-    [
-      "recipeId",
-      "manifestSha256",
-      "retrievalMode",
-      "matchConfigVersion",
-      "librarySnapshotSha256",
-      "datasetVersion",
-      "llmProvider",
-      "rerankModelId",
-      "proseModelId",
-      "embeddingModelId",
-      "rerankPromptVersion",
-      "storyPromptVersion",
-      "rerankTemperature",
-      "rerankReasoningEffort",
-      "rerankTopK",
-      "storyTemperature",
-      "storyComposerMode",
-      "hybridStoryComposerEnabled",
-      "composerVersion",
-      "validatorVersion",
-      "storySpecSchemaVersion",
-      "boundaryPolicyVersion",
-      "resonanceBriefVersion",
-    ],
+    isV2
+      ? [...commonKeys, "manifestSchemaVersion", "facetTagger"]
+      : commonKeys,
     path,
   );
   const retrievalMode = oneOf(
@@ -311,7 +321,7 @@ function parseRecipe(value: unknown, path: string): StoryRecipeManifest {
       item.resonanceBriefVersion,
       `${path}.resonanceBriefVersion`,
     ),
-  } satisfies StoryRecipeManifest;
+  };
   literal(
     item.hybridStoryComposerEnabled,
     false,
@@ -323,7 +333,89 @@ function parseRecipe(value: unknown, path: string): StoryRecipeManifest {
       : manifest.embeddingModelId !== null,
     `${path}.embeddingModelId does not match retrieval mode`,
   );
-  return manifest;
+  if (!isV2) return manifest;
+
+  literal(
+    item.manifestSchemaVersion,
+    STORY_RECIPE_MANIFEST_SCHEMA_V2,
+    `${path}.manifestSchemaVersion`,
+  );
+  assert(
+    retrievalMode === "facetsrag" && manifest.embeddingModelId !== null,
+    `${path} manifest v2 requires FacetsRAG with an embedder`,
+  );
+  const tagger = record(item.facetTagger, `${path}.facetTagger`);
+  exactKeys(
+    tagger,
+    [
+      "mode",
+      "modelId",
+      "promptVersion",
+      "temperature",
+      "reasoningEffort",
+      "timeoutMs",
+      "signalSchemaVersion",
+      "projectionSchemaVersion",
+      "queryMode",
+      "weightingMode",
+      "expansionEnabled",
+    ],
+    `${path}.facetTagger`,
+  );
+  const facetTagger = {
+    mode: oneOf(
+      tagger.mode,
+      ["closed_template"] as const,
+      `${path}.facetTagger.mode`,
+    ),
+    modelId: modelId(tagger.modelId, `${path}.facetTagger.modelId`),
+    promptVersion: registryVersionId(
+      tagger.promptVersion,
+      `${path}.facetTagger.promptVersion`,
+    ),
+    temperature: literal(
+      tagger.temperature,
+      0,
+      `${path}.facetTagger.temperature`,
+    ),
+    reasoningEffort: registryVersionId(
+      tagger.reasoningEffort,
+      `${path}.facetTagger.reasoningEffort`,
+    ),
+    timeoutMs: literal(
+      tagger.timeoutMs,
+      3000,
+      `${path}.facetTagger.timeoutMs`,
+    ),
+    signalSchemaVersion: registryVersionId(
+      tagger.signalSchemaVersion,
+      `${path}.facetTagger.signalSchemaVersion`,
+    ),
+    projectionSchemaVersion: registryVersionId(
+      tagger.projectionSchemaVersion,
+      `${path}.facetTagger.projectionSchemaVersion`,
+    ),
+    queryMode: oneOf(
+      tagger.queryMode,
+      ["raw", "validated_projection"] as const,
+      `${path}.facetTagger.queryMode`,
+    ),
+    weightingMode: oneOf(
+      tagger.weightingMode,
+      ["static", "bounded_dynamic"] as const,
+      `${path}.facetTagger.weightingMode`,
+    ),
+    expansionEnabled: literal(
+      tagger.expansionEnabled,
+      false,
+      `${path}.facetTagger.expansionEnabled`,
+    ),
+  } satisfies StoryRecipeManifestV2["facetTagger"];
+  return {
+    ...manifest,
+    manifestSchemaVersion: STORY_RECIPE_MANIFEST_SCHEMA_V2,
+    facetTagger,
+  };
 }
 
 function parsePromotion(
@@ -1349,6 +1441,11 @@ function validatePromotionDecision(
   assert(decision.fromRecipeId !== decision.toRecipeId, "promotion must change the primary");
   assert(decision.toRecipeId === decision.challengerRecipeId, "promoted recipe must be the challenger");
   assert(decision.rollbackRecipeId === decision.fromRecipeId, "rollback target must be prior primary");
+  assert(
+    challengerRecipe.manifestSchemaVersion !==
+      STORY_RECIPE_MANIFEST_SCHEMA_V2,
+    "manifest v2 recipes cannot be promoted until execution support is installed",
+  );
   assert(decision.dataset.visibility === "protected_holdout", "promotion requires protected/blind holdout evidence");
   validateMatchingOnlyPromotion(baselineRecipe, challengerRecipe);
   const allEvidence = [...baseline, ...challenger];
@@ -1684,6 +1781,120 @@ function runTamperSelfChecks(state: GovernanceState): void {
   assert(
     selected.decisionType !== "promote_challenger" || selected.dataset.visibility === "protected_holdout",
     "synthetic evidence authorized a promotion",
+  );
+  runManifestV2SelfChecks(state);
+}
+
+function runManifestV2SelfChecks(state: GovernanceState): void {
+  const baseline = requiredMap(
+    state.recipes,
+    state.registry.selection.primaryRecipeId,
+  );
+  const raw = {
+    ...baseline,
+    recipeId: "facetsrag-manifest-v2-self-check",
+    manifestSha256: "0".repeat(64),
+    retrievalMode: "facetsrag",
+    embeddingModelId: "gemini-embedding-001@d1536",
+    manifestSchemaVersion: STORY_RECIPE_MANIFEST_SCHEMA_V2,
+    facetTagger: {
+      mode: "closed_template",
+      modelId: "gpt-oss-120b",
+      promptVersion: "facet-tagger-prompt-v1-2026-07",
+      temperature: 0,
+      reasoningEffort: "low",
+      timeoutMs: 3000,
+      signalSchemaVersion: "facet-signal-v1-2026-07",
+      projectionSchemaVersion:
+        "facet-query-template-catalog-v1-2026-07",
+      queryMode: "validated_projection",
+      weightingMode: "static",
+      expansionEnabled: false,
+    },
+  } satisfies StoryRecipeManifestV2;
+  raw.manifestSha256 = manifestSha256(raw);
+  const parsed = parseRecipe(raw, "self-check.manifestV2");
+  assert(
+    parsed.manifestSchemaVersion ===
+      STORY_RECIPE_MANIFEST_SCHEMA_V2 &&
+      manifestSha256(parsed) === raw.manifestSha256,
+    "manifest v2 did not preserve its canonical identity",
+  );
+
+  const changedQueryMode: StoryRecipeManifestV2 = {
+    ...raw,
+    facetTagger: {
+      ...raw.facetTagger,
+      queryMode: "raw",
+    },
+  };
+  assert(
+    manifestSha256(changedQueryMode) !== raw.manifestSha256,
+    "manifest v2 hash omitted nested facet-tagger axes",
+  );
+
+  let nestedExtraRejected = false;
+  try {
+    parseRecipe(
+      {
+        ...raw,
+        facetTagger: { ...raw.facetTagger, unexpected: true },
+      },
+      "self-check.manifestV2Extra",
+    );
+  } catch {
+    nestedExtraRejected = true;
+  }
+  assert(
+    nestedExtraRejected,
+    "manifest v2 accepted an unknown facet-tagger key",
+  );
+
+  let evalRejected = false;
+  try {
+    recipeForEval(
+      { ...state.registry, recipes: [...state.registry.recipes, parsed] },
+      "facetsrag",
+      parsed.recipeId,
+    );
+  } catch (error) {
+    evalRejected =
+      error instanceof Error &&
+      error.message.includes("v2 execution support is not installed");
+  }
+  assert(evalRejected, "manifest v2 reached the eval execution path");
+
+  const selectedDecision = requiredMap(
+    state.decisions,
+    state.registry.selection.decisionId,
+  );
+  const promotionProbe: RecipeDecision = {
+    ...selectedDecision,
+    decisionType: "promote_challenger",
+    fromRecipeId: baseline.recipeId,
+    toRecipeId: parsed.recipeId,
+    challengerRecipeId: parsed.recipeId,
+    rollbackRecipeId: baseline.recipeId,
+    promotionAuthorized: true,
+  };
+  let promotionRejectedBeforeEvidence = false;
+  try {
+    validatePromotionDecision(
+      promotionProbe,
+      baseline,
+      parsed,
+      [],
+      [],
+      [],
+    );
+  } catch (error) {
+    promotionRejectedBeforeEvidence =
+      error instanceof Error &&
+      error.message.includes("manifest v2 recipes cannot be promoted");
+  }
+  assert(
+    promotionRejectedBeforeEvidence,
+    "manifest v2 promotion was not rejected before evidence validation",
   );
 }
 

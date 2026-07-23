@@ -16,6 +16,7 @@ import { isEmbeddingStub } from "../lib/embeddings";
 import { resolveRetrievalMode } from "../lib/matching";
 import { hybridStoryComposerEnabled } from "../lib/story-composer";
 import {
+  FACET_TAGGER_PROMPT_CONTRACT,
   RERANK_PROMPT_CONTRACT,
   STORY_PROMPT_CONTRACT,
   canonicalPromptContract,
@@ -61,7 +62,11 @@ function expectFailure(
 }
 
 function main(): void {
-  for (const contract of [RERANK_PROMPT_CONTRACT, STORY_PROMPT_CONTRACT]) {
+  for (const contract of [
+    RERANK_PROMPT_CONTRACT,
+    STORY_PROMPT_CONTRACT,
+    FACET_TAGGER_PROMPT_CONTRACT,
+  ]) {
     const canonical = canonicalPromptContract(contract);
     if (
       sha256Hex(canonical) !==

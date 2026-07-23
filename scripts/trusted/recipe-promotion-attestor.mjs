@@ -29,6 +29,9 @@ const PROMPT_RELEASE_KINDS = Object.freeze([
   "story",
   "facetTagger",
 ]);
+const FACET_TAGGER_PROMPT_ARTIFACT_SCHEMA_VERSION =
+  "facet-tagger-prompt-contract-v1";
+const FACET_TAGGER_PROMPT_ARTIFACT_MAX_BYTES = 32_768;
 const STORY_RECIPE_MANIFEST_SCHEMA_V2 = "story-recipe-manifest-v2";
 const RECIPE_MANIFEST_V1_KEYS = Object.freeze([
   "recipeId",
@@ -622,18 +625,19 @@ function assertProtectedHistoryFilesAppendOnly(repository, baseSha, headSha) {
 
 function assertPromptReleaseHistoryAppendOnly(repository, baseSha, headSha) {
   const path = "config/prompt-releases.json";
-  const baseText = git(repository, ["show", `${baseSha}:${path}`], true);
+  const baseText = readAt(repository, baseSha, path);
   const headText = readAt(repository, headSha, path);
   const head = parsePromptReleaseRegistryText(
     headText,
     "head prompt release registry",
   );
-  if (baseText === null) return;
   const base = parsePromptReleaseRegistryText(
     baseText,
     "base prompt release registry",
   );
   assertPromptRegistryAppendOnly(base, head);
+  assertFacetTaggerPromptArtifactsAt(repository, headSha, head);
+  return { base, head };
 }
 
 function parsePromptReleaseRegistryText(text, label) {
@@ -730,6 +734,130 @@ function assertPromptRegistryAppendOnly(base, head) {
   }
 }
 
+function facetTaggerPromptArtifactPath(digest) {
+  sha(digest, "facet-tagger prompt artifact digest");
+  return `config/prompt-artifacts/facet-tagger/${digest}.json`;
+}
+
+function assertFacetTaggerPromptArtifactsAt(repository, commit, registry) {
+  for (const release of registry.facetTagger) {
+    const path = facetTaggerPromptArtifactPath(release.sha256);
+    const text = readAt(repository, commit, path);
+    assertFacetTaggerPromptArtifactText(text, release.sha256, path);
+  }
+}
+
+function assertFacetTaggerPromptArtifactText(text, expectedDigest, label) {
+  sha(expectedDigest, `${label} expected digest`);
+  assert(
+    Buffer.byteLength(text, "utf8") <=
+      FACET_TAGGER_PROMPT_ARTIFACT_MAX_BYTES,
+    `${label} exceeds the prompt artifact size limit`,
+  );
+  let value;
+  try {
+    value = JSON.parse(text);
+  } catch {
+    fail(`${label} is not valid JSON`);
+  }
+  const contract = validateFacetTaggerPromptArtifact(value, label);
+  assert(
+    sha256(canonical(contract)) === expectedDigest,
+    `${label} does not match its registered prompt hash`,
+  );
+}
+
+function validateFacetTaggerPromptArtifact(value, label) {
+  const artifact = record(value, label);
+  exactKeys(
+    artifact,
+    ["schemaVersion", "systemLines", "userLines", "responseFormat"],
+    label,
+  );
+  assert(
+    artifact.schemaVersion === FACET_TAGGER_PROMPT_ARTIFACT_SCHEMA_VERSION,
+    `${label}.schemaVersion is unknown`,
+  );
+  assert(
+    artifact.responseFormat === "json_object",
+    `${label}.responseFormat is unsupported`,
+  );
+  const system = validatePromptLines(
+    artifact.systemLines,
+    `${label}.systemLines`,
+  ).join("\n");
+  const user = validatePromptLines(
+    artifact.userLines,
+    `${label}.userLines`,
+  ).join("\n");
+  assert(
+    !system.includes("{{") && !system.includes("}}"),
+    `${label}.systemLines cannot contain template placeholders`,
+  );
+  const placeholders = [
+    ...user.matchAll(/\{\{([A-Za-z][A-Za-z0-9]*)\}\}/g),
+  ].map((match) => match[1]);
+  assert(
+    canonical(placeholders.sort()) ===
+      canonical(["feeling", "projectionTemplateCatalog"]),
+    `${label}.userLines has the wrong template placeholders`,
+  );
+  assert(
+    !user.replace(/\{\{[A-Za-z][A-Za-z0-9]*\}\}/g, "").includes("{{") &&
+      !user.replace(/\{\{[A-Za-z][A-Za-z0-9]*\}\}/g, "").includes("}}"),
+    `${label}.userLines contains a malformed template placeholder`,
+  );
+  return {
+    schemaVersion: artifact.schemaVersion,
+    system,
+    user,
+    responseFormat: artifact.responseFormat,
+  };
+}
+
+function validatePromptLines(value, label) {
+  const lines = array(value, label);
+  assert(lines.length > 0 && lines.length <= 64, `${label} has an unsafe line count`);
+  let totalBytes = 0;
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    assert(
+      typeof line === "string" &&
+        Buffer.byteLength(line, "utf8") <= 1_024 &&
+        !/[\r\n]/.test(line),
+      `${label}[${index}] is invalid`,
+    );
+    totalBytes += Buffer.byteLength(line, "utf8");
+  }
+  assert(totalBytes > 0 && totalBytes <= 16_384, `${label} is too large`);
+  return lines;
+}
+
+function assertRecipePromptReferences(basePromptRegistry, recipes) {
+  const versions = Object.fromEntries(
+    PROMPT_RELEASE_KINDS.map((kind) => [
+      kind,
+      new Set(basePromptRegistry[kind].map((release) => release.version)),
+    ]),
+  );
+  for (const recipe of recipes) {
+    assert(
+      versions.rerank.has(recipe.rerankPromptVersion),
+      `recipe ${recipe.recipeId} references an unreviewed rerank prompt`,
+    );
+    assert(
+      versions.story.has(recipe.storyPromptVersion),
+      `recipe ${recipe.recipeId} references an unreviewed story prompt`,
+    );
+    if (Object.hasOwn(recipe, "manifestSchemaVersion")) {
+      assert(
+        versions.facetTagger.has(recipe.facetTagger.promptVersion),
+        `recipe ${recipe.recipeId} references an unreviewed facet-tagger prompt`,
+      );
+    }
+  }
+}
+
 function mainDetect(repository, baseSha, headSha) {
   requireCommit(repository, baseSha, "base SHA");
   requireCommit(repository, headSha, "head SHA");
@@ -737,7 +865,12 @@ function mainDetect(repository, baseSha, headSha) {
   const head = registryAt(repository, headSha);
   assertRegistryHistoryAppendOnly(base, head);
   assertProtectedHistoryFilesAppendOnly(repository, baseSha, headSha);
-  assertPromptReleaseHistoryAppendOnly(repository, baseSha, headSha);
+  const promptRegistries = assertPromptReleaseHistoryAppendOnly(
+    repository,
+    baseSha,
+    headSha,
+  );
+  assertRecipePromptReferences(promptRegistries.base, head.recipes);
   process.stdout.write(promotionRequired(base, head) ? "true" : "false");
 }
 
@@ -1832,6 +1965,12 @@ async function mainAttest(repository, baseSha, headSha) {
 
   const base = registryAt(repository, baseSha);
   const head = registryAt(repository, headSha);
+  const promptRegistries = assertPromptReleaseHistoryAppendOnly(
+    repository,
+    baseSha,
+    headSha,
+  );
+  assertRecipePromptReferences(promptRegistries.base, head.recipes);
   assertSameRegistryCatalog(base, head);
   const added = promotionDiff(base, head);
   assert(added.length === 1, "there is no single new promotion to attest");
@@ -2189,6 +2328,95 @@ function selfTest() {
     "malformed prompt release",
   );
 
+  const facetTaggerPromptArtifact = {
+    schemaVersion: FACET_TAGGER_PROMPT_ARTIFACT_SCHEMA_VERSION,
+    systemLines: [
+      "Classify the disclosure using only the reviewed closed vocabulary.",
+      "Return one JSON object and nothing else.",
+    ],
+    userLines: [
+      "The person wrote:",
+      "{{feeling}}",
+      "Allowed projection templates:",
+      "{{projectionTemplateCatalog}}",
+    ],
+    responseFormat: "json_object",
+  };
+  const facetTaggerPromptContract = validateFacetTaggerPromptArtifact(
+    facetTaggerPromptArtifact,
+    "self-test facet-tagger prompt artifact",
+  );
+  const facetTaggerPromptDigest = sha256(
+    canonical(facetTaggerPromptContract),
+  );
+  assert(
+    facetTaggerPromptArtifactPath(facetTaggerPromptDigest) ===
+      `config/prompt-artifacts/facet-tagger/${facetTaggerPromptDigest}.json`,
+    "facet-tagger prompt artifact path is not content-addressed",
+  );
+  assertFacetTaggerPromptArtifactText(
+    JSON.stringify(facetTaggerPromptArtifact),
+    facetTaggerPromptDigest,
+    "self-test facet-tagger prompt artifact",
+  );
+  rejects(
+    () =>
+      assertFacetTaggerPromptArtifactText(
+        JSON.stringify({
+          ...facetTaggerPromptArtifact,
+          systemLines: ["changed prompt"],
+        }),
+        facetTaggerPromptDigest,
+        "self-test facet-tagger prompt artifact",
+      ),
+    "prompt artifact hash mismatch",
+  );
+  rejects(
+    () =>
+      assertFacetTaggerPromptArtifactText(
+        "{",
+        facetTaggerPromptDigest,
+        "self-test facet-tagger prompt artifact",
+      ),
+    "prompt artifact invalid JSON",
+  );
+  rejects(
+    () =>
+      validateFacetTaggerPromptArtifact(
+        {
+          ...facetTaggerPromptArtifact,
+          unreviewed: true,
+        },
+        "self-test facet-tagger prompt artifact",
+      ),
+    "prompt artifact extra field",
+  );
+  rejects(
+    () =>
+      validateFacetTaggerPromptArtifact(
+        {
+          ...facetTaggerPromptArtifact,
+          userLines: [
+            ...facetTaggerPromptArtifact.userLines,
+            "{{inventedContext}}",
+          ],
+        },
+        "self-test facet-tagger prompt artifact",
+      ),
+    "prompt artifact unreviewed placeholder",
+  );
+  rejects(
+    () =>
+      validateFacetTaggerPromptArtifact(
+        {
+          ...facetTaggerPromptArtifact,
+          systemLines: ["unsafe\nsecond line"],
+        },
+        "self-test facet-tagger prompt artifact",
+      ),
+    "prompt artifact embedded newline",
+  );
+
   const v1Recipe = {
     recipeId: "keyword-rerank-figure-library-50-2026-07-02",
     manifestSha256:
@@ -2292,6 +2520,43 @@ function selfTest() {
     "v2 manifest hash self-test failed",
   );
   validateRecipeManifest(v2Recipe, "self-test v2 recipe");
+  const reviewedPromptV2 = {
+    ...structuredClone(promptV2),
+    facetTagger: [
+      {
+        version: v2Recipe.facetTagger.promptVersion,
+        sha256: facetTaggerPromptDigest,
+      },
+    ],
+  };
+  assertRecipePromptReferences(reviewedPromptV2, [v2Recipe]);
+  rejects(
+    () => assertRecipePromptReferences(promptV1, [v2Recipe]),
+    "same-change prompt release and recipe reference",
+  );
+  rejects(
+    () =>
+      assertRecipePromptReferences(reviewedPromptV2, [
+        {
+          ...v2Recipe,
+          facetTagger: {
+            ...v2Recipe.facetTagger,
+            promptVersion: v2Recipe.rerankPromptVersion,
+          },
+        },
+      ]),
+    "facet-tagger prompt resolved through the wrong lane",
+  );
+  rejects(
+    () =>
+      assertRecipePromptReferences(reviewedPromptV2, [
+        {
+          ...v2Recipe,
+          storyPromptVersion: "unreviewed-story-prompt",
+        },
+      ]),
+    "unreviewed story prompt reference",
+  );
 
   const hashTamper = structuredClone(v2Recipe);
   hashTamper.facetTagger.queryMode = "raw";

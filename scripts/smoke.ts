@@ -18,7 +18,10 @@ import {
   validateStoredStoryArtifact,
 } from "../lib/story-artifact";
 import { getStoryPlayback } from "../lib/story-playback";
-import { deriveStoryPassageLayout } from "../lib/story-progress";
+import {
+  deriveStoryPassageLayout,
+  parseBeatPositionRequest,
+} from "../lib/story-progress";
 import { prepareStoryProgressTelemetry } from "../lib/story-progress-telemetry";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import { createResonanceBrief } from "../lib/resonance-brief";
@@ -1157,6 +1160,35 @@ function printOverTriggerMap(): void {
   }
 }
 
+function runProgressInputAssertion(): AssertionResult {
+  const valid = parseBeatPositionRequest({
+    sessionId: "safe-position",
+    beatIndex: 0,
+    chunkIndex: 1,
+  });
+  const unsafeBeat = parseBeatPositionRequest({
+    sessionId: "unsafe-beat-position",
+    beatIndex: Number.MAX_SAFE_INTEGER + 1,
+    chunkIndex: 0,
+  });
+  const unsafeChunk = parseBeatPositionRequest({
+    sessionId: "unsafe-chunk-position",
+    beatIndex: 0,
+    chunkIndex: Number.MAX_SAFE_INTEGER + 1,
+  });
+  const ok =
+    !("error" in valid) &&
+    "error" in unsafeBeat &&
+    "error" in unsafeChunk;
+  return {
+    name: "progress coordinates: unsafe integers are rejected",
+    ok,
+    detail: ok
+      ? "valid=accepted, unsafe beat/chunk=rejected"
+      : `valid=${JSON.stringify(valid)}, unsafeBeat=${JSON.stringify(unsafeBeat)}, unsafeChunk=${JSON.stringify(unsafeChunk)}`,
+  };
+}
+
 async function main(): Promise<void> {
   const assertions: AssertionResult[] = [
     await runMatchAssertion(
@@ -1186,6 +1218,7 @@ async function main(): Promise<void> {
     await runArtifactPersistenceAssertion(),
     await runLegacyPlaybackAssertion(),
     await runAtomicProgressAssertion(),
+    runProgressInputAssertion(),
     await runStoryCreationKillSwitchAssertion(),
     runApprovedRecipeAssertion(),
     await runPublishedEligibilityAssertion(),

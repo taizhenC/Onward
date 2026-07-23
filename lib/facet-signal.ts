@@ -48,7 +48,7 @@ const DIAGNOSIS_PATTERN =
 const URL_EMAIL_OR_HANDLE_PATTERN =
   /(?:https?:\/\/|www\.|\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|(?:^|\s)@[a-z0-9_]{2,})/iu;
 const QUOTATION_MARK_PATTERN = /["“”«»‹›]/u;
-const TITLE_CASE_TOKEN_PATTERN = /\b\p{Lu}[\p{Ll}\p{M}'’-]{2,}\b/gu;
+const TITLE_CASE_TOKEN_PATTERN = /\b\p{Lu}[\p{Ll}\p{M}'’-]{2,}\b/u;
 const CONCRETE_EVENT_PATTERN =
   /\b(?:draft notice|funeral|hospital|prison|war|battle|divorc(?:e|ed)|marri(?:age|ed)|father|mother|husband|wife|son|daughter|brother|sister|died|death|fired|laid off|graduat(?:ed|ion)|college|university)\b/giu;
 
@@ -237,11 +237,10 @@ function isValidProjectionText(value: unknown): value is string {
     return false;
   }
 
-  const titleCaseTokens = value.match(TITLE_CASE_TOKEN_PATTERN) ?? [];
-  return titleCaseTokens.every((token, index) => {
-    if (index > 0) return false;
-    return NEUTRAL_SUBJECT_PATTERN.test(token);
-  });
+  const neutralSubject = value.match(NEUTRAL_SUBJECT_PATTERN)?.[0];
+  if (!neutralSubject) return false;
+  const predicate = value.slice(neutralSubject.length);
+  return !TITLE_CASE_TOKEN_PATTERN.test(predicate);
 }
 
 function containsUnsubstantiatedConcreteDetail(

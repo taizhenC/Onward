@@ -1,4 +1,13 @@
+import facetTaggerPromptArtifactDocument from "../config/prompt-artifacts/facet-tagger/a68e57abeb7f92699ef8787004ec40f13dc918e518ccb8f8c8266bb534228c64.json";
+
 type TemplateValue = string | number | readonly string[];
+
+export type FacetTaggerPromptContract = Readonly<{
+  schemaVersion: "facet-tagger-prompt-contract-v1";
+  system: string;
+  user: string;
+  responseFormat: "json_object";
+}>;
 
 export type PromptRerankCandidate = Readonly<{
   figureKey: string;
@@ -28,6 +37,11 @@ export type PromptHybridPlanSurface = Readonly<{
   allowedBridgeTemplateIds: readonly string[];
   priorFailureReasons: readonly string[];
 }>;
+
+export const FACET_TAGGER_PROMPT_CONTRACT =
+  normalizeFacetTaggerPromptArtifact(
+    facetTaggerPromptArtifactDocument as unknown,
+  );
 
 export const RERANK_PROMPT_CONTRACT = Object.freeze({
   system: [
@@ -170,6 +184,94 @@ export function canonicalPromptContract(value: unknown): string {
       .join(",")}}`;
   }
   return JSON.stringify(value);
+}
+
+function normalizeFacetTaggerPromptArtifact(
+  value: unknown,
+): FacetTaggerPromptContract {
+  if (
+    !isRecord(value) ||
+    !hasExactKeys(value, [
+      "schemaVersion",
+      "systemLines",
+      "userLines",
+      "responseFormat",
+    ]) ||
+    value.schemaVersion !== "facet-tagger-prompt-contract-v1" ||
+    value.responseFormat !== "json_object"
+  ) {
+    throw new Error("Facet-tagger prompt artifact is invalid.");
+  }
+
+  const system = validatePromptLines(value.systemLines).join("\n");
+  const user = validatePromptLines(value.userLines).join("\n");
+  if (system.includes("{{") || system.includes("}}")) {
+    throw new Error("Facet-tagger prompt artifact is invalid.");
+  }
+
+  const placeholders = [
+    ...user.matchAll(/\{\{([A-Za-z][A-Za-z0-9]*)\}\}/g),
+  ]
+    .map((match) => match[1])
+    .sort();
+  const withoutPlaceholders = user.replace(
+    /\{\{[A-Za-z][A-Za-z0-9]*\}\}/g,
+    "",
+  );
+  if (
+    placeholders.join(",") !== "feeling,projectionTemplateCatalog" ||
+    withoutPlaceholders.includes("{{") ||
+    withoutPlaceholders.includes("}}")
+  ) {
+    throw new Error("Facet-tagger prompt artifact is invalid.");
+  }
+
+  return Object.freeze({
+    schemaVersion: "facet-tagger-prompt-contract-v1",
+    system,
+    user,
+    responseFormat: "json_object",
+  });
+}
+
+function validatePromptLines(value: unknown): string[] {
+  if (!Array.isArray(value) || value.length === 0 || value.length > 64) {
+    throw new Error("Facet-tagger prompt artifact is invalid.");
+  }
+  const lines: string[] = [];
+  let totalBytes = 0;
+  for (const line of value) {
+    if (
+      typeof line !== "string" ||
+      utf8Bytes(line) > 1_024 ||
+      /[\p{Cc}\p{Cf}\p{Cs}\p{Zl}\p{Zp}]/u.test(line)
+    ) {
+      throw new Error("Facet-tagger prompt artifact is invalid.");
+    }
+    totalBytes += utf8Bytes(line);
+    lines.push(line);
+  }
+  if (totalBytes === 0 || totalBytes > 16_384) {
+    throw new Error("Facet-tagger prompt artifact is invalid.");
+  }
+  return lines;
+}
+
+function utf8Bytes(value: string): number {
+  return new TextEncoder().encode(value).byteLength;
+}
+
+function hasExactKeys(
+  value: Record<string, unknown>,
+  expected: readonly string[],
+): boolean {
+  return (
+    Object.keys(value).sort().join(",") === [...expected].sort().join(",")
+  );
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 function renderTemplate(

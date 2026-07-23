@@ -32,6 +32,8 @@ const PROMPT_RELEASE_KINDS = Object.freeze([
 const FACET_TAGGER_PROMPT_ARTIFACT_SCHEMA_VERSION =
   "facet-tagger-prompt-contract-v1";
 const FACET_TAGGER_PROMPT_ARTIFACT_MAX_BYTES = 32_768;
+const PROMPT_RELEASE_REGISTRY_MAX_BYTES = 65_536;
+const PROMPT_RELEASE_LANE_MAX_ENTRIES = 256;
 const STORY_RECIPE_MANIFEST_SCHEMA_V2 = "story-recipe-manifest-v2";
 const RECIPE_MANIFEST_V1_KEYS = Object.freeze([
   "recipeId",
@@ -163,6 +165,25 @@ function readAt(repository, commit, path) {
   const value = git(repository, ["show", `${commit}:${path}`], true);
   assert(value !== null, `${path} is missing at ${commit}`);
   return value;
+}
+
+function readBoundedAt(repository, commit, path, maxBytes) {
+  assert(
+    Number.isSafeInteger(maxBytes) && maxBytes > 0,
+    "repository read limit is invalid",
+  );
+  const sizeText = git(
+    repository,
+    ["cat-file", "-s", `${commit}:${path}`],
+    true,
+  );
+  assert(sizeText !== null, `${path} is missing at ${commit}`);
+  const size = Number(sizeText.trim());
+  assert(
+    Number.isSafeInteger(size) && size >= 0 && size <= maxBytes,
+    `${path} exceeds its repository size limit`,
+  );
+  return readAt(repository, commit, path);
 }
 
 function readJsonAt(repository, commit, path) {
@@ -625,8 +646,18 @@ function assertProtectedHistoryFilesAppendOnly(repository, baseSha, headSha) {
 
 function assertPromptReleaseHistoryAppendOnly(repository, baseSha, headSha) {
   const path = "config/prompt-releases.json";
-  const baseText = readAt(repository, baseSha, path);
-  const headText = readAt(repository, headSha, path);
+  const baseText = readBoundedAt(
+    repository,
+    baseSha,
+    path,
+    PROMPT_RELEASE_REGISTRY_MAX_BYTES,
+  );
+  const headText = readBoundedAt(
+    repository,
+    headSha,
+    path,
+    PROMPT_RELEASE_REGISTRY_MAX_BYTES,
+  );
   const head = parsePromptReleaseRegistryText(
     headText,
     "head prompt release registry",
@@ -694,7 +725,11 @@ function validatePromptReleaseRegistry(value, label) {
 
 function validatePromptReleaseLane(value, label, versions, hashes) {
   const releases = array(value, label);
-  assert(releases.length > 0, `${label} is empty`);
+  assert(
+    releases.length > 0 &&
+      releases.length <= PROMPT_RELEASE_LANE_MAX_ENTRIES,
+    `${label} has an unsafe release count`,
+  );
   return releases.map((value, index) => {
     const release = record(value, `${label}[${index}]`);
     exactKeys(
@@ -725,6 +760,12 @@ function assertPromptRegistryAppendOnly(base, head) {
     const prior = base[kind];
     const current = head[kind];
     assert(current.length >= prior.length, `${kind} prompt history was truncated`);
+    if (kind !== "facetTagger") {
+      assert(
+        current.length === prior.length,
+        `${kind} prompt releases are frozen until inert artifact binding is installed`,
+      );
+    }
     for (let index = 0; index < prior.length; index += 1) {
       assert(
         canonical(current[index]) === canonical(prior[index]),
@@ -742,7 +783,12 @@ function facetTaggerPromptArtifactPath(digest) {
 function assertFacetTaggerPromptArtifactsAt(repository, commit, registry) {
   for (const release of registry.facetTagger) {
     const path = facetTaggerPromptArtifactPath(release.sha256);
-    const text = readAt(repository, commit, path);
+    const text = readBoundedAt(
+      repository,
+      commit,
+      path,
+      FACET_TAGGER_PROMPT_ARTIFACT_MAX_BYTES,
+    );
     assertFacetTaggerPromptArtifactText(text, release.sha256, path);
   }
 }
@@ -2238,6 +2284,20 @@ function selfTest() {
       assertPromptRegistryAppendOnly(promptV1, {
         ...structuredClone(promptV1),
         rerank: [
+          ...promptV1.rerank,
+          {
+            version: "rerank-prompt-v2",
+            sha256: "8".repeat(64),
+          },
+        ],
+      }),
+    "unbound rerank prompt append",
+  );
+  rejects(
+    () =>
+      assertPromptRegistryAppendOnly(promptV1, {
+        ...structuredClone(promptV1),
+        rerank: [
           {
             ...promptV1.rerank[0],
             sha256: "5".repeat(64),
@@ -2271,6 +2331,25 @@ function selfTest() {
         "self-test prompt registry",
       ),
     "prompt v2 empty tagger lane",
+  );
+  rejects(
+    () =>
+      validatePromptReleaseRegistry(
+        {
+          schemaVersion: PROMPT_RELEASE_REGISTRY_V2,
+          rerank: promptV1.rerank,
+          story: promptV1.story,
+          facetTagger: Array.from(
+            { length: PROMPT_RELEASE_LANE_MAX_ENTRIES + 1 },
+            (_, index) => ({
+              version: `facet-tagger-prompt-${index}`,
+              sha256: index.toString(16).padStart(64, "0"),
+            }),
+          ),
+        },
+        "self-test prompt registry",
+      ),
+    "oversized prompt release lane",
   );
   rejects(
     () =>

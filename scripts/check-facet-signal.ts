@@ -415,12 +415,38 @@ function checkTemplateCatalog(): void {
       );
       check(
         template.text.trim() === template.text &&
-          !/[\r\n{}[\]]/u.test(template.text) &&
+          !/\p{C}/u.test(template.text) &&
+          !/[{}\[\]]/u.test(template.text) &&
           template.text.endsWith(".") &&
           (template.text.match(/[.!?]/gu) ?? []).length === 1 &&
           words.length > 0 &&
           words.length <= FACET_PROJECTION_MAX_WORDS,
         `${template.templateId} violates closed sentence invariants`,
+      );
+      const predicate = template.text.replace(/^\S+\s+/u, "");
+      check(
+        /^(?:Someone|They|A|An|Something)\b/u.test(template.text) &&
+          !/\b\p{Lu}[\p{L}\p{M}\p{N}'’-]{2,}\b/u.test(predicate) &&
+          !/\b\d{4}\b/u.test(template.text) &&
+          !/\b(?:I|me|my|mine|myself|we|us|our|ours|ourselves)\b/iu.test(
+            template.text,
+          ) &&
+          !/\b(?:adhd|anxiety|bipolar|depress(?:ed|ion|ive)?|diagnos(?:ed|is)|disorder|ocd|ptsd|suicid(?:al|e)|trauma(?:tic)?)\b/iu.test(
+            template.text,
+          ) &&
+          !/(?:https?:\/\/|www\.|\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b)/iu.test(
+            template.text,
+          ) &&
+          !/\b(?:should|must|ought to|need to|needs to|try to|you)\b/iu.test(
+            template.text,
+          ),
+        `${template.templateId} violates figure-neutral editorial rules`,
+      );
+      check(
+        /\b(?:felt|carried|feared|faced|changed|ended|had|was|were|stopped|went|failed|disrupted|kept|remained|held|wanted)\b/iu.test(
+          template.text,
+        ),
+        `${template.templateId} is not explicitly past tense`,
       );
       seenIds.add(template.templateId);
       seenTexts.add(template.text);

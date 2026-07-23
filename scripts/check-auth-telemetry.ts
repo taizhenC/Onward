@@ -453,32 +453,32 @@ function checkPrivacyShape(): void {
 }
 
 function checkStaticIntegration(): void {
-  const route = source("app/api/match/route.ts");
+  const handler = source("app/api/match/handler.ts");
   const intakeForm = source("components/IntakeForm.tsx");
   const workflow = source(".github/workflows/ci.yml");
 
   assert(
-    route.indexOf("classifyCrisis(safetyText)") <
-      route.indexOf("readStoryFlowAuthChallengeCookie(request)"),
+    handler.indexOf("classifyCrisis(safetyText)") <
+      handler.indexOf("readStoryFlowAuthChallengeCookie(request)"),
   );
   assert(
-    route.indexOf("STORY_CREATION_ENABLED") <
-      route.indexOf("readStoryFlowAuthChallengeCookie(request)"),
+    handler.indexOf("STORY_CREATION_ENABLED") <
+      handler.indexOf("readStoryFlowAuthChallengeCookie(request)"),
   );
   assert(
-    route.indexOf("const validated = validateIntakeInput(body)") <
-      route.indexOf("readStoryFlowAuthChallengeCookie(request)"),
+    handler.indexOf("const validated = intake.validateIntakeInput(body)") <
+      handler.indexOf("readStoryFlowAuthChallengeCookie(request)"),
   );
   assert(
-    route.indexOf("authProof = verifyAnonymousStoryFlowAuthChallenge") <
-      route.indexOf("authUser = await getAuthUserContext()"),
+    handler.indexOf("authProof = verifyAnonymousStoryFlowAuthChallenge") <
+      handler.indexOf("authUser = await getAuthUserContext()"),
   );
   assert(
-    route.indexOf("const activation = await activateTelemetryFlowForOwner") <
-      route.indexOf("await recordLinkedProductEventBestEffort"),
+    handler.indexOf("const activation = await activateTelemetryFlowForOwner") <
+      handler.indexOf("await recordLinkedProductEventBestEffort"),
   );
-  assert(route.includes('authEstablishedEvent("anonymous")'));
-  assert(route.includes("hasFreshAnonymousAuthentication"));
+  assert(handler.includes('authEstablishedEvent("anonymous")'));
+  assert(handler.includes("hasFreshAnonymousAuthentication"));
   assert(!intakeForm.includes(STORY_FLOW_AUTH_CHALLENGE_COOKIE));
   assert(!intakeForm.includes("authChallenge"));
   assert(

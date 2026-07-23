@@ -9,11 +9,12 @@ import type {
 import { listAll, listByAge } from "./figures";
 import {
   APPROVED_PRODUCTION_RECIPE,
+  FACETSRAG_TOP_K,
   framingFromConfidence,
   requireApprovedProductionRecipe,
   RERANK_TOP_K,
 } from "./match-config";
-import { pickFigure, RerankError } from "./llm";
+import { pickFigure, RERANK_PROMPT_VERSION, RerankError } from "./llm";
 import { pickByKeywordHybrid, scoreAllByKeywordHybrid } from "./keyword-match";
 import { EmbeddingError } from "./embeddings";
 import { retrieveFacets, RetrievalUnavailableError } from "./facets-retrieval";
@@ -21,6 +22,11 @@ import {
   withMatchClarification,
   type MatchClarification,
 } from "./match-recovery";
+import {
+  assertProductionStoryRecipeRuntime,
+  storyRecipeExecutionPlan,
+} from "./story-recipe";
+import type { StoryRecipeManifest } from "./story-recipe";
 
 export type MatchInput = {
   age: number;
@@ -73,7 +79,8 @@ export type MatchDebug = MatchResult &
 
 // Production entry point: only the client-safe shape escapes.
 export async function match(input: MatchInput): Promise<MatchResult> {
-  const { figureKey, stageId, framing } = await matchWithDebug(input);
+  const recipe = requireApprovedProductionRecipe(resolveRetrievalMode());
+  const { figureKey, stageId, framing } = await matchWithRecipe(input, recipe);
   return { figureKey, stageId, framing };
 }
 
@@ -86,7 +93,14 @@ export type IntakeMatchResult = MatchResult &
 export async function matchForIntake(
   input: MatchInput,
 ): Promise<IntakeMatchResult> {
-  const result = await matchWithDebug(input);
+  // Validate the selected production manifest before retrieval, reranking, or
+  // any other provider work. The route repeats this boundary before auth and
+  // writes; this guard covers scripts and future non-route callers.
+  const recipe = requireApprovedProductionRecipe(resolveRetrievalMode());
+  if (recipe.rerankPromptVersion !== RERANK_PROMPT_VERSION) {
+    throw new Error("The rerank prompt identity is not approved.");
+  }
+  const result = await matchWithRecipe(input, recipe);
   // Public story creation is pinned to the recipe that cleared the current
   // trust gate. Keep challenger retrieval available through matchWithDebug()
   // for evals, but never let it acquire the approved keyword recipe identity
@@ -104,6 +118,29 @@ export async function matchForIntake(
 }
 
 export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
+  const mode = resolveRetrievalMode();
+  return matchWithExecution(input, mode, {
+    keywordTopK: RERANK_TOP_K,
+    facetsTopK: FACETSRAG_TOP_K,
+  });
+}
+
+async function matchWithRecipe(
+  input: MatchInput,
+  recipe: StoryRecipeManifest,
+): Promise<MatchDebug> {
+  const plan = storyRecipeExecutionPlan(recipe);
+  return matchWithExecution(input, plan.retrievalMode, {
+    keywordTopK: plan.rerankTopK,
+    facetsTopK: plan.rerankTopK,
+  });
+}
+
+async function matchWithExecution(
+  input: MatchInput,
+  mode: RetrievalMode,
+  topK: Readonly<{ keywordTopK: number; facetsTopK: number }>,
+): Promise<MatchDebug> {
   const effectiveInput: MatchInput = {
     ...input,
     feeling: withMatchClarification(input.feeling, input.clarification),
@@ -112,7 +149,8 @@ export async function matchWithDebug(input: MatchInput): Promise<MatchDebug> {
   const selection = await selectMatchPool(
     effectiveInput,
     pool,
-    resolveRetrievalMode(),
+    mode,
+    topK,
   );
   const rerankPool = selection.rerankPool;
   const debugScalars: DebugScalars = {
@@ -209,14 +247,21 @@ function keywordFallback(
 }
 
 // The configured retrieval mode. The evaluated keyword recipe is the default;
-// `auto` and FacetsRAG remain local/eval challengers; production rejects every
-// explicit non-keyword or unknown value. The actual path is frozen on MatchDebug
+// `auto` and FacetsRAG remain local/eval challengers; production ignores this
+// secondary switch and takes the path from its selected recipe. The actual path is frozen on MatchDebug
 // and IntakeMatchResult, while intake uses this resolver only before a no-run
 // no-eligible telemetry outcome.
 export function resolveRetrievalMode(
   explicit?: string,
   environment = process.env.NODE_ENV,
 ): RetrievalMode {
+  if (environment === "production") {
+    // The manifest selector is the only production behavior control. Ignore
+    // stale RETRIEVAL_MODE values so a rollback cannot create a mixed recipe.
+    return environment === process.env.NODE_ENV
+      ? assertProductionStoryRecipeRuntime().recipe.retrievalMode
+      : APPROVED_PRODUCTION_RECIPE.retrievalMode;
+  }
   const configured = explicit ?? process.env.RETRIEVAL_MODE;
   const raw = configured?.trim().toLowerCase();
 
@@ -224,11 +269,6 @@ export function resolveRetrievalMode(
   // approved baseline. Local/eval callers may still explicitly request `auto` or
   // FacetsRAG; a public production process must name its evaluated keyword recipe.
   if (!raw) return APPROVED_PRODUCTION_RECIPE.retrievalMode;
-  if (environment === "production" && raw !== "keyword") {
-    throw new Error(
-      `RETRIEVAL_MODE=${raw} is not approved for production; set RETRIEVAL_MODE=keyword.`,
-    );
-  }
   if (raw === "auto") {
     return "auto";
   }
@@ -248,13 +288,17 @@ async function selectMatchPool(
   input: MatchInput,
   pool: FigureStageRow[],
   mode: RetrievalMode,
+  topK: Readonly<{ keywordTopK: number; facetsTopK: number }>,
 ): Promise<RetrievalSelection> {
   if (mode === "keyword") {
-    return { rerankPool: selectRerankPool(input, pool), retrievalMode: "keyword" };
+    return {
+      rerankPool: selectRerankPool(input, pool, topK.keywordTopK),
+      retrievalMode: "keyword",
+    };
   }
 
   try {
-    const retrieval = await retrieveFacets(input, pool);
+    const retrieval = await retrieveFacets(input, pool, topK.facetsTopK);
     return {
       rerankPool: retrieval.pool,
       retrievalMode: "facetsrag",
@@ -272,7 +316,7 @@ async function selectMatchPool(
     }
     // auto: degrade to keyword (recovery-asymmetry — a degraded match beats no match).
     return {
-      rerankPool: selectRerankPool(input, pool),
+      rerankPool: selectRerankPool(input, pool, topK.keywordTopK),
       retrievalMode: "keyword",
       retrievalFallbackReason: reason,
     };
@@ -292,10 +336,14 @@ function retrievalErrorReason(error: unknown): string {
 export function selectRerankPool(
   input: MatchInput,
   pool: FigureStageRow[],
+  topK = RERANK_TOP_K,
 ): FigureStageRow[] {
-  if (pool.length <= RERANK_TOP_K) return pool;
+  if (!Number.isInteger(topK) || topK < 1) {
+    throw new Error("Keyword rerank top-K must be a positive integer.");
+  }
+  if (pool.length <= topK) return pool;
   return scoreAllByKeywordHybrid(input, pool)
-    .slice(0, RERANK_TOP_K)
+    .slice(0, topK)
     .map((pick) => pick.stage);
 }
 

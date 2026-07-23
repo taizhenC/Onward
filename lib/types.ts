@@ -132,13 +132,32 @@ export type OpeningCopy = {
 // jsonb, so new fields need no migration; tagger/projection fields slot in the same way later.
 export type MatchRecipe = {
   recipeId: string;
+  // Required on every newly-created story. Optional in the replay type only
+  // because immutable sessions/artifacts created before the recipe registry
+  // cannot be backfilled with provenance they never recorded.
+  recipeManifestHash?: string;
+  datasetVersion?: string;
+  deploymentVersion?: string;
   matchConfigVersion: string;
+  librarySnapshotSha256?: string;
   crisisRegexVersion: string;
   llmProvider: string;
   rerankModelId: string;
   proseModelId: string;
-  embeddingModelId: string;
+  embeddingModelId: string | null;
   retrievalMode: RetrievalMode;
+  rerankPromptVersion?: string;
+  storyPromptVersion?: string;
+  rerankTemperature?: number;
+  rerankReasoningEffort?: string;
+  rerankTopK?: number;
+  storyTemperature?: number;
+  storyComposerMode?: "canonical";
+  hybridStoryComposerEnabled?: false;
+  composerVersion?: string;
+  validatorVersion?: string;
+  storySpecSchemaVersion?: string;
+  boundaryPolicyVersion?: string;
   // Optional only for replaying sessions created before the short-lived
   // ResonanceBrief boundary existed. Every new intake pins this version.
   resonanceBriefVersion?: string;

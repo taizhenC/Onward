@@ -410,11 +410,73 @@ type ApprovedStoryRecipe = {
   storyPromptVersion: string;
   validatorVersion: string;
   storySpecSchemaVersion: string;
-  approvedAt: string;
+};
+
+type RecipePromotion = {
+  recipeId: string;
+  decisionId: string;
+  promotedAt: string;
 };
 ```
 
-Production refuses every retrieval value other than the currently approved keyword path. Challenger modes remain available through the eval/debug matcher, but the story-creation matcher carries its actual resolved path and rejects it before persistence when it is not approved. Session construction uses that returned path rather than rereading mutable environment configuration. Match/artifact producers and the transactional SQL boundary independently require the approved recipe ID, retrieval path, and match-config version, so a challenger cannot be counted under the production calibration cohort.
+The as-built boundary uses `config/story-recipes.json` as the canonical,
+content-addressed registry. It records the full retrieval, model, prompt,
+temperature, composer, validator, and StorySpec identity for both the current
+keyword baseline and the non-selectable FacetsRAG challenger. Production must
+name the primary or pre-registered rollback ID explicitly through
+`ONWARD_PRODUCTION_RECIPE_ID`. That manifest is the sole non-secret production
+behavior source: provider, models, tuning, retrieval/top-K, embedder, and
+composer environment values are local/eval inputs and cannot form a mixed
+production recipe. Unknown selectors, unsafe persistence, missing credentials,
+endpoint/timeout drift, and missing deployment identity fail before
+authentication, limits, providers, or writes. Crisis resources and the story
+kill switch remain outside that failure boundary.
+
+Every new session and immutable artifact pins the manifest hash, dataset,
+deployment, models, prompts, composer mode, validator, and schema versions.
+Migration `0020` adds an append-only, forced-RLS database registry and an exact
+session trigger, then moves product events, generation attempts, match recovery,
+initial/alternate completion, and rollup recipe checks off duplicated literals.
+The database stores no active pointer: compatible promoted rows remain valid and
+the application selector is the single rollback change. Promotion is deliberately
+limited to matching axes within one installed library/code/story compatibility
+set. A library, prompt, validator, schema, or composer change is a release and
+must ship its own rollback-compatible code/content; an old manifest is never
+pretended to be executable against a different installed corpus.
+Prompt release identity is content-derived, not a mutable label:
+`config/prompt-releases.json` is append-only and maps each rerank/story version
+to the SHA-256 of its exact canonical prompt contract. Edge and Node hashing are
+cross-checked, and runtime version identity fails when content and release hash
+diverge.
+
+Detailed eval trials remain local. Metrics-only results are append-only and
+content-addressed under `evals/history`, paired comparisons under
+`evals/shadow`, and deliberate decisions under `config/recipe-decisions`.
+The current record honestly retains keyword: its imported synthetic evidence
+passes at 98.0% with zero definitive-wrong results, while FacetsRAG reaches
+95.0% with three definitive-wrong results. Imported/synthetic evidence can
+never authorize promotion. Eval and shadow tools also cannot self-mint
+authority: they emit content-addressed candidates with `promotable=false`. A
+future promotion requires real non-legacy protected-holdout candidates, strict top-1 superiority, a passing recomputed
+paired shadow gate, fixed sample/stability/latency floors, an exact hash of the
+Supabase-published and StorySpec-eligible catalog, zero definitive-wrong results,
+no hard-confusion, miss-detection, or coverage regression, independently
+attested clean-commit/input-tree, run, deployment, source-output, and approval
+contexts, three named approval roles, and the base commit's compatible primary
+as both source and rollback. Each promoted row is bound to its authorizing
+decision and an exact append-only migration registration. The candidate set must
+already exist byte-for-byte on protected `main`; the later promotion-only PR
+cannot change evidence, manifests, datasets, runtime code, workflows, or the
+attestor.
+
+Ordinary CI performs structural validation without authority. The promotion
+detector and minimal dependency-free attestor are loaded from the protected base
+commit, read the candidate only through immutable Git objects, and execute no
+candidate code. Protected environment values and its secret are scoped to the
+single attestor step—never checkout, dependency installation, eval, or PR-owned
+scripts. The attestor recomputes the gate, enforces distinct eval/shadow run and
+deployment identities, includes the rerank prompt in rollback compatibility,
+and binds the full candidate envelope to `RECIPE_PROMOTION_ATTESTATION_SHA256`.
 
 ## P0-11 — [Feature] Safe observability architecture
 

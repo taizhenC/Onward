@@ -654,38 +654,23 @@ function runApprovedRecipeAssertion(): AssertionResult {
     "development",
   );
   const productionMode = resolveRetrievalMode("keyword", "production");
-  let autoRejected = false;
-  let facetsRagRejected = false;
-  let unknownRejected = false;
-  try {
-    resolveRetrievalMode("auto", "production");
-  } catch {
-    autoRejected = true;
-  }
-  try {
-    resolveRetrievalMode("facetsrag", "production");
-  } catch {
-    facetsRagRejected = true;
-  }
-  try {
-    resolveRetrievalMode("unexpected-mode", "production");
-  } catch {
-    unknownRejected = true;
-  }
+  const staleAuto = resolveRetrievalMode("auto", "production");
+  const staleFacets = resolveRetrievalMode("facetsrag", "production");
+  const staleUnknown = resolveRetrievalMode("unexpected-mode", "production");
 
   const ok =
     defaultMode === APPROVED_PRODUCTION_RECIPE.retrievalMode &&
     developmentChallenger === "facetsrag" &&
     productionMode === "keyword" &&
-    autoRejected &&
-    facetsRagRejected &&
-    unknownRejected;
+    staleAuto === "keyword" &&
+    staleFacets === "keyword" &&
+    staleUnknown === "keyword";
   return {
     name,
     ok,
     detail: ok
-      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production challengers rejected`
-      : `default=${defaultMode}, developmentChallenger=${developmentChallenger}, production=${productionMode}, autoRejected=${autoRejected}, facetsRagRejected=${facetsRagRejected}, unknownRejected=${unknownRejected}`,
+      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production behavior is selector-owned`
+      : `default=${defaultMode}, developmentChallenger=${developmentChallenger}, production=${productionMode}, stale=${staleAuto}/${staleFacets}/${staleUnknown}`,
   };
 }
 

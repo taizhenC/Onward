@@ -14,6 +14,13 @@ import {
   listPublishedStorySpecKeys,
   storySpecStageKey,
 } from "../lib/story-spec-repository";
+import {
+  getStoryRecipeById,
+  getStoryRecipePromotion,
+  PRIMARY_STORY_RECIPE,
+  ROLLBACK_STORY_RECIPE,
+  SELECTABLE_STORY_RECIPE_IDS,
+} from "../lib/story-recipe";
 
 // Supabase-mode release check. Run after migrations, seeding, and publishing the launch
 // subset, as a SEPARATE process so the
@@ -136,6 +143,87 @@ async function checkArtifactSchema(): Promise<Step> {
     };
   } catch (error) {
     return { name, ok: false, detail: `${message(error)} — apply migration 0005` };
+  }
+}
+
+async function checkStoryRecipeRegistry(): Promise<Step> {
+  const name = "immutable promoted story-recipe registry installed";
+  try {
+    const configured = process.env.ONWARD_PRODUCTION_RECIPE_ID?.trim();
+    const active = configured
+      ? getStoryRecipeById(configured)
+      : PRIMARY_STORY_RECIPE;
+    if (!active || !SELECTABLE_STORY_RECIPE_IDS.includes(active.recipeId)) {
+      throw new Error("configured production recipe is not selectable");
+    }
+    const selectable = [...new Map(
+      [PRIMARY_STORY_RECIPE, ROLLBACK_STORY_RECIPE].map((recipe) => [
+        recipe.recipeId,
+        recipe,
+      ]),
+    ).values()];
+    for (const recipe of selectable) {
+      const promotion = getStoryRecipePromotion(recipe.recipeId);
+      if (!promotion) throw new Error(`${recipe.recipeId} is not promoted`);
+      const result = await getSupabase()
+        .from("story_recipe_registry")
+        .select(
+          "recipe_id,manifest_sha256,dataset_version,match_config_version,library_snapshot_sha256,retrieval_mode,llm_provider,rerank_model_id,prose_model_id,embedding_model_id,rerank_prompt_version,story_prompt_version,rerank_temperature,rerank_reasoning_effort,rerank_top_k,story_temperature,story_composer_mode,hybrid_story_composer_enabled,composer_version,validator_version,story_spec_schema_version,boundary_policy_version,resonance_brief_version,decision_id,promoted_at",
+        )
+        .eq("recipe_id", recipe.recipeId)
+        .maybeSingle();
+      if (result.error) throw new Error(result.error.message);
+      const expected = {
+        recipe_id: recipe.recipeId,
+        manifest_sha256: recipe.manifestSha256,
+        dataset_version: recipe.datasetVersion,
+        match_config_version: recipe.matchConfigVersion,
+        library_snapshot_sha256: recipe.librarySnapshotSha256,
+        retrieval_mode: recipe.retrievalMode,
+        llm_provider: recipe.llmProvider,
+        rerank_model_id: recipe.rerankModelId,
+        prose_model_id: recipe.proseModelId,
+        embedding_model_id: recipe.embeddingModelId,
+        rerank_prompt_version: recipe.rerankPromptVersion,
+        story_prompt_version: recipe.storyPromptVersion,
+        rerank_temperature: recipe.rerankTemperature,
+        rerank_reasoning_effort: recipe.rerankReasoningEffort,
+        rerank_top_k: recipe.rerankTopK,
+        story_temperature: recipe.storyTemperature,
+        story_composer_mode: recipe.storyComposerMode,
+        hybrid_story_composer_enabled:
+          recipe.hybridStoryComposerEnabled,
+        composer_version: recipe.composerVersion,
+        validator_version: recipe.validatorVersion,
+        story_spec_schema_version: recipe.storySpecSchemaVersion,
+        boundary_policy_version: recipe.boundaryPolicyVersion,
+        resonance_brief_version: recipe.resonanceBriefVersion,
+        decision_id: promotion.decisionId,
+        promoted_at: promotion.promotedAt,
+      };
+      const actual = result.data
+        ? {
+            ...result.data,
+            rerank_temperature: Number(result.data.rerank_temperature),
+            rerank_top_k: Number(result.data.rerank_top_k),
+            story_temperature: Number(result.data.story_temperature),
+            promoted_at:
+              typeof result.data.promoted_at === "string"
+                ? new Date(result.data.promoted_at).toISOString()
+                : result.data.promoted_at,
+          }
+        : null;
+      if (!actual || !isDeepStrictEqual(actual, expected)) {
+        throw new Error(`${recipe.recipeId} differs from the manifest`);
+      }
+    }
+    return {
+      name,
+      ok: true,
+      detail: `active ${active.recipeId}; ${selectable.length} selectable manifest(s) installed`,
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0020` };
   }
 }
 
@@ -844,6 +932,7 @@ async function main(): Promise<void> {
     await checkServingParity(),
     await checkPublishedStorySpecs(),
     await checkArtifactSchema(),
+    await checkStoryRecipeRegistry(),
     await checkMatchRecoverySchema(),
     await checkHistoricalConcernSchema(),
     await checkStoryFeedbackSchema(),

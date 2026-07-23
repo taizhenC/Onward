@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "match-eval-evidence-v1",
+  "harnessVersion": "match-eval-harness-v2-2026-07",
+  "evidenceId": "ev_cc12a3198ddef5022b5bf8d7383d3cba0841f1aba01e56e30e6fcf8a04f7553f",
+  "recipeId": "facetsrag-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "8024a865b7e20bc80ca9dc36a757705a09cc232e5841640546fb048ace25fadd",
+  "dataset": {
+    "version": "match-104-2026-07-02",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "visibility": "synthetic"
+  },
+  "run": {
+    "startedAt": "2026-07-02T07:11:44.039Z",
+    "completedAt": "2026-07-02T07:11:44.039Z",
+    "k": 1,
+    "concurrency": 1,
+    "maxRetries": 2,
+    "caseCount": 104,
+    "trialCount": 104
+  },
+  "config": {
+    "provider": "real",
+    "model": "gpt-oss-120b",
+    "retrievalMode": "facetsrag",
+    "embeddingModelId": "gemini-embedding-001@d1536",
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "rerankTemperature": 0,
+    "rerankReasoningEffort": "low",
+    "rerankTopK": 8
+  },
+  "metrics": {
+    "rerankTop1": 0.9504950495049505,
+    "overallTop1": 0.9504950495049505,
+    "missDetection": 1,
+    "hardConfusion": 0.022727272727272728,
+    "goldSurvivalStageA": 1,
+    "goldSurvivalStageB": 1,
+    "stability": null,
+    "counts": {
+      "rerankCorrect": 96,
+      "rerankTotal": 101,
+      "overallCorrect": 96,
+      "overallTotal": 101,
+      "missDetected": 3,
+      "missTotal": 3,
+      "hardConfused": 1,
+      "hardTotal": 44,
+      "survivedStageA": 101,
+      "survivedStageB": 101,
+      "survivalTotal": 101,
+      "rerankChosen": 104,
+      "keywordFallback": 0
+    },
+    "calibration": {
+      "definitiveCorrect": 89,
+      "definitiveWrong": 3,
+      "partialCorrect": 7,
+      "partialWrong": 2
+    },
+    "latency": {
+      "p50Ms": 329,
+      "p95Ms": 733
+    },
+    "trustGate": {
+      "passed": false,
+      "coverage": 1,
+      "checks": {
+        "coverage": true,
+        "rerankTop1": false,
+        "missDetection": true,
+        "noDefinitiveWrong": false,
+        "top1": false,
+        "hardConfusion": false
+      },
+      "thresholds": {
+        "minCoverage": 0.95,
+        "minRerankTop1": 0.971,
+        "minOverallTop1": 0.971,
+        "minMissDetection": 1,
+        "maxDefinitiveWrong": 0,
+        "maxHardConfusion": 0
+      }
+    }
+  },
+  "provenance": {
+    "gitCommit": "138d247",
+    "deploymentId": null,
+    "sourceRun": "2026-07-02T07-11-44-039Z.json"
+  },
+  "legacyImported": true,
+  "promotable": false
+}

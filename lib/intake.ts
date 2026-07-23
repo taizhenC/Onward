@@ -47,6 +47,8 @@ import {
   beginInitialStoryPreparationFailureRecorder,
   type InitialStoryPreparationFailureDependencies,
 } from "./flow-failure-telemetry";
+import { assertProductionStoryRecipeRuntime } from "./story-recipe";
+import { assertProductionStoryRecipeRegistered } from "./story-recipe-registration";
 
 export type IntakeInput = {
   age: number;
@@ -116,6 +118,17 @@ export async function handleIntake(
   // support remains available because it is evaluated above this branch. The
   // disabled path persists nothing and spends no provider or rate-limit budget.
   if (process.env.STORY_CREATION_ENABLED?.trim().toLowerCase() === "false") {
+    return { temporarilyUnavailable: true };
+  }
+
+  // Non-route callers receive the same fail-closed recipe boundary as the
+  // public endpoint. Keep it after crisis support and the kill switch, but
+  // before telemetry-flow activation, rate limiting, catalog work, or any
+  // provider call so a drifted deployment spends and persists nothing.
+  try {
+    const runtime = assertProductionStoryRecipeRuntime();
+    await assertProductionStoryRecipeRegistered(runtime);
+  } catch {
     return { temporarilyUnavailable: true };
   }
 

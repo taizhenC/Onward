@@ -26,6 +26,8 @@ import {
   noEligibleMatchCompletedEvent,
   recordLinkedProductEventBestEffort,
 } from "./telemetry-producers";
+import { assertProductionStoryRecipeRuntime } from "./story-recipe";
+import { assertProductionStoryRecipeRegistered } from "./story-recipe-registration";
 
 export type CreateAlternateStoryResult =
   | { status: "ready"; sessionId: string }
@@ -89,6 +91,16 @@ export async function createAlternateStory(
     } catch {
       // The kill-switch response stays storage-agnostic.
     }
+    return { status: "temporarily_unavailable" };
+  }
+
+  // Validate before acquiring the alternate lease or running retrieval. A
+  // configuration incident must not consume an attempt or write flow state;
+  // already-ready results and the kill-switch replay above remain readable.
+  try {
+    const runtime = assertProductionStoryRecipeRuntime();
+    await assertProductionStoryRecipeRegistered(runtime);
+  } catch {
     return { status: "temporarily_unavailable" };
   }
 

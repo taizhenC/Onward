@@ -91,20 +91,21 @@ See `.env.example` for the documented template. Summary:
 | `ALTERNATE_STORY_TOKEN_SECRET` | Optional dedicated HMAC secret for post-story alternate capabilities; minimum 32 bytes; falls back to the recovery secret, then `IP_HASH_SALT`. |
 | `STORY_DELETION_TOKEN_SECRET` | Optional dedicated HMAC secret for ten-minute story-delete confirmations; minimum 32 bytes; production falls back to `IP_HASH_SALT`. Rotation invalidates only outstanding confirmation forms. |
 | `ACCOUNT_DELETION_TOKEN_SECRET` | Optional dedicated HMAC secret for ten-minute account-delete and reauthentication continuations; minimum 32 bytes; falls back to `STORY_DELETION_TOKEN_SECRET`, then `IP_HASH_SALT`. Rotation invalidates only outstanding forms. |
-| `LLM_PROVIDER` | `stub` (default) or `real` (Cerebras) |
-| `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL` | for `LLM_PROVIDER=real` |
-| `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE` | default `gpt-oss-120b` |
-| `EMBEDDING_PROVIDER` | `stub` (default) or `gemini` |
-| `GEMINI_API_KEY` | for `EMBEDDING_PROVIDER=gemini` |
-| `RETRIEVAL_MODE` | `keyword` is the only approved story-creation recipe. `facetsrag` and `auto` remain eval/debug challengers; every non-keyword value is rejected in production, and challenger results cannot be persisted or labeled as the approved recipe. |
+| `LLM_PROVIDER`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE` | Local/eval controls. Served production ignores them and uses the selected immutable recipe. |
+| `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL` | Production credential and pinned Cerebras endpoint. |
+| `EMBEDDING_PROVIDER`, `EMBEDDING_MODEL`, `EMBEDDING_DIM` | Local/eval controls. Served production derives them from the selected recipe. |
+| `GEMINI_API_KEY` | Required when the selected production recipe uses Gemini embeddings. |
+| `RETRIEVAL_MODE` | Local/eval control only. Production ignores it—including `auto`—and uses the selected recipe's exact retrieval path and top-K. |
+| `ONWARD_PRODUCTION_RECIPE_ID` | Required in production and the sole non-secret behavior selector. It can name only the primary or pre-registered rollback recipe in [`config/story-recipes.json`](config/story-recipes.json). A compatible matching-recipe rollback is this one change and needs no data migration. |
+| `ONWARD_DEPLOYMENT_VERSION` | Required outside Vercel when no `VERCEL_GIT_COMMIT_SHA` is present. Stored with the immutable session recipe for release audit. |
 | `STORY_CREATION_ENABLED` | Optional emergency kill switch; set `false` to pause new stories while leaving crisis resources available. |
-| `HYBRID_STORY_COMPOSER_ENABLED` | Eval-gated promotion/rollback flag. Production defaults to canonical unless explicitly `true`; local development exercises hybrid by default. |
+| `HYBRID_STORY_COMPOSER_ENABLED` | Local/eval control only. Production composer behavior is pinned by the selected recipe; local development exercises hybrid by default. |
 
 ## Deploying
 
 ### 1. Supabase (dashboard)
 
-1. For a fresh project, apply every file from `supabase/migrations/` in numeric order in the Supabase SQL editor: `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010` → `0011` → `0012` → `0013` → `0014` → `0015` → `0016` → `0017` → `0018` → `0019`. Before `0003`, enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. Apply each migration exactly once and stop on the first error. **`0003` deletes existing development session rows on purpose.** Migration `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning; `0011` adds the telemetry-flow registry, transactional `create_story_session_v3` binding, typed capture RPC, and leased product-event outbox; `0012` adds transactional match-limiter, recovery, and `create_story_session_v4` artifact producers, including two-day unlinkable limiter-decision replay for ambiguous responses; `0013` makes each artifact-backed Continue/Finish an owner-scoped CAS that atomically captures its persisted-artifact-derived passage ordinal and final completion; `0014` atomically captures the persisted feedback verdict while keeping the closed miss reason in the feedback domain only; `0015` captures alternate demand only when a valid capability becomes a durable claim; `0016` derives alternate match calibration at the server boundary and atomically captures alternate terminal outcomes plus ready-artifact telemetry with their authoritative transitions; `0017` replaces service-role raw-event claims with a private, ID-only Postgres dispatcher that atomically folds each source event into identifier-free UTC-day marginal counts before marking its outbox pointer delivered; `0018` adds the owner-scoped story-deletion RPC and removes direct service-role session deletion; `0019` adds the owner-confirmed account-deletion RPC, FK-binds and indexes rate-limit user keys, routes guest expiry through the same locked cascade, and account-serializes flow ownership plus initial-story RPCs. The dispatcher minute cron remains disabled in `telemetry_rollup_dispatch_control` until an operator completes the rollout gates. Pre-`0009` sessions remain deliberately ineligible for linked telemetry because their original limits cannot be reconstructed safely, but they remain deletable.
+1. For a fresh project, apply every file from `supabase/migrations/` in numeric order in the Supabase SQL editor: `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010` → `0011` → `0012` → `0013` → `0014` → `0015` → `0016` → `0017` → `0018` → `0019` → `0020`. Before `0003`, enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. Apply each migration exactly once and stop on the first error. **`0003` deletes existing development session rows on purpose.** Migration `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning; `0011` adds the telemetry-flow registry, transactional `create_story_session_v3` binding, typed capture RPC, and leased product-event outbox; `0012` adds transactional match-limiter, recovery, and `create_story_session_v4` artifact producers, including two-day unlinkable limiter-decision replay for ambiguous responses; `0013` makes each artifact-backed Continue/Finish an owner-scoped CAS that atomically captures its persisted-artifact-derived passage ordinal and final completion; `0014` atomically captures the persisted feedback verdict while keeping the closed miss reason in the feedback domain only; `0015` captures alternate demand only when a valid capability becomes a durable claim; `0016` derives alternate match calibration at the server boundary and atomically captures alternate terminal outcomes plus ready-artifact telemetry with their authoritative transitions; `0017` replaces service-role raw-event claims with a private, ID-only Postgres dispatcher that atomically folds each source event into identifier-free UTC-day marginal counts before marking its outbox pointer delivered; `0018` adds the owner-scoped story-deletion RPC and removes direct service-role session deletion; `0019` adds the owner-confirmed account-deletion RPC, FK-binds and indexes rate-limit user keys, routes guest expiry through the same locked cascade, and account-serializes flow ownership plus initial-story RPCs; `0020` adds the append-only promoted-recipe registry, exact immutable session-recipe trigger, and registry-backed telemetry/recovery/rollup checks. The dispatcher minute cron remains disabled in `telemetry_rollup_dispatch_control` until an operator completes the rollout gates. Pre-`0009` sessions remain deliberately ineligible for linked telemetry because their original limits cannot be reconstructed safely, but they remain deletable.
 
 Run each migration as one whole-file transaction, never statement-by-statement.
 This is mandatory for `0017`: its table lock, delivered-pointer backfill, and
@@ -112,7 +113,7 @@ legacy claim/ACK revocation are one atomic cutover. If the migration runner does
 not transaction-wrap a file, wrap the complete `0017` script in `BEGIN` and
 `COMMIT` for that execution.
 
-Before applying `0011`-`0019`, validate the release commit locally:
+Before applying `0011`-`0020`, validate the release commit locally:
 
 ```powershell
 npm run typecheck
@@ -157,6 +158,77 @@ capture/outbox transaction from `0011`. Migration `0017` belongs to the separate
 first-party dispatcher slice; it does not broaden the failure producer.
 
 For an existing deployment, use a schema-first rollout. Create a database restore point and validate `0011_transactional_telemetry_outbox.sql` through `0019_owned_account_deletion.sql` against staging first. Migration `0013` deliberately aborts if any validator-v1 artifact has blank chunks or more than 64 passages; repair or explicitly retire every reported legacy row before retrying, so rollout cannot silently strand an old reader. Keep the currently deployed application in place, apply all nine migrations to production, and run `npm run check-db` with the production Supabase URL, service-role key, and a dedicated `TELEMETRY_ID_SECRET`. Only after that gate passes should you deploy the application version that calls the `0012`-`0016` domain RPCs or the `0018`/`0019` deletion RPCs; deploying that application first makes the corresponding new story, recovery, Continue, feedback, alternate, story-delete, or account-delete action fail because its RPC does not exist yet. Migration `0017` creates missing pointers for every still-live pre-outbox event, backfills still-live pointers already marked delivered, revokes service-role access to the v1 full-row claim and plain ACK paths, and installs private dispatch plus pruning cron jobs. Dispatch remains a no-op until explicitly enabled; applying the migration alone never consumes the queue. Before applying it, stop every legacy outbox worker, wait at least the 60-second lease period, and verify there is no active leased row (`status='leased' and lease_expires_at > statement_timestamp()`). This quiescence is mandatory because revoking execute permission cannot cancel a v1 ACK invocation that already passed authorization. Confirm that no old worker depends on the revoked paths. Confirm before the window that the running build does not require direct `product_events` writes for a request to succeed, because `0011` revokes both inserts and deletes as soon as it is applied. If a maintenance window is needed, set `STORY_CREATION_ENABLED=false` before the migrations and restore it only after the live-flow check passes. `TELEMETRY_FLOW_BINDING_ENABLED=false` remains an explicit temporary escape hatch for producer schema/config incidents; it deliberately creates a telemetry gap and does not replace migration-first rollout. Remove it or set it to `true` only after `0011`-`0016` and the producer database gate pass. The `0017` dispatch control is database-only and independent of that application flag.
+
+Migration `0020` is the deliberate exception to the schema-first rule because
+its session trigger requires the expanded immutable MatchRecipe written by this
+application version. In staging and production, pause new stories with
+`STORY_CREATION_ENABLED=false` (crisis resources remain available), deploy this
+code with the exact manifest environment, apply `0020`, run the three recipe
+checks plus `npm run check-db`, create one canary after re-enabling stories, and
+verify its session records the expected manifest hash and deployment version.
+Do not roll the application back to a pre-registry build while `0020` remains
+installed; keep stories paused until a registry-aware build is restored. Recipe
+rollback between the registry-aware build's compatible, pre-registered matching
+recipes is one `ONWARD_PRODUCTION_RECIPE_ID` change and needs no database
+change. A figure-library, prompt, validator, schema, or story-composer change is
+a code/content release, not a matching-recipe promotion; it requires its own
+forward/rollback release plan and cannot borrow this selector guarantee.
+Prompt version labels are not trusted by themselves: `config/prompt-releases.json`
+is append-only, and each active rerank/story version binds the exact canonical
+prompt-content SHA-256 that the runtime verifies. CI checks both current content
+identity and pull-request-base append-only history.
+
+Before the first challenger promotion, create a protected GitHub environment
+named `recipe-promotion`, require independent reviewers, and add a dedicated
+`RECIPE_PROMOTION_ENVIRONMENT_TOKEN` secret of at least 32 bytes. Eval and
+paired-shadow tooling always writes `promotable=false`; a normal, non-authority
+PR first lands its content-addressed candidate evidence on `main`. A separate
+promotion-only PR must target `main` and may modify only the selector registry,
+one new decision, the generated recipe document, and one new registration
+migration. It cannot introduce or modify evidence, manifests, datasets, code,
+workflows, or the attestor while requesting authority.
+
+For that promotion PR, set protected environment variables for the exact head,
+decision, dataset, catalog, evidence IDs, shadow IDs, evaluated commits and
+input-tree hashes, independent eval run/deployment/source-run hashes, independent
+shadow run/deployment/source hashes, and the three reviewer identities. The
+variable names are the `RECIPE_PROMOTION_ATTESTED_*` and
+`RECIPE_PROMOTION_*_REVIEWER_ID` names mapped only on the final step in
+`.github/workflows/recipe-promotion.yml`;
+`RECIPE_PROMOTION_ATTESTATION_SHA256` binds the whole canonical bundle. The
+detector and attestor are dependency-free and are loaded from the pull request's
+protected base commit. The secret and variables are unavailable to checkout,
+package installation, evals, and every pull-request-controlled script.
+
+Bootstrap note: the first landing of this governance system contains no new
+promotion; it establishes `.github/workflows/recipe-promotion.yml` and the
+attestor on protected `main`. Every later promotion is evaluated by that merged
+base-owned `pull_request_target` workflow. Do not use a workflow copied from the
+promotion head as a substitute.
+
+Require ordinary CI's `verify` plus the always-running
+`recipe-promotion-gate` check; that stable gate accepts a non-promotion only
+after trusted detection and accepts a promotion only after the conditional
+attestor succeeds. Also require independent
+environment review, CODEOWNERS review, dismissal after new commits, and no
+direct pushes. Require the promotion branch to be up to date with `main` before
+merging, so a success bound to an older base SHA cannot be reused after `main`
+advances. The current workflows do not handle `merge_group`; keep merge queue
+disabled unless both required workflows add and verify that trigger. The
+attestor independently recomputes content IDs, metric floors,
+paired comparisons, conservative superiority, manifest compatibility (including
+the rerank prompt), exact base-primary/rollback binding, immutable candidate
+files, one registration migration, and every protected binding. Missing or
+reused run/deployment/shadow identity, dirty/unbound input tree, or any other
+proof fails closed.
+
+As of July 23, 2026, this repository is private on a GitHub plan for which the
+branch-protection API returns `403` and reports that GitHub Pro (or a public
+repository) is required. Therefore CODEOWNERS, required checks, stale-review
+dismissal, and no-direct-push rules cannot yet be enforced. Do not authorize a
+recipe promotion while that remains true. Upgrade the plan or deliberately
+change repository visibility, then configure and verify the controls above
+before treating the attestation workflow as a production authority boundary.
 
 Migration `0017` is the only implemented P0 outbox destination candidate. It claims only
 event and lease identifiers inside Postgres, locks the authoritative source
@@ -304,7 +376,7 @@ the staging dispatcher healthy. Disable it again after the exercise. These are
 real-Postgres release exercises; `npm run check-telemetry-dispatcher` is a
 hermetic structural gate, not concurrency, cron, or dashboard-privacy evidence.
 
-Rollback compatibility is deliberately narrow. Keep migrations `0011`-`0019` installed during the application rollback window; the older application-compatible domain RPCs remain, and a pre-deletion application simply exposes no delete action. Never restore direct service-role `sessions` DELETE or remove the rate-limit owner FK while old/new instances overlap. A pre-0016 application loses alternate terminal, match-calibration, and ready-artifact telemetry; a pre-0015 application also loses transactional alternate-request events; a pre-0014 application also loses transactional feedback events; a pre-0013 application also loses transactional progress/completion events; a v3 application loses transactional match-producer completeness; and a v2 application stops registering/binding new flows and is incident-only. None restores the pre-`0011` direct-write telemetry paths. Migration `0017` also intentionally revokes service-role execution of the raw-row v1 claim and plain ACK paths, so do not roll back to an outbox worker that requires them.
+Rollback compatibility is deliberately narrow. Keep migrations `0011`-`0020` installed during the application rollback window; the older application-compatible domain RPCs remain, and a pre-deletion application simply exposes no delete action. After `0020`, however, every build that creates stories must write the expanded registry-backed MatchRecipe; use the story kill switch instead of rolling back to a pre-registry writer. Never restore direct service-role `sessions` DELETE or remove the rate-limit owner FK while old/new instances overlap. A pre-0016 application loses alternate terminal, match-calibration, and ready-artifact telemetry; a pre-0015 application also loses transactional alternate-request events; a pre-0014 application also loses transactional feedback events; a pre-0013 application also loses transactional progress/completion events; a v3 application loses transactional match-producer completeness; and a v2 application stops registering/binding new flows and is incident-only. None restores the pre-`0011` direct-write telemetry paths. Migration `0017` also intentionally revokes service-role execution of the raw-row v1 claim and plain ACK paths, so do not roll back to an outbox worker that requires them.
 
 Before an application rollback or dispatcher incident, disable aggregation
 through the dedicated control; do not drop the rollup/control tables,
@@ -345,7 +417,7 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
 
 ### 2. Vercel
 
-Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, a separate required `TELEMETRY_ID_SECRET`, `TELEMETRY_FLOW_BINDING_ENABLED=true` after `0011`-`0016` pass verification, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET`, `ALTERNATE_STORY_TOKEN_SECRET`, `STORY_DELETION_TOKEN_SECRET`, and `ACCOUNT_DELETION_TOKEN_SECRET`, `LLM_PROVIDER=real`, `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE`, `EMBEDDING_PROVIDER=gemini`, `GEMINI_API_KEY`, `RETRIEVAL_MODE=keyword`, and `HYBRID_STORY_COMPOSER_ENABLED=false` until the hybrid recipe clears its benchmark and review gate. The `0017` dispatcher is pure Postgres and adds no Vercel cron secret, webhook, or analytics destination. Production rejects every non-keyword retrieval value, and story creation independently rejects a challenger before persistence or telemetry. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories` → story delete confirmation → deletion success → `/account` → recent-sign-in/account delete confirmation → account-deleted success. Confirm stale story URLs 404, the old JWT cannot authenticate, and a new intake creates a distinct guest account. Keep dispatch disabled while running the production `check-db` and schema/queue-health preflight. Only after the staging exercises and production checks pass may an operator call `set_telemetry_rollup_dispatch_enabled_v1(true)`. Confirm queue health reports `dispatch_enabled=true`, inspect `cron.job_run_details` for enabled dispatch and pruning, and disable the control before rollback or incident response. No dashboard may call the private daily-read candidate in this slice.
+Set the environment variables: `PERSISTENCE=supabase`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `IP_HASH_SALT`, a separate required `TELEMETRY_ID_SECRET`, `TELEMETRY_FLOW_BINDING_ENABLED=true` after `0011`-`0016` pass verification, optionally dedicated `MATCH_RECOVERY_TOKEN_SECRET`, `ALTERNATE_STORY_TOKEN_SECRET`, `STORY_DELETION_TOKEN_SECRET`, and `ACCOUNT_DELETION_TOKEN_SECRET`, `CEREBRAS_API_KEY`, the canonical `CEREBRAS_BASE_URL`, and `ONWARD_PRODUCTION_RECIPE_ID=keyword-rerank-figure-library-50-2026-07-02`. Add `GEMINI_API_KEY` only when the selected promoted recipe uses Gemini embeddings. Do not use `LLM_PROVIDER`, model/tuning, `EMBEDDING_PROVIDER`, `RETRIEVAL_MODE`, or composer flags as production behavior controls; the selected manifest is authoritative and stale values are ignored. Vercel supplies `VERCEL_GIT_COMMIT_SHA`; another host must set `ONWARD_DEPLOYMENT_VERSION`. Run `npm run check-recipe-governance`, `npm run check-recipe-registry`, and `npm run check-recipe-deployment` before deploying. [`docs/production-recipe.md`](docs/production-recipe.md) is generated from the same manifest the runtime reads and is the authoritative recipe/rollback procedure. The `0017` dispatcher is pure Postgres and adds no Vercel cron secret, webhook, or analytics destination. Production fails closed on an unknown selector, unsafe persistence, missing credentials, unapproved endpoints/timeouts, or missing deployment identity before provider or persistence work, while crisis resources remain available. Deploy; then walk the live flow once: landing → begin → story → negative feedback → alternate story → save card → email confirm → `/stories` → story delete confirmation → deletion success → `/account` → recent-sign-in/account delete confirmation → account-deleted success. Confirm the new session records the expected recipe manifest hash and deployment version, stale story URLs 404, the old JWT cannot authenticate, and a new intake creates a distinct guest account. Keep dispatch disabled while running the production `check-db` and schema/queue-health preflight. Only after the staging exercises and production checks pass may an operator call `set_telemetry_rollup_dispatch_enabled_v1(true)`. Confirm queue health reports `dispatch_enabled=true`, inspect `cron.job_run_details` for enabled dispatch and pruning, and disable the control before rollback or incident response. No dashboard may call the private daily-read candidate in this slice.
 
 For telemetry deployments, set a dedicated `TELEMETRY_ID_SECRET`; Supabase/production mode has no fallback to `IP_HASH_SALT`, and reusing the salt is not supported. During rotation, configure `TELEMETRY_ID_PREVIOUS_SECRETS` before switching the current key and retain outgoing keys until every associated flow, event, and outbox retry is deleted or drained. Configure Vercel, proxy, and APM logging to redact `x-onward-telemetry-flow-id`, the short-lived `onward_entry_flow` handoff cookie, the two-minute `onward_auth_retry` challenge cookie, the ten-minute `onward_account_delete_reauth` continuation cookie, and the two-minute one-view `onward_account_delete_success` receipt; the application does not log any of them, but infrastructure retention must also stay within the reviewed lifecycle.
 

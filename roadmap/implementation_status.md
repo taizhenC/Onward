@@ -1,7 +1,7 @@
 # Roadmap Implementation Status
 
 **Authoritative objective:** finish every item in `feature_roadmap.md`.  
-**Status date:** July 14, 2026
+**Status date:** July 23, 2026
 **Evidence rule:** an item is `Complete` only when every acceptance criterion is implemented and directly verified. Passing a neighboring test is not sufficient.
 
 ## Status meanings
@@ -28,7 +28,7 @@
 | P0-10 | In progress | Completed-story readers—including anonymous owners—can answer one close/not-close question with exactly one of seven closed miss reasons. After a durable rejection, a root story can issue one owner/session/artifact-bound capability and generate one different, always-partial story without browser replay of age, disclosure, limits, clarification, reason, candidates, or prose and without a public rate unit. The exact previous stage is removed before age fallback, keyword/Facets retrieval, reranking, fallback, and composition. The original closed context exists only on the root, has an immutable expiry, and is reused under the same hard boundaries; the alternate stores only lineage/deadline and no age, disclosure, limits, or clarification. Empty/low coverage stops honestly; operational failures get two leased attempts with a server-enforced cooldown; concurrent clicks converge; a live second lease hydrates as preparing rather than exhausted; the one-hour capability TTL is consistently start-by while the two-minute lease and original disclosure deadline remain finish-by. SQL finalization rechecks feedback/completion/publication/authoritative content profile/boundaries atomically. Owner-scoped SSR and a separate exact capability-refresh endpoint restore available, preparing, ready, unavailable, expired, exhausted, and timed transient states after reload/back without resending the miss reason. Terminal outcomes and local Back/Stay transitions restore focus, and cross-tab feedback refresh remounts from the durable projection. | Add separate consented/encrypted short-retention optional notes or record an explicit product/privacy decision not to collect them; prove anonymous Supabase migration/RPC/RLS/cross-instance lease/cron/deletion behavior, browser accessibility/navigation, and aggregate learning with P0-11. |
 | P0-11 | In progress | The exact 22-event product union and unlinkable attempt stream reject sensitive/unbounded shapes and reduce failures to closed buckets. Purpose-separated HMAC IDs are retry-stable; signed flows have an immutable 30-day lifetime. Migrations `0011`-`0013` implement the owner/root lifecycle, leased outbox, initial intake/match/recovery/artifact producers, and transactional passage/completion capture. Migration `0014` commits bounded feedback with a persisted-verdict event and no miss reason. Migration `0015` captures `alternate_requested` only after a durable claim. Migration `0016` adds alternate match calibration and atomically derives the alternate artifact denominator plus first-write-wins terminal outcomes from authoritative state. Fixed entry endpoints capture CTA and first interaction without a tracking SDK. Three exact reader-visibility endpoints capture match-to-preface and Continue-to-passage latency plus first source opening. The match boundary proves story-flow anonymous authentication with a short-lived HttpOnly flow challenge plus verified fresh AMR before owner-scoped singleton capture. Eligible initial-story preparation owns one bounded `flow_failed:composition` occurrence, while raw errors and expected recovery states remain silent. Migration `0017` adds a pure-Postgres, ID-only dispatcher that locks the source before its pointer, atomically folds it into identifier-free UTC-day marginal counts, and then marks delivery. Dispatch defaults off behind a dedicated database control. A hardened 28-day/`k>=10` daily-read candidate withholds immature, missing-pointer, unsettled, and complementary-count-unsafe cells but has no caller grant; rollups expire within 30 days. Queue health exposes the control state, counts, and a closed oldest-actionable age bucket, while schema health verifies effective grants, private helpers, forced RLS, and exact cron definitions with booleans only. Raw external delivery remains prohibited. Exact retries reconcile or deduplicate by semantic unit; transaction-coupled capture conflicts roll back their domain transitions, while auth and failure observation are documented availability-first exceptions; and null/revoked flows preserve the product without fabricated telemetry. Memory mode mirrors producer transaction and privacy semantics. Crisis resources still return before the match route parses the flow, reads an auth challenge, or writes a crisis event. | Apply, check, explicitly enable, and exercise `0017` on real Postgres, including cron, RLS/grants, concurrent dispatch, lease recovery, deletion races, retention, and exhaustion. Complete dashboard privacy review before granting any read; add flow-linked 24-hour cohort and generation-attempt aggregates, dashboards, alerts/runbooks, named on-call ownership, and live-data proof. Marginal rollups alone cannot satisfy every release metric. |
 | P0-12 | External gate | Deterministic pre-provider gate; versioned 39-case corpus passes 26/26 critical positives; resource actions are region-specific, linked, and dated; crisis persistence/kill-switch behavior is smoke-tested; the route returns resources before flow/auth/age validation, the client reaches that route before anonymous sign-in, and intake exposes an always-available reviewed-resource action without requiring a valid age/disclosure. | Qualified safety review, launch-market approval, browser proof that crisis never invokes anonymous sign-in, and a deliberate policy for context/negation over-triggers remain required before `Complete`. |
-| P0-13 | In progress | Approved recipe ID, keyword default, and fail-closed recipe identity are implemented. Production rejects every non-keyword/unknown retrieval value; story creation carries the matcher's actual path and rejects challengers before persistence; match/artifact telemetry and the v4 SQL boundary require the approved recipe ID, retrieval mode, and match-config version. Eval-only `matchWithDebug` still exercises FacetsRAG. Each immutable artifact pins the complete match recipe plus analyzer, match-recovery, composer, validator, boundary, hybrid-plan, and template-policy versions. | Immutable multi-run eval history, deployment startup check, shadow promotion record, and rollback exercise. |
+| P0-13 | In progress | A canonical content-addressed registry now pins the full retrieval/model/prompt/tuning/composer/validator/spec recipe. Production requires an explicit primary-or-compatible-rollback recipe and deployment ID; that manifest is the sole non-secret behavior source, so stale `auto`, provider/model/tuning/embedder/composer environment values cannot create a mixed recipe. Unsafe persistence, missing credentials, endpoint/timeout drift, unknown selectors, and missing deployment identity fail before non-crisis auth, limits, providers, or writes. New sessions/artifacts store manifest, dataset, deployment, prompt, model, composer, validator, and schema identity; keyword correctly records no embedder. Migration `0020` adds an append-only forced-RLS promotion registry, exact immutable session trigger, migration-owner-only registration, and registry-backed initial/alternate/recovery/telemetry/rollup validation. Eval evidence, shadow comparisons, and decisions are append-only/content-addressed; the current non-promoting record retains keyword (98.0%, zero definitive-wrong) over FacetsRAG (95.0%, three definitive-wrong). Eval/shadow output is always non-authoritative. A locked dependency-free attestor loaded from protected `main` independently binds a separate promotion-only PR to exact candidate hashes, clean commit/input tree, distinct run/deployment/shadow identities, catalog/dataset, reviewers, base-primary rollback, rerank-prompt compatibility, and one migration; its secret is scoped to that single step. Generated docs, deploy/startup checks, DB/static checks, CODEOWNERS, and PR append-only enforcement are wired into CI. | Apply `0020` with the documented kill-switch cutover, run live `check-db`, verify a production canary's manifest/deployment fields, and exercise a real one-selector rollback when a second compatible recipe is actually promoted. Promotion is currently externally blocked: on 2026-07-23 the private repository's branch-protection/ruleset APIs returned `403` requiring GitHub Pro or public visibility, and the `recipe-promotion` environment did not exist. Upgrade the plan or deliberately change visibility, then protect `main` with strict/up-to-date `CI / verify` and `Recipe Promotion Authority / recipe-promotion-gate`, required CODEOWNERS review, stale-review dismissal, no direct pushes, and independent protected-environment reviewers. Keep merge queue disabled unless both workflows gain and verify `merge_group` support. Current imported synthetic evidence is audit-only and cannot promote a challenger. |
 | P0-14 | Partial | Guest cleanup and root-only disclosure/context expiry exist. Artifacts, feedback, recovery, and alternate state are owner-scoped and/or time-bounded. Concern submission is owner-authorized, but the resulting shared editorial record retains only curated identifiers and currently has no TTL. Migration `0018` plus the paginated `/stories` flow let an owner hard-delete any saved story from the active database without JavaScript or support. Migration `0019` plus dedicated `/account` and `/account/delete` surfaces now let a verified guest or recently reauthenticated permanent owner hard-delete the auth account and every FK-owned story/artifact/feedback/recovery/alternate/telemetry record. Purpose-bound ten-minute forms, same-device email-link continuation, a generated rate-limit ownership FK, retry/existence reconciliation, a locked guest-eligibility recheck, receipt-gated one-view success, and unlinkable best-effort request/completion events close the active-data account boundary. A public plain-language privacy guide now distinguishes the 60-day situation/context deadline from age/story retention and discloses provider, backup, shared-editorial, security, and unlinkable residuals. | Define durable save-state semantics and full derived-rationale/artifact retention classes; decide optional-note consent/encryption; prove real Postgres cascade/deadlock/limiter/grant/cron behavior and supported-browser accessibility/same/cross-device reauth. Add a backup/PITR lifecycle plus restore-time deletion replay or a bounded non-restoration guarantee, complete provider/infrastructure retention review, convert the preview guide into a market-specific legal notice with a named controller/contact and rights process, and complete market/youth review. |
 | P0-15 | In progress | Strict non-interactive ESLint, isolated production build, deterministic fonts, CI, approved-recipe fail-closed behavior, story kill switch, independent hybrid-composer flag, four-path provider health check, and migrations for immutable StorySpecs/StoryArtifacts, atomic pre-story recovery, current provenance, bounded editorial concerns, immutable completed-story feedback, root-only request context, and leased/atomic alternate finalization exist. All persistence/auth boundaries use one parser that rejects memory in served production even when the build-only override is copied. IP-hash/recovery/alternate secrets share a minimum 32-byte fail-closed parser. The story kill switch blocks new capability issuance/claims without hiding terminal ready results. Migration `0009` is deploy-before-app compatible; destructive removal of the legacy RPC is outside the automatic migration stream until the rollback window closes. | Complete route/integration matrix, real migration preflight/rollback and atomic-RPC tests, broader health/readiness checks, remaining kill switches, and green remote CI evidence. |
 | P0-16 | Partial | Landing/auth typography, reduced motion, several keyboard affordances, native boundary/clarification/source/report/feedback controls, focused no-eligible/no-close and feedback-reason states, visible partial framing, labeled content notes, safe external-link treatment, and announced report/feedback outcomes exist. | Shared primitives, all-flow copy system, and complete keyboard/screen-reader/zoom/manual usability audit. |
@@ -682,6 +682,76 @@ RLS/grants, native no-JavaScript submission, same/cross-device email links,
 screen-reader focus, mobile/reflow, and deployed no-store/framing headers. Before
 an unqualified permanent-deletion promise, verify provider/backups and implement
 a restore-time deletion-replay strategy or prove deleted rows cannot be restored.
+
+### Stacked branch: `roadmap-recipe-promotion-gate`
+
+`config/story-recipes.json` is now the single runtime and documentation source
+for the production recipe. Its current decision is deliberately
+`retain_baseline`: the imported July 2 keyword run passed at 99/101 non-miss
+top-1 with zero hard-confusion and zero definitive-wrong results, while the
+FacetsRAG challenger reached 96/101, confused one hard pair, and produced three
+definitive-wrong results. Both metrics-only records, their aggregate offline
+comparison, and the no-promotion decision are content-addressed and append-only;
+the detailed local run directory is ignored. The governance checker recomputes
+every manifest/evidence/shadow/decision hash and metric, validates the generated
+operator document, and prevents synthetic or imported evidence from authorizing
+a promotion. Future promotion requires one protected holdout, real non-legacy
+candidate evidence from the exact production-eligible catalog, fixed sample/stability/
+latency floors, conservative superiority, a passing paired shadow record, zero definitive-
+wrong results, no hard/miss/coverage regression, product/matching/safety-privacy
+approvals attested by a reviewer-protected environment, and the base commit's
+compatible primary as both source and rollback. Eval and shadow records remain
+`promotable=false`; their exact commit/input-tree and distinct run, deployment,
+source-output, and shadow identities are bound only by the dependency-free
+attestor loaded from protected `main`. Its authority is scoped to one minimal
+step and one promotion-only PR, so PR-controlled code, checkout, and package
+installation never receive the secret. CI also rejects modification or deletion
+of prior evidence/decisions and mutation of an existing recipe entry.
+
+Production requires `ONWARD_PRODUCTION_RECIPE_ID`, Supabase persistence,
+provider credentials, canonical endpoint/timeout posture, and a safe deployment
+identifier. The selected manifest is the sole non-secret production source for
+provider/model/tuning/retrieval/embedder/composer behavior; stale local/eval
+environment values are ignored instead of creating a mixed recipe. The
+append-only prompt-release registry binds each version to the SHA-256 of its
+exact canonical prompt content, which is also verified by the runtime. Startup logs
+only safe recipe identity; invalid
+configuration keeps crisis resources available but stops every other story
+before auth, rate limiting, providers, or durable work. New session recipes pin
+the manifest hash, dataset, deployment, prompt, model, composer, validator, and
+StorySpec versions, with `embeddingModelId=null` on keyword. Migration
+`0020_story_recipe_registry.sql` independently enforces the same identity through
+an append-only default-deny registry and exact session trigger, while replacing
+the old duplicated single-ID checks across recovery, initial/alternate writes,
+product events, generation attempts, and daily rollups. The database has no
+active pointer, so a compatible pre-registered matching rollback is one
+application selector change. Promotion is restricted to the same installed
+library, prompt, validator, schema, boundary, and composer compatibility set;
+changes to those axes require a rollback-capable code/content release rather
+than an unsafe selector-only claim.
+
+Local gates pass for recipe governance, registry structure/tampering,
+deployment drift/rollback selection, telemetry contracts/producers, lint,
+typecheck, and the 19-case smoke suite. This does not claim the migration has
+been applied or that a second recipe has been promoted. Before public release,
+pause new stories, deploy the registry-aware writer, apply `0020`, run the live
+database gate, re-enable for one canary, verify persisted manifest/deployment
+identity, and restore the prior selector in a real rollback drill. A protected
+holdout remains mandatory before any challenger promotion.
+The workflow and CODEOWNERS entries are present, but the repository is private
+and, as verified on 2026-07-23, its current GitHub plan returns `403` for branch
+protection and rulesets with an instruction to upgrade to GitHub Pro or make the
+repository public. The `recipe-promotion` environment is also absent. Promotion
+is therefore externally blocked: upgrade the plan or deliberately change
+visibility, then create/protect the environment, populate its
+exact head/decision/evidence/shadow/commit/tree/run/deployment/source/catalog/
+dataset/reviewer bindings plus canonical attestation digest and secret, and
+protect `main` with pull requests, CODEOWNERS review, dismissal of stale
+approvals, no direct pushes, and strict/up-to-date `CI / verify` plus
+`Recipe Promotion Authority / recipe-promotion-gate`. Keep merge queue disabled
+because the current workflows do not handle `merge_group`; if it is adopted,
+add and verify that trigger in both required workflows before enabling the
+queue. Only then may the separate direct-to-`main` promotion PR be considered.
 
 ## Completion audit rule
 

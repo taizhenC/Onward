@@ -28,8 +28,21 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Protect immutable recipe evidence
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.event.pull_request.base.sha }}"
+          npm run check-recipe-immutability -- "${{ github.event.pull_request.base.sha }}"
+          npm run check-prompt-releases -- "${{ github.event.pull_request.base.sha }}"
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm run check-recipe-governance
+      - run: npm run check-prompt-releases
+      - run: node scripts/trusted/recipe-promotion-attestor.mjs self-test
+      - run: npm run check-recipe-registry
+      - run: npm run check-recipe-deployment
+      - run: npm run check-recipe-failure-boundary
       - run: npm run check-figure
       - run: npm run check-story-spec
       - run: npm run check-story-artifact

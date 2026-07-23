@@ -840,7 +840,10 @@ function checkMigrationAndRuntimeBoundary(): void {
   assert(unclaimedIndex >= 0 && unclaimedIndex < ownerCollisionIndex);
 
   const beginPage = readFileSync(resolve("app/begin/page.tsx"), "utf8");
-  const matchRoute = readFileSync(resolve("app/api/match/route.ts"), "utf8");
+  const matchHandler = readFileSync(
+    resolve("app/api/match/handler.ts"),
+    "utf8",
+  );
   const intakeForm = readFileSync(resolve("components/IntakeForm.tsx"), "utf8");
   const intake = readFileSync(resolve("lib/intake.ts"), "utf8");
   const sessionStore = readFileSync(
@@ -854,8 +857,8 @@ function checkMigrationAndRuntimeBoundary(): void {
   assert.match(beginPage, /dynamic = "force-dynamic"/);
   assert.match(beginPage, /<IntakeForm[\s\S]*telemetryFlowId=\{telemetryFlowId\}/);
   assert(
-    matchRoute.indexOf("classifyCrisis(safetyText)") <
-      matchRoute.indexOf("parseTelemetryFlowId(flowHeader)"),
+    matchHandler.indexOf("classifyCrisis(safetyText)") <
+      matchHandler.indexOf("parseTelemetryFlowId(flowHeader)"),
     "crisis support must precede flow capability parsing",
   );
   assert.match(intake, /activateTelemetryFlowForOwner\(/);

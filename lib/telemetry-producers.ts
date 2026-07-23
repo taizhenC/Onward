@@ -1,8 +1,5 @@
 import "server-only";
-import {
-  APPROVED_PRODUCTION_RECIPE,
-  requireApprovedProductionRecipe,
-} from "./match-config";
+import { requireApprovedProductionRecipe } from "./match-config";
 import type { IntakeMatchResult } from "./matching";
 import type { MatchDisposition } from "./match-recovery";
 import {
@@ -95,12 +92,14 @@ export function artifactCreatedEvent(
   artifact: StoryArtifact,
   storyRole: StoryRole,
 ): Extract<ProductEvent, { event: "artifact_created" }> {
+  const recipe = requireApprovedProductionRecipe(
+    artifact.recipe.match.retrievalMode,
+  );
   if (
-    artifact.recipe.match.recipeId !== APPROVED_PRODUCTION_RECIPE.recipeId ||
+    artifact.recipe.match.recipeId !== recipe.recipeId ||
     artifact.recipe.match.matchConfigVersion !==
-      APPROVED_PRODUCTION_RECIPE.matchConfigVersion ||
-    artifact.recipe.match.retrievalMode !==
-      APPROVED_PRODUCTION_RECIPE.retrievalMode
+      recipe.matchConfigVersion ||
+    artifact.recipe.match.retrievalMode !== recipe.retrievalMode
   ) {
     throw new Error("artifact telemetry requires the approved recipe");
   }
@@ -119,7 +118,7 @@ export function artifactCreatedEvent(
     }
     return {
       event: "artifact_created",
-      recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+      recipeId: recipe.recipeId,
       storyRole,
       compositionMode: "hybrid",
       fallbackReason: "none",
@@ -147,7 +146,7 @@ export function artifactCreatedEvent(
   }
   return {
     event: "artifact_created",
-    recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+    recipeId: recipe.recipeId,
     storyRole,
     compositionMode: "canonical_fallback",
     fallbackReason,

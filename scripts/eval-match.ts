@@ -1,8 +1,16 @@
 import "./_smoke-bootstrap";
+import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { spawnSync } from "node:child_process";
+import { isDeepStrictEqual } from "node:util";
 import { loadEnvLocal } from "./_load-env";
 import { listAll, listByAge } from "../lib/figures";
+import { FIGURE_STAGES } from "../lib/figures-data";
+import {
+  listPublishedStorySpecCatalog,
+  storySpecStageKey,
+} from "../lib/story-spec-repository";
 import {
   matchWithDebug,
   resolveRetrievalMode,
@@ -10,23 +18,52 @@ import {
   type MatchDebug,
 } from "../lib/matching";
 import {
+  FACETSRAG_TOP_K,
   matchConfigVersion,
   RERANK_TOP_K,
   RERANK_TRUST_GATE,
 } from "../lib/match-config";
 import { embeddingModelId } from "../lib/embeddings";
+import {
+  createEvalEvidence,
+  canonicalJson,
+  currentDeploymentId,
+  currentEvalRunId,
+  currentGitCommit,
+  datasetForEval,
+  evidenceMetricsFromRun,
+  loadRecipeRegistry,
+  manifestSha256,
+  gitInputTreeSha256,
+  RECIPE_PROMOTION_POLICY,
+  recipeForEval,
+  sha256File,
+  writeEvalEvidence,
+  type EvalEvidence,
+} from "./recipe-evidence";
+import {
+  assertStoryRecipeCodeIdentity,
+  assertStoryRecipeExecutionRuntime,
+} from "../lib/story-recipe-runtime";
 
 // The verification instrument for Phase 1A: run hand-graded gold cases through the real
 // matcher and report whether the reranker picks the right figure — and how honestly it
 // frames its confidence. This is the decision gate for the (deferred) vector pipeline.
 //
 // Privacy: matchWithDebug() never returns resonance/gap (they don't leave lib/), so this
-// harness physically cannot dump them. The full per-trial dump (gitignored) carries the
-// SYNTHETIC gold feelings; summary.json carries metrics/counts/the 2x2 ONLY — no feeling
-// text — so it's safe to commit for cross-run diffing via git history.
+// harness physically cannot dump them. Full per-trial dumps remain gitignored. Every run
+// also writes a metrics-only, content-addressed evidence record with no feeling, notes,
+// trial rows, resonance/gap, provider body, base URL, or secret.
 
-const GOLD_PATH = resolve(process.cwd(), "evals/match.json");
 const RUNS_DIR = resolve(process.cwd(), "evals/runs");
+const FULL_GIT_COMMIT = /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/;
+
+function evalDatasetPath(): string {
+  return resolve(
+    process.cwd(),
+    process.env.EVAL_DATASET_PATH?.trim() || "evals/match.json",
+  );
+}
 const DEFAULT_MODEL = "gpt-oss-120b";
 
 type GoldCase = {
@@ -48,11 +85,23 @@ type Trial = {
   result: MatchDebug;
 };
 
+type ProductionEvalCatalog = {
+  eligibleStageKeys: ReadonlySet<string>;
+  evidence: NonNullable<EvalEvidence["catalog"]>;
+};
+
 function numberEnv(name: string, fallback: number): number {
   const raw = process.env[name];
   if (raw === undefined || raw.trim() === "") return fallback;
   const parsed = Number(raw);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function finiteNumberEnv(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (raw === undefined || raw.trim() === "") return fallback;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : fallback;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -66,11 +115,12 @@ function sleep(ms: number): Promise<void> {
 // ── Gold-set loading + validation ────────────────────────────────────────────
 
 function loadGold(validKeys: Set<string>): GoldCase[] {
+  const path = evalDatasetPath();
   let text: string;
   try {
-    text = readFileSync(GOLD_PATH, "utf8");
+    text = readFileSync(path, "utf8");
   } catch {
-    fail(`Could not read ${GOLD_PATH}`);
+    fail(`Could not read ${path}`);
   }
 
   let raw: unknown;
@@ -163,10 +213,18 @@ function loadGold(validKeys: Set<string>): GoldCase[] {
 // it out of the rerank metric. parse_error/invalid_pick are genuine model behavior and
 // are NEVER retried (they're the signal we're measuring). Distinct from the
 // no-retry-on-logic-failure rule in CLAUDE.md.
-async function runTrial(gold: GoldCase, maxRetries: number): Promise<MatchDebug> {
+async function runTrial(
+  gold: GoldCase,
+  maxRetries: number,
+  eligibleStageKeys?: ReadonlySet<string>,
+): Promise<MatchDebug> {
   let attempt = 0;
   for (;;) {
-    const result = await matchWithDebug({ age: gold.age, feeling: gold.feeling });
+    const result = await matchWithDebug({
+      age: gold.age,
+      feeling: gold.feeling,
+      eligibleStageKeys,
+    });
     const transient =
       result.chosenBy === "keyword_fallback" &&
       (result.failureReason === "api_error" || result.failureReason === "timeout");
@@ -179,6 +237,7 @@ async function runTrial(gold: GoldCase, maxRetries: number): Promise<MatchDebug>
 async function assertExpectedSurvivesPrefilter(
   cases: GoldCase[],
   allStages: Awaited<ReturnType<typeof listAll>>,
+  eligibleStageKeys?: ReadonlySet<string>,
 ): Promise<void> {
   const errors: string[] = [];
 
@@ -188,10 +247,14 @@ async function assertExpectedSurvivesPrefilter(
     // FacetsRAG's value, so they don't gate the keyword-path provider run.
     if (gold.semantic) continue;
 
-    const agePool = await listByAge(gold.age);
-    const pool = agePool.length === 0 ? allStages : agePool;
+    const isEligible = (stage: (typeof allStages)[number]) =>
+      !eligibleStageKeys ||
+      eligibleStageKeys.has(storySpecStageKey(stage.figureKey, stage.stageId));
+    const agePool = (await listByAge(gold.age)).filter(isEligible);
+    const eligibleAll = allStages.filter(isEligible);
+    const pool = agePool.length === 0 ? eligibleAll : agePool;
     const selected = selectRerankPool(
-      { age: gold.age, feeling: gold.feeling },
+      { age: gold.age, feeling: gold.feeling, eligibleStageKeys },
       pool,
     );
 
@@ -664,6 +727,112 @@ function apiKeyConfigured(): boolean {
 
 // ── Main ─────────────────────────────────────────────────────────────────────
 
+async function loadProductionEvalCatalog(
+  stages: Awaited<ReturnType<typeof listAll>>,
+): Promise<ProductionEvalCatalog> {
+  const authoredByKey = new Map(
+    FIGURE_STAGES.map((stage) => [
+      storySpecStageKey(stage.figureKey, stage.stageId),
+      stage,
+    ]),
+  );
+  for (const stage of stages) {
+    const key = storySpecStageKey(stage.figureKey, stage.stageId);
+    const authored = authoredByKey.get(key);
+    if (!authored || !isDeepStrictEqual(stage, authored)) {
+      fail(`Supabase figure catalog differs from the installed library at ${key}.`);
+    }
+  }
+
+  const storySpecs = await listPublishedStorySpecCatalog();
+  if (storySpecs.size === 0) {
+    fail("A production-equivalent eval needs at least one valid published StorySpec.");
+  }
+  const servedByKey = new Map(
+    stages.map((stage) => [
+      storySpecStageKey(stage.figureKey, stage.stageId),
+      stage,
+    ]),
+  );
+  const entries = [...storySpecs.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([key, storySpec]) => {
+      const stage = servedByKey.get(key);
+      if (!stage) {
+        fail(`Published StorySpec ${key} has no byte-identical published figure stage.`);
+      }
+      return { key, stage, storySpec };
+    });
+  const sha256 = createHash("sha256")
+    .update(canonicalJson(entries))
+    .digest("hex");
+  return {
+    eligibleStageKeys: new Set(entries.map((entry) => entry.key)),
+    evidence: {
+      sha256,
+      eligibleStageCount: entries.length,
+      source: "supabase_published_story_specs",
+    },
+  };
+}
+
+function promotionCandidateInputsReady(
+  catalog: ProductionEvalCatalog | null,
+  gitCommit: string | null,
+  inputTreeSha256: string | null,
+  runId: string | null,
+  deploymentId: string | null,
+): boolean {
+  return (
+    process.env.PERSISTENCE === "supabase" &&
+    catalog !== null &&
+    gitCommit !== null &&
+    FULL_GIT_COMMIT.test(gitCommit) &&
+    gitCommit === gitHeadCommit() &&
+    inputTreeSha256 !== null &&
+    inputTreeSha256 === gitInputTreeSha256(gitCommit) &&
+    runId !== null &&
+    deploymentId !== null &&
+    runId !== deploymentId &&
+    runId !== gitCommit &&
+    deploymentId !== gitCommit &&
+    gitTrackedTreeIsClean()
+  );
+}
+
+function promotionMetricFloorsPass(metrics: Metrics, k: number): boolean {
+  const policy = RECIPE_PROMOTION_POLICY;
+  return (
+    k >= policy.minKPerEvidence &&
+    metrics.overallTop1Counts.total >= policy.minNonMissCasesPerEvidence * k &&
+    metrics.missDetectionCounts.total >= policy.minMissCasesPerEvidence * k &&
+    metrics.hardConfusionCounts.total >= policy.minHardCasesPerEvidence * k &&
+    metrics.stability !== null &&
+    metrics.stability >= policy.minStability &&
+    metrics.latencyP95 <= policy.maxP95LatencyMs
+  );
+}
+
+function gitHeadCommit(): string | null {
+  const result = spawnSync("git", ["rev-parse", "HEAD"], {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    windowsHide: true,
+  });
+  if (result.status !== 0) return null;
+  const value = result.stdout.trim();
+  return FULL_GIT_COMMIT.test(value) ? value : null;
+}
+
+function gitTrackedTreeIsClean(): boolean {
+  const result = spawnSync(
+    "git",
+    ["status", "--porcelain", "--untracked-files=all"],
+    { cwd: process.cwd(), encoding: "utf8", windowsHide: true },
+  );
+  return result.status === 0 && result.stdout.trim() === "";
+}
+
 async function main(): Promise<void> {
   console.log("Onward match eval");
   console.log("=================");
@@ -672,7 +841,10 @@ async function main(): Promise<void> {
   // Default to real (the verification instrument), but honor an explicitly-set provider
   // — `LLM_PROVIDER=stub` lets you self-test the harness without burning API calls.
   if (!process.env.LLM_PROVIDER) process.env.LLM_PROVIDER = "real";
-  const provider = process.env.LLM_PROVIDER;
+  if (!(["stub", "real"] as const).includes(process.env.LLM_PROVIDER as "stub" | "real")) {
+    fail("LLM_PROVIDER must be stub or real for an eval run.");
+  }
+  const provider = process.env.LLM_PROVIDER as "stub" | "real";
 
   if (provider === "real" && !apiKeyConfigured()) {
     fail(
@@ -686,15 +858,107 @@ async function main(): Promise<void> {
   const model = process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
 
   const stages = await listAll();
+  const productionCatalog =
+    process.env.PERSISTENCE === "supabase"
+      ? await loadProductionEvalCatalog(stages)
+      : null;
+  const eligibleStageKeys = productionCatalog?.eligibleStageKeys;
+  const gitCommit = currentGitCommit();
+  const inputTreeSha256 = gitInputTreeSha256(gitCommit ?? "HEAD");
+  const runId = currentEvalRunId();
+  const deploymentId = currentDeploymentId();
+  const candidateInputsReady = promotionCandidateInputsReady(
+    productionCatalog,
+    gitCommit,
+    inputTreeSha256,
+    runId,
+    deploymentId,
+  );
   const validKeys = new Set(stages.map((s) => s.figureKey));
   const cases = loadGold(validKeys);
 
   const retrievalMode = resolveRetrievalMode();
+  if (retrievalMode === "auto") {
+    fail(
+      "Eval evidence requires an explicit keyword or facetsrag retrieval mode; auto is not auditable.",
+    );
+  }
+  const registry = loadRecipeRegistry();
+  const recipe = recipeForEval(registry, retrievalMode);
+  assertStoryRecipeCodeIdentity(recipe);
+  if (provider === "real") {
+    assertStoryRecipeExecutionRuntime(recipe);
+  }
+  const dataset = datasetForEval(registry, recipe);
+  const datasetPath = evalDatasetPath();
+  const datasetSha256 = sha256File(datasetPath);
+  if (
+    dataset.version.trim() === "" ||
+    dataset.sha256 !== datasetSha256
+  ) {
+    fail(
+      `Recipe eval dataset does not match ${datasetPath} (${dataset.version}/${datasetSha256}).`,
+    );
+  }
+  if (process.env.EVAL_CANDIDATE_MODE === "1") {
+    const policy = RECIPE_PROMOTION_POLICY;
+    const nonMissCases = cases.filter((entry) => entry.expect !== "miss").length;
+    const missCases = cases.length - nonMissCases;
+    const hardCases = cases.filter((entry) => entry.hard).length;
+    if (
+      !candidateInputsReady ||
+      provider !== "real" ||
+      dataset.visibility !== "protected_holdout" ||
+      k < policy.minKPerEvidence ||
+      nonMissCases < policy.minNonMissCasesPerEvidence ||
+      missCases < policy.minMissCasesPerEvidence ||
+      hardCases < policy.minHardCasesPerEvidence
+    ) {
+      fail(
+        "Candidate eval is missing its production catalog, dedicated run/deployment identities, clean input commit, protected dataset, real provider, or sample floors.",
+      );
+    }
+  }
+  if (manifestSha256(recipe) !== recipe.manifestSha256) {
+    fail(`Recipe manifest hash is invalid for ${recipe.recipeId}.`);
+  }
+  const actualEmbeddingModel =
+    retrievalMode === "facetsrag" ? embeddingModelId() : null;
+  const actualTopK =
+    retrievalMode === "facetsrag" ? FACETSRAG_TOP_K : RERANK_TOP_K;
+  const rerankTemperature = finiteNumberEnv("LLM_RERANK_TEMPERATURE", 0);
+  const rerankReasoningEffort =
+    process.env.LLM_RERANK_REASONING_EFFORT ?? "low";
+  const mismatches = [
+    recipe.matchConfigVersion === matchConfigVersion
+      ? null
+      : `matchConfigVersion=${matchConfigVersion}`,
+    recipe.rerankModelId === model ? null : `model=${model}`,
+    recipe.embeddingModelId === actualEmbeddingModel
+      ? null
+      : `embeddingModel=${actualEmbeddingModel ?? "none"}`,
+    recipe.rerankTemperature === rerankTemperature
+      ? null
+      : `rerankTemperature=${rerankTemperature}`,
+    recipe.rerankReasoningEffort === rerankReasoningEffort
+      ? null
+      : `rerankReasoningEffort=${rerankReasoningEffort}`,
+    recipe.rerankTopK === actualTopK ? null : `rerankTopK=${actualTopK}`,
+  ].filter((entry): entry is string => entry !== null);
+  if (mismatches.length > 0) {
+    fail(
+      `Eval environment does not match recipe ${recipe.recipeId}: ${mismatches.join(", ")}.`,
+    );
+  }
   // The keyword top-K prefilter assertion applies only to the keyword path. FacetsRAG's pre-flight
   // is `npm run eval-retrieval` (Stage A/B survival); and a forced-but-unavailable facetsrag run
   // throws per-trial, so a "FacetsRAG run" can never silently degrade to keyword unnoticed.
   if (retrievalMode === "keyword") {
-    await assertExpectedSurvivesPrefilter(cases, stages);
+    await assertExpectedSurvivesPrefilter(
+      cases,
+      stages,
+      eligibleStageKeys,
+    );
   }
 
   const jobs = cases.flatMap((gold) =>
@@ -705,13 +969,14 @@ async function main(): Promise<void> {
     `provider=${provider} model=${model} k=${k} concurrency=${concurrency} cases=${cases.length} trials=${jobs.length}`,
   );
   console.log(
-    `matchConfigVersion=${matchConfigVersion} retrievalMode=${retrievalMode} embeddingModel=${embeddingModelId()}`,
+    `recipeId=${recipe.recipeId} matchConfigVersion=${matchConfigVersion} retrievalMode=${retrievalMode} embeddingModel=${actualEmbeddingModel ?? "not-used"}`,
   );
 
+  const startedAt = new Date().toISOString();
   const results = await mapWithConcurrency(jobs, concurrency, async (job) => ({
     gold: job.gold,
     run: job.run,
-    result: await runTrial(job.gold, maxRetries),
+    result: await runTrial(job.gold, maxRetries, eligibleStageKeys),
   }));
 
   const metrics = computeMetrics(results, k);
@@ -719,44 +984,103 @@ async function main(): Promise<void> {
 
   // ── Dumps ──
   mkdirSync(RUNS_DIR, { recursive: true });
-  const ranAt = new Date().toISOString();
+  const completedAt = new Date().toISOString();
   const config = {
+    recipeId: recipe.recipeId,
+    recipeManifestSha256: recipe.manifestSha256,
+    datasetVersion: dataset.version,
+    datasetSha256: dataset.sha256,
     matchConfigVersion,
     provider,
     model,
     retrievalMode,
-    embeddingModel: embeddingModelId(),
+    embeddingModel: actualEmbeddingModel,
+    rerankTemperature,
+    rerankReasoningEffort,
+    rerankTopK: actualTopK,
     k,
     concurrency,
     maxRetries,
-    ranAt,
+    startedAt,
+    completedAt,
     caseCount: cases.length,
     trialCount: jobs.length,
   };
 
-  const stamp = ranAt.replace(/[:.]/g, "-");
+  const stamp = completedAt.replace(/[:.]/g, "-");
   const fullPath = resolve(RUNS_DIR, `${stamp}.json`);
-  // Full dump (gitignored): config + metrics + per-trial gold (SYNTHETIC feeling) + result.
-  // No resonance/gap exists to leak — matchWithDebug never returns it.
+  // Full dump (gitignored): config + metrics + per-trial labels/results. Feelings and notes
+  // are stripped by toDumpTrial; resonance/gap cannot appear because MatchDebug omits them.
   writeFileSync(
     fullPath,
     JSON.stringify({ config, metrics, trials: results.map(toDumpTrial) }, null, 2),
   );
+  const sourceRunSha256 = sha256File(fullPath);
 
-  const summaryPath = resolve(RUNS_DIR, "summary.json");
-  // Committable: metrics + config ONLY. No `trials`, so no feeling text. Diff across
-  // runs via git history.
-  writeFileSync(summaryPath, JSON.stringify({ config, metrics }, null, 2));
+  // Eval output is always an untrusted candidate. It can never mint promotion
+  // authority, even on a protected runner; the locked base-branch attestor is
+  // the only component allowed to authorize a selector change.
+  const candidate =
+    provider === "real" &&
+    dataset.visibility === "protected_holdout" &&
+    metrics.trustGate.passed &&
+    candidateInputsReady &&
+    promotionMetricFloorsPass(metrics, k);
+
+  const evidence = createEvalEvidence({
+    recipeId: recipe.recipeId,
+    recipeManifestSha256: recipe.manifestSha256,
+    dataset: {
+      version: dataset.version,
+      sha256: dataset.sha256,
+      visibility: dataset.visibility,
+    },
+    catalog: productionCatalog?.evidence ?? null,
+    run: {
+      startedAt,
+      completedAt,
+      k,
+      concurrency,
+      maxRetries,
+      caseCount: cases.length,
+      trialCount: jobs.length,
+    },
+    config: {
+      provider,
+      model,
+      retrievalMode,
+      embeddingModelId: actualEmbeddingModel,
+      matchConfigVersion,
+      rerankTemperature,
+      rerankReasoningEffort,
+      rerankTopK: actualTopK,
+    },
+    metrics: evidenceMetricsFromRun(
+      metrics as unknown as Record<string, unknown>,
+    ),
+    provenance: {
+      gitCommit,
+      deploymentId,
+      sourceRun: `${stamp}.json`,
+      runId,
+      sourceRunSha256,
+      inputTreeSha256,
+    },
+    legacyImported: false,
+    candidate,
+    promotable: false,
+  });
+  const evidencePath = writeEvalEvidence(evidence);
 
   console.log("");
   console.log(`Wrote ${fullPath}  (full, gitignored)`);
-  console.log(`Wrote ${summaryPath}  (metrics only, committable)`);
+  console.log(`Wrote ${evidencePath}  (metrics only, append-only)`);
   console.log("");
   console.log(
     "Decision gate: high rerank top-1 + low near-miss confusion -> matching works at this scale; the vector pipeline (Phase 1B) stays deferred. High hard-pair confusion is the eval evidence to build the lanes.",
   );
 
-  // Fail loudly for CI/pre-deploy, but only AFTER the dump + summary are written above,
+  // Fail loudly for CI/pre-deploy, but only AFTER the dump + immutable evidence are written,
   // and only in real mode (the gate is the real-rerank trust gate; the stub deliberately
   // carries the accepted lonely-child definitive-wrong, which would always trip it).
   if (
@@ -766,7 +1090,7 @@ async function main(): Promise<void> {
   ) {
     console.error("");
     console.error(
-      "EVAL_REQUIRE_GATE=1 and the real rerank trust gate FAILED — exiting non-zero (dump + summary were written above).",
+      "EVAL_REQUIRE_GATE=1 and the real rerank trust gate FAILED; exiting non-zero after writing the dump and immutable evidence.",
     );
     process.exit(1);
   }

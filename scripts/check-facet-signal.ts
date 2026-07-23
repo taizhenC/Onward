@@ -1,12 +1,15 @@
 import "./_smoke-bootstrap";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   FACET_PROJECTION_MAX_WORDS,
+  FACET_PROJECTION_TEMPLATE_CATALOG,
   FACET_SIGNAL_MAX_ANCHOR_CHARACTERS,
   FACET_SIGNAL_MAX_ANCHORS_PER_LANE,
   FACET_SIGNAL_MAX_OUTPUT_BYTES,
   parseFacetSignalJson,
   resolveFacetQueryText,
-  type FacetSignal,
+  type ValidatedFacetSignal,
 } from "../lib/facet-signal";
 import { FACET_TYPES } from "../lib/types";
 
@@ -32,6 +35,7 @@ function main(): void {
   checkProjectionDegradation();
   checkFallbackAndImmutability();
   checkSilentFailureBoundary();
+  checkDormantBoundary();
 
   console.log("Onward FacetSignal contract");
   console.log("===========================");
@@ -178,6 +182,71 @@ function checkSignalFailures(): void {
   ];
   expectNull("oversized anchor", oversizedAnchor);
 
+  for (const weakAnchor of ["I", "feel", ","]) {
+    const fixture = validFixture();
+    fixture.anchors.emotional_core = [weakAnchor];
+    expectNull(`weak anchor ${JSON.stringify(weakAnchor)}`, fixture);
+  }
+  for (const weakAnchor of [
+    "2024",
+    "now",
+    "very",
+    "just",
+    "again",
+    "everything",
+  ]) {
+    const fixture = validFixture();
+    for (const facetType of FACET_TYPES) {
+      fixture.anchors[facetType] = [weakAnchor];
+      const query = fixture.facetQueries[facetType];
+      if (
+        query !== null &&
+        typeof query === "object" &&
+        !Array.isArray(query)
+      ) {
+        (query as Record<string, unknown>).anchors = [weakAnchor];
+      }
+    }
+    expectNull(
+      `numeric or filler anchor ${JSON.stringify(weakAnchor)}`,
+      fixture,
+      `I feel ${weakAnchor} right now.`,
+    );
+  }
+
+  const usefulShortAnchors = validFixture();
+  usefulShortAnchors.anchors = {
+    emotional_core: ["job"],
+    decision_shape: ["lost"],
+    trigger_event: ["job"],
+    agency_state: ["stuck"],
+  };
+  usefulShortAnchors.facetQueries = {
+    emotional_core: {
+      templateId: "effort_unrecognized",
+      anchors: ["job"],
+    },
+    decision_shape: {
+      templateId: "remain_or_restart",
+      anchors: ["lost"],
+    },
+    trigger_event: {
+      templateId: "stability_lost",
+      anchors: ["job"],
+    },
+    agency_state: {
+      templateId: "pressure_trapped",
+      anchors: ["stuck"],
+    },
+  };
+  check(
+    parseFixture(
+      usefulShortAnchors,
+      "I lost my job and now I feel completely stuck.",
+    ) !== null,
+    "useful short semantic anchors were rejected",
+  );
+
   expectRawNull("malformed JSON", "{");
   expectRawNull("JSON null", "null");
   expectRawNull("JSON array", "[]");
@@ -203,158 +272,160 @@ function checkSignalFailures(): void {
 }
 
 function checkProjectionDegradation(): void {
-  const exactlyAtLimit = projectionWithWordCount(FACET_PROJECTION_MAX_WORDS);
-  expectProjection(
-    "32-word projection",
-    { text: exactlyAtLimit, anchors: ["overwhelmed"] },
-    true,
-  );
-  expectProjection(
-    "33-word projection",
-    {
-      text: projectionWithWordCount(FACET_PROJECTION_MAX_WORDS + 1),
-      anchors: ["overwhelmed"],
-    },
-    false,
-  );
+  checkTemplateCatalog();
 
-  const cases: Array<[string, unknown]> = [
+  for (const facetType of FACET_TYPES) {
+    for (const template of FACET_PROJECTION_TEMPLATE_CATALOG[facetType]) {
+      expectProjection(
+        `${facetType}/${template.templateId}`,
+        {
+          templateId: template.templateId,
+          anchors: [anchorFor(facetType)],
+        },
+        true,
+        facetType,
+        template.text,
+      );
+      for (const wrongFacet of FACET_TYPES) {
+        if (wrongFacet === facetType) continue;
+        expectProjection(
+          `${template.templateId} selected for ${wrongFacet}`,
+          {
+            templateId: template.templateId,
+            anchors: [anchorFor(wrongFacet)],
+          },
+          false,
+          wrongFacet,
+        );
+      }
+    }
+  }
+
+  const invalidSelections: Array<[string, unknown]> = [
     [
       "empty projection anchors",
-      {
-        text: "Someone felt overwhelmed by another closed door.",
-        anchors: [],
-      },
+      { templateId: "pressure_overwhelming", anchors: [] },
     ],
     [
       "fabricated projection anchor",
       {
-        text: "Someone felt overwhelmed by another closed door.",
+        templateId: "pressure_overwhelming",
         anchors: [PRIVATE_CANARY],
       },
     ],
     [
       "projection anchor outside lane signal anchors",
       {
-        text: "Someone felt overwhelmed by another closed door.",
+        templateId: "pressure_overwhelming",
         anchors: ["application was rejected"],
       },
     ],
     [
-      "first-person projection",
+      "unknown template ID",
+      { templateId: "unknown_projection", anchors: ["overwhelmed"] },
+    ],
+    [
+      "wrong-case template ID",
+      { templateId: "Pressure_overwhelming", anchors: ["overwhelmed"] },
+    ],
+    [
+      "whitespace-padded template ID",
+      { templateId: " pressure_overwhelming", anchors: ["overwhelmed"] },
+    ],
+    [
+      "Unicode-confusable template ID",
+      { templateId: "prеssure_overwhelming", anchors: ["overwhelmed"] },
+    ],
+    [
+      "invisible-character template ID",
+      { templateId: "pressure_\u200boverwhelming", anchors: ["overwhelmed"] },
+    ],
+    [
+      "wrong-facet template ID",
+      { templateId: "continue_or_stop", anchors: ["overwhelmed"] },
+    ],
+    [
+      "provider-authored text",
       {
-        text: "Someone felt my confidence fading after another attempt.",
+        text: "Someone felt overwhelmed by pressure they could not resolve.",
         anchors: ["overwhelmed"],
       },
     ],
     [
-      "four-digit year",
+      "provider text alongside template ID",
       {
-        text: "Someone felt stuck after 2024 changed everything.",
+        templateId: "pressure_overwhelming",
+        text: PRIVATE_CANARY,
         anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "diagnosis vocabulary",
-      {
-        text: "Someone felt depression narrowing every possible choice.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "present tense",
-      {
-        text: "Someone feels unable to trust another attempt.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "future tense",
-      {
-        text: "Someone will feel unable to trust another attempt.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "proper name",
-      {
-        text: "Someone felt rejected while Priya moved forward.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "unsubstantiated concrete event",
-      {
-        text: "Someone felt alone after her father died.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "non-neutral subject",
-      {
-        text: "A worker felt unable to trust another attempt.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "multiple sentences",
-      {
-        text: "Someone felt rejected. They tried again.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "multiline sentence",
-      {
-        text: "Someone felt rejected,\nbut they tried again.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "quotation marks",
-      {
-        text: 'Someone felt "trapped" after another refusal.',
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "URL",
-      {
-        text: "Someone felt rejected after https://example.com responded.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "untrimmed projection",
-      {
-        text: " Someone felt overwhelmed by another closed door.",
-        anchors: ["overwhelmed"],
-      },
-    ],
-    [
-      "extra projection field",
-      {
-        text: "Someone felt overwhelmed by another closed door.",
-        anchors: ["overwhelmed"],
-        explanation: PRIVATE_CANARY,
       },
     ],
     ["array projection", []],
-    ["string projection", "Someone felt overwhelmed."],
+    ["string projection", "pressure_overwhelming"],
   ];
-
-  for (const [label, query] of cases) {
+  for (const [label, query] of invalidSelections) {
     expectProjection(label, query, false);
   }
 
-  expectProjection(
-    "approved multi-word neutral subject",
-    {
-      text: "The person felt overwhelmed by another closed door.",
-      anchors: ["overwhelmed"],
-    },
-    true,
+  const adversarialProviderText = [
+    "Someone felt overwhelmed after a car crashed and a house burned.",
+    "Someone walks away whenever overwhelmed.",
+    "Someone felt overwhelmed while priya lost a court case.",
+    "Someone felt overwhelmed after Pr\u200biya lost a lawsuit.",
+    "Someone felt overwhelmed after their startup collapsed.",
+    "Someone felt my confidence fading after another attempt.",
+    "Someone felt stuck after 2024 changed everything.",
+    "Someone felt depression narrowing every possible choice.",
+  ];
+  for (const text of adversarialProviderText) {
+    expectProjection(
+      "provider-authored adversarial prose",
+      { text, anchors: ["overwhelmed"] },
+      false,
+    );
+  }
+}
+
+function checkTemplateCatalog(): void {
+  const seenIds = new Set<string>();
+  const seenTexts = new Set<string>();
+  check(
+    Object.isFrozen(FACET_PROJECTION_TEMPLATE_CATALOG),
+    "template catalog root is mutable",
   );
+  for (const facetType of FACET_TYPES) {
+    const templates = FACET_PROJECTION_TEMPLATE_CATALOG[facetType];
+    check(Object.isFrozen(templates), `${facetType} template list is mutable`);
+    check(templates.length > 0, `${facetType} has no projection templates`);
+    for (const template of templates) {
+      const words =
+        template.text.match(/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu) ??
+        [];
+      check(Object.isFrozen(template), `${template.templateId} is mutable`);
+      check(
+        /^[a-z][a-z0-9_]{2,63}$/u.test(template.templateId),
+        `${template.templateId} is not a canonical ASCII identifier`,
+      );
+      check(
+        !seenIds.has(template.templateId),
+        `${template.templateId} is not globally unique`,
+      );
+      check(
+        !seenTexts.has(template.text),
+        `${template.templateId} reuses another template's text`,
+      );
+      check(
+        template.text.trim() === template.text &&
+          !/[\r\n{}[\]]/u.test(template.text) &&
+          template.text.endsWith(".") &&
+          (template.text.match(/[.!?]/gu) ?? []).length === 1 &&
+          words.length > 0 &&
+          words.length <= FACET_PROJECTION_MAX_WORDS,
+        `${template.templateId} violates closed sentence invariants`,
+      );
+      seenIds.add(template.templateId);
+      seenTexts.add(template.text);
+    }
+  }
 }
 
 function checkFallbackAndImmutability(): void {
@@ -364,7 +435,7 @@ function checkFallbackAndImmutability(): void {
 
   check(
     resolveFacetQueryText(RAW_FEELING, signal, "emotional_core") ===
-      "Someone felt overwhelmed after their effort was rejected.",
+      "Someone felt overwhelmed by pressure they could not resolve.",
     "valid projection did not route to its facet lane",
   );
   check(
@@ -374,6 +445,25 @@ function checkFallbackAndImmutability(): void {
   check(
     resolveFacetQueryText(RAW_FEELING, null, "emotional_core") === RAW_FEELING,
     "null signal did not preserve raw feeling byte-for-byte",
+  );
+  const forged = { ...signal } as unknown as ValidatedFacetSignal;
+  check(
+    resolveFacetQueryText(RAW_FEELING, forged, "emotional_core") === RAW_FEELING,
+    "structurally forged signal bypassed the runtime validation brand",
+  );
+  const symbolForged = { ...signal } as Record<PropertyKey, unknown>;
+  for (const symbol of Object.getOwnPropertySymbols(signal)) {
+    symbolForged[symbol] = (signal as unknown as Record<PropertyKey, unknown>)[
+      symbol
+    ];
+  }
+  check(
+    resolveFacetQueryText(
+      RAW_FEELING,
+      symbolForged as unknown as ValidatedFacetSignal,
+      "emotional_core",
+    ) === RAW_FEELING,
+    "copied private symbols bypassed validated-signal identity",
   );
 
   check(Object.isFrozen(signal), "signal root is mutable");
@@ -393,6 +483,35 @@ function checkFallbackAndImmutability(): void {
       );
     }),
     "a projection or projection-anchor list is mutable",
+  );
+
+  const privateFixture = validFixture();
+  for (const facetType of FACET_TYPES) {
+    privateFixture.anchors[facetType] = [PRIVATE_CANARY];
+    privateFixture.facetQueries[facetType] = {
+      templateId:
+        FACET_PROJECTION_TEMPLATE_CATALOG[facetType][0]?.templateId ?? "",
+      anchors: [PRIVATE_CANARY],
+    };
+  }
+  const privateSignal = parseFixture(
+    privateFixture,
+    `I am carrying ${PRIVATE_CANARY} through this.`,
+  );
+  check(
+    privateSignal !== null &&
+      FACET_TYPES.every((facetType) => {
+        const query = privateSignal.facetQueries[facetType];
+        return query !== null && !query.text.includes(PRIVATE_CANARY);
+      }),
+    "raw feeling or anchors were interpolated into server template text",
+  );
+  check(
+    privateSignal !== null &&
+      !JSON.stringify(privateSignal.facetQueries).includes(
+        "pressure_overwhelming",
+      ),
+    "provider template ID escaped the validation boundary",
   );
 }
 
@@ -421,31 +540,69 @@ function checkSilentFailureBoundary(): void {
   );
 }
 
+function checkDormantBoundary(): void {
+  const productionRoots = ["app", "components", "lib"];
+  const importers: string[] = [];
+  for (const root of productionRoots) {
+    for (const path of sourceFiles(join(process.cwd(), root))) {
+      if (path.endsWith(`${join("lib", "facet-signal.ts")}`)) continue;
+      const source = readFileSync(path, "utf8");
+      if (
+        /(?:from\s+|import\s*\()\s*["'][^"']*facet-signal["']/u.test(source)
+      ) {
+        importers.push(path);
+      }
+    }
+  }
+  check(
+    importers.length === 0,
+    "dormant facet contract is imported by production code",
+  );
+}
+
+function sourceFiles(directory: string): string[] {
+  const files: string[] = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const path = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...sourceFiles(path));
+    } else if (entry.isFile() && /\.(?:ts|tsx)$/u.test(entry.name)) {
+      files.push(path);
+    }
+  }
+  return files;
+}
+
 function expectProjection(
   label: string,
   query: unknown,
   expectedValid: boolean,
+  facetType: (typeof FACET_TYPES)[number] = "emotional_core",
+  expectedText?: string,
 ): void {
   const fixture = validFixture();
-  fixture.facetQueries.emotional_core = query;
+  fixture.facetQueries[facetType] = query;
   const signal = parseFixture(fixture);
   check(signal !== null, `${label} invalidated the entire signal`);
   if (!signal) return;
-  const actualValid = signal.facetQueries.emotional_core !== null;
+  const actual = signal.facetQueries[facetType];
+  const actualValid = actual !== null;
   check(
     actualValid === expectedValid,
     `${label} was ${actualValid ? "accepted" : "rejected"}`,
   );
+  if (expectedText !== undefined) {
+    check(
+      actual?.text === expectedText,
+      `${label} did not resolve to server-owned template text`,
+    );
+  }
+  const unaffectedFacet =
+    facetType === "emotional_core" ? "decision_shape" : "emotional_core";
   check(
-    signal.facetQueries.decision_shape !== null,
+    signal.facetQueries[unaffectedFacet] !== null,
     `${label} degraded an unrelated valid projection`,
   );
-}
-
-function projectionWithWordCount(wordCount: number): string {
-  const words = ["Someone", "felt"];
-  while (words.length < wordCount) words.push("uncertain");
-  return `${words.join(" ")}.`;
 }
 
 function validFixture(): MutableFixture {
@@ -466,15 +623,15 @@ function validFixture(): MutableFixture {
     },
     facetQueries: {
       emotional_core: {
-        text: "Someone felt overwhelmed after their effort was rejected.",
+        templateId: "pressure_overwhelming",
         anchors: ["overwhelmed"],
       },
       decision_shape: {
-        text: "They faced whether to try again or walk away.",
+        templateId: "continue_or_stop",
         anchors: ["cannot decide"],
       },
       trigger_event: {
-        text: "A person saw an effort rejected after hoping it would work.",
+        templateId: "effort_rejected",
         anchors: ["application was rejected"],
       },
       agency_state: null,
@@ -485,8 +642,17 @@ function validFixture(): MutableFixture {
 function parseFixture(
   fixture: MutableFixture,
   rawFeeling = RAW_FEELING,
-): FacetSignal | null {
+): ValidatedFacetSignal | null {
   return parseFacetSignalJson(JSON.stringify(fixture), rawFeeling);
+}
+
+function anchorFor(facetType: (typeof FACET_TYPES)[number]): string {
+  return {
+    emotional_core: "overwhelmed",
+    decision_shape: "cannot decide",
+    trigger_event: "application was rejected",
+    agency_state: "try again",
+  }[facetType];
 }
 
 function expectNull(

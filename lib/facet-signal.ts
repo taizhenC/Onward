@@ -3,7 +3,7 @@ import { FACET_TYPES, type FacetType } from "./types";
 
 export const FACET_SIGNAL_SCHEMA_VERSION = "facet-signal-v1-2026-07";
 export const FACET_PROJECTION_SCHEMA_VERSION =
-  "facet-query-projection-v1-2026-07";
+  "facet-query-template-catalog-v1-2026-07";
 
 export const FACET_SIGNAL_MIN_CONFIDENCE = 0.55;
 export const FACET_SIGNAL_IMPORTANT_LANE_THRESHOLD = 0.3;
@@ -18,39 +18,283 @@ export type FacetQuery = Readonly<{
   anchors: readonly string[];
 }>;
 
-export type FacetSignal = Readonly<{
+declare const VALIDATED_FACET_SIGNAL: unique symbol;
+const VALIDATED_FACET_SIGNALS = new WeakSet<object>();
+
+export type ValidatedFacetSignal = Readonly<{
   confidence: number;
   dominantMode: FacetType | "unclear";
   facetImportance: Readonly<Record<FacetType, number>>;
   anchors: Readonly<Record<FacetType, readonly string[]>>;
   facetQueries: Readonly<Record<FacetType, FacetQuery | null>>;
+  readonly [VALIDATED_FACET_SIGNAL]: true;
 }>;
+
+export type FacetProjectionTemplate = Readonly<{
+  templateId: string;
+  text: string;
+}>;
+
+/**
+ * The tagger selects from these exact server-owned sentences; it does not
+ * author retrieval prose. This makes "no invented event/name/diagnosis" a
+ * closed vocabulary guarantee instead of an incomplete natural-language
+ * blacklist. Adding or changing a sentence requires a projection schema bump
+ * and projection-only shadow evaluation.
+ */
+export const FACET_PROJECTION_TEMPLATE_CATALOG: Readonly<
+  Record<FacetType, readonly FacetProjectionTemplate[]>
+> = deepFreeze({
+  emotional_core: [
+    {
+      templateId: "pressure_overwhelming",
+      text: "Someone felt overwhelmed by pressure they could not resolve.",
+    },
+    {
+      templateId: "effort_unrecognized",
+      text: "Someone felt rejected after effort failed to bring recognition.",
+    },
+    {
+      templateId: "belonging_isolated",
+      text: "Someone felt isolated from belonging and recognition.",
+    },
+    {
+      templateId: "setback_shame",
+      text: "Someone carried shame after a painful setback.",
+    },
+    {
+      templateId: "next_step_uncertain",
+      text: "Someone felt uncertain about what came next.",
+    },
+    {
+      templateId: "effort_exhausted",
+      text: "Someone felt exhausted after effort lasted too long.",
+    },
+    {
+      templateId: "identity_between",
+      text: "Someone felt caught between an old identity and an unclear future.",
+    },
+    {
+      templateId: "important_loss",
+      text: "Someone carried grief after an important loss.",
+    },
+    {
+      templateId: "effort_unseen",
+      text: "Someone felt unseen despite sustained effort.",
+    },
+    {
+      templateId: "failure_doubt",
+      text: "Someone feared another failure would confirm their doubt.",
+    },
+  ],
+  decision_shape: [
+    {
+      templateId: "continue_or_stop",
+      text: "They faced whether to continue or step away.",
+    },
+    {
+      templateId: "remain_or_restart",
+      text: "They faced whether to remain or begin again.",
+    },
+    {
+      templateId: "safety_or_uncertainty",
+      text: "They faced a choice between safety and a less certain path.",
+    },
+    {
+      templateId: "retry_or_withdraw",
+      text: "They faced whether another attempt was worth the risk.",
+    },
+    {
+      templateId: "all_choices_costly",
+      text: "They faced how to act when every available choice felt costly.",
+    },
+    {
+      templateId: "others_or_self_direction",
+      text: "They faced whether to follow others' expectations or their own direction.",
+    },
+    {
+      templateId: "persist_or_release",
+      text: "They faced whether persistence still served what mattered.",
+    },
+    {
+      templateId: "no_safe_answer",
+      text: "They faced a choice without a clearly safe answer.",
+    },
+  ],
+  trigger_event: [
+    {
+      templateId: "setback_changed_possibility",
+      text: "A setback changed what seemed possible next.",
+    },
+    {
+      templateId: "effort_rejected",
+      text: "An effort ended in rejection after hope had gathered around it.",
+    },
+    {
+      templateId: "stability_lost",
+      text: "A familiar source of stability was lost.",
+    },
+    {
+      templateId: "path_closed",
+      text: "An expected path stopped feeling available.",
+    },
+    {
+      templateId: "public_setback",
+      text: "Something public went wrong while others seemed to move forward.",
+    },
+    {
+      templateId: "effort_without_result",
+      text: "A long effort failed to produce the hoped-for result.",
+    },
+    {
+      templateId: "connection_changed",
+      text: "An important connection stopped offering the same belonging.",
+    },
+    {
+      templateId: "direction_disrupted",
+      text: "A sudden change disrupted the direction they had trusted.",
+    },
+  ],
+  agency_state: [
+    {
+      templateId: "unable_to_move",
+      text: "They felt unable to move even while wanting change.",
+    },
+    {
+      templateId: "trying_with_doubt",
+      text: "They kept trying while doubt weakened their sense of control.",
+    },
+    {
+      templateId: "pressure_trapped",
+      text: "They felt trapped between pressure and an uncertain next step.",
+    },
+    {
+      templateId: "control_slipping",
+      text: "They remained present while their sense of control was slipping.",
+    },
+    {
+      templateId: "attempt_might_not_matter",
+      text: "They felt unable to trust that another attempt would matter.",
+    },
+    {
+      templateId: "moves_felt_unsafe",
+      text: "They held back because each available move felt unsafe.",
+    },
+    {
+      templateId: "effort_might_not_help",
+      text: "They kept going without feeling sure that effort could help.",
+    },
+    {
+      templateId: "unable_to_choose",
+      text: "They wanted change while feeling unable to choose a direction.",
+    },
+  ],
+});
 
 const TOP_LEVEL_KEYS =
   "anchors,confidence,dominantMode,facetImportance,facetQueries";
-const QUERY_KEYS = "anchors,text";
+const QUERY_KEYS = "anchors,templateId";
 const FACET_KEYS = [...FACET_TYPES].sort().join(",");
-
-// These checks are intentionally conservative. A rejected signal is equivalent
-// to today's raw-query/static-weight behavior; accepting invented detail would
-// silently bias retrieval. Changes to these lists require a projection schema
-// version bump and shadow-eval evidence.
-const NEUTRAL_SUBJECT_PATTERN =
-  /^(?:Someone|They|A person|The person|An individual|He|She)\b/u;
-const PAST_TENSE_PATTERN =
-  /\b(?:was|were|had|felt|found|faced|became|began|could|struggled|seemed|lost|left|kept|held|made|went|saw|knew|wanted|needed|tried|chose|turned|stood|stayed|carried|[a-z]+ed)\b/iu;
-const PRESENT_OR_FUTURE_PATTERN =
-  /\b(?:am|is|are|has|have|does|do|can|will|shall|going to|feels|wants|needs|faces|seems|struggles|tries|chooses)\b/iu;
-const FIRST_PERSON_PATTERN =
-  /\b(?:I|me|my|mine|myself|we|us|our|ours|ourselves)\b/iu;
-const DIAGNOSIS_PATTERN =
-  /\b(?:adhd|anxiety|anxious|bipolar|depress(?:ed|ion|ive)?|diagnos(?:ed|is)|disorder|ocd|panic attack|ptsd|suicid(?:al|e)|trauma(?:tic)?|triggered)\b/iu;
-const URL_EMAIL_OR_HANDLE_PATTERN =
-  /(?:https?:\/\/|www\.|\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b|(?:^|\s)@[a-z0-9_]{2,})/iu;
-const QUOTATION_MARK_PATTERN = /["“”«»‹›]/u;
-const TITLE_CASE_TOKEN_PATTERN = /\b\p{Lu}[\p{Ll}\p{M}'’-]{2,}\b/u;
-const CONCRETE_EVENT_PATTERN =
-  /\b(?:draft notice|funeral|hospital|prison|war|battle|divorc(?:e|ed)|marri(?:age|ed)|father|mother|husband|wife|son|daughter|brother|sister|died|death|fired|laid off|graduat(?:ed|ion)|college|university)\b/giu;
+const ANCHOR_STOPWORDS = new Set([
+  "a",
+  "again",
+  "am",
+  "an",
+  "and",
+  "are",
+  "as",
+  "at",
+  "be",
+  "because",
+  "been",
+  "being",
+  "but",
+  "by",
+  "can",
+  "could",
+  "completely",
+  "did",
+  "do",
+  "does",
+  "everything",
+  "even",
+  "ever",
+  "feel",
+  "feels",
+  "felt",
+  "for",
+  "from",
+  "had",
+  "has",
+  "have",
+  "he",
+  "her",
+  "hers",
+  "him",
+  "his",
+  "i",
+  "if",
+  "in",
+  "into",
+  "is",
+  "it",
+  "its",
+  "just",
+  "may",
+  "me",
+  "might",
+  "mine",
+  "much",
+  "must",
+  "my",
+  "myself",
+  "never",
+  "not",
+  "now",
+  "of",
+  "on",
+  "or",
+  "our",
+  "ours",
+  "ourselves",
+  "she",
+  "shall",
+  "should",
+  "so",
+  "someone",
+  "somebody",
+  "something",
+  "still",
+  "than",
+  "that",
+  "the",
+  "their",
+  "theirs",
+  "them",
+  "then",
+  "they",
+  "this",
+  "thing",
+  "things",
+  "to",
+  "totally",
+  "too",
+  "us",
+  "very",
+  "was",
+  "we",
+  "were",
+  "will",
+  "with",
+  "without",
+  "would",
+  "really",
+  "you",
+  "your",
+  "yours",
+  "yourself",
+  "yourselves",
+]);
 
 /**
  * Parses untrusted tagger output into the only signal shape retrieval may use.
@@ -62,7 +306,7 @@ const CONCRETE_EVENT_PATTERN =
 export function parseFacetSignalJson(
   rawOutput: string,
   rawFeeling: string,
-): FacetSignal | null {
+): ValidatedFacetSignal | null {
   if (
     typeof rawOutput !== "string" ||
     Buffer.byteLength(rawOutput, "utf8") > FACET_SIGNAL_MAX_OUTPUT_BYTES
@@ -112,18 +356,22 @@ export function parseFacetSignalJson(
   for (const facetType of FACET_TYPES) {
     facetQueries[facetType] = parseFacetQuery(
       parsed.facetQueries[facetType],
+      facetType,
       rawFeeling,
       anchors[facetType],
     );
   }
 
-  return deepFreeze({
+  const reconstructed = {
     confidence,
     dominantMode: parsed.dominantMode as FacetType | "unclear",
     facetImportance,
     anchors,
     facetQueries,
-  });
+  };
+  const frozen = deepFreeze(reconstructed);
+  VALIDATED_FACET_SIGNALS.add(frozen);
+  return frozen as unknown as ValidatedFacetSignal;
 }
 
 /**
@@ -132,10 +380,11 @@ export function parseFacetSignalJson(
  */
 export function resolveFacetQueryText(
   rawFeeling: string,
-  signal: FacetSignal | null,
+  signal: ValidatedFacetSignal | null,
   facetType: FacetType,
 ): string {
-  return signal?.facetQueries[facetType]?.text ?? rawFeeling;
+  if (!signal || !VALIDATED_FACET_SIGNALS.has(signal)) return rawFeeling;
+  return signal.facetQueries[facetType]?.text ?? rawFeeling;
 }
 
 function parseFacetImportance(
@@ -167,13 +416,21 @@ function parseFacetAnchors(
 
 function parseFacetQuery(
   value: unknown,
+  facetType: FacetType,
   rawFeeling: string,
   signalAnchors: readonly string[],
 ): FacetQuery | null {
   if (value === null) return null;
-  if (!isExactRecord(value, QUERY_KEYS) || !isValidProjectionText(value.text)) {
+  if (
+    !isExactRecord(value, QUERY_KEYS) ||
+    typeof value.templateId !== "string"
+  ) {
     return null;
   }
+  const template = FACET_PROJECTION_TEMPLATE_CATALOG[facetType].find(
+    (candidate) => candidate.templateId === value.templateId,
+  );
+  if (!template) return null;
   const anchors = parseAnchorList(value.anchors, rawFeeling);
   if (
     !anchors ||
@@ -182,10 +439,7 @@ function parseFacetQuery(
   ) {
     return null;
   }
-  if (containsUnsubstantiatedConcreteDetail(value.text, rawFeeling)) {
-    return null;
-  }
-  return { text: value.text, anchors };
+  return { text: template.text, anchors };
 }
 
 function parseAnchorList(value: unknown, rawFeeling: string): string[] | null {
@@ -203,7 +457,8 @@ function parseAnchorList(value: unknown, rawFeeling: string): string[] | null {
       anchor.length > FACET_SIGNAL_MAX_ANCHOR_CHARACTERS ||
       anchor.trim() !== anchor ||
       !rawFeeling.includes(anchor) ||
-      anchors.includes(anchor)
+      anchors.includes(anchor) ||
+      !hasMeaningfulAnchorContent(anchor)
     ) {
       return null;
     }
@@ -212,48 +467,18 @@ function parseAnchorList(value: unknown, rawFeeling: string): string[] | null {
   return anchors;
 }
 
-function isValidProjectionText(value: unknown): value is string {
-  if (
-    typeof value !== "string" ||
-    value.length === 0 ||
-    value.trim() !== value ||
-    /[\r\n]/u.test(value) ||
-    !value.endsWith(".") ||
-    (value.match(/[.!?]/gu) ?? []).length !== 1 ||
-    !NEUTRAL_SUBJECT_PATTERN.test(value) ||
-    !PAST_TENSE_PATTERN.test(value) ||
-    PRESENT_OR_FUTURE_PATTERN.test(value) ||
-    FIRST_PERSON_PATTERN.test(value) ||
-    /\b\d{4}\b/u.test(value) ||
-    URL_EMAIL_OR_HANDLE_PATTERN.test(value) ||
-    QUOTATION_MARK_PATTERN.test(value) ||
-    DIAGNOSIS_PATTERN.test(value)
-  ) {
-    return false;
-  }
-  const words =
-    value.match(/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu) ?? [];
-  if (words.length === 0 || words.length > FACET_PROJECTION_MAX_WORDS) {
-    return false;
-  }
-
-  const neutralSubject = value.match(NEUTRAL_SUBJECT_PATTERN)?.[0];
-  if (!neutralSubject) return false;
-  const predicate = value.slice(neutralSubject.length);
-  return !TITLE_CASE_TOKEN_PATTERN.test(predicate);
-}
-
-function containsUnsubstantiatedConcreteDetail(
-  projection: string,
-  rawFeeling: string,
-): boolean {
-  for (const match of projection.matchAll(CONCRETE_EVENT_PATTERN)) {
-    const detail = match[0];
-    if (detail && !rawFeeling.toLocaleLowerCase("en").includes(detail.toLocaleLowerCase("en"))) {
-      return true;
-    }
-  }
-  return false;
+function hasMeaningfulAnchorContent(anchor: string): boolean {
+  const tokens = anchor.toLocaleLowerCase("en").match(/[\p{L}\p{N}]+/gu) ?? [];
+  const alphanumericLength = Array.from(tokens.join("")).length;
+  return (
+    alphanumericLength >= 3 &&
+    tokens.some(
+      (token) =>
+        Array.from(token).length >= 3 &&
+        /\p{L}/u.test(token) &&
+        !ANCHOR_STOPWORDS.has(token),
+    )
+  );
 }
 
 function isUnitNumber(value: unknown): value is number {

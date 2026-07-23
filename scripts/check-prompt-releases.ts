@@ -13,14 +13,19 @@ import {
 import { sha256Hex } from "../lib/sha256-edge";
 
 const REGISTRY_PATH = "config/prompt-releases.json";
+const REGISTRY_V1 = "prompt-release-registry-v1";
+const REGISTRY_V2 = "prompt-release-registry-v2";
+const RELEASE_KINDS = ["rerank", "story", "facetTagger"] as const;
+const MAX_RELEASES_PER_LANE = 256;
 const HASH = /^[0-9a-f]{64}$/;
-const VERSION = /^[a-z0-9][a-z0-9@._-]{0,127}$/;
+const VERSION = /^[a-z0-9][a-z0-9._-]{0,127}$/;
 
 type PromptRelease = Readonly<{ version: string; sha256: string }>;
 type PromptReleaseRegistry = Readonly<{
-  schemaVersion: "prompt-release-registry-v1";
+  schemaVersion: typeof REGISTRY_V1 | typeof REGISTRY_V2;
   rerank: readonly PromptRelease[];
   story: readonly PromptRelease[];
+  facetTagger: readonly PromptRelease[];
 }>;
 
 function main(): void {
@@ -34,6 +39,7 @@ function main(): void {
   } as const;
   assertActiveRelease(registry.rerank, RERANK_PROMPT_VERSION, actual.rerank);
   assertActiveRelease(registry.story, STORY_PROMPT_VERSION, actual.story);
+  checkRegistryFixtures(registry);
 
   const base = process.argv[2]?.trim();
   if (base) assertAppendOnlyFromBase(base, registry);
@@ -83,11 +89,29 @@ function assertAppendOnlyFromBase(
     JSON.parse(priorText) as unknown,
     "base prompt release registry",
   );
-  for (const kind of ["rerank", "story"] as const) {
+  assertAppendOnly(prior, current);
+}
+
+function assertAppendOnly(
+  prior: PromptReleaseRegistry,
+  current: PromptReleaseRegistry,
+): void {
+  assert(
+    prior.schemaVersion === REGISTRY_V1 ||
+      current.schemaVersion === REGISTRY_V2,
+    "prompt release registry was downgraded from v2",
+  );
+  for (const kind of RELEASE_KINDS) {
     assert(
       current[kind].length >= prior[kind].length,
       `${kind} prompt release history was truncated`,
     );
+    if (kind !== "facetTagger") {
+      assert(
+        current[kind].length === prior[kind].length,
+        `${kind} prompt releases changed while artifact binding is unavailable`,
+      );
+    }
     for (let index = 0; index < prior[kind].length; index += 1) {
       assert(
         canonical(prior[kind][index]) === canonical(current[kind][index]),
@@ -99,23 +123,57 @@ function assertAppendOnlyFromBase(
 
 function parseRegistry(value: unknown, label: string): PromptReleaseRegistry {
   assert(isRecord(value), `${label} is not an object`);
+  const schemaVersion = value.schemaVersion;
+  const isV1 = schemaVersion === REGISTRY_V1;
+  const isV2 = schemaVersion === REGISTRY_V2;
   assert(
-    Object.keys(value).sort().join(",") === "rerank,schemaVersion,story",
-    `${label} has missing or extra fields`,
-  );
-  assert(
-    value.schemaVersion === "prompt-release-registry-v1",
+    isV1 || isV2,
     `${label} schema is unsupported`,
   );
-  const rerank = parseReleases(value.rerank, `${label}.rerank`);
-  const story = parseReleases(value.story, `${label}.story`);
-  return { schemaVersion: "prompt-release-registry-v1", rerank, story };
-}
-
-function parseReleases(value: unknown, label: string): PromptRelease[] {
-  assert(Array.isArray(value) && value.length > 0, `${label} is empty`);
+  assert(
+    Object.keys(value).sort().join(",") ===
+      (isV1
+        ? "rerank,schemaVersion,story"
+        : "facetTagger,rerank,schemaVersion,story"),
+    `${label} has missing or extra fields`,
+  );
   const versions = new Set<string>();
   const hashes = new Set<string>();
+  const rerank = parseReleases(
+    value.rerank,
+    `${label}.rerank`,
+    versions,
+    hashes,
+  );
+  const story = parseReleases(
+    value.story,
+    `${label}.story`,
+    versions,
+    hashes,
+  );
+  const facetTagger = isV2
+    ? parseReleases(
+        value.facetTagger,
+        `${label}.facetTagger`,
+        versions,
+        hashes,
+      )
+    : [];
+  return { schemaVersion, rerank, story, facetTagger };
+}
+
+function parseReleases(
+  value: unknown,
+  label: string,
+  versions: Set<string>,
+  hashes: Set<string>,
+): PromptRelease[] {
+  assert(
+    Array.isArray(value) &&
+      value.length > 0 &&
+      value.length <= MAX_RELEASES_PER_LANE,
+    `${label} has an unsafe release count`,
+  );
   return value.map((entry, index) => {
     assert(isRecord(entry), `${label}[${index}] is not an object`);
     assert(
@@ -136,6 +194,137 @@ function parseReleases(value: unknown, label: string): PromptRelease[] {
     hashes.add(entry.sha256);
     return { version: entry.version, sha256: entry.sha256 };
   });
+}
+
+function checkRegistryFixtures(current: PromptReleaseRegistry): void {
+  const v1 = parseRegistry(
+    {
+      schemaVersion: REGISTRY_V1,
+      rerank: current.rerank,
+      story: current.story,
+    },
+    "v1 fixture",
+  );
+  const firstTaggerRelease = {
+    version: "facet-tagger-prompt-v1-2026-07",
+    sha256: "f".repeat(64),
+  };
+  const v2 = parseRegistry(
+    {
+      schemaVersion: REGISTRY_V2,
+      rerank: current.rerank,
+      story: current.story,
+      facetTagger: [firstTaggerRelease],
+    },
+    "v2 fixture",
+  );
+  assertAppendOnly(v1, v2);
+  assertAppendOnly(
+    v2,
+    parseRegistry(
+      {
+        schemaVersion: REGISTRY_V2,
+        rerank: current.rerank,
+        story: current.story,
+        facetTagger: [
+          firstTaggerRelease,
+          {
+            version: "facet-tagger-prompt-v2-2026-08",
+            sha256: "e".repeat(64),
+          },
+        ],
+      },
+      "v2 append fixture",
+    ),
+  );
+
+  expectFailure(
+    () => assertAppendOnly(v2, v1),
+    "v2 prompt registry downgrade was accepted",
+  );
+  expectFailure(
+    () =>
+      assertAppendOnly(
+        v2,
+        parseRegistry(
+          {
+            schemaVersion: REGISTRY_V2,
+            rerank: current.rerank,
+            story: current.story,
+            facetTagger: [
+              {
+                ...firstTaggerRelease,
+                sha256: "d".repeat(64),
+              },
+            ],
+          },
+          "mutated v2 fixture",
+        ),
+      ),
+    "facet-tagger prompt history mutation was accepted",
+  );
+  expectFailure(
+    () =>
+      parseRegistry(
+        {
+          schemaVersion: REGISTRY_V2,
+          rerank: current.rerank,
+          story: current.story,
+          facetTagger: [
+            {
+              version: "facet-tagger@unreviewed",
+              sha256: "d".repeat(64),
+            },
+          ],
+        },
+        "unsafe version fixture",
+      ),
+    "unsafe prompt version grammar was accepted",
+  );
+  expectFailure(
+    () =>
+      parseRegistry(
+        {
+          schemaVersion: REGISTRY_V2,
+          rerank: current.rerank,
+          story: current.story,
+          facetTagger: [
+            {
+              version: "facet-tagger-prompt-v1-2026-07",
+              sha256: current.rerank[0]?.sha256,
+            },
+          ],
+        },
+        "cross-lane alias fixture",
+      ),
+    "cross-lane prompt hash alias was accepted",
+  );
+  expectFailure(
+    () =>
+      parseRegistry(
+        {
+          schemaVersion: REGISTRY_V2,
+          rerank: current.rerank,
+          story: current.story,
+          facetTagger: Array.from(
+            { length: MAX_RELEASES_PER_LANE + 1 },
+            () => firstTaggerRelease,
+          ),
+        },
+        "oversized lane fixture",
+      ),
+    "oversized prompt release lane was accepted",
+  );
+}
+
+function expectFailure(action: () => void, message: string): void {
+  let rejected = false;
+  try {
+    action();
+  } catch {
+    rejected = true;
+  }
+  assert(rejected, message);
 }
 
 function canonical(value: unknown): string {

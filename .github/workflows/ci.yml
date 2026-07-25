@@ -38,6 +38,7 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run check-recipe-manifest-v2
+      - run: npm run check-facet-signal
       - run: npm run check-recipe-governance
       - run: npm run check-prompt-releases
       - run: node scripts/trusted/recipe-promotion-attestor.mjs self-test

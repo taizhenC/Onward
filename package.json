@@ -42,6 +42,7 @@
     "check-resonance-brief": "tsx scripts/check-resonance-brief.ts",
     "check-story-composer": "tsx scripts/check-story-composer.ts",
     "check-match-recovery": "tsx scripts/check-match-recovery.ts",
+    "check-facet-signal": "tsx scripts/check-facet-signal.ts",
     "health": "tsx scripts/check-provider.ts",
     "eval": "tsx scripts/eval-match.ts",
     "eval-retrieval": "tsx scripts/eval-retrieval.ts",

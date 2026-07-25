@@ -190,9 +190,13 @@ tagger contracts are inert JSON artifacts under
 `config/prompt-artifacts/facet-tagger/<sha256>.json`; the protected-base
 attestor checks their schema, bounds, placeholders, hidden characters, and
 content-derived path before accepting registry v2. CI also checks hostile-input
-JSON framing and pull-request-base append-only history. The registered tagger
-prompt remains dormant until a later reviewed v2 recipe wires the provider and
-retrieval path.
+JSON framing and pull-request-base append-only history. A dormant
+`lib/llm.ts#tagAndExpand` facade now has an always-null stub and one bounded real
+adapter: fixed model/tuning, one request, a three-second deadline, an IDs-only
+template catalog, strict UTF-8/response limits, and silent null fallback. CI
+proves that no production matching or retrieval path calls it. Manifest-v2
+execution, shadow invocation, weighting changes, and promotion remain separate
+reviewed gates.
 
 Before the first challenger promotion, create a protected GitHub environment
 named `recipe-promotion`, require independent reviewers, and add a dedicated

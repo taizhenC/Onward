@@ -469,8 +469,17 @@ text in the request. Rerank and story release lanes remain frozen until they
 gain equivalent artifact binding. A new v2 recipe may reference a facet-tagger
 release only after that release exists on the protected base, so prompt content
 and its consuming recipe cannot self-authorize in one pull request. Registering
-the prompt does not execute it: provider wiring, FacetSignal parsing, shadow
-evaluation, and recipe promotion remain separate evidence-gated releases.
+the prompt does not execute it. The provider-neutral `tagAndExpand` facade is
+now installed but dormant: its stub returns null, its real adapter makes one
+fixed-tuning request with a three-second wall-clock deadline, and it reads at
+most a 64 KiB provider envelope before the existing 16 KiB FacetSignal parser.
+Only closed template IDs enter the request; server-owned projection prose never
+does. All provider, transport, envelope, and validation failures return null
+without retry or sensitive logging. CI permits `llm-real.ts` as the sole signal
+importer and rejects any production consumer, so shadow invocation, retrieval
+weights, manifest-v2 execution, evaluation, and promotion remain later
+evidence-gated releases. `dominantMode` is informational only and has no
+retrieval authority.
 
 Detailed eval trials remain local. Metrics-only results are append-only and
 content-addressed under `evals/history`, paired comparisons under

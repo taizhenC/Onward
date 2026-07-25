@@ -38,7 +38,7 @@
 
 | ID | Status | Current evidence | Missing proof / next dependency |
 |---|---|---|---|
-| P1-01 | Partial | Six-lane FacetsRAG skeleton and retrieval eval exist. | Validated per-facet projections, dynamic weights, shadow execution, holdout superiority, promotion. |
+| P1-01 | Partial | Six-lane FacetsRAG, strict branded FacetSignal validation, a content-addressed hostile-input prompt, IDs-only closed projections, and a bounded one-shot provider facade exist. The facade has no production consumer. | Shadow-only invocation, static then bounded-dynamic weighting experiments, protected-holdout superiority, and promotion. |
 | P1-02 | Not started | None. | Optional non-branching emphasis choice and experiment evidence. |
 | P1-03 | Partial | P0 hybrid composition now personalizes only approved transition/bridge templates while preserving canonical beats and evidence. | Full-beat free-prose challenger behind the same StorySpec/validation contract and a blind comparison. |
 | P1-04 | Partial | Seed/check scripts, database draft/published status, a privacy-safe historical-concern queue, service-only triage, and rapid StorySpec retirement exist. | Internal research/review/preview/publish/report/rollback workbench and audited editor identity/action history. |
@@ -720,9 +720,15 @@ stored under its normalized SHA-256, rejects untrusted disclosure instructions,
 accepts only JSON-encoded disclosure data and canonical closed-template IDs,
 and mirrors the strict FacetSignal anchor/fallback contract. Runtime, CI, and
 the protected-base attestor fail closed on schema, placeholder, Unicode,
-size, history, or content-path drift. No provider call, v2 production recipe,
-session identity, or retrieval behavior is enabled by this release; those
-remain later, independently reviewed gates. Startup logs only safe recipe
+size, history, or content-path drift. The provider facade now includes an
+always-null stub plus a real, no-retry adapter with fixed model/tuning, a
+three-second deadline, a 4 KiB input bound, a streamed 64 KiB envelope bound,
+strict UTF-8, IDs-only template serialization, and silent null fallback. An
+adversarial checker proves its prompt, timeout, byte, retry, logging, import,
+and dormant-consumer boundaries. No production caller, v2 production recipe,
+session identity, shadow result, weighting change, or retrieval behavior is
+enabled by this release; those remain later, independently reviewed gates.
+Startup logs only safe recipe
 identity; invalid configuration keeps crisis resources available but stops every other story
 before auth, rate limiting, providers, or durable work. New session recipes pin
 the manifest hash, dataset, deployment, prompt, model, composer, validator, and

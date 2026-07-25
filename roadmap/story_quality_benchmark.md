@@ -25,18 +25,22 @@ The benchmark uses three deliberately separate artifacts.
 
 | Artifact | Location | Permitted content |
 |---|---|---|
-| Frozen benchmark manifest | Access-controlled research storage | Opaque case IDs, input hashes, immutable split assignments, broad cohort cells, consent/de-identification attestations, and required representation |
+| Frozen benchmark manifest | Access-controlled research storage | Opaque case IDs, research-secret input commitments, immutable split assignments, broad cohort cells, consent/de-identification attestations, and required representation |
+| Validation content bundle | Access-controlled research storage | Exact v5 StoryArtifacts, published StorySpecs, and disclosures needed to rerun schema, evidence, tone, boundary, and echo validation |
 | Review packet | Access-controlled research storage | Artifact/recipe/StorySpec hashes, closed rubric scores, blinded reviewer IDs, completion/feedback outcomes, and closed critical-failure categories |
-| Evaluation evidence | Append-only repository history | Content hashes, aggregate counts/rates, closed gate results, and provenance only |
+| Evaluation evidence | Append-only repository history | One packet/manifest attestation digest, aggregate counts/rates, closed gate results, and bounded provenance only |
 
 Raw disclosures, story prose, source excerpts, reviewer notes, contact details,
-free-text error descriptions, and provider responses are forbidden in committed
-evaluation evidence. The local evaluator accepts only a strict closed schema and
-emits no case-level rows.
+free-text error descriptions, provider responses, case IDs, reviewer IDs, and
+per-case input/artifact/StorySpec hashes are forbidden in committed evaluation
+evidence. The local evaluator accepts only strict closed schemas, scans the
+complete controlled content bundle, and emits no case-level rows.
 
-Private manifests and review packets must never be committed. They are supplied
-to the evaluator from an approved research workspace and remain governed by the
-study consent and retention schedule.
+Private manifests, content bundles, and review packets must never be committed.
+They are supplied to the evaluator from an approved research workspace and
+remain governed by the study consent and retention schedule. Benchmark evidence
+is offline research evidence, not product telemetry; it cannot enter product
+events, generation-attempt rows, or aggregate product rollups.
 
 ## Benchmark protocol
 
@@ -53,7 +57,9 @@ study consent and retention schedule.
 
 ### 2. Freeze the benchmark and its splits
 
-Every case receives an opaque ID and SHA-256 digest in a frozen manifest. The
+Every case receives an opaque ID and a domain-separated HMAC commitment made
+with a research-only secret in a frozen manifest. A plain disclosure SHA-256 is
+forbidden because a guessed disclosure could confirm the fingerprint. The
 manifest assigns each case exactly once to:
 
 - `development`: visible to builders and usable for diagnosis;
@@ -75,18 +81,28 @@ of 150 target-audience sessions cannot be lowered by the manifest.
 ### 3. Bind every arm to immutable product output
 
 Canonical, hybrid, and any generative challenger are evaluated on the same
-frozen case set. Each arm binds:
+frozen case set. Each arm privately binds:
 
 - the exact registered recipe ID and manifest SHA-256;
 - the immutable `StoryArtifact` ID and content SHA-256;
 - the `StorySpec` ID, version, schema version, and content SHA-256;
-- the benchmark case ID, input SHA-256, and split assignment; and
+- the benchmark case ID, research-secret input commitment, and split
+  assignment; and
 - whether validation passed on the first attempt or a canonical fallback was
   used.
 
 The candidate arm is declared before review begins. Adding or replacing an arm,
 artifact, recipe, StorySpec, or case changes the packet hash and produces a new
 evaluation identity.
+
+Before review counts can enter a decision, the evaluator loads each exact
+StoryArtifact, published StorySpec, and disclosure from the controlled bundle.
+It rejects unknown fields at every nesting level, scans the entire serialized
+objects for forbidden sensitive/provider surfaces, recomputes content identity,
+reruns StorySpec and artifact validation, rebuilds the disclosure-derived echo
+guard in memory, and verifies the registered recipe. Embedded
+`validation.status` or a recomputed hash is not independent evidence. Legacy
+artifact schemas cannot support a v5 launch claim.
 
 ### 4. Blind and separate the reviews
 
@@ -106,7 +122,9 @@ makes the evaluation incomplete.
 
 Target-reader completion and “felt close” feedback remain separate observations.
 Silence is `no_response`, never a negative or positive answer. Feedback response
-rate is always reported beside the felt-close rate.
+rate is always reported beside the felt-close rate, and a code-owned minimum
+response denominator prevents one positive response from carrying a release
+decision.
 
 ### 5. Apply the rubric to the full artifact
 
@@ -127,22 +145,35 @@ Scores support diagnosis and comparison; they do not override critical gates.
 Expert review covers the full opening, every beat and passage, the final bridge,
 framing, rationale, and source presentation.
 
+Each dimension also has a code-owned aggregate floor and tail floor. A recipe
+cannot pass with acceptable averages while a material share of readers or
+reviewers score one dimension as unacceptable. Candidate-versus-baseline
+non-inferiority limits are frozen before holdout access.
+
 ### 6. Record critical failures independently of scores
 
 Any reviewer may record one or more closed critical categories:
 
 - `unsupported_person`
 - `unsupported_place`
+- `unsupported_organization`
 - `unsupported_date`
 - `unsupported_amount`
 - `unsupported_quote`
 - `unsupported_work`
 - `unsupported_causal_claim`
+- `unsupported_sensory_detail`
+- `chronology_error`
+- `source_misrepresentation`
+- `forbidden_or_disputed_quote`
+- `disallowed_interpretation`
 - `diagnosis`
 - `false_promise`
 - `trauma_equivalence`
 - `harmful_advice`
 - `privacy_echo`
+- `boundary_violation`
+- `sensitive_field_persisted`
 - `critical_safety_failure`
 
 One occurrence fails that recipe arm. Reviewers escalate the underlying material
@@ -161,15 +192,23 @@ The evaluator has three outcomes:
 
 Invalid schemas, hashes, duplicate IDs, split drift, unknown fields, unregistered
 recipes, impossible outcomes, or sensitive/free-text fields are rejected and
-produce no evidence.
+produce no evidence. Evaluator errors are reduced to closed codes; raw thrown
+messages, stacks, filenames, content, and provider bodies are never printed.
 
 The code-owned public-release floors are:
 
 - at least 150 consented, de-identified target-audience story sessions;
+- at least 75 feedback responses, so the felt-close denominator is not
+  trivially small;
 - at least 70% felt close among feedback respondents, with response rate shown;
 - at least 60% completion through the final bridge;
 - at least 95% first-pass artifact validation;
-- no more than 5% canonical fallback; and
+- no more than 5% canonical fallback among arms that attempted
+  personalization; canonical control arms report this check as not applicable;
+- at least a 3.5/5 mean and 80% of scores at 3 or above for every rubric
+  dimension;
+- no more than a 0.15-point rubric-mean regression or five-percentage-point
+  completion/felt-close regression from the paired baseline; and
 - zero unsupported-claim, harmful-tone, privacy, or critical-safety failures.
 
 Threshold changes require a versioned policy change reviewed before the next
@@ -199,6 +238,9 @@ overrides.
   candidate arm.
 - Evidence is content-addressed and append-only. Corrections create a new record
   that references a new packet hash; prior results remain auditable.
+- Committed evidence carries only a single attestation digest for the complete
+  private packet/manifest/content bundle. Per-case commitments and product
+  object identifiers remain private.
 - Synthetic fixtures prove parser and gate behavior only. They must be labeled
   `synthetic` and always resolve to `incomplete`, never a public-release pass.
 - Recipe promotion also remains subject to matching, safety/privacy,

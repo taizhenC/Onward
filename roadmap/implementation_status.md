@@ -730,8 +730,15 @@ StorySpec versions, with `embeddingModelId=null` on keyword. Migration
 `0020_story_recipe_registry.sql` independently enforces the same identity through
 an append-only default-deny registry and exact session trigger, while replacing
 the old duplicated single-ID checks across recovery, initial/alternate writes,
-product events, generation attempts, and daily rollups. The database has no
-active pointer, so a compatible pre-registered matching rollback is one
+product events, generation attempts, and daily rollups. Migration
+`0021_story_recipe_manifest_v2.sql` now stores the
+exact manifest-v2 discriminator and nested facet-tagger identity while keeping
+v1 rows null/null and unchanged. Its migration-owner-only insert boundary,
+persisted-session predicate, production registration matcher, live `check-db`
+probe, protected-attestor renderer, and CI tamper matrix agree on the same
+shape. No v2 row is seeded or selected, and separate runtime/eval/attestor
+execution gates still reject v2. The database has no active pointer, so a
+compatible pre-registered matching rollback is one
 application selector change. Promotion is restricted to the same installed
 library, prompt, validator, schema, boundary, and composer compatibility set;
 changes to those axes require a rollback-capable code/content release rather
@@ -741,7 +748,8 @@ Local gates pass for recipe governance, registry structure/tampering,
 deployment drift/rollback selection, telemetry contracts/producers, lint,
 typecheck, and the 19-case smoke suite. This does not claim the migration has
 been applied or that a second recipe has been promoted. Before public release,
-pause new stories, deploy the registry-aware writer, apply `0020`, run the live
+pause new stories, complete the documented `0020` cutover, then apply `0021`
+schema-first before the v2-aware registry reader. Run the live
 database gate, re-enable for one canary, verify persisted manifest/deployment
 identity, and restore the prior selector in a real rollback drill. A protected
 holdout remains mandatory before any challenger promotion.

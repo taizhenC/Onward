@@ -414,6 +414,11 @@ function checkStaticAuthorityBoundary(): void {
   );
   const llmFacade = join(process.cwd(), "lib", "llm.ts");
   const facetSignal = join(process.cwd(), "lib", "facet-signal.ts");
+  const storyRecipeRuntime = join(
+    process.cwd(),
+    "lib",
+    "story-recipe-runtime.ts",
+  );
   const audits = productionFiles.map(inspectAuthoritySource);
 
   const providerImporters = audits
@@ -443,6 +448,18 @@ function checkStaticAuthorityBoundary(): void {
     dominantModeConsumers,
     [],
     "non-authoritative dominantMode was imported, destructured, or referenced",
+  );
+
+  const executionPlanConsumers = audits
+    .filter(({ path }) => path !== storyRecipeRuntime)
+    .filter(({ exactSymbols }) =>
+      exactSymbols.has("facetTaggerExecutionPlan"),
+    )
+    .map(({ path }) => path);
+  assert.deepEqual(
+    executionPlanConsumers,
+    [],
+    "dormant facet-tagger execution plan gained a production consumer",
   );
 
   const stubPath = join(process.cwd(), "lib", "llm-stub.ts");

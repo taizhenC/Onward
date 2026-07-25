@@ -7,6 +7,7 @@ import {
   STORY_RECIPE_MANIFEST_SCHEMA_V2,
   STORY_RECIPE_REGISTRY,
   StoryRecipeRuntimeError,
+  facetTaggerExecutionPlan,
   isStoryRecipeManifestV2,
   parseStoryRecipeRegistry,
   parseStoryRecipeManifest,
@@ -52,11 +53,13 @@ function main(): void {
   checkValidV2(parsedV2);
   checkMixedRegistry(rawV2, parsedV2);
   checkStrictV2Rejections(rawV2);
+  checkDormantFacetTaggerPlan(parsedV2);
   checkDormantV2Execution(parsedV2);
 
   console.log("Story recipe manifest v2 contract: PASS");
   console.log("  historical v1 hashes remain exact; exports mirror live selection");
   console.log("  strict closed-template v2 parsing and deep freezing are locked");
+  console.log("  exact tagger plans are derivable without provider authority");
   console.log("  runtime and eval reject v2 until execution support is installed");
 }
 
@@ -438,6 +441,77 @@ function checkStrictV2Rejections(valid: MutableJsonObject): void {
   );
 }
 
+function checkDormantFacetTaggerPlan(parsed: StoryRecipeManifestV2): void {
+  const plan = facetTaggerExecutionPlan(parsed);
+  const expected = {
+    mode: "closed_template",
+    modelId: "gpt-oss-120b",
+    promptVersion: "facet-tagger-prompt-v1-2026-07",
+    temperature: 0,
+    reasoningEffort: "low",
+    timeoutMs: 3000,
+    signalSchemaVersion: "facet-signal-v1-2026-07",
+    projectionSchemaVersion:
+      "facet-query-template-catalog-v1-2026-07",
+    queryMode: "validated_projection",
+    weightingMode: "static",
+    expansionEnabled: false,
+  } as const;
+  assert.deepEqual(plan, expected);
+  assert(Object.isFrozen(plan), "facet-tagger execution plan is mutable");
+  assert.notEqual(
+    plan,
+    parsed.facetTagger,
+    "facet-tagger execution plan aliases the parsed manifest",
+  );
+  assert.equal(
+    Reflect.set(plan, "modelId", "untrusted-model"),
+    false,
+    "frozen facet-tagger execution plan accepted mutation",
+  );
+  assert.deepEqual(plan, expected, "facet-tagger execution plan mutated");
+
+  const historicalV1 = STORY_RECIPE_REGISTRY.recipes.find(
+    (recipe) => recipe.recipeId === BASELINE_RECIPE_ID,
+  );
+  assert(historicalV1, "historical v1 recipe is missing");
+  expectTaggerPlanInvalid("manifest v1", historicalV1);
+
+  const identityAxes: Array<
+    readonly [string, (tagger: MutableJsonObject) => void]
+  > = [
+    ["mode", (tagger) => (tagger.mode = "different_mode")],
+    ["model", (tagger) => (tagger.modelId = "different-model")],
+    ["prompt", (tagger) => (tagger.promptVersion = "different-prompt")],
+    ["temperature", (tagger) => (tagger.temperature = 0.1)],
+    ["reasoning", (tagger) => (tagger.reasoningEffort = "high")],
+    ["timeout", (tagger) => (tagger.timeoutMs = 3001)],
+    [
+      "signal schema",
+      (tagger) => (tagger.signalSchemaVersion = "different-signal"),
+    ],
+    [
+      "projection schema",
+      (tagger) =>
+        (tagger.projectionSchemaVersion = "different-projection"),
+    ],
+    ["query mode", (tagger) => (tagger.queryMode = "raw")],
+    [
+      "weighting mode",
+      (tagger) => (tagger.weightingMode = "bounded_dynamic"),
+    ],
+    ["expansion", (tagger) => (tagger.expansionEnabled = true)],
+  ];
+  for (const [axis, mutate] of identityAxes) {
+    const candidate = cloneObject(parsed) as unknown as MutableJsonObject;
+    mutate(taggerObject(candidate));
+    expectTaggerPlanInvalid(
+      axis,
+      candidate as unknown as StoryRecipeManifest,
+    );
+  }
+}
+
 function checkDormantV2Execution(parsed: StoryRecipeManifestV2): void {
   assert.throws(
     () => storyRecipeExecutionPlan(parsed),
@@ -535,6 +609,19 @@ function checkDormantV2Execution(parsed: StoryRecipeManifestV2): void {
     ),
     false,
     "a manifest-v2 recipe matched null v1 identity columns",
+  );
+}
+
+function expectTaggerPlanInvalid(
+  name: string,
+  recipe: StoryRecipeManifest,
+): void {
+  assert.throws(
+    () => facetTaggerExecutionPlan(recipe),
+    (error: unknown) =>
+      error instanceof StoryRecipeRuntimeError &&
+      error.code === "code_identity_invalid",
+    `${name} drift reached the facet-tagger execution plan`,
   );
 }
 

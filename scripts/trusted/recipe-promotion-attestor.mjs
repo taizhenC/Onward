@@ -22,6 +22,50 @@ const SHADOW_ID = /^sh_[a-f0-9]{64}$/;
 const DECISION_ID = /^rd_[a-f0-9]{64}$/;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/;
 const TRUSTED_BASE_REF = "main";
+const STORY_RECIPE_MANIFEST_SCHEMA_V2 = "story-recipe-manifest-v2";
+const RECIPE_MANIFEST_V1_KEYS = Object.freeze([
+  "recipeId",
+  "manifestSha256",
+  "retrievalMode",
+  "matchConfigVersion",
+  "librarySnapshotSha256",
+  "datasetVersion",
+  "llmProvider",
+  "rerankModelId",
+  "proseModelId",
+  "embeddingModelId",
+  "rerankPromptVersion",
+  "storyPromptVersion",
+  "rerankTemperature",
+  "rerankReasoningEffort",
+  "rerankTopK",
+  "storyTemperature",
+  "storyComposerMode",
+  "hybridStoryComposerEnabled",
+  "composerVersion",
+  "validatorVersion",
+  "storySpecSchemaVersion",
+  "boundaryPolicyVersion",
+  "resonanceBriefVersion",
+]);
+const RECIPE_MANIFEST_V2_KEYS = Object.freeze([
+  ...RECIPE_MANIFEST_V1_KEYS,
+  "manifestSchemaVersion",
+  "facetTagger",
+]);
+const FACET_TAGGER_KEYS = Object.freeze([
+  "mode",
+  "modelId",
+  "promptVersion",
+  "temperature",
+  "reasoningEffort",
+  "timeoutMs",
+  "signalSchemaVersion",
+  "projectionSchemaVersion",
+  "queryMode",
+  "weightingMode",
+  "expansionEnabled",
+]);
 const POLICY_SHA256 =
   "4c2fcc31640394956aa1556a606b199e5a541a1c8c31a08d1812ab9da077932e";
 const POLICY = Object.freeze({
@@ -261,33 +305,10 @@ function validateCatalog(value, label) {
 
 function validateRecipeManifest(value, label) {
   const recipe = record(value, label);
+  const isV2 = Object.hasOwn(recipe, "manifestSchemaVersion");
   exactKeys(
     recipe,
-    [
-      "recipeId",
-      "manifestSha256",
-      "retrievalMode",
-      "matchConfigVersion",
-      "librarySnapshotSha256",
-      "datasetVersion",
-      "llmProvider",
-      "rerankModelId",
-      "proseModelId",
-      "embeddingModelId",
-      "rerankPromptVersion",
-      "storyPromptVersion",
-      "rerankTemperature",
-      "rerankReasoningEffort",
-      "rerankTopK",
-      "storyTemperature",
-      "storyComposerMode",
-      "hybridStoryComposerEnabled",
-      "composerVersion",
-      "validatorVersion",
-      "storySpecSchemaVersion",
-      "boundaryPolicyVersion",
-      "resonanceBriefVersion",
-    ],
+    isV2 ? RECIPE_MANIFEST_V2_KEYS : RECIPE_MANIFEST_V1_KEYS,
     label,
   );
   for (const key of [
@@ -338,6 +359,63 @@ function validateRecipeManifest(value, label) {
     ) === false,
     `${label}.hybridStoryComposerEnabled must be false`,
   );
+  if (isV2) {
+    assert(
+      recipe.manifestSchemaVersion === STORY_RECIPE_MANIFEST_SCHEMA_V2,
+      `${label}.manifestSchemaVersion is unknown`,
+    );
+    const facetTagger = record(recipe.facetTagger, `${label}.facetTagger`);
+    exactKeys(facetTagger, FACET_TAGGER_KEYS, `${label}.facetTagger`);
+    assert(
+      facetTagger.mode === "closed_template",
+      `${label}.facetTagger.mode is unknown`,
+    );
+    modelId(facetTagger.modelId, `${label}.facetTagger.modelId`);
+    for (const key of [
+      "promptVersion",
+      "reasoningEffort",
+      "signalSchemaVersion",
+      "projectionSchemaVersion",
+    ]) {
+      registryId(facetTagger[key], `${label}.facetTagger.${key}`);
+    }
+    assert(
+      finite(
+        facetTagger.temperature,
+        `${label}.facetTagger.temperature`,
+      ) === 0,
+      `${label}.facetTagger.temperature must be zero`,
+    );
+    assert(
+      positiveInteger(
+        facetTagger.timeoutMs,
+        `${label}.facetTagger.timeoutMs`,
+      ) === 3_000,
+      `${label}.facetTagger.timeoutMs must be 3000`,
+    );
+    assert(
+      facetTagger.queryMode === "raw" ||
+        facetTagger.queryMode === "validated_projection",
+      `${label}.facetTagger.queryMode is unknown`,
+    );
+    assert(
+      facetTagger.weightingMode === "static" ||
+        facetTagger.weightingMode === "bounded_dynamic",
+      `${label}.facetTagger.weightingMode is unknown`,
+    );
+    assert(
+      boolean(
+        facetTagger.expansionEnabled,
+        `${label}.facetTagger.expansionEnabled`,
+      ) === false,
+      `${label}.facetTagger.expansionEnabled must be false`,
+    );
+    assert(
+      recipe.retrievalMode === "facetsrag" &&
+        recipe.embeddingModelId !== null,
+      `${label} v2 requires FacetsRAG with an embedder`,
+    );
+  }
   assert(
     manifestHash(recipe) === recipe.manifestSha256,
     `${label}.manifestSha256 does not match its exact manifest`,
@@ -583,6 +661,15 @@ function manifestHash(recipe) {
   const payload = { ...recipe };
   delete payload.manifestSha256;
   return sha256(canonical(payload));
+}
+
+function assertPromotionRegistrationSupported(recipe) {
+  const manifest = record(recipe, "registration recipe");
+  assert(
+    !Object.hasOwn(manifest, "manifestSchemaVersion") &&
+      !Object.hasOwn(manifest, "facetTagger"),
+    "story-recipe-manifest-v2 cannot be promoted until exact v2 database identity registration is installed",
+  );
 }
 
 function mapBy(items, key, label) {
@@ -1553,6 +1640,7 @@ function sqlScalar(value) {
 }
 
 function renderRegistrationMigration(recipe, decision) {
+  assertPromotionRegistrationSupported(recipe);
   const values = [
     recipe.recipeId,
     recipe.manifestSha256,
@@ -1691,6 +1779,7 @@ async function mainAttest(repository, baseSha, headSha) {
   const recipes = mapBy(head.recipes, "recipeId", "recipes");
   const baselineRecipe = record(recipes.get(baseSelection.primaryRecipeId), "baseline recipe");
   const challengerRecipe = record(recipes.get(promotion.recipeId), "challenger recipe");
+  assertPromotionRegistrationSupported(challengerRecipe);
   assert(manifestHash(baselineRecipe) === baselineRecipe.manifestSha256, "baseline manifest hash mismatch");
   assert(manifestHash(challengerRecipe) === challengerRecipe.manifestSha256, "challenger manifest hash mismatch");
   validateMatchingOnly(baselineRecipe, challengerRecipe);
@@ -1839,6 +1928,11 @@ function selfTest() {
     }
     assert(rejected, `${label} self-test did not reject`);
   };
+  const withManifestHash = (recipe) => {
+    const value = structuredClone(recipe);
+    value.manifestSha256 = manifestHash(value);
+    return value;
+  };
   assert(
     sha256(canonical(POLICY)) === POLICY_SHA256,
     "locked promotion policy digest differs",
@@ -1858,6 +1952,194 @@ function selfTest() {
   rejects(
     () => deploymentId("deployment:1", "deployment id"),
     "deployment punctuation",
+  );
+
+  const v1Recipe = {
+    recipeId: "keyword-rerank-figure-library-50-2026-07-02",
+    manifestSha256:
+      "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+    retrievalMode: "keyword",
+    matchConfigVersion: "figure-library-50-2026-07-02",
+    librarySnapshotSha256:
+      "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+    datasetVersion: "match-104-2026-07-02",
+    llmProvider: "real",
+    rerankModelId: "gpt-oss-120b",
+    proseModelId: "gpt-oss-120b",
+    embeddingModelId: null,
+    rerankPromptVersion: "rerank-prompt-v1-2026-07",
+    storyPromptVersion: "opening-copy-prompt-v1-2026-07",
+    rerankTemperature: 0,
+    rerankReasoningEffort: "low",
+    rerankTopK: 6,
+    storyTemperature: 0.3,
+    storyComposerMode: "canonical",
+    hybridStoryComposerEnabled: false,
+    composerVersion: "canonical-composer-v1-2026-07",
+    validatorVersion: "artifact-validator-v2-2026-07",
+    storySpecSchemaVersion: "story-spec-v1-2026-07",
+    boundaryPolicyVersion: "story-boundaries-v1-2026-07",
+    resonanceBriefVersion: "resonance-brief-v1-2026-07",
+  };
+  assert(
+    manifestHash(v1Recipe) === v1Recipe.manifestSha256,
+    "v1 manifest hash compatibility self-test failed",
+  );
+  validateRecipeManifest(v1Recipe, "self-test v1 recipe");
+  assertPromotionRegistrationSupported(v1Recipe);
+  const v1FacetsRecipe = {
+    ...v1Recipe,
+    recipeId: "facetsrag-rerank-figure-library-50-2026-07-02",
+    manifestSha256:
+      "8024a865b7e20bc80ca9dc36a757705a09cc232e5841640546fb048ace25fadd",
+    retrievalMode: "facetsrag",
+    embeddingModelId: "gemini-embedding-001@d1536",
+    rerankTopK: 8,
+  };
+  assert(
+    manifestHash(v1FacetsRecipe) === v1FacetsRecipe.manifestSha256,
+    "v1 FacetsRAG manifest hash compatibility self-test failed",
+  );
+  validateRecipeManifest(v1FacetsRecipe, "self-test v1 FacetsRAG recipe");
+  const registrationDecision = {
+    decisionId: `rd_${"f".repeat(64)}`,
+    decidedAt: "2026-07-23T00:00:00.000Z",
+  };
+  assert(
+    renderRegistrationMigration(v1Recipe, registrationDecision).includes(
+      "select public.register_story_recipe_v1(",
+    ),
+    "v1 registration renderer compatibility self-test failed",
+  );
+
+  const v2Recipe = {
+    recipeId: "facetsrag-tagger-v2-self-test",
+    manifestSha256:
+      "a711aed8b0ae68d85b4a8172a6821789e6e52e9f94ad1a01e1ce81e1fed452db",
+    retrievalMode: "facetsrag",
+    matchConfigVersion: "matching-v2",
+    librarySnapshotSha256: "b".repeat(64),
+    datasetVersion: "synthetic-v1",
+    llmProvider: "real",
+    rerankModelId: "rerank-v1",
+    proseModelId: "prose-v1",
+    embeddingModelId: "embedder-v1@d1536",
+    rerankPromptVersion: "rerank-prompt-v1",
+    storyPromptVersion: "story-prompt-v1",
+    rerankTemperature: 0,
+    rerankReasoningEffort: "low",
+    rerankTopK: 8,
+    storyTemperature: 0.3,
+    storyComposerMode: "canonical",
+    hybridStoryComposerEnabled: false,
+    composerVersion: "composer-v1",
+    validatorVersion: "validator-v1",
+    storySpecSchemaVersion: "story-spec-v1",
+    boundaryPolicyVersion: "boundaries-v1",
+    resonanceBriefVersion: "resonance-v1",
+    manifestSchemaVersion: STORY_RECIPE_MANIFEST_SCHEMA_V2,
+    facetTagger: {
+      mode: "closed_template",
+      modelId: "tagger-v1",
+      promptVersion: "facet-tagger-prompt-v1",
+      temperature: 0,
+      reasoningEffort: "low",
+      timeoutMs: 3_000,
+      signalSchemaVersion: "facet-signal-v1",
+      projectionSchemaVersion: "facet-projection-v1",
+      queryMode: "validated_projection",
+      weightingMode: "static",
+      expansionEnabled: false,
+    },
+  };
+  assert(
+    manifestHash(v2Recipe) === v2Recipe.manifestSha256,
+    "v2 manifest hash self-test failed",
+  );
+  validateRecipeManifest(v2Recipe, "self-test v2 recipe");
+
+  const hashTamper = structuredClone(v2Recipe);
+  hashTamper.facetTagger.queryMode = "raw";
+  rejects(
+    () => validateRecipeManifest(hashTamper, "self-test v2 recipe"),
+    "v2 nested hash tamper",
+  );
+  const extraTaggerKey = structuredClone(v2Recipe);
+  extraTaggerKey.facetTagger.untrusted = true;
+  rejects(
+    () =>
+      validateRecipeManifest(
+        withManifestHash(extraTaggerKey),
+        "self-test v2 recipe",
+      ),
+    "v2 tagger extra field",
+  );
+  const missingTaggerKey = structuredClone(v2Recipe);
+  delete missingTaggerKey.facetTagger.projectionSchemaVersion;
+  rejects(
+    () =>
+      validateRecipeManifest(
+        withManifestHash(missingTaggerKey),
+        "self-test v2 recipe",
+    ),
+    "v2 tagger missing field",
+  );
+  const missingV2RootKey = structuredClone(v2Recipe);
+  delete missingV2RootKey.manifestSchemaVersion;
+  rejects(
+    () =>
+      validateRecipeManifest(
+        withManifestHash(missingV2RootKey),
+        "self-test v2 recipe",
+      ),
+    "v2 root missing schema discriminator",
+  );
+  for (const [label, mutate] of [
+    [
+      "v2 tagger temperature",
+      (recipe) => {
+        recipe.facetTagger.temperature = 0.1;
+      },
+    ],
+    [
+      "v2 tagger timeout",
+      (recipe) => {
+        recipe.facetTagger.timeoutMs = 3_001;
+      },
+    ],
+    [
+      "v2 tagger expansion",
+      (recipe) => {
+        recipe.facetTagger.expansionEnabled = true;
+      },
+    ],
+    [
+      "v2 retrieval mode",
+      (recipe) => {
+        recipe.retrievalMode = "keyword";
+        recipe.embeddingModelId = null;
+      },
+    ],
+  ]) {
+    const invalid = structuredClone(v2Recipe);
+    mutate(invalid);
+    rejects(
+      () =>
+        validateRecipeManifest(
+          withManifestHash(invalid),
+          "self-test v2 recipe",
+        ),
+      label,
+    );
+  }
+  rejects(
+    () => assertPromotionRegistrationSupported(v2Recipe),
+    "v2 promotion registration",
+  );
+  rejects(
+    () =>
+      renderRegistrationMigration(v2Recipe, registrationDecision),
+    "v2 registration migration",
   );
 
   const dataset = {

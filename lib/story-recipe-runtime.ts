@@ -29,6 +29,8 @@ import { STORY_SPEC_SCHEMA_VERSION } from "./story-spec-types";
 
 export const STORY_RECIPE_REGISTRY_SCHEMA_VERSION =
   "story-recipe-registry-v1" as const;
+export const STORY_RECIPE_MANIFEST_SCHEMA_V2 =
+  "story-recipe-manifest-v2" as const;
 
 const MANIFEST_HASH_PATTERN = /^[0-9a-f]{64}$/;
 const REGISTRY_VERSION_ID_PATTERN = /^[a-z0-9][a-z0-9._-]{0,127}$/;
@@ -36,7 +38,7 @@ const MODEL_ID_PATTERN = /^[a-z0-9][a-z0-9._/@:-]{0,127}$/;
 export const DEPLOYMENT_VERSION_PATTERN =
   /^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/;
 
-export type StoryRecipeManifest = Readonly<{
+type StoryRecipeManifestBase = Readonly<{
   recipeId: string;
   manifestSha256: string;
   retrievalMode: Extract<RetrievalMode, "keyword" | "facetsrag">;
@@ -61,6 +63,36 @@ export type StoryRecipeManifest = Readonly<{
   boundaryPolicyVersion: string;
   resonanceBriefVersion: string;
 }>;
+
+export type StoryRecipeManifestV1 = StoryRecipeManifestBase &
+  Readonly<{
+    manifestSchemaVersion?: never;
+    facetTagger?: never;
+  }>;
+
+export type FacetTaggerRecipe = Readonly<{
+  mode: "closed_template";
+  modelId: string;
+  promptVersion: string;
+  temperature: 0;
+  reasoningEffort: string;
+  timeoutMs: 3000;
+  signalSchemaVersion: string;
+  projectionSchemaVersion: string;
+  queryMode: "raw" | "validated_projection";
+  weightingMode: "static" | "bounded_dynamic";
+  expansionEnabled: false;
+}>;
+
+export type StoryRecipeManifestV2 = StoryRecipeManifestBase &
+  Readonly<{
+    manifestSchemaVersion: typeof STORY_RECIPE_MANIFEST_SCHEMA_V2;
+    facetTagger: FacetTaggerRecipe;
+  }>;
+
+export type StoryRecipeManifest =
+  | StoryRecipeManifestV1
+  | StoryRecipeManifestV2;
 
 export type StoryRecipeDataset = Readonly<{
   version: string;
@@ -137,7 +169,7 @@ export class StoryRecipeRuntimeError extends Error {
   }
 }
 
-const MANIFEST_KEYS = [
+const MANIFEST_V1_KEYS = [
   "recipeId",
   "manifestSha256",
   "retrievalMode",
@@ -163,7 +195,27 @@ const MANIFEST_KEYS = [
   "resonanceBriefVersion",
 ] as const;
 
-export const STORY_RECIPE_REGISTRY: StoryRecipeRegistry = parseRegistry(
+const MANIFEST_V2_KEYS = [
+  ...MANIFEST_V1_KEYS,
+  "manifestSchemaVersion",
+  "facetTagger",
+] as const;
+
+const FACET_TAGGER_KEYS = [
+  "mode",
+  "modelId",
+  "promptVersion",
+  "temperature",
+  "reasoningEffort",
+  "timeoutMs",
+  "signalSchemaVersion",
+  "projectionSchemaVersion",
+  "queryMode",
+  "weightingMode",
+  "expansionEnabled",
+] as const;
+
+export const STORY_RECIPE_REGISTRY: StoryRecipeRegistry = parseStoryRecipeRegistry(
   registryDocument as unknown,
 );
 
@@ -514,7 +566,7 @@ function requiredRecipe(recipeId: string): StoryRecipeManifest {
   return recipe;
 }
 
-function parseRegistry(value: unknown): StoryRecipeRegistry {
+export function parseStoryRecipeRegistry(value: unknown): StoryRecipeRegistry {
   try {
     if (!isRecord(value) || !hasExactKeys(value, [
       "schemaVersion",
@@ -592,8 +644,72 @@ function parseRegistry(value: unknown): StoryRecipeRegistry {
   }
 }
 
+export function parseStoryRecipeManifest(
+  value: unknown,
+): StoryRecipeManifest {
+  try {
+    return parseManifest(value);
+  } catch {
+    throw new StoryRecipeRuntimeError("registry_invalid");
+  }
+}
+
 function parseManifest(value: unknown): StoryRecipeManifest {
-  if (!isRecord(value) || !hasExactKeys(value, MANIFEST_KEYS)) throw new Error();
+  if (!isRecord(value)) throw new Error();
+  if (Object.hasOwn(value, "manifestSchemaVersion")) {
+    return parseManifestV2(value);
+  }
+  return parseManifestV1(value);
+}
+
+function parseManifestV1(
+  value: Record<string, unknown>,
+): StoryRecipeManifestV1 {
+  if (!hasExactKeys(value, MANIFEST_V1_KEYS)) throw new Error();
+  assertManifestBase(value);
+  return deepFreeze({ ...value }) as unknown as StoryRecipeManifestV1;
+}
+
+function parseManifestV2(
+  value: Record<string, unknown>,
+): StoryRecipeManifestV2 {
+  if (
+    !hasExactKeys(value, MANIFEST_V2_KEYS) ||
+    value.manifestSchemaVersion !== STORY_RECIPE_MANIFEST_SCHEMA_V2 ||
+    value.retrievalMode !== "facetsrag" ||
+    value.embeddingModelId === null ||
+    !isRecord(value.facetTagger) ||
+    !hasExactKeys(value.facetTagger, FACET_TAGGER_KEYS)
+  ) {
+    throw new Error();
+  }
+  assertManifestBase(value);
+  const tagger = value.facetTagger;
+  if (
+    tagger.mode !== "closed_template" ||
+    !modelId(tagger.modelId) ||
+    !registryVersionId(tagger.promptVersion) ||
+    tagger.temperature !== 0 ||
+    !registryVersionId(tagger.reasoningEffort) ||
+    tagger.timeoutMs !== 3000 ||
+    !registryVersionId(tagger.signalSchemaVersion) ||
+    !registryVersionId(tagger.projectionSchemaVersion) ||
+    (tagger.queryMode !== "raw" &&
+      tagger.queryMode !== "validated_projection") ||
+    (tagger.weightingMode !== "static" &&
+      tagger.weightingMode !== "bounded_dynamic") ||
+    tagger.expansionEnabled !== false
+  ) {
+    throw new Error();
+  }
+  return deepFreeze({
+    ...value,
+    manifestSchemaVersion: STORY_RECIPE_MANIFEST_SCHEMA_V2,
+    facetTagger: { ...tagger },
+  }) as unknown as StoryRecipeManifestV2;
+}
+
+function assertManifestBase(value: Record<string, unknown>): void {
   if (
     !registryVersionId(value.recipeId) ||
     typeof value.manifestSha256 !== "string" ||
@@ -607,6 +723,10 @@ function parseManifest(value: unknown): StoryRecipeManifest {
     !modelId(value.rerankModelId) ||
     !modelId(value.proseModelId) ||
     (value.embeddingModelId !== null && !modelId(value.embeddingModelId)) ||
+    (value.retrievalMode === "keyword" &&
+      value.embeddingModelId !== null) ||
+    (value.retrievalMode === "facetsrag" &&
+      value.embeddingModelId === null) ||
     !registryVersionId(value.rerankPromptVersion) ||
     !registryVersionId(value.storyPromptVersion) ||
     typeof value.rerankTemperature !== "number" ||
@@ -626,9 +746,6 @@ function parseManifest(value: unknown): StoryRecipeManifest {
   ) {
     throw new Error();
   }
-
-  const manifest = deepFreeze({ ...value }) as unknown as StoryRecipeManifest;
-  return manifest;
 }
 
 function parsePromotion(value: unknown): StoryRecipePromotion {
@@ -671,6 +788,7 @@ export function assertStoryRecipeCodeIdentity(
   recipe: StoryRecipeManifest,
 ): void {
   if (
+    isStoryRecipeManifestV2(recipe) ||
     recipe.matchConfigVersion !== MATCH_CONFIG_IMPLEMENTATION_VERSION ||
     recipe.librarySnapshotSha256 !== LIBRARY_SNAPSHOT_SHA256 ||
     recipe.rerankPromptVersion !== RERANK_PROMPT_VERSION ||
@@ -683,6 +801,12 @@ export function assertStoryRecipeCodeIdentity(
   ) {
     throw new StoryRecipeRuntimeError("code_identity_invalid");
   }
+}
+
+export function isStoryRecipeManifestV2(
+  recipe: StoryRecipeManifest,
+): recipe is StoryRecipeManifestV2 {
+  return recipe.manifestSchemaVersion === STORY_RECIPE_MANIFEST_SCHEMA_V2;
 }
 
 function validIsoTimestamp(value: unknown): value is string {

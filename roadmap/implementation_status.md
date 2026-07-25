@@ -38,7 +38,7 @@
 
 | ID | Status | Current evidence | Missing proof / next dependency |
 |---|---|---|---|
-| P1-01 | Partial | Six-lane FacetsRAG, strict branded FacetSignal validation, a content-addressed hostile-input prompt, IDs-only closed projections, and a bounded one-shot provider facade exist. Syntax-tree authority checks reject production consumers and the facade hard-returns null in production. | Manifest-derived tagger execution plan, shadow-only invocation, static then bounded-dynamic weighting experiments, protected-holdout superiority, and promotion. |
+| P1-01 | Partial | Six-lane FacetsRAG, strict branded FacetSignal validation, a content-addressed hostile-input prompt, IDs-only closed projections, a bounded one-shot provider facade, and a pure eleven-axis manifest-v2 tagger plan exist. Syntax-tree authority checks reject production consumers and the facade hard-returns null in production. | Registered/hash-verified plan binding, shadow-only invocation, static then bounded-dynamic weighting experiments, protected-holdout superiority, and promotion. |
 | P1-02 | Not started | None. | Optional non-branching emphasis choice and experiment evidence. |
 | P1-03 | Partial | P0 hybrid composition now personalizes only approved transition/bridge templates while preserving canonical beats and evidence. | Full-beat free-prose challenger behind the same StorySpec/validation contract and a blind comparison. |
 | P1-04 | Partial | Seed/check scripts, database draft/published status, a privacy-safe historical-concern queue, service-only triage, and rapid StorySpec retirement exist. | Internal research/review/preview/publish/report/rollback workbench and audited editor identity/action history. |
@@ -727,10 +727,15 @@ strict UTF-8, IDs-only template serialization, and silent null fallback. An
 adversarial checker proves its prompt, timeout, byte, retry, logging, import,
 and dormant-consumer boundaries, including response-body cancellation and
 syntax-tree detection of aliases/dynamic loads. The facade hard-returns the
-null stub under `NODE_ENV=production`. No production caller, manifest-derived
-tagger execution plan, v2 production recipe, session identity, shadow result,
-weighting change, or retrieval behavior is enabled by this release; those
-remain later, independently reviewed gates.
+null stub under `NODE_ENV=production`. A separate pure plan builder now accepts
+only manifest v2, verifies all eleven tagger axes against installed constants,
+and returns a detached frozen identity. The manifest checker rejects v1 and
+one-axis drift while proving the generic production/eval path still rejects v2;
+the AST checker proves the plan has no production consumer. The plan does not
+verify registration or the stored manifest hash. No provider-plan binding, v2
+production recipe, session identity, shadow result, weighting change, or
+retrieval behavior is enabled by this release; those remain later,
+independently reviewed gates.
 Startup logs only safe recipe
 identity; invalid configuration keeps crisis resources available but stops every other story
 before auth, rate limiting, providers, or durable work. New session recipes pin

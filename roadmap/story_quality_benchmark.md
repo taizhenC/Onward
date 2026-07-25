@@ -21,14 +21,14 @@ critical safety failure.
 
 ## Evidence boundaries
 
-The benchmark uses three deliberately separate artifacts.
+The benchmark uses four deliberately separate artifacts.
 
 | Artifact | Location | Permitted content |
 |---|---|---|
 | Frozen benchmark manifest | Access-controlled research storage | Opaque case IDs, research-secret input commitments, immutable split assignments, broad cohort cells, consent/de-identification attestations, and required representation |
 | Validation content bundle | Access-controlled research storage | Exact v5 StoryArtifacts, published StorySpecs, and disclosures needed to rerun schema, evidence, tone, boundary, and echo validation |
-| Review packet | Access-controlled research storage | Artifact/recipe/StorySpec hashes, closed rubric scores, blinded reviewer IDs, completion/feedback outcomes, and closed critical-failure categories |
-| Evaluation evidence | Append-only repository history | One packet/manifest attestation digest, aggregate counts/rates, closed gate results, and bounded provenance only |
+| Review packet | Access-controlled research storage | Frozen assignment bindings, artifact/recipe/StorySpec hashes, closed rubric scores, blinded reviewer IDs, completion/feedback outcomes, and closed critical-failure categories |
+| Evaluation evidence | Append-only repository history | Packet and safe-result attestation digests, an externally verifiable custodian signature, aggregate counts/rates, closed gate results, and bounded provenance only |
 
 Raw disclosures, story prose, source excerpts, reviewer notes, contact details,
 free-text error descriptions, provider responses, case IDs, reviewer IDs, and
@@ -95,12 +95,27 @@ The candidate arm is declared before review begins. Adding or replacing an arm,
 artifact, recipe, StorySpec, or case changes the packet hash and produces a new
 evaluation identity.
 
+Each reviewer receives a frozen opaque assignment. Its content-addressed
+binding covers the benchmark and analysis plan, case commitment, arm and
+presentation, recipe manifest, full artifact document, published StorySpec,
+review-material bundle, reviewer role, policy/protocol identities, and
+assignment time. The submitted review carries that exact assignment plus a
+submission time. A final custodian signature covers the whole packet, including
+these assignments and closed submissions; a review cannot be moved to another
+case, arm, cloned artifact, or StorySpec by copying a content hash.
+
 Before review counts can enter a decision, the evaluator loads each exact
 StoryArtifact, published StorySpec, and disclosure from the controlled bundle.
 It rejects unknown fields at every nesting level, scans the entire serialized
-objects for forbidden sensitive/provider surfaces, recomputes content identity,
-reruns StorySpec and artifact validation, rebuilds the disclosure-derived echo
-guard in memory, and verifies the registered recipe. Embedded
+StorySpec and artifact against every protected disclosure in the benchmark—not
+only the artifact's own case. Exact multi-word and meaningful short
+single-token echoes, Unicode-confusable copies, and longer copied windows are
+rejected. The complete public evidence object is also scanned against every
+disclosure so packet-controlled identifiers cannot become an accidental covert
+channel. The evaluator rejects forbidden sensitive/provider surfaces,
+recomputes content identity, reruns StorySpec and artifact validation, rebuilds
+the disclosure-derived echo guard in memory, and verifies the registered
+recipe. Embedded
 `validation.status` or a recomputed hash is not independent evidence. Legacy
 artifact schemas cannot support a v5 launch claim.
 
@@ -119,6 +134,13 @@ different people. Reviewers do not see recipe labels, other reviewers' scores,
 aggregate results, or the promotion decision while scoring. The review packet
 records these blindness attestations as exact booleans; a missing attestation
 makes the evaluation incomplete.
+
+The enforced chronology is benchmark freeze, holdout seal, candidate freeze,
+holdout opening, run start, artifact creation and validation, assignment,
+review submission, run completion, then custodian signature. The published
+StorySpec review must predate candidate freeze. The post-run signature vouches
+for the custodian's protected access log and procedure; cryptographically
+proving the pre-open state as well would require a separate pre-open receipt.
 
 Target-reader completion and “felt close” feedback remain separate observations.
 Silence is `no_response`, never a negative or positive answer. Feedback response
@@ -184,10 +206,12 @@ only the category and aggregate count.
 
 The evaluator has three outcomes:
 
-- `incomplete`: evidence is structurally valid, but the candidate lacks the
-  required sessions, paired cases, representation, independent/full-artifact
-  reviews, blinded attestations, or required response denominators;
-- `fail`: coverage is complete, but a critical failure or numerical gate fails;
+- `incomplete`: evidence is structurally valid and has no observed critical
+  failure, but the candidate lacks the required sessions, paired cases,
+  representation, independent/full-artifact reviews, blinded attestations, or
+  required response denominators;
+- `fail`: any critical failure is present, or coverage is complete and a
+  numerical gate fails;
 - `pass`: coverage is complete and every critical and numerical gate passes.
 
 Invalid schemas, hashes, duplicate IDs, split drift, unknown fields, unregistered
@@ -234,15 +258,33 @@ overrides.
 ## Promotion and audit rules
 
 - Development and validation evidence is diagnostic and never promotable.
-- A release-candidate pass requires the sealed blind holdout and the declared
-  candidate arm.
+- A release-candidate pass requires the sealed blind holdout, declared
+  candidate arm, complete chronology, and a valid Ed25519 custodian signature.
+- Custodian trust comes only from the protected evaluator runtime. A public key
+  supplied by the packet is never trusted, the repository ships no trusted
+  key, and the private key never enters the app, repository, packet, evidence,
+  logs, or ordinary CI.
+- The signature binds both the complete private packet digest and a
+  deterministic metrics-only result digest. This lets evidence parsing reject
+  coherent aggregate tampering without committing the private packet.
+- Unverified packet signatures are never copied into public evidence. A proof
+  appears there only after verification against the runtime trust root.
 - Evidence is content-addressed and append-only. Corrections create a new record
   that references a new packet hash; prior results remain auditable.
-- Committed evidence carries only a single attestation digest for the complete
-  private packet/manifest/content bundle. Per-case commitments and product
+- Ordinary pull-request CI requires every new history entry to be a regular,
+  non-executable JSON file, parses its safe closed schema, and verifies its
+  exact content-addressed path. It rejects custody-bearing evidence—and
+  therefore every `pass`—because it has no custodian trust root. A future
+  protected, base-owned authority must verify and land signed release evidence.
+- Committed evidence carries only packet/result digests, the public signature,
+  aggregate metrics, and closed provenance. Per-case commitments and product
   object identifiers remain private.
 - Synthetic fixtures prove parser and gate behavior only. They must be labeled
-  `synthetic` and always resolve to `incomplete`, never a public-release pass.
+  `synthetic` and can never produce a public-release pass; without a critical
+  failure they resolve to `incomplete`.
+- Missing external trust or a missing signature makes an otherwise complete
+  run `incomplete`; a malformed or invalid signature under configured trust is
+  rejected. Even a verified `pass` remains `promotionAuthorized: false`.
 - Recipe promotion also remains subject to matching, safety/privacy,
   accessibility, reliability, deployment, and editorial publication gates.
 
@@ -255,3 +297,7 @@ overrides.
 - Data/evaluation owns randomization, blinding, frozen splits, evaluator
   execution, and evidence integrity.
 - Engineering owns the strict evaluator and cannot waive missing human evidence.
+- Repository ownership covers the policy, protocol, evaluator, runner, checks,
+  and evidence namespace. Those reviews become preventive only when protected
+  pull requests and base-owned required checks are enforced; until then this
+  remains an explicit release gate, not a code-level claim.

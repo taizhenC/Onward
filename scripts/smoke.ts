@@ -1056,6 +1056,20 @@ async function runStoryPrivacyAssertion(): Promise<AssertionResult> {
       `A preface. ${disclosure}. A coda.`,
       disclosure,
     ) ||
+    !containsDisclosureEcho(
+      "The record described the period as suicidal.",
+      "suicidal!!",
+    ) ||
+    !containsDisclosureEcho(
+      "The note read I am sad before it turned.",
+      "I am sad...",
+    ) ||
+    !containsDisclosureEcho("死にたい", "死にたい") ||
+    !containsDisclosureEcho("自殺", "自殺!!!!!!!!") ||
+    !containsDisclosureEcho(
+      "В записке было: мне страшно.",
+      "мне страшно",
+    ) ||
     containsDisclosureEcho(SAFE_BRIDGE_DISTANCE_LINE, disclosure)
   ) {
     return {

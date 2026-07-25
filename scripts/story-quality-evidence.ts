@@ -669,11 +669,9 @@ export function storyQualityBenchmarkManifestSha256(
     cases: benchmark.cases.map(
       ({
         disclosure: _disclosure,
-        boundaries: _boundaries,
         ...entry
       }) => {
         void _disclosure;
-        void _boundaries;
         return entry;
       },
     ),

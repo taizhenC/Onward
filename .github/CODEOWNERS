@@ -1,0 +1,39 @@
+# Promotion authority and immutable evidence need an explicit repository owner
+# review in addition to automated validation. Branch protection must require
+# Code Owner review for this file to be effective.
+/.github/workflows/ @taizhenC
+/.github/CODEOWNERS @taizhenC
+/config/story-recipes.json @taizhenC
+/config/prompt-releases.json @taizhenC
+/config/recipe-decisions/ @taizhenC
+/evals/history/ @taizhenC
+/evals/shadow/ @taizhenC
+/scripts/check-recipe-governance.ts @taizhenC
+/scripts/check-recipe-deployment.ts @taizhenC
+/scripts/check-recipe-failure-boundary.ts @taizhenC
+/scripts/check-recipe-immutability.ts @taizhenC
+/scripts/check-recipe-registry.ts @taizhenC
+/scripts/trusted/ @taizhenC
+/scripts/recipe-evidence.ts @taizhenC
+/scripts/check-prompt-releases.ts @taizhenC
+/app/api/match/route.ts @taizhenC
+/app/api/match/handler.ts @taizhenC
+/instrumentation.ts @taizhenC
+/lib/story-recipe*.ts @taizhenC
+/lib/*-recipe-constants.ts @taizhenC
+/lib/llm-prompts.ts @taizhenC
+/lib/llm-recipe-constants.ts @taizhenC
+/lib/sha256-edge.ts @taizhenC
+/lib/llm.ts @taizhenC
+/lib/llm-real.ts @taizhenC
+/lib/embeddings.ts @taizhenC
+/lib/embeddings-real.ts @taizhenC
+/lib/facets-retrieval.ts @taizhenC
+/lib/matching.ts @taizhenC
+/lib/match-config.ts @taizhenC
+/lib/intake.ts @taizhenC
+/lib/alternate-story.ts @taizhenC
+/lib/resonance-brief.ts @taizhenC
+/lib/story-composer.ts @taizhenC
+/lib/story-generation.ts @taizhenC
+/supabase/migrations/ @taizhenC

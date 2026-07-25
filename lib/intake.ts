@@ -43,6 +43,12 @@ import {
   noEligibleMatchCompletedEvent,
   recordLinkedProductEventBestEffort,
 } from "./telemetry-producers";
+import {
+  beginInitialStoryPreparationFailureRecorder,
+  type InitialStoryPreparationFailureDependencies,
+} from "./flow-failure-telemetry";
+import { assertProductionStoryRecipeRuntime } from "./story-recipe";
+import { assertProductionStoryRecipeRegistered } from "./story-recipe-registration";
 
 export type IntakeInput = {
   age: number;
@@ -63,6 +69,11 @@ export type IntakeContext = {
   telemetryFlowOwnerClaimed?: boolean;
 };
 
+export type IntakeDependencies = {
+  prepare?: typeof prepareStory;
+  failureTelemetry?: InitialStoryPreparationFailureDependencies;
+};
+
 export type IntakeValidationError = {
   error: string;
 };
@@ -76,7 +87,7 @@ type CoreIntakeInput = {
   recoveryTokenRaw: unknown;
 };
 
-type ValidatedIntakeInput = {
+export type ValidatedIntakeInput = {
   age: number;
   feeling: string;
   boundaries: StoryBoundaries | undefined;
@@ -88,6 +99,7 @@ type ValidatedIntakeInput = {
 export async function handleIntake(
   input: unknown,
   ctx: IntakeContext,
+  dependencies: IntakeDependencies = {},
 ): Promise<MatchResponse> {
   // Crisis detection uses any string feeling before age/boundary validation and
   // is never rate-limited. Malformed optional controls cannot hide resources.
@@ -99,44 +111,24 @@ export async function handleIntake(
     }
   }
 
-  const core = validateCoreIntake(input);
-  if ("error" in core) return core;
-  const parsedBoundaries = parseStoryBoundaries(core.boundariesRaw);
-  if ("error" in parsedBoundaries) return parsedBoundaries;
-  const parsedClarification = parseMatchClarification(core.clarificationRaw);
-  if ("error" in parsedClarification) return parsedClarification;
-  if (
-    core.acceptAdjacentRaw !== undefined &&
-    typeof core.acceptAdjacentRaw !== "boolean"
-  ) {
-    return { error: "Adjacent-match preference must be a boolean." };
-  }
-  const parsedRecoveryToken = parseMatchRecoveryToken(core.recoveryTokenRaw);
-  if ("error" in parsedRecoveryToken) return parsedRecoveryToken;
-  const recoveryChoiceProvided =
-    parsedClarification.value !== undefined || core.acceptAdjacentRaw === true;
-  if (recoveryChoiceProvided && parsedRecoveryToken.value === undefined) {
-    return { error: "This match step expired. Please revise and try again." };
-  }
-  if (
-    parsedRecoveryToken.value &&
-    !recoveryChoiceProvided
-  ) {
-    return { error: "Choose an answer or accept the adjacent story to continue." };
-  }
-  const validated: ValidatedIntakeInput = {
-    age: core.age,
-    feeling: core.feeling,
-    boundaries: parsedBoundaries.value,
-    clarification: parsedClarification.value,
-    acceptAdjacent: core.acceptAdjacentRaw === true,
-    recoveryToken: parsedRecoveryToken.value,
-  };
+  const validated = validateIntakeInput(input);
+  if ("error" in validated) return validated;
 
   // Operational kill switch for a safety, privacy, or content incident. Crisis
   // support remains available because it is evaluated above this branch. The
   // disabled path persists nothing and spends no provider or rate-limit budget.
   if (process.env.STORY_CREATION_ENABLED?.trim().toLowerCase() === "false") {
+    return { temporarilyUnavailable: true };
+  }
+
+  // Non-route callers receive the same fail-closed recipe boundary as the
+  // public endpoint. Keep it after crisis support and the kill switch, but
+  // before telemetry-flow activation, rate limiting, catalog work, or any
+  // provider call so a drifted deployment spends and persists nothing.
+  try {
+    const runtime = assertProductionStoryRecipeRuntime();
+    await assertProductionStoryRecipeRegistered(runtime);
+  } catch {
     return { temporarilyUnavailable: true };
   }
 
@@ -335,9 +327,13 @@ export async function handleIntake(
   await recordLinkedProductEventBestEffort(matchEvent, telemetryFlowId);
   const selectedFraming =
     disposition === "close_match" ? result.framing : "partial";
+  const preparationFailure = beginInitialStoryPreparationFailureRecorder(
+    telemetryFlowId,
+    dependencies.failureTelemetry,
+  );
   let prepared;
   try {
-    prepared = await prepareStory({
+    prepared = await (dependencies.prepare ?? prepareStory)({
       age: validated.age,
       feeling: validated.feeling,
       boundaries: validated.boundaries,
@@ -347,11 +343,17 @@ export async function handleIntake(
       framing: selectedFraming,
       mode: "initial",
     });
-  } catch {
+  } catch (error) {
     // Never reflect or log composition detail: it may contain curated prose.
+    await preparationFailure.capture(error);
     return { temporarilyUnavailable: true };
   }
-  if (!prepared) return { temporarilyUnavailable: true };
+  if (!prepared) {
+    // prepareStory returns null only when its matched catalog/stage identity
+    // disappeared before composition (for example, concurrent retirement).
+    await preparationFailure.captureContentConflict();
+    return { temporarilyUnavailable: true };
+  }
 
   let sessionId: string;
   try {
@@ -376,6 +378,44 @@ export async function handleIntake(
   }
 
   return { sessionId };
+}
+
+// Pure exact validation shared by the route's pre-auth boundary and the domain
+// handler. Keeping it free of auth, persistence, rate limits, and providers lets
+// malformed requests fail before they can mint an auth-funnel milestone.
+export function validateIntakeInput(
+  input: unknown,
+): ValidatedIntakeInput | IntakeValidationError {
+  const core = validateCoreIntake(input);
+  if ("error" in core) return core;
+  const parsedBoundaries = parseStoryBoundaries(core.boundariesRaw);
+  if ("error" in parsedBoundaries) return parsedBoundaries;
+  const parsedClarification = parseMatchClarification(core.clarificationRaw);
+  if ("error" in parsedClarification) return parsedClarification;
+  if (
+    core.acceptAdjacentRaw !== undefined &&
+    typeof core.acceptAdjacentRaw !== "boolean"
+  ) {
+    return { error: "Adjacent-match preference must be a boolean." };
+  }
+  const parsedRecoveryToken = parseMatchRecoveryToken(core.recoveryTokenRaw);
+  if ("error" in parsedRecoveryToken) return parsedRecoveryToken;
+  const recoveryChoiceProvided =
+    parsedClarification.value !== undefined || core.acceptAdjacentRaw === true;
+  if (recoveryChoiceProvided && parsedRecoveryToken.value === undefined) {
+    return { error: "This match step expired. Please revise and try again." };
+  }
+  if (parsedRecoveryToken.value && !recoveryChoiceProvided) {
+    return { error: "Choose an answer or accept the adjacent story to continue." };
+  }
+  return {
+    age: core.age,
+    feeling: core.feeling,
+    boundaries: parsedBoundaries.value,
+    clarification: parsedClarification.value,
+    acceptAdjacent: core.acceptAdjacentRaw === true,
+    recoveryToken: parsedRecoveryToken.value,
+  };
 }
 
 function validateCoreIntake(input: unknown): CoreIntakeInput | IntakeValidationError {

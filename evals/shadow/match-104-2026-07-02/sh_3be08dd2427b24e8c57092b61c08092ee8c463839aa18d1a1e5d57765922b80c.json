@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "recipe-shadow-evidence-v1",
+  "shadowId": "sh_3be08dd2427b24e8c57092b61c08092ee8c463839aa18d1a1e5d57765922b80c",
+  "dataset": {
+    "version": "match-104-2026-07-02",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "visibility": "synthetic"
+  },
+  "createdAt": "2026-07-02T07:13:02.101Z",
+  "source": "offline_aggregate_import",
+  "baselineEvidenceId": "ev_7a7d9bfa19852146f38ee523c1c0caa916601720cdc9e446bbf32984e38053ad",
+  "challengerEvidenceId": "ev_cc12a3198ddef5022b5bf8d7383d3cba0841f1aba01e56e30e6fcf8a04f7553f",
+  "comparison": {
+    "overallTop1Delta": -0.02970297029702973,
+    "hardConfusionDelta": 0.022727272727272728,
+    "definitiveWrongDelta": 3,
+    "missDetectionDelta": 0,
+    "coverageDelta": 0
+  },
+  "outputsServedToUsers": false,
+  "disclosuresPersisted": false,
+  "gate": {
+    "passed": false,
+    "checks": {
+      "sameDataset": true,
+      "strictTop1Superiority": false,
+      "trustGatePassed": false,
+      "noDefinitiveWrong": false,
+      "hardConfusionNoWorse": false,
+      "missDetectionNoWorse": true,
+      "coverageNoWorse": true
+    }
+  },
+  "legacyImported": true,
+  "promotable": false
+}

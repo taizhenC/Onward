@@ -322,8 +322,8 @@
 **Scope**
 
 - Define a closed, string-hostile event schema that accepts only allowlisted event names, versioned recipe IDs, booleans, counts, durations, coarse buckets, and approved identifiers.
-- Instrument: landing CTA, intake started/submitted, auth established, crisis intercepted, rate limited, match path, confidence band, clarification, artifact validation/fallback, first content, passage acknowledged, story completed, source opened, feedback, another story, save, delete, and error class.
-- Add dashboards for funnel, resonance, completion, factual reports, fallback rate, p50/p95 latency, provider errors, cost per completed story, and retention cohort.
+- Instrument authoritative landing, intake, story-flow auth, rate-limit, match, clarification, artifact, visibility, progress, completion, source, feedback, alternate, and owned failure boundaries. Keep crisis, save/reopen, and deletion events reserved until their stricter safety or P0-14 product policies authorize a producer.
+- Add dashboards for funnel, resonance, completion, factual reports, fallback rate, closed latency-bucket distributions and threshold compliance, provider errors, cost per completed story, and retention cohort. Do not infer percentile precision the stored buckets cannot support.
 - Keep raw disclosure, prompt/response bodies, free text, derived semantic tags, embeddings, ranked candidate lists, and exception objects categorically excluded.
 - Add trace-schema tests that fail CI on forbidden fields.
 
@@ -387,7 +387,7 @@
 
 ## P0-14 — [Feature] Story deletion, account deletion, consent, and retention controls
 
-**Problem:** The app explains guest expiry and raw-feeling retention, but users cannot delete a story or account, and the retention contract for future personalized artifacts is undefined. “Keep this story” needs an explicit, technically enforced meaning.
+**Problem:** The app now lets owners hard-delete an individual story or the whole account from the active database, publishes a plain-language preview privacy guide, and explains the guest/disclosure/story periods at save. Durable save semantics, legal/provider/backup review, restore-time deletion handling, and real cascade proof remain incomplete.
 
 **Scope**
 
@@ -404,6 +404,7 @@
 - Database cascades and scheduled jobs are tested against every data class.
 - Saved-story behavior after raw-disclosure expiry is coherent and covered by tests.
 - Product copy, schema, cron jobs, provider retention settings, and event retention agree.
+- Backup/PITR restores cannot silently resurrect deleted owner data: either replay a durable privacy-safe deletion ledger during restore or prove a bounded backup policy that never returns deleted rows to service.
 
 **Dependencies:** P0-03 artifact model and P0-11 event model.  
 **Relative effort:** Large.  
@@ -523,7 +524,7 @@ Let saved users revisit a story and optionally add a private, device-appropriate
 
 ## P1-10 — [Refactor] Latency and cost optimization after instrumentation
 
-Use measured traces to introduce safe caching of curated inputs, prompt compaction, provider hedging where justified, generation prefetch, and cost budgets. Do not cache user-derived prompts across users. **Acceptance:** p95 latency and cost improve with no quality-gate regression and no new sensitive-data persistence. **Effort:** Medium.
+Use measured traces to introduce safe caching of curated inputs, prompt compaction, provider hedging where justified, generation prefetch, and cost budgets. Do not cache user-derived prompts across users. **Acceptance:** latency-budget compliance and cost improve with no quality-gate regression and no new sensitive-data persistence. **Effort:** Medium.
 
 ## P1-11 — [Feature] Two-perspective match choice for ambiguous cases
 

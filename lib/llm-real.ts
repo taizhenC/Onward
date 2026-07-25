@@ -20,6 +20,27 @@ import {
   HybridPlanProviderError,
   type HybridPlanRequest,
 } from "./hybrid-composition";
+import {
+  DEFAULT_PROSE_MODEL_ID,
+  DEFAULT_PROSE_TIMEOUT_MS,
+  DEFAULT_LLM_BASE_URL,
+  DEFAULT_RERANK_MODEL_ID,
+  DEFAULT_RERANK_REASONING_EFFORT,
+  DEFAULT_RERANK_TEMPERATURE,
+  DEFAULT_RERANK_TIMEOUT_MS,
+  DEFAULT_STORY_TEMPERATURE,
+} from "./llm-recipe-constants";
+import { productionStoryRecipeExecutionPlan } from "./story-recipe";
+import {
+  EYEBROW_SYSTEM_PROMPT,
+  HYBRID_PLAN_SYSTEM_PROMPT,
+  RERANK_PROMPT_CONTRACT,
+  RERANK_SYSTEM_PROMPT,
+  STORY_PROMPT_CONTRACT,
+  buildEyebrowUserPrompt,
+  buildHybridPlanUserPrompt,
+  buildRerankUserPrompt,
+} from "./llm-prompts";
 
 // Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
@@ -28,21 +49,18 @@ import {
 // AbortController (plan #6) gives clean timeout-vs-api_error classification without a
 // dependency. If streaming prose lands later it can move to the SDK then.
 //
-// Everything provider-specific is env-configurable (plan #10), never a baked constant.
-// `npm run health` validates the model id / reasoning_effort / JSON-mode at runtime.
-
-const DEFAULT_BASE_URL = "https://api.cerebras.ai/v1";
-const DEFAULT_MODEL = "gpt-oss-120b";
-const DEFAULT_TEMPERATURE = 0;
-const DEFAULT_TIMEOUT_MS = 15000;
+// Local/eval runs are env-configurable. Served production takes every non-secret
+// model/tuning choice from the selected immutable story recipe; only credentials
+// and the pinned infrastructure posture remain deployment configuration.
+// `npm run health` validates model / reasoning_effort / JSON mode at runtime.
 
 function baseUrl(): string {
   const configured =
     process.env.LLM_BASE_URL?.trim() ??
     process.env.CEREBRAS_BASE_URL?.trim() ??
     process.env.GROQ_BASE_URL?.trim();
-  if (!configured) return DEFAULT_BASE_URL;
-  return configured.replace(/\/+$/, "") || DEFAULT_BASE_URL;
+  if (!configured) return DEFAULT_LLM_BASE_URL;
+  return configured.replace(/\/+$/, "") || DEFAULT_LLM_BASE_URL;
 }
 function apiKey(): string | undefined {
   return [
@@ -54,18 +72,27 @@ function apiKey(): string | undefined {
     .find((key): key is string => Boolean(key));
 }
 function model(): string {
-  return process.env.LLM_MODEL_RERANK ?? DEFAULT_MODEL;
+  const production = productionStoryRecipeExecutionPlan();
+  if (production) return production.rerankModelId;
+  return process.env.LLM_MODEL_RERANK ?? DEFAULT_RERANK_MODEL_ID;
 }
 function temperature(): number {
-  return numberEnv("LLM_RERANK_TEMPERATURE", DEFAULT_TEMPERATURE);
+  const production = productionStoryRecipeExecutionPlan();
+  if (production) return production.rerankTemperature;
+  return numberEnv("LLM_RERANK_TEMPERATURE", DEFAULT_RERANK_TEMPERATURE);
 }
 function reasoningEffort(): string {
+  const production = productionStoryRecipeExecutionPlan();
+  if (production) return production.rerankReasoningEffort;
   // Empty string disables the param (in case an endpoint rejects it).
-  return process.env.LLM_RERANK_REASONING_EFFORT ?? "low";
+  return (
+    process.env.LLM_RERANK_REASONING_EFFORT ??
+    DEFAULT_RERANK_REASONING_EFFORT
+  );
 }
 function timeoutMs(): number {
-  const value = numberEnv("LLM_RERANK_TIMEOUT_MS", DEFAULT_TIMEOUT_MS);
-  return value > 0 ? value : DEFAULT_TIMEOUT_MS;
+  const value = numberEnv("LLM_RERANK_TIMEOUT_MS", DEFAULT_RERANK_TIMEOUT_MS);
+  return value > 0 ? value : DEFAULT_RERANK_TIMEOUT_MS;
 }
 function numberEnv(name: string, fallback: number): number {
   const raw = process.env[name];
@@ -76,15 +103,15 @@ function numberEnv(name: string, fallback: number): number {
 
 // Prose model for opening copy. Some Cerebras accounts expose only GPT-OSS;
 // override LLM_MODEL_PROSE when a dedicated prose model is available on the account.
-const DEFAULT_PROSE_MODEL = "gpt-oss-120b";
-const DEFAULT_PROSE_TEMPERATURE = 0.3;
-const DEFAULT_PROSE_TIMEOUT_MS = 8000;
-
 function proseModel(): string {
-  return process.env.LLM_MODEL_PROSE ?? DEFAULT_PROSE_MODEL;
+  const production = productionStoryRecipeExecutionPlan();
+  if (production) return production.proseModelId;
+  return process.env.LLM_MODEL_PROSE ?? DEFAULT_PROSE_MODEL_ID;
 }
 function proseTemperature(): number {
-  return numberEnv("LLM_PROSE_TEMPERATURE", DEFAULT_PROSE_TEMPERATURE);
+  const production = productionStoryRecipeExecutionPlan();
+  if (production) return production.storyTemperature;
+  return numberEnv("LLM_PROSE_TEMPERATURE", DEFAULT_STORY_TEMPERATURE);
 }
 function proseTimeoutMs(): number {
   const value = numberEnv("LLM_PROSE_TIMEOUT_MS", DEFAULT_PROSE_TIMEOUT_MS);
@@ -140,46 +167,6 @@ export class RerankError extends Error {
   }
 }
 
-const SYSTEM_PROMPT = [
-  "You are matching a person's emotional disclosure to a curated set of real historical figures.",
-  "Each candidate is one episode from a figure's life at a particular age, described by biographical facts.",
-  "Choose the ONE candidate whose specific struggle at a similar age best mirrors the emotional shape of what the person wrote.",
-  "",
-  "Rules:",
-  "- Bias against figures whose stories are widely taught in school (Lincoln, Van Gogh, Einstein, etc.). When fit is comparable, prefer the less-famous figure — recognizability adds nothing if the resonance is shallow.",
-  "- Weigh emotional shape first. Treat a large gap between the person's age and a candidate's age range as part of what the match does NOT cover, not as a disqualifier.",
-  "- Distinguish being trapped in a life or role imposed by others from losing, wrecking, or restarting a career path one chose. When both are possible, prefer the candidate whose trigger matches the person's stated trap.",
-  "- Distinguish being trapped in a private life role imposed by family or convention from being denied public credit or recognition for work one actually did.",
-  "- Before deciding, hold two things in mind: the strongest reason the match resonates with the person's specific words, and the strongest gap (what their words carry that this figure's struggle does not). Then commit. Do not refuse to choose.",
-  "- If no candidate genuinely matches the person's situation, still choose the closest candidate, but set confidence to \"low\"; do not inflate a weak or merely adjacent fit.",
-  "- Choose only from the provided candidates, using their exact figure_key and stage_id.",
-  "",
-  'Respond with a single JSON object and nothing else, with keys: figure_key (string), stage_id (string), resonance (one sentence), gap (one sentence), confidence (one of "low", "medium", "high").',
-].join("\n");
-
-function buildUserPrompt(
-  age: number,
-  feeling: string,
-  candidates: RerankCandidate[],
-): string {
-  const lines = candidates.map(
-    (c) =>
-      `- figure_key: ${c.figureKey} | stage_id: ${c.stageId} | name: ${c.displayName} | age_range: ${c.ageMin}-${c.ageMax}\n  biographical_facts: ${c.biographicalFacts}`,
-  );
-
-  return [
-    `The person is ${age} years old. They wrote:`,
-    '"""',
-    feeling,
-    '"""',
-    "",
-    "Candidates:",
-    ...lines,
-    "",
-    "Choose the best match and respond with the JSON object.",
-  ].join("\n");
-}
-
 export async function pickFigureReal(input: PickInput): Promise<Pick> {
   const key = apiKey();
   if (!key) {
@@ -192,7 +179,7 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
     throw new RerankError("api_error", "pickFigureReal called with no candidates.");
   }
 
-  const userPrompt = buildUserPrompt(
+  const userPrompt = buildRerankUserPrompt(
     input.age,
     input.feeling,
     input.candidates.map(toRerankCandidate),
@@ -201,9 +188,9 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
   const body: Record<string, unknown> = {
     model: model(),
     temperature: temperature(),
-    response_format: { type: "json_object" },
+    response_format: { type: RERANK_PROMPT_CONTRACT.responseFormat },
     messages: [
-      { role: "system", content: SYSTEM_PROMPT },
+      { role: "system", content: RERANK_SYSTEM_PROMPT },
       { role: "user", content: userPrompt },
     ],
   };
@@ -291,33 +278,6 @@ function coerceConfidence(value: unknown): Confidence {
 // this NEVER throws — any failure (no key, timeout, HTTP error, bad output) degrades to the
 // neutral fallback via sanitizeEyebrow, because copy must never block the story.
 
-const EYEBROW_SYSTEM_PROMPT = [
-  "You write one quiet line for the top of a page in a small, gentle book.",
-  "A privacy-safe emotional shape has been derived from what someone shared. A real life story has been chosen to sit beside theirs, but its subject is not named here.",
-  "Write a single short line that gestures at that pressure — like a chapter eyebrow, not a full sentence.",
-  "",
-  "Rules:",
-  "- No diagnosis. No advice. No reassurance and no promises.",
-  "- Do not name any person, place, or year. Do not claim the two lives match exactly.",
-  "- Under ten words. Plain and calm. No quotation marks.",
-  "- No preamble and no explanation. Output ONLY the line itself.",
-].join("\n");
-
-function buildEyebrowPrompt(surface: EyebrowPromptSurface): string {
-  return [
-    "A privacy boundary reduced the reader's disclosure to these governed fields:",
-    `Primary pressure: ${surface.resonance.primaryPressure}`,
-    `Emotional shape: ${surface.resonance.emotionalCore}`,
-    `Situation shape: ${surface.resonance.situationShape}`,
-    `Desired distance: ${surface.resonance.desiredDistance}`,
-    "",
-    "The chosen life carries this emotional through-line (do not quote it, do not name its subject):",
-    surface.throughLine,
-    "",
-    "Write the one-line eyebrow now.",
-  ].join("\n");
-}
-
 export async function writeOpeningCopyReal(
   input: OpeningCopyInput,
 ): Promise<OpeningCopy> {
@@ -350,7 +310,7 @@ async function generateEyebrowLine(
     temperature: proseTemperature(),
     messages: [
       { role: "system", content: EYEBROW_SYSTEM_PROMPT },
-      { role: "user", content: buildEyebrowPrompt(surface) },
+      { role: "user", content: buildEyebrowUserPrompt(surface) },
     ],
   };
 
@@ -390,13 +350,6 @@ async function generateEyebrowLine(
 // The model chooses only from server-supplied roles and template IDs. It never
 // authors story prose, facts, entities, dates, quotes, or reader-derived text.
 
-const HYBRID_PLAN_SYSTEM_PROMPT = [
-  "You choose a bounded personalization plan for a true historical story.",
-  "Return only one JSON object using values from the supplied allowlists.",
-  "Do not write prose, add fields, infer a diagnosis, or repeat the emotional summary.",
-  "Choose one transition role, one transition template ID, and one bridge template ID.",
-].join("\n");
-
 export async function requestHybridPlanReal(
   input: HybridPlanRequest,
 ): Promise<unknown> {
@@ -409,25 +362,15 @@ export async function requestHybridPlanReal(
   }
   const body = {
     model: proseModel(),
-    temperature: 0,
-    response_format: { type: "json_object" },
+    temperature: STORY_PROMPT_CONTRACT.hybridPlan.temperature,
+    response_format: {
+      type: STORY_PROMPT_CONTRACT.hybridPlan.responseFormat,
+    },
     messages: [
       { role: "system", content: HYBRID_PLAN_SYSTEM_PROMPT },
       {
         role: "user",
-        content: [
-          `Plan schema: ${input.schemaVersion}`,
-          `Primary pressure: ${input.resonance.primaryPressure}`,
-          `Emotional shape: ${input.resonance.emotionalCore}`,
-          `Situation shape: ${input.resonance.situationShape}`,
-          `Desired distance: ${input.resonance.desiredDistance}`,
-          `Historical episode shape: ${input.episodeShape}`,
-          `Allowed transition roles: ${input.allowedTransitionRoles.join(", ")}`,
-          `Allowed transition template IDs: ${input.allowedTransitionTemplateIds.join(", ")}`,
-          `Allowed bridge template IDs: ${input.allowedBridgeTemplateIds.join(", ")}`,
-          `Prior validation failures: ${input.priorFailureReasons.join(", ") || "none"}`,
-          "Return keys schemaVersion, transitionRole, transitionTemplateId, bridgeTemplateId.",
-        ].join("\n"),
+        content: buildHybridPlanUserPrompt(input),
       },
     ],
   };

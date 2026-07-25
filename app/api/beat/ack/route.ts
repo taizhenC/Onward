@@ -5,10 +5,10 @@ import {
   getOwnedSession,
 } from "@/lib/session";
 import {
-  getNextStoryAdvance,
-  nextSessionPosition,
+  deriveStoryPassageLayout,
   parseBeatPositionRequest,
 } from "@/lib/story-progress";
+import { prepareStoryProgressTelemetry } from "@/lib/story-progress-telemetry";
 import { getStoryPlayback } from "@/lib/story-playback";
 
 export const runtime = "nodejs";
@@ -42,25 +42,27 @@ export async function POST(request: Request): Promise<Response> {
     return jsonError("Chunk index is out of range.", 400);
   }
 
-  const next = getNextStoryAdvance({
-    beatIndex: parsed.beatIndex,
-    chunkIndex: parsed.chunkIndex,
-    chunkCount: beat.chunks.length,
-    beatCount: playback.beats.length,
+  const layout = deriveStoryPassageLayout(playback.beats, parsed);
+  if (!layout) return jsonError("Story artifact not found.", 404);
+  const telemetry = await prepareStoryProgressTelemetry({
+    session,
+    userId,
+    layout,
   });
-  const nextPosition = nextSessionPosition(parsed, next);
 
   const result = await acknowledgeOwnedSessionPosition({
     sessionId: parsed.sessionId,
     userId,
+    storyArtifactId: session.storyArtifactId,
+    telemetry,
     expectedBeatIndex: parsed.beatIndex,
     expectedChunkIndex: parsed.chunkIndex,
-    nextBeatIndex: nextPosition.nextBeatIndex,
-    nextChunkIndex: nextPosition.nextChunkIndex,
+    nextBeatIndex: layout.nextBeatIndex,
+    nextChunkIndex: layout.nextChunkIndex,
   });
 
   if (result === "advanced" || result === "already_advanced") {
-    return Response.json({ next });
+    return Response.json({ next: layout.next });
   }
 
   if (result === "not_found") return jsonError("Story session not found.", 404);

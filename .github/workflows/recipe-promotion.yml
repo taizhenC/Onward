@@ -1,0 +1,143 @@
+name: Recipe Promotion Authority
+
+# SECURITY: pull_request_target loads this workflow from the protected base,
+# never from the proposed head. It checks out candidate bytes only as inert data
+# and executes only the dependency-free attestor from that same protected base.
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: recipe-promotion-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  detect-recipe-promotion:
+    runs-on: ubuntu-latest
+    outputs:
+      required: ${{ steps.detect.outputs.required }}
+      base_sha: ${{ steps.detect.outputs.base_sha }}
+      head_sha: ${{ steps.detect.outputs.head_sha }}
+    steps:
+      - name: Check out candidate bytes without executing them
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ github.repository }}
+          ref: refs/pull/${{ github.event.pull_request.number }}/head
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Load detector from the protected base commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ github.repository }}
+          ref: refs/heads/${{ github.event.pull_request.base.ref }}
+          path: trusted
+          fetch-depth: 1
+          persist-credentials: false
+      - id: detect
+        name: Detect one append-only promotion
+        shell: bash
+        env:
+          EVENT_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          test "$(git -C candidate rev-parse HEAD)" = "$HEAD_SHA"
+          BASE_SHA="$(git -C trusted rev-parse HEAD)"
+          test "$BASE_SHA" = "$EVENT_BASE_SHA"
+          git -C candidate fetch --no-tags "$GITHUB_WORKSPACE/trusted" "$BASE_SHA"
+          git -C candidate cat-file -e "${BASE_SHA}^{commit}"
+          required="$(node trusted/scripts/trusted/recipe-promotion-attestor.mjs detect --repository "$GITHUB_WORKSPACE/candidate" --base-sha "$BASE_SHA" --head-sha "$HEAD_SHA")"
+          echo "required=$required" >> "$GITHUB_OUTPUT"
+          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+
+  attest-recipe-promotion:
+    needs: detect-recipe-promotion
+    if: needs.detect-recipe-promotion.outputs.required == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: recipe-promotion
+    steps:
+      - name: Check out candidate bytes without executing them
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ github.repository }}
+          ref: refs/pull/${{ github.event.pull_request.number }}/head
+          path: candidate
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Load locked attestor from the protected base commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          repository: ${{ github.repository }}
+          ref: refs/heads/${{ github.event.pull_request.base.ref }}
+          path: trusted
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Bind immutable head and base objects before authority is exposed
+        shell: bash
+        env:
+          BASE_SHA: ${{ needs.detect-recipe-promotion.outputs.base_sha }}
+          HEAD_SHA: ${{ needs.detect-recipe-promotion.outputs.head_sha }}
+        run: |
+          test "$(git -C candidate rev-parse HEAD)" = "$HEAD_SHA"
+          test "$(git -C trusted rev-parse HEAD)" = "$BASE_SHA"
+          git -C candidate fetch --no-tags "$GITHUB_WORKSPACE/trusted" "$BASE_SHA"
+          git -C candidate cat-file -e "${BASE_SHA}^{commit}"
+      - name: Bind and attest the exact promotion candidate
+        shell: bash
+        env:
+          CI: "true"
+          GITHUB_ACTIONS: "true"
+          GITHUB_EVENT_NAME: pull_request_target
+          GITHUB_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          GITHUB_API_URL: ${{ github.api_url }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_REVIEW_TOKEN: ${{ github.token }}
+          RECIPE_PROMOTION_ENVIRONMENT_TOKEN: ${{ secrets.RECIPE_PROMOTION_ENVIRONMENT_TOKEN }}
+          RECIPE_PROMOTION_ATTESTED_HEAD_SHA: ${{ vars.RECIPE_PROMOTION_ATTESTED_HEAD_SHA }}
+          RECIPE_PROMOTION_ATTESTED_DECISION_ID: ${{ vars.RECIPE_PROMOTION_ATTESTED_DECISION_ID }}
+          RECIPE_PROMOTION_ATTESTED_EVIDENCE_IDS: ${{ vars.RECIPE_PROMOTION_ATTESTED_EVIDENCE_IDS }}
+          RECIPE_PROMOTION_ATTESTED_SHADOW_IDS: ${{ vars.RECIPE_PROMOTION_ATTESTED_SHADOW_IDS }}
+          RECIPE_PROMOTION_ATTESTED_GIT_COMMITS: ${{ vars.RECIPE_PROMOTION_ATTESTED_GIT_COMMITS }}
+          RECIPE_PROMOTION_ATTESTED_INPUT_TREE_SHA256S: ${{ vars.RECIPE_PROMOTION_ATTESTED_INPUT_TREE_SHA256S }}
+          RECIPE_PROMOTION_ATTESTED_RUN_IDS: ${{ vars.RECIPE_PROMOTION_ATTESTED_RUN_IDS }}
+          RECIPE_PROMOTION_ATTESTED_DEPLOYMENT_IDS: ${{ vars.RECIPE_PROMOTION_ATTESTED_DEPLOYMENT_IDS }}
+          RECIPE_PROMOTION_ATTESTED_SOURCE_RUN_SHA256S: ${{ vars.RECIPE_PROMOTION_ATTESTED_SOURCE_RUN_SHA256S }}
+          RECIPE_PROMOTION_ATTESTED_SHADOW_RUN_IDS: ${{ vars.RECIPE_PROMOTION_ATTESTED_SHADOW_RUN_IDS }}
+          RECIPE_PROMOTION_ATTESTED_SHADOW_DEPLOYMENT_IDS: ${{ vars.RECIPE_PROMOTION_ATTESTED_SHADOW_DEPLOYMENT_IDS }}
+          RECIPE_PROMOTION_ATTESTED_SHADOW_SOURCE_RUN_SHA256S: ${{ vars.RECIPE_PROMOTION_ATTESTED_SHADOW_SOURCE_RUN_SHA256S }}
+          RECIPE_PROMOTION_ATTESTED_DATASET_SHA256: ${{ vars.RECIPE_PROMOTION_ATTESTED_DATASET_SHA256 }}
+          RECIPE_PROMOTION_ATTESTED_CATALOG_SHA256: ${{ vars.RECIPE_PROMOTION_ATTESTED_CATALOG_SHA256 }}
+          RECIPE_PROMOTION_ATTESTATION_SHA256: ${{ vars.RECIPE_PROMOTION_ATTESTATION_SHA256 }}
+          RECIPE_PROMOTION_PRODUCT_REVIEWER_ID: ${{ vars.RECIPE_PROMOTION_PRODUCT_REVIEWER_ID }}
+          RECIPE_PROMOTION_MATCHING_REVIEWER_ID: ${{ vars.RECIPE_PROMOTION_MATCHING_REVIEWER_ID }}
+          RECIPE_PROMOTION_SAFETY_PRIVACY_REVIEWER_ID: ${{ vars.RECIPE_PROMOTION_SAFETY_PRIVACY_REVIEWER_ID }}
+        run: |
+          node trusted/scripts/trusted/recipe-promotion-attestor.mjs attest --repository "$GITHUB_WORKSPACE/candidate" --base-sha "${{ needs.detect-recipe-promotion.outputs.base_sha }}" --head-sha "${{ needs.detect-recipe-promotion.outputs.head_sha }}"
+
+  recipe-promotion-gate:
+    if: always()
+    needs: [detect-recipe-promotion, attest-recipe-promotion]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require attestation exactly when promotion was detected
+        shell: bash
+        env:
+          DETECT_RESULT: ${{ needs.detect-recipe-promotion.result }}
+          PROMOTION_REQUIRED: ${{ needs.detect-recipe-promotion.outputs.required }}
+          ATTEST_RESULT: ${{ needs.attest-recipe-promotion.result }}
+        run: |
+          test "$DETECT_RESULT" = "success"
+          if test "$PROMOTION_REQUIRED" = "true"; then
+            test "$ATTEST_RESULT" = "success"
+          else
+            test "$PROMOTION_REQUIRED" = "false"
+            test "$ATTEST_RESULT" = "skipped"
+          fi

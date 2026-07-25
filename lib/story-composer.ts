@@ -15,6 +15,7 @@ import {
 } from "./story-artifact";
 import type { StoryArtifact } from "./story-artifact-types";
 import type { OpeningCopy } from "./types";
+import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 
 const MAX_HYBRID_ATTEMPTS = 2;
 
@@ -59,7 +60,11 @@ export async function composeStoryArtifact(
     });
   }
 
-  if (!(options.hybridEnabled ?? hybridStoryComposerEnabled())) return baseline;
+  const hybridEnabled =
+    process.env.NODE_ENV === "production"
+      ? hybridStoryComposerEnabled()
+      : (options.hybridEnabled ?? hybridStoryComposerEnabled());
+  if (!hybridEnabled) return baseline;
 
   const requester = options.requestPlan ?? requestHybridPlan;
   const failures: HybridPlanFailureReason[] = [];
@@ -123,6 +128,11 @@ export function hybridStoryComposerEnabled(
   configured = process.env.HYBRID_STORY_COMPOSER_ENABLED,
   environment = process.env.NODE_ENV,
 ): boolean {
+  if (environment === "production" && environment === process.env.NODE_ENV) {
+    return (
+      productionStoryRecipeExecutionPlan()?.hybridStoryComposerEnabled ?? false
+    );
+  }
   const normalized = configured?.trim().toLowerCase();
   if (normalized === "true") return true;
   if (normalized === "false") return false;

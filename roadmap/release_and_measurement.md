@@ -69,7 +69,7 @@ Track completion and feedback response rate separately so the team can interpret
 | Metric | Definition | Notes |
 |---|---|---|
 | Intake abandonment | Intake starts without valid submit | Segment only by safe device/flow buckets. |
-| Time to first readable content | Intake submit to preface/story readiness | Report p50 and p95. |
+| Time to first readable content | Intake submit to preface/story readiness | Report the closed latency-bucket distribution and threshold compliance; do not infer unsupported percentile precision. |
 | Passage load latency | Continue to next stored passage displayed | Excludes optional local reveal animation. |
 | Resume correctness | Sessions returning to last acknowledged passage | Verified by tests and sampled safe state transitions. |
 | Story creation error rate | Creation attempts ending without artifact or reviewed safety state | Canonical fallback should keep this very low. |
@@ -114,7 +114,7 @@ These are proposed go/no-go thresholds. Establish the baseline during private al
 - Zero persistence or provider calls for intercepted crisis inputs in integration tests.
 - Safety copy/resources reviewed and dated for the launch market.
 - Youth/age policy, terms, privacy, content rights, and non-clinical positioning reviewed for the initial market.
-- Story deletion, account deletion, guest TTL, disclosure TTL, derived-artifact retention, and event pruning pass end-to-end tests.
+- Story deletion, account deletion, guest TTL, disclosure TTL, derived-artifact retention, event pruning, and backup/PITR restore-deletion behavior pass end-to-end tests.
 - Privacy schema tests reject every forbidden raw/derived field and provider error object.
 
 ### UX and accessibility gate
@@ -128,8 +128,8 @@ These are proposed go/no-go thresholds. Establish the baseline during private al
 
 ### Reliability and performance gate
 
-- p95 intake-submit to first readable state at or below eight seconds under beta load; canonical fallback is included in this measurement.
-- p95 stored-passage transition at or below 500 milliseconds, excluding intentional visual transition.
+- At least 95% of intake-submit to first-readable measurements fall in the contract's at-or-below-eight-second buckets under beta load; canonical fallback is included.
+- At least 95% of stored-passage transitions fall in the at-or-below-500-millisecond buckets, excluding intentional visual transition.
 - At least 99.5% successful eligible flow availability during the final beta window.
 - Less than 1% of eligible story-creation attempts end without a story artifact or reviewed safety state.
 - Provider timeout, invalid output, database transient failure, email failure, and retrieval failure drills have user-safe recovery paths.
@@ -219,7 +219,7 @@ Work packages:
 - **P0-09 [Bug Fix]** Implement explicit atomic acknowledgement and resume behavior.
 - **P0-10 [Feature]** Add resonance feedback and another-story recovery.
 - **P0-16 [UI/UX]** Apply shared design primitives and complete accessibility hardening.
-- **P0-14 [Feature]** Finish deletion, save consent, privacy page, and retention UI.
+- **P0-14 [Feature]** Finish save consent, derived-data classes, market-specific privacy notice, backup/restore deletion guarantees, and retention UI around the shipped active-database deletion controls.
 - **P0-17 [Feature]** Add optional emotional boundaries, reviewed content notes, and hard eligibility enforcement.
 
 Exit criteria:
@@ -271,7 +271,7 @@ Automatic pause/rollback conditions:
 
 - any critical safety, privacy, or unsupported historical claim incident;
 - material increase in definitive wrong match, generation failure, or canonical fallback rate;
-- p95 latency or availability outside the release budget for a sustained observation window;
+- latency-threshold compliance or availability outside the release budget for a sustained observation window;
 - evidence that deletion/retention jobs are not operating as promised;
 - unexplained recipe/config drift.
 
@@ -303,7 +303,7 @@ Variants:
 
 Primary outcome: “felt close” rate.  
 Secondary outcomes: completion, bridge completion, save, critical tone flags.  
-Guardrails: unsupported claims, safety, privacy, fallback, p95 latency, cost.
+Guardrails: unsupported claims, safety, privacy, fallback, latency-threshold compliance, cost.
 
 ### Experiment B — Clarification for low-confidence matches
 

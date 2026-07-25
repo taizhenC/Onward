@@ -4,6 +4,8 @@ import type {
   AcknowledgeSessionPositionInput,
   AcknowledgeSessionPositionResult,
   CreateSessionInput,
+  DeleteOwnedSessionResult,
+  ListSessionsByUserOptions,
   MatchRecipe,
   OpeningCopy,
   Session,
@@ -13,8 +15,11 @@ import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import { getSupabase } from "./db";
 import { parseStoryRequestContext } from "./story-request-context";
 import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
+import { telemetryFlowBindingEnabled } from "./telemetry-flow-lifecycle";
 import { prepareProductEventCapture } from "./telemetry";
-import { artifactCreatedEvent } from "./telemetry-producers";
+import {
+  artifactCreatedEvent,
+} from "./telemetry-producers";
 
 // Durable session store (PERSISTENCE=supabase). Survives restarts and works across
 // serverless instances. getSupabase() is called inside the methods, never at import, so this
@@ -122,14 +127,73 @@ async function getSession(sessionId: string): Promise<Session | null> {
   return data ? rowToSession(data as SessionRow) : null;
 }
 
-// Atomic compare-and-set for reader progress. The expected-position predicates
-// are part of the UPDATE, so concurrent tabs cannot both advance from the same
-// passage. A follow-up owner-scoped read classifies idempotent retries without
-// exposing whether a foreign session exists.
+// Artifact-backed sessions always use migration 0013's transaction, including
+// when their linked flow has expired. Only pre-0005 rows without an artifact
+// retain the compatibility CAS below.
 async function acknowledgePosition(
   input: AcknowledgeSessionPositionInput,
 ): Promise<AcknowledgeSessionPositionResult> {
-  const { data, error } = await getSupabase()
+  // Explicit incident rollback: a schema/config outage can temporarily retain
+  // the prior owner-scoped CAS, accepting a documented measurement gap. Normal
+  // enabled operation sends every artifact-backed transition through 0013.
+  if (!telemetryFlowBindingEnabled()) {
+    return acknowledgeLegacyPosition(input, false);
+  }
+  if (!input.storyArtifactId) {
+    if (input.telemetry) {
+      throw new Error("legacy story progress cannot carry linked telemetry");
+    }
+    return acknowledgeLegacyPosition(input, true);
+  }
+  const passageCapture = input.telemetry?.passage ?? null;
+  const completionCapture = input.telemetry?.completion ?? null;
+  if (
+    passageCapture &&
+    (passageCapture.event !== "passage_acknowledged" ||
+      passageCapture.flowId === null ||
+      (completionCapture !== null &&
+        (completionCapture.event !== "story_completed" ||
+          completionCapture.flowId !== passageCapture.flowId ||
+          completionCapture.schemaVersion !== passageCapture.schemaVersion ||
+          completionCapture.storyRole !== passageCapture.storyRole)))
+  ) {
+    throw new Error("story progress telemetry captures are inconsistent");
+  }
+
+  const { data, error } = await getSupabase().rpc(
+    "acknowledge_story_position_v1",
+    {
+      p_session_id: input.sessionId,
+      p_user_id: input.userId,
+      p_expected_beat_index: input.expectedBeatIndex,
+      p_expected_chunk_index: input.expectedChunkIndex,
+      p_next_beat_index: input.nextBeatIndex,
+      p_next_chunk_index: input.nextChunkIndex,
+      p_telemetry_flow_id: passageCapture?.flowId ?? null,
+      p_passage_event_id: passageCapture?.eventId ?? null,
+      p_completion_event_id: completionCapture?.eventId ?? null,
+      p_schema_version: passageCapture?.schemaVersion ?? null,
+      p_story_role: passageCapture?.storyRole ?? null,
+      p_passage_ordinal: passageCapture?.passageOrdinal ?? null,
+    },
+  );
+  if (error) throw new Error(`acknowledgePosition failed: ${error.message}`);
+  if (
+    data === "advanced" ||
+    data === "already_advanced" ||
+    data === "conflict" ||
+    data === "not_found"
+  ) {
+    return data;
+  }
+  throw new Error("acknowledgePosition returned an invalid disposition");
+}
+
+async function acknowledgeLegacyPosition(
+  input: AcknowledgeSessionPositionInput,
+  requireLegacyArtifactNull: boolean,
+): Promise<AcknowledgeSessionPositionResult> {
+  let update = getSupabase()
     .from(TABLE)
     .update({
       next_beat_index: input.nextBeatIndex,
@@ -139,7 +203,11 @@ async function acknowledgePosition(
     .eq("session_id", input.sessionId)
     .eq("user_id", input.userId)
     .eq("next_beat_index", input.expectedBeatIndex)
-    .eq("next_chunk_index", input.expectedChunkIndex)
+    .eq("next_chunk_index", input.expectedChunkIndex);
+  if (requireLegacyArtifactNull) {
+    update = update.is("story_artifact_id", null);
+  }
+  const { data, error } = await update
     .select("session_id")
     .maybeSingle();
 
@@ -157,15 +225,41 @@ async function acknowledgePosition(
   return "conflict";
 }
 
-async function listSessionsByUser(userId: string): Promise<Session[]> {
+async function listSessionsByUser(
+  userId: string,
+  options: ListSessionsByUserOptions,
+): Promise<Session[]> {
   const { data, error } = await getSupabase()
     .from(TABLE)
     .select("*")
     .eq("user_id", userId)
     .order("created_at", { ascending: false })
-    .limit(100);
+    .order("session_id", { ascending: false })
+    .range(options.offset, options.offset + options.limit - 1);
   if (error) throw new Error(`listSessionsByUser failed: ${error.message}`);
   return ((data ?? []) as SessionRow[]).map(rowToSession);
+}
+
+async function deleteOwnedSession(
+  sessionId: string,
+  userId: string,
+): Promise<DeleteOwnedSessionResult> {
+  const { data, error } = await getSupabase().rpc("delete_owned_story_v1", {
+    p_user_id: userId,
+    p_session_id: sessionId,
+  });
+  if (error) {
+    // The RPC may have committed even when its response was lost. Reconcile
+    // through the owner-blind internal read: absence means the requested
+    // privacy state already holds; a still-owned row means retry is required.
+    const current = await getSession(sessionId);
+    if (!current) return "deleted";
+    if (current.userId !== userId) return "not_found";
+    throw new Error("deleteOwnedSession failed");
+  }
+  if (data === true) return "deleted";
+  if (data === false) return "not_found";
+  throw new Error("deleteOwnedSession returned an invalid disposition");
 }
 
 async function sessionCount(): Promise<number> {
@@ -239,5 +333,6 @@ export const supabaseSessionStore: SessionStore = {
   getSession,
   acknowledgePosition,
   listSessionsByUser,
+  deleteOwnedSession,
   _sessionCount: sessionCount,
 };

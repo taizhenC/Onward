@@ -10,7 +10,7 @@ Onward is not an emergency service. Team members do not contact a user from an i
 
 1. Set `STORY_CREATION_ENABLED=false` in the affected environment. Crisis resources remain available; non-crisis requests return a quiet 503 and persist nothing.
 2. If one stage is affected, remove it from the published content set. A dedicated per-stage runtime flag remains part of P0-15.
-3. If one provider or recipe is affected, pin the approved keyword/canonical path or keep new creation disabled until a safe configuration is deployed.
+3. If one provider or recipe is affected, keep new creation disabled while selecting an already registered, compatible rollback with `ONWARD_PRODUCTION_RECIPE_ID`. Do not try to reconstruct the old keyword/canonical posture with legacy provider, retrieval, model, tuning, or composer environment flags.
 4. Never paste disclosures, prompts, provider bodies, raw exceptions, or generated sensitive text into tickets, chat, logs, or this incident record.
 
 ## Roles
@@ -44,4 +44,4 @@ Never record intake text, semantic user tags, query embeddings, prompts, model r
 
 ## Restoration gate
 
-Restore story creation only after the failing regression passes; lint, typecheck, figure validation, crisis eval, smoke, and isolated production build pass; required reviewers approve; rollback remains available; and monitoring covers the safe failure signal.
+Restore story creation only after the failing regression passes; lint, typecheck, figure validation, crisis eval, smoke, and isolated production build pass; the deployed selector resolves to the intended registered recipe; required reviewers approve; rollback remains available; and monitoring covers the safe failure signal. A new recipe is not an incident shortcut: promotion still requires the protected evidence/attestation path and the strict, up-to-date `CI / verify` plus `Recipe Promotion Authority / recipe-promotion-gate` checks. Until the private-repository plan supports enforcing those controls, keep promotion disabled and use only a previously approved compatible rollback.

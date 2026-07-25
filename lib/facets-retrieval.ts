@@ -61,7 +61,11 @@ type Lane = { lane: RetrievalLane; ranking: string[] };
 export async function retrieveFacets(
   input: RetrievalInput,
   pool: FigureStageRow[],
+  topK = FACETSRAG_TOP_K,
 ): Promise<RetrievalResult> {
+  if (!Number.isInteger(topK) || topK < 1) {
+    throw new Error("FacetsRAG top-K must be a positive integer.");
+  }
   // Stub embedder → no real vectors (the seeder refuses stubs). Cheapest check first, before any
   // Supabase or Gemini call.
   if (isEmbeddingStub()) {
@@ -163,7 +167,7 @@ export async function retrieveFacets(
   });
   adjusted.sort((a, b) => b.score - a.score || a.key.localeCompare(b.key));
 
-  const stageBKeys = adjusted.slice(0, FACETSRAG_TOP_K).map((entry) => entry.key);
+  const stageBKeys = adjusted.slice(0, topK).map((entry) => entry.key);
   const resultPool = stageBKeys
     .map((key) => stageByKey.get(key))
     .filter((stage): stage is FigureStageRow => stage !== undefined);

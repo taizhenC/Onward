@@ -3,6 +3,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 
+import {
+  acknowledgeStoryPassage,
+  beatFailureFromStatus,
+  beatFailureRecovery,
+  parseStoryAdvance,
+  type BeatFailureKind,
+  type BeatRequestPhase,
+} from "@/lib/story-beat-network";
+import {
+  elapsedLatencyBucket,
+  monotonicEpochMs,
+  sendPassagePresented,
+} from "@/lib/story-visibility-client";
 import type { StoryAdvance } from "@/lib/types";
 
 // Client-owned reveal pacing (the server no longer delays — see lib/llm-stub.ts).
@@ -11,12 +24,20 @@ import type { StoryAdvance } from "@/lib/types";
 // the decorative caret blink via the global prefers-reduced-motion CSS rule, the
 // same way the demo handles it.
 const STREAM_SPEED_MS = 40;
+const LOADING_DELAY_MS = 350;
+const DELIVERY_TIMEOUT_MS = 15_000;
+const ACKNOWLEDGEMENT_TIMEOUT_MS = 12_000;
 
 type Props = {
   sessionId: string;
   beatIndex: number;
   chunkIndex: number;
-  onComplete: (next: StoryAdvance) => void;
+  presentationStartedAt: number | null;
+  presentationVisible: boolean;
+  onComplete: (
+    next: StoryAdvance,
+    presentationStartedAt: number | null,
+  ) => void;
   // Fired once after the reader explicitly acknowledges the final passage.
   // Separate channel from onComplete, whose contract excludes "end". Required:
   // without a handler the acknowledged finish would have nowhere to go and the
@@ -24,12 +45,17 @@ type Props = {
   onEnd: () => void;
 };
 
-type FailureKind = "notfound" | "conflict" | "connection" | "generic";
+type BeatFailure = Readonly<{
+  kind: BeatFailureKind;
+  phase: BeatRequestPhase;
+}>;
 
 export function StoryBeat({
   sessionId,
   beatIndex,
   chunkIndex,
+  presentationStartedAt,
+  presentationVisible,
   onComplete,
   onEnd,
 }: Props) {
@@ -37,16 +63,23 @@ export function StoryBeat({
   const [revealedCount, setRevealedCount] = useState(0);
   const [skipped, setSkipped] = useState(false);
   const [streamDone, setStreamDone] = useState(false);
-  const [failure, setFailure] = useState<FailureKind | null>(null);
+  const [failure, setFailure] = useState<BeatFailure | null>(null);
   const [nextStep, setNextStep] = useState<StoryAdvance | null>(null);
+  const [deliveryAttempt, setDeliveryAttempt] = useState(0);
+  const [deliveryPending, setDeliveryPending] = useState(true);
+  const [showLoading, setShowLoading] = useState(false);
+  const [announcement, setAnnouncement] = useState("");
   // Guards the Continue advance so it fires exactly once per passage. The exiting
   // StoryBeat (kept mounted during StoryPlayer's mode="wait" fade) keeps this true,
   // so repeat clicks during the fade can't push the position past the ack'd
   // session position — the cause of the /api/beat 409.
   const [advancing, setAdvancing] = useState(false);
-  // The final passage was acknowledged. Hides Finish story so the closing text
-  // stands alone next to whatever the parent renders for the story's end.
-  const [ended, setEnded] = useState(false);
+  const advancingRef = useRef(false);
+  const deliveryInFlightRef = useRef(false);
+  const acknowledgementControllerRef = useRef<AbortController | null>(null);
+  const failureRef = useRef<HTMLDivElement>(null);
+  const endReportedRef = useRef(false);
+  const presentationReportedRef = useRef(false);
 
   // Ref so the streaming effect below doesn't list onEnd as a dependency — a parent
   // re-render handing in a fresh closure must not abort and restart the stream.
@@ -86,10 +119,44 @@ export function StoryBeat({
     setFailure(null);
     setNextStep(null);
     setAdvancing(false);
-    setEnded(false);
+    advancingRef.current = false;
+    setDeliveryPending(true);
+    setShowLoading(false);
+    setAnnouncement(
+      deliveryAttempt > 0 ? "Trying to bring the passage back." : "",
+    );
+    deliveryInFlightRef.current = true;
 
     const controller = new AbortController();
     let cancelled = false;
+    let deliveryTimedOut = false;
+    const loadingTimer = window.setTimeout(() => {
+      if (!cancelled) setShowLoading(true);
+    }, LOADING_DELAY_MS);
+    const deliveryTimer = window.setTimeout(() => {
+      deliveryTimedOut = true;
+      controller.abort();
+    }, DELIVERY_TIMEOUT_MS);
+
+    function stopLoading() {
+      window.clearTimeout(loadingTimer);
+      setShowLoading(false);
+    }
+
+    function failDelivery(kind: BeatFailureKind) {
+      if (cancelled) return;
+      stopLoading();
+      window.clearTimeout(deliveryTimer);
+      deliveryInFlightRef.current = false;
+      setDeliveryPending(false);
+      // Never leave a truncated passage on screen after a mid-stream failure.
+      setFullText("");
+      setRevealedCount(0);
+      setStreamDone(false);
+      setNextStep(null);
+      setFailure({ kind, phase: "delivery" });
+      setAnnouncement("");
+    }
 
     async function run() {
       let response: Response;
@@ -100,18 +167,30 @@ export function StoryBeat({
           body: JSON.stringify({ sessionId, beatIndex, chunkIndex }),
           signal: controller.signal,
         });
-      } catch (caught) {
-        if (cancelled || (caught as Error).name === "AbortError") return;
-        setFailure("connection");
+      } catch {
+        if (
+          cancelled ||
+          (controller.signal.aborted && !deliveryTimedOut)
+        ) {
+          return;
+        }
+        failDelivery("connection");
         return;
       }
 
       if (!response.ok || !response.body) {
-        if (!cancelled) setFailure(failureFromStatus(response.status));
+        failDelivery(beatFailureFromStatus(response.status));
         return;
       }
 
-      const headerNext = parseNextStep(response.headers.get("x-onward-next"));
+      const headerNext = parseStoryAdvance(
+        response.headers.get("x-onward-next"),
+      );
+      if (headerNext === null) {
+        void response.body.cancel().catch(() => undefined);
+        failDelivery("generic");
+        return;
+      }
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       try {
@@ -121,20 +200,32 @@ export function StoryBeat({
           if (streamEnded) break;
           const chunk = decoder.decode(value, { stream: true });
           if (chunk.length > 0) {
+            stopLoading();
             setFullText((previous) => previous + chunk);
           }
         }
         const lastChunk = decoder.decode();
         if (lastChunk.length > 0) {
+          stopLoading();
           setFullText((previous) => previous + lastChunk);
         }
         if (!cancelled) {
+          stopLoading();
+          window.clearTimeout(deliveryTimer);
+          deliveryInFlightRef.current = false;
+          setDeliveryPending(false);
           setNextStep(headerNext);
           setStreamDone(true);
+          setAnnouncement("Passage ready.");
         }
-      } catch (caught) {
-        if (cancelled || (caught as Error).name === "AbortError") return;
-        setFailure("connection");
+      } catch {
+        if (
+          cancelled ||
+          (controller.signal.aborted && !deliveryTimedOut)
+        ) {
+          return;
+        }
+        failDelivery("connection");
       }
     }
 
@@ -142,9 +233,68 @@ export function StoryBeat({
 
     return () => {
       cancelled = true;
+      window.clearTimeout(loadingTimer);
+      window.clearTimeout(deliveryTimer);
+      deliveryInFlightRef.current = false;
       controller.abort();
     };
-  }, [sessionId, beatIndex, chunkIndex]);
+  }, [sessionId, beatIndex, chunkIndex, deliveryAttempt]);
+
+  useEffect(() => {
+    return () => acknowledgementControllerRef.current?.abort();
+  }, []);
+
+  useEffect(() => {
+    if (!failure) return;
+    const frame = requestAnimationFrame(() => failureRef.current?.focus());
+    return () => cancelAnimationFrame(frame);
+  }, [failure]);
+
+  // The complete stored passage is already committed to the DOM (including
+  // its height-reserving hidden tail). Two frames allow layout/paint before we
+  // stop the transition clock; the optional word reveal is deliberately not
+  // part of the latency SLO.
+  useEffect(() => {
+    if (
+      presentationReportedRef.current ||
+      presentationStartedAt === null ||
+      !presentationVisible ||
+      !streamDone ||
+      fullText.length === 0 ||
+      failure
+    ) {
+      return;
+    }
+    let firstFrame = 0;
+    let secondFrame = 0;
+    firstFrame = requestAnimationFrame(() => {
+      secondFrame = requestAnimationFrame(() => {
+        if (presentationReportedRef.current) return;
+        const latencyBucket = elapsedLatencyBucket(presentationStartedAt);
+        if (!latencyBucket) return;
+        presentationReportedRef.current = true;
+        void sendPassagePresented({
+          sessionId,
+          beatIndex,
+          chunkIndex,
+          latencyBucket,
+        });
+      });
+    });
+    return () => {
+      cancelAnimationFrame(firstFrame);
+      cancelAnimationFrame(secondFrame);
+    };
+  }, [
+    beatIndex,
+    chunkIndex,
+    failure,
+    fullText,
+    presentationStartedAt,
+    presentationVisible,
+    sessionId,
+    streamDone,
+  ]);
 
   // Reveal pacing: a local timer walks revealedCount toward the buffered token
   // count. It pauses when caught up (no-op until more text lands) and stops once
@@ -223,31 +373,75 @@ export function StoryBeat({
     };
   }, [canSkip, handleSkip]);
 
+  function handleDeliveryRetry() {
+    if (deliveryInFlightRef.current) return;
+    deliveryInFlightRef.current = true;
+    setFailure(null);
+    setDeliveryPending(true);
+    setAnnouncement("Trying to bring the passage back.");
+    setDeliveryAttempt((current) => current + 1);
+  }
+
   async function handleAdvance() {
-    if (advancing || nextStep === null || !revealComplete) return;
+    if (advancingRef.current || nextStep === null || !revealComplete) return;
+    advancingRef.current = true;
     setAdvancing(true);
-    const result = await acknowledgeBeat({
+    setFailure(null);
+    setAnnouncement("Saving your place.");
+    const startedAt = monotonicEpochMs();
+    const controller = new AbortController();
+    acknowledgementControllerRef.current = controller;
+    let acknowledgementTimedOut = false;
+    const acknowledgementTimer = window.setTimeout(() => {
+      acknowledgementTimedOut = true;
+      controller.abort();
+    }, ACKNOWLEDGEMENT_TIMEOUT_MS);
+    const acknowledged = await acknowledgeStoryPassage({
       sessionId,
       beatIndex,
       chunkIndex,
-      fallbackNext: nextStep,
+      signal: controller.signal,
     });
-    if (!result.ok) {
-      setFailure(result.failure);
+    window.clearTimeout(acknowledgementTimer);
+    if (controller.signal.aborted && !acknowledgementTimedOut) return;
+    acknowledgementControllerRef.current = null;
+
+    if (!acknowledged.ok) {
+      advancingRef.current = false;
       setAdvancing(false);
+      setFailure({ kind: acknowledged.kind, phase: "acknowledgement" });
+      setAnnouncement("");
       return;
     }
-    if (result.next === "end") {
-      setEnded(true);
+
+    if (acknowledged.next === "end") {
+      if (endReportedRef.current) return;
+      endReportedRef.current = true;
+      setNextStep(null);
+      setAdvancing(false);
+      setAnnouncement("Story finished.");
       onEndRef.current();
       return;
     }
-    onComplete(result.next);
+    onComplete(acknowledged.next, startedAt);
   }
 
   return (
     <div className="space-y-8">
-      <div>
+      <p
+        className="sr-only"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        {announcement}
+      </p>
+
+      {showLoading && deliveryPending && fullText.length === 0 && !failure ? (
+        <PassageLoading />
+      ) : null}
+
+      <div aria-busy={deliveryPending}>
         <p className="whitespace-pre-wrap">
           {revealedText}
           {showCaret ? (
@@ -265,40 +459,90 @@ export function StoryBeat({
         <button
           type="button"
           onClick={handleSkip}
-          className="font-ui text-xs tracking-wide text-[var(--color-ink-soft)] underline decoration-[var(--color-ink-soft)]/40 underline-offset-4 hover:text-[var(--color-ink)]"
+          className="-mx-2 inline-flex min-h-11 items-center px-2 font-ui text-xs tracking-wide text-[var(--color-ink-soft)] underline decoration-[var(--color-ink-soft)]/40 underline-offset-4 hover:text-[var(--color-ink)]"
         >
           Show full passage
         </button>
       ) : null}
 
-      {failure ? <BeatFailure kind={failure} /> : null}
+      {failure ? (
+        <div
+          ref={failureRef}
+          tabIndex={-1}
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+          className="outline-none"
+        >
+          <BeatFailure
+            failure={failure}
+            advanceLabel={nextStep === "end" ? "Finish story" : "Continue"}
+            onRetry={
+              failure.phase === "delivery"
+                ? handleDeliveryRetry
+                : handleAdvance
+            }
+          />
+        </div>
+      ) : null}
 
       {/* Progress changes only after the complete passage is visible and the
           reader deliberately acknowledges it. Clicking anywhere or pressing space
           skips the animation, which is what makes this button appear. */}
-      {!failure && !ended && revealComplete && nextStep !== null ? (
+      {!failure && revealComplete && nextStep !== null ? (
         <button
           type="button"
           onClick={handleAdvance}
           disabled={advancing}
-          className={`font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors ${
+          className={`min-h-11 font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors ${
             advancing
               ? "pointer-events-none opacity-40"
               : "hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]"
           }`}
         >
-          {nextStep === "end" ? "Finish story" : "Continue"}
+          {advancing
+            ? "Saving…"
+            : nextStep === "end"
+              ? "Finish story"
+              : "Continue"}
         </button>
       ) : null}
     </div>
   );
 }
 
-function BeatFailure({ kind }: { kind: FailureKind }) {
-  const actionClass =
-    "inline-block font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]";
+function PassageLoading() {
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className="space-y-4 text-[var(--color-ink-soft)]"
+    >
+      <p className="font-ui text-sm">Bringing the next passage into view…</p>
+      <div aria-hidden="true" className="space-y-3 opacity-30">
+        <div className="h-px w-full bg-[var(--color-ink-soft)]" />
+        <div className="h-px w-5/6 bg-[var(--color-ink-soft)]" />
+        <div className="h-px w-2/3 bg-[var(--color-ink-soft)]" />
+      </div>
+    </div>
+  );
+}
 
-  if (kind === "notfound") {
+function BeatFailure({
+  failure,
+  advanceLabel,
+  onRetry,
+}: {
+  failure: BeatFailure;
+  advanceLabel: "Continue" | "Finish story";
+  onRetry: () => void;
+}) {
+  const { kind, phase } = failure;
+  const actionClass =
+    "inline-flex min-h-11 items-center font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]";
+
+  const recovery = beatFailureRecovery(kind);
+  if (recovery === "restart") {
     return (
       <div className="space-y-3">
         <p className="font-ui text-sm text-[var(--color-accent)]">
@@ -311,91 +555,51 @@ function BeatFailure({ kind }: { kind: FailureKind }) {
     );
   }
 
-  const message =
-    kind === "conflict"
-      ? "We lost your place for a moment."
-      : kind === "connection"
-        ? "The connection dropped."
-        : "This beat could not be loaded.";
+  if (recovery === "reload") {
+    return (
+      <div className="space-y-3">
+        <p className="font-ui text-sm text-[var(--color-accent)]">
+          This story moved forward somewhere else. Reload to continue from its
+          saved place.
+        </p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className={actionClass}
+        >
+          Reload saved place
+        </button>
+      </div>
+    );
+  }
+
+  const message = retryMessage(failure);
+  const retryLabel =
+    phase === "delivery" ? "Try passage again" : `Try ${advanceLabel} again`;
 
   return (
     <div className="space-y-3">
       <p className="font-ui text-sm text-[var(--color-accent)]">{message}</p>
       <button
         type="button"
-        onClick={() => window.location.reload()}
+        onClick={onRetry}
         className={actionClass}
       >
-        Refresh
+        {retryLabel}
       </button>
     </div>
   );
 }
 
-function failureFromStatus(status: number): FailureKind {
-  if (status === 404) return "notfound";
-  if (status === 409) return "conflict";
-  return "generic";
-}
-
-type AcknowledgeBeatInput = {
-  sessionId: string;
-  beatIndex: number;
-  chunkIndex: number;
-  fallbackNext: StoryAdvance;
-  signal?: AbortSignal;
-};
-
-// Distinguishes why an ack failed so the reader sees the right recovery copy:
-// a dropped connection is not "we lost your place", and a 404 means the story
-// itself is gone, not the position.
-type AcknowledgeBeatResult =
-  | { ok: true; next: StoryAdvance }
-  | { ok: false; failure: FailureKind };
-
-async function acknowledgeBeat({
-  sessionId,
-  beatIndex,
-  chunkIndex,
-  fallbackNext,
-  signal,
-}: AcknowledgeBeatInput): Promise<AcknowledgeBeatResult> {
-  let response: Response;
-  try {
-    response = await fetch("/api/beat/ack", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ sessionId, beatIndex, chunkIndex }),
-      signal,
-    });
-  } catch {
-    return { ok: false, failure: "connection" };
+function retryMessage({ kind, phase }: BeatFailure): string {
+  if (phase === "acknowledgement") {
+    if (kind === "connection") {
+      return "Your place may already be saved, but the response did not make it back.";
+    }
+    return "We could not confirm your saved place just yet.";
   }
-
-  if (!response.ok) {
-    return { ok: false, failure: failureFromStatus(response.status) };
+  if (kind === "connection") {
+    return "The connection dropped before this passage arrived.";
   }
-
-  let body: unknown;
-  try {
-    body = await response.json();
-  } catch {
-    return { ok: true, next: fallbackNext };
-  }
-
-  if (body !== null && typeof body === "object" && "next" in body) {
-    return {
-      ok: true,
-      next: parseNextStep((body as { next: unknown }).next, fallbackNext),
-    };
-  }
-
-  return { ok: true, next: fallbackNext };
-}
-
-function parseNextStep(value: unknown, fallback: StoryAdvance = "end"): StoryAdvance {
-  if (value === "chunk" || value === "beat" || value === "end") {
-    return value;
-  }
-  return fallback;
+  return "This passage is taking longer than it should.";
 }

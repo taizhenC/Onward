@@ -9,6 +9,11 @@ import {
   type ResonanceFeedbackPresentation,
   type ResonanceMissReason,
 } from "@/lib/resonance-feedback-types";
+import {
+  bindFirstContentStory,
+  clearFirstContentRequestStarted,
+  markFirstContentRequestStarted,
+} from "@/lib/story-visibility-client";
 
 type Props = {
   sessionId: string;
@@ -181,6 +186,7 @@ export function ResonanceFeedbackCard({
 
   async function requestAlternate(offer: AlternateStoryOffer) {
     if (offer.status === "ready") {
+      clearFirstContentRequestStarted();
       router.push(`/story/${offer.sessionId}`);
       return;
     }
@@ -188,12 +194,23 @@ export function ResonanceFeedbackCard({
     submittingRef.current = true;
     setAlternateAction({ kind: "preparing" });
     try {
+      markFirstContentRequestStarted();
       const response = await fetch("/api/story-feedback/alternate", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ sessionId, token: offer.token }),
       });
       const body: unknown = await response.json().catch(() => null);
+      if (response.ok && isReadyResponse(body)) {
+        bindFirstContentStory(body.sessionId);
+        setAcceptedMissOffer(
+          { status: "ready", sessionId: body.sessionId },
+          true,
+        );
+        router.push(`/story/${body.sessionId}`);
+        return;
+      }
+      clearFirstContentRequestStarted();
       if (response.status === 202 && hasStatus(body, "preparing")) {
         setAlternateActionWithFocus({
           kind: "waiting",
@@ -201,14 +218,6 @@ export function ResonanceFeedbackCard({
           message:
             "Another request is already preparing this story. You can check again shortly.",
         });
-        return;
-      }
-      if (response.ok && isReadyResponse(body)) {
-        setAcceptedMissOffer(
-          { status: "ready", sessionId: body.sessionId },
-          true,
-        );
-        router.push(`/story/${body.sessionId}`);
         return;
       }
       if (response.ok && hasStatus(body, "unavailable")) {
@@ -237,6 +246,7 @@ export function ResonanceFeedbackCard({
         message: "Another story could not be prepared right now. Please try again.",
       });
     } catch {
+      clearFirstContentRequestStarted();
       setAlternateAction({
         kind: "error",
         message: "Another story could not be prepared right now. Please try again.",

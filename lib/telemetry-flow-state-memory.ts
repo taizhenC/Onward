@@ -153,6 +153,15 @@ export function isMemoryTelemetryFlowRevoked(flowId: TelemetryFlowId): boolean {
   return revocations.has(flowId);
 }
 
+export function listMemoryTelemetryFlowIdsForUser(
+  userId: string,
+): TelemetryFlowId[] {
+  pruneMemoryTelemetryFlowState();
+  return [...flows.values()]
+    .filter((flow) => flow.userId === userId)
+    .map((flow) => flow.flowId);
+}
+
 export function pruneMemoryTelemetryFlowState(now = Date.now()): void {
   for (const [flowId, flow] of flows) {
     if (Date.parse(flow.expiresAt) <= now) {

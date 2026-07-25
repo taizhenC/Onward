@@ -18,6 +18,11 @@ import {
   validateStoredStoryArtifact,
 } from "../lib/story-artifact";
 import { getStoryPlayback } from "../lib/story-playback";
+import {
+  deriveStoryPassageLayout,
+  parseBeatPositionRequest,
+} from "../lib/story-progress";
+import { prepareStoryProgressTelemetry } from "../lib/story-progress-telemetry";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import { MATCH_LIMITS } from "../lib/rate-limit";
@@ -546,20 +551,38 @@ async function runAtomicProgressAssertion(): Promise<AssertionResult> {
     return { name, ok: false, detail: "intake did not create a progress session" };
   }
 
+  const owned = await getOwnedSession(result.sessionId, PROGRESS_CTX.userId);
+  const playback = owned ? await getStoryPlayback(owned) : null;
+  const layout = playback
+    ? deriveStoryPassageLayout(playback.beats, {
+        beatIndex: 0,
+        chunkIndex: 0,
+      })
+    : null;
+  if (!owned || !layout) {
+    return { name, ok: false, detail: "progress artifact was unavailable" };
+  }
+  const telemetry = await prepareStoryProgressTelemetry({
+    session: owned,
+    userId: PROGRESS_CTX.userId,
+    layout,
+  });
+
   const input = {
     sessionId: result.sessionId,
     userId: PROGRESS_CTX.userId,
+    storyArtifactId: owned.storyArtifactId,
+    telemetry,
     expectedBeatIndex: 0,
     expectedChunkIndex: 0,
-    nextBeatIndex: 0,
-    nextChunkIndex: 1,
+    nextBeatIndex: layout.nextBeatIndex,
+    nextChunkIndex: layout.nextChunkIndex,
   } as const;
   const first = await acknowledgeOwnedSessionPosition(input);
   const repeated = await acknowledgeOwnedSessionPosition(input);
   const stale = await acknowledgeOwnedSessionPosition({
     ...input,
-    nextBeatIndex: 1,
-    nextChunkIndex: 0,
+    nextBeatIndex: layout.nextBeatIndex + 1,
   });
   const foreign = await acknowledgeOwnedSessionPosition({
     ...input,
@@ -572,8 +595,8 @@ async function runAtomicProgressAssertion(): Promise<AssertionResult> {
     repeated !== "already_advanced" ||
     stale !== "conflict" ||
     foreign !== "not_found" ||
-    session?.nextBeatIndex !== 0 ||
-    session.nextChunkIndex !== 1
+    session?.nextBeatIndex !== layout.nextBeatIndex ||
+    session.nextChunkIndex !== layout.nextChunkIndex
   ) {
     return {
       name,
@@ -634,38 +657,23 @@ function runApprovedRecipeAssertion(): AssertionResult {
     "development",
   );
   const productionMode = resolveRetrievalMode("keyword", "production");
-  let autoRejected = false;
-  let facetsRagRejected = false;
-  let unknownRejected = false;
-  try {
-    resolveRetrievalMode("auto", "production");
-  } catch {
-    autoRejected = true;
-  }
-  try {
-    resolveRetrievalMode("facetsrag", "production");
-  } catch {
-    facetsRagRejected = true;
-  }
-  try {
-    resolveRetrievalMode("unexpected-mode", "production");
-  } catch {
-    unknownRejected = true;
-  }
+  const staleAuto = resolveRetrievalMode("auto", "production");
+  const staleFacets = resolveRetrievalMode("facetsrag", "production");
+  const staleUnknown = resolveRetrievalMode("unexpected-mode", "production");
 
   const ok =
     defaultMode === APPROVED_PRODUCTION_RECIPE.retrievalMode &&
     developmentChallenger === "facetsrag" &&
     productionMode === "keyword" &&
-    autoRejected &&
-    facetsRagRejected &&
-    unknownRejected;
+    staleAuto === "keyword" &&
+    staleFacets === "keyword" &&
+    staleUnknown === "keyword";
   return {
     name,
     ok,
     detail: ok
-      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production challengers rejected`
-      : `default=${defaultMode}, developmentChallenger=${developmentChallenger}, production=${productionMode}, autoRejected=${autoRejected}, facetsRagRejected=${facetsRagRejected}, unknownRejected=${unknownRejected}`,
+      ? `${APPROVED_PRODUCTION_RECIPE.recipeId}; production behavior is selector-owned`
+      : `default=${defaultMode}, developmentChallenger=${developmentChallenger}, production=${productionMode}, stale=${staleAuto}/${staleFacets}/${staleUnknown}`,
   };
 }
 
@@ -1152,6 +1160,35 @@ function printOverTriggerMap(): void {
   }
 }
 
+function runProgressInputAssertion(): AssertionResult {
+  const valid = parseBeatPositionRequest({
+    sessionId: "safe-position",
+    beatIndex: 0,
+    chunkIndex: 1,
+  });
+  const unsafeBeat = parseBeatPositionRequest({
+    sessionId: "unsafe-beat-position",
+    beatIndex: Number.MAX_SAFE_INTEGER + 1,
+    chunkIndex: 0,
+  });
+  const unsafeChunk = parseBeatPositionRequest({
+    sessionId: "unsafe-chunk-position",
+    beatIndex: 0,
+    chunkIndex: Number.MAX_SAFE_INTEGER + 1,
+  });
+  const ok =
+    !("error" in valid) &&
+    "error" in unsafeBeat &&
+    "error" in unsafeChunk;
+  return {
+    name: "progress coordinates: unsafe integers are rejected",
+    ok,
+    detail: ok
+      ? "valid=accepted, unsafe beat/chunk=rejected"
+      : `valid=${JSON.stringify(valid)}, unsafeBeat=${JSON.stringify(unsafeBeat)}, unsafeChunk=${JSON.stringify(unsafeChunk)}`,
+  };
+}
+
 async function main(): Promise<void> {
   const assertions: AssertionResult[] = [
     await runMatchAssertion(
@@ -1181,6 +1218,7 @@ async function main(): Promise<void> {
     await runArtifactPersistenceAssertion(),
     await runLegacyPlaybackAssertion(),
     await runAtomicProgressAssertion(),
+    runProgressInputAssertion(),
     await runStoryCreationKillSwitchAssertion(),
     runApprovedRecipeAssertion(),
     await runPublishedEligibilityAssertion(),

@@ -28,6 +28,11 @@ import {
 } from "@/lib/intake-constraints";
 import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
 import type { TelemetryFlowId } from "@/lib/telemetry-types";
+import {
+  bindFirstContentStory,
+  clearFirstContentRequestStarted,
+  markFirstContentRequestStarted,
+} from "@/lib/story-visibility-client";
 
 type MatchSuccess = { sessionId: string };
 type MatchCrisis = { crisis: true; resources: CrisisResource[] };
@@ -111,6 +116,7 @@ export function IntakeForm({
   const feelingRef = useRef<HTMLTextAreaElement>(null);
   const flowConflictRef = useRef<HTMLAnchorElement>(null);
   const submittingRef = useRef(false);
+  const intakeStartedRef = useRef(false);
 
   useEffect(() => {
     if (flowConflict) flowConflictRef.current?.focus();
@@ -133,6 +139,21 @@ export function IntakeForm({
     event.preventDefault();
     if (noCloseMatch || flowConflict) return;
     await submitMatch(false);
+  }
+
+  function markIntakeStarted(event: React.FormEvent<HTMLFormElement>) {
+    if (
+      intakeStartedRef.current ||
+      !telemetryFlowId ||
+      !event.nativeEvent.isTrusted
+    ) {
+      return;
+    }
+    intakeStartedRef.current = true;
+    const viewportBucket = window.matchMedia("(max-width: 767px)").matches
+      ? "small"
+      : "large";
+    void sendIntakeStarted(telemetryFlowId, viewportBucket);
   }
 
   async function submitMatch(acceptAdjacent: boolean) {
@@ -172,6 +193,9 @@ export function IntakeForm({
         "content-type": "application/json",
       };
       if (telemetryFlowId) headers[TELEMETRY_FLOW_HEADER] = telemetryFlowId;
+      // Overwrite before every dispatch so a 401/auth retry measures from the
+      // request the server ultimately accepts, not from the rejected attempt.
+      markFirstContentRequestStarted();
       return fetch("/api/match", { method: "POST", headers, body });
     };
     try {
@@ -182,6 +206,7 @@ export function IntakeForm({
         response = await postMatch();
       }
     } catch {
+      clearFirstContentRequestStarted();
       setError("The connection dropped. Please try again.");
       finishSubmitting();
       return;
@@ -191,6 +216,7 @@ export function IntakeForm({
     try {
       payload = (await response.json()) as MatchPayload;
     } catch {
+      clearFirstContentRequestStarted();
       setError(
         response.ok
           ? "Couldn't read the response."
@@ -198,6 +224,13 @@ export function IntakeForm({
       );
       finishSubmitting();
       return;
+    }
+
+    // A timestamp survives only for a successful story navigation. Crisis,
+    // recovery, rate-limit, conflict, and failure paths cannot leak a stale
+    // measurement into a later saved-story visit.
+    if (!(response.ok && "sessionId" in payload)) {
+      clearFirstContentRequestStarted();
     }
 
     if (response.status === 409 || "flowConflict" in payload) {
@@ -265,6 +298,7 @@ export function IntakeForm({
       return;
     }
     if ("sessionId" in payload) {
+      bindFirstContentStory(payload.sessionId);
       router.push(`/story/${payload.sessionId}`);
       return;
     }
@@ -334,6 +368,7 @@ export function IntakeForm({
   return (
     <motion.form
       onSubmit={handleSubmit}
+      onChange={markIntakeStarted}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -403,7 +438,9 @@ export function IntakeForm({
           {feelingLength}/{INTAKE_MAX_FEELING_LENGTH}
         </span>
         <span className="block text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          What you write stays private and is not repeated back in the story.
+          What you write is used to find and shape one story. It may be processed
+          by our model providers and is removed from your saved session after 60
+          days. It is not repeated back in the story.
         </span>
       </label>
 
@@ -677,4 +714,32 @@ export function IntakeForm({
       ) : null}
     </motion.form>
   );
+}
+
+async function sendIntakeStarted(
+  flowId: TelemetryFlowId,
+  viewportBucket: "small" | "large",
+): Promise<void> {
+  const request = () =>
+    fetch("/api/telemetry/intake-started", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        [TELEMETRY_FLOW_HEADER]: flowId,
+      },
+      body: JSON.stringify({ viewportBucket }),
+      cache: "no-store",
+      keepalive: true,
+    });
+  try {
+    const response = await request();
+    if (response.ok) return;
+    await request();
+  } catch {
+    try {
+      await request();
+    } catch {
+      // Visibility telemetry never changes form behavior.
+    }
+  }
 }

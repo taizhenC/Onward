@@ -1,7 +1,7 @@
 import "server-only";
 import { getOwnedSession } from "./session";
 import { getOwnedStoryArtifact } from "./story-artifacts";
-import { matchForIntake } from "./matching";
+import { matchForIntake, resolveRetrievalMode } from "./matching";
 import { storySpecStageKey } from "./story-spec-repository";
 import {
   loadEligibleStoryCatalog,
@@ -10,6 +10,7 @@ import {
 } from "./story-generation";
 import {
   claimAlternateStoryFlow,
+  completeAlternateStoryExpired,
   completeAlternateStoryReady,
   completeAlternateStoryUnavailable,
   isAlternateStoryTokenValid,
@@ -20,6 +21,13 @@ import {
 import type { AlternateStoryRequest } from "./alternate-story-request";
 import type { IntakeMatchResult } from "./matching";
 import type { PreparedStory } from "./story-generation";
+import {
+  matchCompletedEvent,
+  noEligibleMatchCompletedEvent,
+  recordLinkedProductEventBestEffort,
+} from "./telemetry-producers";
+import { assertProductionStoryRecipeRuntime } from "./story-recipe";
+import { assertProductionStoryRecipeRegistered } from "./story-recipe-registration";
 
 export type CreateAlternateStoryResult =
   | { status: "ready"; sessionId: string }
@@ -86,6 +94,16 @@ export async function createAlternateStory(
     return { status: "temporarily_unavailable" };
   }
 
+  // Validate before acquiring the alternate lease or running retrieval. A
+  // configuration incident must not consume an attempt or write flow state;
+  // already-ready results and the kill-switch replay above remain readable.
+  try {
+    const runtime = assertProductionStoryRecipeRuntime();
+    await assertProductionStoryRecipeRegistered(runtime);
+  } catch {
+    return { status: "temporarily_unavailable" };
+  }
+
   let claimResult;
   try {
     claimResult = await claimAlternateStoryFlow({
@@ -136,10 +154,18 @@ export async function createAlternateStory(
     return { status: "temporarily_unavailable" };
   }
   if (session.disclosureExpiresAt <= Date.now()) {
-    await releaseQuietly(userId, claim);
-    return { status: "expired" };
+    return finishExpired(userId, claim);
   }
   if (catalogResult.status === "no_eligible") {
+    try {
+      await recordLinkedProductEventBestEffort(
+        noEligibleMatchCompletedEvent(resolveRetrievalMode(), "alternate"),
+        claim.telemetryFlowId,
+      );
+    } catch {
+      await releaseQuietly(userId, claim);
+      return { status: "temporarily_unavailable" };
+    }
     return finishUnavailable(userId, claim);
   }
 
@@ -156,12 +182,28 @@ export async function createAlternateStory(
     return { status: "temporarily_unavailable" };
   }
   if (session.disclosureExpiresAt <= Date.now()) {
-    await releaseQuietly(userId, claim);
-    return { status: "expired" };
+    return finishExpired(userId, claim);
   }
   // A degraded provider/reranker path is operationally retryable. It must not
   // be recorded as evidence that the library has no suitable alternative.
   if (matchResult.chosenBy === "keyword_fallback") {
+    await releaseQuietly(userId, claim);
+    return { status: "temporarily_unavailable" };
+  }
+  try {
+    await recordLinkedProductEventBestEffort(
+      matchCompletedEvent({
+        result: matchResult,
+        disposition:
+          matchResult.confidence === "low"
+            ? "no_close_match"
+            : "adjacent_match",
+        storyRole: "alternate",
+        boundaries,
+      }),
+      claim.telemetryFlowId,
+    );
+  } catch {
     await releaseQuietly(userId, claim);
     return { status: "temporarily_unavailable" };
   }
@@ -202,6 +244,20 @@ export async function createAlternateStory(
       artifact: prepared.artifact,
     });
     return { status: "ready", sessionId: resultSessionId };
+  } catch {
+    await releaseQuietly(userId, claim);
+    return { status: "temporarily_unavailable" };
+  }
+}
+
+async function finishExpired(
+  userId: string,
+  claim: ClaimedAlternateStoryFlow,
+): Promise<CreateAlternateStoryResult> {
+  try {
+    return (await completeAlternateStoryExpired(userId, claim))
+      ? { status: "expired" }
+      : { status: "temporarily_unavailable" };
   } catch {
     await releaseQuietly(userId, claim);
     return { status: "temporarily_unavailable" };

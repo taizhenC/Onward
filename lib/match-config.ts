@@ -1,27 +1,44 @@
 import type { Confidence, FacetType, Framing, RetrievalMode } from "./types";
+import {
+  MATCH_CONFIG_IMPLEMENTATION_VERSION,
+} from "./match-recipe-constants";
+export { RERANK_TRUST_GATE } from "./match-recipe-constants";
+import {
+  assertProductionStoryRecipeRuntime,
+  getStoryRecipeById,
+  PRIMARY_STORY_RECIPE,
+  ROLLBACK_STORY_RECIPE,
+  type StoryRecipeManifest,
+} from "./story-recipe";
 
-export const matchConfigVersion = "figure-library-50-2026-07-02";
+export const matchConfigVersion = MATCH_CONFIG_IMPLEMENTATION_VERSION;
 
 // The one recipe approved by the latest 50-figure holdout. FacetsRAG remains a
 // challenger: its latest run regressed below keyword and produced definitive
 // wrong matches. Public production must name a deliberate, approved path rather
 // than resolving `auto` according to whichever provider happens to be configured.
-export const APPROVED_PRODUCTION_RECIPE = {
-  recipeId: "keyword-rerank-figure-library-50-2026-07-02",
-  retrievalMode: "keyword",
-  matchConfigVersion,
-  datasetVersion: "match-104-2026-07-02",
-} as const;
+export const APPROVED_PRODUCTION_RECIPE = PRIMARY_STORY_RECIPE;
+export const ROLLBACK_PRODUCTION_RECIPE = ROLLBACK_STORY_RECIPE;
+export const FACETSRAG_CHALLENGER_RECIPE = requiredChallengerRecipe();
 
 export function requireApprovedProductionRecipe(
   retrievalMode: RetrievalMode,
-): typeof APPROVED_PRODUCTION_RECIPE {
-  if (retrievalMode !== APPROVED_PRODUCTION_RECIPE.retrievalMode) {
+): StoryRecipeManifest {
+  const recipe = assertProductionStoryRecipeRuntime().recipe;
+  if (retrievalMode !== recipe.retrievalMode) {
     throw new Error(
       `Retrieval path ${retrievalMode} is not approved for story creation.`,
     );
   }
-  return APPROVED_PRODUCTION_RECIPE;
+  return recipe;
+}
+
+function requiredChallengerRecipe(): StoryRecipeManifest {
+  const recipe = getStoryRecipeById(
+    "facetsrag-rerank-figure-library-50-2026-07-02",
+  );
+  if (!recipe) throw new Error("Story recipe registry is incomplete.");
+  return recipe;
 }
 
 // ── Retention TTLs (CLAUDE.md: TTLs live here, version-stamped — not as magic numbers in
@@ -38,16 +55,7 @@ export const AGE_TOLERANCE_YEARS = 10;
 
 export const PARTIAL_FRAMING_THRESHOLD = 1;
 
-export const RERANK_TOP_K = 6;
-
-export const RERANK_TRUST_GATE = {
-  minCoverage: 0.95,
-  minRerankTop1: 0.971,
-  minOverallTop1: 0.971,
-  minMissDetection: 1,
-  maxDefinitiveWrong: 0,
-  maxHardConfusion: 0,
-} as const;
+export const RERANK_TOP_K = APPROVED_PRODUCTION_RECIPE.rerankTopK;
 
 // Confidence → framing. Only "definitive" | "partial" crosses the wire (CLAUDE.md:
 // the client never sees the underlying confidence). ONLY a "high"-confidence pick is
@@ -129,7 +137,7 @@ export const AGE_SLOPE = 0.02;
 // 50-figure library (2026-07-02 eval): with 12 candidates the rerank regressed on previously
 // green cases (lee definitive-wrongs, butler smoke leak); at 8 the choice set matches the
 // keyword path's proven regime while Stage B gold survival stays 100% (eval-retrieval).
-export const FACETSRAG_TOP_K = 8;
+export const FACETSRAG_TOP_K = FACETSRAG_CHALLENGER_RECIPE.rerankTopK;
 
 // Lowercase substring → theme tags. A figure earns one point per matched keyword whose theme tag
 // is in the figure's themes[]. Drives the keyword-hybrid scorer/fallback AND (via the exported

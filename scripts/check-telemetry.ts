@@ -290,7 +290,7 @@ function checkExactSchemas(): void {
 }
 
 function checkEnvelopeAndRetention(): void {
-  const now = new Date("2026-07-12T12:00:00.000Z");
+  const now = new Date();
   validEvents.forEach((event) => {
     const record = createProductEventRecord({
       event,
@@ -534,7 +534,7 @@ function checkGenerationSchema(): void {
 
 function checkMemoryStore(): void {
   assert.notEqual(registerMemoryTelemetryFlow(flowId), "revoked");
-  const now = new Date("2026-07-12T12:00:00.000Z");
+  const now = new Date();
   const event = createProductEventRecord({
     eventId: createTelemetryEventId(),
     flowId,
@@ -583,11 +583,10 @@ function checkMemoryStore(): void {
 
   const expired = createProductEventRecord({
     eventId: createTelemetryEventId(),
-    flowId: createTelemetryFlowId(),
-    event: { event: "intake_submitted" },
+    flowId: null,
+    event: { event: "crisis_intercepted" },
     now: new Date("2025-01-01T00:00:00.000Z"),
   });
-  assert.notEqual(registerMemoryTelemetryFlow(expired.flowId!), "revoked");
   assert.equal(appendMemoryProductEvent(expired), "created");
   pruneMemoryTelemetry(Date.parse("2025-02-01T00:00:00.001Z"));
   assert(!listMemoryProductEvents().some((item) => item.eventId === expired.eventId));
@@ -596,12 +595,13 @@ function checkMemoryStore(): void {
 function checkMetricFixture(): void {
   const flowA = createTelemetryFlowId();
   const flowB = createTelemetryFlowId();
+  const now = new Date();
   const record = (flow: typeof flowA, event: ProductEvent): ProductEventRecord =>
     createProductEventRecord({
       eventId: createTelemetryEventId(),
       flowId: flow,
       event,
-      now: new Date("2026-07-12T12:00:00.000Z"),
+      now,
     });
   const records = [
     record(flowA, { event: "artifact_created", recipeId, storyRole: "initial", compositionMode: "hybrid", fallbackReason: "none", attemptBucket: "first" }),
@@ -832,6 +832,10 @@ function checkDatabaseAndStaticPrivacyContract(): void {
     resolve("supabase/migrations/0010_privacy_safe_telemetry.sql"),
     "utf8",
   );
+  const recipeMigration = readFileSync(
+    resolve("supabase/migrations/0020_story_recipe_registry.sql"),
+    "utf8",
+  );
   const types = readFileSync(resolve("lib/telemetry-types.ts"), "utf8");
   assert(!/^\s*\w+\s+jsonb\b/gim.test(migration), "telemetry SQL has a JSONB column");
   assert(!/^\s*(payload|properties|metadata|message|text|error|exception)\s+/gim.test(migration));
@@ -845,12 +849,23 @@ function checkDatabaseAndStaticPrivacyContract(): void {
   assert.match(migration, /interval '14 days'/);
   assert.match(migration, /delete_expired_telemetry/);
   assert.match(migration, /set_telemetry_retention_window/);
-  const sqlRecipeIds = [...migration.matchAll(/recipe_id\s*=\s*'([^']+)'/g)]
-    .map((match) => match[1]);
-  assert.equal(sqlRecipeIds.length, 2, "SQL recipe constraints changed shape");
-  assert(
-    sqlRecipeIds.every((candidate) => candidate === recipeId),
-    "SQL recipe differs from approved runtime recipe",
+  assert.match(
+    recipeMigration,
+    /alter table public\.product_events[\s\S]*drop constraint product_events_recipe_id_check/,
+  );
+  assert.match(
+    recipeMigration,
+    /alter table public\.generation_attempts[\s\S]*drop constraint generation_attempts_recipe_id_check/,
+  );
+  assert.match(
+    recipeMigration,
+    /foreign key \(recipe_id\) references public\.story_recipe_registry\(recipe_id\)/,
+    "final telemetry recipe IDs must reference the append-only registry",
+  );
+  assert.match(
+    recipeMigration,
+    new RegExp(`'${recipeId}'[\\s\\S]*?create or replace function public\\.is_registered_story_recipe_id_v1`),
+    "approved runtime recipe is not seeded before the telemetry allowlist helper",
   );
   const eventRegistry = /event_name text not null check \(event_name in \(([\s\S]*?)\)\),/.exec(
     migration,

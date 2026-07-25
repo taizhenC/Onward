@@ -1,6 +1,6 @@
 # Executive Summary
 
-**Status date:** July 13, 2026
+**Status date:** July 14, 2026
 **Authoritative delivery ledger:** [`implementation_status.md`](implementation_status.md)
 
 ## Executive conclusion
@@ -15,15 +15,20 @@ The stacked codebase has moved well beyond the original barebones MVP. It now
 has evidence-addressable story contracts, bounded personalization, honest weak-
 match recovery, story limits, source transparency, explicit progress writes,
 resonance feedback, one controlled alternate-story recovery, and a privacy-safe
-telemetry lifecycle with initial match-journey producers. Those are meaningful
-product and architecture advances.
+telemetry lifecycle with initial match-journey, durable reader-progress,
+bounded-feedback, alternate demand/match/artifact/terminal producers, and a
+privacy-safe landing-to-intake funnel. Migration `0017` now supplies a gated
+first-party Postgres dispatcher for identifier-free daily marginals without
+exporting raw rows; it installs disabled and exposes no dashboard read yet.
+Those are meaningful product and architecture advances.
 
 It is still **not a viable public release**. The current fifty-figure StorySpecs
 are review drafts rather than a researcher-approved launch set; end-to-end
-relatability has not been validated with target readers; reader/client telemetry,
-dispatch, dashboards, and alerts are not operating; browser accessibility and
+relatability has not been validated with target readers; the authored telemetry
+dispatcher has not been exercised in production, and cohort dashboards, alerts,
+and on-call ownership are not operating; browser accessibility and
 critical-flow evidence remain incomplete; and the configured Supabase project
-does not yet contain migrations `0004` through `0012`. Local green checks do not
+does not yet contain migrations `0004` through `0017`. Local green checks do not
 substitute for those editorial, safety, user-research, and production gates.
 
 ## What the product does
@@ -66,7 +71,7 @@ The current product loop is:
 | Resonance feedback and one alternate | Gives readers a recovery path and creates a closed, privacy-safe learning signal. |
 | Anonymous-first ownership and retention | Reduces the cost of being honest while keeping sessions private and time-bounded. |
 | Crisis-first safety boundary | Keeps emergency support independent of cookies, rate limits, database state, and providers. |
-| Typed telemetry lifecycle and initial producers | Captures closed intake/match/recovery/artifact milestones without storing disclosure, prompts, prose, or open-ended analytics payloads. |
+| Typed telemetry lifecycle, authoritative producers, and gated first-party rollups | Captures closed entry/auth/intake/match/recovery/artifact/reader/feedback/alternate milestones and provides a default-off atomic path to identifier-free UTC-day marginals without storing or exporting disclosure, prompts, prose, miss reasons, or open-ended analytics payloads. |
 
 ## Unique value proposition
 
@@ -143,10 +148,10 @@ and market-policy review is a public-release gate, not an implementation detail.
 | Content and factual integrity | Strong architecture, incomplete launch content | Research, review, and publish a real launch StorySpec subset with exact evidence. |
 | Matching | Promising but editorially benchmarked | Run a consented blind holdout and calibrate confidence/clarification with real disclosures. |
 | Personalization | Safely bounded, deliberately narrow | Prove the hybrid recipe improves relatability and tone without factual or privacy regression. |
-| Reader UX | Materially improved, not fully proven | Complete browser, keyboard, screen-reader, zoom, mobile, refresh, back, offline, and multi-tab evidence. |
+| Reader UX | Materially improved; desktop resilience evidenced | Desktop browser evidence now covers refresh, Back/Forward, timeout/reconnect, double-click, same/stale multi-tab, focus transitions, and the final coda. Real Postgres, representative-phone, zoom/reflow, keyboard-only, screen-reader, Supabase-auth conversion, and target-reader evidence remain. |
 | Safety | Deterministic gate and CI corpus exist | Obtain qualified safety review, launch-market approval, and an explicit over-trigger policy. |
-| Privacy | Strong ownership/retention foundations | Ship user-facing story/account deletion and consent controls; prove all cascades and cron behavior on real Postgres. |
-| Observability | Contract, lifecycle, and outbox foundation exist | Instrument authoritative transitions, operate a privacy-reviewed sink, and build minimum-cell dashboards and alerts. |
+| Privacy | Strong ownership/retention foundations, owner-controlled active-database story/account deletion, explicit save-period copy, and a plain-language preview guide | Define durable save/derived-data classes; prove cascades, limiter races, and cron on real Postgres; add provider/backup/PITR restore-deletion evidence and a reviewed market-specific legal notice. |
+| Observability | Contract, lifecycle, outbox, entry funnel, flow-bound anonymous-auth, server-owned story journey, reader visibility, one bounded initial-composition failure owner, and a default-off pure-Postgres daily-marginal dispatcher exist; the hardened read candidate remains private | Prove and explicitly enable `0017` cron/RLS/concurrency/deletion behavior in staging and production; complete dashboard privacy review before any read grant; add flow-linked cohort and attempt aggregates, dashboards, alerts/runbooks, and named on-call ownership. Expand failure domains only where an authoritative owner exists. |
 | Release engineering | Local CI and production build are green | Apply and exercise migrations in staging/production, verify RLS/concurrency/rollback, and collect remote canary evidence. |
 
 ## Public-release definition

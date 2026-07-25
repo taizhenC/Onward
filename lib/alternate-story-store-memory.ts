@@ -1,10 +1,29 @@
 import "server-only";
+import { isDeepStrictEqual } from "node:util";
 import { getMemoryResonanceFeedbackForSession } from "./resonance-feedback-store-memory";
 import {
   ALTERNATE_STORY_MAX_ATTEMPTS,
   ALTERNATE_STORY_RETRY_COOLDOWN_MS,
   type AlternateStoryFlowStatus,
 } from "./alternate-story-types";
+import type {
+  AlternateReadyTelemetry,
+  AlternateRequestedTelemetryCapture,
+  AlternateResolvedTelemetryCapture,
+} from "./alternate-story-telemetry";
+import { getOwnedMemoryTelemetryFlowBindingByRoot } from "./telemetry-flow-binding-memory";
+import { telemetryFlowBindingEnabled } from "./telemetry-flow-lifecycle";
+import {
+  reconcilePreparedMemoryAlternateResolvedEventFirstWriteWins,
+  recordPreparedMemoryProductEventsAtomically,
+} from "./telemetry";
+import {
+  alternateResolvedEvent,
+  artifactCreatedEvent,
+} from "./telemetry-producers";
+import { deleteMemoryStoryArtifact } from "./story-artifact-store-memory";
+import type { StoryArtifact } from "./story-artifact-types";
+import type { MemoryTelemetryFlowBinding } from "./telemetry-flow-binding-memory";
 
 export type StoredAlternateStoryFlow = {
   userId: string;
@@ -141,31 +160,79 @@ export function claimMemoryAlternateStoryFlow(input: {
   policyVersion: string;
   leaseId: string;
   leaseExpiresAt: number;
+  telemetry: AlternateRequestedTelemetryCapture | null;
+  resolutionTelemetry: AlternateResolvedTelemetryCapture | null;
 }): AlternateFlowClaimResult {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (
+    !telemetryEnabled &&
+    (input.telemetry !== null || input.resolutionTelemetry !== null)
+  ) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
   const flow = flows.get(input.sourceSessionId);
   if (!flow || !sameIdentity(flow, input)) return { status: "not_found" };
   const now = Date.now();
   if (flow.status === "ready" && flow.resultSessionId) {
+    captureAlternateClaimTelemetry(
+      input,
+      flow,
+      telemetryEnabled,
+      now,
+      true,
+      "ready",
+    );
     return { status: "ready", sessionId: flow.resultSessionId };
   }
-  if (flow.status === "unavailable") return { status: "unavailable" };
+  if (flow.status === "unavailable") {
+    captureAlternateClaimTelemetry(
+      input,
+      flow,
+      telemetryEnabled,
+      now,
+      true,
+      "unavailable",
+    );
+    return { status: "unavailable" };
+  }
   if (
     flow.status === "preparing" &&
     flow.leaseExpiresAt !== null &&
     flow.leaseExpiresAt > now
   ) {
+    captureAlternateClaimTelemetry(input, flow, telemetryEnabled, now, true);
     return {
       status: "preparing",
       retryAfterMs: flow.leaseExpiresAt - now,
     };
   }
-  if (flow.expiresAt <= now) return { status: "expired" };
+  if (flow.expiresAt <= now) {
+    captureAlternateClaimTelemetry(
+      input,
+      flow,
+      telemetryEnabled,
+      now,
+      flow.attemptCount > 0,
+      "expired",
+    );
+    return { status: "expired" };
+  }
   if (flow.attemptCount >= ALTERNATE_STORY_MAX_ATTEMPTS) {
+    captureAlternateClaimTelemetry(
+      input,
+      flow,
+      telemetryEnabled,
+      now,
+      true,
+      "exhausted",
+    );
     return { status: "exhausted" };
   }
   if (flow.nextAttemptAt !== null && flow.nextAttemptAt > now) {
+    captureAlternateClaimTelemetry(input, flow, telemetryEnabled, now, true);
     return { status: "cooldown", retryAfterMs: flow.nextAttemptAt - now };
   }
+  captureAlternateClaimTelemetry(input, flow, telemetryEnabled, now, true);
   flow.status = "preparing";
   flow.attemptCount += 1;
   flow.leaseId = input.leaseId;
@@ -175,24 +242,98 @@ export function claimMemoryAlternateStoryFlow(input: {
   return { status: "claimed" };
 }
 
+function captureAlternateClaimTelemetry(
+  input: {
+    userId: string;
+    sourceSessionId: string;
+    telemetry: AlternateRequestedTelemetryCapture | null;
+    resolutionTelemetry: AlternateResolvedTelemetryCapture | null;
+  },
+  flow: StoredAlternateStoryFlow,
+  telemetryEnabled: boolean,
+  now: number,
+  claimEvidenced: boolean,
+  terminalOutcome?: AlternateResolvedTelemetryCapture["outcome"],
+): void {
+  if (!claimEvidenced || !telemetryEnabled) return;
+  const binding = activeBinding(flow, input.userId, now);
+  if (!binding) return;
+  if (
+    !input.telemetry ||
+    input.telemetry.event !== "alternate_requested" ||
+    input.telemetry.flowId !== binding.flowId
+  ) {
+    throw new Error("active alternate-request telemetry capture is invalid");
+  }
+  if (
+    recordPreparedMemoryProductEventsAtomically([input.telemetry], now) ===
+    "conflict"
+  ) {
+    throw new Error("alternate-request telemetry conflicted");
+  }
+  if (terminalOutcome !== undefined) {
+    captureAlternateResolution(
+      input.resolutionTelemetry,
+      binding,
+      terminalOutcome,
+      now,
+    );
+  }
+}
+
 export function releaseMemoryAlternateStoryFlow(input: {
   userId: string;
   sourceSessionId: string;
   leaseId: string;
+  telemetry: AlternateResolvedTelemetryCapture | null;
 }): boolean {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
   const flow = flows.get(input.sourceSessionId);
-  if (
-    flow?.status !== "preparing" ||
-    flow.userId !== input.userId ||
-    flow.leaseId !== input.leaseId
-  ) {
+  if (!flow || flow.userId !== input.userId) return false;
+  const now = Date.now();
+  const binding = telemetryEnabled
+    ? activeBinding(flow, input.userId, now)
+    : null;
+
+  if (flow.status === "ready" && flow.resultSessionId) {
+    if (binding) captureAlternateResolution(input.telemetry, binding, "ready", now);
     return false;
+  }
+  if (flow.status === "unavailable" || flow.status === "ready") {
+    if (binding) {
+      captureAlternateResolution(input.telemetry, binding, "unavailable", now);
+    }
+    return false;
+  }
+  if (flow.status !== "preparing" || flow.leaseId !== input.leaseId) {
+    if (
+      flow.status === "available" &&
+      flow.attemptCount >= ALTERNATE_STORY_MAX_ATTEMPTS
+    ) {
+      if (binding) captureAlternateResolution(input.telemetry, binding, "failed", now);
+    }
+    return false;
+  }
+
+  const terminalOutcome =
+    flow.contextExpiresAt <= now
+      ? "expired"
+      : flow.attemptCount >= ALTERNATE_STORY_MAX_ATTEMPTS
+        ? "failed"
+        : null;
+  if (terminalOutcome && binding) {
+    captureAlternateResolution(input.telemetry, binding, terminalOutcome, now);
   }
   flow.status = "available";
   flow.leaseId = null;
   flow.leaseExpiresAt = null;
-  flow.nextAttemptAt = Date.now() + ALTERNATE_STORY_RETRY_COOLDOWN_MS;
-  flow.updatedAt = Date.now();
+  flow.nextAttemptAt = terminalOutcome
+    ? null
+    : now + ALTERNATE_STORY_RETRY_COOLDOWN_MS;
+  flow.updatedAt = now;
   return true;
 }
 
@@ -200,12 +341,37 @@ export function completeMemoryAlternateStoryUnavailable(input: {
   userId: string;
   sourceSessionId: string;
   leaseId: string;
+  telemetry: AlternateResolvedTelemetryCapture | null;
 }): boolean {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
   const flow = flows.get(input.sourceSessionId);
   const now = Date.now();
+  if (!flow || flow.userId !== input.userId) return false;
+  const binding = telemetryEnabled
+    ? activeBinding(flow, input.userId, now)
+    : null;
+  if (flow.status === "unavailable") {
+    if (binding) {
+      captureAlternateResolution(input.telemetry, binding, "unavailable", now);
+    }
+    return true;
+  }
+  if (flow.status === "ready") {
+    if (binding) {
+      captureAlternateResolution(
+        input.telemetry,
+        binding,
+        flow.resultSessionId ? "ready" : "unavailable",
+        now,
+      );
+    }
+    return false;
+  }
   if (
-    flow?.status !== "preparing" ||
-    flow.userId !== input.userId ||
+    flow.status !== "preparing" ||
     flow.leaseId !== input.leaseId ||
     flow.leaseExpiresAt === null ||
     flow.leaseExpiresAt <= now ||
@@ -213,7 +379,61 @@ export function completeMemoryAlternateStoryUnavailable(input: {
   ) {
     return false;
   }
+  if (binding) {
+    captureAlternateResolution(input.telemetry, binding, "unavailable", now);
+  }
   flow.status = "unavailable";
+  flow.leaseId = null;
+  flow.leaseExpiresAt = null;
+  flow.nextAttemptAt = null;
+  flow.updatedAt = now;
+  return true;
+}
+
+export function completeMemoryAlternateStoryExpired(input: {
+  userId: string;
+  sourceSessionId: string;
+  leaseId: string;
+  telemetry: AlternateResolvedTelemetryCapture | null;
+}): boolean {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
+  const flow = flows.get(input.sourceSessionId);
+  const now = Date.now();
+  if (!flow || flow.userId !== input.userId || flow.attemptCount === 0) {
+    return false;
+  }
+  const binding = telemetryEnabled
+    ? activeBinding(flow, input.userId, now)
+    : null;
+  if (flow.status === "ready" && flow.resultSessionId) {
+    if (binding) captureAlternateResolution(input.telemetry, binding, "ready", now);
+    return false;
+  }
+  if (flow.status === "unavailable" || flow.status === "ready") {
+    if (binding) {
+      captureAlternateResolution(input.telemetry, binding, "unavailable", now);
+    }
+    return false;
+  }
+  const session = globalThis.__onwardSessions?.get(input.sourceSessionId);
+  if (
+    flow.contextExpiresAt > now &&
+    (!session || session.disclosureExpiresAt > now)
+  ) {
+    return false;
+  }
+  if (
+    flow.status === "preparing" &&
+    flow.leaseId !== null &&
+    flow.leaseId !== input.leaseId
+  ) {
+    return false;
+  }
+  if (binding) captureAlternateResolution(input.telemetry, binding, "expired", now);
+  flow.status = "available";
   flow.leaseId = null;
   flow.leaseExpiresAt = null;
   flow.nextAttemptAt = null;
@@ -226,8 +446,14 @@ export function completeMemoryAlternateStoryReady(input: {
   sourceSessionId: string;
   sourceArtifactId: string;
   leaseId: string;
+  artifact: StoryArtifact;
+  telemetry: AlternateReadyTelemetry | null;
   createSession: () => string;
 }): string | null {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
   const flow = flows.get(input.sourceSessionId);
   const now = Date.now();
   if (
@@ -241,7 +467,33 @@ export function completeMemoryAlternateStoryReady(input: {
   ) {
     return null;
   }
+  const binding = telemetryEnabled
+    ? activeBinding(flow, input.userId, now)
+    : null;
+  const captures = binding
+    ? readyCaptures(input.telemetry, binding, input.artifact)
+    : null;
+  const existingSessionId = [...(globalThis.__onwardSessions?.values() ?? [])]
+    .find((session) => session.alternateOfSessionId === input.sourceSessionId)
+    ?.sessionId;
   const resultSessionId = input.createSession();
+  const created = existingSessionId === undefined;
+  if (captures) {
+    try {
+      if (
+        recordPreparedMemoryProductEventsAtomically(captures, now) ===
+        "conflict"
+      ) {
+        throw new Error("alternate ready telemetry conflicted");
+      }
+    } catch (error) {
+      if (created) {
+        globalThis.__onwardSessions?.delete(resultSessionId);
+        deleteMemoryStoryArtifact(input.artifact.artifactId);
+      }
+      throw error;
+    }
+  }
   flow.status = "ready";
   flow.resultSessionId = resultSessionId;
   flow.leaseId = null;
@@ -249,6 +501,88 @@ export function completeMemoryAlternateStoryReady(input: {
   flow.nextAttemptAt = null;
   flow.updatedAt = now;
   return resultSessionId;
+}
+
+function activeBinding(
+  flow: StoredAlternateStoryFlow,
+  userId: string,
+  now: number,
+): MemoryTelemetryFlowBinding | null {
+  const session = globalThis.__onwardSessions?.get(flow.sourceSessionId);
+  if (
+    !session ||
+    session.userId !== userId ||
+    session.alternateOfSessionId !== null ||
+    session.storyArtifactId !== flow.sourceArtifactId
+  ) {
+    return null;
+  }
+  return getOwnedMemoryTelemetryFlowBindingByRoot(
+    session.sessionId,
+    session.userId,
+    now,
+  );
+}
+
+function captureAlternateResolution(
+  telemetry: AlternateResolvedTelemetryCapture | null,
+  binding: MemoryTelemetryFlowBinding,
+  outcome: AlternateResolvedTelemetryCapture["outcome"],
+  now: number,
+): void {
+  if (
+    !telemetry ||
+    telemetry.event !== "alternate_resolved" ||
+    telemetry.flowId !== binding.flowId
+  ) {
+    throw new Error("active alternate-resolution telemetry capture is invalid");
+  }
+  const derived = Object.freeze({
+    ...telemetry,
+    ...alternateResolvedEvent(outcome),
+  });
+  if (
+    reconcilePreparedMemoryAlternateResolvedEventFirstWriteWins(derived, now) ===
+    "conflict"
+  ) {
+    throw new Error("alternate-resolution telemetry conflicted");
+  }
+}
+
+function readyCaptures(
+  telemetry: AlternateReadyTelemetry | null,
+  binding: MemoryTelemetryFlowBinding,
+  artifact: StoryArtifact,
+): ReadonlyArray<
+  AlternateReadyTelemetry["artifact"] | AlternateReadyTelemetry["resolution"]
+> {
+  const expectedArtifact = artifactCreatedEvent(artifact, "alternate");
+  if (
+    !telemetry ||
+    telemetry.artifact.flowId !== binding.flowId ||
+    telemetry.resolution.flowId !== binding.flowId ||
+    telemetry.resolution.event !== "alternate_resolved" ||
+    !isDeepStrictEqual(captureEvent(telemetry.artifact), expectedArtifact)
+  ) {
+    throw new Error("active alternate-ready telemetry capture is invalid");
+  }
+  return Object.freeze([
+    telemetry.artifact,
+    Object.freeze({
+      ...telemetry.resolution,
+      ...alternateResolvedEvent("ready"),
+    }),
+  ]);
+}
+
+function captureEvent(
+  capture: AlternateReadyTelemetry["artifact"],
+): Record<string, unknown> {
+  const event: Record<string, unknown> = { ...capture };
+  delete event.eventId;
+  delete event.schemaVersion;
+  delete event.flowId;
+  return event;
 }
 
 export function deleteMemoryAlternateStoryFlow(sourceSessionId: string): void {

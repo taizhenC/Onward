@@ -3,6 +3,8 @@ import type {
   AcknowledgeSessionPositionInput,
   AcknowledgeSessionPositionResult,
   CreateSessionInput,
+  DeleteOwnedSessionResult,
+  ListSessionsByUserOptions,
   Session,
   SessionStore,
 } from "./types";
@@ -82,8 +84,30 @@ export async function getOwnedSession(
 
 // Own-sessions listing for /stories (created-desc). Inherently scoped — callers pass
 // the authenticated user id only.
-export function listSessionsByUser(userId: string): Promise<Session[]> {
-  return resolveStore().listSessionsByUser(userId);
+export function listSessionsByUser(
+  userId: string,
+  options: ListSessionsByUserOptions = { offset: 0, limit: 100 },
+): Promise<Session[]> {
+  if (
+    !Number.isSafeInteger(options.offset) ||
+    options.offset < 0 ||
+    !Number.isSafeInteger(options.limit) ||
+    options.limit < 1 ||
+    options.limit > MAX_SESSION_LIST_PAGE_SIZE
+  ) {
+    throw new Error("session list pagination is invalid");
+  }
+  return resolveStore().listSessionsByUser(userId, options);
+}
+
+// Owner-scoped hard deletion. The persistence adapters retire the shared raw
+// telemetry flow before removing content, so deleting an alternate cannot
+// leave recreatable family telemetry behind.
+export function deleteOwnedSession(
+  sessionId: string,
+  userId: string,
+): Promise<DeleteOwnedSessionResult> {
+  return resolveStore().deleteOwnedSession(sessionId, userId);
 }
 
 export function acknowledgeOwnedSessionPosition(
@@ -95,3 +119,5 @@ export function acknowledgeOwnedSessionPosition(
 export function _sessionCount(): Promise<number> {
   return resolveStore()._sessionCount();
 }
+
+const MAX_SESSION_LIST_PAGE_SIZE = 101;

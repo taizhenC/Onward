@@ -11,20 +11,22 @@ import {
   geminiDim,
   geminiModelId,
 } from "./embeddings-real";
+import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 
 // The single embeddings boundary — mirrors lib/llm.ts. Everything outside lib/ imports from here,
 // never from embeddings-stub / embeddings-real directly (CLAUDE.md: the provider is invisible
 // outside lib/).
 //
-// Provider is resolved lazily on first use (NOT at module load) and memoized — a script that sets
-// EMBEDDING_PROVIDER before its first call always wins, regardless of ESM import hoisting. Each
-// process is single-provider by construction (smoke/memory → stub, seed/eval → gemini).
+// Local/seed/eval provider selection is lazy and memoized. Served production
+// bypasses EMBEDDING_PROVIDER and derives the embedder from its selected recipe.
 
 export { EmbeddingError } from "./embeddings-real";
 
 let provider: "stub" | "gemini" | undefined;
 
 function resolveProvider(): "stub" | "gemini" {
+  const production = productionStoryRecipeExecutionPlan();
+  if (production) return production.embedding === null ? "stub" : "gemini";
   if (provider === undefined) {
     provider = process.env.EMBEDDING_PROVIDER === "gemini" ? "gemini" : "stub";
   }

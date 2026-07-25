@@ -16,6 +16,7 @@ import {
 } from "./alternate-story-types";
 import {
   claimMemoryAlternateStoryFlow,
+  completeMemoryAlternateStoryExpired,
   completeMemoryAlternateStoryReady,
   completeMemoryAlternateStoryUnavailable,
   issueMemoryAlternateStoryFlow,
@@ -25,6 +26,7 @@ import {
 } from "./alternate-story-store-memory";
 import {
   claimSupabaseAlternateStoryFlow,
+  completeSupabaseAlternateStoryExpired,
   completeSupabaseAlternateStoryReady,
   completeSupabaseAlternateStoryUnavailable,
   issueSupabaseAlternateStoryFlow,
@@ -33,6 +35,12 @@ import {
 import { createMemoryAlternateSession } from "./session-store-memory";
 import { persistenceMode } from "./persistence";
 import { readStrongSecret } from "./secret-config";
+import {
+  prepareAlternateReadyTelemetry,
+  prepareAlternateRequestedTelemetry,
+  prepareAlternateResolvedTelemetry,
+} from "./alternate-story-telemetry";
+import type { TelemetryFlowId } from "./telemetry-types";
 
 declare global {
   var __onwardAlternateStorySecret: Buffer | undefined;
@@ -45,6 +53,7 @@ const EPHEMERAL_FALLBACK_SECRET =
 export type ClaimedAlternateStoryFlow = {
   sourceSessionId: string;
   leaseId: string;
+  telemetryFlowId: TelemetryFlowId | null;
 };
 
 export type AlternateStoryClaim =
@@ -138,6 +147,14 @@ export async function claimAlternateStoryFlow(input: {
     input.artifact.artifactId,
   );
   if (!safeTokenEqual(input.token, expected)) return { status: "not_found" };
+  const telemetry = await prepareAlternateRequestedTelemetry({
+    userId: input.userId,
+    session: input.session,
+  });
+  const resolutionTelemetry = prepareAlternateResolvedTelemetry(
+    telemetry?.flowId ?? null,
+    "exhausted",
+  );
   const tokenHash = hashToken(input.token);
   const leaseId = randomBytes(16).toString("hex");
   const leaseExpiresAt =
@@ -151,6 +168,8 @@ export async function claimAlternateStoryFlow(input: {
           tokenHash,
           policyVersion: ALTERNATE_STORY_POLICY_VERSION,
           leaseId,
+          telemetry,
+          resolutionTelemetry,
         })
       : claimMemoryAlternateStoryFlow({
           userId: input.userId,
@@ -160,9 +179,16 @@ export async function claimAlternateStoryFlow(input: {
           policyVersion: ALTERNATE_STORY_POLICY_VERSION,
           leaseId,
           leaseExpiresAt,
+          telemetry,
+          resolutionTelemetry,
         });
   return result.status === "claimed"
-    ? { status: "claimed", sourceSessionId: input.session.sessionId, leaseId }
+    ? {
+        status: "claimed",
+        sourceSessionId: input.session.sessionId,
+        leaseId,
+        telemetryFlowId: telemetry?.flowId ?? null,
+      }
     : result;
 }
 
@@ -182,14 +208,24 @@ export async function releaseAlternateStoryFlow(
   userId: string,
   claim: ClaimedAlternateStoryFlow,
 ): Promise<void> {
+  const telemetry = prepareAlternateResolvedTelemetry(
+    claim.telemetryFlowId,
+    "failed",
+  );
   if (persistenceMode() === "supabase") {
     await releaseSupabaseAlternateStoryFlow({
       userId,
       sourceSessionId: claim.sourceSessionId,
       leaseId: claim.leaseId,
+      telemetry,
     });
   } else {
-    releaseMemoryAlternateStoryFlow({ userId, ...claim });
+    releaseMemoryAlternateStoryFlow({
+      userId,
+      sourceSessionId: claim.sourceSessionId,
+      leaseId: claim.leaseId,
+      telemetry,
+    });
   }
 }
 
@@ -197,13 +233,46 @@ export async function completeAlternateStoryUnavailable(
   userId: string,
   claim: ClaimedAlternateStoryFlow,
 ): Promise<boolean> {
+  const telemetry = prepareAlternateResolvedTelemetry(
+    claim.telemetryFlowId,
+    "unavailable",
+  );
   return persistenceMode() === "supabase"
     ? completeSupabaseAlternateStoryUnavailable({
         userId,
         sourceSessionId: claim.sourceSessionId,
         leaseId: claim.leaseId,
+        telemetry,
       })
-    : completeMemoryAlternateStoryUnavailable({ userId, ...claim });
+    : completeMemoryAlternateStoryUnavailable({
+        userId,
+        sourceSessionId: claim.sourceSessionId,
+        leaseId: claim.leaseId,
+        telemetry,
+      });
+}
+
+export async function completeAlternateStoryExpired(
+  userId: string,
+  claim: ClaimedAlternateStoryFlow,
+): Promise<boolean> {
+  const telemetry = prepareAlternateResolvedTelemetry(
+    claim.telemetryFlowId,
+    "expired",
+  );
+  return persistenceMode() === "supabase"
+    ? completeSupabaseAlternateStoryExpired({
+        userId,
+        sourceSessionId: claim.sourceSessionId,
+        leaseId: claim.leaseId,
+        telemetry,
+      })
+    : completeMemoryAlternateStoryExpired({
+        userId,
+        sourceSessionId: claim.sourceSessionId,
+        leaseId: claim.leaseId,
+        telemetry,
+      });
 }
 
 export async function completeAlternateStoryReady(input: {
@@ -212,12 +281,17 @@ export async function completeAlternateStoryReady(input: {
   sourceArtifactId: string;
   artifact: StoryArtifact;
 }): Promise<string> {
+  const telemetry = prepareAlternateReadyTelemetry(
+    input.claim.telemetryFlowId,
+    input.artifact,
+  );
   if (persistenceMode() === "supabase") {
     return completeSupabaseAlternateStoryReady({
       userId: input.userId,
       sourceSessionId: input.claim.sourceSessionId,
       leaseId: input.claim.leaseId,
       artifact: input.artifact,
+      telemetry,
     });
   }
   const sessionId = completeMemoryAlternateStoryReady({
@@ -225,6 +299,8 @@ export async function completeAlternateStoryReady(input: {
     sourceSessionId: input.claim.sourceSessionId,
     sourceArtifactId: input.sourceArtifactId,
     leaseId: input.claim.leaseId,
+    artifact: input.artifact,
+    telemetry,
     createSession: () =>
       createMemoryAlternateSession({
         userId: input.userId,

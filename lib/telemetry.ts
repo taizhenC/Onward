@@ -7,6 +7,7 @@ import {
 } from "./telemetry-schema";
 import {
   deriveProductEventId,
+  deriveDeletionCorrelationId,
   issueDeletionCorrelationId,
   issueGenerationAttemptId,
   issueTelemetryEventId,
@@ -18,9 +19,11 @@ import {
   ackMemoryProductEventOutbox,
   appendMemoryGenerationAttempt,
   appendMemoryProductEvent,
+  appendMemoryProductEventsAtomically,
   claimMemoryProductEventOutbox,
   nackMemoryProductEventOutbox,
   reconcileMemoryMatchEventFirstWriteWins as reconcileMemoryMatchEventRecord,
+  reconcileMemoryAlternateResolvedEventFirstWriteWins as reconcileMemoryAlternateResolvedEventRecord,
   type TelemetryWriteResult,
 } from "./telemetry-store-memory";
 import {
@@ -34,6 +37,7 @@ import {
   registerTelemetryFlow,
   revokeTelemetryFlow,
 } from "./telemetry-flow-lifecycle";
+import { PRODUCT_EVENT_SCHEMA_VERSION } from "./telemetry-types";
 import type {
   ClaimedProductEvent,
   DeletionCorrelationId,
@@ -41,6 +45,7 @@ import type {
   GenerationAttemptId,
   ProductEvent,
   ProductEventCapture,
+  ProductEventRecord,
   TelemetryEventId,
   TelemetryFlowId,
   TelemetryOccurrenceId,
@@ -54,12 +59,12 @@ import type {
 // commits telemetry in the same database transaction as its authoritative
 // state change. Unlike recordProductEvent(), this does not register or write a
 // flow; the receiving RPC must verify the active owner/root binding itself.
-export function prepareProductEventCapture(input: {
-  event: ProductEvent;
+export function prepareProductEventCapture<Event extends ProductEvent>(input: {
+  event: Event;
   flowId: TelemetryFlowId | null;
   occurrenceId?: TelemetryOccurrenceId;
-}): Readonly<ProductEventCapture> {
-  const event = parseProductEvent(input.event);
+}): Readonly<ProductEventCapture<Event>> {
+  const event = parseProductEvent(input.event) as Readonly<Event>;
   const record = createProductEventRecord({
     event,
     flowId: input.flowId,
@@ -68,7 +73,7 @@ export function prepareProductEventCapture(input: {
   const { occurredAt, expiresAt, ...capture } = record;
   void occurredAt;
   void expiresAt;
-  return Object.freeze(capture);
+  return Object.freeze(capture) as Readonly<ProductEventCapture<Event>>;
 }
 
 export async function recordProductEvent(input: {
@@ -91,6 +96,31 @@ export async function recordProductEvent(input: {
     : appendMemoryProductEvent(record);
 }
 
+// A memory-backed domain store calls this immediately before its infallible
+// state-map mutation. The complete event batch is preflighted and committed
+// together, mirroring the transaction used by the Supabase domain RPC.
+export function recordPreparedMemoryProductEventsAtomically(
+  captures: ReadonlyArray<Readonly<ProductEventCapture>>,
+  now = Date.now(),
+): TelemetryWriteResult {
+  if (persistenceMode() !== "memory") {
+    throw new Error("prepared memory event transaction requires memory mode");
+  }
+  const records: Readonly<ProductEventRecord>[] = captures.map((capture) => {
+    const { eventId, schemaVersion, flowId, ...event } = capture;
+    if (schemaVersion !== PRODUCT_EVENT_SCHEMA_VERSION) {
+      throw new Error("prepared product-event schema version is unsupported");
+    }
+    return createProductEventRecord({
+      eventId,
+      flowId,
+      event,
+      now: new Date(now),
+    });
+  });
+  return appendMemoryProductEventsAtomically(records, now);
+}
+
 // Memory-backed domain transactions use this only when the durable product
 // action must survive a retry whose non-identity measurements have drifted.
 // Supabase equivalents belong inside their owning SQL transaction.
@@ -110,6 +140,31 @@ export async function reconcileMemoryMatchEventFirstWriteWins(input: {
     eventId: deriveProductEventId(event, input.flowId),
   });
   return reconcileMemoryMatchEventRecord(record);
+}
+
+export function reconcilePreparedMemoryAlternateResolvedEventFirstWriteWins(
+  capture: Readonly<
+    Extract<ProductEventCapture, { event: "alternate_resolved" }>
+  >,
+  now = Date.now(),
+): TelemetryWriteResult {
+  if (persistenceMode() !== "memory") {
+    throw new Error(
+      "alternate-resolution memory reconciliation requires memory mode",
+    );
+  }
+  const { eventId, schemaVersion, flowId, ...event } = capture;
+  if (schemaVersion !== PRODUCT_EVENT_SCHEMA_VERSION) {
+    throw new Error("prepared product-event schema version is unsupported");
+  }
+  return reconcileMemoryAlternateResolvedEventRecord(
+    createProductEventRecord({
+      eventId,
+      flowId,
+      event,
+      now: new Date(now),
+    }),
+  );
 }
 
 export async function recordGenerationAttempt(input: {
@@ -170,6 +225,12 @@ export function createTelemetryFlowId(): TelemetryFlowId {
 
 export function createDeletionCorrelationId(): DeletionCorrelationId {
   return issueDeletionCorrelationId();
+}
+
+export function createDeletionCorrelationIdForRequest(
+  seed: string,
+): DeletionCorrelationId {
+  return deriveDeletionCorrelationId(seed);
 }
 
 export function createGenerationAttemptId(): GenerationAttemptId {

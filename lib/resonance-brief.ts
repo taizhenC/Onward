@@ -1,9 +1,15 @@
 import "server-only";
 import { createHmac, randomBytes } from "node:crypto";
 import type { StoryBoundaries } from "./story-boundaries";
+import {
+  RESONANCE_BRIEF_SENSITIVITY,
+  RESONANCE_BRIEF_VERSION,
+} from "./resonance-brief-constants";
 
-export const RESONANCE_BRIEF_VERSION = "resonance-brief-v1-2026-07";
-export const RESONANCE_BRIEF_SENSITIVITY = "sensitive-derived-ephemeral";
+export {
+  RESONANCE_BRIEF_SENSITIVITY,
+  RESONANCE_BRIEF_VERSION,
+} from "./resonance-brief-constants";
 
 export const PRIMARY_PRESSURES = [
   "loss",

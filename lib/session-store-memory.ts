@@ -5,6 +5,8 @@ import type {
   AcknowledgeSessionPositionInput,
   AcknowledgeSessionPositionResult,
   CreateSessionInput,
+  DeleteOwnedSessionResult,
+  ListSessionsByUserOptions,
   OpeningCopy,
   Session,
   SessionStore,
@@ -26,13 +28,22 @@ import { ALTERNATE_STORY_POLICY_VERSION } from "./alternate-story-types";
 import { storyProfileAllowed } from "./story-boundaries";
 import type { StoryArtifact } from "./story-artifact-types";
 import { TelemetryFlowConflictError } from "./telemetry-flow-errors";
+import { telemetryFlowBindingEnabled } from "./telemetry-flow-lifecycle";
 import {
   bindMemoryTelemetryFlow,
   deleteMemoryTelemetryFlowBindingForRoot,
   getMemoryTelemetryFlowBindingByFlow,
+  getOwnedMemoryTelemetryFlowBindingByRoot,
 } from "./telemetry-flow-binding-memory";
-import { recordProductEvent } from "./telemetry";
-import { artifactCreatedEvent } from "./telemetry-producers";
+import {
+  recordPreparedMemoryProductEventsAtomically,
+  recordProductEvent,
+} from "./telemetry";
+import {
+  artifactCreatedEvent,
+} from "./telemetry-producers";
+import { deriveStoryPassageLayout } from "./story-progress";
+import type { ProductEventCapture, StoryRole } from "./telemetry-types";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -349,35 +360,113 @@ function migrateOpeningCopy(openingCopy: unknown): OpeningCopy {
 async function acknowledgePosition(
   input: AcknowledgeSessionPositionInput,
 ): Promise<AcknowledgeSessionPositionResult> {
+  // Mirror Postgres statement_timestamp(): ownership, flow activity, event
+  // capture, and the progress write all observe one transaction clock.
+  const now = Date.now();
   const existing = sessions.get(input.sessionId);
-  if (!existing || isExpired(existing) || existing.userId !== input.userId) {
-    if (existing && isExpired(existing)) {
+  if (
+    !existing ||
+    isExpired(existing, now) ||
+    existing.userId !== input.userId
+  ) {
+    if (existing && isExpired(existing, now)) {
       deleteMemorySessionCascade(input.sessionId);
     }
     return "not_found";
   }
 
-  if (
-    existing.nextBeatIndex === input.nextBeatIndex &&
-    existing.nextChunkIndex === input.nextChunkIndex
-  ) {
-    return "already_advanced";
+  const artifact = existing.storyArtifactId
+    ? getOwnedMemoryStoryArtifactSync(
+        existing.storyArtifactId,
+        existing.userId,
+        existing.sessionId,
+      )
+    : null;
+  if (input.storyArtifactId !== existing.storyArtifactId) return "not_found";
+  if (existing.storyArtifactId && !artifact) return "not_found";
+  const rootSessionId = existing.alternateOfSessionId ?? existing.sessionId;
+  const binding = telemetryFlowBindingEnabled()
+    ? getOwnedMemoryTelemetryFlowBindingByRoot(
+        rootSessionId,
+        existing.userId,
+        now,
+      )
+    : null;
+  if (binding && !artifact) {
+    throw new Error("active story telemetry flow requires an owned artifact");
   }
-
+  if (!artifact && input.telemetry) {
+    throw new Error("legacy story progress cannot carry linked telemetry");
+  }
+  const layout = artifact
+    ? deriveStoryPassageLayout(artifact.beats, {
+        beatIndex: input.expectedBeatIndex,
+        chunkIndex: input.expectedChunkIndex,
+      })
+    : null;
+  if (artifact && !layout) {
+    throw new Error("persisted story artifact progress layout is invalid");
+  }
   if (
-    existing.nextBeatIndex !== input.expectedBeatIndex ||
-    existing.nextChunkIndex !== input.expectedChunkIndex
+    layout &&
+    (input.nextBeatIndex !== layout.nextBeatIndex ||
+      input.nextChunkIndex !== layout.nextChunkIndex)
   ) {
     return "conflict";
   }
 
-  sessions.set(input.sessionId, {
-    ...existing,
-    nextBeatIndex: input.nextBeatIndex,
-    nextChunkIndex: input.nextChunkIndex,
-    updatedAt: Date.now(),
-  });
-  return "advanced";
+  const alreadyAdvanced =
+    existing.nextBeatIndex === input.nextBeatIndex &&
+    existing.nextChunkIndex === input.nextChunkIndex;
+  if (!alreadyAdvanced && (
+    existing.nextBeatIndex !== input.expectedBeatIndex ||
+    existing.nextChunkIndex !== input.expectedChunkIndex
+  )) {
+    return "conflict";
+  }
+
+  if (artifact && layout) {
+    if (binding) {
+      const storyRole: StoryRole =
+        existing.alternateOfSessionId === null ? "initial" : "alternate";
+      const telemetry = input.telemetry;
+      if (
+        !telemetry ||
+        telemetry.passage.event !== "passage_acknowledged" ||
+        telemetry.passage.flowId !== binding.flowId ||
+        telemetry.passage.storyRole !== storyRole ||
+        telemetry.passage.passageOrdinal !== layout.passageOrdinal ||
+        (layout.next === "end") !== (telemetry.completion !== null) ||
+        (telemetry.completion !== null &&
+          (telemetry.completion.event !== "story_completed" ||
+            telemetry.completion.flowId !== binding.flowId ||
+            telemetry.completion.storyRole !== storyRole ||
+            telemetry.completion.schemaVersion !==
+              telemetry.passage.schemaVersion))
+      ) {
+        throw new Error("active story progress telemetry capture is invalid");
+      }
+      const captures: ProductEventCapture[] = telemetry.completion
+        ? [telemetry.passage, telemetry.completion]
+        : [telemetry.passage];
+      if (
+        recordPreparedMemoryProductEventsAtomically(captures, now) ===
+        "conflict"
+      ) {
+        throw new Error("story progress telemetry conflicted");
+      }
+    }
+  }
+
+  if (!alreadyAdvanced) {
+    sessions.set(input.sessionId, {
+      ...existing,
+      nextBeatIndex: input.nextBeatIndex,
+      nextChunkIndex: input.nextChunkIndex,
+      updatedAt: now,
+    });
+  }
+  return alreadyAdvanced ? "already_advanced" : "advanced";
 }
 
 function deleteMemorySessionCascade(sessionId: string): void {
@@ -397,11 +486,55 @@ function deleteMemorySessionCascade(sessionId: string): void {
   sessions.delete(sessionId);
 }
 
-async function listSessionsByUser(userId: string): Promise<Session[]> {
+async function listSessionsByUser(
+  userId: string,
+  options: ListSessionsByUserOptions,
+): Promise<Session[]> {
   pruneExpiredSessions();
   return [...sessions.values()]
     .filter((session) => session.userId === userId)
-    .sort((a, b) => b.createdAt - a.createdAt);
+    .sort(
+      (a, b) =>
+        b.createdAt - a.createdAt || b.sessionId.localeCompare(a.sessionId),
+    )
+    .slice(options.offset, options.offset + options.limit);
+}
+
+async function deleteOwnedSession(
+  sessionId: string,
+  userId: string,
+): Promise<DeleteOwnedSessionResult> {
+  pruneExpiredSessions();
+  const session = sessions.get(sessionId);
+  if (!session || session.userId !== userId) return "not_found";
+
+  // Initial and alternate stories share one flow. Retire it for either scope;
+  // otherwise an alternate-only delete would leave role-less recovery events
+  // live and deterministically recreatable.
+  deleteMemoryTelemetryFlowBindingForRoot(
+    session.alternateOfSessionId ?? session.sessionId,
+  );
+  deleteMemorySessionCascade(sessionId);
+  return "deleted";
+}
+
+// Auth-user deletion cascades every owned session in Postgres. Keep the memory
+// adapter behaviorally equivalent so privacy tests exercise the same complete
+// account boundary rather than only clearing the currently visible page.
+export function deleteMemorySessionsForUser(userId: string): number {
+  pruneExpiredSessions();
+  const ownedIds = [...sessions.values()]
+    .filter((session) => session.userId === userId)
+    .map((session) => session.sessionId);
+  const roots = ownedIds.filter(
+    (sessionId) => sessions.get(sessionId)?.alternateOfSessionId === null,
+  );
+  for (const sessionId of roots) deleteMemorySessionCascade(sessionId);
+  // Defensive cleanup for malformed/hot-reload rows whose root disappeared.
+  for (const sessionId of ownedIds) {
+    if (sessions.has(sessionId)) deleteMemorySessionCascade(sessionId);
+  }
+  return ownedIds.length;
 }
 
 async function sessionCount(): Promise<number> {
@@ -414,5 +547,6 @@ export const memorySessionStore: SessionStore = {
   getSession,
   acknowledgePosition,
   listSessionsByUser,
+  deleteOwnedSession,
   _sessionCount: sessionCount,
 };

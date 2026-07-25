@@ -15,6 +15,7 @@ import {
   getSupabaseResonanceFeedbackForSession,
   submitSupabaseResonanceFeedback,
 } from "./resonance-feedback-store-supabase";
+import { prepareResonanceFeedbackTelemetry } from "./resonance-feedback-telemetry";
 import { issueAlternateStoryCapability } from "./alternate-story-flow";
 import { persistenceMode } from "./persistence";
 
@@ -42,6 +43,11 @@ export async function submitResonanceFeedback(input: {
     throw new ResonanceFeedbackIncompleteError();
   }
   const reason = feedback.verdict === "not_close" ? feedback.reason : null;
+  const telemetry = await prepareResonanceFeedbackTelemetry({
+    userId,
+    session,
+    verdict: feedback.verdict,
+  });
   const result =
     persistenceMode() === "supabase"
       ? await submitSupabaseResonanceFeedback({
@@ -51,6 +57,7 @@ export async function submitResonanceFeedback(input: {
           policyVersion: RESONANCE_FEEDBACK_POLICY_VERSION,
           verdict: feedback.verdict,
           reason,
+          telemetry,
         })
       : await submitMemoryResonanceFeedback({
           userId,
@@ -64,6 +71,7 @@ export async function submitResonanceFeedback(input: {
           policyVersion: RESONANCE_FEEDBACK_POLICY_VERSION,
           verdict: feedback.verdict,
           reason,
+          telemetry,
         });
 
   if (result === "not_found") throw new ResonanceFeedbackTargetError();

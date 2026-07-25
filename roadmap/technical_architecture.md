@@ -82,7 +82,7 @@ flowchart LR
 - Raw disclosure, derived copy, persisted story, feedback, and event retention are not modeled as explicit data classes in code.
 - The planned taint wrappers and string-hostile trace schema are documented but not implemented.
 - Safety regression, reviewed market resource configuration, and operational incident controls are missing.
-- Account and story deletion are absent.
+- Owner-scoped story and account deletion now exist through migrations `0018` and `0019`; the complete retention/privacy surface and real deployment proof remain absent.
 
 ## Target architecture
 
@@ -124,7 +124,7 @@ flowchart TD
 | Move acknowledgement to explicit Continue and make it atomic | P0 | [Bug Fix] | P0-09 | Corrects resume and concurrency semantics. |
 | Implement a closed telemetry schema | P0 | [Feature] | P0-11 | Enables learning without logging intimate text. |
 | Pin production retrieval to an approved manifest | P0 | [Bug Fix] | P0-13 | Prevents configuration drift from selecting a weaker matcher. |
-| Add explicit retention classes and deletion | P0 | [Feature] | P0-14 | Extends privacy from policy text into data lifecycle. |
+| Finish explicit retention classes around shipped story/account deletion | P0 | [Feature] | P0-14 | Extends both deletion authorities into a complete, reviewable data lifecycle. |
 | Enforce user-selected content boundaries before matching | P0 | [Feature] | P0-17 | A reader's explicit safety boundary must never be overridden by relevance scoring. |
 | Add facet projections only as a shadow challenger | P1 | [Refactor] | P1-01 | Retrieval sophistication must earn promotion through measured gains. |
 | Persist stable reading preferences only through explicit consent | P1 | [Feature] | P1-14 | Repeat utility does not justify silently retaining a psychological profile. |
@@ -410,11 +410,81 @@ type ApprovedStoryRecipe = {
   storyPromptVersion: string;
   validatorVersion: string;
   storySpecSchemaVersion: string;
-  approvedAt: string;
+};
+
+type RecipePromotion = {
+  recipeId: string;
+  decisionId: string;
+  promotedAt: string;
 };
 ```
 
-Production refuses every retrieval value other than the currently approved keyword path. Challenger modes remain available through the eval/debug matcher, but the story-creation matcher carries its actual resolved path and rejects it before persistence when it is not approved. Session construction uses that returned path rather than rereading mutable environment configuration. Match/artifact producers and the transactional SQL boundary independently require the approved recipe ID, retrieval path, and match-config version, so a challenger cannot be counted under the production calibration cohort.
+The as-built boundary uses `config/story-recipes.json` as the canonical,
+content-addressed registry. It records the full retrieval, model, prompt,
+temperature, composer, validator, and StorySpec identity for both the current
+keyword baseline and the non-selectable FacetsRAG challenger. Production must
+name the primary or pre-registered rollback ID explicitly through
+`ONWARD_PRODUCTION_RECIPE_ID`. That manifest is the sole non-secret production
+behavior source: provider, models, tuning, retrieval/top-K, embedder, and
+composer environment values are local/eval inputs and cannot form a mixed
+production recipe. Unknown selectors, unsafe persistence, missing credentials,
+endpoint/timeout drift, and missing deployment identity fail before
+authentication, limits, providers, or writes. Crisis resources and the story
+kill switch remain outside that failure boundary.
+
+Every new session and immutable artifact pins the manifest hash, dataset,
+deployment, models, prompts, composer mode, validator, and schema versions.
+Migration `0020` adds an append-only, forced-RLS database registry and an exact
+session trigger, then moves product events, generation attempts, match recovery,
+initial/alternate completion, and rollup recipe checks off duplicated literals.
+The database stores no active pointer: compatible promoted rows remain valid and
+the application selector is the single rollback change. Promotion is deliberately
+limited to matching axes within one installed library/code/story compatibility
+set. A library, prompt, validator, schema, or composer change is a release and
+must ship its own rollback-compatible code/content; an old manifest is never
+pretended to be executable against a different installed corpus.
+Prompt release identity is content-derived, not a mutable label:
+`config/prompt-releases.json` is append-only and maps each rerank/story version
+to the SHA-256 of its exact canonical prompt contract. Edge and Node hashing are
+cross-checked, and runtime version identity fails when content and release hash
+diverge.
+
+Detailed eval trials remain local. Metrics-only results are append-only and
+content-addressed under `evals/history`, paired comparisons under
+`evals/shadow`, and deliberate decisions under `config/recipe-decisions`.
+The current record honestly retains keyword: its imported synthetic evidence
+passes at 98.0% with zero definitive-wrong results, while FacetsRAG reaches
+95.0% with three definitive-wrong results. Imported/synthetic evidence can
+never authorize promotion. Eval and shadow tools also cannot self-mint
+authority: they emit content-addressed candidates with `promotable=false`. A
+future promotion requires real non-legacy protected-holdout candidates, strict top-1 superiority, a passing recomputed
+paired shadow gate, fixed sample/stability/latency floors, an exact hash of the
+Supabase-published and StorySpec-eligible catalog, zero definitive-wrong results,
+no hard-confusion, miss-detection, or coverage regression, independently
+attested clean-commit/input-tree, run, deployment, source-output, and approval
+contexts, three named approval roles, and the base commit's compatible primary
+as both source and rollback. Each promoted row is bound to its authorizing
+decision and an exact append-only migration registration. The candidate set must
+already exist byte-for-byte on protected `main`; the later promotion-only PR
+cannot change evidence, manifests, datasets, runtime code, workflows, or the
+attestor.
+
+The manifest's `datasetVersion` is the immutable default evaluation corpus and
+remains equal across selector-compatible baseline and challenger recipes.
+Protected promotion does not rewrite that release-bound axis. Instead,
+`EVAL_DATASET_VERSION` re-evaluates both exact manifests on one separately
+registered protected holdout; the decision, evidence, paired shadows, and
+base-owned attestor all bind that corpus byte-for-byte. This keeps rollback
+compatibility intact without letting a synthetic default authorize promotion.
+
+Ordinary CI performs structural validation without authority. The promotion
+detector and minimal dependency-free attestor are loaded from the protected base
+commit, read the candidate only through immutable Git objects, and execute no
+candidate code. Protected environment values and its secret are scoped to the
+single attestor step—never checkout, dependency installation, eval, or PR-owned
+scripts. The attestor recomputes the gate, enforces distinct eval/shadow run and
+deployment identities, includes the rerank prompt in rollback compatibility,
+and binds the full candidate envelope to `RECIPE_PROMOTION_ATTESTATION_SHA256`.
 
 ## P0-11 — [Feature] Safe observability architecture
 
@@ -440,8 +510,26 @@ copy of event content. Domain milestones that already have a durable state must
 capture in that transaction: migration `0012` does this for recovery-token
 issuance, rate-limit denial, and the initial artifact/session commit. Plain
 computation milestones such as validated intake and match disposition use the
-same exact server boundary and deterministic IDs. Progress, feedback, alternate,
-and client-visibility producers remain subsequent slices.
+same exact server boundary and deterministic IDs. Progress, feedback, and
+alternate milestones are now coupled to their authoritative transitions. Three
+narrow reader-visibility routes accept only closed client measurements, then
+verify bounded caller coordinates against reached durable progress and derive role
+plus flattened passage ordinal from the owned immutable story before capture.
+
+Story-flow authentication uses no generic auth analytics hook. An exactly
+validated unauthenticated match attempt mints a two-minute, exact-flow HMAC challenge in an
+HttpOnly `SameSite=Strict` cookie scoped to `/api/match`. The client performs its
+existing anonymous sign-in without reading the token. Claims verification is
+skipped for ordinary authenticated starts. On retry, the server validates the
+cookie, a fresh `anonymous` AMR entry from verified Supabase claims,
+and the owner claim before best-effort deterministic capture. Existing sessions
+and standalone sign-in, confirmation, account upgrade, password setting, saved
+stories, and alternates remain silent; email-link/password values are reserved
+until those methods have explicit story-flow continuations. Auth is external to
+Postgres, so no database RPC can make the two systems atomic. A telemetry outage
+may undercount this pure-observability milestone but cannot block a valid story;
+flow/event singleton constraints and the outbox make successful retries
+idempotent.
 
 The match limiter also stores a two-day, default-deny replay row containing
 only the occurrence-derived event ID and its closed decision. An ambiguous RPC
@@ -458,6 +546,80 @@ Changing that rule requires an explicit safety/privacy decision rather than an
 observability shortcut. The full registry, retention, producer ownership, and
 delivery restrictions are in [`telemetry_contract.md`](telemetry_contract.md).
 
+`flow_failed` is likewise bounded to one authoritative owner rather than wired
+to generic catches. Immediately before an eligible initial story enters
+`prepareStory`, the server fixes `domain=composition`, mints one purpose-separated
+occurrence, and starts a monotonic clock. A thrown value is inspected only by the
+string-hostile reducer; a `null` preparation maps to a fixed conflict sentinel
+for disappeared catalog/stage identity. The capture RPC commits the exact closed
+row and pointer-only outbox, and one ambiguous replay reuses the same event ID
+inside a strict one-second total budget, bounding the added observability wait.
+Valid canonical fallback is a successful artifact and remains silent.
+Persistence and the other reserved
+failure domains are not inferred from a public 503. This slice needs no migration:
+the exact `0010` columns and `0011` active-flow capture transaction already
+provide shape enforcement, idempotency, retention, and deletion cascade.
+
+Migration `0017` gives that pointer-only outbox a deliberately first-party
+destination. There is no application worker, public cron route, webhook, or
+third-party analytics SDK. Supabase `pg_cron` invokes a private security-definer
+dispatcher each minute, but an RLS-protected singleton control defaults to
+`false`, making every scheduled call a no-op until an operator explicitly
+enables it after environment gates. Its v2 claim returns only event and lease
+identifiers; the v1 full-event claim and plain ACK are no longer executable by
+`service_role`, so a later worker cannot bypass the reviewed fold.
+
+Settlement is source-first and atomic. It locks the still-live immutable
+`product_events` row before the cascade-owned outbox pointer, verifies the flow
+has not expired or been revoked, writes the aggregate cells, and marks the
+pointer delivered in one transaction. A deletion that commits first leaves
+nothing to fold. A settlement that commits first leaves only unlinkable counts
+after later deletion. A per-row exception rolls back that row's partial fold and
+uses the existing NACK transition with the fixed `database` error class; no raw
+SQL exception reaches storage or logs. Existing 60-second leases, capped
+20-attempt retry, expired-lease recovery, and backoff remain authoritative.
+
+The transactional cutover first creates a pointer for every still-live legacy
+source. A pre-registry linked source without an active registered flow remains
+unclaimable and expires naturally; its pending pointer prevents the reporting
+candidate from declaring that UTC date complete.
+
+The aggregate is intentionally normalized and marginal rather than a copied
+event. `telemetry_event_daily_rollups` stores only UTC date, schema version,
+event name, one closed dimension name/value, and count. Each source event adds
+one `all/all` denominator cell and one independent cell for each applicable
+dimension; no cell crosses two dimensions, and no row contains an event, flow,
+deletion, account, session, artifact, lease, exact timestamp, or content
+identifier. Table access is default-deny. The private read candidate accepts at
+most 28 retained UTC days, withholds the two newest dates and dates with
+unsettled source work, and suppresses unsafe child partitions and their parent
+cells. It remains a private candidate with no service-role grant in this slice;
+the pruning job enforces a maximum of 30 calendar days. A later dashboard
+privacy review must approve and grant or replace that candidate.
+Its threshold counts events, not distinct contributors, so it is not a claim of
+contributor-level k-anonymity and cannot be granted without contribution bounds
+or another approved disclosure-control model.
+
+This read model supports event volumes and one-dimensional closed
+distributions. It does **not** support flow/role intersections, ordered funnels,
+24-hour completion/resonance cohorts, or cost per completed story. Those must
+not be approximated from unrelated marginals. A future cohort read model and
+the generation-attempt aggregate require separate privacy-reviewed migrations.
+Queue operations expose the dispatch-control state, state counts, and a closed
+oldest-actionable age bucket. Dispatcher-actionable work counts only still-live
+sources and active linked flows and includes due final-attempt terminalization.
+A separate schema-health RPC exposes closed booleans for
+forced RLS, effective privilege denial on private/raw paths, service-only
+operational boundaries, and exact active cron schedules and commands. Operators enable through
+`set_telemetry_rollup_dispatch_enabled_v1(true)` only after staging and
+environment checks, and disable with `false` before rollback or incident
+response. The disabling update waits for any batch holding the shared control
+lock, making a successful `false` response the drain barrier. Dashboards,
+alerts, and on-call runbooks remain downstream work, and
+the dispatcher is not production-operated until real Postgres proves enabled
+cron execution, RLS, concurrent `SKIP LOCKED`, lease recovery, deletion races,
+retention, and atomic idempotency.
+
 ## P0-14 — [Feature] Data model and retention classes
 
 ### Proposed tables
@@ -470,11 +632,28 @@ delivery restrictions are in [`telemetry_contract.md`](telemetry_contract.md).
 | `sessions` | Ownership, match, raw disclosure, progress | Raw sensitive + safe identifiers | Guest TTL; raw disclosure nulled on stated schedule |
 | `story_feedback` | Rating and bounded reason enums; optional free text separately | Enums may be sensitive-derived; free text is raw sensitive | Short documented retention; user-deletable |
 | `product_events` | Closed non-semantic events | Safe operational | Short operational retention |
+| `telemetry_event_daily_rollups` | UTC day, event, one closed marginal dimension, count | Identifier-free aggregate candidate | Maximum 30 UTC calendar days; no caller grant pending dashboard privacy review |
 | `match_rate_limit_decisions` | Occurrence ID plus closed allow/deny result; no request/user/IP key | Safe unlinkable operational | Two days |
 | `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Short operational retention |
-| `content_reports` | Fact ID and bounded issue reason | Curated identifiers | Until resolution plus audit period |
+| `historical_concern_reports` | StorySpec/fact ID and bounded issue reason | Curated identifiers | Current: no automatic TTL; define a bounded resolved-report audit period or explicitly approve indefinite editorial retention before launch |
 | `carry_forward_cards` | User-selected fact/line plus optional user-authored sentence | Raw sensitive user content | Saved until user deletion under explicit consent |
 | `user_story_preferences` | Opt-in length, distance, boundaries, and prior stage IDs | Sensitive preferences | Until consent withdrawal/account deletion |
+
+### Deletion and restore boundary
+
+Migrations `0018` and `0019` hard-delete owned rows from the active database,
+with deterministic root/session/flow locks and account-serialized initial-story
+writers protecting the active deletion boundary from concurrent resurrection,
+but the repository does not yet define how point-in-time recovery or provider
+backups preserve that privacy decision. The unlinkable deletion telemetry is
+deliberately incapable of identifying an account or story and therefore cannot
+serve as a restore ledger. Before an unqualified permanent-deletion promise,
+release engineering and privacy must choose and test one of two explicit
+postures: a separately protected, purpose-limited deletion ledger that is
+replayed before a restored database can serve traffic, or a provider-backed
+retention/non-restoration guarantee proving deleted rows cannot return to the
+active service. Provider logs and already-processed model/email requests remain
+outside the application transaction and require their own contractual review.
 
 ### Retention decision required before launch
 

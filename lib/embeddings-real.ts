@@ -1,10 +1,20 @@
 import "server-only";
+import {
+  DEFAULT_EMBEDDING_BASE_URL,
+  DEFAULT_EMBEDDING_DIM,
+  DEFAULT_EMBEDDING_MAX_RETRIES,
+  DEFAULT_EMBEDDING_MODEL,
+  DEFAULT_EMBEDDING_RETRY_BASE_MS,
+  DEFAULT_EMBEDDING_TIMEOUT_MS,
+} from "./embedding-recipe-constants";
+import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 
 // Real embedder: Gemini gemini-embedding-001 via the Generative Language REST API, called with
 // plain `fetch` (no SDK), mirroring lib/llm-real.ts. Asymmetric encoding is REQUIRED:
 // RETRIEVAL_DOCUMENT at seed time, RETRIEVAL_QUERY at match time (the encoder learned different
 // prefixes per role). Outputs are L2-normalized AFTER truncation — 1536 < the native 3072 breaks
-// unit norm. Everything provider-specific is env-driven, never a baked constant.
+// unit norm. Local/seed/eval behavior is env-driven; served production derives
+// model and dimension from its selected immutable story recipe.
 //
 // REQUEST SHAPE — the probe (scripts/check-embeddings.ts) is the arbiter, run BEFORE any seed.
 // Raw REST :embedContent / :batchEmbedContents take `taskType` and `outputDimensionality` as
@@ -16,14 +26,8 @@ import "server-only";
 // Privacy floor (same as lib/llm-real.ts): raw provider errors are discarded and converted to a
 // class-level EmbeddingError — the original (which can carry the document/query text) never logged.
 
-const DEFAULT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta";
-const DEFAULT_MODEL = "gemini-embedding-001";
-const DEFAULT_DIM = 1536;
-const DEFAULT_TIMEOUT_MS = 20000;
 // Gemini batchEmbedContents caps requests per call; chunk to stay safely under it.
 const BATCH_LIMIT = 100;
-const DEFAULT_MAX_RETRIES = 3;
-const DEFAULT_RETRY_BASE_MS = 3000;
 const DEFAULT_RATE_LIMIT_RETRY_MS = 10000;
 
 type EmbeddingErrorClass =
@@ -47,8 +51,8 @@ export class EmbeddingError extends Error {
 function baseUrl(): string {
   const configured =
     process.env.EMBEDDING_BASE_URL?.trim() ?? process.env.GEMINI_BASE_URL?.trim();
-  if (!configured) return DEFAULT_BASE_URL;
-  return configured.replace(/\/+$/, "") || DEFAULT_BASE_URL;
+  if (!configured) return DEFAULT_EMBEDDING_BASE_URL;
+  return configured.replace(/\/+$/, "") || DEFAULT_EMBEDDING_BASE_URL;
 }
 function apiKey(): string | undefined {
   return [process.env.GEMINI_API_KEY, process.env.EMBEDDING_API_KEY]
@@ -56,13 +60,19 @@ function apiKey(): string | undefined {
     .find((key): key is string => Boolean(key));
 }
 function modelName(): string {
-  return process.env.EMBEDDING_MODEL?.trim() || DEFAULT_MODEL;
+  const production = productionStoryRecipeExecutionPlan();
+  if (production?.embedding) return production.embedding.model;
+  return process.env.EMBEDDING_MODEL?.trim() || DEFAULT_EMBEDDING_MODEL;
 }
 export function geminiDim(): number {
+  const production = productionStoryRecipeExecutionPlan();
+  if (production?.embedding) return production.embedding.dimension;
   const raw = process.env.EMBEDDING_DIM;
-  if (raw === undefined || raw.trim() === "") return DEFAULT_DIM;
+  if (raw === undefined || raw.trim() === "") return DEFAULT_EMBEDDING_DIM;
   const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : DEFAULT_DIM;
+  return Number.isFinite(parsed) && parsed > 0
+    ? Math.floor(parsed)
+    : DEFAULT_EMBEDDING_DIM;
 }
 // Canonical, dim-stamped model id (…@d1536) — the cache/recipe key. A dim change → new id → the
 // stale-vector gate (model_id mismatch) invalidates old rows automatically.
@@ -71,21 +81,27 @@ export function geminiModelId(): string {
 }
 function timeoutMs(): number {
   const raw = process.env.EMBEDDING_TIMEOUT_MS;
-  if (raw === undefined || raw.trim() === "") return DEFAULT_TIMEOUT_MS;
+  if (raw === undefined || raw.trim() === "") return DEFAULT_EMBEDDING_TIMEOUT_MS;
   const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_TIMEOUT_MS;
+  return Number.isFinite(parsed) && parsed > 0
+    ? parsed
+    : DEFAULT_EMBEDDING_TIMEOUT_MS;
 }
 function maxRetries(): number {
   const raw = process.env.EMBEDDING_MAX_RETRIES;
-  if (raw === undefined || raw.trim() === "") return DEFAULT_MAX_RETRIES;
+  if (raw === undefined || raw.trim() === "") return DEFAULT_EMBEDDING_MAX_RETRIES;
   const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed >= 0 ? Math.floor(parsed) : DEFAULT_MAX_RETRIES;
+  return Number.isFinite(parsed) && parsed >= 0
+    ? Math.floor(parsed)
+    : DEFAULT_EMBEDDING_MAX_RETRIES;
 }
 function retryBaseMs(): number {
   const raw = process.env.EMBEDDING_RETRY_BASE_MS;
-  if (raw === undefined || raw.trim() === "") return DEFAULT_RETRY_BASE_MS;
+  if (raw === undefined || raw.trim() === "") return DEFAULT_EMBEDDING_RETRY_BASE_MS;
   const parsed = Number(raw);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : DEFAULT_RETRY_BASE_MS;
+  return Number.isFinite(parsed) && parsed > 0
+    ? parsed
+    : DEFAULT_EMBEDDING_RETRY_BASE_MS;
 }
 
 // One query embedding (match time). RETRIEVAL_QUERY.

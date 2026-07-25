@@ -14,6 +14,7 @@ node_modules/
 # next.js
 .next/
 .next-ci/
+.next-*/
 out/
 next-env.d.ts
 
@@ -34,10 +35,9 @@ yarn-error.log*
 # editorial workspace (Phase 1 readiness)
 scripts/drafts/
 
-# eval run dumps — full per-trial dumps are local-only (they carry synthetic gold
-# feelings); the metrics-only summary.json is committable for cross-run diffing.
+# eval run dumps — detailed per-trial output stays local. Metrics-only evidence lives
+# outside this directory under content-addressed evals/history and evals/shadow paths.
 evals/runs/*
-!evals/runs/summary.json
 
 # IDE / OS
 .vscode/

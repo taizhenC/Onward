@@ -10,7 +10,12 @@ import {
   writeOpeningCopyReal,
   requestHybridPlanReal,
 } from "./llm-real";
+import {
+  RERANK_PROMPT_VERSION,
+  STORY_PROMPT_VERSION,
+} from "./llm-recipe-constants";
 import type { HybridPlanRequest } from "./hybrid-composition";
+import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 
 // The single LLM boundary. Everything outside lib/ imports from here — never from
 // llm-stub / llm-real directly (CLAUDE.md: the provider is invisible outside lib/).
@@ -25,14 +30,24 @@ export type { StreamBeatInput } from "./llm-stub";
 // keyword-hybrid fallback without importing lib/llm-real directly.
 export { RerankError, toRerankCandidate } from "./llm-real";
 export type { RerankCandidate } from "./llm-real";
+export {
+  DEFAULT_PROSE_MODEL_ID,
+  DEFAULT_RERANK_MODEL_ID,
+  DEFAULT_RERANK_REASONING_EFFORT,
+  DEFAULT_RERANK_TEMPERATURE,
+  DEFAULT_STORY_TEMPERATURE,
+  RERANK_PROMPT_VERSION,
+  STORY_PROMPT_VERSION,
+} from "./llm-recipe-constants";
 
-// Provider is resolved lazily on first use (NOT at module load) and memoized. A script
-// that sets process.env.LLM_PROVIDER before its first match call therefore always wins,
-// regardless of ESM import hoisting. Each process is single-provider by construction
-// (smoke → stub, eval/health → real, the Next app → .env.local), so memoization is safe.
+// Local/eval provider selection is resolved lazily and memoized. Served production
+// bypasses that environment switch and uses its immutable manifest, so changing
+// one selector cannot accidentally leave a stale provider behind.
 let provider: "stub" | "real" | undefined;
 
 function resolveProvider(): "stub" | "real" {
+  const production = productionStoryRecipeExecutionPlan();
+  if (production) return production.llmProvider;
   if (provider === undefined) {
     provider = process.env.LLM_PROVIDER === "real" ? "real" : "stub";
   }
@@ -66,10 +81,14 @@ export function activeRecipe(): {
   llmProvider: "stub" | "real";
   rerankModelId: string;
   proseModelId: string;
+  rerankPromptVersion: string;
+  storyPromptVersion: string;
 } {
   return {
     llmProvider: resolveProvider(),
     rerankModelId: rerankModelId(),
     proseModelId: proseModelId(),
+    rerankPromptVersion: RERANK_PROMPT_VERSION,
+    storyPromptVersion: STORY_PROMPT_VERSION,
   };
 }

@@ -13,6 +13,10 @@ import {
   completeMemoryAlternateStoryUnavailable,
   releaseMemoryAlternateStoryFlow,
 } from "../lib/alternate-story-store-memory";
+import {
+  prepareAlternateRequestedTelemetry,
+  prepareAlternateResolvedTelemetry,
+} from "../lib/alternate-story-telemetry";
 import { createAlternateStory } from "../lib/alternate-story";
 import {
   parseAlternateCapabilityRequest,
@@ -38,11 +42,7 @@ import {
   _listResonanceFeedback,
   getResonanceFeedbackPresentation,
 } from "../lib/resonance-feedback";
-import {
-  acknowledgeOwnedSessionPosition,
-  createSession,
-  getSession,
-} from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { getOwnedStoryArtifact } from "../lib/story-artifacts";
 import {
@@ -56,6 +56,7 @@ import {
 } from "../lib/story-request-context";
 import { storySpecStageKey } from "../lib/story-spec-repository";
 import type { FigureStageRow, MatchRecipe } from "../lib/types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -106,7 +107,7 @@ async function main(): Promise<void> {
   console.log("PASS empty/low coverage stops honestly; operational failures retry twice");
   console.log("PASS live second leases hydrate before exhaustion; claim TTL is start-by");
   console.log("PASS no public rate unit, alternate chain, or sensitive flow payload");
-  console.log("PASS alternate deletion preserves root telemetry; root expiry cascades all flow state");
+  console.log("PASS internal alternate cleanup preserves root telemetry; owner deletion is separately gated");
 }
 
 async function checkIntakeValidationParity(failures: string[]): Promise<void> {
@@ -177,17 +178,30 @@ async function checkLeaseHydrationAndExpiryParity(
     ...identity,
     leaseId: firstLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    ...(await alternateClaimTelemetry(
+      identity.userId,
+      identity.sourceSessionId,
+    )),
   });
   releaseMemoryAlternateStoryFlow({
     userId: identity.userId,
     sourceSessionId: identity.sourceSessionId,
     leaseId: firstLeaseId,
+    telemetry: await alternateResolutionCapture(
+      identity.userId,
+      identity.sourceSessionId,
+      "failed",
+    ),
   });
   activeFlow.nextAttemptAt = Date.now() - 1;
   const secondClaim = claimMemoryAlternateStoryFlow({
     ...identity,
     leaseId: secondLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    ...(await alternateClaimTelemetry(
+      identity.userId,
+      identity.sourceSessionId,
+    )),
   });
   const hydrated = await requestCapability(activeSecond.sessionId);
   const hydratedBody = await hydrated.json();
@@ -221,6 +235,10 @@ async function checkLeaseHydrationAndExpiryParity(
     policyVersion: startByFlow.policyVersion,
     leaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    ...(await alternateClaimTelemetry(
+      startByFlow.userId,
+      startByFlow.sourceSessionId,
+    )),
   });
   startByFlow.expiresAt = Date.now() - 1;
   const activeAfterStartBy = await requestCapability(startBy.sessionId);
@@ -229,6 +247,11 @@ async function checkLeaseHydrationAndExpiryParity(
     userId: startByFlow.userId,
     sourceSessionId: startByFlow.sourceSessionId,
     leaseId,
+    telemetry: await alternateResolutionCapture(
+      startByFlow.userId,
+      startByFlow.sourceSessionId,
+      "unavailable",
+    ),
   });
   if (
     claim.status !== "claimed" ||
@@ -261,12 +284,21 @@ async function checkLeaseHydrationAndExpiryParity(
     policyVersion: retentionFlow.policyVersion,
     leaseId: retentionLeaseId,
     leaseExpiresAt: Date.now() + 120_000,
+    ...(await alternateClaimTelemetry(
+      retentionFlow.userId,
+      retentionFlow.sourceSessionId,
+    )),
   });
   retentionFlow.contextExpiresAt = Date.now() - 1;
   const retentionCompleted = completeMemoryAlternateStoryUnavailable({
     userId: retentionFlow.userId,
     sourceSessionId: retentionFlow.sourceSessionId,
     leaseId: retentionLeaseId,
+    telemetry: await alternateResolutionCapture(
+      retentionFlow.userId,
+      retentionFlow.sourceSessionId,
+      "unavailable",
+    ),
   });
   if (retentionClaim.status !== "claimed" || retentionCompleted) {
     failures.push(
@@ -582,11 +614,13 @@ async function checkHappyConcurrentFlow(
     failures.push("capability refresh endpoint did not restore the ready alternate");
   }
 
-  await completeSession(
-    alternateSessionId,
-    LOCAL_DEV_USER_ID,
-    artifact?.beats.length ?? 7,
-  );
+  if (artifact) {
+    await completeMemoryStorySessionFixture({
+      sessionId: alternateSessionId,
+      userId: LOCAL_DEV_USER_ID,
+      artifact,
+    });
+  }
   const alternateFeedback = await requestFeedback({
     sessionId: alternateSessionId,
     verdict: "not_close",
@@ -1218,32 +1252,37 @@ async function makeRoot(options: {
     artifact,
   });
   if (options.completed !== false) {
-    await completeSession(sessionId, userId, artifact.beats.length);
+    await completeMemoryStorySessionFixture({ sessionId, userId, artifact });
   }
   return { sessionId, artifact, stage };
 }
 
-// Advance a fixture session to the end of its story through the same atomic
-// compare-and-swap the reader uses; the blind-update path this replaced was
-// removed as dead code.
-async function completeSession(
-  sessionId: string,
-  userId: string,
-  beatCount: number,
-): Promise<void> {
+async function alternateRequestedCapture(userId: string, sessionId: string) {
   const session = await getSession(sessionId);
-  if (!session) throw new Error(`fixture session ${sessionId} not found`);
-  const result = await acknowledgeOwnedSessionPosition({
-    sessionId,
-    userId,
-    expectedBeatIndex: session.nextBeatIndex,
-    expectedChunkIndex: session.nextChunkIndex,
-    nextBeatIndex: beatCount,
-    nextChunkIndex: 0,
-  });
-  if (result !== "advanced" && result !== "already_advanced") {
-    throw new Error(`could not complete fixture session ${sessionId}: ${result}`);
+  if (!session || session.userId !== userId) {
+    throw new Error("alternate-request telemetry fixture is unavailable");
   }
+  return prepareAlternateRequestedTelemetry({ session, userId });
+}
+
+async function alternateClaimTelemetry(userId: string, sessionId: string) {
+  const telemetry = await alternateRequestedCapture(userId, sessionId);
+  return {
+    telemetry,
+    resolutionTelemetry: prepareAlternateResolvedTelemetry(
+      telemetry?.flowId ?? null,
+      "exhausted",
+    ),
+  };
+}
+
+async function alternateResolutionCapture(
+  userId: string,
+  sessionId: string,
+  outcome: "ready" | "unavailable" | "expired" | "exhausted" | "failed",
+) {
+  const telemetry = await alternateRequestedCapture(userId, sessionId);
+  return prepareAlternateResolvedTelemetry(telemetry?.flowId ?? null, outcome);
 }
 
 function chooseNonRejectionSource(): FigureStageRow {

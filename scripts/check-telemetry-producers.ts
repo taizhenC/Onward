@@ -71,6 +71,10 @@ function checkTransactionalProducerBoundaries(): void {
     resolve("supabase/migrations/0012_match_telemetry_producers.sql"),
     "utf8",
   );
+  const recipeMigration = readFileSync(
+    resolve("supabase/migrations/0020_story_recipe_registry.sql"),
+    "utf8",
+  );
   const sessionStore = readFileSync(
     resolve("lib/session-store-supabase.ts"),
     "utf8",
@@ -166,12 +170,20 @@ function checkTransactionalProducerBoundaries(): void {
     /create_story_session_v4[\s\S]*create_story_session_v3\([\s\S]*from public\.story_artifacts[\s\S]*p_event_name => 'artifact_created'/,
   );
   assert.match(
-    migration,
-    /v_session\.match_recipe ->> 'matchConfigVersion'\) is distinct from[\s\S]*'figure-library-50-2026-07-02'/,
+    recipeMigration,
+    /create or replace function public\.is_promoted_story_recipe_v1\(/,
   );
   assert.match(
-    migration,
-    /v_session\.match_recipe ->> 'retrievalMode'\) is distinct from 'keyword'/,
+    recipeMigration,
+    /create_story_session_v4_unserialized[\s\S]*is_promoted_story_recipe_v1\(v_session\.match_recipe\)/,
+  );
+  assert.match(
+    recipeMigration,
+    /issue_match_recovery_flow_v2[\s\S]*is_registered_story_recipe_id_v1\(p_recipe_id\)/,
+  );
+  assert.match(
+    recipeMigration,
+    /foreign key \(recipe_id\) references public\.story_recipe_registry\(recipe_id\)/,
   );
   assert.match(sessionStore, /rpc\("create_story_session_v4"/);
   assert.match(recoveryStore, /rpc\([\s\S]*"issue_match_recovery_flow_v2"/);

@@ -264,3 +264,15 @@ function pruneExpired(now: number): void {
     if (entry.expiresAt <= now) counters.delete(key);
   }
 }
+
+export function deleteMemoryRateLimitsForUser(userId: string): number {
+  const prefix = `u:${userId}:`;
+  let deleted = 0;
+  for (const key of counters.keys()) {
+    if (key.startsWith(prefix)) {
+      counters.delete(key);
+      deleted += 1;
+    }
+  }
+  return deleted;
+}

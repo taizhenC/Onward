@@ -1,8 +1,6 @@
 import "server-only";
 import { activeRecipe, writeOpeningCopy } from "./llm";
-import { embeddingModelId } from "./embeddings";
 import { getByKey, listAll } from "./figures";
-import { requireApprovedProductionRecipe } from "./match-config";
 import type { IntakeMatchResult } from "./matching";
 import { crisisRegexVersion } from "./safety";
 import { buildDraftStorySpec } from "./story-spec";
@@ -14,9 +12,13 @@ import { composeStoryArtifact } from "./story-composer";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
 import {
   filterStorySpecCatalog,
+  STORY_BOUNDARY_POLICY_VERSION,
   type StoryBoundaries,
 } from "./story-boundaries";
-import type { StorySpec } from "./story-spec-types";
+import {
+  STORY_SPEC_SCHEMA_VERSION,
+  type StorySpec,
+} from "./story-spec-types";
 import {
   RESONANCE_BRIEF_VERSION,
   createResonanceBrief,
@@ -27,8 +29,13 @@ import {
 } from "./match-recovery";
 import { ALTERNATE_STORY_POLICY_VERSION } from "./alternate-story-types";
 import type { Framing, MatchRecipe } from "./types";
-import type { StoryArtifact } from "./story-artifact-types";
+import {
+  STORY_ARTIFACT_VALIDATOR_VERSION,
+  STORY_COMPOSER_VERSION,
+  type StoryArtifact,
+} from "./story-artifact-types";
 import { persistenceMode } from "./persistence";
+import { assertProductionStoryRecipeRuntime } from "./story-recipe";
 
 export type StoryCatalogResult =
   | { status: "ready"; catalog: ReadonlyMap<string, StorySpec> }
@@ -131,17 +138,48 @@ function activeMatchRecipe(
   match: IntakeMatchResult,
   mode: "initial" | "alternate",
 ): MatchRecipe {
-  const approvedRecipe = requireApprovedProductionRecipe(match.retrievalMode);
+  const runtime = assertProductionStoryRecipeRuntime();
+  const approvedRecipe = runtime.recipe;
+  if (match.retrievalMode !== approvedRecipe.retrievalMode) {
+    throw new Error("The matched retrieval path is not approved.");
+  }
+  const llmRecipe = activeRecipe();
+  if (
+    approvedRecipe.rerankPromptVersion !== llmRecipe.rerankPromptVersion ||
+    approvedRecipe.storyPromptVersion !== llmRecipe.storyPromptVersion ||
+    approvedRecipe.composerVersion !== STORY_COMPOSER_VERSION ||
+    approvedRecipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
+    approvedRecipe.storySpecSchemaVersion !== STORY_SPEC_SCHEMA_VERSION ||
+    approvedRecipe.boundaryPolicyVersion !== STORY_BOUNDARY_POLICY_VERSION ||
+    approvedRecipe.resonanceBriefVersion !== RESONANCE_BRIEF_VERSION
+  ) {
+    throw new Error("The story recipe code identity is not approved.");
+  }
   return {
     recipeId: approvedRecipe.recipeId,
+    recipeManifestHash: approvedRecipe.manifestSha256,
+    datasetVersion: approvedRecipe.datasetVersion,
+    deploymentVersion: runtime.deploymentVersion,
     matchConfigVersion: approvedRecipe.matchConfigVersion,
+    librarySnapshotSha256: approvedRecipe.librarySnapshotSha256,
     crisisRegexVersion,
-    ...activeRecipe(),
-    embeddingModelId: embeddingModelId(),
+    ...llmRecipe,
+    embeddingModelId: approvedRecipe.embeddingModelId,
     // The path that actually produced this match is authoritative. Never
     // re-read mutable process configuration after matching and accidentally
     // assign a different recipe identity to the persisted session.
     retrievalMode: match.retrievalMode,
+    rerankTemperature: approvedRecipe.rerankTemperature,
+    rerankReasoningEffort: approvedRecipe.rerankReasoningEffort,
+    rerankTopK: approvedRecipe.rerankTopK,
+    storyTemperature: approvedRecipe.storyTemperature,
+    storyComposerMode: approvedRecipe.storyComposerMode,
+    hybridStoryComposerEnabled:
+      approvedRecipe.hybridStoryComposerEnabled,
+    composerVersion: approvedRecipe.composerVersion,
+    validatorVersion: approvedRecipe.validatorVersion,
+    storySpecSchemaVersion: approvedRecipe.storySpecSchemaVersion,
+    boundaryPolicyVersion: approvedRecipe.boundaryPolicyVersion,
     resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
     matchRecoveryPolicyVersion: MATCH_RECOVERY_POLICY_VERSION,
     ...(mode === "alternate"

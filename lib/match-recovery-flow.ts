@@ -57,6 +57,17 @@ const EPHEMERAL_FALLBACK_SECRET =
   globalThis.__onwardMatchRecoverySecret ??
   (globalThis.__onwardMatchRecoverySecret = randomBytes(32));
 
+export function deleteMemoryMatchRecoveryFlowsForUser(userId: string): number {
+  let deleted = 0;
+  for (const [tokenHash, flow] of memoryFlows) {
+    if (flow.userId === userId) {
+      memoryFlows.delete(tokenHash);
+      deleted += 1;
+    }
+  }
+  return deleted;
+}
+
 export function parseMatchRecoveryToken(
   value: unknown,
 ): { value: string | undefined } | { error: string } {

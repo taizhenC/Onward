@@ -20,6 +20,13 @@ import type {
 type TelemetryIdPrefix = "tfl" | "tev" | "toc" | "gat" | "tdl";
 type TelemetrySigningKey = Readonly<{ id: string; secret: string }>;
 
+export const STORY_FLOW_AUTH_CHALLENGE_TTL_SECONDS = 2 * 60;
+
+export type AnonymousStoryFlowAuthChallenge = Readonly<{
+  expectedAuthMethod: "anonymous";
+  issuedAtSeconds: number;
+}>;
+
 export function issueTelemetryFlowId(now = new Date()): TelemetryFlowId {
   const issuedAtSeconds = Math.floor(now.getTime() / 1000);
   if (!Number.isSafeInteger(issuedAtSeconds) || issuedAtSeconds < 0) {
@@ -54,6 +61,25 @@ export function issueDeletionCorrelationId(): DeletionCorrelationId {
   return issueId("tdl") as DeletionCorrelationId;
 }
 
+// Retry-stable deletion correlation without persisting or exposing the story,
+// account, or session. The seed is a short-lived server-signed form token; only
+// its one-way HMAC-derived nonce reaches telemetry storage.
+export function deriveDeletionCorrelationId(
+  seed: string,
+): DeletionCorrelationId {
+  if (typeof seed !== "string" || seed.length < 32 || seed.length > 512) {
+    throw new Error("deletion correlation seed is invalid");
+  }
+  const key = telemetryIdKeys()[0];
+  const nonce = createHmac("sha256", key.secret)
+    .update("onward:story-deletion-correlation:v1")
+    .update("\0")
+    .update(seed)
+    .digest("hex")
+    .slice(0, 32);
+  return signedId("tdl", nonce, key) as DeletionCorrelationId;
+}
+
 export function deriveProductEventId(
   event: Readonly<ProductEvent>,
   flowId: TelemetryFlowId | null,
@@ -81,7 +107,7 @@ export function deriveProductEventId(
     correlationId =
       event.event === "deletion_requested" || event.event === "deletion_completed"
         ? parseDeletionCorrelationId(event.deletionId)
-        : parseTelemetryFlowId(flowId);
+        : authenticateTelemetryFlowId(flowId);
     nonceDomain = PRODUCT_EVENT_ID_DOMAIN;
   }
   const signingKey = signingKeyForId(correlationId);
@@ -109,7 +135,7 @@ export function deriveProductEventSemanticKey(
 ): string | null {
   if (flowId === null || event.event === "flow_failed") return null;
   return JSON.stringify([
-    parseTelemetryFlowId(flowId),
+    authenticateTelemetryFlowId(flowId),
     productEventSemanticUnit(event),
   ]);
 }
@@ -152,6 +178,16 @@ export function parseTelemetryFlowId(
 export function parseTelemetryFlowIdForRetirement(
   value: unknown,
 ): TelemetryFlowId {
+  return authenticateTelemetryFlowId(value);
+}
+
+// Deterministic identity construction and transaction-prepared captures must
+// remain valid at an expiry boundary. They authenticate the server-issued ID
+// here; the owning store/RPC is the single authority that decides whether the
+// flow is still active at the domain transaction timestamp.
+export function authenticateTelemetryFlowId(
+  value: unknown,
+): TelemetryFlowId {
   const flowId = parseSignedId(
     value,
     "tfl",
@@ -166,6 +202,68 @@ export function telemetryFlowExpiresAt(flowId: TelemetryFlowId): Date {
   return new Date(
     (issuedAtSeconds + TELEMETRY_FLOW_RETENTION_SECONDS) * 1000,
   );
+}
+
+// A 401 can prove that authentication was performed inside this story flow by
+// handing the browser a short-lived, flow-bound challenge. The token contains
+// only key ID, coarse issuance time, and signature; it does not expose the flow.
+export function issueAnonymousStoryFlowAuthChallenge(
+  value: TelemetryFlowId,
+  now = new Date(),
+): string {
+  const flowId = parseTelemetryFlowId(value, now);
+  const issuedAtSeconds = Math.floor(now.getTime() / 1000);
+  if (!Number.isSafeInteger(issuedAtSeconds) || issuedAtSeconds < 0) {
+    throw new Error("story-flow auth challenge issuance time is invalid");
+  }
+  const issuedAtHex = issuedAtSeconds
+    .toString(16)
+    .padStart(AUTH_CHALLENGE_TIMESTAMP_HEX_LENGTH, "0");
+  if (issuedAtHex.length !== AUTH_CHALLENGE_TIMESTAMP_HEX_LENGTH) {
+    throw new Error("story-flow auth challenge issuance time is out of range");
+  }
+  return formatStoryFlowAuthChallenge(
+    flowId,
+    issuedAtHex,
+    telemetryIdKeys()[0],
+  );
+}
+
+export function verifyAnonymousStoryFlowAuthChallenge(
+  value: unknown,
+  flowValue: TelemetryFlowId,
+  now = new Date(),
+): AnonymousStoryFlowAuthChallenge {
+  const flowId = parseTelemetryFlowId(flowValue, now);
+  if (typeof value !== "string") {
+    throw new Error("story-flow auth challenge is invalid");
+  }
+  const match = /^tac_([0-9a-f]{16})_([0-9a-f]{16})_([0-9a-f]{64})$/.exec(
+    value,
+  );
+  if (!match) throw new Error("story-flow auth challenge is invalid");
+  const key = telemetryIdKeys().find((candidate) => candidate.id === match[1]);
+  if (!key) throw new Error("story-flow auth challenge signing key is inactive");
+  const issuedAtSeconds = Number.parseInt(match[2], 16);
+  const nowSeconds = Math.floor(now.getTime() / 1000);
+  if (
+    !Number.isSafeInteger(issuedAtSeconds) ||
+    !Number.isSafeInteger(nowSeconds) ||
+    issuedAtSeconds > nowSeconds + AUTH_CHALLENGE_CLOCK_SKEW_SECONDS ||
+    issuedAtSeconds + STORY_FLOW_AUTH_CHALLENGE_TTL_SECONDS <= nowSeconds
+  ) {
+    throw new Error("story-flow auth challenge has expired");
+  }
+  const expected = formatStoryFlowAuthChallenge(flowId, match[2], key);
+  if (
+    !timingSafeEqual(Buffer.from(value, "utf8"), Buffer.from(expected, "utf8"))
+  ) {
+    throw new Error("story-flow auth challenge signature is invalid");
+  }
+  return Object.freeze({
+    expectedAuthMethod: "anonymous",
+    issuedAtSeconds,
+  });
 }
 
 export function parseTelemetryEventId(value: unknown): TelemetryEventId {
@@ -223,6 +321,23 @@ function signedId(
     .update(nonce)
     .digest("hex");
   return `${prefix}_${key.id}_${nonce}_${signature}`;
+}
+
+function formatStoryFlowAuthChallenge(
+  flowId: TelemetryFlowId,
+  issuedAtHex: string,
+  key: TelemetrySigningKey,
+): string {
+  const signature = createHmac("sha256", key.secret)
+    .update(AUTH_CHALLENGE_SIGNATURE_DOMAIN)
+    .update("\0")
+    .update(key.id)
+    .update("\0")
+    .update(flowId)
+    .update("\0")
+    .update(issuedAtHex)
+    .digest("hex");
+  return `tac_${key.id}_${issuedAtHex}_${signature}`;
 }
 
 function parseSignedId(
@@ -348,6 +463,10 @@ function telemetryKeyId(secret: string): string {
 }
 
 const ID_SIGNATURE_DOMAIN = "onward:telemetry-id:v1";
+const AUTH_CHALLENGE_SIGNATURE_DOMAIN =
+  "onward:story-flow-auth-challenge:v1";
+const AUTH_CHALLENGE_TIMESTAMP_HEX_LENGTH = 16;
+const AUTH_CHALLENGE_CLOCK_SKEW_SECONDS = 30;
 const KEY_ID_DOMAIN = "onward:telemetry-key-id:v1";
 const PRODUCT_EVENT_ID_DOMAIN = "onward:product-event:v1";
 const OCCURRENCE_EVENT_ID_DOMAIN = "onward:occurrence-event:v1";

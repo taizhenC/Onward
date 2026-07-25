@@ -5,6 +5,7 @@ import {
   claimMemoryTelemetryFlowOwner,
   getMemoryTelemetryFlowByFlow,
   getMemoryTelemetryFlowByRoot,
+  listMemoryTelemetryFlowIdsForUser,
   registerMemoryTelemetryFlow,
   revokeMemoryTelemetryFlowForRootState,
   revokeMemoryTelemetryFlowState,
@@ -37,8 +38,9 @@ export function getOwnedMemoryTelemetryFlowByFlow(
 export function getOwnedMemoryTelemetryFlowBindingByRoot(
   rootSessionId: string,
   userId: string,
+  now = Date.now(),
 ): MemoryTelemetryFlowBinding | null {
-  const flow = getMemoryTelemetryFlowByRoot(rootSessionId);
+  const flow = getMemoryTelemetryFlowByRoot(rootSessionId, now);
   return flow?.userId === userId ? asBinding(flow) : null;
 }
 
@@ -69,6 +71,12 @@ export function deleteMemoryTelemetryFlowBindingForRoot(
 ): void {
   const flowId = revokeMemoryTelemetryFlowForRootState(rootSessionId);
   if (flowId) deleteMemoryProductEventsForFlow(flowId);
+}
+
+export function deleteMemoryTelemetryFlowsForUser(userId: string): number {
+  const flowIds = listMemoryTelemetryFlowIdsForUser(userId);
+  for (const flowId of flowIds) revokeMemoryTelemetryFlow(flowId, userId);
+  return flowIds.length;
 }
 
 function asBinding(

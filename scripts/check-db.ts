@@ -6,9 +6,7 @@ import { _resetFigureCache, listAll } from "../lib/figures";
 import { getSupabase } from "../lib/db";
 import { handleIntake } from "../lib/intake";
 import {
-  createTelemetryEventId,
   createTelemetryFlowId,
-  createTelemetryOutboxLeaseId,
 } from "../lib/telemetry";
 import { _sessionCount } from "../lib/session";
 import type { FigureStageRow } from "../lib/types";
@@ -16,6 +14,13 @@ import {
   listPublishedStorySpecKeys,
   storySpecStageKey,
 } from "../lib/story-spec-repository";
+import {
+  getStoryRecipeById,
+  getStoryRecipePromotion,
+  PRIMARY_STORY_RECIPE,
+  ROLLBACK_STORY_RECIPE,
+  SELECTABLE_STORY_RECIPE_IDS,
+} from "../lib/story-recipe";
 
 // Supabase-mode release check. Run after migrations, seeding, and publishing the launch
 // subset, as a SEPARATE process so the
@@ -141,6 +146,87 @@ async function checkArtifactSchema(): Promise<Step> {
   }
 }
 
+async function checkStoryRecipeRegistry(): Promise<Step> {
+  const name = "immutable promoted story-recipe registry installed";
+  try {
+    const configured = process.env.ONWARD_PRODUCTION_RECIPE_ID?.trim();
+    const active = configured
+      ? getStoryRecipeById(configured)
+      : PRIMARY_STORY_RECIPE;
+    if (!active || !SELECTABLE_STORY_RECIPE_IDS.includes(active.recipeId)) {
+      throw new Error("configured production recipe is not selectable");
+    }
+    const selectable = [...new Map(
+      [PRIMARY_STORY_RECIPE, ROLLBACK_STORY_RECIPE].map((recipe) => [
+        recipe.recipeId,
+        recipe,
+      ]),
+    ).values()];
+    for (const recipe of selectable) {
+      const promotion = getStoryRecipePromotion(recipe.recipeId);
+      if (!promotion) throw new Error(`${recipe.recipeId} is not promoted`);
+      const result = await getSupabase()
+        .from("story_recipe_registry")
+        .select(
+          "recipe_id,manifest_sha256,dataset_version,match_config_version,library_snapshot_sha256,retrieval_mode,llm_provider,rerank_model_id,prose_model_id,embedding_model_id,rerank_prompt_version,story_prompt_version,rerank_temperature,rerank_reasoning_effort,rerank_top_k,story_temperature,story_composer_mode,hybrid_story_composer_enabled,composer_version,validator_version,story_spec_schema_version,boundary_policy_version,resonance_brief_version,decision_id,promoted_at",
+        )
+        .eq("recipe_id", recipe.recipeId)
+        .maybeSingle();
+      if (result.error) throw new Error(result.error.message);
+      const expected = {
+        recipe_id: recipe.recipeId,
+        manifest_sha256: recipe.manifestSha256,
+        dataset_version: recipe.datasetVersion,
+        match_config_version: recipe.matchConfigVersion,
+        library_snapshot_sha256: recipe.librarySnapshotSha256,
+        retrieval_mode: recipe.retrievalMode,
+        llm_provider: recipe.llmProvider,
+        rerank_model_id: recipe.rerankModelId,
+        prose_model_id: recipe.proseModelId,
+        embedding_model_id: recipe.embeddingModelId,
+        rerank_prompt_version: recipe.rerankPromptVersion,
+        story_prompt_version: recipe.storyPromptVersion,
+        rerank_temperature: recipe.rerankTemperature,
+        rerank_reasoning_effort: recipe.rerankReasoningEffort,
+        rerank_top_k: recipe.rerankTopK,
+        story_temperature: recipe.storyTemperature,
+        story_composer_mode: recipe.storyComposerMode,
+        hybrid_story_composer_enabled:
+          recipe.hybridStoryComposerEnabled,
+        composer_version: recipe.composerVersion,
+        validator_version: recipe.validatorVersion,
+        story_spec_schema_version: recipe.storySpecSchemaVersion,
+        boundary_policy_version: recipe.boundaryPolicyVersion,
+        resonance_brief_version: recipe.resonanceBriefVersion,
+        decision_id: promotion.decisionId,
+        promoted_at: promotion.promotedAt,
+      };
+      const actual = result.data
+        ? {
+            ...result.data,
+            rerank_temperature: Number(result.data.rerank_temperature),
+            rerank_top_k: Number(result.data.rerank_top_k),
+            story_temperature: Number(result.data.story_temperature),
+            promoted_at:
+              typeof result.data.promoted_at === "string"
+                ? new Date(result.data.promoted_at).toISOString()
+                : result.data.promoted_at,
+          }
+        : null;
+      if (!actual || !isDeepStrictEqual(actual, expected)) {
+        throw new Error(`${recipe.recipeId} differs from the manifest`);
+      }
+    }
+    return {
+      name,
+      ok: true,
+      detail: `active ${active.recipeId}; ${selectable.length} selectable manifest(s) installed`,
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0020` };
+  }
+}
+
 async function checkMatchRecoverySchema(): Promise<Step> {
   const name = "single-use match recovery schema installed";
   try {
@@ -263,6 +349,67 @@ async function checkAlternateStorySchema(): Promise<Step> {
   }
 }
 
+async function checkOwnedStoryDeletionSchema(): Promise<Step> {
+  const name = "owner-scoped story deletion boundary installed";
+  try {
+    const probe = await getSupabase().rpc("delete_owned_story_v1", {
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_session_id: "0".repeat(32),
+    });
+    if (probe.error) throw new Error(probe.error.message);
+
+    const directDelete = await getSupabase()
+      .from("sessions")
+      .delete()
+      .eq("session_id", "0".repeat(32));
+    const directDenied =
+      directDelete.error !== null && directDelete.error.code === "42501";
+    const ok = probe.data === false && directDenied;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "nonexistent owner probe is closed; direct service-role delete is denied"
+        : "RPC accepted a nonexistent target or direct session delete remains available",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0018`,
+    };
+  }
+}
+
+async function checkOwnedAccountDeletionSchema(): Promise<Step> {
+  const name = "owner-confirmed account deletion boundary installed";
+  try {
+    const probe = await getSupabase().rpc("delete_owned_account_v1", {
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const rateProjection = await getSupabase()
+      .from("rate_limits")
+      .select("bucket_key,owner_user_id")
+      .limit(1);
+    if (rateProjection.error) throw new Error(rateProjection.error.message);
+    const ok = probe.data === false;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "nonexistent auth owner is closed; rate-limit ownership FK is reachable"
+        : "account deletion accepted a nonexistent auth owner",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0019`,
+    };
+  }
+}
+
 async function checkTelemetrySchema(): Promise<Step> {
   const name = "privacy-safe telemetry schemas installed";
   try {
@@ -328,17 +475,6 @@ async function checkTelemetryLifecycleSchema(): Promise<Step> {
       },
     );
     requireRpcValidationError("typed event capture", captureValidation.error);
-    const outboxClaimValidation = await getSupabase().rpc(
-      "claim_product_event_outbox_v1",
-      {
-        p_lease_id: "invalid",
-        p_limit: 1,
-      },
-    );
-    requireRpcValidationError(
-      "outbox claim",
-      outboxClaimValidation.error,
-    );
     const byRoot = await getSupabase().rpc("resolve_owned_telemetry_flow_v1", {
       p_user_id: userId,
       p_root_session_id: rootSessionId,
@@ -354,17 +490,6 @@ async function checkTelemetryLifecycleSchema(): Promise<Step> {
       p_user_id: userId,
     });
     if (claim.error) throw new Error(claim.error.message);
-    const ack = await getSupabase().rpc("ack_product_event_outbox_v1", {
-      p_event_id: createTelemetryEventId(),
-      p_lease_id: createTelemetryOutboxLeaseId(),
-    });
-    if (ack.error) throw new Error(ack.error.message);
-    const nack = await getSupabase().rpc("nack_product_event_outbox_v1", {
-      p_event_id: createTelemetryEventId(),
-      p_lease_id: createTelemetryOutboxLeaseId(),
-      p_error_class: "unknown",
-    });
-    if (nack.error) throw new Error(nack.error.message);
     const v3 = await getSupabase().rpc("create_story_session_v3", {
       p_session_id: rootSessionId,
       p_user_id: userId,
@@ -384,18 +509,84 @@ async function checkTelemetryLifecycleSchema(): Promise<Step> {
       byRoot.data === null &&
       byFlow.data === null &&
       claim.data === "not_found" &&
-      ack.data === "not_found" &&
-      nack.data === "not_found" &&
       v3Data?.status === "flow_not_found";
     return {
       name,
       ok,
       detail: ok
-        ? "all lifecycle/capture/outbox signatures and service-role grants are reachable without writes"
+        ? "all lifecycle/capture signatures and service-role grants are reachable without writes"
         : "a nonexistent lifecycle probe returned an unsafe disposition",
     };
   } catch (error) {
     return { name, ok: false, detail: `${message(error)} - apply migration 0011` };
+  }
+}
+
+async function checkTelemetryRollupDispatcherSchema(): Promise<Step> {
+  const name = "first-party telemetry rollup dispatcher installed";
+  try {
+    const invalidDispatch = await getSupabase().rpc(
+      "dispatch_product_event_rollups_v1",
+      { p_limit: 0 },
+    );
+    requireRpcValidationError(
+      "telemetry rollup dispatcher",
+      invalidDispatch.error,
+    );
+
+    const health = await getSupabase().rpc("telemetry_outbox_health_v1");
+    if (health.error) throw new Error(health.error.message);
+    const row = Array.isArray(health.data) ? health.data[0] : null;
+    const healthShapeOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") ===
+        [
+          "delivered_count",
+          "dispatch_enabled",
+          "actionable_count",
+          "exhausted_count",
+          "leased_count",
+          "oldest_actionable_age_bucket",
+          "pending_count",
+        ]
+          .sort()
+          .join(",");
+    const schemaHealth = await getSupabase().rpc(
+      "telemetry_rollup_schema_health_v1",
+    );
+    if (schemaHealth.error) throw new Error(schemaHealth.error.message);
+    const schemaRow = Array.isArray(schemaHealth.data)
+      ? schemaHealth.data[0]
+      : null;
+    const expectedSchemaKeys = [
+      "boundaries_granted",
+      "cron_jobs_active",
+      "dispatch_enabled",
+      "helpers_private",
+      "ok",
+      "raw_paths_revoked",
+      "tables_forced_rls",
+    ].sort();
+    const schemaOk =
+      schemaRow !== null &&
+      typeof schemaRow === "object" &&
+      !Array.isArray(schemaRow) &&
+      "ok" in schemaRow &&
+      Object.keys(schemaRow).sort().join(",") === expectedSchemaKeys.join(",") &&
+      Object.values(schemaRow).every((value) => typeof value === "boolean") &&
+      schemaRow.ok === true;
+    const ok = healthShapeOk && schemaOk;
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "count-only dispatch, closed queue health, private helpers, grants, RLS, and cron definitions are reachable"
+        : "dispatcher schema health or queue-health shape is unsafe",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0017` };
   }
 }
 
@@ -462,6 +653,197 @@ async function checkMatchTelemetryProducerSchema(): Promise<Step> {
     };
   } catch (error) {
     return { name, ok: false, detail: `${message(error)} - apply migration 0012` };
+  }
+}
+
+async function checkStoryProgressTelemetrySchema(): Promise<Step> {
+  const name = "transactional story progress telemetry RPC installed";
+  try {
+    const probe = await getSupabase().rpc(
+      "acknowledge_story_position_v1",
+      {
+        p_session_id: "0".repeat(32),
+        p_user_id: "00000000-0000-0000-0000-000000000000",
+        p_expected_beat_index: 0,
+        p_expected_chunk_index: 0,
+        p_next_beat_index: 0,
+        p_next_chunk_index: 1,
+        p_telemetry_flow_id: null,
+        p_passage_event_id: null,
+        p_completion_event_id: null,
+        p_schema_version: null,
+        p_story_role: null,
+        p_passage_ordinal: null,
+      },
+    );
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "owner-first acknowledgement signature is reachable without writes"
+        : "a nonexistent progress probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0013` };
+  }
+}
+
+async function checkStoryFeedbackTelemetrySchema(): Promise<Step> {
+  const name = "transactional story feedback telemetry RPC installed";
+  try {
+    const probe = await getSupabase().rpc("submit_story_feedback_v2", {
+      p_feedback_id: "0".repeat(32),
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_session_id: "0".repeat(32),
+      p_artifact_id: "0".repeat(32),
+      p_policy_version: "resonance-feedback-v1-2026-07",
+      p_verdict: "felt_close",
+      p_reason: null,
+      p_telemetry_flow_id: null,
+      p_feedback_event_id: null,
+      p_telemetry_schema_version: null,
+      p_story_role: null,
+      p_feedback_verdict: null,
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const ok = probe.data === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "owner-first feedback signature is reachable without writes"
+        : "a nonexistent feedback probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0014` };
+  }
+}
+
+async function checkAlternateRequestTelemetrySchema(): Promise<Step> {
+  const name = "transactional alternate-request telemetry RPC installed";
+  try {
+    const probe = await getSupabase().rpc("claim_alternate_story_flow_v2", {
+      p_user_id: "00000000-0000-0000-0000-000000000000",
+      p_source_session_id: "0".repeat(32),
+      p_source_artifact_id: "0".repeat(32),
+      p_token_hash: "0".repeat(64),
+      p_policy_version: "alternate-story-v1-2026-07",
+      p_lease_id: "0".repeat(32),
+      p_telemetry_flow_id: null,
+      p_alternate_requested_event_id: null,
+      p_telemetry_schema_version: null,
+    });
+    if (probe.error) throw new Error(probe.error.message);
+    const data = probe.data as { status?: unknown } | null;
+    const ok = data?.status === "not_found";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "claim-first alternate telemetry signature is reachable without writes"
+        : "a nonexistent alternate claim probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0015` };
+  }
+}
+
+async function checkAlternateResolutionTelemetrySchema(): Promise<Step> {
+  const name = "transactional alternate-resolution telemetry RPCs installed";
+  try {
+    const userId = "00000000-0000-0000-0000-000000000000";
+    const sourceSessionId = "0".repeat(32);
+    const sourceArtifactId = "0".repeat(32);
+    const leaseId = "0".repeat(32);
+
+    const claim = await getSupabase().rpc("claim_alternate_story_flow_v3", {
+      p_user_id: userId,
+      p_source_session_id: sourceSessionId,
+      p_source_artifact_id: sourceArtifactId,
+      p_token_hash: "0".repeat(64),
+      p_policy_version: "alternate-story-v1-2026-07",
+      p_lease_id: leaseId,
+      p_telemetry_flow_id: null,
+      p_alternate_requested_event_id: null,
+      p_alternate_resolved_event_id: null,
+      p_telemetry_schema_version: null,
+    });
+    if (claim.error) throw new Error(claim.error.message);
+
+    const release = await getSupabase().rpc(
+      "release_alternate_story_claim_v2",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_telemetry_flow_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (release.error) throw new Error(release.error.message);
+
+    const unavailable = await getSupabase().rpc(
+      "complete_alternate_story_unavailable_v2",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_telemetry_flow_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (unavailable.error) throw new Error(unavailable.error.message);
+
+    const expired = await getSupabase().rpc(
+      "complete_alternate_story_expired_v1",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_telemetry_flow_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (expired.error) throw new Error(expired.error.message);
+
+    const ready = await getSupabase().rpc(
+      "complete_alternate_story_session_v2",
+      {
+        p_user_id: userId,
+        p_source_session_id: sourceSessionId,
+        p_lease_id: leaseId,
+        p_session_id: sourceSessionId,
+        p_artifact: {},
+        p_telemetry_flow_id: null,
+        p_artifact_event_id: null,
+        p_alternate_resolved_event_id: null,
+        p_telemetry_schema_version: null,
+      },
+    );
+    if (ready.error) throw new Error(ready.error.message);
+
+    const claimData = claim.data as { status?: unknown } | null;
+    const readyData = ready.data as { status?: unknown } | null;
+    const ok =
+      claimData?.status === "not_found" &&
+      release.data === false &&
+      unavailable.data === false &&
+      expired.data === false &&
+      readyData?.status === "rejected";
+    return {
+      name,
+      ok,
+      detail: ok
+        ? "claim/release/unavailable/expired/ready signatures are reachable without writes"
+        : "a nonexistent alternate terminal probe returned an unsafe disposition",
+    };
+  } catch (error) {
+    return { name, ok: false, detail: `${message(error)} - apply migration 0016` };
   }
 }
 
@@ -550,13 +932,21 @@ async function main(): Promise<void> {
     await checkServingParity(),
     await checkPublishedStorySpecs(),
     await checkArtifactSchema(),
+    await checkStoryRecipeRegistry(),
     await checkMatchRecoverySchema(),
     await checkHistoricalConcernSchema(),
     await checkStoryFeedbackSchema(),
     await checkAlternateStorySchema(),
+    await checkOwnedStoryDeletionSchema(),
+    await checkOwnedAccountDeletionSchema(),
     await checkTelemetrySchema(),
     await checkTelemetryLifecycleSchema(),
+    await checkTelemetryRollupDispatcherSchema(),
     await checkMatchTelemetryProducerSchema(),
+    await checkStoryProgressTelemetrySchema(),
+    await checkStoryFeedbackTelemetrySchema(),
+    await checkAlternateRequestTelemetrySchema(),
+    await checkAlternateResolutionTelemetrySchema(),
     await checkCrisisPersistsNothing(),
   ];
 

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "match-eval-evidence-v1",
+  "harnessVersion": "match-eval-harness-v2-2026-07",
+  "evidenceId": "ev_7a7d9bfa19852146f38ee523c1c0caa916601720cdc9e446bbf32984e38053ad",
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "dataset": {
+    "version": "match-104-2026-07-02",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "visibility": "synthetic"
+  },
+  "run": {
+    "startedAt": "2026-07-02T07:13:02.101Z",
+    "completedAt": "2026-07-02T07:13:02.101Z",
+    "k": 1,
+    "concurrency": 1,
+    "maxRetries": 2,
+    "caseCount": 104,
+    "trialCount": 104
+  },
+  "config": {
+    "provider": "real",
+    "model": "gpt-oss-120b",
+    "retrievalMode": "keyword",
+    "embeddingModelId": null,
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "rerankTemperature": 0,
+    "rerankReasoningEffort": "low",
+    "rerankTopK": 6
+  },
+  "metrics": {
+    "rerankTop1": 0.9801980198019802,
+    "overallTop1": 0.9801980198019802,
+    "missDetection": 1,
+    "hardConfusion": 0,
+    "goldSurvivalStageA": null,
+    "goldSurvivalStageB": null,
+    "stability": null,
+    "counts": {
+      "rerankCorrect": 99,
+      "rerankTotal": 101,
+      "overallCorrect": 99,
+      "overallTotal": 101,
+      "missDetected": 3,
+      "missTotal": 3,
+      "hardConfused": 0,
+      "hardTotal": 44,
+      "survivedStageA": 0,
+      "survivedStageB": 0,
+      "survivalTotal": 0,
+      "rerankChosen": 104,
+      "keywordFallback": 0
+    },
+    "calibration": {
+      "definitiveCorrect": 93,
+      "definitiveWrong": 0,
+      "partialCorrect": 6,
+      "partialWrong": 2
+    },
+    "latency": {
+      "p50Ms": 319,
+      "p95Ms": 702
+    },
+    "trustGate": {
+      "passed": true,
+      "coverage": 1,
+      "checks": {
+        "coverage": true,
+        "rerankTop1": true,
+        "missDetection": true,
+        "noDefinitiveWrong": true,
+        "top1": true,
+        "hardConfusion": true
+      },
+      "thresholds": {
+        "minCoverage": 0.95,
+        "minRerankTop1": 0.971,
+        "minOverallTop1": 0.971,
+        "minMissDetection": 1,
+        "maxDefinitiveWrong": 0,
+        "maxHardConfusion": 0
+      }
+    }
+  },
+  "provenance": {
+    "gitCommit": "138d247",
+    "deploymentId": null,
+    "sourceRun": "2026-07-02T07-13-02-101Z.json"
+  },
+  "legacyImported": true,
+  "promotable": false
+}

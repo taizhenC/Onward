@@ -7,6 +7,7 @@ import type {
   StoryTransparency,
   StoryTransparencyFact,
 } from "@/lib/story-transparency-types";
+import { sendSourceOpened } from "@/lib/story-visibility-client";
 
 type Props = {
   sessionId: string;
@@ -55,6 +56,7 @@ export function StoryAfterword({ sessionId, transparency }: Props) {
   const [reason, setReason] = useState<HistoricalConcernReason>("incorrect_fact");
   const [submission, setSubmission] = useState<SubmissionState>("idle");
   const submittingRef = useRef(false);
+  const sourceOpenedRef = useRef(false);
   const reportableFacts = useMemo(
     () => (transparency ? factsByFirstPassage(transparency) : []),
     [transparency],
@@ -124,7 +126,14 @@ export function StoryAfterword({ sessionId, transparency }: Props) {
         ) : null}
       </div>
 
-      <details className="group border-y border-[var(--color-ink-soft)]/30 py-4">
+      <details
+        onToggle={(event) => {
+          if (!event.currentTarget.open || sourceOpenedRef.current) return;
+          sourceOpenedRef.current = true;
+          void sendSourceOpened(sessionId);
+        }}
+        className="group border-y border-[var(--color-ink-soft)]/30 py-4"
+      >
         <summary className="cursor-pointer list-none font-ui text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]">
           Sources and story notes
           <span aria-hidden="true" className="float-right group-open:rotate-45">

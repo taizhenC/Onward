@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "recipe-decision-v1",
+  "decisionId": "rd_c5c82ca18b56997b606f2d30e8d03cde57365a806b78fefeb436065085b2ad8b",
+  "decisionType": "retain_baseline",
+  "dataset": {
+    "version": "match-104-2026-07-02",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "visibility": "synthetic"
+  },
+  "decidedAt": "2026-07-02T07:13:02.101Z",
+  "fromRecipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "toRecipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "challengerRecipeId": "facetsrag-rerank-figure-library-50-2026-07-02",
+  "rollbackRecipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "baselineEvidenceIds": [
+    "ev_7a7d9bfa19852146f38ee523c1c0caa916601720cdc9e446bbf32984e38053ad"
+  ],
+  "challengerEvidenceIds": [
+    "ev_cc12a3198ddef5022b5bf8d7383d3cba0841f1aba01e56e30e6fcf8a04f7553f"
+  ],
+  "shadowEvidenceIds": [
+    "sh_3be08dd2427b24e8c57092b61c08092ee8c463839aa18d1a1e5d57765922b80c"
+  ],
+  "promotionAuthorized": false,
+  "rationaleCodes": [
+    "baseline_trust_gate_passed",
+    "challenger_lower_top1",
+    "challenger_definitive_wrong",
+    "challenger_hard_confusion_regression",
+    "legacy_synthetic_evidence_not_promotable"
+  ],
+  "approvals": []
+}

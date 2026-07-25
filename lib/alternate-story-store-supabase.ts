@@ -6,6 +6,12 @@ import type {
   AlternateFlowClaimResult,
   AlternateFlowIssueResult,
 } from "./alternate-story-store-memory";
+import type { AlternateRequestedTelemetryCapture } from "./alternate-story-telemetry";
+import type {
+  AlternateReadyTelemetry,
+  AlternateResolvedTelemetryCapture,
+} from "./alternate-story-telemetry";
+import { telemetryFlowBindingEnabled } from "./telemetry-flow-lifecycle";
 
 export async function issueSupabaseAlternateStoryFlow(input: {
   userId: string;
@@ -37,18 +43,41 @@ export async function claimSupabaseAlternateStoryFlow(input: {
   tokenHash: string;
   policyVersion: string;
   leaseId: string;
+  telemetry: AlternateRequestedTelemetryCapture | null;
+  resolutionTelemetry: AlternateResolvedTelemetryCapture | null;
 }): Promise<AlternateFlowClaimResult> {
-  const { data, error } = await getSupabase().rpc(
-    "claim_alternate_story_flow",
-    {
-      p_user_id: input.userId,
-      p_source_session_id: input.sourceSessionId,
-      p_source_artifact_id: input.sourceArtifactId,
-      p_token_hash: input.tokenHash,
-      p_policy_version: input.policyVersion,
-      p_lease_id: input.leaseId,
-    },
-  );
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (
+    !telemetryEnabled &&
+    (input.telemetry !== null || input.resolutionTelemetry !== null)
+  ) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
+  const { data, error } = telemetryEnabled
+    ? await getSupabase().rpc("claim_alternate_story_flow_v3", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_source_artifact_id: input.sourceArtifactId,
+        p_token_hash: input.tokenHash,
+        p_policy_version: input.policyVersion,
+        p_lease_id: input.leaseId,
+        p_telemetry_flow_id: input.telemetry?.flowId ?? null,
+        p_alternate_requested_event_id: input.telemetry?.eventId ?? null,
+        p_alternate_resolved_event_id:
+          input.resolutionTelemetry?.eventId ?? null,
+        p_telemetry_schema_version:
+          input.telemetry?.schemaVersion ??
+          input.resolutionTelemetry?.schemaVersion ??
+          null,
+      })
+    : await getSupabase().rpc("claim_alternate_story_flow", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_source_artifact_id: input.sourceArtifactId,
+        p_token_hash: input.tokenHash,
+        p_policy_version: input.policyVersion,
+        p_lease_id: input.leaseId,
+      });
   if (error) throw new Error("alternate story flow could not be claimed");
   return parseClaimResult(data);
 }
@@ -57,12 +86,26 @@ export async function releaseSupabaseAlternateStoryFlow(input: {
   userId: string;
   sourceSessionId: string;
   leaseId: string;
+  telemetry: AlternateResolvedTelemetryCapture | null;
 }): Promise<void> {
-  const { error } = await getSupabase().rpc("release_alternate_story_claim", {
-    p_user_id: input.userId,
-    p_source_session_id: input.sourceSessionId,
-    p_lease_id: input.leaseId,
-  });
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
+  const { error } = telemetryEnabled
+    ? await getSupabase().rpc("release_alternate_story_claim_v2", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_lease_id: input.leaseId,
+        p_telemetry_flow_id: input.telemetry?.flowId ?? null,
+        p_alternate_resolved_event_id: input.telemetry?.eventId ?? null,
+        p_telemetry_schema_version: input.telemetry?.schemaVersion ?? null,
+      })
+    : await getSupabase().rpc("release_alternate_story_claim", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_lease_id: input.leaseId,
+      });
   if (error) throw new Error("alternate story claim could not be released");
 }
 
@@ -70,16 +113,55 @@ export async function completeSupabaseAlternateStoryUnavailable(input: {
   userId: string;
   sourceSessionId: string;
   leaseId: string;
+  telemetry: AlternateResolvedTelemetryCapture | null;
 }): Promise<boolean> {
-  const { data, error } = await getSupabase().rpc(
-    "complete_alternate_story_unavailable",
-    {
-      p_user_id: input.userId,
-      p_source_session_id: input.sourceSessionId,
-      p_lease_id: input.leaseId,
-    },
-  );
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
+  const { data, error } = telemetryEnabled
+    ? await getSupabase().rpc("complete_alternate_story_unavailable_v2", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_lease_id: input.leaseId,
+        p_telemetry_flow_id: input.telemetry?.flowId ?? null,
+        p_alternate_resolved_event_id: input.telemetry?.eventId ?? null,
+        p_telemetry_schema_version: input.telemetry?.schemaVersion ?? null,
+      })
+    : await getSupabase().rpc("complete_alternate_story_unavailable", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_lease_id: input.leaseId,
+      });
   if (error) throw new Error("alternate story outcome could not be stored");
+  return data === true;
+}
+
+export async function completeSupabaseAlternateStoryExpired(input: {
+  userId: string;
+  sourceSessionId: string;
+  leaseId: string;
+  telemetry: AlternateResolvedTelemetryCapture | null;
+}): Promise<boolean> {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
+  const { data, error } = telemetryEnabled
+    ? await getSupabase().rpc("complete_alternate_story_expired_v1", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_lease_id: input.leaseId,
+        p_telemetry_flow_id: input.telemetry?.flowId ?? null,
+        p_alternate_resolved_event_id: input.telemetry?.eventId ?? null,
+        p_telemetry_schema_version: input.telemetry?.schemaVersion ?? null,
+      })
+    : await getSupabase().rpc("release_alternate_story_claim", {
+        p_user_id: input.userId,
+        p_source_session_id: input.sourceSessionId,
+        p_lease_id: input.leaseId,
+      });
+  if (error) throw new Error("alternate story expiry could not be stored");
   return data === true;
 }
 
@@ -88,19 +170,35 @@ export async function completeSupabaseAlternateStoryReady(input: {
   sourceSessionId: string;
   leaseId: string;
   artifact: StoryArtifact;
+  telemetry: AlternateReadyTelemetry | null;
 }): Promise<string> {
+  const telemetryEnabled = telemetryFlowBindingEnabled();
+  if (!telemetryEnabled && input.telemetry !== null) {
+    throw new Error("disabled alternate telemetry received a capture");
+  }
   for (let attempt = 0; attempt < 5; attempt += 1) {
     const sessionId = randomBytes(16).toString("hex");
-    const { data, error } = await getSupabase().rpc(
-      "complete_alternate_story_session",
-      {
-        p_user_id: input.userId,
-        p_source_session_id: input.sourceSessionId,
-        p_lease_id: input.leaseId,
-        p_session_id: sessionId,
-        p_artifact: input.artifact,
-      },
-    );
+    const { data, error } = telemetryEnabled
+      ? await getSupabase().rpc("complete_alternate_story_session_v2", {
+          p_user_id: input.userId,
+          p_source_session_id: input.sourceSessionId,
+          p_lease_id: input.leaseId,
+          p_session_id: sessionId,
+          p_artifact: input.artifact,
+          p_telemetry_flow_id: input.telemetry?.artifact.flowId ?? null,
+          p_artifact_event_id: input.telemetry?.artifact.eventId ?? null,
+          p_alternate_resolved_event_id:
+            input.telemetry?.resolution.eventId ?? null,
+          p_telemetry_schema_version:
+            input.telemetry?.artifact.schemaVersion ?? null,
+        })
+      : await getSupabase().rpc("complete_alternate_story_session", {
+          p_user_id: input.userId,
+          p_source_session_id: input.sourceSessionId,
+          p_lease_id: input.leaseId,
+          p_session_id: sessionId,
+          p_artifact: input.artifact,
+        });
     if (error) throw new Error("alternate story session could not be stored");
     const result = asRecord(data);
     if (result?.status === "ready" && typeof result.sessionId === "string") {

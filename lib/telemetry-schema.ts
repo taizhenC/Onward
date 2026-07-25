@@ -23,10 +23,10 @@ import {
 } from "./telemetry-types";
 import { MATCH_RECOVERY_POLICY_VERSION } from "./match-recovery";
 import {
+  authenticateTelemetryFlowId,
   parseDeletionCorrelationId,
   parseGenerationAttemptId,
   parseTelemetryEventId,
-  parseTelemetryFlowId,
 } from "./telemetry-id";
 
 type Validator = (value: unknown) => boolean;
@@ -356,11 +356,12 @@ export function createProductEventRecord(input: {
 }): Readonly<ProductEventRecord> {
   const event = parseProductEvent(input.event);
   const eventId = parseTelemetryEventId(input.eventId);
+  const now = validDate(input.now ?? new Date(), "event time");
   const unlinkable = (UNLINKABLE_PRODUCT_EVENTS as readonly string[]).includes(
     event.event,
   );
   const flowId =
-    input.flowId === null ? null : parseTelemetryFlowId(input.flowId);
+    input.flowId === null ? null : authenticateTelemetryFlowId(input.flowId);
   if (unlinkable !== (flowId === null)) {
     throw new Error(
       unlinkable
@@ -368,7 +369,6 @@ export function createProductEventRecord(input: {
         : `${event.event} requires an opaque flow ID`,
     );
   }
-  const now = validDate(input.now ?? new Date(), "event time");
   return Object.freeze({
     ...event,
     eventId,

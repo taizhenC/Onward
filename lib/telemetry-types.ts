@@ -1,5 +1,5 @@
-import { APPROVED_PRODUCTION_RECIPE } from "./match-config";
 import { MATCH_RECOVERY_POLICY_VERSION } from "./match-recovery";
+import { SELECTABLE_STORY_RECIPE_IDS } from "./story-recipe-runtime";
 
 export const PRODUCT_EVENT_SCHEMA_VERSION = "product-event-v1-2026-07";
 export const GENERATION_ATTEMPT_SCHEMA_VERSION =
@@ -8,9 +8,7 @@ export const PRODUCT_EVENT_RETENTION_DAYS = 30;
 export const TELEMETRY_FLOW_RETENTION_DAYS = 30;
 export const GENERATION_ATTEMPT_RETENTION_DAYS = 14;
 
-export const APPROVED_TELEMETRY_RECIPE_IDS = [
-  APPROVED_PRODUCTION_RECIPE.recipeId,
-] as const;
+export const APPROVED_TELEMETRY_RECIPE_IDS = SELECTABLE_STORY_RECIPE_IDS;
 export type ApprovedTelemetryRecipeId =
   (typeof APPROVED_TELEMETRY_RECIPE_IDS)[number];
 
@@ -244,7 +242,9 @@ export type TelemetryOutboxNackResult =
   | "stale"
   | "not_found";
 
-export type ProductEventCapture = ProductEvent & {
+export type ProductEventCapture<
+  Event extends ProductEvent = ProductEvent,
+> = Event & {
   eventId: TelemetryEventId;
   schemaVersion: typeof PRODUCT_EVENT_SCHEMA_VERSION;
   flowId: TelemetryFlowId | null;

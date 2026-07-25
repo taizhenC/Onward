@@ -1,15 +1,16 @@
 import "server-only";
-import {
-  APPROVED_PRODUCTION_RECIPE,
-  requireApprovedProductionRecipe,
-} from "./match-config";
+import { requireApprovedProductionRecipe } from "./match-config";
 import type { IntakeMatchResult } from "./matching";
 import type { MatchDisposition } from "./match-recovery";
-import type { StoryArtifact } from "./story-artifact-types";
+import {
+  MAX_STORY_PASSAGES,
+  type StoryArtifact,
+} from "./story-artifact-types";
 import type { StoryBoundaries } from "./story-boundaries";
 import { recordProductEvent } from "./telemetry";
 import type { RetrievalMode } from "./types";
 import type {
+  LatencyBucket,
   ProductEvent,
   StoryRole,
   TelemetryFlowId,
@@ -21,6 +22,31 @@ export type LinkedTelemetryWriteResult =
   | "conflict"
   | "unavailable"
   | "skipped";
+
+export function landingCtaClickedEvent(): Extract<
+  ProductEvent,
+  { event: "landing_cta_clicked" }
+> {
+  return { event: "landing_cta_clicked", surface: "home_primary" };
+}
+
+export function intakeStartedEvent(
+  viewportBucket: Extract<
+    ProductEvent,
+    { event: "intake_started" }
+  >["viewportBucket"],
+): Extract<ProductEvent, { event: "intake_started" }> {
+  return { event: "intake_started", viewportBucket };
+}
+
+export function authEstablishedEvent(
+  authMethod: Extract<
+    ProductEvent,
+    { event: "auth_established" }
+  >["authMethod"],
+): Extract<ProductEvent, { event: "auth_established" }> {
+  return { event: "auth_established", authMethod };
+}
 
 export function matchCompletedEvent(input: {
   result: IntakeMatchResult;
@@ -44,6 +70,7 @@ export function matchCompletedEvent(input: {
 
 export function noEligibleMatchCompletedEvent(
   configuredRetrievalMode: RetrievalMode,
+  storyRole: StoryRole = "initial",
 ): Extract<
   ProductEvent,
   { event: "match_completed" }
@@ -52,7 +79,7 @@ export function noEligibleMatchCompletedEvent(
   return {
     event: "match_completed",
     recipeId: recipe.recipeId,
-    storyRole: "initial",
+    storyRole,
     disposition: "no_close_match",
     confidenceBucket: "not_applicable",
     matchPath: "not_run",
@@ -65,12 +92,14 @@ export function artifactCreatedEvent(
   artifact: StoryArtifact,
   storyRole: StoryRole,
 ): Extract<ProductEvent, { event: "artifact_created" }> {
+  const recipe = requireApprovedProductionRecipe(
+    artifact.recipe.match.retrievalMode,
+  );
   if (
-    artifact.recipe.match.recipeId !== APPROVED_PRODUCTION_RECIPE.recipeId ||
+    artifact.recipe.match.recipeId !== recipe.recipeId ||
     artifact.recipe.match.matchConfigVersion !==
-      APPROVED_PRODUCTION_RECIPE.matchConfigVersion ||
-    artifact.recipe.match.retrievalMode !==
-      APPROVED_PRODUCTION_RECIPE.retrievalMode
+      recipe.matchConfigVersion ||
+    artifact.recipe.match.retrievalMode !== recipe.retrievalMode
   ) {
     throw new Error("artifact telemetry requires the approved recipe");
   }
@@ -89,7 +118,7 @@ export function artifactCreatedEvent(
     }
     return {
       event: "artifact_created",
-      recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+      recipeId: recipe.recipeId,
       storyRole,
       compositionMode: "hybrid",
       fallbackReason: "none",
@@ -117,12 +146,91 @@ export function artifactCreatedEvent(
   }
   return {
     event: "artifact_created",
-    recipeId: APPROVED_PRODUCTION_RECIPE.recipeId,
+    recipeId: recipe.recipeId,
     storyRole,
     compositionMode: "canonical_fallback",
     fallbackReason,
     attemptBucket: notAttempted ? "not_attempted" : "exhausted",
   };
+}
+
+export function passageAcknowledgedEvent(
+  storyRole: StoryRole,
+  passageOrdinal: number,
+): Extract<ProductEvent, { event: "passage_acknowledged" }> {
+  if (
+    !Number.isInteger(passageOrdinal) ||
+    passageOrdinal < 0 ||
+    passageOrdinal >= MAX_STORY_PASSAGES
+  ) {
+    throw new Error("passage telemetry ordinal exceeds the artifact contract");
+  }
+  return { event: "passage_acknowledged", storyRole, passageOrdinal };
+}
+
+export function firstContentShownEvent(
+  storyRole: StoryRole,
+  latencyBucket: LatencyBucket,
+): Extract<ProductEvent, { event: "first_content_shown" }> {
+  return { event: "first_content_shown", storyRole, latencyBucket };
+}
+
+export function passagePresentedEvent(
+  storyRole: StoryRole,
+  passageOrdinal: number,
+  latencyBucket: LatencyBucket,
+): Extract<ProductEvent, { event: "passage_presented" }> {
+  if (
+    !Number.isInteger(passageOrdinal) ||
+    passageOrdinal < 0 ||
+    passageOrdinal >= MAX_STORY_PASSAGES
+  ) {
+    throw new Error("passage telemetry ordinal exceeds the artifact contract");
+  }
+  return {
+    event: "passage_presented",
+    storyRole,
+    passageOrdinal,
+    latencyBucket,
+  };
+}
+
+export function sourceOpenedEvent(
+  storyRole: StoryRole,
+): Extract<ProductEvent, { event: "source_opened" }> {
+  return { event: "source_opened", storyRole };
+}
+
+export function storyCompletedEvent(
+  storyRole: StoryRole,
+): Extract<ProductEvent, { event: "story_completed" }> {
+  return { event: "story_completed", storyRole };
+}
+
+export function feedbackSubmittedEvent(
+  storyRole: StoryRole,
+  verdict: Extract<
+    ProductEvent,
+    { event: "feedback_submitted" }
+  >["verdict"],
+): Extract<ProductEvent, { event: "feedback_submitted" }> {
+  return { event: "feedback_submitted", storyRole, verdict };
+}
+
+export function alternateRequestedEvent(): Extract<
+  ProductEvent,
+  { event: "alternate_requested" }
+> {
+  return { event: "alternate_requested" };
+}
+
+export function alternateResolvedEvent(
+  outcome: Extract<
+    ProductEvent,
+    { event: "alternate_resolved" }
+  >["outcome"],
+): Extract<ProductEvent, { event: "alternate_resolved" }> {
+  return { event: "alternate_resolved", outcome };
 }
 
 // Pure observability must not turn a valid non-crisis product response into an

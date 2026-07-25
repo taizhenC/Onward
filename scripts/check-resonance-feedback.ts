@@ -14,16 +14,13 @@ import {
   RESONANCE_FEEDBACK_RETENTION_DAYS,
   RESONANCE_MISS_REASONS,
 } from "../lib/resonance-feedback-types";
-import {
-  acknowledgeOwnedSessionPosition,
-  createSession,
-  getSession,
-} from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import type { MatchRecipe } from "../lib/types";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -321,19 +318,11 @@ async function makeSession(userId: string, completed: boolean) {
     artifact,
   });
   if (completed) {
-    // A fresh session sits at (0, 0); acknowledge straight to the end so the
-    // fixture advances through the same atomic compare-and-swap the reader does.
-    const result = await acknowledgeOwnedSessionPosition({
+    await completeMemoryStorySessionFixture({
       sessionId,
       userId,
-      expectedBeatIndex: 0,
-      expectedChunkIndex: 0,
-      nextBeatIndex: artifact.beats.length,
-      nextChunkIndex: 0,
+      artifact,
     });
-    if (result !== "advanced") {
-      throw new Error(`could not complete fixture session: ${result}`);
-    }
   }
   return { sessionId, artifact };
 }

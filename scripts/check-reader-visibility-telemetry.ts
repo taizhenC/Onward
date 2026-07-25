@@ -13,7 +13,6 @@ import {
   acknowledgeOwnedSessionPosition,
   createSession,
   getSession,
-  updateSession,
 } from "../lib/session";
 import { createMemoryAlternateSession } from "../lib/session-store-memory";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
@@ -50,6 +49,7 @@ import type {
 } from "../lib/telemetry-types";
 import type { FigureStageRow, MatchRecipe, Session } from "../lib/types";
 import { ALTERNATE_STORY_POLICY_VERSION } from "../lib/alternate-story-types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -190,9 +190,10 @@ async function checkSourceOpen(
     { sessionId: fixture.sessionId },
   );
   assert.equal(incomplete.status, 409);
-  await updateSession(fixture.sessionId, {
-    nextBeatIndex: fixture.artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId: fixture.sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact: fixture.artifact,
   });
   const before = countEvents(requireFlow(fixture), "source_opened", role);
   const body = { sessionId: fixture.sessionId };
@@ -366,9 +367,10 @@ async function checkOwnershipAndExactRequests(): Promise<void> {
 async function makeAlternateFixture(): Promise<Fixture> {
   const rootStage = FIGURE_STAGES[3] ?? FIGURE_STAGES[0];
   const root = await makeFixture(rootStage, recipe);
-  await updateSession(root.sessionId, {
-    nextBeatIndex: root.artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId: root.sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact: root.artifact,
   });
   const alternateStage = FIGURE_STAGES.find(
     (stage) =>
@@ -412,9 +414,10 @@ async function checkNullAndDisabledFlows(): Promise<void> {
     )).status,
     204,
   );
-  await updateSession(noFlow.sessionId, {
-    nextBeatIndex: noFlow.artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId: noFlow.sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact: noFlow.artifact,
   });
   assert.equal(
     (await post(captureSourceOpened, "/api/telemetry/source-opened", {

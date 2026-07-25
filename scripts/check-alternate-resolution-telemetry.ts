@@ -25,7 +25,7 @@ import { submitResonanceFeedback } from "../lib/resonance-feedback";
 import {
   createMemoryAlternateSession,
 } from "../lib/session-store-memory";
-import { createSession, getSession, updateSession } from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import type { StoryArtifact } from "../lib/story-artifact-types";
 import { getOwnedMemoryStoryArtifactSync } from "../lib/story-artifact-store-memory";
@@ -51,6 +51,7 @@ import type {
   TelemetryFlowId,
 } from "../lib/telemetry-types";
 import type { FigureStageRow, MatchRecipe, Session } from "../lib/types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -455,9 +456,10 @@ async function makeFixture(
     matchRecipe: recipe,
     artifact,
   });
-  await updateSession(sessionId, {
-    nextBeatIndex: artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact,
   });
   const session = await getSession(sessionId);
   assert(session, "alternate terminal fixture session is unavailable");

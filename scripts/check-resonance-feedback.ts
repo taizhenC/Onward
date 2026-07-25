@@ -14,16 +14,13 @@ import {
   RESONANCE_FEEDBACK_RETENTION_DAYS,
   RESONANCE_MISS_REASONS,
 } from "../lib/resonance-feedback-types";
-import {
-  createSession,
-  getSession,
-  updateSession,
-} from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import type { MatchRecipe } from "../lib/types";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -321,9 +318,10 @@ async function makeSession(userId: string, completed: boolean) {
     artifact,
   });
   if (completed) {
-    await updateSession(sessionId, {
-      nextBeatIndex: artifact.beats.length,
-      nextChunkIndex: 0,
+    await completeMemoryStorySessionFixture({
+      sessionId,
+      userId,
+      artifact,
     });
   }
   return { sessionId, artifact };

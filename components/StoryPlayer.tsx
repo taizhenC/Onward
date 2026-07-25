@@ -121,11 +121,11 @@ export function StoryPlayer({
         setChunkIndex(0);
         break;
       case "end":
-        // Intentional no-op. Per StoryBeat's contract, when next === "end"
-        // the in-flow finish is signalled via onEnd, not onComplete. This
-        // branch only runs if a future caller misuses the contract. The
-        // "ended" phase is entered exclusively via the refresh path
-        // (initialBeatIndex >= total).
+        // Intentional no-op. Per StoryBeat's contract the acknowledged finish
+        // arrives via onEnd, never onComplete — the final chunk stays visible
+        // and the after-story section renders below it. This branch only runs
+        // if a future caller misuses the contract. The "ended" phase is
+        // entered exclusively via the refresh path (initialBeatIndex >= total).
         break;
       default: {
         const exhaustive: never = next;

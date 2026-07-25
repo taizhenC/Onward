@@ -385,14 +385,15 @@ function hasUnsafeControl(value: string): boolean {
 }
 
 function buildFactAtoms(stage: FigureStageRow, sources: SourceRecord[]): FactAtom[] {
-  const refs = sources.map((source) => ({
-    sourceId: source.sourceId,
-    scope: "broad" as const,
-  }));
+  // Fresh ref objects per fact — editors narrow scope/locator claim by claim,
+  // so facts must not share one mutable sourceRefs array.
   return splitFactSentences(stage.biographicalFacts).map((statement, index) => ({
     factId: `fact-${pad(index + 1)}`,
     statement,
-    sourceRefs: refs,
+    sourceRefs: sources.map((source) => ({
+      sourceId: source.sourceId,
+      scope: "broad" as const,
+    })),
     eventOrder: index + 1,
     confidence: "documented",
     claimKind: "event",
@@ -450,7 +451,9 @@ function buildDraftQuotes(
     quoteId: `quote-${pad(index + 1)}`,
     text: (match[1] ?? match[2]).trim(),
     status: "unverified",
-    sourceRefs,
+    // Same rule as facts: each quote owns its refs so verifying one quote's
+    // source cannot silently retag another's.
+    sourceRefs: sourceRefs.map((ref) => ({ ...ref })),
   }));
 }
 

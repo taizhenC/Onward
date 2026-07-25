@@ -37,6 +37,8 @@ export function CrisisCard({ resources }: { resources: CrisisResource[] }) {
           >
             <a
               href={resource.href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="underline decoration-[var(--color-ink-soft)]/40 underline-offset-4"
             >
               <span className="block font-ui text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">

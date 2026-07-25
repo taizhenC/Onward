@@ -16,7 +16,7 @@ import { FIGURE_STAGES } from "../lib/figures-data";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import { submitResonanceFeedback } from "../lib/resonance-feedback";
-import { createSession, getSession, updateSession } from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import type { StoryArtifact } from "../lib/story-artifact-types";
 import { createStoryRequestContext } from "../lib/story-request-context";
@@ -41,6 +41,7 @@ import type {
   TelemetryFlowId,
 } from "../lib/telemetry-types";
 import type { MatchRecipe, Session } from "../lib/types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -371,9 +372,10 @@ async function makeFixture(
     matchRecipe: recipe,
     artifact,
   });
-  await updateSession(sessionId, {
-    nextBeatIndex: artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact,
   });
   const session = await getSession(sessionId);
   assert(session, "alternate request fixture session is unavailable");

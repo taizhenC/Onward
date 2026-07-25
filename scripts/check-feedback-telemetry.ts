@@ -27,11 +27,7 @@ import {
   type ResonanceFeedbackVerdict,
   type ResonanceMissReason,
 } from "../lib/resonance-feedback-types";
-import {
-  createSession,
-  getSession,
-  updateSession,
-} from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import type { StoryArtifact } from "../lib/story-artifact-types";
 import { createStoryRequestContext } from "../lib/story-request-context";
@@ -58,6 +54,7 @@ import type {
   TelemetryFlowId,
 } from "../lib/telemetry-types";
 import type { FigureStageRow, MatchRecipe, Session } from "../lib/types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -474,9 +471,10 @@ async function checkInitialAndAlternateRoles(): Promise<TelemetryFlowId> {
     sourceArtifactId: initial.artifact.artifactId,
     artifact: alternateArtifact,
   });
-  await updateSession(alternateSessionId, {
-    nextBeatIndex: alternateArtifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId: alternateSessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact: alternateArtifact,
   });
   const alternateSession = await getSession(alternateSessionId);
   assert(alternateSession, "completed alternate session is unavailable");
@@ -607,9 +605,10 @@ async function makeCompletedFixture(input: {
     matchRecipe: recipe,
     artifact,
   });
-  await updateSession(sessionId, {
-    nextBeatIndex: artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact,
   });
   const session = await getSession(sessionId);
   assert(session, "completed feedback session is unavailable");

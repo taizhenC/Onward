@@ -42,11 +42,7 @@ import {
   _listResonanceFeedback,
   getResonanceFeedbackPresentation,
 } from "../lib/resonance-feedback";
-import {
-  createSession,
-  getSession,
-  updateSession,
-} from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { getOwnedStoryArtifact } from "../lib/story-artifacts";
 import {
@@ -60,6 +56,7 @@ import {
 } from "../lib/story-request-context";
 import { storySpecStageKey } from "../lib/story-spec-repository";
 import type { FigureStageRow, MatchRecipe } from "../lib/types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -617,10 +614,13 @@ async function checkHappyConcurrentFlow(
     failures.push("capability refresh endpoint did not restore the ready alternate");
   }
 
-  await updateSession(alternateSessionId, {
-    nextBeatIndex: artifact?.beats.length ?? 7,
-    nextChunkIndex: 0,
-  });
+  if (artifact) {
+    await completeMemoryStorySessionFixture({
+      sessionId: alternateSessionId,
+      userId: LOCAL_DEV_USER_ID,
+      artifact,
+    });
+  }
   const alternateFeedback = await requestFeedback({
     sessionId: alternateSessionId,
     verdict: "not_close",
@@ -1252,10 +1252,7 @@ async function makeRoot(options: {
     artifact,
   });
   if (options.completed !== false) {
-    await updateSession(sessionId, {
-      nextBeatIndex: artifact.beats.length,
-      nextChunkIndex: 0,
-    });
+    await completeMemoryStorySessionFixture({ sessionId, userId, artifact });
   }
   return { sessionId, artifact, stage };
 }

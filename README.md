@@ -194,9 +194,11 @@ JSON framing and pull-request-base append-only history. A dormant
 `lib/llm.ts#tagAndExpand` facade now has an always-null stub and one bounded real
 adapter: fixed model/tuning, one request, a three-second deadline, an IDs-only
 template catalog, strict UTF-8/response limits, and silent null fallback. CI
-proves that no production matching or retrieval path calls it. Manifest-v2
-execution, shadow invocation, weighting changes, and promotion remain separate
-reviewed gates.
+proves that no production matching or retrieval path references it, and the
+facade itself returns the null stub whenever `NODE_ENV=production`.
+Manifest-v2 execution, shadow invocation, weighting changes, and promotion
+remain separate reviewed gates; shadow wiring must first derive and verify an
+immutable tagger execution plan from the exact v2 recipe.
 
 Before the first challenger promotion, create a protected GitHub environment
 named `recipe-promotion`, require independent reviewers, and add a dedicated

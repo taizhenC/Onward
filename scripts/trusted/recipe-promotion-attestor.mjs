@@ -862,6 +862,23 @@ function validateMatchingOnly(baseRecipe, challenger) {
   }
 }
 
+function resolvePromotionDataset(datasets, decisionDataset) {
+  const dataset = datasets.get(decisionDataset.version);
+  assert(
+    dataset,
+    `promotion dataset ${decisionDataset.version} is not registered`,
+  );
+  assert(
+    canonical(dataset) === canonical(decisionDataset),
+    "decision dataset differs from registry",
+  );
+  assert(
+    dataset.visibility === "protected_holdout",
+    "promotion dataset is not protected holdout",
+  );
+  return dataset;
+}
+
 function parseEvidence(repository, commit, datasetVersion, recipeId, evidenceId) {
   assert(EVIDENCE_ID.test(evidenceId), "invalid evidence id");
   const path = `evals/history/${datasetVersion}/${recipeId}/${evidenceId}.json`;
@@ -1687,9 +1704,7 @@ async function mainAttest(repository, baseSha, headSha) {
   );
 
   const datasets = mapBy(head.datasets, "version", "datasets");
-  const dataset = record(datasets.get(challengerRecipe.datasetVersion), "promotion dataset");
-  assert(canonical(dataset) === canonical(decision.dataset), "decision dataset differs from registry");
-  assert(dataset.visibility === "protected_holdout", "promotion dataset is not protected holdout");
+  const dataset = resolvePromotionDataset(datasets, decision.dataset);
   envExact("RECIPE_PROMOTION_ATTESTED_DATASET_SHA256", dataset.sha256);
 
   const baselineIds = unique(array(decision.baselineEvidenceIds, "baseline evidence ids"), "baseline evidence ids");
@@ -1854,6 +1869,69 @@ function selfTest() {
   rejects(
     () => validateDataset({ ...dataset, extra: true }, "self-test dataset"),
     "dataset extra field",
+  );
+  const syntheticDataset = {
+    version: "synthetic-v1",
+    sha256: "c".repeat(64),
+    visibility: "synthetic",
+  };
+  const matchingRecipe = {
+    matchConfigVersion: "matching-v1",
+    librarySnapshotSha256: "b".repeat(64),
+    datasetVersion: syntheticDataset.version,
+    llmProvider: "real",
+    proseModelId: "prose-v1",
+    rerankPromptVersion: "rerank-prompt-v1",
+    storyPromptVersion: "story-prompt-v1",
+    storyTemperature: 0.3,
+    storyComposerMode: "canonical",
+    hybridStoryComposerEnabled: false,
+    composerVersion: "composer-v1",
+    validatorVersion: "validator-v1",
+    storySpecSchemaVersion: "story-spec-v1",
+    boundaryPolicyVersion: "boundaries-v1",
+    resonanceBriefVersion: "resonance-v1",
+  };
+  validateMatchingOnly(matchingRecipe, structuredClone(matchingRecipe));
+  rejects(
+    () =>
+      validateMatchingOnly(matchingRecipe, {
+        ...matchingRecipe,
+        datasetVersion: dataset.version,
+      }),
+    "matching-only recipe dataset drift",
+  );
+  rejects(
+    () =>
+      validateMatchingOnly(matchingRecipe, {
+        ...matchingRecipe,
+        storyPromptVersion: "story-prompt-v2",
+      }),
+    "matching-only story prompt drift",
+  );
+  const promotionDatasets = new Map([
+    [syntheticDataset.version, syntheticDataset],
+    [dataset.version, dataset],
+  ]);
+  assert(
+    resolvePromotionDataset(promotionDatasets, dataset) === dataset,
+    "protected decision dataset bridge failed",
+  );
+  rejects(
+    () =>
+      resolvePromotionDataset(promotionDatasets, {
+        ...dataset,
+        sha256: "d".repeat(64),
+      }),
+    "promotion dataset metadata mismatch",
+  );
+  rejects(
+    () => resolvePromotionDataset(promotionDatasets, syntheticDataset),
+    "synthetic promotion dataset",
+  );
+  rejects(
+    () => resolvePromotionDataset(new Map(), dataset),
+    "unregistered promotion dataset",
   );
   const catalog = {
     sha256: "b".repeat(64),

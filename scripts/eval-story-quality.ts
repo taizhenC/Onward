@@ -3,10 +3,13 @@ import { readFileSync } from "node:fs";
 import {
   evaluateStoryQualityPacket,
   StoryQualityError,
+  storyQualityCustodianKeyId,
   writeStoryQualityEvidence,
 } from "./story-quality-evidence";
 
 const HMAC_ENV = "STORY_QUALITY_RESEARCH_HMAC_KEY";
+const CUSTODIAN_KEY_ENV =
+  "STORY_QUALITY_CUSTODIAN_PUBLIC_KEY_PEM";
 const MINIMUM_HMAC_SECRET_BYTES = 32;
 
 type RunnerResult = Readonly<{
@@ -58,6 +61,19 @@ function readPacket(path: string): unknown {
   }
 }
 
+function custodianTrustFromEnvironment():
+  | Readonly<{ publicKeyPem: string }>
+  | undefined {
+  const publicKeyPem = process.env[CUSTODIAN_KEY_ENV]?.trim();
+  if (!publicKeyPem) return undefined;
+  try {
+    storyQualityCustodianKeyId(publicKeyPem);
+    return { publicKeyPem };
+  } catch {
+    closedFailure("custodian_trust_invalid");
+  }
+}
+
 function safeResult(
   evidence: ReturnType<typeof evaluateStoryQualityPacket>,
 ): RunnerResult {
@@ -73,10 +89,14 @@ function safeResult(
 function main(): void {
   try {
     const packet = readPacket(packetPathFromArguments());
+    const custodianTrust = custodianTrustFromEnvironment();
     const evidence = evaluateStoryQualityPacket(packet, {
       hmacSecret: researchSecretFromEnvironment(),
+      custodianTrust,
     });
-    writeStoryQualityEvidence(evidence);
+    writeStoryQualityEvidence(evidence, undefined, {
+      custodianTrust,
+    });
     process.stdout.write(`${JSON.stringify(safeResult(evidence))}\n`);
     process.exitCode = evidence.status === "pass" ? 0 : 1;
   } catch (error) {

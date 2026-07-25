@@ -6,6 +6,14 @@
   "packetSchemaVersion": "story-quality-review-packet-v1",
   "benchmarkSchemaVersion": "story-quality-benchmark-v1",
   "requiredReleaseSplit": "blind_holdout",
+  "custodianAttestation": {
+    "requiredForProtectedHoldoutPass": true,
+    "algorithm": "Ed25519",
+    "attestationSchemaVersion": "story-quality-custodian-attestation-v1",
+    "resultSchemaVersion": "story-quality-result-attestation-v1",
+    "signingDomain": "onward.story-quality.custodian-attestation.v1",
+    "trustSource": "external_runtime"
+  },
   "minimums": {
     "targetAudienceSessions": 150,
     "feedbackResponses": 75,

@@ -1,5 +1,10 @@
 import "./_smoke-bootstrap";
-import { createHmac } from "node:crypto";
+import {
+  createHash,
+  createHmac,
+  createPublicKey,
+  verify as verifySignature,
+} from "node:crypto";
 import {
   mkdirSync,
   readFileSync,
@@ -20,6 +25,8 @@ import {
   parseStoryBoundaries,
   type StoryBoundaries,
 } from "../lib/story-boundaries";
+import { MATCH_RECOVERY_POLICY_VERSION } from "../lib/match-recovery";
+import { crisisRegexVersion } from "../lib/safety";
 import {
   createResonanceBrief,
 } from "../lib/resonance-brief";
@@ -78,6 +85,18 @@ const STORY_QUALITY_POLICY_SCHEMA_VERSION =
   "story-quality-policy-v1";
 const STORY_QUALITY_PROTOCOL_VERSION =
   "story-quality-protocol-v1-2026-07";
+const STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION =
+  "story-quality-custodian-attestation-v1";
+const STORY_QUALITY_RESULT_ATTESTATION_SCHEMA_VERSION =
+  "story-quality-result-attestation-v1";
+const STORY_QUALITY_CUSTODIAN_DOMAIN =
+  "onward.story-quality.custodian-attestation.v1";
+
+type ProtectedDisclosureFingerprint = Readonly<{
+  exactPhrase: string | null;
+  copiedPhrases: readonly string[];
+  longTokens: readonly string[];
+}>;
 
 export const RUBRIC_DIMENSIONS = [
   "match_closeness",
@@ -146,6 +165,14 @@ export type StoryQualityPolicy = Readonly<{
   packetSchemaVersion: typeof STORY_QUALITY_PACKET_SCHEMA_VERSION;
   benchmarkSchemaVersion: typeof STORY_QUALITY_BENCHMARK_SCHEMA_VERSION;
   requiredReleaseSplit: "blind_holdout";
+  custodianAttestation: Readonly<{
+    requiredForProtectedHoldoutPass: true;
+    algorithm: "Ed25519";
+    attestationSchemaVersion: typeof STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION;
+    resultSchemaVersion: typeof STORY_QUALITY_RESULT_ATTESTATION_SCHEMA_VERSION;
+    signingDomain: typeof STORY_QUALITY_CUSTODIAN_DOMAIN;
+    trustSource: "external_runtime";
+  }>;
   minimums: Readonly<{
     targetAudienceSessions: number;
     feedbackResponses: number;
@@ -180,14 +207,44 @@ export type StoryQualityBenchmarkCase = Readonly<{
   boundaries: StoryBoundaries | null;
 }>;
 
+export type StoryQualityReviewAssignment = Readonly<{
+  assignmentId: string;
+  assignmentSha256: string;
+  assignedAt: string;
+  reviewerId: string;
+  reviewerRole: "expert" | "target_reader";
+  benchmarkVersion: string;
+  benchmarkManifestSha256: string;
+  runId: string;
+  analysisPlanSha256: string;
+  caseId: string;
+  caseInputCommitment: string;
+  armId: string;
+  presentationId: string;
+  recipeManifestSha256: string;
+  artifactId: string;
+  artifactContentHash: string;
+  artifactDocumentSha256: string;
+  storySpecId: string;
+  storySpecVersion: number;
+  storySpecSchemaVersion: string;
+  storySpecDocumentSha256: string;
+  reviewMaterialSha256: string;
+  policyVersion: string;
+  policySha256: string;
+  protocolVersion: string;
+  protocolSha256: string;
+}>;
+
 export type StoryQualityExpertReview = Readonly<{
   reviewId: string;
   reviewerId: string;
+  submittedAt: string;
+  assignment: StoryQualityReviewAssignment;
   trained: boolean;
   blindToRecipe: boolean;
   blindToOtherReviews: boolean;
   fullArtifactReviewed: boolean;
-  artifactContentHash: string;
   scores: Readonly<{
     factual_support: number;
     tone: number;
@@ -202,11 +259,12 @@ export type StoryQualityExpertReview = Readonly<{
 export type StoryQualityTargetReaderReview = Readonly<{
   reviewId: string;
   reviewerId: string;
+  submittedAt: string;
+  assignment: StoryQualityReviewAssignment;
   targetAudienceEligible: boolean;
   blindToRecipe: boolean;
   blindToOtherReviews: boolean;
   fullArtifactReviewed: boolean;
-  artifactContentHash: string;
   scores: Readonly<{
     match_closeness: number;
     desire_to_continue: number;
@@ -238,7 +296,18 @@ export type StoryQualityArm = Readonly<{
   personalizationAttempted: boolean;
   recipeId: string;
   recipeManifestSha256: string;
+  generationDeploymentVersion: string;
   observations: readonly StoryQualityObservation[];
+}>;
+
+export type StoryQualityCustodianAttestation = Readonly<{
+  schemaVersion: typeof STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION;
+  algorithm: "Ed25519";
+  keyId: string;
+  signedAt: string;
+  packetSha256: string;
+  resultSha256: string;
+  signature: string;
 }>;
 
 export type StoryQualityPacket = Readonly<{
@@ -272,6 +341,7 @@ export type StoryQualityPacket = Readonly<{
     startedAt: string;
     completedAt: string;
     normalProviderConditions: boolean;
+    custodianAttestation: StoryQualityCustodianAttestation | null;
   }>;
   arms: readonly StoryQualityArm[];
 }>;
@@ -279,17 +349,35 @@ export type StoryQualityPacket = Readonly<{
 type QualityRecipeManifest = Readonly<{
   recipeId: string;
   manifestSha256: string;
-  storyComposerMode: string;
+  retrievalMode: "keyword" | "facetsrag";
+  matchConfigVersion: string;
+  librarySnapshotSha256: string;
+  datasetVersion: string;
+  llmProvider: "real";
+  rerankModelId: string;
+  proseModelId: string;
+  embeddingModelId: string | null;
+  rerankPromptVersion: string;
+  storyPromptVersion: string;
+  rerankTemperature: number;
+  rerankReasoningEffort: string;
+  rerankTopK: number;
+  storyTemperature: number;
+  storyComposerMode: "canonical" | "hybrid";
   hybridStoryComposerEnabled: boolean;
   composerVersion: string;
   validatorVersion: string;
   storySpecSchemaVersion: string;
   boundaryPolicyVersion: string;
   resonanceBriefVersion: string;
-  [key: string]: unknown;
 }>;
 
 export type QualityRecipeRegistry = Readonly<{
+  datasets: readonly Readonly<{
+    version: string;
+    sha256: string;
+    visibility: "synthetic" | "protected_holdout";
+  }>[];
   recipes: readonly QualityRecipeManifest[];
 }>;
 
@@ -321,9 +409,15 @@ export type StoryQualityArmEvidence = Readonly<{
   personalizationAttempted: boolean;
   sample: Readonly<{
     sessions: number;
+    consentedSessions: number;
+    deidentifiedSessions: number;
     feedbackResponses: number;
     expertReviews: number;
     targetReaderReviews: number;
+    expertReviewCoveredArtifacts: number;
+    targetReaderReviewCoveredArtifacts: number;
+    independentReviewArtifacts: number;
+    cohortCellsMeetingTargets: number;
     criticalFailureArtifacts: number;
   }>;
   dimensions: Readonly<Record<RubricDimension, DimensionMetric>>;
@@ -367,6 +461,10 @@ export type StoryQualityEvidence = Readonly<{
     cohortCellCount: number;
     packetAttestationSha256: string;
   }>;
+  attestation: Readonly<{
+    resultAttestationSha256: string;
+    custodian: StoryQualityCustodianAttestation | null;
+  }>;
   candidate: Readonly<{
     recipeId: string;
     recipeManifestSha256: string;
@@ -383,6 +481,8 @@ export type StoryQualityEvidence = Readonly<{
   checks: Readonly<{
     protectedHoldout: boolean;
     holdoutChronology: boolean;
+    contentChronology: boolean;
+    custodianAttestation: boolean;
     pairedCaseSet: boolean;
     normalProviderConditions: boolean;
     provenance: boolean;
@@ -390,6 +490,7 @@ export type StoryQualityEvidence = Readonly<{
     candidateNonInferiority: boolean;
     noCriticalFailures: boolean;
     reviewerIndependence: boolean;
+    reviewerAssignmentCollisionCount: number;
   }>;
   failureReasons: readonly (
     | "critical_failure"
@@ -403,6 +504,8 @@ export type StoryQualityEvidence = Readonly<{
   incompleteReasons: readonly (
     | "synthetic_or_non_holdout"
     | "holdout_chronology"
+    | "content_chronology"
+    | "custodian_attestation"
     | "sample_size"
     | "feedback_coverage"
     | "consent"
@@ -432,6 +535,9 @@ export type StoryQualityEvaluationOptions = Readonly<{
     inputTreeSha256: string | null;
   }>;
   protocolPath?: string;
+  custodianTrust?: Readonly<{
+    publicKeyPem: string;
+  }>;
 }>;
 
 export function loadStoryQualityPolicy(
@@ -460,6 +566,7 @@ export function parseStoryQualityPolicy(
       "packetSchemaVersion",
       "benchmarkSchemaVersion",
       "requiredReleaseSplit",
+      "custodianAttestation",
       "minimums",
       "maximums",
       "rubricDimensions",
@@ -480,6 +587,28 @@ export function parseStoryQualityPolicy(
         STORY_QUALITY_BENCHMARK_SCHEMA_VERSION,
     );
     assert(policy.requiredReleaseSplit === "blind_holdout");
+    const custodianAttestation = record(
+      policy.custodianAttestation,
+    );
+    exactKeys(custodianAttestation, [
+      "requiredForProtectedHoldoutPass",
+      "algorithm",
+      "attestationSchemaVersion",
+      "resultSchemaVersion",
+      "signingDomain",
+      "trustSource",
+    ]);
+    assert(
+      custodianAttestation.requiredForProtectedHoldoutPass === true &&
+        custodianAttestation.algorithm === "Ed25519" &&
+        custodianAttestation.attestationSchemaVersion ===
+          STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION &&
+        custodianAttestation.resultSchemaVersion ===
+          STORY_QUALITY_RESULT_ATTESTATION_SCHEMA_VERSION &&
+        custodianAttestation.signingDomain ===
+          STORY_QUALITY_CUSTODIAN_DOMAIN &&
+        custodianAttestation.trustSource === "external_runtime",
+    );
 
     const minimums = record(policy.minimums);
     exactKeys(minimums, [
@@ -584,6 +713,16 @@ export function parseStoryQualityPolicy(
       packetSchemaVersion: STORY_QUALITY_PACKET_SCHEMA_VERSION,
       benchmarkSchemaVersion: STORY_QUALITY_BENCHMARK_SCHEMA_VERSION,
       requiredReleaseSplit: "blind_holdout",
+      custodianAttestation: {
+        requiredForProtectedHoldoutPass: true,
+        algorithm: "Ed25519",
+        attestationSchemaVersion:
+          STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION,
+        resultSchemaVersion:
+          STORY_QUALITY_RESULT_ATTESTATION_SCHEMA_VERSION,
+        signingDomain: STORY_QUALITY_CUSTODIAN_DOMAIN,
+        trustSource: "external_runtime",
+      },
       minimums: parsedMinimums,
       maximums: parsedMaximums,
       rubricDimensions: dimensions,
@@ -680,6 +819,108 @@ export function storyQualityBenchmarkManifestSha256(
   return sha256Text(canonicalJson(payload));
 }
 
+export function storyQualityPacketAttestationSha256(
+  packet: StoryQualityPacket,
+): string {
+  return sha256Text(
+    canonicalJson({
+      ...packet,
+      run: {
+        ...packet.run,
+        custodianAttestation: null,
+      },
+    }),
+  );
+}
+
+export function storyQualityCustodianSigningMessage(input: {
+  keyId: string;
+  signedAt: string;
+  packetSha256: string;
+  resultSha256: string;
+  policy?: StoryQualityPolicy;
+  protocolSha256?: string;
+}): string {
+  const policy = input.policy ?? loadStoryQualityPolicy();
+  const protocolSha256 =
+    input.protocolSha256 ??
+    sha256File(STORY_QUALITY_PROTOCOL_PATH);
+  if (
+    !id(input.keyId) ||
+    !timestamp(input.signedAt) ||
+    !hash(input.packetSha256) ||
+    !hash(input.resultSha256) ||
+    !hash(protocolSha256)
+  ) {
+    throw new StoryQualityError("binding_invalid");
+  }
+  return `${STORY_QUALITY_CUSTODIAN_DOMAIN}\u0000${canonicalJson({
+    schemaVersion:
+      STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION,
+    algorithm: "Ed25519",
+    keyId: input.keyId,
+    signedAt: input.signedAt,
+    packetSha256: input.packetSha256,
+    resultSchemaVersion:
+      STORY_QUALITY_RESULT_ATTESTATION_SCHEMA_VERSION,
+    resultSha256: input.resultSha256,
+    policyVersion: policy.policyVersion,
+    policySha256: storyQualityPolicySha256(policy),
+    protocolVersion: policy.protocolVersion,
+    protocolSha256,
+    evidenceSchemaVersion: policy.evidenceSchemaVersion,
+    harnessVersion: STORY_QUALITY_HARNESS_VERSION,
+  })}`;
+}
+
+export function storyQualityCustodianKeyId(
+  publicKeyPem: string,
+): string {
+  try {
+    const key = createPublicKey(publicKeyPem);
+    if (key.asymmetricKeyType !== "ed25519") {
+      throw new StoryQualityError("policy_invalid");
+    }
+    const der = key.export({ format: "der", type: "spki" });
+    return `ed25519-spki-sha256:${createHash("sha256")
+      .update(der)
+      .digest("hex")}`;
+  } catch (error) {
+    if (error instanceof StoryQualityError) throw error;
+    throw new StoryQualityError("policy_invalid");
+  }
+}
+
+export function storyQualityReviewMaterialSha256(input: {
+  artifact: StoryArtifact;
+  storySpec: StorySpec;
+}): string {
+  return sha256Text(
+    canonicalJson({
+      domain: "onward.story-quality.review-material.v1",
+      artifact: input.artifact,
+      storySpec: input.storySpec,
+    }),
+  );
+}
+
+export function storyQualityReviewAssignmentSha256(
+  assignment:
+    | Omit<StoryQualityReviewAssignment, "assignmentSha256">
+    | StoryQualityReviewAssignment,
+): string {
+  const payload = {
+    ...(assignment as StoryQualityReviewAssignment),
+  } as Record<string, unknown>;
+  delete payload.assignmentSha256;
+  return sha256Text(
+    canonicalJson({
+      domain: "onward.story-quality.review-assignment.v1",
+      assignment: payload,
+    }),
+  );
+}
+
 export function evaluateStoryQualityPacket(
   input: unknown,
   options: StoryQualityEvaluationOptions,
@@ -698,13 +939,31 @@ function evaluateStoryQualityPacketUnsafe(
 ): StoryQualityEvidence {
   const policy = options.policy ?? loadStoryQualityPolicy();
   const packet = parseStoryQualityPacket(input, policy);
+  const protocolPath = options.protocolPath ?? STORY_QUALITY_PROTOCOL_PATH;
+  let protocolSha256: string;
+  try {
+    protocolSha256 = sha256File(protocolPath);
+  } catch {
+    throw new StoryQualityError("provenance_invalid");
+  }
+  const loadedRegistry = options.registry
+    ? null
+    : loadRecipeRegistry();
   const registry =
     options.registry ??
-    (loadRecipeRegistry() as unknown as QualityRecipeRegistry);
+    ({
+      datasets: loadedRegistry!.datasets,
+      recipes: loadedRegistry!.recipes,
+    } as QualityRecipeRegistry);
+  assertQualityRecipeRegistry(registry);
   const recipes = new Map(
     registry.recipes.map((recipe) => [recipe.recipeId, recipe]),
   );
   assertBinding(recipes.size === registry.recipes.length);
+  const datasets = new Map(
+    registry.datasets.map((dataset) => [dataset.version, dataset]),
+  );
+  assertBinding(datasets.size === registry.datasets.length);
   const selectedSplit = splitForPurpose(packet.run.purpose);
   const benchmarkCases = packet.benchmark.cases.filter(
     (entry) => entry.split === selectedSplit,
@@ -713,6 +972,9 @@ function evaluateStoryQualityPacketUnsafe(
   const caseIds = benchmarkCases.map((entry) => entry.caseId).sort();
   const caseById = new Map(
     benchmarkCases.map((entry) => [entry.caseId, entry]),
+  );
+  const protectedDisclosureFingerprints = packet.benchmark.cases.map(
+    (entry) => protectedDisclosureFingerprint(entry.disclosure),
   );
   for (const benchmarkCase of benchmarkCases) {
     assertPrivacy(
@@ -727,6 +989,9 @@ function evaluateStoryQualityPacketUnsafe(
   const artifactIds: string[] = [];
   const artifactDocuments: string[] = [];
   const reviewIds: string[] = [];
+  const assignmentIds: string[] = [];
+  const assignmentHashes: string[] = [];
+  const presentationIds: string[] = [];
   for (const arm of packet.arms) {
     for (const observation of arm.observations) {
       artifactIds.push(observation.artifact.artifactId);
@@ -735,11 +1000,29 @@ function evaluateStoryQualityPacketUnsafe(
         ...observation.expertReviews.map((entry) => entry.reviewId),
         ...observation.targetReaderReviews.map((entry) => entry.reviewId),
       );
+      const assignments = [
+        ...observation.expertReviews.map((entry) => entry.assignment),
+        ...observation.targetReaderReviews.map(
+          (entry) => entry.assignment,
+        ),
+      ];
+      assignmentIds.push(
+        ...assignments.map((entry) => entry.assignmentId),
+      );
+      assignmentHashes.push(
+        ...assignments.map((entry) => entry.assignmentSha256),
+      );
+      presentationIds.push(
+        ...assignments.map((entry) => entry.presentationId),
+      );
     }
   }
   unique(artifactIds);
   unique(artifactDocuments);
   unique(reviewIds);
+  unique(assignmentIds);
+  unique(assignmentHashes);
+  unique(presentationIds);
 
   const armEvidence: StoryQualityArmEvidence[] = [];
   for (const arm of packet.arms) {
@@ -754,6 +1037,7 @@ function evaluateStoryQualityPacketUnsafe(
     assertBinding(
       recipeManifestDigest(recipe!) === recipe!.manifestSha256,
     );
+    assertBinding(datasets.has(recipe!.datasetVersion));
     assertBinding(
       arm.personalizationAttempted ===
         recipe!.hybridStoryComposerEnabled,
@@ -761,7 +1045,16 @@ function evaluateStoryQualityPacketUnsafe(
     for (const observation of arm.observations) {
       const benchmarkCase = caseById.get(observation.caseId);
       assertBinding(benchmarkCase !== undefined);
-      validateObservationContent(observation, benchmarkCase!, arm, recipe!);
+      validateObservationContent(
+        observation,
+        benchmarkCase!,
+        arm,
+        recipe!,
+        packet,
+        policy,
+        protocolSha256,
+        protectedDisclosureFingerprints,
+      );
     }
     armEvidence.push(
       buildArmEvidence(
@@ -788,14 +1081,17 @@ function evaluateStoryQualityPacketUnsafe(
     candidateEvidence,
     policy,
   );
+  const reviewerAssignmentCollisions =
+    reviewerAssignmentCollisionCount(packet.arms);
   const crossArmReviewerIndependence =
-    hasCrossArmReviewerIndependence(packet.arms);
+    reviewerAssignmentCollisions === 0;
 
   const protectedHoldout =
     packet.run.purpose === "release_candidate" &&
     packet.benchmark.visibility === "protected_holdout" &&
     selectedSplit === policy.requiredReleaseSplit;
   const holdoutChronology = validHoldoutChronology(packet);
+  const contentChronology = validContentChronology(packet);
   const provenance = options.provenance ?? {
     gitCommit: currentGitCommit(),
     deploymentId: currentDeploymentId(),
@@ -830,9 +1126,10 @@ function evaluateStoryQualityPacketUnsafe(
       entry.checks.reviewCoverage &&
       entry.checks.reviewerIndependence,
   );
-  const coverageComplete =
+  const baseCoverageComplete =
     protectedHoldout &&
     holdoutChronology &&
+    contentChronology &&
     packet.run.normalProviderConditions &&
     provenanceComplete &&
     pairedCoverage &&
@@ -845,37 +1142,33 @@ function evaluateStoryQualityPacketUnsafe(
   const incompleteReasons = collectIncompleteReasons({
     protectedHoldout,
     holdoutChronology,
+    contentChronology,
     providerConditions: packet.run.normalProviderConditions,
     provenanceComplete,
     candidate: candidateEvidence,
     baseline: baselineEvidence,
     crossArmReviewerIndependence,
   });
-  const status: StoryQualityStatus = !noCriticalFailures
+  const statusWithoutCustodian: StoryQualityStatus = !noCriticalFailures
     ? "fail"
-    : !coverageComplete
+    : !baseCoverageComplete
       ? "incomplete"
       : candidateAbsoluteGate && comparison.passed
         ? "pass"
         : "fail";
 
-  const protocolPath = options.protocolPath ?? STORY_QUALITY_PROTOCOL_PATH;
-  let protocolSha256: string;
-  try {
-    protocolSha256 = sha256File(protocolPath);
-  } catch {
-    throw new StoryQualityError("provenance_invalid");
-  }
   const policySha256 = storyQualityPolicySha256(policy);
   const candidate = {
     recipeId: candidateArm.recipeId,
     recipeManifestSha256: candidateArm.recipeManifestSha256,
   };
-  const candidateRecord = {
+  const packetAttestationSha256 =
+    storyQualityPacketAttestationSha256(packet);
+  const draftRecord = {
     schemaVersion: STORY_QUALITY_EVIDENCE_SCHEMA_VERSION,
     harnessVersion: STORY_QUALITY_HARNESS_VERSION,
     evidenceId: "",
-    status,
+    status: statusWithoutCustodian,
     policy: {
       policyVersion: policy.policyVersion,
       policySha256,
@@ -888,7 +1181,11 @@ function evaluateStoryQualityPacketUnsafe(
       split: selectedSplit,
       caseCount: benchmarkCases.length,
       cohortCellCount: packet.benchmark.cohortTargets.length,
-      packetAttestationSha256: sha256Text(canonicalJson(packet)),
+      packetAttestationSha256,
+    },
+    attestation: {
+      resultAttestationSha256: "0".repeat(64),
+      custodian: null,
     },
     candidate,
     arms: armEvidence,
@@ -896,6 +1193,8 @@ function evaluateStoryQualityPacketUnsafe(
     checks: {
       protectedHoldout,
       holdoutChronology,
+      contentChronology,
+      custodianAttestation: false,
       pairedCaseSet: true,
       normalProviderConditions: packet.run.normalProviderConditions,
       provenance: provenanceComplete,
@@ -903,6 +1202,8 @@ function evaluateStoryQualityPacketUnsafe(
       candidateNonInferiority: comparison.passed,
       noCriticalFailures,
       reviewerIndependence: crossArmReviewerIndependence,
+      reviewerAssignmentCollisionCount:
+        reviewerAssignmentCollisions,
     },
     failureReasons,
     incompleteReasons,
@@ -913,10 +1214,52 @@ function evaluateStoryQualityPacketUnsafe(
     },
     promotionAuthorized: false as const,
   } satisfies StoryQualityEvidence;
+  const resultAttestationSha256 =
+    storyQualityResultAttestationSha256(draftRecord);
+  const custodianAttestation = verifyCustodianAttestationOrThrow({
+    attestation: packet.run.custodianAttestation,
+    policy,
+    protocolSha256,
+    packetSha256: packetAttestationSha256,
+    resultSha256: resultAttestationSha256,
+    completedAt: packet.run.completedAt,
+    trust: options.custodianTrust,
+  });
+  const finalIncompleteReasons = custodianAttestation
+    ? incompleteReasons
+    : [...incompleteReasons, "custodian_attestation" as const];
+  const coverageComplete =
+    baseCoverageComplete && custodianAttestation;
+  const status: StoryQualityStatus = !noCriticalFailures
+    ? "fail"
+    : !coverageComplete
+      ? "incomplete"
+      : candidateAbsoluteGate && comparison.passed
+        ? "pass"
+        : "fail";
+  const candidateRecord = {
+    ...draftRecord,
+    status,
+    attestation: {
+      resultAttestationSha256,
+      custodian: custodianAttestation
+        ? packet.run.custodianAttestation
+        : null,
+    },
+    checks: {
+      ...draftRecord.checks,
+      custodianAttestation,
+    },
+    incompleteReasons: finalIncompleteReasons,
+  } satisfies StoryQualityEvidence;
   const evidence = {
     ...candidateRecord,
     evidenceId: storyQualityEvidenceId(candidateRecord),
   };
+  assertEvidenceContainsNoDisclosure(
+    evidence,
+    protectedDisclosureFingerprints,
+  );
   assertSafeEvidence(evidence);
   return deepFreeze(evidence);
 }
@@ -931,12 +1274,52 @@ export function storyQualityEvidenceId(
   return `sqe_${sha256Text(canonicalJson(payload))}`;
 }
 
+export function storyQualityResultAttestationSha256(
+  evidence:
+    | StoryQualityEvidence
+    | Omit<StoryQualityEvidence, "evidenceId">,
+): string {
+  const checks = {
+    ...evidence.checks,
+  } as Record<string, unknown>;
+  delete checks.custodianAttestation;
+  return sha256Text(
+    canonicalJson({
+      domain: "onward.story-quality.result-attestation.v1",
+      schemaVersion:
+        STORY_QUALITY_RESULT_ATTESTATION_SCHEMA_VERSION,
+      evidenceSchemaVersion: evidence.schemaVersion,
+      harnessVersion: evidence.harnessVersion,
+      statusWithoutCustodian:
+        statusWithoutCustodianAttestation(evidence),
+      policy: evidence.policy,
+      benchmark: evidence.benchmark,
+      candidate: evidence.candidate,
+      arms: evidence.arms,
+      comparison: evidence.comparison,
+      checks,
+      failureReasons: evidence.failureReasons,
+      incompleteReasons: evidence.incompleteReasons.filter(
+        (reason) => reason !== "custodian_attestation",
+      ),
+      provenance: evidence.provenance,
+      promotionAuthorized: false,
+    }),
+  );
+}
+
 export function parseStoryQualityEvidence(
   value: unknown,
-  policy = loadStoryQualityPolicy(),
-  protocolPath = STORY_QUALITY_PROTOCOL_PATH,
+  options: Readonly<{
+    policy?: StoryQualityPolicy;
+    protocolPath?: string;
+    custodianTrust?: Readonly<{ publicKeyPem: string }>;
+  }> = {},
 ): StoryQualityEvidence {
   try {
+    const policy = options.policy ?? loadStoryQualityPolicy();
+    const protocolPath =
+      options.protocolPath ?? STORY_QUALITY_PROTOCOL_PATH;
     const evidence = record(value);
     exactKeys(evidence, [
       "schemaVersion",
@@ -945,6 +1328,7 @@ export function parseStoryQualityEvidence(
       "status",
       "policy",
       "benchmark",
+      "attestation",
       "candidate",
       "arms",
       "comparison",
@@ -1007,6 +1391,26 @@ export function parseStoryQualityEvidence(
       "evidence_invalid",
     );
 
+    const attestationRecord = record(evidence.attestation);
+    exactKeys(attestationRecord, [
+      "resultAttestationSha256",
+      "custodian",
+    ]);
+    assert(
+      hash(attestationRecord.resultAttestationSha256),
+      "evidence_invalid",
+    );
+    const custodianProof =
+      attestationRecord.custodian === null
+        ? null
+        : parseCustodianAttestation(
+            attestationRecord.custodian,
+          );
+    assert(
+      custodianProof === null || options.custodianTrust !== undefined,
+      "evidence_invalid",
+    );
+
     const candidate = record(evidence.candidate);
     exactKeys(candidate, ["recipeId", "recipeManifestSha256"]);
     assert(
@@ -1014,7 +1418,11 @@ export function parseStoryQualityEvidence(
       "evidence_invalid",
     );
     const arms = array(evidence.arms).map((entry) =>
-      parseArmEvidence(entry, policy),
+      parseArmEvidence(
+        entry,
+        policy,
+        benchmark.cohortCellCount as number,
+      ),
     );
     assert(arms.length >= 2, "evidence_invalid");
     unique(arms.map((entry) => entry.recipeId));
@@ -1050,6 +1458,8 @@ export function parseStoryQualityEvidence(
     exactKeys(checksRecord, [
       "protectedHoldout",
       "holdoutChronology",
+      "contentChronology",
+      "custodianAttestation",
       "pairedCaseSet",
       "normalProviderConditions",
       "provenance",
@@ -1057,11 +1467,39 @@ export function parseStoryQualityEvidence(
       "candidateNonInferiority",
       "noCriticalFailures",
       "reviewerIndependence",
+      "reviewerAssignmentCollisionCount",
     ]);
-    const checks = parseBooleanRecord(checksRecord);
+    const reviewerAssignmentCollisionCount = nonNegativeInteger(
+      checksRecord.reviewerAssignmentCollisionCount,
+    );
+    const booleanCheckKeys = [
+      "protectedHoldout",
+      "holdoutChronology",
+      "contentChronology",
+      "custodianAttestation",
+      "pairedCaseSet",
+      "normalProviderConditions",
+      "provenance",
+      "candidateAbsoluteGate",
+      "candidateNonInferiority",
+      "noCriticalFailures",
+      "reviewerIndependence",
+    ] as const;
+    const checks = Object.fromEntries(
+      booleanCheckKeys.map((key) => {
+        assert(
+          typeof checksRecord[key] === "boolean",
+          "evidence_invalid",
+        );
+        return [key, checksRecord[key]];
+      }),
+    ) as Record<(typeof booleanCheckKeys)[number], boolean>;
     const protectedHoldout =
       benchmark.visibility === "protected_holdout" &&
       benchmark.split === policy.requiredReleaseSplit;
+    const pairedCaseSet = arms.every(
+      (entry) => entry.sample.sessions === benchmark.caseCount,
+    );
     const noCriticalFailures = arms.every(
       (entry) =>
         entry.sample.criticalFailureArtifacts <=
@@ -1079,10 +1517,15 @@ export function parseStoryQualityEvidence(
       candidateArm.checks.criticalFailures;
     assert(
       checks.protectedHoldout === protectedHoldout &&
-        checks.pairedCaseSet === true &&
+        checks.pairedCaseSet === pairedCaseSet &&
         checks.candidateAbsoluteGate === candidateAbsoluteGate &&
         checks.candidateNonInferiority === comparison.passed &&
-        checks.noCriticalFailures === noCriticalFailures,
+        checks.noCriticalFailures === noCriticalFailures &&
+        checks.reviewerIndependence ===
+          (reviewerAssignmentCollisionCount === 0 &&
+            arms.every(
+              (entry) => entry.checks.reviewerIndependence,
+            )),
       "evidence_invalid",
     );
 
@@ -1100,20 +1543,6 @@ export function parseStoryQualityEvidence(
     );
     const incompleteReasons = parseIncompleteReasons(
       evidence.incompleteReasons,
-    );
-    const expectedIncomplete = collectIncompleteReasons({
-      protectedHoldout,
-      holdoutChronology: checks.holdoutChronology,
-      providerConditions: checks.normalProviderConditions,
-      provenanceComplete: checks.provenance,
-      candidate: candidateArm,
-      baseline,
-      crossArmReviewerIndependence: checks.reviewerIndependence,
-    });
-    assert(
-      canonicalJson(incompleteReasons) ===
-        canonicalJson(expectedIncomplete),
-      "evidence_invalid",
     );
 
     const provenanceRecord = record(evidence.provenance);
@@ -1143,9 +1572,60 @@ export function parseStoryQualityEvidence(
       checks.provenance === provenanceComplete,
       "evidence_invalid",
     );
+    const parsed = evidence as unknown as StoryQualityEvidence;
+    const expectedResultAttestationSha256 =
+      storyQualityResultAttestationSha256(parsed);
+    assert(
+      attestationRecord.resultAttestationSha256 ===
+        expectedResultAttestationSha256,
+      "evidence_invalid",
+    );
+    let custodianAttestation = false;
+    try {
+      custodianAttestation = verifyCustodianAttestationOrThrow({
+        attestation: custodianProof,
+        policy,
+        protocolSha256: policyBinding.protocolSha256 as string,
+        packetSha256:
+          benchmark.packetAttestationSha256 as string,
+        resultSha256: expectedResultAttestationSha256,
+        completedAt: provenanceRecord.completedAt as string,
+        trust: options.custodianTrust,
+      });
+    } catch {
+      throw new StoryQualityError("evidence_invalid");
+    }
+    assert(
+      checks.custodianAttestation === custodianAttestation &&
+        (custodianAttestation
+          ? custodianProof !== null
+          : custodianProof === null),
+      "evidence_invalid",
+    );
+    const expectedIncomplete = [...collectIncompleteReasons({
+      protectedHoldout,
+      holdoutChronology: checks.holdoutChronology,
+      contentChronology: checks.contentChronology,
+      providerConditions: checks.normalProviderConditions,
+      provenanceComplete,
+      candidate: candidateArm,
+      baseline,
+      crossArmReviewerIndependence:
+        checks.reviewerIndependence,
+    })];
+    if (!custodianAttestation) {
+      expectedIncomplete.push("custodian_attestation");
+    }
+    assert(
+      canonicalJson(incompleteReasons) ===
+        canonicalJson(expectedIncomplete),
+      "evidence_invalid",
+    );
     const coverageComplete =
       protectedHoldout &&
       checks.holdoutChronology &&
+      checks.contentChronology &&
+      custodianAttestation &&
       checks.pairedCaseSet &&
       checks.normalProviderConditions &&
       provenanceComplete &&
@@ -1172,7 +1652,6 @@ export function parseStoryQualityEvidence(
       "evidence_invalid",
     );
 
-    const parsed = evidence as unknown as StoryQualityEvidence;
     assert(
       parsed.evidenceId === storyQualityEvidenceId(parsed),
       "evidence_invalid",
@@ -1193,9 +1672,14 @@ export function parseStoryQualityEvidence(
 export function writeStoryQualityEvidence(
   evidence: StoryQualityEvidence,
   root = STORY_QUALITY_HISTORY_DIR,
+  options: Readonly<{
+    policy?: StoryQualityPolicy;
+    protocolPath?: string;
+    custodianTrust?: Readonly<{ publicKeyPem: string }>;
+  }> = {},
 ): string {
   try {
-    const parsed = parseStoryQualityEvidence(evidence);
+    const parsed = parseStoryQualityEvidence(evidence, options);
     const directory = resolve(
       root,
       parsed.benchmark.benchmarkVersion,
@@ -1203,8 +1687,15 @@ export function writeStoryQualityEvidence(
     );
     mkdirSync(directory, { recursive: true });
     const path = resolve(directory, `${parsed.evidenceId}.json`);
-    const options: WriteFileOptions = { encoding: "utf8", flag: "wx" };
-    writeFileSync(path, `${JSON.stringify(parsed, null, 2)}\n`, options);
+    const writeOptions: WriteFileOptions = {
+      encoding: "utf8",
+      flag: "wx",
+    };
+    writeFileSync(
+      path,
+      `${JSON.stringify(parsed, null, 2)}\n`,
+      writeOptions,
+    );
     return path;
   } catch (error) {
     if (error instanceof StoryQualityError) throw error;
@@ -1357,6 +1848,7 @@ function parseRun(value: unknown): StoryQualityPacket["run"] {
     "startedAt",
     "completedAt",
     "normalProviderConditions",
+    "custodianAttestation",
   ]);
   assert(id(run.runId));
   assert(
@@ -1375,7 +1867,40 @@ function parseRun(value: unknown): StoryQualityPacket["run"] {
     Date.parse(run.startedAt) <= Date.parse(run.completedAt),
   );
   assert(typeof run.normalProviderConditions === "boolean");
-  return run as StoryQualityPacket["run"];
+  const custodianAttestation =
+    run.custodianAttestation === null
+      ? null
+      : parseCustodianAttestation(run.custodianAttestation);
+  return {
+    ...run,
+    custodianAttestation,
+  } as StoryQualityPacket["run"];
+}
+
+function parseCustodianAttestation(
+  value: unknown,
+): StoryQualityCustodianAttestation {
+  const attestation = record(value);
+  exactKeys(attestation, [
+    "schemaVersion",
+    "algorithm",
+    "keyId",
+    "signedAt",
+    "packetSha256",
+    "resultSha256",
+    "signature",
+  ]);
+  assert(
+    attestation.schemaVersion ===
+      STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION,
+  );
+  assert(attestation.algorithm === "Ed25519");
+  assert(id(attestation.keyId));
+  assert(timestamp(attestation.signedAt));
+  assert(hash(attestation.packetSha256));
+  assert(hash(attestation.resultSha256));
+  assert(canonicalEd25519Signature(attestation.signature));
+  return attestation as StoryQualityCustodianAttestation;
 }
 
 function parseArm(value: unknown): StoryQualityArm {
@@ -1386,6 +1911,7 @@ function parseArm(value: unknown): StoryQualityArm {
     "personalizationAttempted",
     "recipeId",
     "recipeManifestSha256",
+    "generationDeploymentVersion",
     "observations",
   ]);
   assert(id(arm.armId));
@@ -1397,6 +1923,7 @@ function parseArm(value: unknown): StoryQualityArm {
   assert(typeof arm.personalizationAttempted === "boolean");
   assert(id(arm.recipeId));
   assert(hash(arm.recipeManifestSha256));
+  assert(deploymentId(arm.generationDeploymentVersion));
   const observations = array(arm.observations)
     .map(parseObservation)
     .sort(by("caseId"));
@@ -1408,6 +1935,8 @@ function parseArm(value: unknown): StoryQualityArm {
     personalizationAttempted: arm.personalizationAttempted,
     recipeId: arm.recipeId as string,
     recipeManifestSha256: arm.recipeManifestSha256 as string,
+    generationDeploymentVersion:
+      arm.generationDeploymentVersion as string,
     observations,
   };
 }
@@ -1475,20 +2004,26 @@ function parseExpertReview(value: unknown): StoryQualityExpertReview {
   exactKeys(review, [
     "reviewId",
     "reviewerId",
+    "submittedAt",
+    "assignment",
     "trained",
     "blindToRecipe",
     "blindToOtherReviews",
     "fullArtifactReviewed",
-    "artifactContentHash",
     "scores",
     "criticalFailures",
   ]);
   assert(id(review.reviewId) && id(review.reviewerId));
+  assert(timestamp(review.submittedAt));
+  const assignment = parseReviewAssignment(review.assignment);
+  assert(
+    assignment.reviewerRole === "expert" &&
+      assignment.reviewerId === review.reviewerId,
+  );
   assert(typeof review.trained === "boolean");
   assert(typeof review.blindToRecipe === "boolean");
   assert(typeof review.blindToOtherReviews === "boolean");
   assert(typeof review.fullArtifactReviewed === "boolean");
-  assert(hash(review.artifactContentHash));
   const scores = record(review.scores);
   exactKeys(scores, [
     "factual_support",
@@ -1513,11 +2048,12 @@ function parseExpertReview(value: unknown): StoryQualityExpertReview {
   return {
     reviewId: review.reviewId as string,
     reviewerId: review.reviewerId as string,
+    submittedAt: review.submittedAt as string,
+    assignment,
     trained: review.trained,
     blindToRecipe: review.blindToRecipe,
     blindToOtherReviews: review.blindToOtherReviews,
     fullArtifactReviewed: review.fullArtifactReviewed,
-    artifactContentHash: review.artifactContentHash as string,
     scores: parsedScores,
     criticalFailures,
   };
@@ -1530,20 +2066,26 @@ function parseTargetReaderReview(
   exactKeys(review, [
     "reviewId",
     "reviewerId",
+    "submittedAt",
+    "assignment",
     "targetAudienceEligible",
     "blindToRecipe",
     "blindToOtherReviews",
     "fullArtifactReviewed",
-    "artifactContentHash",
     "scores",
     "criticalFailures",
   ]);
   assert(id(review.reviewId) && id(review.reviewerId));
+  assert(timestamp(review.submittedAt));
+  const assignment = parseReviewAssignment(review.assignment);
+  assert(
+    assignment.reviewerRole === "target_reader" &&
+      assignment.reviewerId === review.reviewerId,
+  );
   assert(typeof review.targetAudienceEligible === "boolean");
   assert(typeof review.blindToRecipe === "boolean");
   assert(typeof review.blindToOtherReviews === "boolean");
   assert(typeof review.fullArtifactReviewed === "boolean");
-  assert(hash(review.artifactContentHash));
   const scores = record(review.scores);
   exactKeys(scores, ["match_closeness", "desire_to_continue"]);
   const parsedScores = {
@@ -1553,14 +2095,87 @@ function parseTargetReaderReview(
   return {
     reviewId: review.reviewId as string,
     reviewerId: review.reviewerId as string,
+    submittedAt: review.submittedAt as string,
+    assignment,
     targetAudienceEligible: review.targetAudienceEligible,
     blindToRecipe: review.blindToRecipe,
     blindToOtherReviews: review.blindToOtherReviews,
     fullArtifactReviewed: review.fullArtifactReviewed,
-    artifactContentHash: review.artifactContentHash as string,
     scores: parsedScores,
     criticalFailures: parseCriticalFailures(review.criticalFailures),
   };
+}
+
+function parseReviewAssignment(
+  value: unknown,
+): StoryQualityReviewAssignment {
+  const assignment = record(value);
+  exactKeys(assignment, [
+    "assignmentId",
+    "assignmentSha256",
+    "assignedAt",
+    "reviewerId",
+    "reviewerRole",
+    "benchmarkVersion",
+    "benchmarkManifestSha256",
+    "runId",
+    "analysisPlanSha256",
+    "caseId",
+    "caseInputCommitment",
+    "armId",
+    "presentationId",
+    "recipeManifestSha256",
+    "artifactId",
+    "artifactContentHash",
+    "artifactDocumentSha256",
+    "storySpecId",
+    "storySpecVersion",
+    "storySpecSchemaVersion",
+    "storySpecDocumentSha256",
+    "reviewMaterialSha256",
+    "policyVersion",
+    "policySha256",
+    "protocolVersion",
+    "protocolSha256",
+  ]);
+  assert(id(assignment.assignmentId));
+  assert(hash(assignment.assignmentSha256));
+  assert(timestamp(assignment.assignedAt));
+  assert(id(assignment.reviewerId));
+  assert(
+    assignment.reviewerRole === "expert" ||
+      assignment.reviewerRole === "target_reader",
+  );
+  assert(id(assignment.benchmarkVersion));
+  assert(hash(assignment.benchmarkManifestSha256));
+  assert(id(assignment.runId));
+  assert(hash(assignment.analysisPlanSha256));
+  assert(id(assignment.caseId));
+  assert(
+    typeof assignment.caseInputCommitment === "string" &&
+      COMMITMENT.test(assignment.caseInputCommitment),
+  );
+  assert(id(assignment.armId));
+  assert(id(assignment.presentationId));
+  assert(hash(assignment.recipeManifestSha256));
+  assert(id(assignment.artifactId));
+  assert(hash(assignment.artifactContentHash));
+  assert(hash(assignment.artifactDocumentSha256));
+  assert(id(assignment.storySpecId));
+  assert(positiveInteger(assignment.storySpecVersion));
+  assert(id(assignment.storySpecSchemaVersion));
+  assert(hash(assignment.storySpecDocumentSha256));
+  assert(hash(assignment.reviewMaterialSha256));
+  assert(id(assignment.policyVersion));
+  assert(hash(assignment.policySha256));
+  assert(id(assignment.protocolVersion));
+  assert(hash(assignment.protocolSha256));
+  const parsed = assignment as StoryQualityReviewAssignment;
+  assert(
+    parsed.assignmentSha256 ===
+      storyQualityReviewAssignmentSha256(parsed),
+  );
+  return parsed;
 }
 
 function validateObservationContent(
@@ -1568,6 +2183,11 @@ function validateObservationContent(
   benchmarkCase: StoryQualityBenchmarkCase,
   arm: StoryQualityArm,
   recipe: QualityRecipeManifest,
+  packet: StoryQualityPacket,
+  policy: StoryQualityPolicy,
+  protocolSha256: string,
+  protectedDisclosureFingerprints:
+    readonly ProtectedDisclosureFingerprint[],
 ): void {
   try {
     const artifact = observation.artifact;
@@ -1599,6 +2219,18 @@ function validateObservationContent(
           arm.recipeManifestSha256,
     );
     assertBinding(artifactMatchMirrorsRecipe(artifact, recipe));
+    assertBinding(
+      artifact.recipe.match.deploymentVersion ===
+        arm.generationDeploymentVersion &&
+        (packet.run.purpose !== "release_candidate" ||
+          arm.generationDeploymentVersion !== "local") &&
+        artifact.recipe.match.crisisRegexVersion ===
+          crisisRegexVersion &&
+        artifact.recipe.match.matchRecoveryPolicyVersion ===
+          MATCH_RECOVERY_POLICY_VERSION &&
+        artifact.recipe.match.alternateStoryPolicyVersion ===
+          undefined,
+    );
     assertContent(
       recipe.storySpecSchemaVersion === spec.schemaVersion &&
         recipe.composerVersion === artifact.recipe.composerVersion &&
@@ -1619,21 +2251,64 @@ function validateObservationContent(
       benchmarkCase.boundaries ?? undefined,
     );
     assertContent(artifactValidation.valid);
+    const serializedSpec = canonicalJson(spec);
+    const serializedArtifact = canonicalJson(artifact);
     assertPrivacy(
       !storySpecContainsDisclosure(spec, benchmarkCase.disclosure),
     );
     assertPrivacy(
-      !containsProtectedDisclosureEcho(
-        canonicalJson(artifact),
-        benchmarkCase.disclosure,
+      !containsAnyProtectedDisclosureEcho(
+        serializedSpec,
+        protectedDisclosureFingerprints,
+      ),
+    );
+    assertPrivacy(
+      !containsAnyProtectedDisclosureEcho(
+        serializedArtifact,
+        protectedDisclosureFingerprints,
       ),
     );
     const artifactHash = artifact.contentHash;
+    const reviewMaterialSha256 = storyQualityReviewMaterialSha256({
+      artifact,
+      storySpec: spec,
+    });
     for (const review of [
       ...observation.expertReviews,
       ...observation.targetReaderReviews,
     ]) {
-      assertBinding(review.artifactContentHash === artifactHash);
+      const assignment = review.assignment;
+      assertBinding(
+        assignment.benchmarkVersion ===
+          packet.benchmark.benchmarkVersion &&
+          assignment.benchmarkManifestSha256 ===
+            packet.benchmark.manifestSha256 &&
+          assignment.runId === packet.run.runId &&
+          assignment.analysisPlanSha256 ===
+            packet.run.analysisPlanSha256 &&
+          assignment.caseId === benchmarkCase.caseId &&
+          assignment.caseInputCommitment ===
+            benchmarkCase.inputCommitment &&
+          assignment.armId === arm.armId &&
+          assignment.recipeManifestSha256 ===
+            arm.recipeManifestSha256 &&
+          assignment.artifactId === artifact.artifactId &&
+          assignment.artifactContentHash === artifactHash &&
+          assignment.artifactDocumentSha256 ===
+            observation.artifactDocumentSha256 &&
+          assignment.storySpecId === spec.storySpecId &&
+          assignment.storySpecVersion === spec.version &&
+          assignment.storySpecSchemaVersion === spec.schemaVersion &&
+          assignment.storySpecDocumentSha256 ===
+            observation.storySpecDocumentSha256 &&
+          assignment.reviewMaterialSha256 ===
+            reviewMaterialSha256 &&
+          assignment.policyVersion === policy.policyVersion &&
+          assignment.policySha256 ===
+            storyQualityPolicySha256(policy) &&
+          assignment.protocolVersion === policy.protocolVersion &&
+          assignment.protocolSha256 === protocolSha256,
+      );
     }
     if (arm.personalizationAttempted) {
       if (observation.outcome.compositionOutcome === "canonical_fallback") {
@@ -1689,6 +2364,11 @@ function buildArmEvidence(
   let reviewCoverage = true;
   let reviewerIndependence = true;
   let consent = true;
+  let consentedSessions = 0;
+  let deidentifiedSessions = 0;
+  let expertReviewCoveredArtifacts = 0;
+  let targetReaderReviewCoveredArtifacts = 0;
+  let independentReviewArtifacts = 0;
   let completed = 0;
   let feedbackResponses = 0;
   let feltClose = 0;
@@ -1699,6 +2379,8 @@ function buildArmEvidence(
     const benchmarkCase = caseById.get(observation.caseId)!;
     consent &&=
       benchmarkCase.consented && benchmarkCase.deidentified;
+    if (benchmarkCase.consented) consentedSessions += 1;
+    if (benchmarkCase.deidentified) deidentifiedSessions += 1;
     if (observation.outcome.finalBridgeCompleted) completed += 1;
     if (observation.outcome.feedbackVerdict !== "no_response") {
       feedbackResponses += 1;
@@ -1717,16 +2399,20 @@ function buildArmEvidence(
     }
     reviewerCounts.expert += observation.expertReviews.length;
     reviewerCounts.target += observation.targetReaderReviews.length;
-    reviewCoverage &&=
+    const expertCovered =
       observation.expertReviews.length >=
-        policy.minimums.expertReviewsPerArtifact &&
+      policy.minimums.expertReviewsPerArtifact;
+    const targetCovered =
       observation.targetReaderReviews.length >=
-        policy.minimums.targetReaderReviewsPerArtifact;
+      policy.minimums.targetReaderReviewsPerArtifact;
+    if (expertCovered) expertReviewCoveredArtifacts += 1;
+    if (targetCovered) targetReaderReviewCoveredArtifacts += 1;
+    reviewCoverage &&= expertCovered && targetCovered;
     const reviewerIds = [
       ...observation.expertReviews.map((entry) => entry.reviewerId),
       ...observation.targetReaderReviews.map((entry) => entry.reviewerId),
     ];
-    reviewerIndependence &&=
+    const independent =
       new Set(reviewerIds).size === reviewerIds.length &&
       observation.expertReviews.every(
         (entry) =>
@@ -1742,6 +2428,8 @@ function buildArmEvidence(
           entry.blindToOtherReviews &&
           entry.fullArtifactReviewed,
       );
+    if (independent) independentReviewArtifacts += 1;
+    reviewerIndependence &&= independent;
     const scoreGroups: Record<RubricDimension, number[]> = {
       match_closeness: observation.targetReaderReviews.map(
         (entry) => entry.scores.match_closeness,
@@ -1837,6 +2525,11 @@ function buildArmEvidence(
         (cellCounts.get(target.cohortCellId) ?? 0) >=
         target.minimumSessions,
     );
+  const cohortCellsMeetingTargets = cohortTargets.filter(
+    (target) =>
+      (cellCounts.get(target.cohortCellId) ?? 0) >=
+      target.minimumSessions,
+  ).length;
   const checks = {
     consent,
     cohortRepresentation,
@@ -1879,9 +2572,15 @@ function buildArmEvidence(
     personalizationAttempted: arm.personalizationAttempted,
     sample: {
       sessions,
+      consentedSessions,
+      deidentifiedSessions,
       feedbackResponses,
       expertReviews: reviewerCounts.expert,
       targetReaderReviews: reviewerCounts.target,
+      expertReviewCoveredArtifacts,
+      targetReaderReviewCoveredArtifacts,
+      independentReviewArtifacts,
+      cohortCellsMeetingTargets,
       criticalFailureArtifacts: criticalArtifacts.size,
     },
     dimensions,
@@ -1990,6 +2689,7 @@ function collectFailureReasons(
 function collectIncompleteReasons(input: {
   protectedHoldout: boolean;
   holdoutChronology: boolean;
+  contentChronology: boolean;
   providerConditions: boolean;
   provenanceComplete: boolean;
   candidate: StoryQualityArmEvidence;
@@ -1999,6 +2699,7 @@ function collectIncompleteReasons(input: {
   const reasons: StoryQualityEvidence["incompleteReasons"][number][] = [];
   if (!input.protectedHoldout) reasons.push("synthetic_or_non_holdout");
   if (!input.holdoutChronology) reasons.push("holdout_chronology");
+  if (!input.contentChronology) reasons.push("content_chronology");
   if (
     !input.candidate.checks.sessionMinimum ||
     !input.baseline.checks.sessionMinimum
@@ -2055,16 +2756,61 @@ function validHoldoutChronology(packet: StoryQualityPacket): boolean {
   return (
     frozenAt <= sealedAt &&
     sealedAt <= candidateAt &&
-    candidateAt <= openedAt &&
+    candidateAt < openedAt &&
     openedAt <= startedAt &&
     startedAt <= completedAt
   );
 }
 
-function hasCrossArmReviewerIndependence(
+function validContentChronology(packet: StoryQualityPacket): boolean {
+  const candidateFrozenAt = Date.parse(packet.run.candidateFrozenAt);
+  const startedAt = Date.parse(packet.run.startedAt);
+  const completedAt = Date.parse(packet.run.completedAt);
+  return packet.arms.every((arm) =>
+    arm.observations.every((observation) => {
+      const specReviewedAt = Date.parse(
+        observation.storySpec.review.reviewedAt ?? "",
+      );
+      const artifactCreatedAt = Date.parse(
+        observation.artifact.createdAt,
+      );
+      const artifactValidatedAt = Date.parse(
+        observation.artifact.validation.validatedAt,
+      );
+      const reviews = [
+        ...observation.expertReviews,
+        ...observation.targetReaderReviews,
+      ];
+      return (
+        Number.isFinite(specReviewedAt) &&
+        specReviewedAt <= candidateFrozenAt &&
+        Number.isFinite(artifactCreatedAt) &&
+        startedAt <= artifactCreatedAt &&
+        artifactCreatedAt <= completedAt &&
+        Number.isFinite(artifactValidatedAt) &&
+        artifactCreatedAt <= artifactValidatedAt &&
+        artifactValidatedAt <= completedAt &&
+        reviews.every((review) => {
+          const assignedAt = Date.parse(review.assignment.assignedAt);
+          const submittedAt = Date.parse(review.submittedAt);
+          return (
+            Number.isFinite(assignedAt) &&
+            Number.isFinite(submittedAt) &&
+            artifactValidatedAt <= assignedAt &&
+            assignedAt <= submittedAt &&
+            submittedAt <= completedAt
+          );
+        })
+      );
+    }),
+  );
+}
+
+function reviewerAssignmentCollisionCount(
   arms: readonly StoryQualityArm[],
-): boolean {
+): number {
   const assignments = new Map<string, string>();
+  let collisions = 0;
   for (const arm of arms) {
     for (const observation of arm.observations) {
       for (const reviewerId of [
@@ -2075,12 +2821,15 @@ function hasCrossArmReviewerIndependence(
       ]) {
         const key = `${observation.caseId}\u0000${reviewerId}`;
         const priorArm = assignments.get(key);
-        if (priorArm !== undefined && priorArm !== arm.armId) return false;
-        assignments.set(key, arm.armId);
+        if (priorArm !== undefined && priorArm !== arm.armId) {
+          collisions += 1;
+        } else {
+          assignments.set(key, arm.armId);
+        }
       }
     }
   }
-  return true;
+  return collisions;
 }
 
 function splitForPurpose(
@@ -2386,38 +3135,115 @@ function assertExactSourceRefShape(value: unknown): void {
   );
 }
 
-function containsProtectedDisclosureEcho(
-  serializedArtifact: string,
+function protectedDisclosureFingerprint(
   disclosure: string,
-): boolean {
-  const artifact = normalizedTokens(serializedArtifact);
+): ProtectedDisclosureFingerprint {
   const source = normalizedTokens(disclosure);
-  if (source.length === 0 || artifact.length === 0) return false;
-  const artifactText = ` ${artifact.join(" ")} `;
+  if (source.length === 0) {
+    return {
+      exactPhrase: null,
+      copiedPhrases: [],
+      longTokens: [],
+    };
+  }
+  const exactSource = source.join(" ");
+  const singleToken = source[0];
+  const exactMatchIsSensitive =
+    source.length > 1 ||
+    singleToken.length >= 3 ||
+    (/[^\x00-\x7f]/u.test(singleToken) &&
+      [...singleToken].length >= 2);
   const windowSize = 7;
+  const copiedPhrases: string[] = [];
   for (
     let index = 0;
     index <= source.length - windowSize;
     index += 1
   ) {
-    const phrase = ` ${source.slice(index, index + windowSize).join(" ")} `;
-    if (artifactText.includes(phrase)) return true;
+    copiedPhrases.push(
+      ` ${source.slice(index, index + windowSize).join(" ")} `,
+    );
   }
-  const artifactTokens = new Set(artifact);
-  return source.some(
-    (token) =>
+  return {
+    exactPhrase: exactMatchIsSensitive
+      ? ` ${exactSource} `
+      : null,
+    copiedPhrases,
+    longTokens: source.filter(
+      (token) =>
       token.length >= 12 &&
-      !/^\d+$/.test(token) &&
-      artifactTokens.has(token),
+        !/^\d+$/.test(token),
+    ),
+  };
+}
+
+function containsAnyProtectedDisclosureEcho(
+  serializedArtifact: string,
+  fingerprints: readonly ProtectedDisclosureFingerprint[],
+): boolean {
+  const artifact = normalizedTokens(serializedArtifact);
+  if (artifact.length === 0) return false;
+  const artifactText = ` ${artifact.join(" ")} `;
+  const artifactTokens = new Set(artifact);
+  return fingerprints.some(
+    (fingerprint) =>
+      (fingerprint.exactPhrase !== null &&
+        artifactText.includes(fingerprint.exactPhrase)) ||
+      fingerprint.copiedPhrases.some((phrase) =>
+        artifactText.includes(phrase),
+      ) ||
+      fingerprint.longTokens.some((token) =>
+        artifactTokens.has(token),
+      ),
   );
 }
 
 function normalizedTokens(value: string): string[] {
-  return value
+  const normalized = value
     .normalize("NFKC")
     .replace(/[\u200b-\u200f\u2060\ufeff]/g, "")
-    .toLocaleLowerCase("en-US")
-    .match(/[\p{L}\p{N}@._+-]+/gu) ?? [];
+    .toLocaleLowerCase("en-US");
+  const confusableFolded = normalized.replace(
+    /[аеорсухікмтвнјαεορκμτχνι]/gu,
+    (character) =>
+      ({
+        а: "a",
+        е: "e",
+        о: "o",
+        р: "p",
+        с: "c",
+        у: "y",
+        х: "x",
+        і: "i",
+        к: "k",
+        м: "m",
+        т: "t",
+        в: "b",
+        н: "h",
+        ј: "j",
+        α: "a",
+        ε: "e",
+        ο: "o",
+        ρ: "p",
+        κ: "k",
+        μ: "m",
+        τ: "t",
+        χ: "x",
+        ν: "v",
+        ι: "i",
+      })[character] ?? character,
+  );
+  return confusableFolded.match(/[\p{L}\p{N}@._+-]+/gu) ?? [];
+}
+
+function assertEvidenceContainsNoDisclosure(
+  evidence: StoryQualityEvidence,
+  fingerprints: readonly ProtectedDisclosureFingerprint[],
+): void {
+  const serialized = canonicalJson(evidence);
+  assertPrivacy(
+    !containsAnyProtectedDisclosureEcho(serialized, fingerprints),
+  );
 }
 
 function assertSafeEvidence(evidence: StoryQualityEvidence): void {
@@ -2427,12 +3253,16 @@ function assertSafeEvidence(evidence: StoryQualityEvidence): void {
       "caseId",
       "reviewerId",
       "reviewId",
+      "assignmentId",
+      "assignmentSha256",
+      "presentationId",
       "artifactId",
       "artifactContentHash",
       "artifactDocumentSha256",
       "storySpecId",
       "storySpecDocumentSha256",
       "inputCommitment",
+      "reviewMaterialSha256",
       "disclosure",
       "feeling",
       "notes",
@@ -2499,6 +3329,7 @@ function assertReviewConsistency(
 function parseArmEvidence(
   value: unknown,
   policy: StoryQualityPolicy,
+  cohortCellCount: number,
 ): StoryQualityArmEvidence {
   const arm = record(value);
   exactKeys(arm, [
@@ -2528,23 +3359,60 @@ function parseArmEvidence(
   const sample = record(arm.sample);
   exactKeys(sample, [
     "sessions",
+    "consentedSessions",
+    "deidentifiedSessions",
     "feedbackResponses",
     "expertReviews",
     "targetReaderReviews",
+    "expertReviewCoveredArtifacts",
+    "targetReaderReviewCoveredArtifacts",
+    "independentReviewArtifacts",
+    "cohortCellsMeetingTargets",
     "criticalFailureArtifacts",
   ]);
   const parsedSample = {
     sessions: nonNegativeInteger(sample.sessions),
+    consentedSessions: nonNegativeInteger(sample.consentedSessions),
+    deidentifiedSessions: nonNegativeInteger(
+      sample.deidentifiedSessions,
+    ),
     feedbackResponses: nonNegativeInteger(sample.feedbackResponses),
     expertReviews: nonNegativeInteger(sample.expertReviews),
     targetReaderReviews: nonNegativeInteger(sample.targetReaderReviews),
+    expertReviewCoveredArtifacts: nonNegativeInteger(
+      sample.expertReviewCoveredArtifacts,
+    ),
+    targetReaderReviewCoveredArtifacts: nonNegativeInteger(
+      sample.targetReaderReviewCoveredArtifacts,
+    ),
+    independentReviewArtifacts: nonNegativeInteger(
+      sample.independentReviewArtifacts,
+    ),
+    cohortCellsMeetingTargets: nonNegativeInteger(
+      sample.cohortCellsMeetingTargets,
+    ),
     criticalFailureArtifacts: nonNegativeInteger(
       sample.criticalFailureArtifacts,
     ),
   };
   assert(
     parsedSample.feedbackResponses <= parsedSample.sessions &&
-      parsedSample.criticalFailureArtifacts <= parsedSample.sessions,
+      parsedSample.criticalFailureArtifacts <= parsedSample.sessions &&
+      parsedSample.consentedSessions <= parsedSample.sessions &&
+      parsedSample.deidentifiedSessions <= parsedSample.sessions &&
+      parsedSample.expertReviewCoveredArtifacts <=
+        parsedSample.sessions &&
+      parsedSample.targetReaderReviewCoveredArtifacts <=
+        parsedSample.sessions &&
+      parsedSample.independentReviewArtifacts <=
+        parsedSample.sessions &&
+      parsedSample.cohortCellsMeetingTargets <= cohortCellCount &&
+      parsedSample.expertReviews >=
+        parsedSample.expertReviewCoveredArtifacts *
+          policy.minimums.expertReviewsPerArtifact &&
+      parsedSample.targetReaderReviews >=
+        parsedSample.targetReaderReviewCoveredArtifacts *
+          policy.minimums.targetReaderReviewsPerArtifact,
     "evidence_invalid",
   );
   const dimensionRecord = record(arm.dimensions);
@@ -2558,7 +3426,7 @@ function parseArmEvidence(
   assert(
     RUBRIC_DIMENSIONS.every(
       (dimension) =>
-        dimensions[dimension].reviewedCases === parsedSample.sessions,
+        dimensions[dimension].reviewedCases <= parsedSample.sessions,
     ),
     "evidence_invalid",
   );
@@ -2638,10 +3506,19 @@ function parseArmEvidence(
   ]);
   const checks = parseBooleanRecord(checksRecord);
   const recomputedChecks = {
-    consent: checks.consent,
-    cohortRepresentation: checks.cohortRepresentation,
-    reviewCoverage: checks.reviewCoverage,
-    reviewerIndependence: checks.reviewerIndependence,
+    consent:
+      parsedSample.consentedSessions === parsedSample.sessions &&
+      parsedSample.deidentifiedSessions === parsedSample.sessions,
+    cohortRepresentation:
+      parsedSample.cohortCellsMeetingTargets === cohortCellCount,
+    reviewCoverage:
+      parsedSample.expertReviewCoveredArtifacts ===
+        parsedSample.sessions &&
+      parsedSample.targetReaderReviewCoveredArtifacts ===
+        parsedSample.sessions,
+    reviewerIndependence:
+      parsedSample.independentReviewArtifacts ===
+      parsedSample.sessions,
     sessionMinimum:
       parsedSample.sessions >= policy.minimums.targetAudienceSessions,
     feedbackMinimum:
@@ -2658,6 +3535,15 @@ function parseArmEvidence(
       parsedSample.criticalFailureArtifacts <=
       policy.maximums.criticalFailureArtifacts,
   };
+  assert(
+    !recomputedChecks.reviewCoverage ||
+      RUBRIC_DIMENSIONS.every(
+        (dimension) =>
+          dimensions[dimension].reviewedCases ===
+          parsedSample.sessions,
+      ),
+    "evidence_invalid",
+  );
   assert(
     canonicalJson(checks) === canonicalJson(recomputedChecks),
     "evidence_invalid",
@@ -2829,6 +3715,8 @@ function parseIncompleteReasons(
   const allowed = [
     "synthetic_or_non_holdout",
     "holdout_chronology",
+    "content_chronology",
+    "custodian_attestation",
     "sample_size",
     "feedback_coverage",
     "consent",
@@ -2865,6 +3753,25 @@ function assertQualityStatus(
     value === "incomplete" || value === "fail" || value === "pass",
     "evidence_invalid",
   );
+}
+
+function statusWithoutCustodianAttestation(
+  evidence:
+    | StoryQualityEvidence
+    | Omit<StoryQualityEvidence, "evidenceId">,
+): StoryQualityStatus {
+  if (!evidence.checks.noCriticalFailures) return "fail";
+  if (
+    evidence.incompleteReasons.some(
+      (reason) => reason !== "custodian_attestation",
+    )
+  ) {
+    return "incomplete";
+  }
+  return evidence.checks.candidateAbsoluteGate &&
+    evidence.checks.candidateNonInferiority
+    ? "pass"
+    : "fail";
 }
 
 function sameNullableNumber(value: unknown, expected: number | null): boolean {
@@ -2932,6 +3839,100 @@ function recipeManifestDigest(recipe: QualityRecipeManifest): string {
   return sha256Text(canonicalJson(payload));
 }
 
+function assertQualityRecipeRegistry(
+  registry: QualityRecipeRegistry,
+): void {
+  try {
+    const value = record(registry);
+    exactKeys(value, ["datasets", "recipes"]);
+    const datasets = array(value.datasets);
+    const recipes = array(value.recipes);
+    assert(datasets.length > 0 && recipes.length > 0);
+    for (const datasetValue of datasets) {
+      const dataset = record(datasetValue);
+      exactKeys(dataset, ["version", "sha256", "visibility"]);
+      assert(
+        id(dataset.version) &&
+          hash(dataset.sha256) &&
+          (dataset.visibility === "synthetic" ||
+            dataset.visibility === "protected_holdout"),
+      );
+    }
+    unique(
+      datasets.map(
+        (dataset) =>
+          (dataset as Record<string, unknown>).version as string,
+      ),
+    );
+    const manifestKeys = [
+      "recipeId",
+      "manifestSha256",
+      "retrievalMode",
+      "matchConfigVersion",
+      "librarySnapshotSha256",
+      "datasetVersion",
+      "llmProvider",
+      "rerankModelId",
+      "proseModelId",
+      "embeddingModelId",
+      "rerankPromptVersion",
+      "storyPromptVersion",
+      "rerankTemperature",
+      "rerankReasoningEffort",
+      "rerankTopK",
+      "storyTemperature",
+      "storyComposerMode",
+      "hybridStoryComposerEnabled",
+      "composerVersion",
+      "validatorVersion",
+      "storySpecSchemaVersion",
+      "boundaryPolicyVersion",
+      "resonanceBriefVersion",
+    ] as const;
+    for (const recipeValue of recipes) {
+      const recipe = record(recipeValue);
+      exactKeys(recipe, manifestKeys);
+      assert(
+        id(recipe.recipeId) &&
+          hash(recipe.manifestSha256) &&
+          (recipe.retrievalMode === "keyword" ||
+            recipe.retrievalMode === "facetsrag") &&
+          id(recipe.matchConfigVersion) &&
+          hash(recipe.librarySnapshotSha256) &&
+          id(recipe.datasetVersion) &&
+          recipe.llmProvider === "real" &&
+          recipeToken(recipe.rerankModelId) &&
+          recipeToken(recipe.proseModelId) &&
+          (recipe.embeddingModelId === null ||
+            recipeToken(recipe.embeddingModelId)) &&
+          id(recipe.rerankPromptVersion) &&
+          id(recipe.storyPromptVersion) &&
+          typeof recipe.rerankTemperature === "number" &&
+          Number.isFinite(recipe.rerankTemperature) &&
+          id(recipe.rerankReasoningEffort) &&
+          positiveInteger(recipe.rerankTopK) > 0 &&
+          typeof recipe.storyTemperature === "number" &&
+          Number.isFinite(recipe.storyTemperature) &&
+          recipe.storyComposerMode === "canonical" &&
+          typeof recipe.hybridStoryComposerEnabled === "boolean" &&
+          id(recipe.composerVersion) &&
+          id(recipe.validatorVersion) &&
+          id(recipe.storySpecSchemaVersion) &&
+          id(recipe.boundaryPolicyVersion) &&
+          id(recipe.resonanceBriefVersion),
+      );
+    }
+    unique(
+      recipes.map(
+        (recipe) =>
+          (recipe as Record<string, unknown>).recipeId as string,
+      ),
+    );
+  } catch {
+    throw new StoryQualityError("binding_invalid");
+  }
+}
+
 function artifactMatchMirrorsRecipe(
   artifact: StoryArtifact,
   recipe: QualityRecipeManifest,
@@ -2973,6 +3974,81 @@ function secretByteLength(value: string | Uint8Array): number {
   return typeof value === "string"
     ? Buffer.byteLength(value, "utf8")
     : value.byteLength;
+}
+
+function validEd25519PublicKey(value: string): boolean {
+  try {
+    return createPublicKey(value).asymmetricKeyType === "ed25519";
+  } catch {
+    return false;
+  }
+}
+
+function canonicalEd25519Signature(value: unknown): value is string {
+  if (
+    typeof value !== "string" ||
+    !/^[A-Za-z0-9_-]+$/.test(value)
+  ) {
+    return false;
+  }
+  try {
+    const decoded = Buffer.from(value, "base64url");
+    return (
+      decoded.byteLength === 64 &&
+      decoded.toString("base64url") === value
+    );
+  } catch {
+    return false;
+  }
+}
+
+function verifyCustodianAttestationOrThrow(input: {
+  attestation: StoryQualityCustodianAttestation | null;
+  policy: StoryQualityPolicy;
+  protocolSha256: string;
+  packetSha256: string;
+  resultSha256: string;
+  completedAt: string;
+  trust?: Readonly<{ publicKeyPem: string }>;
+}): boolean {
+  if (!input.attestation || !input.trust) return false;
+  if (!validEd25519PublicKey(input.trust.publicKeyPem)) {
+    throw new StoryQualityError("binding_invalid");
+  }
+  const expectedKeyId = storyQualityCustodianKeyId(
+    input.trust.publicKeyPem,
+  );
+  const attestation = input.attestation;
+  const validBinding =
+    attestation.algorithm === "Ed25519" &&
+    attestation.keyId === expectedKeyId &&
+    attestation.packetSha256 === input.packetSha256 &&
+    attestation.resultSha256 === input.resultSha256 &&
+    Date.parse(attestation.signedAt) >= Date.parse(input.completedAt);
+  if (!validBinding) {
+    throw new StoryQualityError("binding_invalid");
+  }
+  const message = storyQualityCustodianSigningMessage({
+    keyId: attestation.keyId,
+    signedAt: attestation.signedAt,
+    packetSha256: attestation.packetSha256,
+    resultSha256: attestation.resultSha256,
+    policy: input.policy,
+    protocolSha256: input.protocolSha256,
+  });
+  let valid = false;
+  try {
+    valid = verifySignature(
+      null,
+      Buffer.from(message, "utf8"),
+      createPublicKey(input.trust.publicKeyPem),
+      Buffer.from(attestation.signature, "base64url"),
+    );
+  } catch {
+    valid = false;
+  }
+  if (!valid) throw new StoryQualityError("binding_invalid");
+  return true;
 }
 
 function exactEnumArray<const T extends readonly string[]>(
@@ -3048,6 +4124,13 @@ function hash(value: unknown): value is string {
 
 function id(value: unknown): value is string {
   return typeof value === "string" && OPAQUE_ID.test(value);
+}
+
+function recipeToken(value: unknown): value is string {
+  return (
+    typeof value === "string" &&
+    /^[A-Za-z0-9][A-Za-z0-9._:@/-]{0,191}$/.test(value)
+  );
 }
 
 function deploymentId(value: unknown): value is string {

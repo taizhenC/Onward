@@ -37,6 +37,7 @@ export { RerankError, toRerankCandidate } from "./llm-real";
 export type { RerankCandidate } from "./llm-real";
 export {
   DEFAULT_FACET_TAGGER_MODEL_ID,
+  DEFAULT_FACET_TAGGER_INPUT_MAX_BYTES,
   DEFAULT_FACET_TAGGER_REASONING_EFFORT,
   DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES,
   DEFAULT_FACET_TAGGER_TEMPERATURE,

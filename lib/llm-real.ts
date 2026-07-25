@@ -16,7 +16,11 @@ import {
   type OpeningCopyInput,
 } from "./opening-copy";
 import { containsResonanceEcho } from "./resonance-brief";
-import type { ValidatedFacetSignal } from "./facet-signal";
+import {
+  FACET_PROJECTION_TEMPLATE_ID_CATALOG,
+  parseFacetSignalJson,
+  type ValidatedFacetSignal,
+} from "./facet-signal";
 import {
   HybridPlanProviderError,
   type HybridPlanRequest,
@@ -25,6 +29,12 @@ import {
   DEFAULT_PROSE_MODEL_ID,
   DEFAULT_PROSE_TIMEOUT_MS,
   DEFAULT_LLM_BASE_URL,
+  DEFAULT_FACET_TAGGER_INPUT_MAX_BYTES,
+  DEFAULT_FACET_TAGGER_MODEL_ID,
+  DEFAULT_FACET_TAGGER_REASONING_EFFORT,
+  DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES,
+  DEFAULT_FACET_TAGGER_TEMPERATURE,
+  DEFAULT_FACET_TAGGER_TIMEOUT_MS,
   DEFAULT_RERANK_MODEL_ID,
   DEFAULT_RERANK_REASONING_EFFORT,
   DEFAULT_RERANK_TEMPERATURE,
@@ -34,11 +44,13 @@ import {
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 import {
   EYEBROW_SYSTEM_PROMPT,
+  FACET_TAGGER_PROMPT_CONTRACT,
   HYBRID_PLAN_SYSTEM_PROMPT,
   RERANK_PROMPT_CONTRACT,
   RERANK_SYSTEM_PROMPT,
   STORY_PROMPT_CONTRACT,
   buildEyebrowUserPrompt,
+  buildFacetTaggerUserPrompt,
   buildHybridPlanUserPrompt,
   buildRerankUserPrompt,
 } from "./llm-prompts";
@@ -274,14 +286,126 @@ function coerceConfidence(value: unknown): Confidence {
     : "low";
 }
 
-// The provider-neutral facade is intentionally installed before transport or
-// production retrieval wiring. Until the bounded one-shot adapter lands, real
-// mode degrades to the same null signal as the stub.
+// Best-effort, one-shot classification for shadow/eval callers. Every failure
+// returns null without logging or retrying; production matching has no caller.
 export async function tagAndExpandReal(
   input: Readonly<{ feeling: string }>,
 ): Promise<ValidatedFacetSignal | null> {
-  void input;
-  return null;
+  if (
+    typeof input.feeling !== "string" ||
+    input.feeling.length === 0 ||
+    Buffer.byteLength(input.feeling, "utf8") >
+      DEFAULT_FACET_TAGGER_INPUT_MAX_BYTES
+  ) {
+    return null;
+  }
+  const key = apiKey();
+  if (!key) return null;
+
+  const body = {
+    model: DEFAULT_FACET_TAGGER_MODEL_ID,
+    temperature: DEFAULT_FACET_TAGGER_TEMPERATURE,
+    reasoning_effort: DEFAULT_FACET_TAGGER_REASONING_EFFORT,
+    response_format: {
+      type: FACET_TAGGER_PROMPT_CONTRACT.responseFormat,
+    },
+    messages: [
+      { role: "system", content: FACET_TAGGER_PROMPT_CONTRACT.system },
+      {
+        role: "user",
+        content: buildFacetTaggerUserPrompt({
+          feeling: input.feeling,
+          projectionTemplateCatalog:
+            FACET_PROJECTION_TEMPLATE_ID_CATALOG,
+        }),
+      },
+    ],
+  };
+
+  const controller = new AbortController();
+  const timer = setTimeout(
+    () => controller.abort(),
+    DEFAULT_FACET_TAGGER_TIMEOUT_MS,
+  );
+  try {
+    const response = await fetch(`${baseUrl()}/chat/completions`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    if (!response.ok) return null;
+
+    const envelopeText = await readBoundedFacetTaggerEnvelope(
+      response,
+      controller,
+    );
+    if (envelopeText === null) return null;
+
+    const envelope = JSON.parse(envelopeText) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+    const content = envelope.choices?.[0]?.message?.content;
+    return typeof content === "string"
+      ? parseFacetSignalJson(content, input.feeling)
+      : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function readBoundedFacetTaggerEnvelope(
+  response: Response,
+  controller: AbortController,
+): Promise<string | null> {
+  const declaredLength = response.headers.get("content-length");
+  if (
+    declaredLength !== null &&
+    (!/^\d+$/u.test(declaredLength) ||
+      Number(declaredLength) > DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES)
+  ) {
+    controller.abort();
+    return null;
+  }
+  if (!response.body) return null;
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value.byteLength === 0) continue;
+      if (
+        value.byteLength >
+        DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES - totalBytes
+      ) {
+        controller.abort();
+        await reader.cancel().catch(() => undefined);
+        return null;
+      }
+      totalBytes += value.byteLength;
+      chunks.push(value);
+    }
+
+    const envelope = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      envelope.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    return new TextDecoder("utf-8", { fatal: true }).decode(envelope);
+  } catch {
+    return null;
+  } finally {
+    reader.releaseLock();
+  }
 }
 
 // ── Opening copy (eyebrow) ───────────────────────────────────────────────────────────

@@ -4,6 +4,7 @@ import { join } from "node:path";
 import {
   FACET_PROJECTION_MAX_WORDS,
   FACET_PROJECTION_TEMPLATE_CATALOG,
+  FACET_PROJECTION_TEMPLATE_ID_CATALOG,
   FACET_SIGNAL_MAX_ANCHOR_CHARACTERS,
   FACET_SIGNAL_MAX_ANCHORS_PER_LANE,
   FACET_SIGNAL_MAX_OUTPUT_BYTES,
@@ -392,10 +393,28 @@ function checkTemplateCatalog(): void {
     Object.isFrozen(FACET_PROJECTION_TEMPLATE_CATALOG),
     "template catalog root is mutable",
   );
+  check(
+    Object.isFrozen(FACET_PROJECTION_TEMPLATE_ID_CATALOG),
+    "provider ID catalog root is mutable",
+  );
   for (const facetType of FACET_TYPES) {
     const templates = FACET_PROJECTION_TEMPLATE_CATALOG[facetType];
+    const providerIds = FACET_PROJECTION_TEMPLATE_ID_CATALOG[facetType];
     check(Object.isFrozen(templates), `${facetType} template list is mutable`);
+    check(
+      Object.isFrozen(providerIds),
+      `${facetType} provider ID list is mutable`,
+    );
     check(templates.length > 0, `${facetType} has no projection templates`);
+    check(
+      JSON.stringify(providerIds) ===
+        JSON.stringify(templates.map(({ templateId }) => templateId)),
+      `${facetType} provider ID catalog drifted from the closed templates`,
+    );
+    check(
+      templates.every(({ text }) => !JSON.stringify(providerIds).includes(text)),
+      `${facetType} provider ID catalog contains server-owned prose`,
+    );
     for (const template of templates) {
       const words =
         template.text.match(/[\p{L}\p{N}]+(?:['’\-][\p{L}\p{N}]+)*/gu) ??

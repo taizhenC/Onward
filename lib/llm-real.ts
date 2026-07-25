@@ -337,7 +337,10 @@ export async function tagAndExpandReal(
       body: JSON.stringify(body),
       signal: controller.signal,
     });
-    if (!response.ok) return null;
+    if (!response.ok) {
+      cancelFacetTaggerResponse(response, controller);
+      return null;
+    }
 
     const envelopeText = await readBoundedFacetTaggerEnvelope(
       response,
@@ -369,7 +372,7 @@ async function readBoundedFacetTaggerEnvelope(
     (!/^\d+$/u.test(declaredLength) ||
       Number(declaredLength) > DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES)
   ) {
-    controller.abort();
+    cancelFacetTaggerResponse(response, controller);
     return null;
   }
   if (!response.body) return null;
@@ -379,7 +382,12 @@ async function readBoundedFacetTaggerEnvelope(
   let totalBytes = 0;
   try {
     while (true) {
-      const { done, value } = await reader.read();
+      const chunk = await readFacetTaggerChunk(reader, controller.signal);
+      if (chunk === null) {
+        void reader.cancel().catch(() => undefined);
+        return null;
+      }
+      const { done, value } = chunk;
       if (done) break;
       if (value.byteLength === 0) continue;
       if (
@@ -387,7 +395,7 @@ async function readBoundedFacetTaggerEnvelope(
         DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES - totalBytes
       ) {
         controller.abort();
-        await reader.cancel().catch(() => undefined);
+        void reader.cancel().catch(() => undefined);
         return null;
       }
       totalBytes += value.byteLength;
@@ -404,8 +412,43 @@ async function readBoundedFacetTaggerEnvelope(
   } catch {
     return null;
   } finally {
-    reader.releaseLock();
+    try {
+      reader.releaseLock();
+    } catch {
+      // An abort may win while a hostile body still has a pending read. The
+      // controller and reader have already been canceled; never wait on it.
+    }
   }
+}
+
+async function readFacetTaggerChunk(
+  reader: ReadableStreamDefaultReader<Uint8Array>,
+  signal: AbortSignal,
+): Promise<ReadableStreamReadResult<Uint8Array> | null> {
+  if (signal.aborted) return null;
+
+  let removeAbortListener: () => void = () => undefined;
+  const aborted = new Promise<null>((resolve) => {
+    const onAbort = () => resolve(null);
+    signal.addEventListener("abort", onAbort, { once: true });
+    removeAbortListener = () => signal.removeEventListener("abort", onAbort);
+  });
+  try {
+    return await Promise.race([
+      reader.read().catch(() => null),
+      aborted,
+    ]);
+  } finally {
+    removeAbortListener();
+  }
+}
+
+function cancelFacetTaggerResponse(
+  response: Response,
+  controller: AbortController,
+): void {
+  controller.abort();
+  if (response.body) void response.body.cancel().catch(() => undefined);
 }
 
 // ── Opening copy (eyebrow) ───────────────────────────────────────────────────────────

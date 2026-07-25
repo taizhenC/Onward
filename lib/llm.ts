@@ -82,6 +82,9 @@ export type TagAndExpandInput = Readonly<{ feeling: string }>;
 export function tagAndExpand(
   input: TagAndExpandInput,
 ): ReturnType<typeof tagAndExpandReal> {
+  if (process.env.NODE_ENV === "production") {
+    return tagAndExpandStub(input);
+  }
   return resolveProvider() === "real"
     ? tagAndExpandReal(input)
     : tagAndExpandStub(input);

@@ -2,9 +2,12 @@ import "./_smoke-bootstrap";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import ts from "typescript";
 import {
+  FACET_PROJECTION_SCHEMA_VERSION,
   FACET_PROJECTION_TEMPLATE_CATALOG,
   FACET_PROJECTION_TEMPLATE_ID_CATALOG,
+  FACET_SIGNAL_SCHEMA_VERSION,
   resolveFacetQueryText,
 } from "../lib/facet-signal";
 import {
@@ -53,6 +56,7 @@ async function main(): Promise<void> {
   configureRealTestProvider();
   try {
     const capturedLogs = await captureConsole(async () => {
+      await checkProductionHardOff();
       await checkMissingCredential();
       process.env.LLM_API_KEY = "facet-tagger-test-key";
       await checkValidRequestAndSignal();
@@ -95,6 +99,18 @@ function configureRealTestProvider(): void {
   delete process.env.GROQ_API_KEY;
 }
 
+async function checkProductionHardOff(): Promise<void> {
+  mutableEnv.NODE_ENV = "production";
+  process.env.LLM_API_KEY = "must-not-be-used-in-production";
+  const requests = installFetch(async () => {
+    throw new Error("production dormancy gate was bypassed");
+  });
+  assert.equal(await tagAndExpand({ feeling: RAW_FEELING }), null);
+  assert.equal(requests.length, 0, "production called the dormant tagger");
+  mutableEnv.NODE_ENV = "test";
+  delete process.env.LLM_API_KEY;
+}
+
 async function checkMissingCredential(): Promise<void> {
   const requests = installFetch(async () => {
     throw new Error(PRIVATE_CANARY);
@@ -104,6 +120,32 @@ async function checkMissingCredential(): Promise<void> {
 }
 
 async function checkValidRequestAndSignal(): Promise<void> {
+  assert.deepEqual(
+    {
+      modelId: DEFAULT_FACET_TAGGER_MODEL_ID,
+      temperature: DEFAULT_FACET_TAGGER_TEMPERATURE,
+      reasoningEffort: DEFAULT_FACET_TAGGER_REASONING_EFFORT,
+      timeoutMs: DEFAULT_FACET_TAGGER_TIMEOUT_MS,
+      promptVersion: FACET_TAGGER_PROMPT_VERSION,
+      signalSchemaVersion: FACET_SIGNAL_SCHEMA_VERSION,
+      projectionSchemaVersion: FACET_PROJECTION_SCHEMA_VERSION,
+      inputMaxBytes: DEFAULT_FACET_TAGGER_INPUT_MAX_BYTES,
+      responseMaxBytes: DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES,
+    },
+    {
+      modelId: "gpt-oss-120b",
+      temperature: 0,
+      reasoningEffort: "low",
+      timeoutMs: 3000,
+      promptVersion: "facet-tagger-prompt-v1-2026-07",
+      signalSchemaVersion: "facet-signal-v1-2026-07",
+      projectionSchemaVersion:
+        "facet-query-template-catalog-v1-2026-07",
+      inputMaxBytes: 4096,
+      responseMaxBytes: 65_536,
+    },
+    "dormant provider identity drifted from the reviewed manifest-v2 fixture",
+  );
   const requests = installFetch(async () =>
     completionResponse(JSON.stringify(validProviderOutput())),
   );
@@ -184,11 +226,21 @@ async function checkNetworkAndHttpFailure(): Promise<void> {
   assert.equal(await tagAndExpand({ feeling: RAW_FEELING }), null);
   assert.equal(requests.length, 1, "network failure was retried");
 
+  let cancelled = false;
+  const responseBody = new ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode(PRIVATE_CANARY));
+    },
+    cancel() {
+      cancelled = true;
+    },
+  });
   requests = installFetch(async () =>
-    new Response(PRIVATE_CANARY, { status: 429 }),
+    new Response(responseBody, { status: 429 }),
   );
   assert.equal(await tagAndExpand({ feeling: RAW_FEELING }), null);
   assert.equal(requests.length, 1, "HTTP failure was retried");
+  assert(cancelled, "failed HTTP response body was not cancelled");
 }
 
 async function checkMalformedResponses(): Promise<void> {
@@ -283,19 +335,19 @@ async function checkTimeoutAndNoRetry(): Promise<void> {
   const originalSetTimeout = globalThis.setTimeout;
   const originalClearTimeout = globalThis.clearTimeout;
   let scheduledDelay: number | undefined;
-  globalThis.setTimeout = ((
-    callback: (...args: unknown[]) => void,
-    delay?: number,
-    ...args: unknown[]
-  ) => {
-    scheduledDelay = delay;
-    queueMicrotask(() => callback(...args));
-    return 1 as unknown as ReturnType<typeof setTimeout>;
-  }) as typeof setTimeout;
   globalThis.clearTimeout = (() => undefined) as typeof clearTimeout;
 
   try {
-    const requests = installFetch(
+    globalThis.setTimeout = ((
+      callback: (...args: unknown[]) => void,
+      delay?: number,
+      ...args: unknown[]
+    ) => {
+      scheduledDelay = delay;
+      queueMicrotask(() => callback(...args));
+      return 1 as unknown as ReturnType<typeof setTimeout>;
+    }) as typeof setTimeout;
+    let requests = installFetch(
       async (_input, init) =>
         new Promise<Response>((_resolve, reject) => {
           const signal = init?.signal;
@@ -317,6 +369,39 @@ async function checkTimeoutAndNoRetry(): Promise<void> {
       "tagger timeout drifted from the manifest contract",
     );
     assert.equal(requests.length, 1, "timed-out request was retried");
+
+    let fireBodyTimeout: (() => void) | undefined;
+    let bodyCancelled = false;
+    scheduledDelay = undefined;
+    globalThis.setTimeout = ((
+      callback: (...args: unknown[]) => void,
+      delay?: number,
+      ...args: unknown[]
+    ) => {
+      scheduledDelay = delay;
+      fireBodyTimeout = () => callback(...args);
+      return 2 as unknown as ReturnType<typeof setTimeout>;
+    }) as typeof setTimeout;
+    requests = installFetch(async () => {
+      const stalledBody = new ReadableStream<Uint8Array>({
+        pull() {
+          queueMicrotask(() => fireBodyTimeout?.());
+          return new Promise<void>(() => undefined);
+        },
+        cancel() {
+          bodyCancelled = true;
+        },
+      });
+      return new Response(stalledBody);
+    });
+    assert.equal(await tagAndExpand({ feeling: RAW_FEELING }), null);
+    assert.equal(
+      scheduledDelay,
+      DEFAULT_FACET_TAGGER_TIMEOUT_MS,
+      "response-body timeout drifted from the manifest contract",
+    );
+    assert.equal(requests.length, 1, "stalled response body was retried");
+    assert(bodyCancelled, "stalled response body was not cancelled");
   } finally {
     globalThis.setTimeout = originalSetTimeout;
     globalThis.clearTimeout = originalClearTimeout;
@@ -329,41 +414,108 @@ function checkStaticAuthorityBoundary(): void {
   );
   const llmFacade = join(process.cwd(), "lib", "llm.ts");
   const facetSignal = join(process.cwd(), "lib", "facet-signal.ts");
+  const audits = productionFiles.map(inspectAuthoritySource);
 
-  const providerImporters = productionFiles.filter((path) =>
-    /from\s+["'][^"']*llm-real["']/u.test(readFileSync(path, "utf8")),
-  );
+  const providerImporters = audits
+    .filter(({ referencesRealProviderModule }) => referencesRealProviderModule)
+    .map(({ path }) => path);
   assert.deepEqual(
     providerImporters,
     [llmFacade],
-    "provider-specific LLM exports escaped the single facade",
+    "provider-specific LLM imports, re-exports, or dynamic loads escaped the facade",
   );
 
-  const taggerConsumers = productionFiles
-    .filter((path) => path !== llmFacade)
-    .filter((path) => /\btagAndExpand\s*\(/u.test(readFileSync(path, "utf8")));
+  const taggerConsumers = audits
+    .filter(({ path }) => path !== llmFacade)
+    .filter(({ exactSymbols }) => exactSymbols.has("tagAndExpand"))
+    .map(({ path }) => path);
   assert.deepEqual(
     taggerConsumers,
     [],
-    "production code invoked the dormant tagger facade",
+    "production code imported, aliased, referenced, or invoked the dormant tagger",
   );
 
-  const dominantModeConsumers = productionFiles
-    .filter((path) => path !== facetSignal)
-    .filter((path) => /\.dominantMode\b/u.test(readFileSync(path, "utf8")));
+  const dominantModeConsumers = audits
+    .filter(({ path }) => path !== facetSignal)
+    .filter(({ exactSymbols }) => exactSymbols.has("dominantMode"))
+    .map(({ path }) => path);
   assert.deepEqual(
     dominantModeConsumers,
     [],
-    "non-authoritative dominantMode influences production behavior",
+    "non-authoritative dominantMode was imported, destructured, or referenced",
   );
 
-  const stub = readFileSync(join(process.cwd(), "lib", "llm-stub.ts"), "utf8");
-  const stubBody =
-    stub.match(
-      /export async function tagAndExpandStub[\s\S]*?\n\}\n/u,
-    )?.[0] ?? "";
-  assert(stubBody.includes("return null;"), "stub tagger does not return null");
-  assert(!stubBody.includes("fetch("), "stub tagger calls a provider");
+  const stubPath = join(process.cwd(), "lib", "llm-stub.ts");
+  const stubSource = parseTypeScriptSource(stubPath);
+  const stub = stubSource.statements.find(
+    (statement): statement is ts.FunctionDeclaration =>
+      ts.isFunctionDeclaration(statement) &&
+      statement.name?.text === "tagAndExpandStub",
+  );
+  assert(stub?.body, "stub tagger declaration is missing");
+  assert(
+    stub.body.statements.some(
+      (statement) =>
+        ts.isReturnStatement(statement) &&
+        statement.expression?.kind === ts.SyntaxKind.NullKeyword,
+    ),
+    "stub tagger does not return null",
+  );
+  assert(
+    !subtreeContainsExactSymbol(stub.body, "fetch"),
+    "stub tagger calls a provider",
+  );
+}
+
+function inspectAuthoritySource(path: string): Readonly<{
+  path: string;
+  exactSymbols: ReadonlySet<string>;
+  referencesRealProviderModule: boolean;
+}> {
+  const source = parseTypeScriptSource(path);
+  const exactSymbols = new Set<string>();
+  let referencesRealProviderModule = false;
+  const visit = (node: ts.Node): void => {
+    if (ts.isIdentifier(node) || ts.isStringLiteralLike(node)) {
+      exactSymbols.add(node.text);
+      if (
+        ts.isStringLiteralLike(node) &&
+        /(?:^|[\\/])llm-real(?:\.[cm]?[jt]sx?)?$/u.test(node.text)
+      ) {
+        referencesRealProviderModule = true;
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  return { path, exactSymbols, referencesRealProviderModule };
+}
+
+function subtreeContainsExactSymbol(node: ts.Node, symbol: string): boolean {
+  let found = false;
+  const visit = (child: ts.Node): void => {
+    if (found) return;
+    if (
+      (ts.isIdentifier(child) || ts.isStringLiteralLike(child)) &&
+      child.text === symbol
+    ) {
+      found = true;
+      return;
+    }
+    ts.forEachChild(child, visit);
+  };
+  visit(node);
+  return found;
+}
+
+function parseTypeScriptSource(path: string): ts.SourceFile {
+  return ts.createSourceFile(
+    path,
+    readFileSync(path, "utf8"),
+    ts.ScriptTarget.Latest,
+    true,
+    path.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  );
 }
 
 function installFetch(
@@ -441,16 +593,22 @@ async function captureConsole(
   const originalLog = console.log;
   const originalWarn = console.warn;
   const originalError = console.error;
+  const originalInfo = console.info;
+  const originalDebug = console.debug;
   const captured: string[] = [];
   console.log = (...values: unknown[]) => captured.push(values.join(" "));
   console.warn = (...values: unknown[]) => captured.push(values.join(" "));
   console.error = (...values: unknown[]) => captured.push(values.join(" "));
+  console.info = (...values: unknown[]) => captured.push(values.join(" "));
+  console.debug = (...values: unknown[]) => captured.push(values.join(" "));
   try {
     await run();
   } finally {
     console.log = originalLog;
     console.warn = originalWarn;
     console.error = originalError;
+    console.info = originalInfo;
+    console.debug = originalDebug;
   }
   return captured;
 }

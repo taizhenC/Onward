@@ -16,6 +16,7 @@ import {
   type OpeningCopyInput,
 } from "./opening-copy";
 import { containsResonanceEcho } from "./resonance-brief";
+import type { ValidatedFacetSignal } from "./facet-signal";
 import {
   HybridPlanProviderError,
   type HybridPlanRequest,
@@ -271,6 +272,16 @@ function coerceConfidence(value: unknown): Confidence {
   return value === "high" || value === "medium" || value === "low"
     ? value
     : "low";
+}
+
+// The provider-neutral facade is intentionally installed before transport or
+// production retrieval wiring. Until the bounded one-shot adapter lands, real
+// mode degrades to the same null signal as the stub.
+export async function tagAndExpandReal(
+  input: Readonly<{ feeling: string }>,
+): Promise<ValidatedFacetSignal | null> {
+  void input;
+  return null;
 }
 
 // ── Opening copy (eyebrow) ───────────────────────────────────────────────────────────

@@ -599,9 +599,21 @@ function checkDormantBoundary(): void {
       }
     }
   }
+  const allowedProviderImporter = join(
+    process.cwd(),
+    "lib",
+    "llm-real.ts",
+  );
   check(
-    importers.length === 0,
-    "dormant facet contract is imported by production code",
+    importers.length === 1 && importers[0] === allowedProviderImporter,
+    "facet contract escaped the designated real-provider adapter",
+  );
+  const runtimeConsumers = sourceFiles(join(process.cwd(), "lib"))
+    .filter((path) => !path.endsWith(join("lib", "llm.ts")))
+    .filter((path) => /\btagAndExpand\s*\(/u.test(readFileSync(path, "utf8")));
+  check(
+    runtimeConsumers.length === 0,
+    "dormant facet provider is called by production library code",
   );
 }
 

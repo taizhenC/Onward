@@ -41,6 +41,11 @@ export const RERANK_PROMPT_VERSION = activePromptRelease(
   "rerank",
   sha256Hex(canonicalPromptContract(RERANK_PROMPT_CONTRACT)),
 );
+export const DEFAULT_FACET_TAGGER_MODEL_ID = "gpt-oss-120b";
+export const DEFAULT_FACET_TAGGER_TEMPERATURE = 0;
+export const DEFAULT_FACET_TAGGER_REASONING_EFFORT = "low";
+export const DEFAULT_FACET_TAGGER_TIMEOUT_MS = 3000;
+export const DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES = 65_536;
 export const DEFAULT_PROSE_MODEL_ID = "gpt-oss-120b";
 export const DEFAULT_STORY_TEMPERATURE = 0.3;
 export const DEFAULT_PROSE_TIMEOUT_MS = 8000;

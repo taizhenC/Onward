@@ -60,6 +60,15 @@ export async function pickFigureStub(input: PickInput): Promise<Pick> {
   };
 }
 
+// The stub preserves the same provider-neutral contract while making no
+// classification attempt. Raw feeling is never copied, logged, or persisted.
+export async function tagAndExpandStub(
+  input: Readonly<{ feeling: string }>,
+): Promise<null> {
+  void input;
+  return null;
+}
+
 // Stub opening copy: the hand-authored per-stage eyebrow (curatedEyebrow falls back to
 // the neutral line for any uncurated stage) plus the universal hand-authored preface. The
 // real generator in lib/llm-real.ts tailors the eyebrow from a bounded brief when

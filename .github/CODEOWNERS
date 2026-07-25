@@ -13,6 +13,7 @@
 /scripts/check-recipe-failure-boundary.ts @taizhenC
 /scripts/check-recipe-immutability.ts @taizhenC
 /scripts/check-recipe-registry.ts @taizhenC
+/scripts/check-recipe-registry-v2.ts @taizhenC
 /scripts/trusted/ @taizhenC
 /scripts/recipe-evidence.ts @taizhenC
 /scripts/check-prompt-releases.ts @taizhenC

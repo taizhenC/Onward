@@ -42,6 +42,7 @@ jobs:
       - run: npm run check-prompt-releases
       - run: node scripts/trusted/recipe-promotion-attestor.mjs self-test
       - run: npm run check-recipe-registry
+      - run: npm run check-recipe-registry-v2
       - run: npm run check-recipe-deployment
       - run: npm run check-recipe-failure-boundary
       - run: npm run check-figure

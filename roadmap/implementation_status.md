@@ -768,7 +768,7 @@ and ownership gaps were closed.
 |---|---|
 | `npm run check-story-quality-benchmark` | Pass; 74 adversarial assertions, including a 150-session-per-arm protected release fixture |
 | `npm run check-story-quality-immutability-self-test` | Pass; append-only, private-path, regular-file, path, policy, and protocol cases |
-| `npm run check-story-quality-immutability -- <PR-base>` | Required in pull-request CI; the final branch is rechecked against its stacked base after documentation is committed |
+| `npm run check-story-quality-immutability -- c720b8e` | Pass; final committed branch diff is append-only against the stacked PR base |
 | `npm run lint` | Pass; zero warnings |
 | `npm run typecheck` | Pass |
 | All other commands in `CI / verify` before build | Pass |

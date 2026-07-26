@@ -79,10 +79,24 @@ flowchart LR
 
 ### Privacy and safety
 
-- Raw disclosure, derived copy, persisted story, feedback, and event retention are not modeled as explicit data classes in code.
-- The planned taint wrappers and string-hostile trace schema are documented but not implemented.
+- A closed, versioned code registry now classifies raw disclosure, request-only
+  provider output, validated owner-story content, feedback, operational
+  evidence, shared editorial records, and curated references. Every current
+  application-owned table and external AI exchange must appear in that registry.
+- Reader-derived provider outputs cross an opaque, consumer-allowlisted
+  boundary. The shared transport adapter drops raw transport error causes;
+  each reviewed caller discards non-2xx response bodies before emitting a
+  closed error. Curated document embeddings are instead restricted to the
+  catalog seeder and catalog-vector sink. Owner-visible prose responses are
+  marked `no-store`.
+- Migration `0021` records honest current-or-legacy retention labels beside
+  durable session and artifact rows without changing content-addressed
+  StoryArtifact JSON.
 - Safety regression, reviewed market resource configuration, and operational incident controls are missing.
-- Owner-scoped story and account deletion now exist through migrations `0018` and `0019`; the complete retention/privacy surface and real deployment proof remain absent.
+- Owner-scoped story and account deletion now exist through migrations `0018`
+  and `0019`. Durable save-state semantics, real database exercises,
+  backup/restore behavior, provider settings, and legal/market review remain
+  release gates.
 
 ## Target architecture
 
@@ -622,19 +636,68 @@ retention, and atomic idempotency.
 
 ## P0-14 — [Feature] Data model and retention classes
 
-### Proposed tables
+### As-built derived-output boundary
+
+The code-owned contract is `derived-output-retention-v1-2026-07`. It defines
+seven non-overlapping classes:
+
+- `request_ephemeral`: provider responses, query embeddings, and other Working
+  Material; request memory only;
+- `recovery_context`: the root Disclosure, story limits, clarification, and
+  context-bound recovery state; cleanup-eligible at the fixed 60-day deadline
+  and physically cleared by the next daily job;
+- `owned_story`: validated story wording, rationale, provenance, identity, age,
+  and reading state; guest lifetime or permanent owner lifecycle;
+- `bounded_feedback`: the closed verdict and approved reason; cleanup-eligible
+  at 90 days and physically deleted by its scheduled job;
+- `bounded_operational`: exact identifiers, enums, counts, and time buckets;
+  cleanup-eligible by 30 days, with stricter per-table horizons where defined,
+  and physically deleted by scheduled jobs;
+- `shared_editorial`: irreversibly de-linked curated-content concerns under the
+  editorial policy; and
+- `curated_reference`: historical content, evidence, recipes, and catalog
+  vectors that are not reader-derived.
+
+The registry names every allowed sink for 18 current surfaces, including the
+submitted age, all 21 application-owned tables, all 20 `sessions` fields, all
+15 `story_artifacts` fields, and all five current Cerebras/Gemini exchanges.
+Reader-derived provider values are opaque until a named, AST-enumerated literal
+consumer in its reviewed reducer/validator unwraps them. Curated document
+embeddings remain bare catalog vectors, but their caller and sink are separately
+enumerated and restricted. Each exchange accepts only an opaque request-body
+token minted for that exact exchange and enforces its fixed provider, route,
+headers, request options, and JSON schema at runtime.
+Opening copy remains a request-only candidate until complete
+artifact validation; validated hybrid output is likewise promoted from
+request-only Working Material to an Owner Story only after validation.
+Migration `0021` adds immutable relational labels to `sessions` and
+`story_artifacts`; rows created before the migration remain readable with the
+honest `legacy-pre-derived-output-retention-v0` label, while INSERT guards reject
+legacy or wrong-class labels on new rows. Its session-first access-exclusive
+locks use a ten-second lock timeout, and a service-only schema-health RPC checks
+the exact live `pg_attribute` field inventory plus the SQL-mirrored class map,
+current defaults, validated constraints, exact triggers and helper bodies,
+stored labels, and grants.
+StoryArtifact stays at v5 because lifecycle metadata must not rewrite content
+hashes or replay history.
+
+This boundary governs Onward's application code. It does not prove Cerebras,
+Gemini, Vercel, Supabase backup/PITR, email, proxy, or APM retention settings.
+Those remain separate external launch reviews.
+
+### Current and proposed tables
 
 | Table | Contains | Sensitive class | Retention |
 |---|---|---|---|
 | `story_specs` | Versioned editorial specifications | Curated, non-user data | Indefinite with version history |
 | `fact_atoms` / `source_records` | Claim-level evidence | Curated, non-user data | Indefinite with corrections |
-| `story_artifacts` | Validated personalized/canonical output | Sensitive derived for personalized zones | Guest TTL; saved until user deletion under explicit consent, or de-personalize on policy expiry |
-| `sessions` | Ownership, match, raw disclosure, progress | Raw sensitive + safe identifiers | Guest TTL; raw disclosure nulled on stated schedule |
-| `story_feedback` | Rating and bounded reason enums; optional free text separately | Enums may be sensitive-derived; free text is raw sensitive | Short documented retention; user-deletable |
-| `product_events` | Closed non-semantic events | Safe operational | Short operational retention |
-| `telemetry_event_daily_rollups` | UTC day, event, one closed marginal dimension, count | Identifier-free aggregate candidate | Maximum 30 UTC calendar days; no caller grant pending dashboard privacy review |
-| `match_rate_limit_decisions` | Occurrence ID plus closed allow/deny result; no request/user/IP key | Safe unlinkable operational | Two days |
-| `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Short operational retention |
+| `story_artifacts` | Validated personalized/canonical output plus relational `owned_story`/policy labels | Sensitive derived for personalized zones | Guest TTL; permanent owner lifecycle until story/account deletion |
+| `sessions` | Ownership, match, raw disclosure, progress plus separate story/context labels | Mixed `owned_story` and `recovery_context` | Guest TTL; raw disclosure/context becomes cleanup-eligible at its fixed deadline and is nulled by the next daily job; owner-story fields follow owner deletion |
+| `story_feedback` | Rating and bounded reason enums; no free-text field | Closed derived feedback | Cleanup-eligible at 90 days and physically removed by scheduled cleanup; owner-deletable sooner |
+| `product_events` | Closed non-semantic events | Safe operational | Cleanup-eligible by 30 days and physically removed by scheduled cleanup |
+| `telemetry_event_daily_rollups` | UTC day, event, one closed marginal dimension, count | Identifier-free aggregate candidate | Cleanup-eligible by 30 days and physically removed by daily cleanup; no caller grant pending dashboard privacy review |
+| `match_rate_limit_decisions` | Occurrence ID plus closed allow/deny result; no request/user/IP key | Safe unlinkable operational | Cleanup-eligible at two days and physically removed by scheduled cleanup |
+| `generation_attempts` | Recipe, latency, validator/fallback codes | Safe operational only | Cleanup-eligible by 14 days and physically removed by scheduled cleanup |
 | `historical_concern_reports` | StorySpec/fact ID and bounded issue reason | Curated identifiers | Current: no automatic TTL; define a bounded resolved-report audit period or explicitly approve indefinite editorial retention before launch |
 | `carry_forward_cards` | User-selected fact/line plus optional user-authored sentence | Raw sensitive user content | Saved until user deletion under explicit consent |
 | `user_story_preferences` | Opt-in length, distance, boundaries, and prior stage IDs | Sensitive preferences | Until consent withdrawal/account deletion |
@@ -655,16 +718,23 @@ retention/non-restoration guarantee proving deleted rows cannot return to the
 active service. Provider logs and already-processed model/email requests remain
 outside the application transaction and require their own contractual review.
 
-### Retention decision required before launch
+### Save-state decision still required before launch
 
-“Save this story” must have one explicit meaning. The recommended product contract is:
+The product meaning is now explicit in the domain language, save UI, privacy
+guide, and code registry:
 
 - Guest: session, artifact, and derived copy are deleted after the guest inactivity TTL.
 - Saved account: the validated story artifact remains until the user deletes it; raw intake is still deleted on the shorter disclosure schedule.
 - The save UI explicitly explains that personalized story wording may remain because it is the saved item.
-- If the team does not want to retain derived sensitive prose, the saved artifact must de-personalize after the disclosure TTL and fall back to canonical copy. The product must not promise permanence while silently producing a broken bridge.
 
-This decision requires product/privacy review, but the schema must support it with `retention_class`, `saved_at`, `personalized_copy_expires_at`, and cascade-tested deletion.
+The schema now supports immutable retention-class and policy labels, but it
+still lacks a durable `saved_at` transition and a transactionally captured save
+decision. The current account-upgrade flow is not sufficient evidence by
+itself. Implement that state, or formally adopt and test an equivalent durable
+account-lifecycle signal, then prove the cascades and scheduled jobs against
+real Postgres. A future de-personalization policy would require a new explicit
+policy version and migration; it must never silently mutate an immutable
+artifact.
 
 ## P0-15 — [Refactor] Module boundaries
 

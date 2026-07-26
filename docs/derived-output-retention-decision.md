@@ -60,26 +60,44 @@ artifact.
 
 Use A and B together, behind one code-owned retention registry:
 
-- Provider and query-embedding boundaries return opaque classified outputs.
-  Their values live in module-private working memory and can be consumed only
-  by named literal reducers, validators, or scorers.
+- Reader-derived Cerebras and query-embedding boundaries return opaque
+  classified outputs. Their values live in module-private working memory and
+  can be consumed only by named, AST-enumerated literal reducers, validators,
+  or scorers. Curated document embeddings remain bare catalog vectors, but
+  their caller and sink are separately allowlisted. Opening copy remains
+  request-only until complete artifact validation promotes it as part of the
+  Owner Story.
 - Every external provider exchange goes through one adapter and names a
-  registered request/output policy. Raw transport errors are discarded there.
+  registered request/output policy. The adapter owns the origin and path and
+  accepts only an opaque exchange-bound request-body token plus the exact
+  headers and options for that exchange. The five reviewed builders enforce the
+  registered JSON shapes, including the prompt-defined response format. The
+  adapter discards raw transport error causes; each reviewed caller discards a
+  non-2xx response body before emitting its closed error.
 - Validated generated story content uses the `owned_story` class. Recovery
   Context uses `recovery_context`. Closed feedback, operational, editorial, and
   curated stores use their own non-overlapping classes.
 - Sessions and story artifacts carry relational policy/class labels outside
   StoryArtifact JSON. New writes receive the current version. Existing rows are
   labeled as legacy classifications rather than being represented as having
-  recorded a policy that did not yet exist.
-- CI exhaustively compares the retention registry with every application-owned
-  table and every production provider exchange. Unknown kinds, sinks, classes,
-  consumers, policy versions, and direct provider fetches fail closed.
+  recorded a policy that did not yet exist. INSERT guards reject explicit
+  legacy or wrong-class claims on later rows.
+- CI compares the retention registry with all 21 current application-owned
+  tables, all five current provider exchanges, their reviewed transport owners,
+  every current direct production JavaScript/TypeScript fetch path and forbidden
+  alternate transport reference, and the exact 35-column inventory of the two
+  relations that can hold Disclosure or Owner Story data.
+  The live service-only health boundary independently compares those 35 fields
+  with `pg_attribute`. Unknown kinds, sinks, classes, consumers, policy
+  versions, raw-provider imports, fields, and egress paths fail closed until
+  the registry/checker is deliberately updated.
 
-The current product posture remains explicit: Recovery Context expires after
-its fixed deadline; validated generated wording in an Owner Story follows the
-owner lifecycle. A guest's owner lifecycle is temporary. A permanent account's
-story remains until story or account deletion.
+The current product posture remains explicit: Recovery Context becomes
+cleanup-eligible at its fixed deadline and is physically cleared by the next
+daily cleanup; validated generated wording in an Owner Story follows the owner
+lifecycle. A guest's owner lifecycle is temporary. A permanent account's story
+remains until story or account deletion. The deadline and policy-label columns
+are durable control metadata, not retained Disclosure.
 
 ## Consequences
 
@@ -88,7 +106,9 @@ story remains until story or account deletion.
 - Provider call sites gain classify/consume plumbing, but the provider
   implementation remains invisible outside `lib/`.
 - The relational envelope can be applied before the application deploy because
-  existing RPCs receive safe database defaults.
+  existing RPCs receive safe database defaults. Operators must still pause and
+  drain writers: the whole-file migration takes bounded, session-first
+  access-exclusive locks.
 - Existing artifacts remain readable under an explicit legacy policy version.
 - The contract does not govern Cerebras, Gemini, hosting, email, or backup/PITR
   retention after data leaves Onward's application boundary. Those remain

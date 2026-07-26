@@ -45,6 +45,7 @@ async function main(): Promise<void> {
   checkClosedRegistry();
   checkOpaqueOutputs();
   checkPersistenceCoverage();
+  checkRelationalEnvelope();
   checkStaticProviderCoverage();
   await checkProviderTransportBoundary();
 
@@ -59,6 +60,7 @@ async function main(): Promise<void> {
   console.log(
     `PASS ${Object.keys(PERSISTENCE_RETENTION_REGISTRY).length} application-owned tables are exhaustively classified`,
   );
+  console.log("PASS current and legacy durable labels are relational and immutable");
   console.log(
     `PASS ${Object.keys(DERIVED_OUTPUT_POLICIES).length} opaque output kinds reject forged tokens and forbidden consumers`,
   );
@@ -358,6 +360,114 @@ function checkPersistenceCoverage(): void {
   }
 }
 
+function checkRelationalEnvelope(): void {
+  const migrationPath = resolve(
+    MIGRATIONS,
+    "0021_derived_output_retention.sql",
+  );
+  const migration = readFileSync(migrationPath, "utf8").toLowerCase();
+  const requiredSql = [
+    "alter table public.story_artifacts",
+    "add column retention_policy_version text not null",
+    "add column retention_class text not null",
+    "alter table public.sessions",
+    "add column story_retention_class text not null",
+    "add column context_retention_class text not null",
+    "legacy-pre-derived-output-retention-v0",
+    "derived-output-retention-v1-2026-07",
+    "retention_class = 'owned_story'",
+    "story_retention_class = 'owned_story'",
+    "context_retention_class = 'recovery_context'",
+    "sessions_retention_contract_immutable",
+    "session retention contract is immutable",
+  ];
+  for (const fragment of requiredSql) {
+    assert(
+      migration.includes(fragment),
+      `migration 0021 is missing ${fragment}`,
+    );
+  }
+  const legacyDefault = migration.indexOf(
+    "default 'legacy-pre-derived-output-retention-v0'",
+  );
+  const currentDefault = migration.indexOf(
+    "set default 'derived-output-retention-v1-2026-07'",
+  );
+  assert(
+    legacyDefault >= 0 &&
+      currentDefault > legacyDefault,
+    "existing rows must receive an honest legacy label before new-write defaults switch current",
+  );
+  assert(
+    !/\bupdate\s+public\.story_artifacts\b/.test(migration),
+    "retention migration must not rewrite immutable artifact rows or JSON",
+  );
+  assert(
+    !/story-artifact-v6|jsonb_set|\bartifact\s*=/.test(migration),
+    "retention metadata must remain outside content-addressed StoryArtifact JSON",
+  );
+
+  const artifactStore = readFileSync(
+    resolve(LIB, "story-artifacts.ts"),
+    "utf8",
+  );
+  assert(
+    artifactStore.includes(
+      '.select("artifact, retention_class, retention_policy_version")',
+    ) &&
+      artifactStore.includes("parsePersistedRetentionLabel("),
+    "durable artifacts must fail reads with unknown retention labels",
+  );
+  const sessionStore = readFileSync(
+    resolve(LIB, "session-store-supabase.ts"),
+    "utf8",
+  );
+  for (const field of [
+    "retention_policy_version",
+    "story_retention_class",
+    "context_retention_class",
+  ]) {
+    assert(
+      sessionStore.includes(field),
+      `Supabase session reads do not validate ${field}`,
+    );
+  }
+  assert.equal(
+    countOccurrences(sessionStore, "parsePersistedRetentionLabel("),
+    2,
+    "a mixed session row must validate both story and recovery-context labels",
+  );
+
+  const memoryArtifactStore = readFileSync(
+    resolve(LIB, "story-artifact-store-memory.ts"),
+    "utf8",
+  );
+  assert(
+    memoryArtifactStore.includes("CURRENT_ARTIFACT_RETENTION") &&
+      memoryArtifactStore.includes("LEGACY_ARTIFACT_RETENTION") &&
+      memoryArtifactStore.includes("parsePersistedRetentionLabel("),
+    "memory artifacts must stamp new writes and classify pre-contract hot-reload rows",
+  );
+
+  const requiredSinkOwners: Readonly<Record<string, readonly string[]>> = {
+    "story.artifact": [
+      "lib/session-store-memory.ts",
+      "lib/session-store-supabase.ts",
+      "lib/story-artifact-store-memory.ts",
+      "lib/alternate-story-store-supabase.ts",
+    ],
+  };
+  for (const [surface, owners] of Object.entries(requiredSinkOwners)) {
+    for (const owner of owners) {
+      const source = readFileSync(resolve(ROOT, owner), "utf8");
+      assert(
+        source.includes(`"${surface}"`),
+        `${owner} does not name the ${surface} retention surface`,
+      );
+    }
+  }
+}
+
 function checkStaticProviderCoverage(): void {
   const libSources = sourceFiles(LIB).map((path) => ({
     path,
@@ -545,6 +655,10 @@ function deepFrozen(value: unknown): boolean {
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function countOccurrences(value: string, needle: string): number {
+  return value.split(needle).length - 1;
 }
 
 main().catch((error: unknown) => {

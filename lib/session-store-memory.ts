@@ -44,6 +44,7 @@ import {
 } from "./telemetry-producers";
 import { deriveStoryPassageLayout } from "./story-progress";
 import type { ProductEventCapture, StoryRole } from "./telemetry-types";
+import { assertRetentionSink } from "./derived-output-retention";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -81,6 +82,7 @@ function allocateSessionId(): string {
 }
 
 async function createSession(input: CreateSessionInput): Promise<string> {
+  assertNewSessionRetentionContract();
   pruneExpiredSessions();
   const existingBinding = input.telemetryFlowId
     ? getMemoryTelemetryFlowBindingByFlow(input.telemetryFlowId)
@@ -202,6 +204,7 @@ export function createMemoryAlternateSession(input: {
   sourceArtifactId: string;
   artifact: StoryArtifact;
 }): string {
+  assertOwnedStoryRetentionContract();
   pruneExpiredSessions();
   const source = sessions.get(input.sourceSessionId);
   if (!source || source.userId !== input.userId) {
@@ -324,6 +327,18 @@ function expireSensitiveContext(session: Session, now = Date.now()): void {
     session.feeling = null;
     session.storyRequestContext = null;
   }
+}
+
+function assertNewSessionRetentionContract(): void {
+  assertRetentionSink("input.raw_disclosure", "root_session");
+  assertRetentionSink("input.story_request_context", "root_session");
+  assertOwnedStoryRetentionContract();
+}
+
+function assertOwnedStoryRetentionContract(): void {
+  assertRetentionSink("match.selection", "owned_story_store");
+  assertRetentionSink("story.opening_copy", "owned_story_store");
+  assertRetentionSink("story.artifact", "owned_story_store");
 }
 
 // Backfill opening copy for sessions created before a field existed (first eyebrow, then

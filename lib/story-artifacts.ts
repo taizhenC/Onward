@@ -7,6 +7,13 @@ import {
 } from "./story-artifact-store-memory";
 import type { StoryArtifact } from "./story-artifact-types";
 import { validateStoredStoryArtifact } from "./story-artifact";
+import { parsePersistedRetentionLabel } from "./derived-output-retention";
+
+type StoredArtifactRow = {
+  artifact: unknown;
+  retention_class: unknown;
+  retention_policy_version: unknown;
+};
 
 export async function getOwnedStoryArtifact(
   artifactId: string,
@@ -23,14 +30,22 @@ export async function getOwnedStoryArtifact(
 
   const result = await getSupabase()
     .from("story_artifacts")
-    .select("artifact")
+    .select("artifact, retention_class, retention_policy_version")
     .eq("artifact_id", artifactId)
     .eq("user_id", userId)
     .eq("session_id", sessionId)
     .maybeSingle();
   if (result.error) throw new Error(`load story artifact failed: ${result.error.message}`);
   if (!result.data) return null;
-  const artifact = validateStoredStoryArtifact(result.data.artifact);
+  const row = result.data as StoredArtifactRow;
+  parsePersistedRetentionLabel(
+    {
+      policyVersion: row.retention_policy_version,
+      retentionClass: row.retention_class,
+    },
+    "owned_story",
+  );
+  const artifact = validateStoredStoryArtifact(row.artifact);
   if (!artifact) throw new Error("stored StoryArtifact failed integrity validation");
   return artifact;
 }

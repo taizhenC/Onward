@@ -128,21 +128,32 @@ async function checkPublishedStorySpecs(): Promise<Step> {
 }
 
 async function checkArtifactSchema(): Promise<Step> {
-  const name = "StoryArtifact schema installed";
+  const name = "StoryArtifact and retention schema installed";
   try {
     const artifacts = await tableCount("story_artifacts");
+    const artifactLabels = await getSupabase()
+      .from("story_artifacts")
+      .select("retention_policy_version,retention_class")
+      .limit(1);
+    if (artifactLabels.error) throw new Error(artifactLabels.error.message);
     const sessions = await getSupabase()
       .from("sessions")
-      .select("story_artifact_id")
+      .select(
+        "story_artifact_id,retention_policy_version,story_retention_class,context_retention_class",
+      )
       .limit(1);
     if (sessions.error) throw new Error(sessions.error.message);
     return {
       name,
       ok: true,
-      detail: `story_artifacts reachable (${artifacts} row(s)); session pointer present`,
+      detail: `story_artifacts reachable (${artifacts} row(s)); session pointer and explicit retention labels present`,
     };
   } catch (error) {
-    return { name, ok: false, detail: `${message(error)} — apply migration 0005` };
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} — apply migrations 0005 and 0021`,
+    };
   }
 }
 

@@ -54,6 +54,7 @@ jobs:
       - run: npm run check-figure
       - run: npm run check-story-spec
       - run: npm run check-story-artifact
+      - run: npm run check-derived-output-retention
       - run: npm run check-story-quality-benchmark
       - run: npm run check-story-quality-immutability-self-test
       - run: npm run check-source-transparency

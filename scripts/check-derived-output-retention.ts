@@ -456,6 +456,11 @@ function checkRelationalEnvelope(): void {
       "lib/story-artifact-store-memory.ts",
       "lib/alternate-story-store-supabase.ts",
     ],
+    "telemetry.product_event": ["lib/telemetry.ts"],
+    "telemetry.generation_attempt": ["lib/telemetry.ts"],
+    "feedback.closed_response": ["lib/resonance-feedback.ts"],
+    "editorial.historical_concern": ["lib/historical-concerns.ts"],
+    "embedding.curated_vector": ["scripts/seed-embeddings.ts"],
   };
   for (const [surface, owners] of Object.entries(requiredSinkOwners)) {
     for (const owner of owners) {

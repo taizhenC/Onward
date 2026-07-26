@@ -143,10 +143,36 @@ async function checkArtifactSchema(): Promise<Step> {
       )
       .limit(1);
     if (sessions.error) throw new Error(sessions.error.message);
+    const health = await getSupabase().rpc(
+      "derived_output_retention_schema_health_v1",
+    );
+    if (health.error) throw new Error(health.error.message);
+    const row = Array.isArray(health.data) ? health.data[0] : null;
+    const expectedKeys = [
+      "boundary_granted",
+      "columns_classified",
+      "constraints_valid",
+      "current_defaults",
+      "helper_bodies_valid",
+      "labels_valid",
+      "ok",
+      "trigger_enabled",
+    ].sort();
+    const healthOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") === expectedKeys.join(",") &&
+      Object.values(row).every((value) => typeof value === "boolean") &&
+      "ok" in row &&
+      row.ok === true;
+    if (!healthOk) {
+      throw new Error("derived-output retention schema health is unsafe");
+    }
     return {
       name,
       ok: true,
-      detail: `story_artifacts reachable (${artifacts} row(s)); session pointer and explicit retention labels present`,
+      detail: `story_artifacts reachable (${artifacts} row(s)); columns, current defaults, validated constraints, exact trigger helpers, labels, and grants are safe`,
     };
   } catch (error) {
     return {

@@ -73,12 +73,12 @@ export async function pickFigure(
 // it degrades to a neutral fallback rather than blocking the story.
 export async function writeOpeningCopy(
   input: OpeningCopyInput,
-): Promise<DerivedOutput<"opening_copy">> {
+): Promise<DerivedOutput<"opening_copy_candidate">> {
   const copy =
     resolveProvider() === "real"
       ? await writeOpeningCopyReal(input)
       : await writeOpeningCopyStub(input);
-  return classifyDerivedOutput("opening_copy", copy);
+  return classifyDerivedOutput("opening_copy_candidate", copy);
 }
 
 export async function requestHybridPlan(

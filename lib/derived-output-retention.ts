@@ -1,5 +1,10 @@
 import "server-only";
-import type { HybridCompositionPlan } from "./hybrid-composition";
+import {
+  HYBRID_BRIDGE_TEMPLATE_IDS,
+  HYBRID_PLAN_SCHEMA_VERSION,
+  HYBRID_TRANSITION_TEMPLATE_IDS,
+  type HybridCompositionPlan,
+} from "./hybrid-composition";
 import type { OpeningCopy, Pick } from "./types";
 
 export const DERIVED_OUTPUT_RETENTION_POLICY_VERSION =
@@ -32,12 +37,12 @@ export const RETENTION_SINKS = [
 export type RetentionSink = (typeof RETENTION_SINKS)[number];
 
 type RetentionClassPolicy = Readonly<{
-  maximumLifetime:
-    | "request"
+  expiryHorizon:
+    | "request_end"
     | "owner_lifecycle"
-    | "60_days"
-    | "90_days"
-    | "30_days"
+    | "60_day_eligibility"
+    | "90_day_eligibility"
+    | "30_day_eligibility"
     | "editorial_policy"
     | "catalog_history";
   ownerDeletion:
@@ -50,43 +55,43 @@ type RetentionClassPolicy = Readonly<{
 
 export const RETENTION_CLASS_POLICIES = deepFreeze({
   request_ephemeral: {
-    maximumLifetime: "request",
+    expiryHorizon: "request_end",
     ownerDeletion: "not_applicable",
     contentRule:
       "Working Material may be reduced or validated in memory but never persisted, cached, logged, or returned.",
   },
   recovery_context: {
-    maximumLifetime: "60_days",
+    expiryHorizon: "60_day_eligibility",
     ownerDeletion: "required",
     contentRule:
-      "Disclosure, story limits, clarification, and context-bound capabilities stay root-only and expire no later than the original context deadline.",
+      "Disclosure, story limits, clarification, and context-bound capabilities stay root-only, become cleanup-eligible at the original 60-day deadline, and are physically cleared by the next daily cleanup.",
   },
   owned_story: {
-    maximumLifetime: "owner_lifecycle",
+    expiryHorizon: "owner_lifecycle",
     ownerDeletion: "required",
     contentRule:
       "Only validated owner-visible story content, story identity, age, provenance, and reading state may use this class.",
   },
   bounded_feedback: {
-    maximumLifetime: "90_days",
+    expiryHorizon: "90_day_eligibility",
     ownerDeletion: "required",
     contentRule:
-      "Only the closed feedback verdict and one approved reason may be retained; free text is not part of this class.",
+      "Only the closed feedback verdict and one approved reason may be retained; free text is not part of this class, and eligible rows are physically cleared by scheduled cleanup.",
   },
   bounded_operational: {
-    maximumLifetime: "30_days",
+    expiryHorizon: "30_day_eligibility",
     ownerDeletion: "when_owner_linked",
     contentRule:
-      "Only exact identifiers, enums, counts, and time buckets may be retained; no disclosure, prose, provider body, vector, or free-form error.",
+      "Only exact identifiers, enums, counts, and time buckets may be retained; no disclosure, prose, provider body, vector, or free-form error, and each table's eligible rows are physically cleared by scheduled cleanup.",
   },
   shared_editorial: {
-    maximumLifetime: "editorial_policy",
+    expiryHorizon: "editorial_policy",
     ownerDeletion: "de_linked",
     contentRule:
       "Only curated content identifiers and closed editorial states may remain after the report is irreversibly de-linked from its reader and story.",
   },
   curated_reference: {
-    maximumLifetime: "catalog_history",
+    expiryHorizon: "catalog_history",
     ownerDeletion: "not_applicable",
     contentRule:
       "Only editorial, evidence, release, and catalog-derived material that is not derived from a reader may use this class.",
@@ -102,6 +107,14 @@ export const DERIVED_OUTPUT_SURFACES = deepFreeze({
   "input.raw_disclosure": {
     retentionClass: "recovery_context",
     allowedSinks: ["request_memory", "external_provider", "root_session"],
+  },
+  "input.age": {
+    retentionClass: "owned_story",
+    allowedSinks: [
+      "request_memory",
+      "external_provider",
+      "owned_story_store",
+    ],
   },
   "input.story_request_context": {
     retentionClass: "recovery_context",
@@ -231,30 +244,52 @@ export function parsePersistedRetentionLabel(
 
 export const EXTERNAL_PROVIDER_EXCHANGES = deepFreeze({
   "cerebras.rerank": {
-    requestSurface: "input.raw_disclosure",
+    provider: "cerebras",
+    requestSurfaces: [
+      "input.raw_disclosure",
+      "input.age",
+      "content.curated_reference",
+    ],
     responseSurface: "provider.rerank_response",
+    endpointPathSuffix: "/chat/completions",
   },
   "cerebras.opening_copy": {
-    requestSurface: "analysis.resonance_brief",
+    provider: "cerebras",
+    requestSurfaces: [
+      "analysis.resonance_brief",
+      "content.curated_reference",
+    ],
     responseSurface: "provider.opening_copy_response",
+    endpointPathSuffix: "/chat/completions",
   },
   "cerebras.hybrid_plan": {
-    requestSurface: "analysis.resonance_brief",
+    provider: "cerebras",
+    requestSurfaces: [
+      "analysis.resonance_brief",
+      "content.curated_reference",
+    ],
     responseSurface: "provider.hybrid_plan_response",
+    endpointPathSuffix: "/chat/completions",
   },
   "gemini.query_embedding": {
-    requestSurface: "input.raw_disclosure",
+    provider: "gemini",
+    requestSurfaces: ["input.raw_disclosure"],
     responseSurface: "embedding.query_vector",
+    endpointPathSuffix: ":embedContent",
   },
   "gemini.document_embedding": {
-    requestSurface: "content.curated_reference",
+    provider: "gemini",
+    requestSurfaces: ["content.curated_reference"],
     responseSurface: "embedding.curated_vector",
+    endpointPathSuffix: ":batchEmbedContents",
   },
 } as const satisfies Record<
   string,
   Readonly<{
-    requestSurface: DerivedOutputSurface;
+    provider: "cerebras" | "gemini";
+    requestSurfaces: readonly DerivedOutputSurface[];
     responseSurface: DerivedOutputSurface;
+    endpointPathSuffix: string;
   }>
 >);
 
@@ -284,13 +319,62 @@ export const PERSISTENCE_RETENTION_REGISTRY = deepFreeze({
   "public.product_event_outbox": ["bounded_operational"],
   "public.match_rate_limit_decisions": ["bounded_operational"],
   "public.telemetry_event_daily_rollups": ["bounded_operational"],
-  "public.telemetry_rollup_dispatch_control": ["bounded_operational"],
+  "public.telemetry_rollup_dispatch_control": ["curated_reference"],
   "public.story_recipe_registry": ["curated_reference"],
 } as const satisfies Record<string, readonly RetentionClass[]>);
 
+// Exact inventory for the two durable relations that can contain a Disclosure
+// or provider-derived Owner Story. CI derives their columns from every
+// migration; adding a field without choosing its lifecycle fails. The live
+// schema-health RPC independently compares pg_attribute with the same set.
+export const RETENTION_BEARING_COLUMN_REGISTRY = deepFreeze({
+  "public.sessions": {
+    session_id: "owned_story",
+    user_id: "owned_story",
+    figure_key: "owned_story",
+    stage_id: "owned_story",
+    story_artifact_id: "owned_story",
+    framing: "owned_story",
+    opening_copy: "owned_story",
+    age: "owned_story",
+    feeling: "recovery_context",
+    story_request_context: "recovery_context",
+    disclosure_expires_at: "owned_story",
+    alternate_of_session_id: "owned_story",
+    match_recipe: "owned_story",
+    next_beat_index: "owned_story",
+    next_chunk_index: "owned_story",
+    created_at: "owned_story",
+    updated_at: "owned_story",
+    retention_policy_version: "owned_story",
+    story_retention_class: "owned_story",
+    context_retention_class: "owned_story",
+  },
+  "public.story_artifacts": {
+    artifact_id: "owned_story",
+    session_id: "owned_story",
+    user_id: "owned_story",
+    story_spec_id: "owned_story",
+    story_spec_version: "owned_story",
+    story_spec_schema_version: "owned_story",
+    figure_key: "owned_story",
+    stage_id: "owned_story",
+    schema_version: "owned_story",
+    composition_mode: "owned_story",
+    content_hash: "owned_story",
+    artifact: "owned_story",
+    created_at: "owned_story",
+    retention_policy_version: "owned_story",
+    retention_class: "owned_story",
+  },
+} as const satisfies Record<
+  "public.sessions" | "public.story_artifacts",
+  Readonly<Record<string, RetentionClass>>
+>);
+
 export type DerivedOutputValues = {
   rerank_response: Pick;
-  opening_copy: OpeningCopy;
+  opening_copy_candidate: OpeningCopy;
   composition_plan_candidate: unknown;
   validated_composition_plan: HybridCompositionPlan;
   retrieval_query_embedding: number[];
@@ -326,8 +410,8 @@ export const DERIVED_OUTPUT_POLICIES = deepFreeze({
     shape: "rerank_pick",
     allowedConsumers: ["match_reducer", "provider_health_check"],
   },
-  opening_copy: {
-    retentionClass: "owned_story",
+  opening_copy_candidate: {
+    retentionClass: "request_ephemeral",
     shape: "opening_copy",
     allowedConsumers: ["story_validator", "provider_health_check"],
   },
@@ -435,7 +519,7 @@ function validDerivedOutputValue<Kind extends DerivedOutputKind>(
         typeof value.gap === "string" &&
         ["low", "medium", "high"].includes(String(value.confidence))
       );
-    case "opening_copy":
+    case "opening_copy_candidate":
       return (
         isExactRecord(value, "eyebrow,prefaceLines") &&
         typeof value.eyebrow === "string" &&
@@ -450,10 +534,24 @@ function validDerivedOutputValue<Kind extends DerivedOutputKind>(
           value,
           "bridgeTemplateId,schemaVersion,transitionRole,transitionTemplateId",
         ) &&
-        typeof value.schemaVersion === "string" &&
-        typeof value.transitionRole === "string" &&
-        typeof value.transitionTemplateId === "string" &&
-        typeof value.bridgeTemplateId === "string"
+        value.schemaVersion === HYBRID_PLAN_SCHEMA_VERSION &&
+        [
+          "scene",
+          "dark_moment",
+          "response",
+          "struggle",
+          "turning_point",
+          "became",
+          "bridge",
+        ].includes(String(value.transitionRole)) &&
+        HYBRID_TRANSITION_TEMPLATE_IDS.includes(
+          value.transitionTemplateId as
+            (typeof HYBRID_TRANSITION_TEMPLATE_IDS)[number],
+        ) &&
+        HYBRID_BRIDGE_TEMPLATE_IDS.includes(
+          value.bridgeTemplateId as
+            (typeof HYBRID_BRIDGE_TEMPLATE_IDS)[number],
+        )
       );
     case "retrieval_query_embedding":
       return (

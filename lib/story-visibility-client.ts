@@ -3,6 +3,11 @@ import type { LatencyBucket } from "./telemetry-types";
 
 const MAX_VISIBILITY_DURATION_MS = 3_600_000;
 const FIRST_CONTENT_NAVIGATION_WINDOW_MS = 30_000;
+const VISIBILITY_PATHS: ReadonlySet<string> = new Set([
+  "/api/telemetry/first-content",
+  "/api/telemetry/passage-presented",
+  "/api/telemetry/source-opened",
+]);
 
 type PendingFirstContentTiming = {
   startedAt: number;
@@ -125,6 +130,7 @@ async function sendVisibility(
   path: string,
   body: Readonly<Record<string, string | number>>,
 ): Promise<void> {
+  if (!VISIBILITY_PATHS.has(path)) return;
   const request = () =>
     fetch(path, {
       method: "POST",

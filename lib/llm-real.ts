@@ -23,7 +23,6 @@ import {
 import {
   DEFAULT_PROSE_MODEL_ID,
   DEFAULT_PROSE_TIMEOUT_MS,
-  DEFAULT_LLM_BASE_URL,
   DEFAULT_RERANK_MODEL_ID,
   DEFAULT_RERANK_REASONING_EFFORT,
   DEFAULT_RERANK_TEMPERATURE,
@@ -41,7 +40,12 @@ import {
   buildHybridPlanUserPrompt,
   buildRerankUserPrompt,
 } from "./llm-prompts";
-import { fetchExternalProvider } from "./provider-exchange";
+import {
+  buildCerebrasHybridPlanRequestBody,
+  buildCerebrasOpeningCopyRequestBody,
+  buildCerebrasRerankRequestBody,
+  fetchExternalProvider,
+} from "./provider-exchange";
 
 // Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
@@ -55,14 +59,6 @@ import { fetchExternalProvider } from "./provider-exchange";
 // and the pinned infrastructure posture remain deployment configuration.
 // `npm run health` validates model / reasoning_effort / JSON mode at runtime.
 
-function baseUrl(): string {
-  const configured =
-    process.env.LLM_BASE_URL?.trim() ??
-    process.env.CEREBRAS_BASE_URL?.trim() ??
-    process.env.GROQ_BASE_URL?.trim();
-  if (!configured) return DEFAULT_LLM_BASE_URL;
-  return configured.replace(/\/+$/, "") || DEFAULT_LLM_BASE_URL;
-}
 function apiKey(): string | undefined {
   return [
     process.env.LLM_API_KEY,
@@ -186,17 +182,15 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
     input.candidates.map(toRerankCandidate),
   );
 
-  const body: Record<string, unknown> = {
+  const effort = reasoningEffort();
+  const body = buildCerebrasRerankRequestBody({
     model: model(),
     temperature: temperature(),
-    response_format: { type: RERANK_PROMPT_CONTRACT.responseFormat },
-    messages: [
-      { role: "system", content: RERANK_SYSTEM_PROMPT },
-      { role: "user", content: userPrompt },
-    ],
-  };
-  const effort = reasoningEffort();
-  if (effort) body.reasoning_effort = effort;
+    systemPrompt: RERANK_SYSTEM_PROMPT,
+    userPrompt,
+    responseFormat: RERANK_PROMPT_CONTRACT.responseFormat,
+    ...(effort ? { reasoningEffort: effort } : {}),
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs());
@@ -205,14 +199,14 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
   try {
     response = await fetchExternalProvider(
       "cerebras.rerank",
-      `${baseUrl()}/chat/completions`,
+      "/chat/completions",
       {
         method: "POST",
         headers: {
           "content-type": "application/json",
           authorization: `Bearer ${key}`,
         },
-        body: JSON.stringify(body),
+        body,
         signal: controller.signal,
       },
     );
@@ -310,14 +304,12 @@ async function generateEyebrowLine(
   const key = apiKey();
   if (!key) return null;
 
-  const body = {
+  const body = buildCerebrasOpeningCopyRequestBody({
     model: proseModel(),
     temperature: proseTemperature(),
-    messages: [
-      { role: "system", content: EYEBROW_SYSTEM_PROMPT },
-      { role: "user", content: buildEyebrowUserPrompt(surface) },
-    ],
-  };
+    systemPrompt: EYEBROW_SYSTEM_PROMPT,
+    userPrompt: buildEyebrowUserPrompt(surface),
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), proseTimeoutMs());
@@ -326,14 +318,14 @@ async function generateEyebrowLine(
   try {
     response = await fetchExternalProvider(
       "cerebras.opening_copy",
-      `${baseUrl()}/chat/completions`,
+      "/chat/completions",
       {
         method: "POST",
         headers: {
           "content-type": "application/json",
           authorization: `Bearer ${key}`,
         },
-        body: JSON.stringify(body),
+        body,
         signal: controller.signal,
       },
     );
@@ -369,20 +361,13 @@ export async function requestHybridPlanReal(
       "hybrid plan provider key is not configured",
     );
   }
-  const body = {
+  const body = buildCerebrasHybridPlanRequestBody({
     model: proseModel(),
     temperature: STORY_PROMPT_CONTRACT.hybridPlan.temperature,
-    response_format: {
-      type: STORY_PROMPT_CONTRACT.hybridPlan.responseFormat,
-    },
-    messages: [
-      { role: "system", content: HYBRID_PLAN_SYSTEM_PROMPT },
-      {
-        role: "user",
-        content: buildHybridPlanUserPrompt(input),
-      },
-    ],
-  };
+    systemPrompt: HYBRID_PLAN_SYSTEM_PROMPT,
+    userPrompt: buildHybridPlanUserPrompt(input),
+    responseFormat: STORY_PROMPT_CONTRACT.hybridPlan.responseFormat,
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), proseTimeoutMs());
@@ -390,14 +375,14 @@ export async function requestHybridPlanReal(
   try {
     response = await fetchExternalProvider(
       "cerebras.hybrid_plan",
-      `${baseUrl()}/chat/completions`,
+      "/chat/completions",
       {
         method: "POST",
         headers: {
           "content-type": "application/json",
           authorization: `Bearer ${key}`,
         },
-        body: JSON.stringify(body),
+        body,
         signal: controller.signal,
       },
     );

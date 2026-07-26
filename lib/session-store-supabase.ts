@@ -325,6 +325,7 @@ function rowToSession(row: SessionRow): Session {
 function assertNewSessionRetentionContract(): void {
   assertRetentionSink("input.raw_disclosure", "root_session");
   assertRetentionSink("input.story_request_context", "root_session");
+  assertRetentionSink("input.age", "owned_story_store");
   assertRetentionSink("match.selection", "owned_story_store");
   assertRetentionSink("story.opening_copy", "owned_story_store");
   assertRetentionSink("story.artifact", "owned_story_store");

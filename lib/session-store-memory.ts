@@ -336,6 +336,7 @@ function assertNewSessionRetentionContract(): void {
 }
 
 function assertOwnedStoryRetentionContract(): void {
+  assertRetentionSink("input.age", "owned_story_store");
   assertRetentionSink("match.selection", "owned_story_store");
   assertRetentionSink("story.opening_copy", "owned_story_store");
   assertRetentionSink("story.artifact", "owned_story_store");

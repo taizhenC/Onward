@@ -1,6 +1,5 @@
 import "server-only";
 import {
-  DEFAULT_EMBEDDING_BASE_URL,
   DEFAULT_EMBEDDING_DIM,
   DEFAULT_EMBEDDING_MAX_RETRIES,
   DEFAULT_EMBEDDING_MODEL,
@@ -9,7 +8,12 @@ import {
 } from "./embedding-recipe-constants";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 import type { ExternalProviderExchangeId } from "./derived-output-retention";
-import { fetchExternalProvider } from "./provider-exchange";
+import {
+  buildGeminiDocumentEmbeddingRequestBody,
+  buildGeminiQueryEmbeddingRequestBody,
+  fetchExternalProvider,
+  type ExternalProviderRequestBody,
+} from "./provider-exchange";
 
 // Real embedder: Gemini gemini-embedding-001 via the Generative Language REST API, called with
 // plain `fetch` (no SDK), mirroring lib/llm-real.ts. Asymmetric encoding is REQUIRED:
@@ -50,12 +54,6 @@ export class EmbeddingError extends Error {
   }
 }
 
-function baseUrl(): string {
-  const configured =
-    process.env.EMBEDDING_BASE_URL?.trim() ?? process.env.GEMINI_BASE_URL?.trim();
-  if (!configured) return DEFAULT_EMBEDDING_BASE_URL;
-  return configured.replace(/\/+$/, "") || DEFAULT_EMBEDDING_BASE_URL;
-}
 function apiKey(): string | undefined {
   return [process.env.GEMINI_API_KEY, process.env.EMBEDDING_API_KEY]
     .map((key) => key?.trim())
@@ -111,12 +109,11 @@ export async function embedQueryReal(text: string): Promise<number[]> {
   const json = (await postJson(
     "gemini.query_embedding",
     `models/${modelName()}:embedContent`,
-    {
-      model: `models/${modelName()}`,
-      content: { parts: [{ text }] },
-      taskType: "RETRIEVAL_QUERY",
+    buildGeminiQueryEmbeddingRequestBody({
+      model: modelName(),
+      text,
       outputDimensionality: geminiDim(),
-    },
+    }),
   )) as { embedding?: { values?: number[] } };
 
   return normalizeOrThrow(json.embedding?.values);
@@ -133,14 +130,11 @@ export async function embedDocumentsReal(texts: string[]): Promise<number[][]> {
     const json = (await postJson(
       "gemini.document_embedding",
       `models/${modelName()}:batchEmbedContents`,
-      {
-        requests: chunk.map((text) => ({
-          model: `models/${modelName()}`,
-          content: { parts: [{ text }] },
-          taskType: "RETRIEVAL_DOCUMENT",
-          outputDimensionality: geminiDim(),
-        })),
-      },
+      buildGeminiDocumentEmbeddingRequestBody({
+        model: modelName(),
+        texts: chunk,
+        outputDimensionality: geminiDim(),
+      }),
     )) as { embeddings?: Array<{ values?: number[] }> };
 
     const embeddings = json.embeddings ?? [];
@@ -158,7 +152,7 @@ export async function embedDocumentsReal(texts: string[]): Promise<number[][]> {
 async function postJson(
   exchangeId: ExternalProviderExchangeId,
   path: string,
-  body: unknown,
+  body: ExternalProviderRequestBody,
 ): Promise<unknown> {
   const key = apiKey();
   if (!key) throw new EmbeddingError("no_key", "GEMINI_API_KEY is not set.");
@@ -188,7 +182,7 @@ class EmbeddingHttpError extends EmbeddingError {
 async function postJsonOnce(
   exchangeId: ExternalProviderExchangeId,
   path: string,
-  body: unknown,
+  body: ExternalProviderRequestBody,
   key: string,
 ): Promise<unknown> {
   const controller = new AbortController();
@@ -198,11 +192,11 @@ async function postJsonOnce(
   try {
     response = await fetchExternalProvider(
       exchangeId,
-      `${baseUrl()}/${path}`,
+      `/${path}`,
       {
         method: "POST",
         headers: { "content-type": "application/json", "x-goog-api-key": key },
-        body: JSON.stringify(body),
+        body,
         signal: controller.signal,
       },
     );

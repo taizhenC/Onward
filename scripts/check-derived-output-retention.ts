@@ -48,6 +48,7 @@ async function main(): Promise<void> {
   checkPersistenceCoverage();
   checkRelationalEnvelope();
   checkOwnerResponseCaching();
+  checkRetentionCopy();
   checkStaticProviderCoverage();
   await checkProviderTransportBoundary();
 
@@ -68,6 +69,7 @@ async function main(): Promise<void> {
   );
   console.log("PASS raw provider transport errors are reduced without a cause");
   console.log("PASS story prose and private errors are marked no-store");
+  console.log("PASS save and privacy copy state both derived-output lifecycles");
 }
 
 function checkClosedRegistry(): void {
@@ -490,6 +492,38 @@ function checkOwnerResponseCaching(): void {
     beatRoute.includes("...textStreamHeaders"),
     "the owner-only prose route must use the no-store stream headers",
   );
+}
+
+function checkRetentionCopy(): void {
+  const saveCard = readFileSync(
+    resolve(ROOT, "components", "SaveStoriesCard.tsx"),
+    "utf8",
+  );
+  for (const phrase of [
+    "generated wording",
+    "age used to find it",
+    "fixed 60-day deadline",
+    "until you delete",
+  ]) {
+    assert(
+      saveCard.includes(phrase),
+      `save consent omits the ${phrase} lifecycle`,
+    );
+  }
+  const privacyPage = readFileSync(
+    resolve(ROOT, "app", "privacy", "page.tsx"),
+    "utf8",
+  );
+  for (const phrase of [
+    "Short-lived working material",
+    "raw AI responses",
+    "Only validated generated wording enters the saved story",
+  ]) {
+    assert(
+      privacyPage.includes(phrase),
+      `privacy guide omits ${phrase}`,
+    );
+  }
 }
 
 function checkStaticProviderCoverage(): void {

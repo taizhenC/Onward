@@ -90,23 +90,30 @@ export function SaveStoriesCard() {
       className="border border-[var(--color-ink-soft)]/40 px-6 py-6 space-y-4"
     >
       {mode === "permanent" ? (
-        <p className="text-[var(--color-ink-soft)] leading-relaxed">
-          This story is saved with your account.{" "}
+        <div className="space-y-3 text-[var(--color-ink-soft)] leading-relaxed">
+          <p>
+            This story, including its generated wording and the age used to
+            find it, stays with your account until you delete the story or
+            account. What you wrote before the story still clears after its
+            fixed 60-day deadline.
+          </p>
           <Link
             href="/stories"
-            className="underline underline-offset-4 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
           >
             See your stories
           </Link>
-        </p>
+        </div>
       ) : mode === "sent" ? (
         <div role="status" className="space-y-4">
           <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
             Check your email
           </p>
           <p className="leading-relaxed">
-            One click on the link we sent and this story stays with your account
-            until you delete it.
+            One click on the link we sent and this story&apos;s generated wording
+            and age stay with your account until you delete the story or
+            account. What you wrote before it still has the fixed 60-day
+            deadline.
           </p>
         </div>
       ) : (
@@ -119,10 +126,12 @@ export function SaveStoriesCard() {
             account and every story in it are deleted about six hours after the
             latest story creation or saved reading progress in that account.
             Add and confirm an email and the stories stay until you delete them
-            from Your stories. Daily cleanup removes what you wrote before a
-            story after its fixed 60-day deadline, unless deleting the guest
-            account, story, or account removes it earlier. A password is
-            optional if you&apos;d like to skip the email next time.
+            from Your stories. That keeps each story&apos;s generated wording
+            and the age used to find it. Daily cleanup still removes what you
+            wrote before a story after its fixed 60-day deadline, unless
+            deleting the guest account, story, or account removes it earlier.
+            A password is optional if you&apos;d like to skip the email next
+            time.
           </p>
           {emailExists ? (
             <p

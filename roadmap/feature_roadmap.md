@@ -387,7 +387,14 @@
 
 ## P0-14 — [Feature] Story deletion, account deletion, consent, and retention controls
 
-**Problem:** The app now lets owners hard-delete an individual story or the whole account from the active database, publishes a plain-language preview privacy guide, and explains the guest/disclosure/story periods at save. Durable save semantics, legal/provider/backup review, restore-time deletion handling, and real cascade proof remain incomplete.
+**Problem:** The app now lets owners hard-delete an individual story or the
+whole account from the active database, publishes a plain-language preview
+privacy guide, and explains the guest/disclosure/story periods at save. A
+versioned code contract also classifies every current provider output and
+durable table, while migration `0021` gives session/artifact rows honest
+current-or-legacy lifecycle labels. Durable save semantics,
+legal/provider/backup review, restore-time deletion handling, and real cascade
+proof remain incomplete.
 
 **Scope**
 

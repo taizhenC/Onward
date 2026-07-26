@@ -41,6 +41,7 @@ import {
   buildHybridPlanUserPrompt,
   buildRerankUserPrompt,
 } from "./llm-prompts";
+import { fetchExternalProvider } from "./provider-exchange";
 
 // Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
@@ -202,15 +203,19 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
 
   let response: Response;
   try {
-    response = await fetch(`${baseUrl()}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${key}`,
+    response = await fetchExternalProvider(
+      "cerebras.rerank",
+      `${baseUrl()}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify(body),
+        signal: controller.signal,
       },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    );
   } catch {
     // Discard the raw error (it can carry the prompt/feeling) — never log it.
     if (controller.signal.aborted) {
@@ -319,15 +324,19 @@ async function generateEyebrowLine(
 
   let response: Response;
   try {
-    response = await fetch(`${baseUrl()}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${key}`,
+    response = await fetchExternalProvider(
+      "cerebras.opening_copy",
+      `${baseUrl()}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify(body),
+        signal: controller.signal,
       },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    );
   } catch {
     return null;
   } finally {
@@ -379,15 +388,19 @@ export async function requestHybridPlanReal(
   const timer = setTimeout(() => controller.abort(), proseTimeoutMs());
   let response: Response;
   try {
-    response = await fetch(`${baseUrl()}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${key}`,
+    response = await fetchExternalProvider(
+      "cerebras.hybrid_plan",
+      `${baseUrl()}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${key}`,
+        },
+        body: JSON.stringify(body),
+        signal: controller.signal,
       },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    );
   } catch {
     if (controller.signal.aborted) {
       throw new HybridPlanProviderError(

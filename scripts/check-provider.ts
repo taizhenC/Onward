@@ -14,6 +14,7 @@ import {
   buildHybridPlanRequest,
   validateHybridCompositionPlan,
 } from "../lib/hybrid-composition";
+import { consumeDerivedOutput } from "../lib/derived-output-retention";
 
 // Real-mode provider health check. Run BEFORE a full eval or real-mode intake smoke so a
 // broken Cerebras config (bad key, wrong model id, JSON mode unsupported) surfaces in seconds,
@@ -136,13 +137,16 @@ async function checkPickFigure(): Promise<Step> {
 
   const start = performance.now();
   try {
-    const pick = await pickFigure({
-      age: 30,
-      // Synthetic probe — NOT a real user disclosure.
-      feeling:
-        "I am running a health check to confirm the matching service responds.",
-      candidates: pool,
-    });
+    const pick = consumeDerivedOutput(
+      await pickFigure({
+        age: 30,
+        // Synthetic probe — NOT a real user disclosure.
+        feeling:
+          "I am running a health check to confirm the matching service responds.",
+        candidates: pool,
+      }),
+      "provider_health_check",
+    );
     const ms = Math.round(performance.now() - start);
 
     const inPool = pool.some(
@@ -180,13 +184,16 @@ async function checkOpeningCopy(): Promise<Step> {
 
   const start = performance.now();
   try {
-    const { eyebrow } = await writeOpeningCopy({
-      // Synthetic probe — NOT a real user disclosure.
-      resonanceBrief: createResonanceBrief(
-        "I keep working at something and it never seems to get better.",
-      ),
-      stage,
-    });
+    const { eyebrow } = consumeDerivedOutput(
+      await writeOpeningCopy({
+        // Synthetic probe — NOT a real user disclosure.
+        resonanceBrief: createResonanceBrief(
+          "I keep working at something and it never seems to get better.",
+        ),
+        stage,
+      }),
+      "provider_health_check",
+    );
     const ms = Math.round(performance.now() - start);
 
     // writeOpeningCopy never throws; on any failure (no key, timeout, HTTP error, bad
@@ -223,7 +230,10 @@ async function checkHybridPlan(): Promise<Step> {
   const request = buildHybridPlanRequest(buildDraftStorySpec(stage), brief);
   const start = performance.now();
   try {
-    const candidate = await requestHybridPlan(request);
+    const candidate = consumeDerivedOutput(
+      await requestHybridPlan(request),
+      "provider_health_check",
+    );
     const validation = validateHybridCompositionPlan(candidate, request);
     const ms = Math.round(performance.now() - start);
     return validation.valid

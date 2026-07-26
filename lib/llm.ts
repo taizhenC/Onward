@@ -1,5 +1,5 @@
 import "server-only";
-import type { OpeningCopy, Pick, PickInput } from "./types";
+import type { PickInput } from "./types";
 import type { OpeningCopyInput } from "./opening-copy";
 import { pickFigureStub, writeOpeningCopyStub } from "./llm-stub";
 import { requestHybridPlanStub } from "./llm-stub";
@@ -16,6 +16,10 @@ import {
 } from "./llm-recipe-constants";
 import type { HybridPlanRequest } from "./hybrid-composition";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
+import {
+  classifyDerivedOutput,
+  type DerivedOutput,
+} from "./derived-output-retention";
 
 // The single LLM boundary. Everything outside lib/ imports from here — never from
 // llm-stub / llm-real directly (CLAUDE.md: the provider is invisible outside lib/).
@@ -54,25 +58,37 @@ function resolveProvider(): "stub" | "real" {
   return provider;
 }
 
-export function pickFigure(input: PickInput): Promise<Pick> {
-  return resolveProvider() === "real"
-    ? pickFigureReal(input)
-    : pickFigureStub(input);
+export async function pickFigure(
+  input: PickInput,
+): Promise<DerivedOutput<"rerank_response">> {
+  const pick =
+    resolveProvider() === "real"
+      ? await pickFigureReal(input)
+      : await pickFigureStub(input);
+  return classifyDerivedOutput("rerank_response", pick);
 }
 
 // Opening copy (eyebrow) generation. Prose, so the real path uses the Llama prose model,
 // not the GPT-OSS reranker. Best-effort by contract — the real implementation never throws;
 // it degrades to a neutral fallback rather than blocking the story.
-export function writeOpeningCopy(input: OpeningCopyInput): Promise<OpeningCopy> {
-  return resolveProvider() === "real"
-    ? writeOpeningCopyReal(input)
-    : writeOpeningCopyStub(input);
+export async function writeOpeningCopy(
+  input: OpeningCopyInput,
+): Promise<DerivedOutput<"opening_copy">> {
+  const copy =
+    resolveProvider() === "real"
+      ? await writeOpeningCopyReal(input)
+      : await writeOpeningCopyStub(input);
+  return classifyDerivedOutput("opening_copy", copy);
 }
 
-export function requestHybridPlan(input: HybridPlanRequest): Promise<unknown> {
-  return resolveProvider() === "real"
-    ? requestHybridPlanReal(input)
-    : requestHybridPlanStub(input);
+export async function requestHybridPlan(
+  input: HybridPlanRequest,
+): Promise<DerivedOutput<"composition_plan_candidate">> {
+  const candidate =
+    resolveProvider() === "real"
+      ? await requestHybridPlanReal(input)
+      : await requestHybridPlanStub(input);
+  return classifyDerivedOutput("composition_plan_candidate", candidate);
 }
 
 // The LLM half of a session's match recipe (frozen at intake for replay): provider + the

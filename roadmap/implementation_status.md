@@ -783,6 +783,40 @@ base-owned workflow and enforced branch controls must independently verify and
 land the real signed result; CODEOWNERS and post-push audits are not a substitute
 for those controls.
 
+### Stacked branch: `codex/p0-derived-output-retention-contract`
+
+This slice closes the code-scoped P0-04 derived-output privacy gap without
+claiming that P0-14's external retention program is complete. It adds seven
+closed lifecycle classes, 19 classified surfaces, five exact provider
+exchanges, opaque reader-derived outputs and exchange-bound request bodies,
+exact consumer/caller/sink inventories, reduced provider errors, private
+owner-response caching rules, and migration `0021`'s honest current-or-legacy
+labels over all 35 session/artifact fields. The migration uses bounded,
+session-first rollout locks and exposes only a closed service-role schema-health
+result. The checker also enumerates every current application table and
+production JavaScript/TypeScript network path. A final independent standards
+and contract audit found no remaining concrete defect.
+
+| Command | Result |
+|---|---|
+| `npm run check-recipe-immutability -- 69e366b14d7b4dfa62f4c83149c7140e97e8ffd6` | Pass; stacked recipe history remains append-only |
+| `npm run check-prompt-releases -- 69e366b14d7b4dfa62f4c83149c7140e97e8ffd6` | Pass; prompt releases remain append-only |
+| `npm run check-story-quality-immutability -- 69e366b14d7b4dfa62f4c83149c7140e97e8ffd6` | Pass; protected quality evidence remains append-only |
+| `npm run check-derived-output-retention` | Pass; 7 classes, 19 surfaces, 5 exchanges, 21 tables, and 35 sensitive fields |
+| `npm run check-telemetry-dispatcher` | Pass; declarative classification does not open private runtime reporting access |
+| `npm run lint` / `npm run typecheck` | Pass; zero lint warnings and no type errors |
+| All remaining commands in `CI / verify` before build | Pass |
+| `npm run eval-crisis` | Pass; 26/26 critical safety cases with zero critical false negatives |
+| `npm run smoke` | Pass; 20/20 application regressions |
+| `NEXT_DIST_DIR=.next-ci PERSISTENCE=memory ONWARD_ALLOW_MEMORY_IN_PRODUCTION=true LLM_PROVIDER=stub EMBEDDING_PROVIDER=stub RETRIEVAL_MODE=keyword npm run build` | Pass; optimized production build compiled and generated successfully |
+
+P0-04 is `Complete`; P0-14 remains `Partial`. Before public release, apply and
+exercise `0021` on real Postgres, verify lock/concurrency/RLS/grant/cron behavior,
+capture a durable transactional save state, approve the shared-editorial
+retention period, configure provider and infrastructure logging/retention, and
+define backup/PITR deletion replay or a bounded non-restoration guarantee.
+Legal, market, and youth review remain external gates.
+
 ## Completion audit rule
 
 The goal remains active until every row above is `Complete` and every external gate has authoritative evidence. A PR merge, green CI check, model output, or local smoke result completes only the acceptance criteria it directly covers.

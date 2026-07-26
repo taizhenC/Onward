@@ -647,7 +647,8 @@ seven non-overlapping classes:
   context-bound recovery state; cleanup-eligible at the fixed 60-day deadline
   and physically cleared by the next daily job;
 - `owned_story`: validated story wording, rationale, provenance, identity, age,
-  and reading state; guest lifetime or permanent owner lifecycle;
+  reading/activity state, and the exact registry-named ownership/lifecycle
+  controls and timestamps; guest lifetime or permanent owner lifecycle;
 - `bounded_feedback`: the closed verdict and approved reason; cleanup-eligible
   at 90 days and physically deleted by its scheduled job;
 - `bounded_operational`: exact identifiers, enums, counts, and time buckets;
@@ -658,9 +659,10 @@ seven non-overlapping classes:
 - `curated_reference`: historical content, evidence, recipes, and catalog
   vectors that are not reader-derived.
 
-The registry names every allowed sink for 18 current surfaces, including the
-submitted age, all 21 application-owned tables, all 20 `sessions` fields, all
-15 `story_artifacts` fields, and all five current Cerebras/Gemini exchanges.
+The registry names every allowed sink for 19 current surfaces, including the
+submitted age and closed hybrid-retry feedback, all 21 application-owned
+tables, all 20 `sessions` fields, all 15 `story_artifacts` fields, and all five
+current Cerebras/Gemini exchanges.
 Reader-derived provider values are opaque until a named, AST-enumerated literal
 consumer in its reviewed reducer/validator unwraps them. Curated document
 embeddings remain bare catalog vectors, but their caller and sink are separately

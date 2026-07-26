@@ -111,6 +111,53 @@ function checkClosedRegistry(): void {
     Object.keys(RETENTION_CLASS_POLICIES).sort(),
     [...RETENTION_CLASSES].sort(),
   );
+  assert.deepEqual(
+    Object.fromEntries(
+      Object.entries(EXTERNAL_PROVIDER_EXCHANGES).map(
+        ([exchangeId, exchange]) => [
+          exchangeId,
+          {
+            requestSurfaces: exchange.requestSurfaces,
+            responseSurface: exchange.responseSurface,
+          },
+        ],
+      ),
+    ),
+    {
+      "cerebras.rerank": {
+        requestSurfaces: [
+          "input.raw_disclosure",
+          "input.age",
+          "content.curated_reference",
+        ],
+        responseSurface: "provider.rerank_response",
+      },
+      "cerebras.opening_copy": {
+        requestSurfaces: [
+          "analysis.resonance_brief",
+          "content.curated_reference",
+        ],
+        responseSurface: "provider.opening_copy_response",
+      },
+      "cerebras.hybrid_plan": {
+        requestSurfaces: [
+          "analysis.resonance_brief",
+          "analysis.hybrid_retry_feedback",
+          "content.curated_reference",
+        ],
+        responseSurface: "provider.hybrid_plan_response",
+      },
+      "gemini.query_embedding": {
+        requestSurfaces: ["input.raw_disclosure"],
+        responseSurface: "embedding.query_vector",
+      },
+      "gemini.document_embedding": {
+        requestSurfaces: ["content.curated_reference"],
+        responseSurface: "embedding.curated_vector",
+      },
+    },
+    "provider exchanges must retain the exact reviewed request/response surface inventory",
+  );
   assert.equal(
     RETENTION_CLASS_POLICIES.recovery_context.expiryHorizon,
     "60_day_eligibility",

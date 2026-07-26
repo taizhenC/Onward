@@ -70,7 +70,7 @@ export const RETENTION_CLASS_POLICIES = deepFreeze({
     expiryHorizon: "owner_lifecycle",
     ownerDeletion: "required",
     contentRule:
-      "Only validated owner-visible story content, story identity, age, provenance, and reading state may use this class.",
+      "Only validated owner-visible story content; story, owner, and alternate identity; age; provenance; reading and activity state; and the exact lifecycle control metadata and timestamps named in the field registry may use this class.",
   },
   bounded_feedback: {
     expiryHorizon: "90_day_eligibility",
@@ -121,6 +121,10 @@ export const DERIVED_OUTPUT_SURFACES = deepFreeze({
     allowedSinks: ["request_memory", "root_session"],
   },
   "analysis.resonance_brief": {
+    retentionClass: "request_ephemeral",
+    allowedSinks: ["request_memory", "external_provider"],
+  },
+  "analysis.hybrid_retry_feedback": {
     retentionClass: "request_ephemeral",
     allowedSinks: ["request_memory", "external_provider"],
   },
@@ -266,6 +270,7 @@ export const EXTERNAL_PROVIDER_EXCHANGES = deepFreeze({
     provider: "cerebras",
     requestSurfaces: [
       "analysis.resonance_brief",
+      "analysis.hybrid_retry_feedback",
       "content.curated_reference",
     ],
     responseSurface: "provider.hybrid_plan_response",

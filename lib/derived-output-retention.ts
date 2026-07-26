@@ -378,7 +378,7 @@ export function classifyDerivedOutput<Kind extends DerivedOutputKind>(
     kind,
     policyVersion: DERIVED_OUTPUT_RETENTION_POLICY_VERSION,
   });
-  classifiedValues.set(token, value);
+  classifiedValues.set(token, deepFreeze(value));
   return token as DerivedOutput<Kind>;
 }
 

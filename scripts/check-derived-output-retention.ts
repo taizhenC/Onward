@@ -34,6 +34,7 @@ import {
   ExternalProviderTransportError,
   fetchExternalProvider,
 } from "../lib/provider-exchange";
+import { jsonError, textStreamHeaders } from "../lib/api-utils";
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const LIB = resolve(ROOT, "lib");
@@ -46,6 +47,7 @@ async function main(): Promise<void> {
   checkOpaqueOutputs();
   checkPersistenceCoverage();
   checkRelationalEnvelope();
+  checkOwnerResponseCaching();
   checkStaticProviderCoverage();
   await checkProviderTransportBoundary();
 
@@ -65,6 +67,7 @@ async function main(): Promise<void> {
     `PASS ${Object.keys(DERIVED_OUTPUT_POLICIES).length} opaque output kinds reject forged tokens and forbidden consumers`,
   );
   console.log("PASS raw provider transport errors are reduced without a cause");
+  console.log("PASS story prose and private errors are marked no-store");
 }
 
 function checkClosedRegistry(): void {
@@ -471,6 +474,22 @@ function checkRelationalEnvelope(): void {
       );
     }
   }
+}
+
+function checkOwnerResponseCaching(): void {
+  assert.equal(textStreamHeaders["cache-control"], "no-store");
+  assert.equal(
+    jsonError("private failure", 400).headers.get("cache-control"),
+    "no-store",
+  );
+  const beatRoute = readFileSync(
+    resolve(ROOT, "app", "api", "beat", "route.ts"),
+    "utf8",
+  );
+  assert(
+    beatRoute.includes("...textStreamHeaders"),
+    "the owner-only prose route must use the no-store stream headers",
+  );
 }
 
 function checkStaticProviderCoverage(): void {

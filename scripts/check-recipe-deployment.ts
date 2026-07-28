@@ -83,6 +83,8 @@ function main(): void {
     selectedPlan?.llmProvider !== "real" ||
     selectedPlan.rerankModelId !== "gpt-oss-120b" ||
     selectedPlan.proseModelId !== "gpt-oss-120b" ||
+    selectedPlan.rerankPromptVersion !== runtime.recipe.rerankPromptVersion ||
+    selectedPlan.storyPromptVersion !== runtime.recipe.storyPromptVersion ||
     selectedPlan.retrievalMode !== "keyword" ||
     selectedPlan.rerankTopK !== 6 ||
     selectedPlan.embedding !== null ||
@@ -230,6 +232,8 @@ function main(): void {
       active.llmProvider !== "real" ||
       active.rerankModelId !== selectedPlan.rerankModelId ||
       active.proseModelId !== selectedPlan.proseModelId ||
+      active.rerankPromptVersion !== selectedPlan.rerankPromptVersion ||
+      active.storyPromptVersion !== selectedPlan.storyPromptVersion ||
       resolveRetrievalMode() !== selectedPlan.retrievalMode ||
       hybridStoryComposerEnabled() !== false ||
       !isEmbeddingStub()

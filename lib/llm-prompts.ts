@@ -29,6 +29,21 @@ export type PromptHybridPlanSurface = Readonly<{
   priorFailureReasons: readonly string[];
 }>;
 
+// Structural rather than inferred from v1 so append-only releases may change
+// prose while preserving the provider contract required by current adapters.
+export type StoryPromptContract = Readonly<{
+  eyebrow: Readonly<{
+    system: string;
+    user: string;
+  }>;
+  hybridPlan: Readonly<{
+    system: string;
+    user: string;
+    responseFormat: "json_object";
+    temperature: number;
+  }>;
+}>;
+
 export const RERANK_PROMPT_CONTRACT = Object.freeze({
   system: [
     "You are matching a person's emotional disclosure to a curated set of real historical figures.",
@@ -110,7 +125,7 @@ export const STORY_PROMPT_CONTRACT = Object.freeze({
     responseFormat: "json_object",
     temperature: 0,
   }),
-});
+}) satisfies StoryPromptContract;
 
 export const RERANK_SYSTEM_PROMPT = RERANK_PROMPT_CONTRACT.system;
 export const EYEBROW_SYSTEM_PROMPT = STORY_PROMPT_CONTRACT.eyebrow.system;
@@ -131,8 +146,11 @@ export function buildRerankUserPrompt(
   });
 }
 
-export function buildEyebrowUserPrompt(surface: PromptEyebrowSurface): string {
-  return renderTemplate(STORY_PROMPT_CONTRACT.eyebrow.user, {
+export function buildEyebrowUserPrompt(
+  surface: PromptEyebrowSurface,
+  contract: StoryPromptContract = STORY_PROMPT_CONTRACT,
+): string {
+  return renderTemplate(contract.eyebrow.user, {
     ...surface.resonance,
     throughLine: surface.throughLine,
   });
@@ -140,8 +158,9 @@ export function buildEyebrowUserPrompt(surface: PromptEyebrowSurface): string {
 
 export function buildHybridPlanUserPrompt(
   input: PromptHybridPlanSurface,
+  contract: StoryPromptContract = STORY_PROMPT_CONTRACT,
 ): string {
-  return renderTemplate(STORY_PROMPT_CONTRACT.hybridPlan.user, {
+  return renderTemplate(contract.hybridPlan.user, {
     schemaVersion: input.schemaVersion,
     ...input.resonance,
     episodeShape: input.episodeShape,

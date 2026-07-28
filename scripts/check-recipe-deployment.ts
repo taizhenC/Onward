@@ -25,6 +25,8 @@ import { sha256Hex } from "../lib/sha256-edge";
 type Environment = Record<string, string | undefined>;
 
 const DEPLOYMENT_ID = "deploy_check_2026-07-18";
+const PERSONALIZED_PREFACE_RECIPE_ID =
+  "keyword-rerank-personalized-preface-v2-figure-library-50-2026-07-28";
 
 function productionEnvironment(recipeId = PRIMARY_STORY_RECIPE.recipeId): Environment {
   return {
@@ -201,6 +203,13 @@ function main(): void {
     "unknown recipe",
     (env) => {
       env.ONWARD_PRODUCTION_RECIPE_ID = "unapproved-sentinel";
+    },
+    "recipe_not_selectable",
+  );
+  expectFailure(
+    "unpromoted personalized-preface challenger",
+    (env) => {
+      env.ONWARD_PRODUCTION_RECIPE_ID = PERSONALIZED_PREFACE_RECIPE_ID;
     },
     "recipe_not_selectable",
   );

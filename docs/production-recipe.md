@@ -12,6 +12,7 @@ This file is generated from `config/story-recipes.json`. Do not edit it by hand.
 |---|---|---|---|---|---|
 | `keyword-rerank-figure-library-50-2026-07-02` | `match-104-2026-07-02` | keyword | real / `gpt-oss-120b` | Not used | Primary |
 | `facetsrag-rerank-figure-library-50-2026-07-02` | `match-104-2026-07-02` | facetsrag | real / `gpt-oss-120b` | `gemini-embedding-001@d1536` | Challenger |
+| `keyword-rerank-personalized-preface-v2-figure-library-50-2026-07-28` | `match-104-2026-07-02` | keyword | real / `gpt-oss-120b` | Not used | Challenger |
 
 Production must name either the primary or rollback recipe explicitly. The selected manifest is the sole non-secret behavior source; stale provider, model, tuning, retrieval, embedder, and composer environment values are ignored. A selector-only rollback is valid only inside the same installed library, rerank/story prompts, validator, schema, boundary, and composer compatibility set.
 

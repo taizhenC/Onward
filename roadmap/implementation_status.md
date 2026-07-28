@@ -817,6 +817,52 @@ retention period, configure provider and infrastructure logging/retention, and
 define backup/PITR deletion replay or a bounded non-restoration guarantee.
 Legal, market, and youth review remain external gates.
 
+### Stacked branch: `codex/p0-durable-story-save-state`
+
+This slice makes the account-wide Save decision durable without stamping or
+mutating every Session. Migration `0022` records only the informed
+anonymous-to-permanent Auth transition as current evidence, backfills older
+permanent owners with an honest null-time legacy observation, preserves the
+owner decision across story deletion, and removes it with account deletion.
+The server projects closed temporary, saved, read-unavailable, and
+integrity-conflict states. Returning-owner sign-in cannot create an account,
+and the initial match boundary stops a permanent owner without coherent Save
+evidence before telemetry activation, limits, providers, or writes.
+
+The story library and Save card now state the guest clock and fixed 60-day
+Recovery Context deadline, show and correct the pending email destination,
+avoid stranding a guest on an existing-account sign-in, distinguish retryable
+reads from contradictions, and preserve keyboard/screen-reader focus through
+async Save and sign-in states. A separate main-based compatibility slice is
+open as PR #72 so returning-only sign-in can deploy before the coordinated
+`0022` cutover. The runbook requires pausing and draining story creation,
+verifying migration health, deploying the full guard, running canaries, and
+only then reopening; it prohibits public rollback to an implicit-signup or
+unguarded permanent-story build.
+
+| Command or review | Result |
+|---|---|
+| Recipe, prompt-release, and story-quality immutability checks against `89cf591a6d313712a99f3a0e89691dc46a6ccf81` | Pass; all protected histories remain append-only |
+| `npm run check-owner-story-save` | Pass; parser, projection, consent, SQL ordering, grants, deletion, UI, cutover, and integration contracts |
+| Exact migration execution in PGlite/PostgreSQL | Pass; all 9 health flags plus upgrade consent, direct-account coverage failure, immutability, Auth cascade, and role denial |
+| `npm run check-derived-output-retention` | Pass; 7 classes, 20 surfaces, 5 exchanges, 22 tables, and 35 sensitive fields |
+| `npm run check-auth-telemetry` | Pass; permanent-without-Save returns 503 without flow/session mutation, then succeeds with coherent evidence |
+| `npm run check-story-deletion` / `npm run check-account-deletion` | Pass; story deletion preserves Save State and account deletion removes it |
+| `npm run lint` / `npm run typecheck` | Pass; zero lint warnings and no type errors |
+| Every remaining command in `CI / verify` before build | Pass |
+| `npm run eval-crisis` | Pass; 26/26 critical safety cases with zero critical false negatives |
+| `npm run smoke` | Pass; 20/20 application regressions |
+| `NEXT_DIST_DIR=.next-ci PERSISTENCE=memory ONWARD_ALLOW_MEMORY_IN_PRODUCTION=true LLM_PROVIDER=stub EMBEDDING_PROVIDER=stub RETRIEVAL_MODE=keyword npm run build` | Pass; optimized production build compiled and generated all 23 app surfaces |
+| Focused local browser QA | Pass; desktop/mobile temporary library and returning sign-in render correctly, labels are exposed, and email validation enables/disables the Save action without submitting Auth data |
+| Independent code, security/database, and product/accessibility reviews | All implementation findings resolved; managed Supabase/Auth and production cutover evidence remain external |
+
+P0-14 remains `Partial`. Before public release, merge and deploy the
+compatibility guard, execute the documented paused cutover against managed
+Supabase, verify real Auth timing, lock/deadlock, RLS/grants, same/cross-device,
+cascade, limiter, cron, rollback, and supported-browser accessibility canaries,
+and complete the provider, infrastructure, backup/PITR, legal, market, youth,
+optional-note, and shared-editorial-retention decisions listed in the matrix.
+
 ## Completion audit rule
 
 The goal remains active until every row above is `Complete` and every external gate has authoritative evidence. A PR merge, green CI check, model output, or local smoke result completes only the acceptance criteria it directly covers.

@@ -19,7 +19,7 @@ export default function PrivacyPage() {
             Onward home
           </Link>
           <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-            Last updated July 26, 2026
+            Last updated July 27, 2026
           </p>
           <h1 className="text-4xl leading-tight">Privacy, in plain language</h1>
           <p className="max-w-[38rem] text-xl leading-relaxed text-[var(--color-ink-soft)]">
@@ -47,8 +47,10 @@ export default function PrivacyPage() {
             <li>
               A temporary guest account and every story in it are deleted about
               six hours after the latest story creation or saved reading
-              progress in that account. Adding and confirming an email keeps
-              the same account and its stories until you delete them.
+              progress in that account. Sending a confirmation email does not
+              save anything by itself. Using its confirmation link makes the
+              same account permanent; that account-wide change covers stories
+              already there and stories created later until you delete them.
             </li>
             <li>
               You can delete one story or your whole account yourself. No
@@ -72,7 +74,11 @@ export default function PrivacyPage() {
           />
           <DataItem
             title="Story, reading place, and generated copy"
-            body="These let the story remain stable and reopen where you stopped. For a guest, the account-wide cleanup clock runs from the latest story creation or saved reading progress in that account; when it expires, the guest account and every story in it are deleted. After an email is confirmed, stories stay until you delete the story or account."
+            body="These let the story remain stable and reopen where you stopped. For a guest, the account-wide cleanup clock runs from the latest story creation or saved reading progress in that account; when it expires, the guest account and every story in it are deleted. After an email is confirmed, the same account keeps every current and future story, including its generated wording and age, until you delete the story or account. Confirmation does not extend the original fixed 60-day deadline for what you wrote before the story."
+          />
+          <DataItem
+            title="Account-wide save state"
+            body="Onward records whether the account became permanent, the evidence type, and—when the current system observed the change—the confirmation time. This state belongs to the account rather than one story. Older permanent accounts have an honest legacy record without an invented historical confirmation time."
           />
           <DataItem
             title="Short-lived working material"
@@ -80,7 +86,7 @@ export default function PrivacyPage() {
           />
           <DataItem
             title="Email and password"
-            body="Supabase Auth handles sign-in. Onward's product tables store the account identifier, not your password. Password recovery uses a one-time email link."
+            body="Supabase Auth handles sign-in and email confirmation. Onward's product tables store the account identifier and the account-wide save state, not your password. Password recovery uses a one-time email link."
           />
           <DataItem
             title="Essential cookies"
@@ -164,8 +170,9 @@ export default function PrivacyPage() {
             Account deletion hard-deletes from Onward&apos;s active database the
             sign-in, owned stories, generated
             story copies, reading places, private context, saved feedback,
-            recovery state, account-linked product events, and per-account rate
-            limits. Deleting an original story also deletes its alternate;
+            recovery state, the account-wide save state, account-linked product
+            events, and per-account rate limits. Deleting an original story
+            also deletes its alternate;
             deleting only an alternate keeps the original.
           </p>
           <p className="leading-relaxed text-[var(--color-ink-soft)]">

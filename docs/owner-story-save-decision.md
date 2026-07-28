@@ -80,7 +80,8 @@ The migration is additive and schema-first:
 
 1. create and secure the state table, helpers, and boolean-only health RPC;
 2. take a late ten-second-bounded lock on `auth.users`;
-3. install the Auth trigger;
+3. add the owner foreign key only after that explicit lock, then install the
+   Auth trigger;
 4. backfill every already-permanent owner as `legacy_permanent_observed`;
 5. release the lock at transaction commit; and
 6. run the service-only health RPC before deploying the state-aware reader.

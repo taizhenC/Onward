@@ -10,8 +10,7 @@ set local lock_timeout = '10s';
 set local statement_timeout = '30s';
 
 create table public.owner_story_save_states (
-  user_id uuid primary key
-    references auth.users (id) on delete cascade,
+  user_id uuid primary key,
   saved_at timestamptz,
   observed_at timestamptz not null default statement_timestamp(),
   evidence_kind text not null,
@@ -534,6 +533,10 @@ comment on function public.owner_story_save_schema_health_v1() is
 -- the legacy scan must still be one atomic cutover: SHARE ROW EXCLUSIVE blocks
 -- concurrent Auth writes while leaving reads available.
 lock table auth.users in share row exclusive mode;
+
+alter table public.owner_story_save_states
+  add constraint owner_story_save_states_user_id_fkey
+  foreign key (user_id) references auth.users (id) on delete cascade;
 
 create trigger onward_record_owner_story_save
 after update of is_anonymous on auth.users

@@ -389,7 +389,7 @@ function checkMigrationContract(failures: string[]): void {
 
   const requiredSchema = [
     "create table public.owner_story_save_states",
-    "user_id uuid primary key references auth.users (id) on delete cascade",
+    "user_id uuid primary key",
     "saved_at timestamptz",
     "observed_at timestamptz not null default statement_timestamp()",
     "evidence_kind text not null",
@@ -405,6 +405,7 @@ function checkMigrationContract(failures: string[]): void {
   if (
     tableDefinition.length === 0 ||
     tableColumns.join(",") !== expectedTableColumns.join(",") ||
+    /references\s+auth\.users/i.test(tableDefinition) ||
     requiredSchema.some(
       (fragment) => !normalized.includes(normalizeSql(fragment)),
     ) ||
@@ -473,6 +474,11 @@ function checkMigrationContract(failures: string[]): void {
   const triggerIndex = normalized.indexOf(
     normalizeSql("create trigger onward_record_owner_story_save"),
   );
+  const foreignKeyIndex = normalized.indexOf(
+    normalizeSql(
+      "alter table public.owner_story_save_states add constraint owner_story_save_states_user_id_fkey foreign key (user_id) references auth.users (id) on delete cascade",
+    ),
+  );
   const backfillIndex = normalized.indexOf(
     normalizeSql("insert into public.owner_story_save_states"),
     triggerIndex + 1,
@@ -485,6 +491,8 @@ function checkMigrationContract(failures: string[]): void {
     !normalized.includes("set local lock_timeout = '10s'") ||
     !normalized.includes("set local statement_timeout = '30s'") ||
     lockIndex < 0 ||
+    foreignKeyIndex < lockIndex ||
+    triggerIndex < foreignKeyIndex ||
     triggerIndex < lockIndex ||
     backfillIndex < triggerIndex ||
     !normalizeSql(authTrigger).includes(

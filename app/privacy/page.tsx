@@ -78,7 +78,7 @@ export default function PrivacyPage() {
           />
           <DataItem
             title="Account-wide save state"
-            body="Onward records whether the account became permanent, the evidence type, and—when the current system observed the change—the confirmation time. This state belongs to the account rather than one story. Older permanent accounts have an honest legacy record without an invented historical confirmation time."
+            body="Onward records whether the account became permanent, the evidence type, and—for current-policy transitions—the exact email-confirmation or direct-account-creation time. This state belongs to the account rather than one story. Older permanent accounts have an honest legacy record without an invented historical transition time."
           />
           <DataItem
             title="Short-lived working material"

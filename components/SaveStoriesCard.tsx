@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -30,8 +30,10 @@ export function SaveStoriesCard({
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [requestError, setRequestError] = useState<RequestError>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const stateHeadingRef = useRef<HTMLHeadingElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
   const errorRef = useRef<HTMLParagraphElement>(null);
+  const retryPendingRef = useRef(false);
 
   const saveState = isConsistentPresentation(
     isAnonymous,
@@ -44,6 +46,12 @@ export function SaveStoriesCard({
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
   const canRequestConfirmation =
     emailValid && requestMode !== "sending";
+
+  useEffect(() => {
+    if (refreshing || !retryPendingRef.current) return;
+    retryPendingRef.current = false;
+    stateHeadingRef.current?.focus();
+  }, [refreshing]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -97,13 +105,17 @@ export function SaveStoriesCard({
       className="space-y-4 border border-[var(--color-ink-soft)]/40 px-6 py-6"
     >
       {saveState.status === "saved" ? (
-        <SavedState />
+        <SavedState headingRef={stateHeadingRef} />
       ) : saveState.status === "unavailable" ? (
         <UnavailableState
+          headingRef={stateHeadingRef}
           isAnonymous={isAnonymous}
           reason={saveState.reason}
           refreshing={refreshing}
-          onRetry={() => startRefresh(() => router.refresh())}
+          onRetry={() => {
+            retryPendingRef.current = true;
+            startRefresh(() => router.refresh());
+          }}
         />
       ) : requestMode === "confirmation_pending" ? (
         <ConfirmationPendingState
@@ -117,7 +129,12 @@ export function SaveStoriesCard({
             <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
               Account-wide save
             </p>
-            <h2 id="owner-story-save-heading" className="text-xl">
+            <h2
+              id="owner-story-save-heading"
+              ref={stateHeadingRef}
+              tabIndex={-1}
+              className="text-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            >
               Keep every story in this account
             </h2>
             <p className="leading-relaxed text-[var(--color-ink-soft)]">
@@ -195,13 +212,22 @@ export function SaveStoriesCard({
   );
 }
 
-function SavedState() {
+function SavedState({
+  headingRef,
+}: {
+  headingRef: React.RefObject<HTMLHeadingElement | null>;
+}) {
   return (
     <div className="space-y-3">
       <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
         Account-wide save
       </p>
-      <h2 id="owner-story-save-heading" className="text-xl">
+      <h2
+        id="owner-story-save-heading"
+        ref={headingRef}
+        tabIndex={-1}
+        className="text-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+      >
         Your stories are kept
       </h2>
       <p className="leading-relaxed text-[var(--color-ink-soft)]">
@@ -221,11 +247,13 @@ function SavedState() {
 }
 
 function UnavailableState({
+  headingRef,
   isAnonymous,
   reason,
   refreshing,
   onRetry,
 }: {
+  headingRef: React.RefObject<HTMLHeadingElement | null>;
   isAnonymous: boolean;
   reason: "read_error" | "integrity_conflict";
   refreshing: boolean;
@@ -236,7 +264,12 @@ function UnavailableState({
       <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
         Save status unavailable
       </p>
-      <h2 id="owner-story-save-heading" className="text-xl">
+      <h2
+        id="owner-story-save-heading"
+        ref={headingRef}
+        tabIndex={-1}
+        className="text-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+      >
         We cannot confirm permanent storage
       </h2>
       <p role="status" className="leading-relaxed text-[var(--color-ink-soft)]">

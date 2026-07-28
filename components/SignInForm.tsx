@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -60,6 +60,8 @@ export function SignInForm({ linkError }: Props) {
   const [sending, setSending] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const sentStatusRef = useRef<HTMLParagraphElement>(null);
+  const errorRef = useRef<HTMLParagraphElement>(null);
   // Render nothing until mounted on the client, so the server HTML and the first
   // client render are identical — defensive hardening of the browser-only auth gate
   // below against any future hydration mismatch.
@@ -97,6 +99,7 @@ export function SignInForm({ linkError }: Props) {
       if (signInError) {
         setError(passwordErrorMessage(signInError.code));
         setSending(false);
+        focusAfterRender(errorRef);
         return;
       }
       // The browser client just wrote the auth cookie. Invalidate the router cache
@@ -120,9 +123,11 @@ export function SignInForm({ linkError }: Props) {
           : "The link couldn't be sent. Please try again in a moment.",
       );
       setSending(false);
+      focusAfterRender(errorRef);
       return;
     }
     setSentTo(trimmedEmail);
+    focusAfterRender(sentStatusRef);
   }
 
   // Gate the entire render on mount (the line that actually prevents the mismatch).
@@ -149,7 +154,12 @@ export function SignInForm({ linkError }: Props) {
         <Ornament pulse />
         <Eyebrow />
         <h1 className={headingClasses}>Check your email</h1>
-        <p className="mx-auto mt-5 max-w-[27rem] text-[18px] leading-[1.65] text-[var(--color-ink-soft)] text-pretty">
+        <p
+          ref={sentStatusRef}
+          tabIndex={-1}
+          role="status"
+          className="mx-auto mt-5 max-w-[27rem] text-[18px] leading-[1.65] text-[var(--color-ink-soft)] text-pretty focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+        >
           A sign-in link is on its way to{" "}
           <span className="text-[var(--color-ink)]">{sentTo}</span>. It works
           once and expires soon — open it on this device if you can.
@@ -210,7 +220,14 @@ export function SignInForm({ linkError }: Props) {
         ) : null}
 
         {error ? (
-          <p className="font-ui text-sm text-[var(--color-accent)]">{error}</p>
+          <p
+            ref={errorRef}
+            tabIndex={-1}
+            role="alert"
+            className="font-ui text-sm text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          >
+            {error}
+          </p>
         ) : null}
 
         <div>
@@ -280,4 +297,10 @@ function passwordErrorMessage(code: string | undefined): string {
     default:
       return "We couldn't sign you in. Try again in a moment.";
   }
+}
+
+function focusAfterRender(
+  target: React.RefObject<HTMLElement | null>,
+): void {
+  requestAnimationFrame(() => target.current?.focus());
 }

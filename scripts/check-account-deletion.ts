@@ -22,6 +22,10 @@ import {
   issueAccountReauthRequestToken,
 } from "../lib/account-deletion-token";
 import { issueMatchRecoveryToken } from "../lib/match-recovery-flow";
+import {
+  _recordMemoryOwnerStorySaveTransitionForTests,
+  getMemoryOwnerStorySaveState,
+} from "../lib/owner-story-save-store-memory";
 import { consumeMatchRateLimit } from "../lib/rate-limit";
 import {
   activateTelemetryFlowForOwner,
@@ -55,7 +59,9 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   console.log("PASS purpose-bound confirmation, reauth proof, and exact native POST");
-  console.log("PASS account graph, unbound-flow, recovery, rate-key, and auth cleanup");
+  console.log(
+    "PASS account graph, Save State, unbound-flow, recovery, rate-key, and auth cleanup",
+  );
   console.log("PASS availability-first unlinkable account deletion telemetry");
   console.log("PASS SQL lock order, FK race closure, guest parity, grants, and residual copy");
 }
@@ -228,6 +234,14 @@ async function checkMemoryAccountGraph(failures: string[]): Promise<void> {
     "clarification",
   );
   await consumeMatchRateLimit(userId, "c".repeat(64));
+  _recordMemoryOwnerStorySaveTransitionForTests({
+    userId,
+    evidenceKind: "anonymous_upgrade",
+    occurredAt: Date.parse("2026-07-17T12:00:00.000Z"),
+  });
+  if (!getMemoryOwnerStorySaveState(userId)) {
+    failures.push("memory account graph did not seed Owner Story Save State");
+  }
 
   const root = makeSession(rootId, userId, null, "artifact-root");
   const alternate = makeSession(
@@ -256,6 +270,9 @@ async function checkMemoryAccountGraph(failures: string[]): Promise<void> {
   const userRateKeyRemains = [...(globalThis.__onwardRateLimits?.keys() ?? [])].some(
     (key) => key.startsWith(`u:${userId}:`),
   );
+  if (getMemoryOwnerStorySaveState(userId) !== null) {
+    failures.push("memory account cascade retained Owner Story Save State");
+  }
   if (
     globalThis.__onwardSessions?.has(rootId) ||
     globalThis.__onwardSessions?.has(alternateId) ||
@@ -331,6 +348,9 @@ async function checkRouteContract(failures: string[]): Promise<void> {
 
 function checkStaticContracts(failures: string[]): void {
   const migration = source("../supabase/migrations/0019_owned_account_deletion.sql");
+  const saveMigration = source(
+    "../supabase/migrations/0022_owner_story_save_states.sql",
+  );
   const route = source("../app/api/account-delete/route.ts");
   const reauthRoute = source("../app/api/account-delete/reauth/route.ts");
   const confirm = source("../app/auth/confirm/route.ts");
@@ -375,6 +395,16 @@ function checkStaticContracts(failures: string[]): void {
       (index === 0 || position > orderedBoundaryPositions[index - 1]!),
   );
   const required: Array<readonly [string, boolean]> = [
+    [
+      "Owner Story Save State account cascade",
+      saveMigration.includes(
+        "create table public.owner_story_save_states",
+      ) &&
+        saveMigration.includes(
+          "references auth.users (id) on delete cascade",
+        ) &&
+        migration.includes("delete from auth.users"),
+    ],
     [
       "rate-limit ownership cascade",
       migration.includes("generated always as") &&
@@ -469,8 +499,10 @@ function checkStaticContracts(failures: string[]): void {
     ],
     [
       "account-wide guest retention copy",
-      saveStoriesCard.includes("account and every story in it are deleted") &&
-        saveStoriesCard.includes("latest story creation or saved reading progress") &&
+      saveStoriesCard.includes("still a temporary guest account") &&
+        saveStoriesCard.includes("every story in") &&
+        saveStoriesCard.includes("latest story creation or") &&
+        saveStoriesCard.includes("saved reading progress") &&
         accountPage.includes("account and every story in it are deleted") &&
         accountPage.includes("latest story creation or saved reading") &&
         page.includes("account and every story in it are deleted") &&

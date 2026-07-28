@@ -183,6 +183,54 @@ async function checkArtifactSchema(): Promise<Step> {
   }
 }
 
+async function checkOwnerStorySaveSchema(): Promise<Step> {
+  const name = "durable account-level Owner Story Save schema installed";
+  try {
+    const health = await getSupabase().rpc(
+      "owner_story_save_schema_health_v1",
+    );
+    if (health.error) throw new Error(health.error.message);
+    const row =
+      Array.isArray(health.data) && health.data.length === 1
+        ? health.data[0]
+        : null;
+    const expectedKeys = [
+      "constraints_valid",
+      "coverage_valid",
+      "grants_valid",
+      "helper_bodies_valid",
+      "ok",
+      "rls_valid",
+      "rows_valid",
+      "table_shape_valid",
+      "triggers_enabled",
+    ].sort();
+    const healthOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") === expectedKeys.join(",") &&
+      Object.values(row).every((value) => typeof value === "boolean") &&
+      "ok" in row &&
+      row.ok === true;
+    if (!healthOk) {
+      throw new Error("owner-story Save schema health is unsafe");
+    }
+    return {
+      name,
+      ok: true,
+      detail:
+        "all 9 closed health flags prove table shape, constraints, Auth trigger, immutable helpers, grants, RLS, owner coverage, and row validity",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0022 before the Save-aware application`,
+    };
+  }
+}
+
 async function checkStoryRecipeRegistry(): Promise<Step> {
   const name = "immutable promoted story-recipe registry installed";
   try {
@@ -969,6 +1017,7 @@ async function main(): Promise<void> {
     await checkServingParity(),
     await checkPublishedStorySpecs(),
     await checkArtifactSchema(),
+    await checkOwnerStorySaveSchema(),
     await checkStoryRecipeRegistry(),
     await checkMatchRecoverySchema(),
     await checkHistoricalConcernSchema(),

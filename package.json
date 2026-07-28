@@ -27,6 +27,7 @@
     "check-telemetry-dispatcher": "tsx scripts/check-telemetry-dispatcher.ts",
     "check-story-deletion": "tsx scripts/check-story-deletion.ts",
     "check-account-deletion": "tsx scripts/check-account-deletion.ts",
+    "check-owner-story-save": "tsx scripts/check-owner-story-save.ts",
     "check-recipe-governance": "tsx scripts/check-recipe-governance.ts",
     "check-recipe-registry": "tsx scripts/check-recipe-registry.ts",
     "check-recipe-deployment": "tsx scripts/check-recipe-deployment.ts",

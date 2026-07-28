@@ -43,6 +43,11 @@ import {
   renderHybridTemplate,
   type HybridCompositionPlan,
 } from "./hybrid-composition";
+import { STORY_PROMPT_VERSION_V2 } from "./llm-recipe-constants";
+import {
+  isUniversalPreface,
+  validatePersonalizedPrefaceLines,
+} from "./preface-plan";
 import type {
   ClientFigureOutline,
   FigureStageRow,
@@ -288,7 +293,12 @@ export function validateStoryArtifact(
   if (!validateResonanceBrief(resonanceBrief)) {
     failures.add("resonance_brief_invalid");
   }
-  validateOpeningCopy(artifact.openingCopy, resonanceBrief, failures);
+  validateOpeningCopy(
+    artifact.openingCopy,
+    resonanceBrief,
+    artifact.recipe.match.storyPromptVersion,
+    failures,
+  );
   const expectedProfileReviewed =
     storySpec.status === "published" &&
     storySpec.review.contentProfileReviewed === true;
@@ -442,6 +452,7 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     typeof candidate.stageId !== "string" ||
     !isRecord(candidate.figure) ||
     !isRecord(candidate.openingCopy) ||
+    !hasExactKeys(candidate.openingCopy, ["eyebrow", "prefaceLines"]) ||
     typeof candidate.openingCopy.eyebrow !== "string" ||
     !Array.isArray(candidate.openingCopy.prefaceLines) ||
     (candidate.framing !== "definitive" && candidate.framing !== "partial") ||
@@ -472,7 +483,17 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
   const transparencyAwareSchema =
     artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION;
   const openingFailures = new Set<ArtifactValidationFailure>();
-  validateOpeningCopy(artifact.openingCopy, null, openingFailures);
+  const storedStoryPromptVersion =
+    isRecord(artifact.recipe.match) &&
+    typeof artifact.recipe.match.storyPromptVersion === "string"
+      ? artifact.recipe.match.storyPromptVersion
+      : undefined;
+  validateOpeningCopy(
+    artifact.openingCopy,
+    null,
+    storedStoryPromptVersion,
+    openingFailures,
+  );
   if (
     openingFailures.size > 0 ||
     typeof artifact.figure.displayName !== "string" ||
@@ -674,8 +695,15 @@ function normalizeText(value: string): string {
 function validateOpeningCopy(
   openingCopy: OpeningCopy,
   resonanceBrief: ResonanceBrief | null,
+  storyPromptVersion: string | undefined,
   failures: Set<ArtifactValidationFailure>,
 ): void {
+  if (
+    !isRecord(openingCopy) ||
+    !hasExactKeys(openingCopy, ["eyebrow", "prefaceLines"])
+  ) {
+    failures.add("opening_copy_invalid");
+  }
   const eyebrow =
     typeof openingCopy.eyebrow === "string" ? openingCopy.eyebrow : "";
   const prefaceLines = Array.isArray(openingCopy.prefaceLines)
@@ -694,7 +722,18 @@ function validateOpeningCopy(
     failures.add("opening_copy_invalid");
   }
   if (
-    lines.some(
+    storyPromptVersion === STORY_PROMPT_VERSION_V2 &&
+    !validatePersonalizedPrefaceLines(prefaceLines, resonanceBrief)
+  ) {
+    failures.add("opening_copy_invalid");
+  }
+  const resonanceEchoLines =
+    storyPromptVersion === STORY_PROMPT_VERSION_V2 &&
+    isUniversalPreface(prefaceLines)
+      ? [eyebrow]
+      : lines;
+  if (
+    resonanceEchoLines.some(
       (line) =>
         /\{feeling\}|You wrote:/i.test(line) ||
         (resonanceBrief !== null && containsResonanceEcho(line, resonanceBrief)),
@@ -734,7 +773,16 @@ function deepFreeze<T>(value: T): T {
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
-  return value !== null && typeof value === "object";
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasExactKeys(
+  value: Record<string, unknown>,
+  expected: readonly string[],
+): boolean {
+  return (
+    Object.keys(value).sort().join(",") === [...expected].sort().join(",")
+  );
 }
 
 function isStringArray(value: unknown): value is string[] {

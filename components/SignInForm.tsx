@@ -109,6 +109,9 @@ export function SignInForm({ linkError }: Props) {
 
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email: trimmedEmail,
+      // /signin is for returning owners. New ownership starts anonymously at
+      // intake so the reader sees the account-wide Save decision first.
+      options: { shouldCreateUser: false },
     });
     if (otpError) {
       setError(

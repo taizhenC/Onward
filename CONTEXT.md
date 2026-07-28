@@ -46,6 +46,17 @@ does not extend the Recovery Context deadline.
 Avoid: `copy` or `export`. Saving changes the owner's account lifecycle; it
 does not create a second story.
 
+The durable record of this choice belongs to the owner, not to each Session.
+One Save covers the Owner Stories already attached to the account and any the
+same permanent owner creates later. A sent-but-unconfirmed email is not Save:
+the guest and every Owner Story remain temporary until Auth commits the account
+transition and the application-owned Save State in the same database
+transaction.
+
+For accounts made permanent before Save State existed, use
+`legacy_permanent_observed`. It proves only that the account was already
+permanent when the migration ran; it must not invent an earlier save timestamp.
+
 ## Bounded Record
 
 A closed, purpose-specific record with a fixed maximum lifetime. Feedback,

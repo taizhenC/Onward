@@ -1,7 +1,7 @@
 # Roadmap Implementation Status
 
 **Authoritative objective:** finish every item in `feature_roadmap.md`.  
-**Status date:** July 26, 2026
+**Status date:** July 28, 2026
 **Evidence rule:** an item is `Complete` only when every acceptance criterion is implemented and directly verified. Passing a neighboring test is not sufficient.
 
 ## Status meanings
@@ -18,7 +18,7 @@
 |---|---|---|---|
 | P0-01 | External gate | A versioned end-to-end benchmark protocol and code-owned policy now define paired baseline/candidate evaluation over exact v5 artifacts and published StorySpecs. The evaluator verifies HMAC-bound protected inputs, immutable split/cohort manifests, full artifact/spec hashes and validators, exact production recipe/runtime identity, candidate/holdout/content chronology, frozen reviewer assignments, independent closed-rubric reviews, consent/representation/coverage, factual/tone/privacy failures, outcome floors, and candidate non-inferiority. Every artifact/spec and the final public evidence are scanned against every protected disclosure, including meaningful short and Unicode-confusable echoes. Aggregate evidence is content-addressed, recomputed on parse, append-only in CI, and can pass only when an externally supplied Ed25519 custodian key verifies a signature over both the complete private packet and deterministic safe result; unverified proofs are omitted. Synthetic fixtures remain non-passing, promotion authority is always false, and a 74-assertion adversarial suite exercises tampering and fail-closed behavior. | Approve and operate the real consent protocol; recruit at least 150 target-audience sessions and 75 feedback responses per required arm; freeze and seal a genuine protected holdout; publish the launch StorySpecs; run independent expert/target-reader review; provision a protected custodian key, access-log procedure, and base-owned signing/verification workflow outside the repository; then commit the resulting metrics-only launch-candidate evidence. No real study, holdout, review packet, trusted custodian, or protected evidence-authority workflow currently exists. |
 | P0-02 | In progress | Versioned StorySpec contract, atomic facts, sentence-level evidence maps, source-scope gates, entity/quote links, chronology checks, dramatization limits, reviewer metadata, immutable database versions, fail-closed runtime loading, protected draft seeding, and independent per-stage publish/retire operations are implemented. All 50 legacy stages convert to valid review drafts, and all 50 are rejected when publication is attempted. | The generated drafts intentionally retain broad evidence references and empty beat-to-fact links. Editorial researchers must create exact/bounded locators, resolve quotes/entities/causal claims, and record real reviews for the launch subset before any stage is publicly eligible. |
-| P0-03 | In progress | New sessions create a strict short-lived ResonanceBrief and pass only its governed projection into a separate Story Composer/provider boundary. The model can select one allowed transition role and approved transition/bridge template IDs, but cannot author prose or claims. The composer deterministically renders those choices onto the canonical seven-beat StorySpec, preserves exact fact/entity/quote IDs and chronology, validates privacy/tone/zones/recipe/hash, retries once with closed failure codes, then returns a complete canonical artifact on provider, output, privacy, or validator failure. Immutable v5 artifacts pin analyzer/match/model/composer/validator/boundary/template/plan versions plus public provenance; v1-v4 replay remains supported without reconstructing old provenance. | Obtain blind human resonance/editorial/safety evidence for the hybrid recipe, add real Postgres transaction/JSONB round-trip evidence, production latency/fallback gates and dashboards, and an editorially safe migration plan for permanent pre-0005 sessions before `Complete`. |
+| P0-03 | In progress | New sessions create a strict short-lived ResonanceBrief and pass only its governed projection into a separate Story Composer/provider boundary. The model can select one allowed transition role and approved transition/bridge template IDs, but cannot author prose or claims. The composer deterministically renders those choices onto the canonical seven-beat StorySpec, preserves exact fact/entity/quote IDs and chronology, validates privacy/tone/zones/recipe/hash, retries once with closed failure codes, then returns a complete canonical artifact on provider, output, privacy, or validator failure. Immutable v5 artifacts pin analyzer/match/model/composer/validator/boundary/template/plan versions plus public provenance; v1-v4 replay remains supported without reconstructing old provenance. Opening-copy and hybrid requests now execute the explicit persisted `storyPromptVersion` through a closed policy/contract registry: local evaluation can exercise an unpromoted supported challenger, while production rejects every non-selected identity before provider use. V1 provider and displayed-copy bytes are frozen by literal and SHA-256 fixtures, and the runtime prompt projection physically excludes the validation-only figure name. | Append and evaluate the bounded personalized-preface challenger; obtain blind human resonance/editorial/safety evidence for the hybrid recipe; add real Postgres transaction/JSONB round-trip evidence, production latency/fallback gates and dashboards, and an editorially safe migration plan for permanent pre-0005 sessions before `Complete`. |
 | P0-04 | Complete | All 50 canonical bridges and the demo no longer repeat intake; legacy placeholders are sanitized before chunking. Generated opening and hybrid bridge/transition paths receive only the governed ResonanceBrief projection and are rejected through HMAC exact/eight-word/named-detail/Unicode fingerprints plus placeholder, promise, diagnosis, prescription, equivalence, and closed-template gates. Mock provider capture proves raw text, names, dates, anchors, and hashes do not enter either prose request; artifacts store none of the brief or fingerprints. The approved initial-composition failure owner passes thrown values through a string-hostile reducer that retains only closed error/status/latency buckets; canary tests prove exception messages, stacks, causes, and bodies are discarded. The versioned derived-output contract now defines seven closed lifecycle classes, 20 surfaces (including age, closed hybrid-retry feedback, and owner Save State), five current provider exchanges, opaque consumer-allowlisted outputs, request-only opening candidates, exchange-branded request bodies, reduced errors, and an exact inventory of all current direct TypeScript network paths and provider-boundary imports. Every current application table has a named class, and CI rejects unregistered sinks, consumers, provider calls, storage tables, or direct network paths. | None for this code-scoped bug fix. Provider account settings, infrastructure logs, and backup/PITR behavior remain explicit P0-14 external gates rather than hidden P0-04 claims. |
 | P0-05 | In progress | A versioned deterministic disposition policy converts server-only confidence and age fallback into close, adjacent, one-question, or no-close states. Medium/low first passes ask one six-option question; an answered low match stops honestly without persistence; explicit closest-story acceptance forces partial framing. The preface visibly states that the lives are not the same. Owner/input-bound opaque recovery credits are single-use, purpose-limited, rate-limit safe, and expire in ten minutes. | Calibrate thresholds and prove the question's expected value on the consented holdout; add measured try-another/none-of-these recovery with P0-10; complete browser usability/accessibility evidence and include miss/clarification performance in the release benchmark. |
 | P0-06 | Partial | Functional age/free-text intake, honest expectation copy, just-in-time privacy, optional non-clinical story limits, one bounded clarification, retained in-memory draft across no-eligible/no-close recovery, and gentle focused states are implemented. Client and server now share the same whole-number age plus NFC code-point disclosure limits, including emoji-safe counting. | Stronger initial guided prompt/context, retry across full navigation/reload without unsafe persistence, and browser usability/accessibility evidence. |
@@ -862,6 +862,40 @@ Supabase, verify real Auth timing, lock/deadlock, RLS/grants, same/cross-device,
 cascade, limiter, cron, rollback, and supported-browser accessibility canaries,
 and complete the provider, infrastructure, backup/PITR, legal, market, youth,
 optional-note, and shared-editorial-retention decisions listed in the matrix.
+
+### Stacked branch: `codex/p0-versioned-opening-copy-policy`
+
+This compatibility slice creates the safe release seam needed for a more
+relatable opening without changing current production behavior. Story prompt
+contracts are now executable by an explicit immutable identity carried in the
+recipe execution plan. Opening-copy and hybrid provider calls require that
+identity from the selected match recipe; local evaluation may exercise a
+registered unpromoted challenger, while served production accepts only the
+selected production identity.
+
+The v1 policy retains the exact released eyebrow prompt, output sanitizer,
+anti-echo guard, curated stub eyebrow, and universal preface. Its provider
+projection removes the figure display name as a runtime field rather than
+depending on prompt code to ignore it. Unknown identities fail with closed
+errors before provider access. No recipe manifest, prompt-release record,
+promotion, migration, `MatchRecipe`, artifact schema, or stored replay payload
+changed.
+
+| Command or review | Result |
+|---|---|
+| `npm run check-opening-copy-policy` | Pass; exact v1 request SHA-256, literal displayed-copy fixtures, provider-name exclusion, closed unknown-version behavior, and recipe-plan identity |
+| `npm run check-prompt-releases -- 98595c84d5aad3d4a89509cc7f383731fd967bf3` | Pass; the released prompt registry remains append-only |
+| `npm run check-recipe-immutability -- 98595c84d5aad3d4a89509cc7f383731fd967bf3` | Pass; existing recipe objects and hashes are unchanged |
+| `npm run check-story-quality-immutability -- 98595c84d5aad3d4a89509cc7f383731fd967bf3` | Pass; protected benchmark evidence remains append-only |
+| Every command in `CI / verify` before build | Pass |
+| `npm run smoke` | Pass; 20/20 application regressions |
+| `NEXT_DIST_DIR=.next-ci PERSISTENCE=memory ONWARD_ALLOW_MEMORY_IN_PRODUCTION=true LLM_PROVIDER=stub EMBEDDING_PROVIDER=stub RETRIEVAL_MODE=keyword npm run build` | Pass; optimized production build generated all 23 app surfaces |
+| Independent standards/spec review | All findings resolved; no remaining actionable issue |
+
+P0-03 remains `In progress`. The next stacked slice may append a bounded,
+server-rendered personalized-preface challenger, but production selection must
+remain v1 until the existing blind human, editorial, safety, latency, fallback,
+and real-Postgres gates are satisfied.
 
 ## Completion audit rule
 

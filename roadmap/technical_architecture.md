@@ -732,8 +732,10 @@ guide, and code registry:
 
 Migration `0022` now records that decision once per owner. Its narrow
 `auth.users` trigger writes `anonymous_upgrade` only in the confirmed
-anonymous-to-permanent transaction and records direct permanent creation
-separately. Current evidence receives one exact `saved_at = observed_at`;
+anonymous-to-permanent transaction. Returning-owner sign-in explicitly refuses
+account creation, and a directly created permanent account receives no Save
+claim and fails the coverage gate. Current evidence receives one exact
+`saved_at = observed_at`;
 pre-migration permanent owners receive `legacy_permanent_observed` with
 `saved_at = NULL`, so history is not fabricated. The row is immutable,
 forced-RLS/default-deny, readable only through the server boundary, and removed

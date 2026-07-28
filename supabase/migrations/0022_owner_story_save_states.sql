@@ -22,7 +22,7 @@ create table public.owner_story_save_states (
 
   constraint owner_story_save_evidence_check check (
     (
-      evidence_kind in ('anonymous_upgrade', 'permanent_account_created')
+      evidence_kind = 'anonymous_upgrade'
       and saved_at is not null
       and saved_at = observed_at
       and save_policy_version = 'durable-account-save-v1-2026-07'
@@ -78,15 +78,8 @@ set search_path = pg_catalog, public
 as $fn$
 declare
   v_now timestamptz := statement_timestamp();
-  v_evidence_kind text;
 begin
-  if tg_op = 'INSERT' and new.is_anonymous is not true then
-    v_evidence_kind := 'permanent_account_created';
-  elsif tg_op = 'UPDATE'
-    and old.is_anonymous is true
-    and new.is_anonymous is not true then
-    v_evidence_kind := 'anonymous_upgrade';
-  else
+  if old.is_anonymous is not true or new.is_anonymous is true then
     return new;
   end if;
 
@@ -102,7 +95,7 @@ begin
     new.id,
     v_now,
     v_now,
-    v_evidence_kind,
+    'anonymous_upgrade',
     'durable-account-save-v1-2026-07',
     'derived-output-retention-v1-2026-07',
     'owned_story'
@@ -240,7 +233,7 @@ as $fn$
         and position(
           'permanent_account_created'
           in constraint_row.definition
-        ) > 0
+        ) = 0
         and position(
           'legacy_permanent_observed'
           in constraint_row.definition
@@ -302,7 +295,7 @@ as $fn$
           and procedure_row.proname =
             'record_owner_story_save_from_auth_v1'
           and position(
-            'after insert or update of is_anonymous on auth.users'
+            'after update of is_anonymous on auth.users'
             in lower(pg_get_triggerdef(trigger_row.oid))
           ) > 0
       ) = 1
@@ -335,11 +328,19 @@ as $fn$
         where procedure_row.proname =
           'record_owner_story_save_from_auth_v1'
           and position(
-            'permanent_account_created'
+            'anonymous_upgrade'
             in lower(procedure_row.prosrc)
           ) > 0
           and position(
-            'anonymous_upgrade'
+            'permanent_account_created'
+            in lower(procedure_row.prosrc)
+          ) = 0
+          and position(
+            'old.is_anonymous is not true'
+            in lower(procedure_row.prosrc)
+          ) > 0
+          and position(
+            'new.is_anonymous is true'
             in lower(procedure_row.prosrc)
           ) > 0
           and position(
@@ -472,10 +473,7 @@ as $fn$
           'derived-output-retention-v1-2026-07'
         or save_row.retention_class <> 'owned_story'
         or (
-          save_row.evidence_kind in (
-            'anonymous_upgrade',
-            'permanent_account_created'
-          )
+          save_row.evidence_kind = 'anonymous_upgrade'
           and (
             save_row.saved_at is null
             or save_row.saved_at <> save_row.observed_at
@@ -493,7 +491,6 @@ as $fn$
         )
         or save_row.evidence_kind not in (
           'anonymous_upgrade',
-          'permanent_account_created',
           'legacy_permanent_observed'
         )
     ) as value
@@ -539,7 +536,7 @@ comment on function public.owner_story_save_schema_health_v1() is
 lock table auth.users in share row exclusive mode;
 
 create trigger onward_record_owner_story_save
-after insert or update of is_anonymous on auth.users
+after update of is_anonymous on auth.users
 for each row execute function public.record_owner_story_save_from_auth_v1();
 
 -- Existing permanent accounts were already retained under the original Auth

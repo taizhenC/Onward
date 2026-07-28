@@ -202,8 +202,9 @@ Migration `0022` is also schema-first compatible and must be applied before the
 state-aware Save UI. It creates a forced-RLS, service-read-only owner lifecycle
 row and installs a narrow trigger on `auth.users`. The trigger records
 `anonymous_upgrade` only when Auth confirms the `true` to non-true transition,
-records directly permanent users separately, and never touches Sessions,
-telemetry, or advisory locks. Existing permanent owners are backfilled as
+and never treats direct account creation as informed Save evidence or touches
+Sessions, telemetry, or advisory locks. `/signin` is returning-owner-only and
+sets `shouldCreateUser: false`. Existing permanent owners are backfilled as
 `legacy_permanent_observed` with `saved_at = NULL`; do not invent a historical
 confirmation time. The file takes a ten-second bounded Auth lock only after its
 catalog/helper DDL and limits each statement to 30 seconds, then installs the
@@ -213,8 +214,9 @@ Apply `0022`, run `npm run check-owner-story-save`, then run `npm run check-db`
 and require every `owner_story_save_schema_health_v1` boolean to be true before
 deploying the reader. In staging, create one guest, request email linking, prove
 no row exists while the email is merely pending, confirm it, and prove the same
-Auth ID has one exact `anonymous_upgrade` row. Also test a directly permanent
-account, a same-device and cross-device read, story deletion preserving the
+Auth ID has one exact `anonymous_upgrade` row. Also prove `/signin` cannot
+create a missing account, direct permanent creation fails the coverage gate,
+and test a same-device and cross-device read, story deletion preserving the
 owner row, and account deletion cascading it. If managed Auth confirmation
 fails because of the trigger, use
 `drop trigger onward_record_owner_story_save on auth.users;` as the immediate

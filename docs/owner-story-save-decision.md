@@ -13,11 +13,15 @@ owner:
 
 - `anonymous_upgrade` records the exact database time at which a temporary
   anonymous owner became permanent;
-- `permanent_account_created` records a permanent account that was created
-  directly; and
 - `legacy_permanent_observed` records only that an account was already
   permanent when the migration ran. Its `saved_at` is deliberately `NULL`
   because the original transition time is not recoverable.
+
+`/signin` is returning-owner-only and sets Supabase
+`shouldCreateUser: false`. A new permanent account is not a Save event: if any
+unreviewed path creates one directly after this migration, it receives no
+current Save State, projects as unavailable, and fails the database coverage
+health gate.
 
 The current policy is `durable-account-save-v1-2026-07`. Legacy observations use
 `legacy-pre-durable-save-v0`.
@@ -56,9 +60,8 @@ An owner-scoped row is the deeper boundary:
 
 Migration `0022` installs a narrow trigger on `auth.users`:
 
-1. a permanent Auth-user insert records `permanent_account_created`;
-2. an `is_anonymous: true -> false` update records `anonymous_upgrade`; and
-3. `ON CONFLICT DO NOTHING` preserves the first evidence and timestamp.
+1. an `is_anonymous: true -> false` update records `anonymous_upgrade`; and
+2. `ON CONFLICT DO NOTHING` preserves the first evidence and timestamp.
 
 The trigger inserts only the new owner-state row. It does not lock Sessions,
 telemetry flows, or the account-deletion advisory key. This is important:
@@ -101,6 +104,8 @@ covered by exact transition evidence may be backfilled only as
 
 - The server projects Save State; browser Auth session inspection is not
   retention authority.
+- Returning-owner sign-in cannot create a new account; new permanent ownership
+  begins only through the informed guest Save action.
 - A guest action is labeled as keeping all stories, because the decision is
   account-wide.
 - “Check your email” explicitly says the stories are still temporary.

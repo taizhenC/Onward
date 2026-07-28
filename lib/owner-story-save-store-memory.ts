@@ -3,7 +3,6 @@ import {
   LEGACY_OWNER_STORY_SAVE_POLICY_VERSION,
   OWNER_STORY_SAVE_POLICY_VERSION,
   OWNER_STORY_SAVE_RETENTION_POLICY_VERSION,
-  type OwnerStorySaveEvidenceKind,
   type OwnerStorySaveState,
 } from "./owner-story-save-types";
 
@@ -29,10 +28,7 @@ export function getMemoryOwnerStorySaveState(
 // without letting application code write Save State.
 export function _recordMemoryOwnerStorySaveTransitionForTests(input: {
   userId: string;
-  evidenceKind: Exclude<
-    OwnerStorySaveEvidenceKind,
-    "legacy_permanent_observed"
-  >;
+  evidenceKind: "anonymous_upgrade";
   occurredAt: number;
 }): OwnerStorySaveState {
   const existing = saveStates.get(input.userId);

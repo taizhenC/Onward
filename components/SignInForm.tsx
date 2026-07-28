@@ -109,6 +109,9 @@ export function SignInForm({ linkError }: Props) {
 
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email: trimmedEmail,
+      // /signin is a returning-owner surface. Creating a new permanent user
+      // here would bypass the informed guest-to-permanent Save decision.
+      options: { shouldCreateUser: false },
     });
     if (otpError) {
       setError(

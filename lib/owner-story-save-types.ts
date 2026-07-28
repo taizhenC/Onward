@@ -7,7 +7,6 @@ export const OWNER_STORY_SAVE_RETENTION_POLICY_VERSION =
 
 export const OWNER_STORY_SAVE_EVIDENCE_KINDS = Object.freeze([
   "anonymous_upgrade",
-  "permanent_account_created",
   "legacy_permanent_observed",
 ] as const);
 
@@ -73,10 +72,7 @@ export function parseOwnerStorySaveState(
   const retention = parseCurrentRetention(value);
   const evidenceKind = value.evidence_kind;
 
-  if (
-    evidenceKind === "anonymous_upgrade" ||
-    evidenceKind === "permanent_account_created"
-  ) {
+  if (evidenceKind === "anonymous_upgrade") {
     if (
       typeof value.saved_at !== "string" ||
       value.save_policy_version !== OWNER_STORY_SAVE_POLICY_VERSION

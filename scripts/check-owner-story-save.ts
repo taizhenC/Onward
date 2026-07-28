@@ -56,7 +56,7 @@ async function main(): Promise<void> {
   console.log("PASS temporary/saved/legacy/integrity-failure presentation matrix");
   console.log("PASS Auth-bound atomic SQL, legacy honesty, default-deny, and health proof");
   console.log("PASS account-wide deletion boundary and story-deletion independence");
-  console.log("PASS server-authoritative UI with pending-confirmation honesty");
+  console.log("PASS returning-only sign-in and server-authoritative Save UI");
   console.log("PASS save/reopen telemetry remains a non-producing contract reservation");
 }
 
@@ -71,13 +71,6 @@ function checkClosedParser(failures: string[]): void {
     retention_class: "owned_story",
   };
   const current = parseOwnerStorySaveState(currentRow, OWNER_A);
-  const created = parseOwnerStorySaveState(
-    {
-      ...currentRow,
-      evidence_kind: "permanent_account_created",
-    },
-    OWNER_A,
-  );
   const legacy = parseOwnerStorySaveState(
     {
       ...currentRow,
@@ -90,12 +83,11 @@ function checkClosedParser(failures: string[]): void {
 
   if (
     OWNER_STORY_SAVE_EVIDENCE_KINDS.join(",") !==
-      "anonymous_upgrade,permanent_account_created,legacy_permanent_observed" ||
+      "anonymous_upgrade,legacy_permanent_observed" ||
     !Object.isFrozen(OWNER_STORY_SAVE_EVIDENCE_KINDS) ||
     current.savedAt !== CURRENT_TIME_MS ||
     current.observedAt !== CURRENT_TIME_MS ||
     current.evidenceKind !== "anonymous_upgrade" ||
-    created.evidenceKind !== "permanent_account_created" ||
     legacy.savedAt !== null ||
     legacy.evidenceKind !== "legacy_permanent_observed" ||
     current.retention.retentionClass !== "owned_story" ||
@@ -103,7 +95,6 @@ function checkClosedParser(failures: string[]): void {
       DERIVED_OUTPUT_RETENTION_POLICY_VERSION ||
     !Object.isFrozen(current) ||
     !Object.isFrozen(current.retention) ||
-    !Object.isFrozen(created) ||
     !Object.isFrozen(legacy)
   ) {
     failures.push("valid current/legacy evidence did not parse to exact frozen values");
@@ -159,6 +150,11 @@ function checkClosedParser(failures: string[]): void {
     [
       "unknown evidence",
       { ...currentRow, evidence_kind: "email_sent" },
+      OWNER_A,
+    ],
+    [
+      "direct account creation without informed Save",
+      { ...currentRow, evidence_kind: "permanent_account_created" },
       OWNER_A,
     ],
   ];
@@ -232,7 +228,7 @@ function checkMemoryFirstEvidenceWins(failures: string[]): void {
   });
   const replay = _recordMemoryOwnerStorySaveTransitionForTests({
     userId: OWNER_A,
-    evidenceKind: "permanent_account_created",
+    evidenceKind: "anonymous_upgrade",
     occurredAt: CURRENT_TIME_MS + 60_000,
   });
   const legacyAttempt = _recordLegacyMemoryOwnerStorySaveForTests({
@@ -423,7 +419,7 @@ function checkMigrationContract(failures: string[]): void {
   }
 
   const requiredEvidence = [
-    "evidence_kind in ('anonymous_upgrade', 'permanent_account_created')",
+    "evidence_kind = 'anonymous_upgrade'",
     "saved_at is not null",
     "saved_at = observed_at",
     "save_policy_version = 'durable-account-save-v1-2026-07'",
@@ -436,7 +432,8 @@ function checkMigrationContract(failures: string[]): void {
   if (
     requiredEvidence.some(
       (fragment) => !normalizeSql(tableDefinition).includes(normalizeSql(fragment)),
-    )
+    ) ||
+    /permanent_account_created/i.test(tableDefinition)
   ) {
     failures.push("0022 constraints do not close current, legacy, and retention evidence");
   }
@@ -444,12 +441,9 @@ function checkMigrationContract(failures: string[]): void {
   const normalizedAuthBody = normalizeSql(authBody);
   const authStatements = stripSqlStringLiterals(authBody);
   const requiredAuthBody = [
-    "tg_op = 'insert' and new.is_anonymous is not true",
-    "v_evidence_kind := 'permanent_account_created'",
-    "tg_op = 'update' and old.is_anonymous is true and new.is_anonymous is not true",
-    "v_evidence_kind := 'anonymous_upgrade'",
+    "old.is_anonymous is not true or new.is_anonymous is true",
     "insert into public.owner_story_save_states",
-    "new.id, v_now, v_now, v_evidence_kind",
+    "new.id, v_now, v_now, 'anonymous_upgrade'",
     "'durable-account-save-v1-2026-07'",
     "'derived-output-retention-v1-2026-07'",
     "'owned_story'",
@@ -460,6 +454,7 @@ function checkMigrationContract(failures: string[]): void {
     requiredAuthBody.some(
       (fragment) => !normalizedAuthBody.includes(normalizeSql(fragment)),
     ) ||
+    /permanent_account_created/i.test(authBody) ||
     (authStatements.match(/\binsert\s+into\b/gi) ?? []).length !== 1 ||
     /\b(?:update|delete\s+from|truncate|execute|perform|pg_notify)\b/i.test(
       authStatements,
@@ -493,7 +488,7 @@ function checkMigrationContract(failures: string[]): void {
     triggerIndex < lockIndex ||
     backfillIndex < triggerIndex ||
     !normalizeSql(authTrigger).includes(
-      "after insert or update of is_anonymous on auth.users",
+      "after update of is_anonymous on auth.users",
     )
   ) {
     failures.push("0022 does not lock, install the Auth trigger, then backfill in one bounded order");
@@ -590,6 +585,7 @@ function checkAuthoritativeUi(failures: string[]): void {
   const player = read("../components/StoryPlayer.tsx");
   const storyPage = read("../app/story/[sessionId]/page.tsx");
   const storiesPage = read("../app/stories/page.tsx");
+  const signIn = read("../components/SignInForm.tsx");
 
   const cardHasClosedStatus =
     /OwnerStorySavePresentation/.test(card) &&
@@ -645,6 +641,15 @@ function checkAuthoritativeUi(failures: string[]): void {
     /what you wrote before[^.]{0,120}(?:stays|saved|kept)/i.test(storiesPage)
   ) {
     failures.push("story library does not distinguish temporary, saved, and integrity-failure states");
+  }
+
+  if (
+    !/signInWithOtp\s*\(\s*\{[\s\S]*?options\s*:\s*\{\s*shouldCreateUser\s*:\s*false\s*\}/.test(
+      signIn,
+    ) ||
+    /signUp\s*\(/.test(signIn)
+  ) {
+    failures.push("returning-owner sign-in can create a permanent account without informed Save");
   }
 }
 

@@ -1,5 +1,6 @@
 import "./_smoke-bootstrap";
 import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { deleteMemoryAccount } from "../lib/account-deletion-store-memory";
 import {
@@ -757,7 +758,7 @@ function walkTypeScript(relativeDirectory: string): string[] {
   const directory = fileURLToPath(new URL(relativeDirectory, import.meta.url));
   const results: string[] = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    const path = `${directory}\\${entry.name}`;
+    const path = join(directory, entry.name);
     if (entry.isDirectory()) {
       results.push(...walkAbsoluteTypeScript(path));
     } else if (entry.isFile() && /\.(?:ts|tsx)$/.test(entry.name)) {
@@ -770,7 +771,7 @@ function walkTypeScript(relativeDirectory: string): string[] {
 function walkAbsoluteTypeScript(directory: string): string[] {
   const results: string[] = [];
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    const path = `${directory}\\${entry.name}`;
+    const path = join(directory, entry.name);
     if (entry.isDirectory()) {
       results.push(...walkAbsoluteTypeScript(path));
     } else if (entry.isFile() && /\.(?:ts|tsx)$/.test(entry.name)) {

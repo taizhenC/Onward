@@ -203,11 +203,13 @@ async function checkProjectionMatrix(failures: string[]): Promise<void> {
   if (
     anonymousWithoutEvidence.status !== "temporary" ||
     permanentWithoutEvidence.status !== "unavailable" ||
+    permanentWithoutEvidence.reason !== "integrity_conflict" ||
     currentPermanent.status !== "saved" ||
     currentPermanent.evidence !== "current" ||
     legacyPermanent.status !== "saved" ||
     legacyPermanent.evidence !== "legacy" ||
     impossibleAnonymous.status !== "unavailable" ||
+    impossibleAnonymous.reason !== "integrity_conflict" ||
     [
       anonymousWithoutEvidence,
       permanentWithoutEvidence,
@@ -342,7 +344,8 @@ function checkSupabaseReadBoundary(failures: string[]): void {
     /\.rpc\s*\(/.test(store) ||
     !boundary.includes('assertRetentionSink("owner.save_state", "request_memory")') ||
     !boundary.includes('assertRetentionSink("owner.save_state", "owner_response")') ||
-    !boundary.includes('status: "unavailable"')
+    !boundary.includes('reason: "read_error"') ||
+    !boundary.includes('reason: "integrity_conflict"')
   ) {
     failures.push("Supabase Save State seam is not an exact read-only, retention-gated boundary");
   }
@@ -618,6 +621,14 @@ function checkAuthoritativeUi(failures: string[]): void {
     !/generated wording/i.test(card) ||
     !/age used to find it/i.test(card) ||
     !/fixed 60-day deadline/i.test(card) ||
+    !/sentTo/.test(card) ||
+    !/Change email or resend/.test(card) ||
+    !/Check again/.test(card) ||
+    !/reason:\s*["']read_error["']/.test(card) ||
+    /href=["']\/signin["']/.test(card) ||
+    !/aria-invalid=\{\s*requestError\s*===\s*["']email_exists["']/.test(
+      card,
+    ) ||
     /what you wrote before[^.]{0,120}(?:stays|saved|kept)/i.test(card)
   ) {
     failures.push("Save card does not use server-authoritative status or honest accessible pending copy");
@@ -644,6 +655,9 @@ function checkAuthoritativeUi(failures: string[]): void {
     !storiesPage.includes("getOwnerStorySavePresentation") ||
     !hasTemporaryLibraryCopy ||
     !hasUnavailableLibraryCopy ||
+    !/owner\.isAnonymous\s*&&\s*saveState\.status\s*!==\s*["']saved["']/.test(
+      storiesPage,
+    ) ||
     storiesPage.includes('?? "Saved story"') ||
     storiesPage.includes('aria-label="Saved story pages"') ||
     /(?:session|item)\.feeling/.test(storiesPage) ||

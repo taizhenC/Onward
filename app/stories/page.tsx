@@ -93,7 +93,7 @@ export default async function StoriesPage({ searchParams }: Props) {
           saveState={saveState}
         />
 
-        {saveState.status === "temporary" ? (
+        {owner.isAnonymous && saveState.status !== "saved" ? (
           <SaveStoriesCard
             isAnonymous={owner.isAnonymous}
             savePresentation={saveState}

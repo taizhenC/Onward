@@ -34,7 +34,8 @@ The current policy is `durable-account-save-v1-2026-07`. Legacy observations use
 | Confirmation pending | Browser has sent an email-change request, but Auth is still anonymous and no Save State exists | Still temporary; sending an email does not change retention. |
 | Saved | Verified permanent Auth owner and a current Save State with `saved_at` | Existing and future Owner Stories follow the permanent owner lifecycle. |
 | Legacy saved | Verified permanent Auth owner and `legacy_permanent_observed` | Stories follow the permanent owner lifecycle, but no historical save time is claimed. |
-| Integrity unavailable | Auth and Save State contradict each other or the state cannot be read | The UI must not make a retention promise. Story reading remains available. |
+| Read unavailable | The Save State could not be read or validated | The UI makes no retention promise and offers an immediate retry. Story reading remains available. |
+| Integrity unavailable | Verified Auth and Save State contradict each other | The UI must not make a retention promise or offer a Save transition from the contradictory state. Story reading remains available. |
 | Deleted | Auth owner and state row are absent | Existing account deletion semantics remain authoritative. |
 
 Completion is orthogonal. A temporary or saved Owner Story may still be open.
@@ -110,6 +111,10 @@ covered by exact transition evidence may be backfilled only as
 - A guest action is labeled as keeping all stories, because the decision is
   account-wide.
 - “Check your email” explicitly says the stories are still temporary.
+- The pending state names the destination email and lets the reader correct it
+  or resend without abandoning the temporary owner.
+- A transient state-read failure is distinct from a verified integrity
+  contradiction and offers an immediate server refresh.
 - Saved copy names generated wording and age as durable Owner Story data while
   retaining the fixed Recovery Context deadline.
 - A missing or contradictory state never falls back to “saved.”

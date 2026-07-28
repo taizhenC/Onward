@@ -24,15 +24,17 @@ export async function getOwnerStorySavePresentation(
         ? await getSupabaseOwnerStorySaveState(owner.userId)
         : getMemoryOwnerStorySaveState(owner.userId);
   } catch {
-    return present({ status: "unavailable" });
+    return present({ status: "unavailable", reason: "read_error" });
   }
 
   if (owner.isAnonymous) {
     return state
-      ? present({ status: "unavailable" })
+      ? present({ status: "unavailable", reason: "integrity_conflict" })
       : present({ status: "temporary" });
   }
-  if (!state) return present({ status: "unavailable" });
+  if (!state) {
+    return present({ status: "unavailable", reason: "integrity_conflict" });
+  }
   return present({
     status: "saved",
     evidence:

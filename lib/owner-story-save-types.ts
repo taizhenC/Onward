@@ -33,7 +33,10 @@ export type OwnerStorySavePresentation =
       status: "saved";
       evidence: "current" | "legacy";
     }>
-  | Readonly<{ status: "unavailable" }>;
+  | Readonly<{
+      status: "unavailable";
+      reason: "read_error" | "integrity_conflict";
+    }>;
 
 export type PersistedOwnerStorySaveRow = Readonly<{
   user_id: unknown;

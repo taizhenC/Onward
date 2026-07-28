@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import type { OwnerStorySavePresentation } from "@/lib/owner-story-save-types";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
@@ -22,9 +23,13 @@ export function SaveStoriesCard({
   isAnonymous,
   savePresentation,
 }: Props) {
+  const router = useRouter();
+  const [refreshing, startRefresh] = useTransition();
   const [requestMode, setRequestMode] = useState<RequestMode>("idle");
   const [email, setEmail] = useState("");
+  const [sentTo, setSentTo] = useState<string | null>(null);
   const [requestError, setRequestError] = useState<RequestError>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
   const errorRef = useRef<HTMLParagraphElement>(null);
 
@@ -33,7 +38,7 @@ export function SaveStoriesCard({
     savePresentation,
   )
     ? savePresentation
-    : ({ status: "unavailable" } as const);
+    : ({ status: "unavailable", reason: "integrity_conflict" } as const);
 
   const trimmedEmail = email.trim();
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail);
@@ -69,7 +74,18 @@ export function SaveStoriesCard({
     }
 
     setRequestMode("confirmation_pending");
+    setSentTo(trimmedEmail);
     focusAfterRender(statusRef);
+  }
+
+  function editConfirmationEmail() {
+    setRequestMode("idle");
+    setSentTo(null);
+    setRequestError(null);
+    requestAnimationFrame(() => {
+      emailRef.current?.focus();
+      emailRef.current?.select();
+    });
   }
 
   return (
@@ -83,9 +99,18 @@ export function SaveStoriesCard({
       {saveState.status === "saved" ? (
         <SavedState />
       ) : saveState.status === "unavailable" ? (
-        <UnavailableState />
+        <UnavailableState
+          isAnonymous={isAnonymous}
+          reason={saveState.reason}
+          refreshing={refreshing}
+          onRetry={() => startRefresh(() => router.refresh())}
+        />
       ) : requestMode === "confirmation_pending" ? (
-        <ConfirmationPendingState statusRef={statusRef} />
+        <ConfirmationPendingState
+          statusRef={statusRef}
+          sentTo={sentTo ?? trimmedEmail}
+          onEditEmail={editConfirmationEmail}
+        />
       ) : (
         <>
           <div className="space-y-3">
@@ -121,6 +146,7 @@ export function SaveStoriesCard({
             <label className="block">
               <span className="sr-only">Email</span>
               <input
+                ref={emailRef}
                 type="email"
                 value={email}
                 onChange={(event) => {
@@ -131,9 +157,13 @@ export function SaveStoriesCard({
                 required
                 placeholder="you@example.com"
                 autoComplete="email"
-                aria-invalid={requestError ? true : undefined}
+                aria-invalid={
+                  requestError === "email_exists" ? true : undefined
+                }
                 aria-describedby={
-                  requestError ? "owner-story-save-error" : undefined
+                  requestError === "email_exists"
+                    ? "owner-story-save-error"
+                    : undefined
                 }
                 className="font-ui block min-h-11 w-full border-b border-[var(--color-ink-soft)] bg-transparent px-1 py-2 text-sm focus:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
               />
@@ -190,7 +220,17 @@ function SavedState() {
   );
 }
 
-function UnavailableState() {
+function UnavailableState({
+  isAnonymous,
+  reason,
+  refreshing,
+  onRetry,
+}: {
+  isAnonymous: boolean;
+  reason: "read_error" | "integrity_conflict";
+  refreshing: boolean;
+  onRetry: () => void;
+}) {
   return (
     <div className="space-y-3">
       <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
@@ -200,18 +240,44 @@ function UnavailableState() {
         We cannot confirm permanent storage
       </h2>
       <p role="status" className="leading-relaxed text-[var(--color-ink-soft)]">
-        Onward cannot verify this account&apos;s durable save record right now,
-        so we are not promising that these stories will be kept. Refresh this
-        page or return later before relying on this as a permanent library.
+        {reason === "read_error"
+          ? `Onward could not read this ${isAnonymous ? "guest " : ""}account's durable save record just now, so we are not promising that these stories will be kept.`
+          : "The verified account details and durable save record do not agree, so Onward cannot safely promise permanent storage."}
       </p>
+      {reason === "read_error" ? (
+        <>
+          {isAnonymous ? (
+            <p className="leading-relaxed text-[var(--color-ink-soft)]">
+              Check again now before the guest cleanup window runs out.
+            </p>
+          ) : null}
+          <button
+            type="button"
+            onClick={onRetry}
+            disabled={refreshing}
+            className="font-ui min-h-11 border border-[var(--color-ink)] px-5 py-2 text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-wait disabled:opacity-50"
+          >
+            {refreshing ? "Checking…" : "Check again"}
+          </button>
+        </>
+      ) : (
+        <p className="leading-relaxed text-[var(--color-ink-soft)]">
+          Please return later before relying on this account as a permanent
+          library.
+        </p>
+      )}
     </div>
   );
 }
 
 function ConfirmationPendingState({
   statusRef,
+  sentTo,
+  onEditEmail,
 }: {
   statusRef: React.RefObject<HTMLParagraphElement | null>;
+  sentTo: string;
+  onEditEmail: () => void;
 }) {
   return (
     <div className="space-y-3">
@@ -227,15 +293,23 @@ function ConfirmationPendingState({
         role="status"
         className="leading-relaxed text-[var(--color-ink-soft)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
       >
-        We sent the link. Use it before guest cleanup runs. Only successful
-        confirmation makes this account permanent and keeps every story already
-        here and every story you create later until you delete it or the
-        account.
+        We sent the link to{" "}
+        <span className="break-all text-[var(--color-ink)]">{sentTo}</span>.
+        Use it before guest cleanup runs. Only successful confirmation makes
+        this account permanent and keeps every story already here and every
+        story you create later until you delete it or the account.
       </p>
       <p className="leading-relaxed text-[var(--color-ink-soft)]">
         Confirmation does not extend the fixed 60-day deadline for what you
         wrote before a story.
       </p>
+      <button
+        type="button"
+        onClick={onEditEmail}
+        className="font-ui min-h-11 text-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+      >
+        Change email or resend
+      </button>
     </div>
   );
 }
@@ -257,14 +331,8 @@ function RequestErrorMessage({
     >
       {kind === "email_exists" ? (
         <>
-          That email already has an account.{" "}
-          <Link
-            href="/signin"
-            className="underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
-          >
-            Sign in instead
-          </Link>
-          —but signing in will not transfer these temporary stories.
+          That email already has an account. Use another email to keep this
+          temporary library. Signing in cannot transfer these stories yet.
         </>
       ) : kind === "rate_limited" ? (
         "We just sent a link. Give it a minute before asking for another."

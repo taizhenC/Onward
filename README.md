@@ -232,15 +232,18 @@ Auth ID has one exact `anonymous_upgrade` row. Also prove `/signin` cannot
 create a missing account, direct permanent creation fails the coverage gate,
 and test a same-device and cross-device read, story deletion preserving the
 owner row, and account deletion cascading it. If managed Auth confirmation
-fails because of the trigger, use
-`drop trigger onward_record_owner_story_save on auth.users;` as the immediate
-rollback and keep existing rows immutable. Keep
-`STORY_CREATION_ENABLED=false` and the returning-only sign-in guard active
-until the trigger and guarded app are restored. Never serve a build that allows
-implicit signup or unguarded permanent story creation after `0022`. A permanent
-owner without a row projects as unavailable; any reviewed repair may backfill
-only an honest legacy observation. Repeat the canaries before re-enabling story
-creation.
+fails because of the trigger, keep `STORY_CREATION_ENABLED=false` and first
+activate edge maintenance for every Save surface and `/auth/confirm`
+email-change redemption. Prove an already-issued pending link cannot redeem;
+blocking only new link requests is not enough. Then use
+`drop trigger onward_record_owner_story_save on auth.users;` and keep existing
+rows immutable. Keep confirmation maintenance and the returning-only sign-in
+guard active until the trigger and guarded app are restored, all health flags
+are true, and confirmation canaries pass. Never serve a build that allows
+implicit signup, redeemable unguarded Save links, or unguarded permanent story
+creation after `0022`. A permanent owner without a row projects as unavailable;
+any reviewed repair may backfill only an honest legacy observation. Remove
+confirmation maintenance and re-enable story creation only after the canaries.
 
 Prompt version labels are not trusted by themselves: `config/prompt-releases.json`
 is append-only, and each active rerank/story version binds the exact canonical
@@ -445,7 +448,7 @@ the staging dispatcher healthy. Disable it again after the exercise. These are
 real-Postgres release exercises; `npm run check-telemetry-dispatcher` is a
 hermetic structural gate, not concurrency, cron, or dashboard-privacy evidence.
 
-Rollback compatibility is deliberately narrow. Keep migrations `0011`-`0022` installed during the application rollback window; the older application-compatible domain RPCs remain, and a pre-deletion application simply exposes no delete action. After `0020`, however, every build that creates stories must write the expanded registry-backed MatchRecipe; use the story kill switch instead of rolling back to a pre-registry writer. Never restore direct service-role `sessions` DELETE or remove the rate-limit owner FK while old/new instances overlap. A pre-0016 application loses alternate terminal, match-calibration, and ready-artifact telemetry; a pre-0015 application also loses transactional alternate-request events; a pre-0014 application also loses transactional feedback events; a pre-0013 application also loses transactional progress/completion events; a v3 application loses transactional match-producer completeness; and a v2 application stops registering/binding new flows and is incident-only. None restores the pre-`0011` direct-write telemetry paths. Migration `0017` also intentionally revokes service-role execution of the raw-row v1 claim and plain ACK paths, so do not roll back to an outbox worker that requires them. Migration `0021` remains compatible with older RPC writers through database defaults; do not drop its labels or immutability trigger during rollback. After `0022`, never roll back under public traffic to a build that permits implicit signup or lacks the permanent-owner Save guard. Keep `STORY_CREATION_ENABLED=false` and the returning-only sign-in guard active until the full guarded app is restored; keep the immutable Save rows. If the managed-Auth trigger itself causes confirmation failures, use the documented trigger-only rollback rather than dropping the state table or fabricating timestamps.
+Rollback compatibility is deliberately narrow. Keep migrations `0011`-`0022` installed during the application rollback window; the older application-compatible domain RPCs remain, and a pre-deletion application simply exposes no delete action. After `0020`, however, every build that creates stories must write the expanded registry-backed MatchRecipe; use the story kill switch instead of rolling back to a pre-registry writer. Never restore direct service-role `sessions` DELETE or remove the rate-limit owner FK while old/new instances overlap. A pre-0016 application loses alternate terminal, match-calibration, and ready-artifact telemetry; a pre-0015 application also loses transactional alternate-request events; a pre-0014 application also loses transactional feedback events; a pre-0013 application also loses transactional progress/completion events; a v3 application loses transactional match-producer completeness; and a v2 application stops registering/binding new flows and is incident-only. None restores the pre-`0011` direct-write telemetry paths. Migration `0017` also intentionally revokes service-role execution of the raw-row v1 claim and plain ACK paths, so do not roll back to an outbox worker that requires them. Migration `0021` remains compatible with older RPC writers through database defaults; do not drop its labels or immutability trigger during rollback. After `0022`, never roll back under public traffic to a build that permits implicit signup or lacks the permanent-owner Save guard. Keep `STORY_CREATION_ENABLED=false`, the returning-only sign-in guard, Save-surface maintenance, and `/auth/confirm` email-change blocking active until the full guarded app and trigger are restored and their health/confirmation canaries pass; already-issued links must remain unredeemable during the gap. Keep the immutable Save rows. If the managed-Auth trigger itself causes confirmation failures, use the documented trigger-only rollback rather than dropping the state table or fabricating timestamps.
 
 Before an application rollback or dispatcher incident, disable aggregation
 through the dedicated control; do not drop the rollup/control tables,

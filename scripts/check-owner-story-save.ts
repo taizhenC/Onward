@@ -738,10 +738,14 @@ function checkIntegrationWiring(failures: string[]): void {
     /The migration is additive and schema-first/i.test(decision) ||
     !/coordinated (?:production )?cutover/i.test(readme) ||
     !/STORY_CREATION_ENABLED=false/.test(readme) ||
-    !/returning-only sign-in guard active/i.test(readme) ||
+    !/returning-only sign-in\s+guard active/i.test(readme) ||
+    !/\/auth\/confirm[\s\S]{0,180}(?:pending|already-issued)/i.test(readme) ||
+    !/already-issued links must remain unredeemable/i.test(readme) ||
     !/coordinated\s+cutover/i.test(decision) ||
     !/STORY_CREATION_ENABLED=false/.test(decision) ||
-    !/Never roll back to a build that allows implicit signup/i.test(decision) ||
+    !/\/auth\/confirm[\s\S]{0,180}(?:pending|already-issued)/i.test(decision) ||
+    !/blocking only new link requests is insufficient/i.test(decision) ||
+    !/Never roll back to\s+a build that allows implicit signup/i.test(decision) ||
     saveSurface.retentionClass !== "owned_story" ||
     !saveSurface.allowedSinks.includes("request_memory") ||
     !saveSurface.allowedSinks.includes("owner_response") ||

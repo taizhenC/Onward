@@ -115,14 +115,21 @@ then re-enable story creation. Keep destructive direct-permanent and
 story-creation rejection exercises in staging, followed by cleanup and a green
 health check. Do not leave a pre-guard application live after the migration.
 
-If the managed-Auth canary fails, run
-`drop trigger onward_record_owner_story_save on auth.users;` and keep existing
-state rows immutable. Keep `STORY_CREATION_ENABLED=false` and the returning-only
-sign-in guard active until the trigger and full guarded application are
-restored. Never roll back to a build that allows implicit signup or unguarded
-permanent story creation while public traffic is enabled. Permanent owners
-without a row project as unavailable; any reviewed repair may backfill only an
-honest `legacy_permanent_observed` row and must never fabricate `saved_at`.
+If the managed-Auth canary fails, first keep
+`STORY_CREATION_ENABLED=false` and activate an edge maintenance boundary that
+blocks every Save surface plus `/auth/confirm` email-change redemption. Verify
+an already-issued pending confirmation link reaches maintenance and cannot
+change `is_anonymous`; blocking only new link requests is insufficient. Only
+then run `drop trigger onward_record_owner_story_save on auth.users;` and keep
+existing state rows immutable. Keep confirmation maintenance and the
+returning-only sign-in guard active until the reviewed trigger and full guarded
+application are restored, every health flag is true, and confirmation canaries
+pass. Remove confirmation maintenance only after that point. Never roll back to
+a build that allows implicit signup, redeemable unguarded Save links, or
+unguarded permanent story creation while public traffic is enabled. Permanent
+owners without a row project as unavailable; any reviewed repair may backfill
+only an honest `legacy_permanent_observed` row and must never fabricate
+`saved_at`.
 
 ## UI contract
 

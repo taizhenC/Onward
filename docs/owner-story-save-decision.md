@@ -1,6 +1,6 @@
 # Durable Owner-Story Save Decision
 
-**Status:** Accepted for the P0-14 implementation
+**Status:** Implemented in code; managed-Supabase canary pending
 **Date:** 2026-07-27
 
 ## Decision
@@ -75,24 +75,27 @@ deletion removes the row only through the Auth FK cascade.
 
 The migration is additive and schema-first:
 
-1. take a bounded lock on `auth.users`;
-2. create and secure the state table;
+1. create and secure the state table, helpers, and boolean-only health RPC;
+2. take a late ten-second-bounded lock on `auth.users`;
 3. install the Auth trigger;
 4. backfill every already-permanent owner as `legacy_permanent_observed`;
-5. expose a service-only, boolean-only schema-health RPC; and
-6. release the lock at transaction commit.
+5. release the lock at transaction commit; and
+6. run the service-only health RPC before deploying the state-aware reader.
 
 The trigger is installed before the backfill while the Auth table is locked, so
-no account can become permanent between those two operations.
+no account can become permanent between those two operations. A 30-second
+statement timeout also bounds each migration statement.
 
 A pre-`0022` application remains functional after the migration. It will keep
 using Auth as before; the database starts recording the missing lifecycle
 evidence. Deploy the state-aware UI only after the live health gate passes.
 
-If the managed-Auth canary fails, drop only the Auth trigger and mark Save
-capture unavailable. Keep existing state rows immutable. When the trigger is
-restored, any permanent owner not covered by exact transition evidence may be
-backfilled only as `legacy_permanent_observed`; never fabricate `saved_at`.
+If the managed-Auth canary fails, run
+`drop trigger onward_record_owner_story_save on auth.users;` and keep existing
+state rows immutable. Permanent owners without a row automatically project as
+unavailable. When the reviewed trigger is restored, any permanent owner not
+covered by exact transition evidence may be backfilled only as
+`legacy_permanent_observed`; never fabricate `saved_at`.
 
 ## UI contract
 

@@ -82,7 +82,7 @@ Use A and B together, behind one code-owned retention registry:
   labeled as legacy classifications rather than being represented as having
   recorded a policy that did not yet exist. INSERT guards reject explicit
   legacy or wrong-class claims on later rows.
-- CI compares the retention registry with all 21 current application-owned
+- CI compares the retention registry with all 22 current application-owned
   tables, all five current provider exchanges, their reviewed transport owners,
   every current direct production JavaScript/TypeScript fetch path and forbidden
   alternate transport reference, and the exact 35-column inventory of the two
@@ -113,6 +113,7 @@ are durable control metadata, not retained Disclosure.
 - The contract does not govern Cerebras, Gemini, hosting, email, or backup/PITR
   retention after data leaves Onward's application boundary. Those remain
   external launch reviews.
-- A durable `saved_at` state and save-confirmation transaction remain a
-  separate P0-14 change; this decision must not be used to imply that work is
-  complete.
+- Durable account-level Save State now lives in the separate
+  `durable-account-save-v1-2026-07` contract and migration `0022`. That
+  additive control does not change this decision's 60-day Recovery Context
+  deadline or rewrite immutable StoryArtifact content.

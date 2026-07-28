@@ -392,15 +392,20 @@ whole account from the active database, publishes a plain-language preview
 privacy guide, and explains the guest/disclosure/story periods at save. A
 versioned code contract also classifies every current provider output and
 durable table, while migration `0021` gives session/artifact rows honest
-current-or-legacy lifecycle labels. Durable save semantics,
-legal/provider/backup review, restore-time deletion handling, and real cascade
+current-or-legacy lifecycle labels. Migration `0022` transactionally records
+the account-level Save transition at the Auth boundary, and the UI now
+distinguishes temporary, confirmation-pending, saved, legacy, and unavailable
+states without treating an email send as retention. Legal/provider/backup
+review, restore-time deletion handling, managed-Auth canaries, and real cascade
 proof remain incomplete.
 
 **Scope**
 
 - Add delete-story and delete-account flows with confirmation and safe recovery where feasible.
 - Define retention classes for guest sessions, saved sessions, raw disclosures, generated personalized artifacts, feedback free text, events, and audit metadata.
-- Make save consent explicit: explain what remains, what is deleted after 60 days, and what remains until user deletion.
+- Keep save consent explicit and server-authoritative: explain the account-wide
+  transition, what remains, what is deleted after 60 days, and what remains
+  until user deletion.
 - Apply the same or stricter controls to derived personalized prose, not only raw intake.
 - Provide a privacy page in plain language and a compact just-in-time summary at intake/save.
 - Complete youth, launch-market, terms, content-rights, and privacy review before accepting public users.

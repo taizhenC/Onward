@@ -25,6 +25,7 @@ import {
   validateStoryArtifact,
 } from "../lib/story-artifact";
 import { requestHybridPlan } from "../lib/llm";
+import { STORY_PROMPT_VERSION } from "../lib/llm-recipe-constants";
 import type { MatchRecipe } from "../lib/types";
 
 const PRIVATE_DISCLOSURE =
@@ -39,6 +40,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION,
   resonanceBriefVersion: "resonance-brief-v1-2026-07",
 };
 
@@ -317,7 +319,7 @@ async function checkProviderProjection(failures: string[]): Promise<void> {
   }) as typeof fetch;
   try {
     const response = consumeDerivedOutput(
-      await requestHybridPlan(request),
+      await requestHybridPlan(request, STORY_PROMPT_VERSION),
       "provider_health_check",
     );
     if (JSON.stringify(response) !== JSON.stringify(plan)) {

@@ -755,6 +755,12 @@ backup/PITR, legal, market, and youth review. A future de-personalization policy
 would require a new explicit policy version and migration; it must never
 silently mutate an immutable artifact.
 
+Production `0022` rollout is a coordinated cutover: deploy the independent
+returning-only sign-in compatibility guard, pause and drain story creation,
+apply and verify the migration, deploy the full Save-evidence guard, repeat
+canaries, and only then re-enable stories. An unguarded pre-`0022` build is not
+a safe public rollback target once the migration is installed.
+
 ## P0-15 — [Refactor] Module boundaries
 
 Recommended server-side modules:

@@ -79,7 +79,23 @@ deletion removes the row only through the Auth FK cascade.
 
 ## Rollout and legacy truth
 
-The migration is additive and schema-first:
+The schema change is additive, but production rollout is a coordinated
+cutover—not an unqualified schema-first deployment. The pre-guard application
+can create a missing user from `/signin` and then create stories without Save
+evidence, while the revised trigger intentionally ignores direct Auth inserts.
+
+Before applying `0022` in production:
+
+1. deploy the independently compatible `/signin` guard with
+   `shouldCreateUser: false`;
+2. set `STORY_CREATION_ENABLED=false`, verify ordinary `/api/match` requests
+   return the reviewed 503, and wait at least the route's 60-second maximum
+   duration so in-flight match requests drain; and
+3. verify an unknown email submitted on `/signin` does not create an Auth user.
+
+If that compatibility deploy is not possible, put the sign-in, Save, and story
+creation surfaces behind a maintenance boundary for the entire cutover. The
+migration transaction then:
 
 1. create and secure the state table, helpers, and boolean-only health RPC;
 2. take a late ten-second-bounded lock on `auth.users`;
@@ -87,22 +103,26 @@ The migration is additive and schema-first:
    Auth trigger;
 4. backfill every already-permanent owner as `legacy_permanent_observed`;
 5. release the lock at transaction commit; and
-6. run the service-only health RPC before deploying the state-aware reader.
+6. run the service-only health RPC before deploying the guarded reader.
 
 The trigger is installed before the backfill while the Auth table is locked, so
 no account can become permanent between those two operations. A 30-second
 statement timeout also bounds each migration statement.
 
-A pre-`0022` application remains functional after the migration. It will keep
-using Auth as before; the database starts recording the missing lifecycle
-evidence. Deploy the state-aware UI only after the live health gate passes.
+Deploy the full state-aware application only after every health flag is true.
+Repeat the unknown-email and anonymous-confirmation canaries in production,
+then re-enable story creation. Keep destructive direct-permanent and
+story-creation rejection exercises in staging, followed by cleanup and a green
+health check. Do not leave a pre-guard application live after the migration.
 
 If the managed-Auth canary fails, run
 `drop trigger onward_record_owner_story_save on auth.users;` and keep existing
-state rows immutable. Permanent owners without a row automatically project as
-unavailable. When the reviewed trigger is restored, any permanent owner not
-covered by exact transition evidence may be backfilled only as
-`legacy_permanent_observed`; never fabricate `saved_at`.
+state rows immutable. Keep `STORY_CREATION_ENABLED=false` and the returning-only
+sign-in guard active until the trigger and full guarded application are
+restored. Never roll back to a build that allows implicit signup or unguarded
+permanent story creation while public traffic is enabled. Permanent owners
+without a row project as unavailable; any reviewed repair may backfill only an
+honest `legacy_permanent_observed` row and must never fabricate `saved_at`.
 
 ## UI contract
 
@@ -116,7 +136,11 @@ covered by exact transition evidence may be backfilled only as
 - The pending state names the destination email and lets the reader correct it
   or resend without abandoning the temporary owner.
 - A transient state-read failure is distinct from a verified integrity
-  contradiction and offers an immediate server refresh.
+  contradiction and offers an immediate server refresh. The refreshed state
+  moves focus to its resulting heading instead of dropping keyboard and
+  assistive-technology context.
+- Sign-in failures are focused alerts, and the sent-link result is a focused
+  status message.
 - Saved copy names generated wording and age as durable Owner Story data while
   retaining the fixed Recovery Context deadline.
 - A missing or contradictory state never falls back to “saved.”

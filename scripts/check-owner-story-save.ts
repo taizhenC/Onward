@@ -646,6 +646,8 @@ function checkAuthoritativeUi(failures: string[]): void {
     !/Change email or resend/.test(card) ||
     !/Check again/.test(card) ||
     !/reason:\s*["']read_error["']/.test(card) ||
+    !/retryPendingRef/.test(card) ||
+    !/stateHeadingRef\.current\?\.focus\(\)/.test(card) ||
     /href=["']\/signin["']/.test(card) ||
     !/aria-invalid=\{\s*requestError\s*===\s*["']email_exists["']/.test(
       card,
@@ -691,7 +693,13 @@ function checkAuthoritativeUi(failures: string[]): void {
     !/signInWithOtp\s*\(\s*\{[\s\S]*?options\s*:\s*\{\s*shouldCreateUser\s*:\s*false\s*\}/.test(
       signIn,
     ) ||
-    /signUp\s*\(/.test(signIn)
+    /signUp\s*\(/.test(signIn) ||
+    !/sentStatusRef/.test(signIn) ||
+    !/errorRef/.test(signIn) ||
+    !/role=["']status["']/.test(signIn) ||
+    !/role=["']alert["']/.test(signIn) ||
+    !/focusAfterRender\(sentStatusRef\)/.test(signIn) ||
+    !/focusAfterRender\(errorRef\)/.test(signIn)
   ) {
     failures.push("returning-owner sign-in can create a permanent account without informed Save");
   }
@@ -705,6 +713,8 @@ function checkIntegrationWiring(failures: string[]): void {
   const databaseCheck = read("../scripts/check-db.ts");
   const retentionCheck = read("../scripts/check-derived-output-retention.ts");
   const matchHandler = read("../app/api/match/handler.ts");
+  const readme = read("../README.md");
+  const decision = read("../docs/owner-story-save-decision.md");
   const saveSurface = DERIVED_OUTPUT_SURFACES["owner.save_state"];
   const saveTable = PERSISTENCE_RETENTION_REGISTRY[
     "public.owner_story_save_states"
@@ -724,6 +734,14 @@ function checkIntegrationWiring(failures: string[]): void {
     creationGateIndex >
       matchHandler.indexOf("const activation = await activateTelemetryFlowForOwner") ||
     creationGateIndex > matchHandler.indexOf("await intake.handleIntake") ||
+    /Migration `0022` is also schema-first compatible/i.test(readme) ||
+    /The migration is additive and schema-first/i.test(decision) ||
+    !/coordinated (?:production )?cutover/i.test(readme) ||
+    !/STORY_CREATION_ENABLED=false/.test(readme) ||
+    !/returning-only sign-in guard active/i.test(readme) ||
+    !/coordinated\s+cutover/i.test(decision) ||
+    !/STORY_CREATION_ENABLED=false/.test(decision) ||
+    !/Never roll back to a build that allows implicit signup/i.test(decision) ||
     saveSurface.retentionClass !== "owned_story" ||
     !saveSurface.allowedSinks.includes("request_memory") ||
     !saveSurface.allowedSinks.includes("owner_response") ||

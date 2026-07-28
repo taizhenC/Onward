@@ -48,6 +48,7 @@ jobs:
       - run: npm run check-recipe-governance
       - run: npm run check-prompt-releases
       - run: npm run check-opening-copy-policy
+      - run: npm run check-personalized-preface
       - run: node scripts/trusted/recipe-promotion-attestor.mjs self-test
       - run: npm run check-recipe-registry
       - run: npm run check-recipe-deployment

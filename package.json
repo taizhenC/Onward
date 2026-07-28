@@ -35,6 +35,7 @@
     "check-recipe-failure-boundary": "node --conditions=react-server --import tsx scripts/check-recipe-failure-boundary.ts",
     "check-prompt-releases": "tsx scripts/check-prompt-releases.ts",
     "check-opening-copy-policy": "tsx scripts/check-opening-copy-policy.ts",
+    "check-personalized-preface": "tsx scripts/check-personalized-preface.ts",
     "check-recipe-immutability": "tsx scripts/check-recipe-immutability.ts",
     "check-story-beat-resilience": "tsx scripts/check-story-beat-resilience.ts",
     "check-reader-visibility-telemetry": "tsx scripts/check-reader-visibility-telemetry.ts",

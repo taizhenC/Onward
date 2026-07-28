@@ -2,6 +2,7 @@ import promptReleasesDocument from "../config/prompt-releases.json";
 import {
   RERANK_PROMPT_CONTRACT,
   STORY_PROMPT_CONTRACT,
+  STORY_PROMPT_CONTRACT_V2,
   canonicalPromptContract,
   type StoryPromptContract,
 } from "./llm-prompts";
@@ -25,12 +26,21 @@ export const DEFAULT_STORY_TEMPERATURE = 0.3;
 export const DEFAULT_PROSE_TIMEOUT_MS = 8000;
 export const STORY_PROMPT_VERSION_V1 =
   "opening-copy-prompt-v1-2026-07" as const;
+export const STORY_PROMPT_VERSION_V2 =
+  "opening-copy-prompt-v2-2026-07" as const;
 const STORY_PROMPT_RELEASE_V1 = releasedStoryPromptContract(
   STORY_PROMPT_VERSION_V1,
   STORY_PROMPT_CONTRACT,
 );
+const STORY_PROMPT_RELEASE_V2 = releasedStoryPromptContract(
+  STORY_PROMPT_VERSION_V2,
+  STORY_PROMPT_CONTRACT_V2,
+);
 export const SUPPORTED_STORY_PROMPT_RELEASES = Object.freeze(
-  [STORY_PROMPT_RELEASE_V1] satisfies ReadonlyArray<{
+  [
+    STORY_PROMPT_RELEASE_V1,
+    STORY_PROMPT_RELEASE_V2,
+  ] satisfies ReadonlyArray<{
     version: string;
     contract: StoryPromptContract;
   }>,

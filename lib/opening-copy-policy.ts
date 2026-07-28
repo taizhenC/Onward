@@ -4,24 +4,43 @@ import {
   NEUTRAL_EYEBROW,
   curatedEyebrow,
   sanitizeEyebrow,
+  toEyebrowProviderSurface,
+  toEyebrowSurface,
   type EyebrowProviderSurface,
   type OpeningCopyInput,
 } from "./opening-copy";
 import {
   STORY_PROMPT_VERSION_V1,
+  STORY_PROMPT_VERSION_V2,
   storyPromptContractFor,
 } from "./llm-recipe-constants";
-import { buildEyebrowUserPrompt } from "./llm-prompts";
+import {
+  buildEyebrowUserPrompt,
+  buildPrefacePlanUserPrompt,
+} from "./llm-prompts";
+import {
+  buildPrefacePlanRequest,
+  firstCompatiblePrefacePlan,
+  isUniversalPreface,
+  renderPersonalizedPreface,
+  validatePrefacePlanCandidate,
+} from "./preface-plan";
 import { containsResonanceEcho } from "./resonance-brief";
 import type { OpeningCopy } from "./types";
+
+export type OpeningCopyProviderPrompts = Readonly<{
+  responseMode: "line" | "json_object";
+  systemPrompt: string;
+  userPrompt: string;
+}>;
 
 export type OpeningCopyPolicy = Readonly<{
   storyPromptVersion: string;
   providerPrompts(
     surface: EyebrowProviderSurface,
-  ): Readonly<{ systemPrompt: string; userPrompt: string }>;
+  ): OpeningCopyProviderPrompts;
   fromRealCandidate(
-    raw: string | null,
+    raw: unknown,
     input: OpeningCopyInput,
   ): OpeningCopy;
   fromStub(input: OpeningCopyInput): OpeningCopy;
@@ -38,17 +57,24 @@ export class OpeningCopyPolicyError extends Error {
 
 const v1Contract = storyPromptContractFor(STORY_PROMPT_VERSION_V1);
 if (!v1Contract) throw new OpeningCopyPolicyError();
+const v2Contract = storyPromptContractFor(STORY_PROMPT_VERSION_V2);
+if (!v2Contract?.personalizedPreface) throw new OpeningCopyPolicyError();
+const v2PersonalizedPrefaceContract = v2Contract.personalizedPreface;
 
 const V1_POLICY: OpeningCopyPolicy = Object.freeze({
   storyPromptVersion: STORY_PROMPT_VERSION_V1,
   providerPrompts(surface) {
     return Object.freeze({
+      responseMode: "line",
       systemPrompt: v1Contract.eyebrow.system,
       userPrompt: buildEyebrowUserPrompt(surface, v1Contract),
     });
   },
   fromRealCandidate(raw, input) {
-    const eyebrow = sanitizeEyebrow(raw, input.stage.displayName);
+    const eyebrow = sanitizeEyebrow(
+      typeof raw === "string" ? raw : null,
+      input.stage.displayName,
+    );
     return {
       eyebrow: containsResonanceEcho(eyebrow, input.resonanceBrief)
         ? NEUTRAL_EYEBROW
@@ -64,8 +90,62 @@ const V1_POLICY: OpeningCopyPolicy = Object.freeze({
   },
 });
 
+const V2_POLICY: OpeningCopyPolicy = Object.freeze({
+  storyPromptVersion: STORY_PROMPT_VERSION_V2,
+  providerPrompts(surface) {
+    const request = buildPrefacePlanRequest(surface);
+    return Object.freeze({
+      responseMode: "json_object",
+      systemPrompt: v2PersonalizedPrefaceContract.system,
+      userPrompt: buildPrefacePlanUserPrompt(request, v2Contract),
+    });
+  },
+  fromRealCandidate(raw, input) {
+    const request = buildPrefacePlanRequest(
+      toProviderSurfaceFromInput(input),
+    );
+    const validation = validatePrefacePlanCandidate(raw, request);
+    if (!validation.valid) return fallbackOpeningCopy();
+
+    const eyebrow = sanitizeEyebrow(
+      validation.plan.eyebrow,
+      input.stage.displayName,
+    );
+    if (
+      eyebrow === NEUTRAL_EYEBROW ||
+      containsResonanceEcho(eyebrow, input.resonanceBrief)
+    ) {
+      return fallbackOpeningCopy();
+    }
+    const prefaceLines = renderPersonalizedPreface(
+      validation.plan,
+      input.resonanceBrief,
+    );
+    if (isUniversalPreface(prefaceLines)) return fallbackOpeningCopy();
+    return { eyebrow, prefaceLines };
+  },
+  fromStub(input) {
+    const request = buildPrefacePlanRequest(
+      toProviderSurfaceFromInput(input),
+    );
+    const plan = firstCompatiblePrefacePlan(
+      request,
+      curatedEyebrow(input.stage.figureKey, input.stage.stageId),
+    );
+    const prefaceLines = renderPersonalizedPreface(
+      plan,
+      input.resonanceBrief,
+    );
+    if (isUniversalPreface(prefaceLines)) return fallbackOpeningCopy();
+    return {
+      eyebrow: plan.eyebrow,
+      prefaceLines,
+    };
+  },
+});
+
 export const SUPPORTED_OPENING_COPY_POLICIES: readonly OpeningCopyPolicy[] =
-  Object.freeze([V1_POLICY]);
+  Object.freeze([V1_POLICY, V2_POLICY]);
 
 export function openingCopyPolicyForStoryPromptVersion(
   storyPromptVersion: string,
@@ -83,4 +163,17 @@ export function isOpeningCopyPolicySupported(
   return SUPPORTED_OPENING_COPY_POLICIES.some(
     (policy) => policy.storyPromptVersion === storyPromptVersion,
   );
+}
+
+function toProviderSurfaceFromInput(
+  input: OpeningCopyInput,
+): EyebrowProviderSurface {
+  return toEyebrowProviderSurface(toEyebrowSurface(input));
+}
+
+function fallbackOpeningCopy(): OpeningCopy {
+  return {
+    eyebrow: NEUTRAL_EYEBROW,
+    prefaceLines: DEFAULT_PREFACE_LINES,
+  };
 }

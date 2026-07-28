@@ -56,11 +56,15 @@ export function buildCerebrasRerankRequestBody(
 }
 
 export function buildCerebrasOpeningCopyRequestBody(
-  input: CerebrasRequestInput,
+  input: CerebrasRequestInput &
+    Readonly<{ responseFormat?: "json_object" }>,
 ): ExternalProviderRequestBody {
   return storeProviderRequestBody("cerebras.opening_copy", {
     model: input.model,
     temperature: input.temperature,
+    ...(input.responseFormat
+      ? { response_format: { type: input.responseFormat } }
+      : {}),
     messages: chatMessages(input),
   });
 }
@@ -277,17 +281,17 @@ function validProviderBody(
   switch (exchangeId) {
     case "cerebras.rerank":
       return validChatBody(value, {
-        responseFormat: true,
+        responseFormat: "required",
         optionalReasoningEffort: true,
       });
     case "cerebras.opening_copy":
       return validChatBody(value, {
-        responseFormat: false,
+        responseFormat: "optional",
         optionalReasoningEffort: false,
       });
     case "cerebras.hybrid_plan":
       return validChatBody(value, {
-        responseFormat: true,
+        responseFormat: "required",
         optionalReasoningEffort: false,
       });
     case "gemini.query_embedding":
@@ -300,17 +304,18 @@ function validProviderBody(
 function validChatBody(
   value: unknown,
   options: Readonly<{
-    responseFormat: boolean;
+    responseFormat: "required" | "optional" | "forbidden";
     optionalReasoningEffort: boolean;
   }>,
 ): boolean {
   if (!isRecord(value)) return false;
   const hasReasoningEffort = "reasoning_effort" in value;
+  const hasResponseFormat = "response_format" in value;
   const expectedKeys = [
     "messages",
     "model",
     "temperature",
-    ...(options.responseFormat ? ["response_format"] : []),
+    ...(hasResponseFormat ? ["response_format"] : []),
     ...(hasReasoningEffort ? ["reasoning_effort"] : []),
   ];
   if (
@@ -323,6 +328,8 @@ function validChatBody(
     value.messages.length !== 2 ||
     !validChatMessage(value.messages[0], "system") ||
     !validChatMessage(value.messages[1], "user") ||
+    (options.responseFormat === "required" && !hasResponseFormat) ||
+    (options.responseFormat === "forbidden" && hasResponseFormat) ||
     (hasReasoningEffort &&
       (!options.optionalReasoningEffort ||
         typeof value.reasoning_effort !== "string" ||
@@ -330,7 +337,7 @@ function validChatBody(
   ) {
     return false;
   }
-  return options.responseFormat
+  return hasResponseFormat
     ? isRecord(value.response_format) &&
         hasExactKeys(value.response_format, ["type"]) &&
         value.response_format.type === "json_object"

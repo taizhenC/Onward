@@ -204,7 +204,9 @@ row and installs a narrow trigger on `auth.users`. The trigger records
 `anonymous_upgrade` only when Auth confirms the `true` to non-true transition,
 and never treats direct account creation as informed Save evidence or touches
 Sessions, telemetry, or advisory locks. `/signin` is returning-owner-only and
-sets `shouldCreateUser: false`. Existing permanent owners are backfilled as
+sets `shouldCreateUser: false`; the match boundary also refuses story creation
+for a permanent owner without readable current-or-legacy Save evidence before
+telemetry, limits, providers, or writes. Existing permanent owners are backfilled as
 `legacy_permanent_observed` with `saved_at = NULL`; do not invent a historical
 confirmation time. The file takes a ten-second bounded Auth lock only after its
 catalog/helper DDL and limits each statement to 30 seconds, then installs the

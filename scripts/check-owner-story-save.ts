@@ -15,6 +15,7 @@ import {
   getMemoryOwnerStorySaveState,
 } from "../lib/owner-story-save-store-memory";
 import {
+  canOwnerCreateStory,
   getOwnerStorySavePresentation,
 } from "../lib/owner-story-save";
 import {
@@ -176,6 +177,14 @@ async function checkProjectionMatrix(failures: string[]): Promise<void> {
     userId: OWNER_A,
     isAnonymous: false,
   });
+  const anonymousCanCreate = await canOwnerCreateStory({
+    userId: OWNER_A,
+    isAnonymous: true,
+  });
+  const uncoveredPermanentCanCreate = await canOwnerCreateStory({
+    userId: OWNER_A,
+    isAnonymous: false,
+  });
 
   _recordMemoryOwnerStorySaveTransitionForTests({
     userId: OWNER_A,
@@ -183,6 +192,10 @@ async function checkProjectionMatrix(failures: string[]): Promise<void> {
     occurredAt: CURRENT_TIME_MS,
   });
   const currentPermanent = await getOwnerStorySavePresentation({
+    userId: OWNER_A,
+    isAnonymous: false,
+  });
+  const currentPermanentCanCreate = await canOwnerCreateStory({
     userId: OWNER_A,
     isAnonymous: false,
   });
@@ -199,15 +212,23 @@ async function checkProjectionMatrix(failures: string[]): Promise<void> {
     userId: OWNER_B,
     isAnonymous: false,
   });
+  const legacyPermanentCanCreate = await canOwnerCreateStory({
+    userId: OWNER_B,
+    isAnonymous: false,
+  });
 
   if (
     anonymousWithoutEvidence.status !== "temporary" ||
+    !anonymousCanCreate ||
     permanentWithoutEvidence.status !== "unavailable" ||
     permanentWithoutEvidence.reason !== "integrity_conflict" ||
+    uncoveredPermanentCanCreate ||
     currentPermanent.status !== "saved" ||
     currentPermanent.evidence !== "current" ||
+    !currentPermanentCanCreate ||
     legacyPermanent.status !== "saved" ||
     legacyPermanent.evidence !== "legacy" ||
+    !legacyPermanentCanCreate ||
     impossibleAnonymous.status !== "unavailable" ||
     impossibleAnonymous.reason !== "integrity_conflict" ||
     [
@@ -683,10 +704,14 @@ function checkIntegrationWiring(failures: string[]): void {
   const workflow = read("../.github/workflows/ci.yml");
   const databaseCheck = read("../scripts/check-db.ts");
   const retentionCheck = read("../scripts/check-derived-output-retention.ts");
+  const matchHandler = read("../app/api/match/handler.ts");
   const saveSurface = DERIVED_OUTPUT_SURFACES["owner.save_state"];
   const saveTable = PERSISTENCE_RETENTION_REGISTRY[
     "public.owner_story_save_states"
   ];
+  const creationGateIndex = matchHandler.indexOf(
+    "await canOwnerCreateStory(owner)",
+  );
   if (
     packageJson.scripts?.["check-owner-story-save"] !==
       "tsx scripts/check-owner-story-save.ts" ||
@@ -694,6 +719,11 @@ function checkIntegrationWiring(failures: string[]): void {
     !databaseCheck.includes('"owner_story_save_schema_health_v1"') ||
     !databaseCheck.includes("all 9 closed health flags") ||
     !retentionCheck.includes('"lib/owner-story-save.ts"') ||
+    !matchHandler.includes("canOwnerCreateStory") ||
+    creationGateIndex < 0 ||
+    creationGateIndex >
+      matchHandler.indexOf("const activation = await activateTelemetryFlowForOwner") ||
+    creationGateIndex > matchHandler.indexOf("await intake.handleIntake") ||
     saveSurface.retentionClass !== "owned_story" ||
     !saveSurface.allowedSinks.includes("request_memory") ||
     !saveSurface.allowedSinks.includes("owner_response") ||

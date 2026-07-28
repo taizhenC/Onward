@@ -44,6 +44,17 @@ export async function getOwnerStorySavePresentation(
   });
 }
 
+// Anonymous owners always create under the bounded guest lifecycle. A
+// permanent owner may create only when the durable account Save evidence is
+// readable and coherent; otherwise a new story would outlive the guest window
+// without an informed Save transition.
+export async function canOwnerCreateStory(
+  owner: VerifiedOwnerLifecycle,
+): Promise<boolean> {
+  if (owner.isAnonymous) return true;
+  return (await getOwnerStorySavePresentation(owner)).status === "saved";
+}
+
 function present(
   presentation: OwnerStorySavePresentation,
 ): OwnerStorySavePresentation {

@@ -21,7 +21,9 @@ owner:
 `shouldCreateUser: false`. A new permanent account is not a Save event: if any
 unreviewed path creates one directly after this migration, it receives no
 current Save State, projects as unavailable, and fails the database coverage
-health gate.
+health gate. The initial-match boundary also rejects story creation for a
+permanent owner without readable current-or-legacy Save evidence, before
+telemetry activation, rate limiting, provider work, or persistence.
 
 The current policy is `durable-account-save-v1-2026-07`. Legacy observations use
 `legacy-pre-durable-save-v0`.
@@ -118,6 +120,9 @@ covered by exact transition evidence may be backfilled only as
 - Saved copy names generated wording and age as durable Owner Story data while
   retaining the fixed Recovery Context deadline.
 - A missing or contradictory state never falls back to “saved.”
+- Permanent owners without readable, coherent Save evidence cannot create a
+  new indefinitely retained story; anonymous owners still create under the
+  bounded guest lifecycle.
 - `/stories` may show temporary owned stories, but must label the temporary
   account lifecycle and must not call an individual guest item a Saved Story.
 

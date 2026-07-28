@@ -1,5 +1,6 @@
 import "server-only";
 import type { FigureStageRow } from "./types";
+import { PREFACE_FALLBACK_LINES } from "./preface-plan-contract";
 import {
   toResonancePromptSurface,
   type ResonanceBrief,
@@ -37,12 +38,8 @@ export function curatedEyebrow(figureKey: string, stageId: string): string {
 // the real generator's per-brief personalization is deferred (lib/llm-real.ts returns
 // these lines today and will keep them as its fallback once generation lands). Tone bar
 // (CLAUDE.md): comfort without false promises, no dismissive "don't worry" language.
-export const DEFAULT_PREFACE_LINES: readonly string[] = [
-  "That hurts.",
-  "You do not have to solve everything right now.",
-  "Here is someone who stood in a similar kind of weight.",
-  "Let's start with their story.",
-];
+export const DEFAULT_PREFACE_LINES: readonly string[] =
+  PREFACE_FALLBACK_LINES;
 
 // A quiet chapter-eyebrow is a few words; anything sentence-length is the model
 // ignoring instructions, so we fall back rather than show it.

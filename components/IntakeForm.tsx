@@ -22,10 +22,15 @@ import {
   INTAKE_MAX_FEELING_LENGTH,
   INTAKE_MIN_AGE,
   intakeFeelingLength,
-  isValidIntakeAge,
-  isValidIntakeFeeling,
   normalizeIntakeFeeling,
 } from "@/lib/intake-constraints";
+import { containsCrisisLanguage } from "@/lib/crisis-language";
+import {
+  INTAKE_FICTIONAL_EXAMPLE,
+  INTAKE_WRITING_PROMPTS,
+  firstInvalidIntakeField,
+  validateIntakeDraft,
+} from "@/lib/intake-presentation";
 import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
 import type { TelemetryFlowId } from "@/lib/telemetry-types";
 import {
@@ -92,6 +97,9 @@ export function IntakeForm({
   const router = useRouter();
   const [age, setAge] = useState("");
   const [feeling, setFeeling] = useState("");
+  const [ageTouched, setAgeTouched] = useState(false);
+  const [feelingTouched, setFeelingTouched] = useState(false);
+  const [validationAttempted, setValidationAttempted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [crisisResources, setCrisisResources] = useState<
@@ -113,6 +121,7 @@ export function IntakeForm({
   const noEligibleRef = useRef<HTMLDivElement>(null);
   const clarificationRef = useRef<HTMLFieldSetElement>(null);
   const noCloseRef = useRef<HTMLDivElement>(null);
+  const ageRef = useRef<HTMLInputElement>(null);
   const feelingRef = useRef<HTMLTextAreaElement>(null);
   const flowConflictRef = useRef<HTMLAnchorElement>(null);
   const submittingRef = useRef(false);
@@ -126,14 +135,12 @@ export function IntakeForm({
   }, [clarificationNeeded, flowConflict, noCloseMatch, noEligibleStory]);
 
   const ageNum = Number(age);
-  const ageValid = isValidIntakeAge(ageNum);
   const feelingLength = intakeFeelingLength(feeling);
-  const feelingValid = isValidIntakeFeeling(feeling);
-  const baseCanSubmit = ageValid && feelingValid && !submitting;
-  const canSubmit =
-    baseCanSubmit &&
-    !flowConflict &&
-    (!clarificationNeeded || clarification !== null);
+  const intakeValidation = validateIntakeDraft({ age, feeling });
+  const ageError =
+    ageTouched || validationAttempted ? intakeValidation.age : null;
+  const feelingError =
+    feelingTouched || validationAttempted ? intakeValidation.feeling : null;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -158,11 +165,26 @@ export function IntakeForm({
 
   async function submitMatch(acceptAdjacent: boolean) {
     if (
-      !baseCanSubmit ||
       submittingRef.current ||
       flowConflict ||
       (clarificationNeeded && clarification === null && !acceptAdjacent)
     ) {
+      return;
+    }
+    const firstInvalidField = firstInvalidIntakeField(intakeValidation);
+    if (firstInvalidField !== null) {
+      // The server remains the authoritative crisis gate for every valid
+      // request. This shared predicate prevents local field validation from
+      // hiding reviewed resources when age or disclosure length is invalid.
+      if (containsCrisisLanguage(feeling)) {
+        setCrisisResources(reviewedCrisisResources);
+        return;
+      }
+      setValidationAttempted(true);
+      requestAnimationFrame(() => {
+        if (firstInvalidField === "age") ageRef.current?.focus();
+        else feelingRef.current?.focus();
+      });
       return;
     }
     submittingRef.current = true;
@@ -369,17 +391,25 @@ export function IntakeForm({
     <motion.form
       onSubmit={handleSubmit}
       onChange={markIntakeStarted}
+      noValidate
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
       className="space-y-10"
     >
-      <header className="space-y-3">
-        <h1 className="text-3xl">Onward</h1>
+      <header className="space-y-4">
+        <Link
+          href="/"
+          aria-label="Onward home"
+          className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline decoration-[var(--color-ink-soft)]/40 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+        >
+          Onward home
+        </Link>
+        <h1 className="text-3xl">What are you carrying right now?</h1>
         <p className="text-[var(--color-ink-soft)]">
-          Tell us how old you are and what you are going through. We will look
-          for one useful point of contact in a real life. If the fit is
-          uncertain, we will say so and may ask one question.
+          Share only what feels useful. A few grounded details help us look for
+          one documented life episode with a similar emotional shape. If the
+          fit is uncertain, we will say so and may ask one question.
         </p>
       </header>
 
@@ -387,7 +417,7 @@ export function IntakeForm({
         <button
           type="button"
           onClick={() => setCrisisResources(reviewedCrisisResources)}
-          className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
+          className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         >
           I need immediate help
         </button>
@@ -396,53 +426,142 @@ export function IntakeForm({
         </p>
       </div>
 
-      <label className="block space-y-2">
-        <span className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
+      <div className="space-y-2">
+        <label
+          htmlFor="intake-age"
+          className="block font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]"
+        >
           Age
-        </span>
+        </label>
         <input
+          ref={ageRef}
+          id="intake-age"
           type="number"
           min={INTAKE_MIN_AGE}
           max={INTAKE_MAX_AGE}
           step={1}
+          required
           value={age}
           onChange={(event) => {
             setAge(event.target.value);
             resetMatchRecovery();
           }}
+          onBlur={() => setAgeTouched(true)}
           disabled={submitting}
-          className="w-32 bg-transparent border-b border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none px-1 py-2"
+          aria-invalid={ageError !== null}
+          aria-describedby={
+            ageError ? "intake-age-help intake-age-error" : "intake-age-help"
+          }
+          className="min-h-11 w-32 border-b border-[var(--color-ink-soft)] bg-transparent px-1 py-2 focus-visible:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         />
-      </label>
+        <p
+          id="intake-age-help"
+          className="max-w-md text-sm leading-relaxed text-[var(--color-ink-soft)]"
+        >
+          Your age helps us look for a documented episode from a similar life
+          stage.
+        </p>
+        {ageError ? (
+          <p
+            id="intake-age-error"
+            aria-live="polite"
+            className="font-ui text-sm text-[var(--color-accent)]"
+          >
+            {ageError}
+          </p>
+        ) : null}
+      </div>
 
-      <label className="block space-y-2">
-        <span className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-          What is going on
-        </span>
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <label
+            htmlFor="intake-feeling"
+            className="block font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]"
+          >
+            What is going on
+          </label>
+          <p
+            id="intake-feeling-guidance"
+            className="text-sm leading-relaxed text-[var(--color-ink-soft)]"
+          >
+            You can use any of these as a starting point:
+          </p>
+          <ul className="grid gap-2 text-sm sm:grid-cols-3">
+            {INTAKE_WRITING_PROMPTS.map((prompt) => (
+              <li
+                key={prompt}
+                className="border-l-2 border-[var(--color-accent)] pl-3"
+              >
+                {prompt}
+              </li>
+            ))}
+          </ul>
+          <p
+            id="intake-feeling-example"
+            className="text-sm italic leading-relaxed text-[var(--color-ink-soft)]"
+          >
+            {INTAKE_FICTIONAL_EXAMPLE}
+          </p>
+        </div>
         <textarea
           ref={feelingRef}
+          id="intake-feeling"
           value={feeling}
           onChange={(event) => {
             const next = normalizeIntakeFeeling(event.target.value);
-            if (intakeFeelingLength(next) <= INTAKE_MAX_FEELING_LENGTH) {
-              setFeeling(next);
-            }
+            setFeeling(next);
             resetMatchRecovery();
           }}
+          onBlur={() => setFeelingTouched(true)}
           disabled={submitting}
+          required
           rows={6}
-          placeholder="A few sentences. Whatever feels honest."
-          className="block w-full bg-transparent border border-[var(--color-ink-soft)] focus:border-[var(--color-ink)] focus:outline-none p-4 resize-none"
+          placeholder="A few sentences are enough. Leave out names or details you do not want to share."
+          aria-invalid={feelingError !== null}
+          aria-describedby={[
+            "intake-feeling-guidance",
+            "intake-feeling-example",
+            "intake-feeling-count",
+            "intake-feeling-privacy",
+            ...(feelingError ? ["intake-feeling-error"] : []),
+          ].join(" ")}
+          className="block min-h-44 w-full resize-y border border-[var(--color-ink-soft)] bg-transparent p-4 focus-visible:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         />
-        <span className="block font-ui text-xs text-[var(--color-ink-soft)]/70 text-right">
+        <p
+          id="intake-feeling-count"
+          className={`text-right font-ui text-xs ${
+            feelingLength > INTAKE_MAX_FEELING_LENGTH
+              ? "text-[var(--color-accent)]"
+              : "text-[var(--color-ink-soft)]"
+          }`}
+        >
           {feelingLength}/{INTAKE_MAX_FEELING_LENGTH}
-        </span>
-        <span className="block text-sm leading-relaxed text-[var(--color-ink-soft)]">
-          What you write is used to find and shape one story. It may be processed
-          by our model providers and is removed from your saved session after 60
-          days. It is not repeated back in the story.
-        </span>
-      </label>
+        </p>
+        {feelingError ? (
+          <p
+            id="intake-feeling-error"
+            aria-live="polite"
+            className="font-ui text-sm text-[var(--color-accent)]"
+          >
+            {feelingError}
+          </p>
+        ) : null}
+        <p
+          id="intake-feeling-privacy"
+          className="text-sm leading-relaxed text-[var(--color-ink-soft)]"
+        >
+          What you write is used to find and shape one story. It may be
+          processed by our model providers and is removed from your saved
+          session after 60 days. It is not repeated back in the story.{" "}
+          <Link
+            href="/privacy"
+            className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          >
+            Read the privacy details
+          </Link>
+          .
+        </p>
+      </div>
 
       <fieldset
         ref={boundaryRef}
@@ -596,7 +715,7 @@ export function IntakeForm({
           {!noCloseMatch ? (
             <button
               type="button"
-              disabled={!baseCanSubmit}
+              disabled={submitting}
               onClick={() => void submitMatch(true)}
               className="font-ui text-xs uppercase tracking-wider underline underline-offset-4 disabled:opacity-40"
             >
@@ -625,7 +744,7 @@ export function IntakeForm({
           <div className="flex flex-wrap gap-3">
             <button
               type="button"
-              disabled={!baseCanSubmit}
+              disabled={submitting}
               onClick={() => void submitMatch(true)}
               className="font-ui text-xs uppercase tracking-wider underline underline-offset-4 disabled:opacity-40"
             >
@@ -702,7 +821,9 @@ export function IntakeForm({
       {!noCloseMatch && !flowConflict ? (
         <button
           type="submit"
-          disabled={!canSubmit}
+          disabled={
+            submitting || (clarificationNeeded && clarification === null)
+          }
           className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-6 py-3 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           {submitting

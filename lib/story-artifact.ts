@@ -47,11 +47,13 @@ import {
   STORY_PROMPT_VERSION_V1,
   STORY_PROMPT_VERSION_V2,
 } from "./llm-recipe-constants";
+import { isSafeStoredEyebrow } from "./opening-copy";
 import {
   isUniversalOpeningCopy,
   isUniversalPreface,
   validatePersonalizedOpeningCopy,
 } from "./preface-plan";
+import { getStoryRecipeById } from "./story-recipe-runtime";
 import type {
   ClientFigureOutline,
   FigureStageRow,
@@ -90,6 +92,12 @@ export class StoryCompositionError extends Error {
     this.name = "StoryCompositionError";
   }
 }
+
+export type StoredStoryArtifactEnvelope = Readonly<{
+  artifactId: string;
+  schemaVersion: string;
+  contentHash: string;
+}>;
 
 // Canonical composition is the guaranteed fallback path. It freezes the full
 // reader payload now; no provider or mutable content row is needed during read.
@@ -301,6 +309,7 @@ export function validateStoryArtifact(
     artifact.openingCopy,
     resonanceBrief,
     artifact.recipe.match.storyPromptVersion,
+    artifact.figure.displayName,
     failures,
   );
   const expectedProfileReviewed =
@@ -438,8 +447,13 @@ export function validateStoryArtifact(
 
 // Database JSON is untrusted at the TypeScript boundary. Replay needs no model
 // or mutable StorySpec lookup, but it does re-check structure and the content
-// hash before any stored prose reaches a route.
-export function validateStoredStoryArtifact(value: unknown): StoryArtifact | null {
+// hash before any stored prose reaches a route. Legacy schemas additionally
+// require the immutable row envelope; an artifact cannot grant itself legacy
+// compatibility by rewriting its own schema and recomputing its own hash.
+export function validateStoredStoryArtifact(
+  value: unknown,
+  envelope?: StoredStoryArtifactEnvelope,
+): StoryArtifact | null {
   if (!isRecord(value)) return null;
   const candidate = value as Partial<StoryArtifact>;
   if (
@@ -472,6 +486,18 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     return null;
   }
   const artifact = candidate as StoryArtifact;
+  const legacySchema =
+    artifact.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION;
+  if (
+    (legacySchema && envelope === undefined) ||
+    (envelope !== undefined &&
+      (!validStoredArtifactEnvelope(envelope) ||
+        envelope.artifactId !== artifact.artifactId ||
+        envelope.schemaVersion !== artifact.schemaVersion ||
+        envelope.contentHash !== artifact.contentHash))
+  ) {
+    return null;
+  }
   const boundaryAwareSchema =
     artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION ||
     artifact.schemaVersion === HYBRID_STORY_ARTIFACT_SCHEMA_VERSION ||
@@ -492,12 +518,32 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     typeof artifact.recipe.match.storyPromptVersion === "string"
       ? artifact.recipe.match.storyPromptVersion
       : undefined;
+  const storedDisplayName =
+    typeof artifact.figure.displayName === "string"
+      ? artifact.figure.displayName
+      : "";
+  const registeredRecipe =
+    isRecord(artifact.recipe.match) &&
+    typeof artifact.recipe.match.recipeId === "string"
+      ? getStoryRecipeById(artifact.recipe.match.recipeId)
+      : null;
+  if (
+    registeredRecipe !== null &&
+    ((storedStoryPromptVersion !== undefined &&
+      storedStoryPromptVersion !== registeredRecipe.storyPromptVersion) ||
+      (artifact.recipe.match.recipeManifestHash !== undefined &&
+        artifact.recipe.match.recipeManifestHash !==
+          registeredRecipe.manifestSha256))
+  ) {
+    return null;
+  }
   validateOpeningCopy(
     artifact.openingCopy,
     null,
     storedStoryPromptVersion,
+    storedDisplayName,
     openingFailures,
-    !transparencyAwareSchema,
+    legacySchema && envelope !== undefined,
   );
   if (
     openingFailures.size > 0 ||
@@ -701,6 +747,7 @@ function validateOpeningCopy(
   openingCopy: OpeningCopy,
   resonanceBrief: ResonanceBrief | null,
   storyPromptVersion: string | undefined,
+  displayName: string,
   failures: Set<ArtifactValidationFailure>,
   allowLegacyUnversioned = false,
 ): void {
@@ -722,6 +769,7 @@ function validateOpeningCopy(
     !eyebrow.trim() ||
     eyebrow.includes("\n") ||
     eyebrow.trim().split(/\s+/).length > 10 ||
+    !isSafeStoredEyebrow(eyebrow, displayName) ||
     prefaceLines.length === 0 ||
     lines.some((line) => !line.trim())
   ) {
@@ -761,6 +809,18 @@ function validateOpeningCopy(
   ) {
     failures.add("tone_invalid");
   }
+}
+
+function validStoredArtifactEnvelope(
+  envelope: StoredStoryArtifactEnvelope,
+): boolean {
+  return (
+    typeof envelope.artifactId === "string" &&
+    envelope.artifactId.length > 0 &&
+    typeof envelope.schemaVersion === "string" &&
+    envelope.schemaVersion.length > 0 &&
+    /^[0-9a-f]{64}$/.test(envelope.contentHash)
+  );
 }
 
 function containsToneViolation(value: string): boolean {

@@ -55,6 +55,7 @@ import {
   validateStoredStoryArtifact,
   validateStoryArtifact,
 } from "../lib/story-artifact";
+import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import {
   PRIMARY_STORY_RECIPE,
@@ -606,6 +607,19 @@ function assertArtifactBoundary(
   rehash(downgraded);
   assert.equal(validateStoredStoryArtifact(downgraded), null);
 
+  const sensitiveV1Downgrade = structuredClone(artifact);
+  sensitiveV1Downgrade.recipe.match.storyPromptVersion =
+    STORY_PROMPT_VERSION_V1;
+  sensitiveV1Downgrade.openingCopy = {
+    eyebrow: "Suicide made every road narrow",
+    prefaceLines: DEFAULT_PREFACE_LINES,
+  };
+  rehash(sensitiveV1Downgrade);
+  assert.equal(
+    validateStoredStoryArtifact(sensitiveV1Downgrade),
+    null,
+  );
+
   const unknownVersion = withArbitraryOpening(
     structuredClone(artifact),
   );
@@ -620,6 +634,24 @@ function assertArtifactBoundary(
   delete missingVersion.recipe.match.storyPromptVersion;
   rehash(missingVersion);
   assert.equal(validateStoredStoryArtifact(missingVersion), null);
+
+  const schemaDowngrade = withArbitraryOpening(
+    structuredClone(artifact),
+  );
+  schemaDowngrade.schemaVersion =
+    HYBRID_STORY_ARTIFACT_SCHEMA_VERSION;
+  delete schemaDowngrade.transparency;
+  delete schemaDowngrade.recipe.match.storyPromptVersion;
+  rehash(schemaDowngrade);
+  assert.equal(validateStoredStoryArtifact(schemaDowngrade), null);
+  assert.equal(
+    validateStoredStoryArtifact(schemaDowngrade, {
+      artifactId: artifact.artifactId,
+      schemaVersion: artifact.schemaVersion,
+      contentHash: artifact.contentHash,
+    }),
+    null,
+  );
 
   const incompatiblePressure = structuredClone(artifact);
   const lossLine = PREFACE_ACKNOWLEDGEMENT_TEMPLATES.find(

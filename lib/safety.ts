@@ -38,9 +38,13 @@ export type CrisisResult = {
   latencyMs: number;
 };
 
+export function containsCrisisLanguage(value: string): boolean {
+  return CRISIS_PATTERNS.some((pattern) => pattern.test(value));
+}
+
 export function classifyCrisis(feeling: string): CrisisResult {
   const start = performance.now();
-  const detected = CRISIS_PATTERNS.some((re) => re.test(feeling));
+  const detected = containsCrisisLanguage(feeling);
   const latencyMs = performance.now() - start;
   return { crisisDetected: detected, crisisRegexVersion, latencyMs };
 }

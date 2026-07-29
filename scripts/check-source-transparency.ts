@@ -34,6 +34,7 @@ import {
   storyArtifactContentHash,
   validateStoredStoryArtifact,
   validateStoryArtifact,
+  type StoredStoryArtifactEnvelope,
 } from "../lib/story-artifact";
 import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { validateStorySpec } from "../lib/story-spec";
@@ -277,13 +278,20 @@ function checkTamperAndLegacyReplay(
   legacy.schemaVersion = HYBRID_STORY_ARTIFACT_SCHEMA_VERSION;
   delete legacy.transparency;
   legacy.contentHash = storyArtifactContentHash(legacy);
-  if (!validateStoredStoryArtifact(legacy)) {
+  if (
+    !validateStoredStoryArtifact(legacy, storedEnvelope(legacy))
+  ) {
     failures.push("v4 artifact without transparency no longer replays");
   }
   const fabricatedLegacy = structuredClone(legacy);
   fabricatedLegacy.transparency = structuredClone(artifact.transparency);
   fabricatedLegacy.contentHash = storyArtifactContentHash(fabricatedLegacy);
-  if (validateStoredStoryArtifact(fabricatedLegacy)) {
+  if (
+    validateStoredStoryArtifact(
+      fabricatedLegacy,
+      storedEnvelope(fabricatedLegacy),
+    )
+  ) {
     failures.push("legacy replay accepted fabricated current provenance");
   }
 }
@@ -710,6 +718,20 @@ function publishedStorySpec(): StorySpec {
 
 function read(relative: string): string {
   return readFileSync(fileURLToPath(new URL(relative, import.meta.url)), "utf8");
+}
+
+function storedEnvelope(
+  artifact: Readonly<{
+    artifactId: string;
+    schemaVersion: string;
+    contentHash: string;
+  }>,
+): StoredStoryArtifactEnvelope {
+  return {
+    artifactId: artifact.artifactId,
+    schemaVersion: artifact.schemaVersion,
+    contentHash: artifact.contentHash,
+  };
 }
 
 main().catch((error) => {

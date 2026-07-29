@@ -620,10 +620,13 @@ function checkRelationalEnvelope(): void {
   );
   assert(
     artifactStore.includes(
-      '.select("artifact, retention_class, retention_policy_version")',
+      '"artifact_id, schema_version, content_hash, artifact, retention_class, retention_policy_version"',
     ) &&
-      artifactStore.includes("parsePersistedRetentionLabel("),
-    "durable artifacts must fail reads with unknown retention labels",
+      artifactStore.includes("parsePersistedRetentionLabel(") &&
+      artifactStore.includes(
+        "validateStoredStoryArtifact(row.artifact, {",
+      ),
+    "durable artifacts must bind immutable row identity and fail reads with unknown retention labels",
   );
   const sessionStore = readFileSync(
     resolve(LIB, "session-store-supabase.ts"),

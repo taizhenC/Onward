@@ -8,6 +8,7 @@ import {
   storyArtifactContentHash,
   validateStoredStoryArtifact,
   validateStoryArtifact,
+  type StoredStoryArtifactEnvelope,
 } from "../lib/story-artifact";
 import {
   HYBRID_STORY_ARTIFACT_SCHEMA_VERSION,
@@ -97,7 +98,12 @@ function main(): void {
     hybridArtifact.schemaVersion = HYBRID_STORY_ARTIFACT_SCHEMA_VERSION;
     delete hybridArtifact.transparency;
     hybridArtifact.contentHash = storyArtifactContentHash(hybridArtifact);
-    if (!validateStoredStoryArtifact(hybridArtifact)) {
+    if (
+      !validateStoredStoryArtifact(
+        hybridArtifact,
+        storedEnvelope(hybridArtifact),
+      )
+    ) {
       failures.push(`${label}: hybrid-era artifact schema no longer replays`);
     }
     const resonanceArtifact = structuredClone(hybridArtifact);
@@ -105,14 +111,24 @@ function main(): void {
     delete resonanceArtifact.recipe.hybridTemplatePolicyVersion;
     delete resonanceArtifact.composition.attemptCount;
     resonanceArtifact.contentHash = storyArtifactContentHash(resonanceArtifact);
-    if (!validateStoredStoryArtifact(resonanceArtifact)) {
+    if (
+      !validateStoredStoryArtifact(
+        resonanceArtifact,
+        storedEnvelope(resonanceArtifact),
+      )
+    ) {
       failures.push(`${label}: resonance-era artifact schema no longer replays`);
     }
     const boundaryArtifact = structuredClone(resonanceArtifact);
     boundaryArtifact.schemaVersion = BOUNDARY_STORY_ARTIFACT_SCHEMA_VERSION;
     delete boundaryArtifact.recipe.resonanceBriefVersion;
     boundaryArtifact.contentHash = storyArtifactContentHash(boundaryArtifact);
-    if (!validateStoredStoryArtifact(boundaryArtifact)) {
+    if (
+      !validateStoredStoryArtifact(
+        boundaryArtifact,
+        storedEnvelope(boundaryArtifact),
+      )
+    ) {
       failures.push(`${label}: boundary-era artifact schema no longer replays`);
     }
     const legacy = structuredClone(boundaryArtifact);
@@ -120,7 +136,9 @@ function main(): void {
     delete legacy.recipe.boundaryPolicyVersion;
     delete legacy.contentProfile.reviewed;
     legacy.contentHash = storyArtifactContentHash(legacy);
-    if (!validateStoredStoryArtifact(legacy)) {
+    if (
+      !validateStoredStoryArtifact(legacy, storedEnvelope(legacy))
+    ) {
       failures.push(`${label}: prior artifact schema no longer replays`);
     }
     if (JSON.stringify(artifact).includes(disclosure)) {
@@ -271,6 +289,20 @@ function main(): void {
   console.log(`PASS ${FIGURE_STAGES.length}/${FIGURE_STAGES.length} tamper attempts rejected`);
   console.log("PASS generated opening privacy and tone rejections use closed reason enums");
   console.log("PASS static migration shape includes RPC-only immutable/bound persistence");
+}
+
+function storedEnvelope(
+  artifact: Readonly<{
+    artifactId: string;
+    schemaVersion: string;
+    contentHash: string;
+  }>,
+): StoredStoryArtifactEnvelope {
+  return {
+    artifactId: artifact.artifactId,
+    schemaVersion: artifact.schemaVersion,
+    contentHash: artifact.contentHash,
+  };
 }
 
 function reverseObjectKeys<T>(value: T): T {

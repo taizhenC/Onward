@@ -4,7 +4,13 @@ import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import type { CrisisResource } from "@/lib/types";
 
-export function CrisisCard({ resources }: { resources: CrisisResource[] }) {
+export function CrisisCard({
+  resources,
+  matchRequestStarted = false,
+}: {
+  resources: CrisisResource[];
+  matchRequestStarted?: boolean;
+}) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,10 +62,19 @@ export function CrisisCard({ resources }: { resources: CrisisResource[] }) {
         Onward is not therapy and not an emergency service. If you are in
         immediate danger, call your local emergency number.
       </p>
-      <p className="font-ui text-xs text-[var(--color-ink-soft)]">
-        Onward did not save what you wrote and will not start a story from this
-        message. You can return another time.
-      </p>
+      {matchRequestStarted ? (
+        <p className="font-ui text-xs leading-relaxed text-[var(--color-ink-soft)]">
+          You opened these resources after a story request was sent. That
+          request may already have created a story; opening this page does not
+          cancel or delete it. Onward will not move you into that story from
+          this screen.
+        </p>
+      ) : (
+        <p className="font-ui text-xs leading-relaxed text-[var(--color-ink-soft)]">
+          Onward did not save what you wrote and will not start a story from
+          this message. You can return another time.
+        </p>
+      )}
     </motion.div>
   );
 }

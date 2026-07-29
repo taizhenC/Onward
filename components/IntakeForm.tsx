@@ -105,6 +105,8 @@ export function IntakeForm({
   const [crisisResources, setCrisisResources] = useState<
     CrisisResource[] | null
   >(null);
+  const [crisisMatchRequestStarted, setCrisisMatchRequestStarted] =
+    useState(false);
   const [rateLimited, setRateLimited] = useState(false);
   const [boundaryEnabled, setBoundaryEnabled] = useState(false);
   const [maxIntensity, setMaxIntensity] =
@@ -126,6 +128,7 @@ export function IntakeForm({
   const flowConflictRef = useRef<HTMLAnchorElement>(null);
   const submittingRef = useRef(false);
   const intakeStartedRef = useRef(false);
+  const manualCrisisOpenedRef = useRef(false);
 
   useEffect(() => {
     if (flowConflict) flowConflictRef.current?.focus();
@@ -177,7 +180,7 @@ export function IntakeForm({
       // request. This shared predicate prevents local field validation from
       // hiding reviewed resources when age or disclosure length is invalid.
       if (containsCrisisLanguage(feeling)) {
-        setCrisisResources(reviewedCrisisResources);
+        openCrisisResources();
         return;
       }
       setValidationAttempted(true);
@@ -224,8 +227,11 @@ export function IntakeForm({
       // Crisis classification reaches the server before the browser auth SDK.
       // Only a non-crisis 401 creates an anonymous session and retries.
       response = await postMatch();
+      if (stopForManualCrisis()) return;
       if (response.status === 401 && (await ensureAuthSession())) {
+        if (stopForManualCrisis()) return;
         response = await postMatch();
+        if (stopForManualCrisis()) return;
       }
     } catch {
       clearFirstContentRequestStarted();
@@ -237,6 +243,7 @@ export function IntakeForm({
     let payload: MatchPayload;
     try {
       payload = (await response.json()) as MatchPayload;
+      if (stopForManualCrisis()) return;
     } catch {
       clearFirstContentRequestStarted();
       setError(
@@ -316,6 +323,7 @@ export function IntakeForm({
     }
 
     if ("crisis" in payload && payload.crisis) {
+      setCrisisMatchRequestStarted(false);
       setCrisisResources(payload.resources);
       return;
     }
@@ -331,6 +339,20 @@ export function IntakeForm({
   function finishSubmitting() {
     submittingRef.current = false;
     setSubmitting(false);
+  }
+
+  function openCrisisResources() {
+    manualCrisisOpenedRef.current = true;
+    setCrisisMatchRequestStarted(submittingRef.current);
+    clearFirstContentRequestStarted();
+    setCrisisResources(reviewedCrisisResources);
+  }
+
+  function stopForManualCrisis(): boolean {
+    if (!manualCrisisOpenedRef.current) return false;
+    clearFirstContentRequestStarted();
+    finishSubmitting();
+    return true;
   }
 
   function toggleExcludedFlag(flag: ContentFlag) {
@@ -364,7 +386,12 @@ export function IntakeForm({
   }
 
   if (crisisResources) {
-    return <CrisisCard resources={crisisResources} />;
+    return (
+      <CrisisCard
+        resources={crisisResources}
+        matchRequestStarted={crisisMatchRequestStarted}
+      />
+    );
   }
 
   if (rateLimited) {
@@ -416,7 +443,7 @@ export function IntakeForm({
       <div className="border-l-2 border-[var(--color-accent)] pl-4">
         <button
           type="button"
-          onClick={() => setCrisisResources(reviewedCrisisResources)}
+          onClick={openCrisisResources}
           className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         >
           I need immediate help

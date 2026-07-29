@@ -26,6 +26,10 @@ import {
 } from "../lib/story-artifact";
 import { requestHybridPlan } from "../lib/llm";
 import { STORY_PROMPT_VERSION } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import type { MatchRecipe } from "../lib/types";
 
 const PRIVATE_DISCLOSURE =
@@ -360,12 +364,12 @@ function makeFixture(brief = createResonanceBrief(PRIVATE_DISCLOSURE)): {
       stage,
       matchRecipe: recipe,
       openingCopy: {
-        eyebrow: "A life under a similar pressure",
-        prefaceLines: ["This story is true.", "Your life is not theirs."],
+        eyebrow: NEUTRAL_EYEBROW,
+        prefaceLines: DEFAULT_PREFACE_LINES,
       },
       fallbackOpeningCopy: {
-        eyebrow: "A life under a similar pressure",
-        prefaceLines: ["This story is true.", "Your life is not theirs."],
+        eyebrow: NEUTRAL_EYEBROW,
+        prefaceLines: DEFAULT_PREFACE_LINES,
       },
       framing: "partial",
       resonanceBrief: brief,

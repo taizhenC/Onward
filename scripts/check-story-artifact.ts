@@ -21,6 +21,11 @@ import {
   RESONANCE_BRIEF_VERSION,
   createResonanceBrief,
 } from "../lib/resonance-brief";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import type { MatchRecipe } from "../lib/types";
 
 const disclosure =
@@ -36,6 +41,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 function main(): void {
@@ -50,8 +56,8 @@ function main(): void {
       stage,
       matchRecipe: recipe,
       openingCopy: {
-        eyebrow: "A story for the difficult middle",
-        prefaceLines: ["This story is true.", "Your life is not theirs."],
+        eyebrow: NEUTRAL_EYEBROW,
+        prefaceLines: DEFAULT_PREFACE_LINES,
       },
       framing: "partial",
       resonanceBrief,

@@ -21,6 +21,11 @@ import {
   createResonanceBrief,
   type PrimaryPressure,
 } from "../lib/resonance-brief";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import { createSession } from "../lib/session";
 import { createStoryRequestContext } from "../lib/story-request-context";
 import {
@@ -53,6 +58,7 @@ const recipe: MatchRecipe = {
   embeddingModelId: "stub",
   retrievalMode: "keyword",
   resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 async function main(): Promise<void> {
@@ -94,8 +100,8 @@ function makeFixture(pressure: PrimaryPressure = "rejection") {
     stage,
     matchRecipe: recipe,
     openingCopy: {
-      eyebrow: "A documented life in a difficult middle",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief,

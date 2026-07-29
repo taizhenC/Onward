@@ -27,8 +27,10 @@ import {
 import { containsCrisisLanguage } from "@/lib/crisis-language";
 import {
   INTAKE_FICTIONAL_EXAMPLE,
+  INTAKE_SUBMISSION_COPY,
   INTAKE_WRITING_PROMPTS,
   firstInvalidIntakeField,
+  type IntakeSubmissionState,
   validateIntakeDraft,
 } from "@/lib/intake-presentation";
 import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
@@ -101,6 +103,8 @@ export function IntakeForm({
   const [feelingTouched, setFeelingTouched] = useState(false);
   const [validationAttempted, setValidationAttempted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [submissionState, setSubmissionState] =
+    useState<IntakeSubmissionState | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [crisisResources, setCrisisResources] = useState<
     CrisisResource[] | null
@@ -121,6 +125,7 @@ export function IntakeForm({
   const [flowConflict, setFlowConflict] = useState(false);
   const boundaryRef = useRef<HTMLFieldSetElement>(null);
   const noEligibleRef = useRef<HTMLDivElement>(null);
+  const rateLimitedRef = useRef<HTMLDivElement>(null);
   const clarificationRef = useRef<HTMLFieldSetElement>(null);
   const noCloseRef = useRef<HTMLDivElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
@@ -135,7 +140,14 @@ export function IntakeForm({
     else if (noCloseMatch) noCloseRef.current?.focus();
     else if (clarificationNeeded) clarificationRef.current?.focus();
     else if (noEligibleStory) noEligibleRef.current?.focus();
-  }, [clarificationNeeded, flowConflict, noCloseMatch, noEligibleStory]);
+    else if (rateLimited) rateLimitedRef.current?.focus();
+  }, [
+    clarificationNeeded,
+    flowConflict,
+    noCloseMatch,
+    noEligibleStory,
+    rateLimited,
+  ]);
 
   const ageNum = Number(age);
   const feelingLength = intakeFeelingLength(feeling);
@@ -223,19 +235,26 @@ export function IntakeForm({
       markFirstContentRequestStarted();
       return fetch("/api/match", { method: "POST", headers, body });
     };
+    setSubmissionState("checking_request");
     try {
       // Crisis classification reaches the server before the browser auth SDK.
       // Only a non-crisis 401 creates an anonymous session and retries.
       response = await postMatch();
       if (stopForManualCrisis()) return;
+      if (response.status === 401) {
+        setSubmissionState("securing_session");
+      }
       if (response.status === 401 && (await ensureAuthSession())) {
         if (stopForManualCrisis()) return;
+        setSubmissionState("finding_story");
         response = await postMatch();
         if (stopForManualCrisis()) return;
       }
     } catch {
       clearFirstContentRequestStarted();
-      setError("The connection dropped. Please try again.");
+      setError(
+        "The connection dropped. What you wrote is still here. Please try again; the server may already have received the request.",
+      );
       finishSubmitting();
       return;
     }
@@ -271,6 +290,7 @@ export function IntakeForm({
     // A gentle terminal state, not an error: the 429 means "come back in a while".
     if (response.status === 429 || "rateLimited" in payload) {
       setRateLimited(true);
+      finishSubmitting();
       return;
     }
 
@@ -325,10 +345,12 @@ export function IntakeForm({
     if ("crisis" in payload && payload.crisis) {
       setCrisisMatchRequestStarted(false);
       setCrisisResources(payload.resources);
+      finishSubmitting();
       return;
     }
     if ("sessionId" in payload) {
       bindFirstContentStory(payload.sessionId);
+      setSubmissionState("opening_story");
       router.push(`/story/${payload.sessionId}`);
       return;
     }
@@ -339,6 +361,7 @@ export function IntakeForm({
   function finishSubmitting() {
     submittingRef.current = false;
     setSubmitting(false);
+    setSubmissionState(null);
   }
 
   function openCrisisResources() {
@@ -397,19 +420,28 @@ export function IntakeForm({
   if (rateLimited) {
     return (
       <motion.div
+        ref={rateLimitedRef}
+        tabIndex={-1}
+        role="status"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="space-y-6"
+        className="space-y-6 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
       >
         <header className="space-y-3">
           <h1 className="text-3xl">A pause</h1>
         </header>
         <p className="text-[var(--color-ink-soft)] leading-relaxed">
-          You&apos;ve begun several stories in a short while, so Onward is
-          asking for a little time. The door opens again within the hour. The
-          stories will be here.
+          Onward has reached a recent story-start limit for this account or
+          connection. This request did not start a story. Please try again
+          later; the limit may be hourly or daily.
         </p>
+        <Link
+          href="/"
+          className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+        >
+          Return home
+        </Link>
       </motion.div>
     );
   }
@@ -419,6 +451,7 @@ export function IntakeForm({
       onSubmit={handleSubmit}
       onChange={markIntakeStarted}
       noValidate
+      aria-busy={submitting}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
@@ -846,19 +879,31 @@ export function IntakeForm({
       ) : null}
 
       {!noCloseMatch && !flowConflict ? (
-        <button
-          type="submit"
-          disabled={
-            submitting || (clarificationNeeded && clarification === null)
-          }
-          className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-6 py-3 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-        >
-          {submitting
-            ? "Finding…"
-            : clarificationNeeded
-              ? "Use this answer"
-              : "Begin"}
-        </button>
+        <div className="space-y-3">
+          <p
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            className="min-h-5 font-ui text-sm text-[var(--color-ink-soft)]"
+          >
+            {submissionState
+              ? INTAKE_SUBMISSION_COPY[submissionState].liveStatus
+              : ""}
+          </p>
+          <button
+            type="submit"
+            disabled={
+              submitting || (clarificationNeeded && clarification === null)
+            }
+            className="min-h-11 border border-[var(--color-ink)] px-6 py-3 font-ui text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            {submissionState
+              ? INTAKE_SUBMISSION_COPY[submissionState].buttonLabel
+              : clarificationNeeded
+                ? "Use this answer"
+                : "Begin"}
+          </button>
+        </div>
       ) : null}
     </motion.form>
   );

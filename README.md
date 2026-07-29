@@ -41,7 +41,7 @@ For the full stack locally, copy `.env.example` to `.env.local` and fill in the 
 npm run typecheck         # tsc --noEmit
 npm run build             # production build
 npm run smoke             # hermetic regression suite (memory + stubs)
-npm run eval              # match eval (EVAL_CONCURRENCY=1 with real providers)
+npm run eval              # match eval (set EVAL_RECIPE_ID; use EVAL_CONCURRENCY=1 with real providers)
 npm run seed              # seed figures + figure_stages to Supabase
 npm run check-story-spec  # validate all draft contracts and publish rejection gates
 npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
@@ -71,6 +71,16 @@ npm run seed-embeddings   # embed shape/facet texts (requires EMBEDDING_PROVIDER
 npm run check-embeddings  # live embed probe + cache validity check
 npm run eval-retrieval    # Stage A/B gold survival (no Cerebras)
 ```
+
+`keyword` now has both the promoted v1 recipe and an unpromoted personalized-
+preface v2 challenger. Set `EVAL_RECIPE_ID` explicitly for match evaluation so
+two recipes with the same retrieval mode cannot be confused. Story-quality
+evaluation instead binds the candidate recipe inside its protected packet and
+manifest. The v2 recipe is evaluation-only and cannot be selected by served
+production until a separate evidence-backed promotion changes the protected
+selector. The selected v1 request contract remains frozen, but its returned
+eyebrow is displayed only when it exactly matches a code-reviewed line;
+otherwise the neutral eyebrow is used.
 
 ## Environment
 

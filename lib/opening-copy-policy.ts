@@ -21,8 +21,7 @@ import {
 import {
   buildPrefacePlanRequest,
   firstCompatiblePrefacePlan,
-  isUniversalPreface,
-  renderPersonalizedPreface,
+  renderPersonalizedOpeningCopy,
   validatePrefacePlanCandidate,
 } from "./preface-plan";
 import { containsResonanceEcho } from "./resonance-brief";
@@ -107,40 +106,22 @@ const V2_POLICY: OpeningCopyPolicy = Object.freeze({
     const validation = validatePrefacePlanCandidate(raw, request);
     if (!validation.valid) return fallbackOpeningCopy();
 
-    const eyebrow = sanitizeEyebrow(
-      validation.plan.eyebrow,
-      input.stage.displayName,
+    return (
+      renderPersonalizedOpeningCopy(
+        validation.plan,
+        input.resonanceBrief,
+      ) ?? fallbackOpeningCopy()
     );
-    if (
-      eyebrow === NEUTRAL_EYEBROW ||
-      containsResonanceEcho(eyebrow, input.resonanceBrief)
-    ) {
-      return fallbackOpeningCopy();
-    }
-    const prefaceLines = renderPersonalizedPreface(
-      validation.plan,
-      input.resonanceBrief,
-    );
-    if (isUniversalPreface(prefaceLines)) return fallbackOpeningCopy();
-    return { eyebrow, prefaceLines };
   },
   fromStub(input) {
     const request = buildPrefacePlanRequest(
       toProviderSurfaceFromInput(input),
     );
-    const plan = firstCompatiblePrefacePlan(
-      request,
-      curatedEyebrow(input.stage.figureKey, input.stage.stageId),
+    const plan = firstCompatiblePrefacePlan(request);
+    return (
+      renderPersonalizedOpeningCopy(plan, input.resonanceBrief) ??
+      fallbackOpeningCopy()
     );
-    const prefaceLines = renderPersonalizedPreface(
-      plan,
-      input.resonanceBrief,
-    );
-    if (isUniversalPreface(prefaceLines)) return fallbackOpeningCopy();
-    return {
-      eyebrow: plan.eyebrow,
-      prefaceLines,
-    };
   },
 });
 

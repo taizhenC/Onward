@@ -1,16 +1,20 @@
 import "./_smoke-bootstrap";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { consumeDerivedOutput } from "../lib/derived-output-retention";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { writeOpeningCopy } from "../lib/llm";
-import { STORY_PROMPT_VERSION_V2 } from "../lib/llm-recipe-constants";
 import {
+  STORY_PROMPT_VERSION_V1,
+  STORY_PROMPT_VERSION_V2,
+} from "../lib/llm-recipe-constants";
+import {
+  OpeningCopyPolicyError,
   openingCopyPolicyForStoryPromptVersion,
 } from "../lib/opening-copy-policy";
 import {
   DEFAULT_PREFACE_LINES,
   NEUTRAL_EYEBROW,
-  curatedEyebrow,
   toEyebrowProviderSurface,
   toEyebrowSurface,
   type OpeningCopyInput,
@@ -19,6 +23,7 @@ import {
   PERSONALIZED_PREFACE_PROMPT_CONTRACT,
   PREFACE_ACKNOWLEDGEMENT_TEMPLATES,
   PREFACE_DISTANCE_TEMPLATES,
+  PREFACE_EYEBROW_TEMPLATES,
   PREFACE_FALLBACK_LINES,
   PREFACE_INVITATION_LINE,
   PREFACE_NON_EQUIVALENCE_LINE,
@@ -30,7 +35,9 @@ import {
   buildPrefacePlanRequest,
   firstCompatiblePrefacePlan,
   isUniversalPreface,
+  renderPersonalizedOpeningCopy,
   renderPersonalizedPreface,
+  validatePersonalizedOpeningCopy,
   validatePersonalizedPrefaceLines,
   validatePrefacePlanCandidate,
 } from "../lib/preface-plan";
@@ -50,6 +57,7 @@ import {
 } from "../lib/story-artifact";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import {
+  PRIMARY_STORY_RECIPE,
   getStoryRecipeById,
   getStoryRecipePromotion,
   storyRecipeExecutionPlan,
@@ -64,7 +72,8 @@ const PRIVATE_DISCLOSURE =
   'After Priya rejected me in Boston in 2024, my "cobalt compass" stopped pointing anywhere.';
 const EPISODE_SHAPE =
   "A person kept working after a closed door made the next step uncertain.";
-const SAFE_EYEBROW = "After the door closed";
+const V2_PROVIDER_REQUEST_SHA256 =
+  "6b60b078cbcec4759bfb88d8a53e9b500a73f533ba294901226ef7aed367d53d";
 
 const DISTANCES = [
   "gentle",
@@ -78,7 +87,7 @@ async function main(): Promise<void> {
   );
   if (!stage) throw new Error("personalized-preface stage fixture is missing");
 
-  const cellCount = assertClosedCatalogMatrix();
+  const catalogCoverage = assertClosedCatalogMatrix();
   assertStrictPlanValidation();
 
   const input: OpeningCopyInput = {
@@ -93,29 +102,25 @@ async function main(): Promise<void> {
     STORY_PROMPT_VERSION_V2,
   );
   const stubCopy = policy.fromStub(input);
-  assert.equal(
-    stubCopy.eyebrow,
-    curatedEyebrow(stage.figureKey, stage.stageId),
-  );
   assert(!isUniversalPreface(stubCopy.prefaceLines));
-  assert(
-    validatePersonalizedPrefaceLines(
-      stubCopy.prefaceLines,
-      input.resonanceBrief,
-    ),
-  );
+  assert(validatePersonalizedOpeningCopy(stubCopy, input.resonanceBrief));
 
   const providerCopy = await assertProviderBoundary(input);
+  await assertUnselectedV2CannotReachProvider(input);
   assertArtifactBoundary(input, providerCopy);
   assertRecipeRegistration();
 
   console.log(
-    `Personalized preface check passed (${cellCount} pressure/distance cells; bounded provider and artifact fallbacks verified).`,
+    `Personalized preface check passed (${catalogCoverage.cells} pressure/distance cells, ${catalogCoverage.combinations} server-owned combinations; bounded provider and artifact fallbacks verified).`,
   );
 }
 
-function assertClosedCatalogMatrix(): number {
+function assertClosedCatalogMatrix(): Readonly<{
+  cells: number;
+  combinations: number;
+}> {
   assert(Object.isFrozen(PERSONALIZED_PREFACE_PROMPT_CONTRACT));
+  assert(Object.isFrozen(PREFACE_EYEBROW_TEMPLATES));
   assert(Object.isFrozen(PREFACE_ACKNOWLEDGEMENT_TEMPLATES));
   assert(Object.isFrozen(PREFACE_DISTANCE_TEMPLATES));
   assert(Object.isFrozen(PREFACE_FALLBACK_LINES));
@@ -123,15 +128,18 @@ function assertClosedCatalogMatrix(): number {
   assert.equal(
     new Set(
       [
+        ...PREFACE_EYEBROW_TEMPLATES,
         ...PREFACE_ACKNOWLEDGEMENT_TEMPLATES,
         ...PREFACE_DISTANCE_TEMPLATES,
       ].map((template) => template.id),
     ).size,
-    PREFACE_ACKNOWLEDGEMENT_TEMPLATES.length +
+    PREFACE_EYEBROW_TEMPLATES.length +
+      PREFACE_ACKNOWLEDGEMENT_TEMPLATES.length +
       PREFACE_DISTANCE_TEMPLATES.length,
   );
 
   let cells = 0;
+  let combinations = 0;
   for (const pressure of PRIMARY_PRESSURES) {
     for (const distance of DISTANCES) {
       cells += 1;
@@ -139,62 +147,91 @@ function assertClosedCatalogMatrix(): number {
       const request = requestFor(brief);
       assert(Object.isFrozen(request));
       assert(Object.isFrozen(request.resonance));
+      assert(Object.isFrozen(request.allowedEyebrowTemplateIds));
       assert(Object.isFrozen(request.allowedAcknowledgementTemplateIds));
       assert(Object.isFrozen(request.allowedDistanceTemplateIds));
+      assert.equal(request.allowedEyebrowTemplateIds.length, 2);
       assert.equal(request.allowedAcknowledgementTemplateIds.length, 2);
       assert.equal(request.allowedDistanceTemplateIds.length, 2);
 
-      for (const acknowledgementTemplateId of
-        request.allowedAcknowledgementTemplateIds) {
-        for (const distanceTemplateId of
-          request.allowedDistanceTemplateIds) {
-          const candidate = {
-            schemaVersion: PREFACE_PLAN_SCHEMA_VERSION,
-            eyebrow: SAFE_EYEBROW,
-            acknowledgementTemplateId,
-            distanceTemplateId,
-          } satisfies PrefacePlanCandidate;
-          const validation = validatePrefacePlanCandidate(candidate, request);
-          assert(validation.valid);
-
-          const rendered = renderPersonalizedPreface(candidate, brief);
-          const acknowledgement =
-            PREFACE_ACKNOWLEDGEMENT_TEMPLATES.find(
-              (template) => template.id === acknowledgementTemplateId,
+      for (const eyebrowTemplateId of
+        request.allowedEyebrowTemplateIds) {
+        for (const acknowledgementTemplateId of
+          request.allowedAcknowledgementTemplateIds) {
+          for (const distanceTemplateId of
+            request.allowedDistanceTemplateIds) {
+            combinations += 1;
+            const candidate = {
+              schemaVersion: PREFACE_PLAN_SCHEMA_VERSION,
+              eyebrowTemplateId,
+              acknowledgementTemplateId,
+              distanceTemplateId,
+            } satisfies PrefacePlanCandidate;
+            const validation = validatePrefacePlanCandidate(
+              candidate,
+              request,
             );
-          const distanceTemplate = PREFACE_DISTANCE_TEMPLATES.find(
-            (template) => template.id === distanceTemplateId,
-          );
-          assert(acknowledgement);
-          assert(distanceTemplate);
-          assert.deepEqual(rendered, [
-            acknowledgement.line,
-            distanceTemplate.line,
-            PREFACE_NON_EQUIVALENCE_LINE,
-            PREFACE_INVITATION_LINE,
-          ]);
-          assert(validatePersonalizedPrefaceLines(rendered, brief));
-          assert(
-            !rendered.some(
-              (line) =>
-                line.includes(acknowledgementTemplateId) ||
-                line.includes(distanceTemplateId),
-            ),
-          );
+            assert(validation.valid);
+
+            const rendered = renderPersonalizedOpeningCopy(
+              candidate,
+              brief,
+            );
+            const eyebrow = PREFACE_EYEBROW_TEMPLATES.find(
+              (template) => template.id === eyebrowTemplateId,
+            );
+            const acknowledgement =
+              PREFACE_ACKNOWLEDGEMENT_TEMPLATES.find(
+                (template) =>
+                  template.id === acknowledgementTemplateId,
+              );
+            const distanceTemplate = PREFACE_DISTANCE_TEMPLATES.find(
+              (template) => template.id === distanceTemplateId,
+            );
+            assert(rendered);
+            assert(eyebrow);
+            assert(acknowledgement);
+            assert(distanceTemplate);
+            assert.deepEqual(rendered, {
+              eyebrow: eyebrow.line,
+              prefaceLines: [
+                acknowledgement.line,
+                distanceTemplate.line,
+                PREFACE_NON_EQUIVALENCE_LINE,
+                PREFACE_INVITATION_LINE,
+              ],
+            });
+            assert(validatePersonalizedOpeningCopy(rendered, brief));
+            assert(
+              !JSON.stringify(rendered).includes(eyebrowTemplateId) &&
+                !JSON.stringify(rendered).includes(
+                  acknowledgementTemplateId,
+                ) &&
+                !JSON.stringify(rendered).includes(
+                  distanceTemplateId,
+                ),
+            );
+          }
         }
       }
     }
   }
 
-  return cells;
+  return Object.freeze({ cells, combinations });
 }
 
 function assertStrictPlanValidation(): void {
   const request = requestFor(createBrief("rejection", "gentle"));
-  const validPlan = firstCompatiblePrefacePlan(request, SAFE_EYEBROW);
+  const validPlan = firstCompatiblePrefacePlan(request);
   assert(validatePrefacePlanCandidate(validPlan, request).valid);
   assert(Object.isFrozen(validPlan));
 
+  const wrongEyebrow = PREFACE_EYEBROW_TEMPLATES.find(
+    (template) =>
+      !request.allowedEyebrowTemplateIds.includes(
+        template.id as never,
+      ),
+  );
   const wrongAcknowledgement = PREFACE_ACKNOWLEDGEMENT_TEMPLATES.find(
     (template) =>
       !request.allowedAcknowledgementTemplateIds.includes(
@@ -205,6 +242,7 @@ function assertStrictPlanValidation(): void {
     (template) =>
       !request.allowedDistanceTemplateIds.includes(template.id as never),
   );
+  assert(wrongEyebrow);
   assert(wrongAcknowledgement);
   assert(wrongDistance);
 
@@ -214,19 +252,13 @@ function assertStrictPlanValidation(): void {
     "not-an-object",
     {},
     { ...validPlan, schemaVersion: "preface-plan-v0" },
-    { ...validPlan, eyebrow: 42 },
-    { ...validPlan, eyebrow: "" },
-    { ...validPlan, eyebrow: ` ${SAFE_EYEBROW}` },
-    { ...validPlan, eyebrow: `${SAFE_EYEBROW}\nAnother line` },
-    { ...validPlan, eyebrow: "You should know everything will be okay" },
-    { ...validPlan, eyebrow: "A closed door in 2024" },
-    { ...validPlan, eyebrow: `"${SAFE_EYEBROW}"` },
-    { ...validPlan, eyebrow: "word ".repeat(11).trim() },
-    { ...validPlan, eyebrow: "x".repeat(73) },
+    { ...validPlan, eyebrowTemplateId: wrongEyebrow.id },
+    { ...validPlan, eyebrowTemplateId: "Alone in Paris" },
+    { ...validPlan, eyebrowTemplateId: "Suicide made every road narrow" },
     { ...validPlan, extra: "provider-authored prose" },
     {
       schemaVersion: validPlan.schemaVersion,
-      eyebrow: validPlan.eyebrow,
+      eyebrowTemplateId: validPlan.eyebrowTemplateId,
       acknowledgementTemplateId: validPlan.acknowledgementTemplateId,
     },
     {
@@ -267,12 +299,13 @@ async function assertProviderBoundary(
   const request = buildPrefacePlanRequest(
     toEyebrowProviderSurface(toEyebrowSurface(input)),
   );
-  const validPlan = firstCompatiblePrefacePlan(request, SAFE_EYEBROW);
-  const expectedLines = renderPersonalizedPreface(
+  const validPlan = firstCompatiblePrefacePlan(request);
+  const expectedCopy = renderPersonalizedOpeningCopy(
     validPlan,
     input.resonanceBrief,
   );
-  assert(!isUniversalPreface(expectedLines));
+  assert(expectedCopy);
+  assert(!isUniversalPreface(expectedCopy.prefaceLines));
 
   const previous = captureEnvironment([
     "LLM_API_KEY",
@@ -306,12 +339,14 @@ async function assertProviderBoundary(
       await writeOpeningCopy(input, STORY_PROMPT_VERSION_V2),
       "provider_health_check",
     );
-    assert.deepEqual(copy, {
-      eyebrow: SAFE_EYEBROW,
-      prefaceLines: expectedLines,
-    });
+    assert.deepEqual(copy, expectedCopy);
 
     const body = JSON.parse(capturedBody) as Record<string, unknown>;
+    assert.equal(
+      createHash("sha256").update(capturedBody).digest("hex"),
+      V2_PROVIDER_REQUEST_SHA256,
+      "v2 provider request bytes changed",
+    );
     assert.deepEqual(body.response_format, { type: "json_object" });
     assert.deepEqual(Object.keys(body).sort(), [
       "messages",
@@ -336,6 +371,7 @@ async function assertProviderBoundary(
       );
     }
     for (const template of [
+      ...PREFACE_EYEBROW_TEMPLATES,
       ...PREFACE_ACKNOWLEDGEMENT_TEMPLATES,
       ...PREFACE_DISTANCE_TEMPLATES,
     ]) {
@@ -345,6 +381,7 @@ async function assertProviderBoundary(
       );
     }
     for (const id of [
+      ...request.allowedEyebrowTemplateIds,
       ...request.allowedAcknowledgementTemplateIds,
       ...request.allowedDistanceTemplateIds,
     ]) {
@@ -372,7 +409,7 @@ async function assertProviderBoundary(
             message: {
               content: JSON.stringify({
                 ...validPlan,
-                preface: "provider-authored prose",
+                eyebrow: "Alone in Paris after the door closed",
               }),
             },
           },
@@ -385,7 +422,7 @@ async function assertProviderBoundary(
         await writeOpeningCopy(input, STORY_PROMPT_VERSION_V2),
         "provider_health_check",
       ),
-      "extra candidate field",
+      "provider-authored place copy",
     );
 
     response = new Response("provider unavailable", { status: 503 });
@@ -404,7 +441,7 @@ async function assertProviderBoundary(
             message: {
               content: JSON.stringify({
                 ...validPlan,
-                eyebrow: input.stage.displayName,
+                eyebrowTemplateId: input.stage.displayName,
               }),
             },
           },
@@ -417,7 +454,7 @@ async function assertProviderBoundary(
         await writeOpeningCopy(input, STORY_PROMPT_VERSION_V2),
         "provider_health_check",
       ),
-      "figure-name leak",
+      "figure-name identifier injection",
     );
 
     response = new Response(
@@ -427,7 +464,8 @@ async function assertProviderBoundary(
             message: {
               content: JSON.stringify({
                 ...validPlan,
-                eyebrow: "You should know everything will be okay",
+                eyebrowTemplateId:
+                  "Suicide made every road feel narrow",
               }),
             },
           },
@@ -440,7 +478,7 @@ async function assertProviderBoundary(
         await writeOpeningCopy(input, STORY_PROMPT_VERSION_V2),
         "provider_health_check",
       ),
-      "unsafe reassurance",
+      "sensitive-content identifier injection",
     );
 
     response = new Response(
@@ -473,6 +511,34 @@ async function assertProviderBoundary(
   }
 }
 
+async function assertUnselectedV2CannotReachProvider(
+  input: OpeningCopyInput,
+): Promise<void> {
+  const previous = captureEnvironment([
+    "NODE_ENV",
+    "ONWARD_PRODUCTION_RECIPE_ID",
+  ]);
+  const originalFetch = globalThis.fetch;
+  let providerCalled = false;
+  Reflect.set(process.env, "NODE_ENV", "production");
+  process.env.ONWARD_PRODUCTION_RECIPE_ID =
+    PRIMARY_STORY_RECIPE.recipeId;
+  globalThis.fetch = (async () => {
+    providerCalled = true;
+    throw new Error("unselected prompt reached provider");
+  }) as typeof fetch;
+  try {
+    await assert.rejects(
+      () => writeOpeningCopy(input, STORY_PROMPT_VERSION_V2),
+      (error: unknown) => error instanceof OpeningCopyPolicyError,
+    );
+    assert.equal(providerCalled, false);
+  } finally {
+    globalThis.fetch = originalFetch;
+    restoreEnvironment(previous);
+  }
+}
+
 function assertArtifactBoundary(
   input: OpeningCopyInput,
   openingCopy: OpeningCopy,
@@ -495,6 +561,7 @@ function assertArtifactBoundary(
   const serialized = JSON.stringify(artifact);
   assert(!serialized.includes(PRIVATE_DISCLOSURE));
   for (const templateId of [
+    ...PREFACE_EYEBROW_TEMPLATES.map((template) => template.id),
     ...PREFACE_ACKNOWLEDGEMENT_TEMPLATES.map((template) => template.id),
     ...PREFACE_DISTANCE_TEMPLATES.map((template) => template.id),
   ]) {
@@ -533,6 +600,27 @@ function assertArtifactBoundary(
   rehash(extraKey);
   assert.equal(validateStoredStoryArtifact(extraKey), null);
 
+  const downgraded = withArbitraryOpening(structuredClone(artifact));
+  downgraded.recipe.match.storyPromptVersion =
+    STORY_PROMPT_VERSION_V1;
+  rehash(downgraded);
+  assert.equal(validateStoredStoryArtifact(downgraded), null);
+
+  const unknownVersion = withArbitraryOpening(
+    structuredClone(artifact),
+  );
+  unknownVersion.recipe.match.storyPromptVersion =
+    "opening-copy-prompt-unknown";
+  rehash(unknownVersion);
+  assert.equal(validateStoredStoryArtifact(unknownVersion), null);
+
+  const missingVersion = withArbitraryOpening(
+    structuredClone(artifact),
+  );
+  delete missingVersion.recipe.match.storyPromptVersion;
+  rehash(missingVersion);
+  assert.equal(validateStoredStoryArtifact(missingVersion), null);
+
   const incompatiblePressure = structuredClone(artifact);
   const lossLine = PREFACE_ACKNOWLEDGEMENT_TEMPLATES.find(
     (template) =>
@@ -546,6 +634,10 @@ function assertArtifactBoundary(
     ...incompatiblePressure.openingCopy.prefaceLines.slice(1),
   ];
   rehash(incompatiblePressure);
+  assert.equal(
+    validateStoredStoryArtifact(incompatiblePressure),
+    null,
+  );
   const detailed = validateStoryArtifact(
     incompatiblePressure,
     storySpec,
@@ -553,6 +645,30 @@ function assertArtifactBoundary(
   );
   assert.equal(detailed.valid, false);
   assert(detailed.failureReasons.includes("opening_copy_invalid"));
+
+  const incompatibleEyebrow = structuredClone(artifact);
+  const lossEyebrow = PREFACE_EYEBROW_TEMPLATES.find(
+    (template) =>
+      (template.allowedPressures as readonly PrimaryPressure[]).includes(
+        "loss",
+      ),
+  )?.line;
+  assert(lossEyebrow);
+  incompatibleEyebrow.openingCopy.eyebrow = lossEyebrow;
+  rehash(incompatibleEyebrow);
+  assert.equal(
+    validateStoredStoryArtifact(incompatibleEyebrow),
+    null,
+  );
+  const eyebrowValidation = validateStoryArtifact(
+    incompatibleEyebrow,
+    storySpec,
+    input.resonanceBrief,
+  );
+  assert.equal(eyebrowValidation.valid, false);
+  assert(
+    eyebrowValidation.failureReasons.includes("opening_copy_invalid"),
+  );
 }
 
 function assertRecipeRegistration(): void {
@@ -631,6 +747,23 @@ function rehash(
   },
 ): void {
   artifact.contentHash = storyArtifactContentHash(artifact);
+}
+
+function withArbitraryOpening<
+  Artifact extends {
+    openingCopy: OpeningCopy;
+  },
+>(artifact: Artifact): Artifact {
+  artifact.openingCopy = {
+    eyebrow: "Arbitrary provider prose",
+    prefaceLines: [
+      "Arbitrary line one.",
+      "Arbitrary line two.",
+      "Arbitrary line three.",
+      "Arbitrary line four.",
+    ],
+  };
+  return artifact;
 }
 
 function assertUniversalFallback(

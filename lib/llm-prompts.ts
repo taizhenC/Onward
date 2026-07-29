@@ -198,6 +198,7 @@ export function buildPrefacePlanUserPrompt(
     schemaVersion: input.schemaVersion,
     ...input.resonance,
     episodeShape: input.episodeShape,
+    allowedEyebrowTemplateIds: input.allowedEyebrowTemplateIds,
     allowedAcknowledgementTemplateIds:
       input.allowedAcknowledgementTemplateIds,
     allowedDistanceTemplateIds: input.allowedDistanceTemplateIds,

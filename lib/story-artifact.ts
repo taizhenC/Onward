@@ -43,10 +43,14 @@ import {
   renderHybridTemplate,
   type HybridCompositionPlan,
 } from "./hybrid-composition";
-import { STORY_PROMPT_VERSION_V2 } from "./llm-recipe-constants";
 import {
+  STORY_PROMPT_VERSION_V1,
+  STORY_PROMPT_VERSION_V2,
+} from "./llm-recipe-constants";
+import {
+  isUniversalOpeningCopy,
   isUniversalPreface,
-  validatePersonalizedPrefaceLines,
+  validatePersonalizedOpeningCopy,
 } from "./preface-plan";
 import type {
   ClientFigureOutline,
@@ -493,6 +497,7 @@ export function validateStoredStoryArtifact(value: unknown): StoryArtifact | nul
     null,
     storedStoryPromptVersion,
     openingFailures,
+    !transparencyAwareSchema,
   );
   if (
     openingFailures.size > 0 ||
@@ -697,6 +702,7 @@ function validateOpeningCopy(
   resonanceBrief: ResonanceBrief | null,
   storyPromptVersion: string | undefined,
   failures: Set<ArtifactValidationFailure>,
+  allowLegacyUnversioned = false,
 ): void {
   if (
     !isRecord(openingCopy) ||
@@ -721,17 +727,26 @@ function validateOpeningCopy(
   ) {
     failures.add("opening_copy_invalid");
   }
-  if (
-    storyPromptVersion === STORY_PROMPT_VERSION_V2 &&
-    !validatePersonalizedPrefaceLines(prefaceLines, resonanceBrief)
+  let trustedUniversalPreface = false;
+  if (storyPromptVersion === STORY_PROMPT_VERSION_V1) {
+    trustedUniversalPreface = isUniversalPreface(prefaceLines);
+    if (!trustedUniversalPreface) failures.add("opening_copy_invalid");
+  } else if (storyPromptVersion === STORY_PROMPT_VERSION_V2) {
+    trustedUniversalPreface = isUniversalOpeningCopy(openingCopy);
+    if (
+      !validatePersonalizedOpeningCopy(openingCopy, resonanceBrief)
+    ) {
+      failures.add("opening_copy_invalid");
+    }
+  } else if (
+    storyPromptVersion !== undefined ||
+    !allowLegacyUnversioned
   ) {
     failures.add("opening_copy_invalid");
   }
-  const resonanceEchoLines =
-    storyPromptVersion === STORY_PROMPT_VERSION_V2 &&
-    isUniversalPreface(prefaceLines)
-      ? [eyebrow]
-      : lines;
+  const resonanceEchoLines = trustedUniversalPreface
+    ? [eyebrow]
+    : lines;
   if (
     resonanceEchoLines.some(
       (line) =>

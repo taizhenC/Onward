@@ -12,11 +12,110 @@ type AcknowledgementTemplate = Readonly<{
   allowedPressures: readonly PrimaryPressure[];
 }>;
 
+type EyebrowTemplate = Readonly<{
+  id: string;
+  line: string;
+  allowedPressures: readonly PrimaryPressure[];
+}>;
+
 type DistanceTemplate = Readonly<{
   id: string;
   line: string;
   allowedDistances: readonly DesiredDistance[];
 }>;
+
+const EYEBROW_TEMPLATE_SOURCE = [
+  {
+    id: "preface-eyebrow-loss-absence-v1",
+    line: "Living beside an absence",
+    allowedPressures: ["loss"],
+  },
+  {
+    id: "preface-eyebrow-loss-changed-day-v1",
+    line: "After what was gone changed the day",
+    allowedPressures: ["loss"],
+  },
+  {
+    id: "preface-eyebrow-rejection-closed-door-v1",
+    line: "After the door closed",
+    allowedPressures: ["rejection"],
+  },
+  {
+    id: "preface-eyebrow-rejection-effort-met-no-v1",
+    line: "When effort met a no",
+    allowedPressures: ["rejection"],
+  },
+  {
+    id: "preface-eyebrow-isolation-belonging-v1",
+    line: "At a distance from belonging",
+    allowedPressures: ["isolation"],
+  },
+  {
+    id: "preface-eyebrow-isolation-quiet-v1",
+    line: "Inside a quieter kind of loneliness",
+    allowedPressures: ["isolation"],
+  },
+  {
+    id: "preface-eyebrow-identity-stopped-fitting-v1",
+    line: "When the old life stopped fitting",
+    allowedPressures: ["identity"],
+  },
+  {
+    id: "preface-eyebrow-identity-between-selves-v1",
+    line: "Between an old self and what comes next",
+    allowedPressures: ["identity"],
+  },
+  {
+    id: "preface-eyebrow-blocked-agency-narrow-v1",
+    line: "When every way forward felt narrow",
+    allowedPressures: ["blocked_agency"],
+  },
+  {
+    id: "preface-eyebrow-blocked-agency-room-v1",
+    line: "A life waiting for room to move",
+    allowedPressures: ["blocked_agency"],
+  },
+  {
+    id: "preface-eyebrow-shame-verdict-v1",
+    line: "When one moment felt like a verdict",
+    allowedPressures: ["shame"],
+  },
+  {
+    id: "preface-eyebrow-shame-self-judgment-v1",
+    line: "Under the weight of self-judgment",
+    allowedPressures: ["shame"],
+  },
+  {
+    id: "preface-eyebrow-uncertainty-direction-v1",
+    line: "Before any direction felt solid",
+    allowedPressures: ["uncertainty"],
+  },
+  {
+    id: "preface-eyebrow-uncertainty-next-step-v1",
+    line: "At the edge of an unclear next step",
+    allowedPressures: ["uncertainty"],
+  },
+  {
+    id: "preface-eyebrow-exhaustion-outlasted-strength-v1",
+    line: "After effort outlasted the available strength",
+    allowedPressures: ["exhaustion"],
+  },
+  {
+    id: "preface-eyebrow-exhaustion-far-step-v1",
+    line: "When even a small step felt far away",
+    allowedPressures: ["exhaustion"],
+  },
+  {
+    id: "preface-eyebrow-other-difficult-middle-v1",
+    line: "In the difficult middle",
+    allowedPressures: ["other"],
+  },
+  {
+    id: "preface-eyebrow-other-without-name-v1",
+    line: "Beside a pressure without an easy name",
+    allowedPressures: ["other"],
+  },
+] as const satisfies readonly EyebrowTemplate[];
 
 const ACKNOWLEDGEMENT_TEMPLATE_SOURCE = [
   {
@@ -153,6 +252,9 @@ const DISTANCE_TEMPLATE_SOURCE = [
   },
 ] as const satisfies readonly DistanceTemplate[];
 
+export const PREFACE_EYEBROW_TEMPLATES = deepFreeze(
+  EYEBROW_TEMPLATE_SOURCE,
+);
 export const PREFACE_ACKNOWLEDGEMENT_TEMPLATES = deepFreeze(
   ACKNOWLEDGEMENT_TEMPLATE_SOURCE,
 );
@@ -160,6 +262,8 @@ export const PREFACE_DISTANCE_TEMPLATES = deepFreeze(
   DISTANCE_TEMPLATE_SOURCE,
 );
 
+export type PrefaceEyebrowTemplateId =
+  (typeof PREFACE_EYEBROW_TEMPLATES)[number]["id"];
 export type PrefaceAcknowledgementTemplateId =
   (typeof PREFACE_ACKNOWLEDGEMENT_TEMPLATES)[number]["id"];
 export type PrefaceDistanceTemplateId =
@@ -181,13 +285,14 @@ export type PrefacePlanRequest = Readonly<{
   schemaVersion: typeof PREFACE_PLAN_SCHEMA_VERSION;
   resonance: ResonancePromptSurface;
   episodeShape: string;
+  allowedEyebrowTemplateIds: readonly PrefaceEyebrowTemplateId[];
   allowedAcknowledgementTemplateIds: readonly PrefaceAcknowledgementTemplateId[];
   allowedDistanceTemplateIds: readonly PrefaceDistanceTemplateId[];
 }>;
 
 export type PrefacePlanCandidate = Readonly<{
   schemaVersion: typeof PREFACE_PLAN_SCHEMA_VERSION;
-  eyebrow: string;
+  eyebrowTemplateId: PrefaceEyebrowTemplateId;
   acknowledgementTemplateId: PrefaceAcknowledgementTemplateId;
   distanceTemplateId: PrefaceDistanceTemplateId;
 }>;
@@ -196,17 +301,12 @@ export const PERSONALIZED_PREFACE_PROMPT_CONTRACT = deepFreeze({
   schemaVersion: PREFACE_PLAN_SCHEMA_VERSION,
   system: [
     "You prepare the opening of a small, gentle book built around a true historical episode.",
-    "Write one quiet page eyebrow and choose two template IDs from the supplied allowlists.",
-    "The template IDs select server-owned prose. Never write, quote, paraphrase, or explain the preface itself.",
-    "",
-    "Eyebrow rules:",
-    "- A single short fragment under ten words.",
-    "- No diagnosis, advice, reassurance, promise, or claim that two lives match exactly.",
-    "- Do not name any person, place, or year.",
-    "- No quotation marks, preamble, or explanation.",
+    "Choose three template IDs from the supplied allowlists.",
+    "The IDs select server-owned eyebrow and preface prose.",
+    "Never write, quote, paraphrase, or explain any reader-visible copy.",
     "",
     "Selection rules:",
-    "- Use only IDs from the supplied acknowledgement and distance allowlists.",
+    "- Use only IDs from the supplied eyebrow, acknowledgement, and distance allowlists.",
     "- Return exactly the requested keys and no others.",
     "- Output one JSON object and nothing else.",
   ].join("\n"),
@@ -217,11 +317,13 @@ export const PERSONALIZED_PREFACE_PROMPT_CONTRACT = deepFreeze({
     "Situation shape: {{situationShape}}",
     "Desired distance: {{desiredDistance}}",
     "Historical episode shape: {{episodeShape}}",
+    "Allowed eyebrow template IDs: {{allowedEyebrowTemplateIds}}",
     "Allowed acknowledgement template IDs: {{allowedAcknowledgementTemplateIds}}",
     "Allowed distance template IDs: {{allowedDistanceTemplateIds}}",
-    "Return keys schemaVersion, eyebrow, acknowledgementTemplateId, distanceTemplateId.",
+    "Return keys schemaVersion, eyebrowTemplateId, acknowledgementTemplateId, distanceTemplateId.",
   ].join("\n"),
   responseFormat: "json_object" as const,
+  eyebrowTemplates: PREFACE_EYEBROW_TEMPLATES,
   acknowledgementTemplates: PREFACE_ACKNOWLEDGEMENT_TEMPLATES,
   distanceTemplates: PREFACE_DISTANCE_TEMPLATES,
   fixedLines: [

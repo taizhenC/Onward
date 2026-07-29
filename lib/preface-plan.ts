@@ -3,12 +3,14 @@ import {
   PERSONALIZED_PREFACE_PROMPT_CONTRACT,
   PREFACE_ACKNOWLEDGEMENT_TEMPLATES,
   PREFACE_DISTANCE_TEMPLATES,
+  PREFACE_EYEBROW_TEMPLATES,
   PREFACE_FALLBACK_LINES,
   PREFACE_INVITATION_LINE,
   PREFACE_NON_EQUIVALENCE_LINE,
   PREFACE_PLAN_SCHEMA_VERSION,
   type PrefaceAcknowledgementTemplateId,
   type PrefaceDistanceTemplateId,
+  type PrefaceEyebrowTemplateId,
   type PrefacePlanCandidate,
   type PrefacePlanRequest,
 } from "./preface-plan-contract";
@@ -19,7 +21,11 @@ import {
   type PrimaryPressure,
   type ResonanceBrief,
 } from "./resonance-brief";
-import type { EyebrowProviderSurface } from "./opening-copy";
+import {
+  NEUTRAL_EYEBROW,
+  type EyebrowProviderSurface,
+} from "./opening-copy";
+import type { OpeningCopy } from "./types";
 
 export type PrefacePlanValidation =
   | Readonly<{ valid: true; plan: PrefacePlanCandidate }>
@@ -43,6 +49,10 @@ assertCatalogIntegrity();
 export function buildPrefacePlanRequest(
   surface: EyebrowProviderSurface,
 ): PrefacePlanRequest {
+  const allowedEyebrowTemplateIds = PREFACE_EYEBROW_TEMPLATES.filter(
+    (template) =>
+      allowsPressure(template, surface.resonance.primaryPressure),
+  ).map((template) => template.id);
   const allowedAcknowledgementTemplateIds =
     PREFACE_ACKNOWLEDGEMENT_TEMPLATES.filter((template) =>
       allowsPressure(template, surface.resonance.primaryPressure),
@@ -52,6 +62,7 @@ export function buildPrefacePlanRequest(
   ).map((template) => template.id);
 
   if (
+    allowedEyebrowTemplateIds.length === 0 ||
     allowedAcknowledgementTemplateIds.length === 0 ||
     allowedDistanceTemplateIds.length === 0
   ) {
@@ -62,6 +73,7 @@ export function buildPrefacePlanRequest(
     schemaVersion: PREFACE_PLAN_SCHEMA_VERSION,
     resonance: { ...surface.resonance },
     episodeShape: surface.throughLine,
+    allowedEyebrowTemplateIds,
     allowedAcknowledgementTemplateIds,
     allowedDistanceTemplateIds,
   });
@@ -74,11 +86,13 @@ export function validatePrefacePlanCandidate(
   if (
     !isExactRecord(
       value,
-      "acknowledgementTemplateId,distanceTemplateId,eyebrow,schemaVersion",
+      "acknowledgementTemplateId,distanceTemplateId,eyebrowTemplateId,schemaVersion",
     ) ||
     value.schemaVersion !== PREFACE_PLAN_SCHEMA_VERSION ||
-    typeof value.eyebrow !== "string" ||
-    !validEyebrowCandidate(value.eyebrow) ||
+    typeof value.eyebrowTemplateId !== "string" ||
+    !request.allowedEyebrowTemplateIds.includes(
+      value.eyebrowTemplateId as PrefaceEyebrowTemplateId,
+    ) ||
     typeof value.acknowledgementTemplateId !== "string" ||
     !request.allowedAcknowledgementTemplateIds.includes(
       value.acknowledgementTemplateId as PrefaceAcknowledgementTemplateId,
@@ -95,7 +109,8 @@ export function validatePrefacePlanCandidate(
     valid: true,
     plan: {
       schemaVersion: PREFACE_PLAN_SCHEMA_VERSION,
-      eyebrow: value.eyebrow,
+      eyebrowTemplateId:
+        value.eyebrowTemplateId as PrefaceEyebrowTemplateId,
       acknowledgementTemplateId:
         value.acknowledgementTemplateId as PrefaceAcknowledgementTemplateId,
       distanceTemplateId:
@@ -106,19 +121,46 @@ export function validatePrefacePlanCandidate(
 
 export function firstCompatiblePrefacePlan(
   request: PrefacePlanRequest,
-  eyebrow: string,
 ): PrefacePlanCandidate {
+  const eyebrowTemplateId = request.allowedEyebrowTemplateIds[0];
   const acknowledgementTemplateId =
     request.allowedAcknowledgementTemplateIds[0];
   const distanceTemplateId = request.allowedDistanceTemplateIds[0];
-  if (!acknowledgementTemplateId || !distanceTemplateId) {
+  if (
+    !eyebrowTemplateId ||
+    !acknowledgementTemplateId ||
+    !distanceTemplateId
+  ) {
     throw new Error("Personalized preface catalog is incomplete.");
   }
   return deepFreeze({
     schemaVersion: PREFACE_PLAN_SCHEMA_VERSION,
-    eyebrow,
+    eyebrowTemplateId,
     acknowledgementTemplateId,
     distanceTemplateId,
+  });
+}
+
+export function renderPersonalizedOpeningCopy(
+  plan: PrefacePlanCandidate,
+  resonanceBrief: ResonanceBrief,
+): OpeningCopy | null {
+  const eyebrow = PREFACE_EYEBROW_TEMPLATES.find(
+    (template) => template.id === plan.eyebrowTemplateId,
+  );
+  if (
+    !eyebrow ||
+    !allowsPressure(eyebrow, resonanceBrief.primaryPressure) ||
+    !validEyebrowTemplateLine(eyebrow.line) ||
+    containsResonanceEcho(eyebrow.line, resonanceBrief)
+  ) {
+    return null;
+  }
+  const prefaceLines = renderPersonalizedPreface(plan, resonanceBrief);
+  if (isUniversalPreface(prefaceLines)) return null;
+  return deepFreeze({
+    eyebrow: eyebrow.line,
+    prefaceLines,
   });
 }
 
@@ -156,6 +198,40 @@ export function renderPersonalizedPreface(
   return lines;
 }
 
+export function validatePersonalizedOpeningCopy(
+  openingCopy: OpeningCopy,
+  resonanceBrief: ResonanceBrief | null,
+): boolean {
+  if (isUniversalOpeningCopy(openingCopy)) return true;
+  const eyebrow = PREFACE_EYEBROW_TEMPLATES.find(
+    (template) => template.line === openingCopy.eyebrow,
+  );
+  const acknowledgement =
+    PREFACE_ACKNOWLEDGEMENT_TEMPLATES.find(
+      (template) => template.line === openingCopy.prefaceLines[0],
+    );
+  if (
+    !eyebrow ||
+    !acknowledgement ||
+    !validEyebrowTemplateLine(openingCopy.eyebrow) ||
+    !eyebrow.allowedPressures.some((pressure) =>
+      (acknowledgement.allowedPressures as readonly PrimaryPressure[])
+        .includes(pressure),
+    ) ||
+    !validatePersonalizedPrefaceLines(
+      openingCopy.prefaceLines,
+      resonanceBrief,
+    )
+  ) {
+    return false;
+  }
+  return (
+    resonanceBrief === null ||
+    (allowsPressure(eyebrow, resonanceBrief.primaryPressure) &&
+      !containsResonanceEcho(openingCopy.eyebrow, resonanceBrief))
+  );
+}
+
 export function validatePersonalizedPrefaceLines(
   lines: readonly string[],
   resonanceBrief: ResonanceBrief | null,
@@ -191,8 +267,18 @@ export function isUniversalPreface(lines: readonly string[]): boolean {
   return sameLines(lines, PREFACE_FALLBACK_LINES);
 }
 
+export function isUniversalOpeningCopy(
+  openingCopy: OpeningCopy,
+): boolean {
+  return (
+    openingCopy.eyebrow === NEUTRAL_EYEBROW &&
+    isUniversalPreface(openingCopy.prefaceLines)
+  );
+}
+
 function assertCatalogIntegrity(): void {
   const allTemplates = [
+    ...PREFACE_EYEBROW_TEMPLATES,
     ...PREFACE_ACKNOWLEDGEMENT_TEMPLATES,
     ...PREFACE_DISTANCE_TEMPLATES,
   ];
@@ -201,12 +287,21 @@ function assertCatalogIntegrity(): void {
   if (
     new Set(ids).size !== ids.length ||
     new Set(lines).size !== lines.length ||
+    !PREFACE_EYEBROW_TEMPLATES.every((template) =>
+      validEyebrowTemplateLine(template.line),
+    ) ||
     !validTemplateLines([
       ...lines,
       PREFACE_NON_EQUIVALENCE_LINE,
       PREFACE_INVITATION_LINE,
       ...PREFACE_FALLBACK_LINES,
     ]) ||
+    PRIMARY_PRESSURES.some(
+      (pressure) =>
+        PREFACE_EYEBROW_TEMPLATES.filter((template) =>
+          allowsPressure(template, pressure),
+        ).length < 2,
+    ) ||
     PRIMARY_PRESSURES.some(
       (pressure) =>
         PREFACE_ACKNOWLEDGEMENT_TEMPLATES.filter((template) =>
@@ -230,7 +325,7 @@ function assertCatalogIntegrity(): void {
   }
 }
 
-function validEyebrowCandidate(value: string): boolean {
+function validEyebrowTemplateLine(value: string): boolean {
   return (
     value.trim() === value &&
     value.length > 0 &&

@@ -698,7 +698,11 @@ function checkPublicationBoundary(failures: string[]): void {
     "select database_row.datdba into strict authority_owner",
     "where database_row.datname = pg_catalog.current_database()",
     "(current_user::pg_catalog.regrole)::oid <> authority_owner",
+    "pg_catalog.pg_has_role( 'service_role'::regrole, authority_owner, 'member' )",
+    "pg_catalog.pg_has_role( 'anon'::regrole, authority_owner, 'member' )",
+    "pg_catalog.pg_has_role( 'authenticated'::regrole, authority_owner, 'member' )",
     "storyspec cutover must run as the database owner",
+    "application roles must not inherit storyspec publication authority",
     "storyspec cutover must run as the canonical table owner",
     "storyspec cutover found an unexpected routine, overload, or owner",
     "figure_stages must not have user triggers",
@@ -743,6 +747,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "revoke all on table public.figure_stages from public, anon, authenticated, service_role",
     "grant select, insert, update on table public.figure_stages to service_role",
     "public_function_grant_health as (",
+    "authority_health as (",
     "private_function_grant_health as (",
     "controlled_routine_inventory_health as (",
     "function_grant_health as (",
@@ -763,8 +768,10 @@ function checkPublicationBoundary(failures: string[]): void {
     "grant execute on function public.promote_story_spec_v2(text, jsonb) to service_role",
     "grant execute on function public.retire_story_spec(text) to service_role",
     "manifest_function_health.value",
+    "authority_health.value",
     "and retirement_health.value",
     "and stage_boundary_health.value",
+    "database_row.datdba = publication_manifest.authority_owner",
     "select health.ok from public.story_spec_publication_schema_health_v1() health",
   ]) {
     if (!migration.includes(required)) {
@@ -1203,6 +1210,37 @@ function checkPublicationBoundary(failures: string[]): void {
   ) {
     failures.push(
       "lifecycle health must reject every extra enabled user trigger",
+    );
+  }
+  const authorityHealthStart = migration.indexOf("authority_health as (");
+  const manifestHealthStart = migration.indexOf(
+    "manifest_function_health as (",
+    authorityHealthStart,
+  );
+  const authorityHealth =
+    authorityHealthStart >= 0 && manifestHealthStart > authorityHealthStart
+      ? migration.slice(authorityHealthStart, manifestHealthStart)
+      : "";
+  if (
+    !authorityHealth ||
+    !authorityHealth.includes(
+      "database_row.datdba = publication_manifest.authority_owner",
+    ) ||
+    !authorityHealth.includes(
+      "(owner_role.rolsuper or owner_role.rolbypassrls)",
+    ) ||
+    !authorityHealth.includes(
+      "not pg_catalog.pg_has_role( 'service_role'::regrole, owner_role.oid, 'member' )",
+    ) ||
+    !authorityHealth.includes(
+      "not pg_catalog.pg_has_role( 'anon'::regrole, owner_role.oid, 'member' )",
+    ) ||
+    !authorityHealth.includes(
+      "not pg_catalog.pg_has_role( 'authenticated'::regrole, owner_role.oid, 'member' )",
+    )
+  ) {
+    failures.push(
+      "publication authority health must bind the database owner and reject application-role inheritance",
     );
   }
   const functionGrantHealthStart = migration.indexOf(

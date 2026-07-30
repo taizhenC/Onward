@@ -1,5 +1,6 @@
 -- Onward - strict StorySpec identity and compare-and-set publication, migration 0023.
--- Apply after 0004. Reader traffic is unaffected; stale editorial tooling fails closed.
+-- Apply after 0004. Existing story playback is unaffected; pause and drain new
+-- story creation plus editorial writes because both terminal tables are locked.
 
 set local lock_timeout = '10s';
 set local statement_timeout = '30s';
@@ -26,6 +27,25 @@ begin
   if (current_user::pg_catalog.regrole)::oid <> authority_owner then
     raise exception
       'StorySpec cutover must run as the database owner';
+  end if;
+
+  if pg_catalog.pg_has_role(
+      'service_role'::regrole,
+      authority_owner,
+      'MEMBER'
+    )
+    or pg_catalog.pg_has_role(
+      'anon'::regrole,
+      authority_owner,
+      'MEMBER'
+    )
+    or pg_catalog.pg_has_role(
+      'authenticated'::regrole,
+      authority_owner,
+      'MEMBER'
+    ) then
+    raise exception
+      'application roles must not inherit StorySpec publication authority';
   end if;
 
   if exists (
@@ -728,6 +748,34 @@ as $fn$
     select manifest.*
     from public.story_spec_publication_manifest_v1() manifest
   ),
+  authority_health as (
+    select count(*) filter (
+      where database_row.datname = pg_catalog.current_database()
+        and database_row.datdba = publication_manifest.authority_owner
+        and owner_role.oid = publication_manifest.authority_owner
+        and (owner_role.rolsuper or owner_role.rolbypassrls)
+        and not pg_catalog.pg_has_role(
+          'service_role'::regrole,
+          owner_role.oid,
+          'MEMBER'
+        )
+        and not pg_catalog.pg_has_role(
+          'anon'::regrole,
+          owner_role.oid,
+          'MEMBER'
+        )
+        and not pg_catalog.pg_has_role(
+          'authenticated'::regrole,
+          owner_role.oid,
+          'MEMBER'
+        )
+    ) = 1 as value
+    from pg_catalog.pg_database database_row
+    join pg_catalog.pg_roles owner_role
+      on owner_role.oid = database_row.datdba
+    cross join publication_manifest
+    where database_row.datname = pg_catalog.current_database()
+  ),
   manifest_function_health as (
     select
       count(*) = 1
@@ -1384,10 +1432,12 @@ as $fn$
   ),
   grant_health as (
     select
-      function_grant_health.value
+      authority_health.value
+        and function_grant_health.value
         and table_boundary_health.value
         and stage_boundary_health.value as value
-    from function_grant_health,
+    from authority_health,
+      function_grant_health,
       table_boundary_health,
       stage_boundary_health
   )

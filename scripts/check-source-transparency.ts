@@ -46,6 +46,10 @@ import {
   parseStorySpecRow,
 } from "../lib/story-spec-repository";
 import type { StorySpec } from "../lib/story-spec-types";
+import {
+  buildStoryTransparency,
+  validateStoredStoryTransparency,
+} from "../lib/story-transparency";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import type { MatchRecipe } from "../lib/types";
@@ -233,6 +237,44 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
   credentialSpec.sources[0].url = "https://user:secret@example.test/archive";
   if (validateStorySpec(credentialSpec, { forPublish: true }).valid) {
     failures.push("StorySpec validation accepted credentials in a source URL");
+  }
+
+  const projectionNoise = structuredClone(storySpec);
+  projectionNoise.sources[0].locator = undefined;
+  projectionNoise.sources[0].url = undefined;
+  (
+    projectionNoise.sources[0] as StorySpec["sources"][number] & {
+      privateNote: string;
+    }
+  ).privateNote = "must not enter public provenance";
+  (
+    projectionNoise.facts[0].sourceRefs[0] as StorySpec["facts"][number]["sourceRefs"][number] & {
+      privateNote: string;
+    }
+  ).privateNote = "must not enter public provenance";
+  (
+    projectionNoise.quotes[0].sourceRefs[0] as StorySpec["quotes"][number]["sourceRefs"][number] & {
+      privateNote: string;
+    }
+  ).privateNote = "must not enter public provenance";
+  const noisySpecValidation = validateStorySpec(projectionNoise, {
+    forPublish: true,
+  });
+  const sanitizedProjection = buildStoryTransparency(
+    projectionNoise,
+    resonanceBrief,
+    "partial",
+  );
+  if (
+    !noisySpecValidation.valid ||
+    !validateStoredStoryTransparency(sanitizedProjection) ||
+    Object.hasOwn(sanitizedProjection.sources[0], "locator") ||
+    Object.hasOwn(sanitizedProjection.sources[0], "url") ||
+    JSON.stringify(sanitizedProjection).includes("privateNote")
+  ) {
+    failures.push(
+      "public provenance did not allowlist direct-validator source metadata",
+    );
   }
 
   const blockedInterpretation = structuredClone(storySpec);

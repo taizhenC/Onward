@@ -669,11 +669,13 @@ function expectAccepted(
 }
 
 function checkPublicationBoundary(failures: string[]): void {
-  const migration = read(
+  const migrationSource = read(
     "../supabase/migrations/0023_story_spec_publication_cas.sql",
-  )
+  );
+  const migration = migrationSource
     .toLowerCase()
     .replace(/\s+/g, " ");
+  const casePreservedMigration = migrationSource.replace(/\s+/g, " ");
   const statusCommand = read("./set-story-spec-status.ts")
     .toLowerCase()
     .replace(/\s+/g, " ");
@@ -766,6 +768,58 @@ function checkPublicationBoundary(failures: string[]): void {
   ) {
     failures.push(
       "lifecycle health must preserve case in its exact function fingerprint",
+    );
+  }
+  const identityCatalogStart = casePreservedMigration.indexOf(
+    "identity_constraint_catalog as (",
+  );
+  const identityHealthStart = casePreservedMigration.indexOf(
+    "identity_health as (",
+    identityCatalogStart,
+  );
+  const identityCatalog =
+    identityCatalogStart >= 0 && identityHealthStart > identityCatalogStart
+      ? casePreservedMigration.slice(
+          identityCatalogStart,
+          identityHealthStart,
+        )
+      : "";
+  if (
+    !identityCatalog ||
+    identityCatalog.includes("pg_catalog.lower(") ||
+    !casePreservedMigration.includes(
+      "andspec->''storySpecId''=to_jsonbstory_spec_id",
+    ) ||
+    !casePreservedMigration.includes(
+      "andspec->''schemaVersion''=to_jsonbschema_version",
+    )
+  ) {
+    failures.push(
+      "identity health must preserve case for exact StorySpec document keys",
+    );
+  }
+  const publicationIndexStart = casePreservedMigration.indexOf(
+    "publication_index_health as (",
+  );
+  const promotionHealthCaseStart = casePreservedMigration.indexOf(
+    "promotion_health as (",
+    publicationIndexStart,
+  );
+  const publicationIndexHealth =
+    publicationIndexStart >= 0 &&
+    promotionHealthCaseStart > publicationIndexStart
+      ? casePreservedMigration.slice(
+          publicationIndexStart,
+          promotionHealthCaseStart,
+        )
+      : "";
+  if (
+    !publicationIndexHealth ||
+    publicationIndexHealth.includes("pg_catalog.lower(") ||
+    !publicationIndexHealth.includes(") = 'status=''published'''")
+  ) {
+    failures.push(
+      "publication-index health must preserve case in its exact predicate",
     );
   }
   if (

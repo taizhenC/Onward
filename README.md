@@ -116,7 +116,7 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. For a fresh project, apply every file from `supabase/migrations/` in numeric order in the Supabase SQL editor: `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010` → `0011` → `0012` → `0013` → `0014` → `0015` → `0016` → `0017` → `0018` → `0019` → `0020` → `0021` → `0022` → `0023`. Before `0003`, enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. Apply each migration exactly once and stop on the first error. **`0003` deletes existing development session rows on purpose.** Migration `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning; `0011` adds the telemetry-flow registry, transactional `create_story_session_v3` binding, typed capture RPC, and leased product-event outbox; `0012` adds transactional match-limiter, recovery, and `create_story_session_v4` artifact producers, including two-day unlinkable limiter-decision replay for ambiguous responses; `0013` makes each artifact-backed Continue/Finish an owner-scoped CAS that atomically captures its persisted-artifact-derived passage ordinal and final completion; `0014` atomically captures the persisted feedback verdict while keeping the closed miss reason in the feedback domain only; `0015` captures alternate demand only when a valid capability becomes a durable claim; `0016` derives alternate match calibration at the server boundary and atomically captures alternate terminal outcomes plus ready-artifact telemetry with their authoritative transitions; `0017` replaces service-role raw-event claims with a private, ID-only Postgres dispatcher that atomically folds each source event into identifier-free UTC-day marginal counts before marking its outbox pointer delivered; `0018` adds the owner-scoped story-deletion RPC and removes direct service-role session deletion; `0019` adds the owner-confirmed account-deletion RPC, FK-binds and indexes rate-limit user keys, routes guest expiry through the same locked cascade, and account-serializes flow ownership plus initial-story RPCs; `0020` adds the append-only promoted-recipe registry, exact immutable session-recipe trigger, and registry-backed telemetry/recovery/rollup checks; `0021` adds immutable current-or-honest-legacy retention labels, current-only insert guards, and a closed service-role schema-health boundary without rewriting StoryArtifact JSON; `0022` atomically records one immutable account-level Save State at the confirmed Auth transition, preserves honest legacy observations, and exposes a closed service-only health boundary; `0023` enforces strict StorySpec JSON identity, snapshot-bound reviewed publication, legacy-promotion revocation, and closed publication-schema health. The dispatcher minute cron remains disabled in `telemetry_rollup_dispatch_control` until an operator completes the rollout gates. Pre-`0009` sessions remain deliberately ineligible for linked telemetry because their original limits cannot be reconstructed safely, but they remain deletable.
+1. For a fresh project, apply every file from `supabase/migrations/` in numeric order in the Supabase SQL editor: `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010` → `0011` → `0012` → `0013` → `0014` → `0015` → `0016` → `0017` → `0018` → `0019` → `0020` → `0021` → `0022` → `0023`. Before `0003`, enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. Apply each migration exactly once and stop on the first error. **`0003` deletes existing development session rows on purpose.** Migration `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning; `0011` adds the telemetry-flow registry, transactional `create_story_session_v3` binding, typed capture RPC, and leased product-event outbox; `0012` adds transactional match-limiter, recovery, and `create_story_session_v4` artifact producers, including two-day unlinkable limiter-decision replay for ambiguous responses; `0013` makes each artifact-backed Continue/Finish an owner-scoped CAS that atomically captures its persisted-artifact-derived passage ordinal plus final completion; `0014` atomically captures the persisted feedback verdict while keeping the closed miss reason in the feedback domain only; `0015` captures alternate demand only when a valid capability becomes a durable claim; `0016` derives alternate match calibration at the server boundary and atomically captures alternate terminal outcomes plus ready-artifact telemetry with their authoritative transitions; `0017` replaces service-role raw-event claims with a private, ID-only Postgres dispatcher that atomically folds each source event into identifier-free UTC-day marginal counts before marking its outbox pointer delivered; `0018` adds the owner-scoped story-deletion RPC and removes direct service-role session deletion; `0019` adds the owner-confirmed account-deletion RPC, FK-binds and indexes rate-limit user keys, routes guest expiry through the same locked cascade, and account-serializes flow ownership plus initial-story RPCs; `0020` adds the append-only promoted-recipe registry, exact immutable session-recipe trigger, and registry-backed telemetry/recovery/rollup checks; `0021` adds immutable current-or-honest-legacy retention labels, current-only insert guards, and a closed service-role schema-health boundary without rewriting StoryArtifact JSON; `0022` atomically records one immutable account-level Save State at the confirmed Auth transition, preserves honest legacy observations, and exposes a closed service-only health boundary; `0023` enforces strict StorySpec JSON identity, snapshot-bound reviewed publication, legacy-promotion revocation, a one-way database-owned replay marker for pre-cutover v5 artifacts, and closed publication/replay schema health. The dispatcher minute cron remains disabled in `telemetry_rollup_dispatch_control` until an operator completes the rollout gates. Pre-`0009` sessions remain deliberately ineligible for linked telemetry because their original limits cannot be reconstructed safely, but they remain deletable.
 
 Run each migration as one whole-file transaction, never statement-by-statement.
 This is mandatory for `0017`: its table lock, delivered-pointer backfill, and
@@ -500,18 +500,28 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
    normal `/stories` destination and can choose Account there.
 6. Seed: `npm run seed`, then `npm run seed-story-specs`. New stages and specs stay in `draft`; source mapping and human review are required before an editor moves a spec to `review` and runs `npm run story-spec:status -- publish <storySpecId>`. Production matching considers only valid published StorySpecs. The same command with `retire` immediately removes one stage version from new matching without a deploy. Historical concerns appear in `historical_concern_reports`; triage them through `triage_historical_concern`, and retire the pinned `story_spec_id` when a concern requires immediate unpublication. Reports never auto-retire content. Run `npm run check-db` after publishing the intended launch subset. For semantic retrieval: `npm run check-embeddings` → `npm run seed-embeddings` → `npm run check-embeddings`.
 
-Apply migration `0023` before using the publication command from this version.
+Apply migration `0023` before using the `publish` action from this version.
 Set `STORY_CREATION_ENABLED=false`, verify a new intake is paused, drain
 in-flight creation, and pause editorial writes before the cutover. Existing
-story playback remains available. Run the whole migration file as the database
-owner; it locks `story_specs` and `figure_stages` together until commit. The
+story pages already in memory remain readable, but an artifact load or reload
+may wait while the short cutover transaction holds its lock. Run the whole
+migration file as the database owner; it locks `story_specs`, `figure_stages`,
+and `story_artifacts` together until commit. The
 migration rejects any different database/table/routine owner, application-role
 inheritance of the database owner, unexpected controlled-routine overload, or
-user trigger on `figure_stages` before changing the schema. The database owner
-must have no actual direct or indirect `pg_auth_members` members. The managed
+user trigger on `figure_stages` before changing the schema. It also rejects
+inheritance or partition edges, table rewrite rules, a missing or altered
+`story_specs(story_spec_id)` primary key, generated columns on either
+publication table, and additive constraints or indexes that depend on `status`,
+`spec`, `published_at`, or `retired_at`. The
+database owner must have no actual direct or indirect
+`pg_auth_members` members. The managed
 Supabase `service_role` descendant set is closed to `authenticator`, the current
-database-owner OID, and the optional exact `supabase_storage_admin` role reached
-through `authenticator`; any app, browser, or unknown role makes readiness fail.
+database-owner OID, and the optional exact `supabase_storage_admin` role, whether
+its managed membership is direct or reached through `authenticator`; any app,
+browser, or unknown role makes readiness fail. Exactly one direct-or-indirect
+storage path may exist, and its membership edge must remain `INHERIT FALSE`,
+`SET TRUE`, and `ADMIN FALSE`.
 `authenticator` must remain `NOINHERIT`, non-superuser, without `BYPASSRLS`,
 `CREATEROLE`, `CREATEDB`, or replication authority. On PostgreSQL 16+, its
 direct membership edge must also remain `INHERIT FALSE`, `SET TRUE`, and
@@ -551,15 +561,20 @@ The migration validates strict JSON identities; replaces and fingerprints the
 exact StorySpec status constraint, StorySpec-to-stage foreign key, stage-status
 constraint, publication index, and canonical stage lifecycle trigger; revokes
 the legacy ID-only promotion RPC; and installs snapshot-bound
-`promote_story_spec_v2` plus the audited retirement RPC. While both tables are
-locked, it reconciles every stage projection: a stage is `published` exactly
-when one published StorySpec exists for it, and every legacy stage-only
-publication becomes `draft`. Inspect that expected demotion set before the
-cutover and keep story creation paused until the reviewed launch subset is
-confirmed. The service role retains direct draft/review authoring and
-content-only stage refreshes, but direct writes cannot create a published row,
-demote a reviewed StorySpec, change `figure_stages.status`, or enter either
-terminal StorySpec status.
+`promote_story_spec_v2` plus the audited retirement RPC. While all three tables
+are locked, it snapshots the IDs of existing
+`story-artifact-v5-2026-07` rows into the database-owned
+`story_artifact_legacy_v5_replay` table. That one-way snapshot is the only
+legacy-replay capability: artifacts created after the cutover cannot add
+themselves to it, and artifact JSON, schema labels, timestamps, or a recomputed
+content hash cannot manufacture eligibility. The migration also reconciles
+every stage projection: a stage is `published` exactly when one published
+StorySpec exists for it, and every legacy stage-only publication becomes
+`draft`. Inspect that expected demotion set before the cutover and keep story
+creation paused until the reviewed launch subset is confirmed. The service role
+retains direct draft/review authoring and content-only stage refreshes, but
+direct writes cannot create a published row, demote a reviewed StorySpec, change
+`figure_stages.status`, or enter either terminal StorySpec status.
 Publication and retirement must pass through the owner-definer RPCs, and either
 RPC rolls its StorySpec transition back if exactly one corresponding stage does
 not exist. `npm run seed` inserts missing stages as drafts and refreshes existing
@@ -571,22 +586,29 @@ automatically.
 Published sentence maps must classify every sentence as an evidence-backed
 historical claim or one of the code-owned reader-bridge lines, and every
 beat-level quote link must equal its sentence-level quote links.
-Pre-closure v5 artifacts remain replayable only through their immutable
-database envelope; the compatibility seam cannot compose a new artifact or
-accept the same rehashed legacy transparency without that envelope.
+Pre-closure v5 artifacts first pass the current strict replay validator. Only a
+strict failure may try the legacy transparency shape, and that fallback requires
+the exact immutable database envelope, unchanged content hash, and an
+`artifact_id` row in `story_artifact_legacy_v5_replay`. Missing eligibility or a
+marker lookup error fails closed. The compatibility seam cannot compose a new
+artifact, and the UI labels an old mixed bridge with fact or quote IDs as
+historical without mutating the hashed artifact.
 
 Run `npm run check-db` before resuming editorial work. Any quarantined row,
 stage/spec mismatch, unexpected enabled or disabled user trigger,
 controlled-routine overload, unsafe StorySpec/stage table, column, trigger, or
-function grant, owner drift, policy, unsafe role-membership graph,
-missing/changed stage FK, changed status constraint, additive status-dependent
-constraint/unique/exclusion index, or stale identity/trigger/full
+function grant, replay-marker shape, owner, FORCE-RLS, policy, rule, trigger,
+inheritance, or ACL drift, other controlled-object owner drift or policy,
+unsafe role-membership graph, missing/changed StorySpec primary key or stage FK,
+changed status constraint, generated publication column, additive
+terminal-column constraint/index, or stale identity/trigger/full
 publication-index fingerprint makes readiness fail. `npm run
 check-story-spec-migration` executes promotion, stale rejection, retirement,
 review-demotion and direct stage-status denial, hostile ACL cleanup, managed
 role-graph drift, inherited stage-trigger rejection, stage/spec reconciliation,
 orphan-stage rollback, forged FK metadata, owner/overload/disabled-trigger/
-status-index/full-index drift, and atomic cutover rollback in embedded
+status-index/full-index/generated-column drift, and atomic cutover rollback in
+embedded
 PostgreSQL. It does not replace
 managed-Supabase lock/concurrency, RLS/grant, rollback, role-catalog, and
 service-role canaries. Deploy the guarded application, rerun
@@ -617,6 +639,7 @@ existing `0011` lifecycle/capture/outbox schema.
 - Stories are owned: another person's story URL is a 404, indistinguishable from a missing one.
 - A temporary guest account and every story in it are deleted about six hours after the latest story creation or saved reading progress in that account (`ANON_USER_TTL_HOURS`). Sending an email link does not change that lifecycle. Confirming it commits one immutable account-level Save State for the same owner, covering existing and future Owner Stories until story/account deletion; older permanent accounts are marked as legacy without a fabricated confirmation time.
 - Owners can hard-delete any saved story or their entire account from the active Onward database without support. Account deletion removes the sign-in, all owned stories/artifacts/feedback/recovery state, owner-linked telemetry flows, and user rate-limit keys; guest expiry uses the same cascade. Deleting an original story also deletes its alternate; deleting only an alternate preserves the original. Daily counts already settled before deletion follow a 30-day expiry schedule without an account, session, or saved-story identifier, with physical removal by daily cleanup. Historical concern reports remain attached to shared historical-library StorySpec and fact identifiers but contain no reporter, account, session, saved-story, artifact, disclosure, or generated-prose identifier; they currently have no automatic expiry or user-controlled deletion. Provider processing and infrastructure backups follow separately reviewed schedules and are not recalled by the in-app transaction.
+- Legacy v5 replay eligibility is a database-owned marker containing only the existing `artifact_id`. It follows the Owner Story lifecycle: its foreign key cascades when the artifact is removed by story deletion, account deletion, or guest expiry. It copies no account, session, disclosure, source, or generated prose, and it is not an analytics record. Forced RLS keeps it browser-inaccessible; the service role may only read it while loading an already-owned artifact.
 - The situation text and private request context become eligible for daily cleanup at their fixed 60-day deadline (`FEELING_RETENTION_DAYS`), saved or not, and are deleted earlier with the guest account, story, or account. The submitted age and validated generated wording follow the Owner Story lifecycle until story or account deletion; Save never extends the private-context deadline.
 - Crisis input is detected by a deterministic regex before any LLM call and is never persisted.
 - Optional story intensity/topic limits and a closed clarification choice are retained with the disclosure only on the original session so one alternate can reuse them exactly. They are never placed in either StoryArtifact or the alternate session, become cleanup-eligible at the original disclosure deadline, and are NULL'd by the next daily cleanup.

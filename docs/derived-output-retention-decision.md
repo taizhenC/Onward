@@ -82,7 +82,10 @@ Use A and B together, behind one code-owned retention registry:
   labeled as legacy classifications rather than being represented as having
   recorded a policy that did not yet exist. INSERT guards reject explicit
   legacy or wrong-class claims on later rows.
-- CI compares the retention registry with all 22 current application-owned
+- The one-way legacy-v5 replay marker retains only an existing artifact ID,
+  uses the `owned_story` class, and cascades with that artifact; it carries no
+  disclosure, prose, account, session, or analytics field.
+- CI compares the retention registry with all 23 current application-owned
   tables, all five current provider exchanges, their reviewed transport owners,
   every current direct production JavaScript/TypeScript fetch path and forbidden
   alternate transport reference, and the exact 35-column inventory of the two

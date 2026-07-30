@@ -660,7 +660,7 @@ seven non-overlapping classes:
   vectors that are not reader-derived.
 
 The registry names every allowed sink for 20 current surfaces, including the
-submitted age, closed hybrid-retry feedback, and owner Save State, all 22
+submitted age, closed hybrid-retry feedback, and owner Save State, all 23
 application-owned tables, all 20 `sessions` fields, all 15 `story_artifacts`
 fields, and all five current Cerebras/Gemini exchanges.
 Reader-derived provider values are opaque until a named, AST-enumerated literal

@@ -31,8 +31,9 @@ async function main(): Promise<void> {
     const validation = validateStorySpec(candidate, { forPublish: true });
     if (!validation.valid) throw new Error(validation.errors.join("; "));
 
-    const promoted = await supabase.rpc("promote_story_spec", {
+    const promoted = await supabase.rpc("promote_story_spec_v2", {
       p_story_spec_id: storySpecId,
+      p_expected_review_spec: stored,
     });
     if (promoted.error) throw new Error(`publish failed: ${promoted.error.message}`);
   } else {

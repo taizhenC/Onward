@@ -112,6 +112,55 @@ function main(): void {
     true,
     "reviewedAt must be an ISO date or UTC timestamp",
   );
+  expectRejected(
+    failures,
+    "unknown fact confidence",
+    mutate(publishedFixture, (spec) => {
+      (spec.facts[0] as unknown as { confidence: string }).confidence =
+        "invented";
+    }),
+    true,
+    "confidence or claim kind is invalid",
+  );
+  expectRejected(
+    failures,
+    "unknown fact claim kind",
+    mutate(publishedFixture, (spec) => {
+      (spec.facts[0] as unknown as { claimKind: string }).claimKind =
+        "prediction";
+    }),
+    true,
+    "confidence or claim kind is invalid",
+  );
+  expectRejected(
+    failures,
+    "unknown fact source scope",
+    mutate(publishedFixture, (spec) => {
+      (spec.facts[0].sourceRefs[0] as unknown as { scope: string }).scope =
+        "invented";
+    }),
+    true,
+    "source scope is invalid",
+  );
+  expectRejected(
+    failures,
+    "unknown quote status",
+    mutate(publishedFixture, (spec) => {
+      (spec.quotes[0] as unknown as { status: string }).status = "invented";
+    }),
+    true,
+    "status is invalid",
+  );
+  expectRejected(
+    failures,
+    "unknown quote source scope",
+    mutate(publishedFixture, (spec) => {
+      (spec.quotes[0].sourceRefs[0] as unknown as { scope: string }).scope =
+        "invented";
+    }),
+    true,
+    "source scope is invalid",
+  );
 
   // Editors narrow evidence claim by claim — the builders must give every
   // fact and quote its own sourceRefs array, never one shared reference.
@@ -647,6 +696,9 @@ function checkPublicationBoundary(failures: string[]): void {
     "procedure_row.prorettype = 'trigger'::pg_catalog.regtype",
     "procedure_row.proconfig = array['search_path=public']::text[]",
     "4319d665aca2de512bf07bdb2b865f3a",
+    "procedure_row.prorettype = 'void'::pg_catalog.regtype",
+    "procedure_row.proconfig = array['search_path=pg_catalog, public']::text[]",
+    "7c146e43dcb5754f5e14828276f6e9ea",
     "trigger_row.tgtype = 23::smallint",
     "trigger_row.tgattr = ''::pg_catalog.int2vector",
     "function_namespace.nspname = 'public'",
@@ -677,6 +729,20 @@ function checkPublicationBoundary(failures: string[]): void {
   ) {
     failures.push(
       "publication migration does not lock and compare the validated snapshot before retirement",
+    );
+  }
+  const promotionHealthStart = migration.indexOf("promotion_health as (");
+  const legacyHealthStart = migration.indexOf(
+    "legacy_health as (",
+    promotionHealthStart,
+  );
+  const promotionHealth =
+    promotionHealthStart >= 0 && legacyHealthStart > promotionHealthStart
+      ? migration.slice(promotionHealthStart, legacyHealthStart)
+      : "";
+  if (!promotionHealth || promotionHealth.includes("position(")) {
+    failures.push(
+      "publication health must fingerprint the exact promotion function rather than scan tokens",
     );
   }
   if (

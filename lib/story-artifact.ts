@@ -98,6 +98,10 @@ export type StoredStoryArtifactEnvelope = Readonly<{
   artifactId: string;
   schemaVersion: string;
   contentHash: string;
+  // This capability is owned by the storage row, never by artifact JSON.
+  // Migration 0023 marks only v5 rows that existed at the evidence-closure
+  // cutover; current writes must always supply false.
+  legacyV5ReplayEligible?: boolean;
 }>;
 
 // Canonical composition is the guaranteed fallback path. It freezes the full
@@ -613,7 +617,7 @@ export function validateStoredStoryArtifact(
       ? !(
           validateStoredStoryTransparency(artifact.transparency) ||
           (
-            envelope !== undefined &&
+            envelope?.legacyV5ReplayEligible === true &&
             validateLegacyStoredStoryTransparencyV1(artifact.transparency)
           )
         ) ||
@@ -830,7 +834,9 @@ function validStoredArtifactEnvelope(
     envelope.artifactId.length > 0 &&
     typeof envelope.schemaVersion === "string" &&
     envelope.schemaVersion.length > 0 &&
-    /^[0-9a-f]{64}$/.test(envelope.contentHash)
+    /^[0-9a-f]{64}$/.test(envelope.contentHash) &&
+    (envelope.legacyV5ReplayEligible === undefined ||
+      typeof envelope.legacyV5ReplayEligible === "boolean")
   );
 }
 

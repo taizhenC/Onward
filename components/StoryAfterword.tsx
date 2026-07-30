@@ -3,10 +3,10 @@
 import { useMemo, useRef, useState } from "react";
 import type {
   HistoricalConcernReason,
-  StoryEvidenceClass,
   StoryTransparency,
   StoryTransparencyFact,
 } from "@/lib/story-transparency-types";
+import { storyEvidenceLabel } from "@/lib/story-transparency-presentation";
 import { sendSourceOpened } from "@/lib/story-visibility-client";
 
 type Props = {
@@ -15,19 +15,6 @@ type Props = {
 };
 
 type SubmissionState = "idle" | "submitting" | "sent" | "error";
-
-const EVIDENCE_LABELS: Record<StoryEvidenceClass, string> = {
-  documented_scene:
-    "Includes historical claims — documented and told in narrative language",
-  documented_with_interpretation:
-    "Includes historical claims — documented with reviewed interpretation",
-  qualified_historical_evidence:
-    "Includes historical claims — some evidence is probable or disputed and labeled below",
-  qualified_evidence_with_interpretation:
-    "Includes historical claims — qualified evidence with reviewed interpretation",
-  reader_bridge: "Reflection — not a historical claim",
-  review_pending: "Editorial review draft — evidence mapping is not public-ready",
-};
 
 const REASON_OPTIONS: Array<{
   value: HistoricalConcernReason;
@@ -152,7 +139,7 @@ export function StoryAfterword({ sessionId, transparency }: Props) {
                   <span className="font-medium">
                     {index + 1}. {roleLabel(beat.role)}:
                   </span>{" "}
-                  {EVIDENCE_LABELS[beat.evidenceClass]}.
+                  {storyEvidenceLabel(beat)}.
                   {beat.hasPersonalizedTransition ? (
                     <span className="block text-[var(--color-ink-soft)]">
                       Personalized transition — connective wording only; it adds

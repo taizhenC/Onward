@@ -1,9 +1,12 @@
 import "./_smoke-bootstrap";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import * as React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
   POST as historicalConcernPost,
 } from "../app/api/historical-concern/route";
+import { StoryAfterword } from "../components/StoryAfterword";
 import { parseHistoricalConcernRequest } from "../lib/historical-concern-request";
 import { LOCAL_DEV_USER_ID } from "../lib/auth";
 import { FIGURE_STAGES } from "../lib/figures-data";
@@ -28,6 +31,8 @@ import {
 } from "../lib/opening-copy";
 import { READER_BRIDGE_SENTENCES } from "../lib/reader-bridge-copy";
 import { createSession } from "../lib/session";
+import { _markMemoryStoryArtifactLegacyV5ReplayEligible } from "../lib/story-artifact-store-memory";
+import { getOwnedStoryArtifact } from "../lib/story-artifacts";
 import { createStoryRequestContext } from "../lib/story-request-context";
 import {
   composeCanonicalStoryArtifact,
@@ -57,6 +62,7 @@ import { buildPublishedStorySpecFixture } from "./_story-spec-fixtures";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
+(globalThis as typeof globalThis & { React: typeof React }).React = React;
 
 const PRIVATE_DISCLOSURE =
   "Avery left Montréal in 2025 with a private vermilion astrolabe after the eighth closed door.";
@@ -95,8 +101,12 @@ async function main(): Promise<void> {
   }
   console.log("PASS published rationale, StorySpec identity, evidence, sources, and quote traceability");
   console.log(`PASS ${PRIMARY_PRESSURES.length}/${PRIMARY_PRESSURES.length} controlled rationales exclude disclosure data`);
-  console.log("PASS v5 tamper rejection and immutable v1-v4 replay boundary");
-  console.log("PASS owner-scoped bounded reports are private and idempotent");
+  console.log(
+    "PASS strict v5, one-way marked mixed-v5, and immutable v1-v4 replay boundaries",
+  );
+  console.log(
+    "PASS owner-scoped bounded reports, including marked legacy facts, are private and idempotent",
+  );
   console.log("PASS migration, API, and accessible end-of-story surface contracts");
 }
 
@@ -123,6 +133,54 @@ function makeFixture(pressure: PrimaryPressure = "rejection") {
     now: new Date("2026-07-10T12:00:00.000Z"),
   });
   return { stage, storySpec, resonanceBrief, artifact };
+}
+
+function makeMixedBridgeStorySpec(fixture: Fixture): {
+  mixedSpec: StorySpec;
+  bridgeFact: StorySpec["facts"][number];
+} {
+  const mixedSpec = structuredClone(fixture.storySpec);
+  const mixedBridge = mixedSpec.arc.at(-1);
+  const bridgeFact = mixedSpec.facts.at(-1);
+  if (!mixedBridge || !bridgeFact) {
+    throw new Error("reviewed fixture is missing bridge-classification inputs");
+  }
+  mixedBridge.canonicalText = [
+    bridgeFact.statement,
+    ...READER_BRIDGE_SENTENCES,
+  ].join(" ");
+  mixedBridge.requiredFactIds = [bridgeFact.factId];
+  mixedBridge.optionalFactIds = [];
+  mixedBridge.sentenceEvidence = [
+    {
+      sentenceIndex: 0,
+      treatment: "historical_claim",
+      factIds: [bridgeFact.factId],
+      interpretationIds: [],
+      quoteIds: [],
+    },
+    ...READER_BRIDGE_SENTENCES.map((_, sentenceIndex) => ({
+      sentenceIndex: sentenceIndex + 1,
+      treatment: "reader_bridge" as const,
+      factIds: [],
+      interpretationIds: [],
+      quoteIds: [],
+    })),
+  ];
+  return { mixedSpec, bridgeFact };
+}
+
+function makeLegacyMixedBridgeArtifact(
+  mixedArtifact: ReturnType<typeof composeCanonicalStoryArtifact>,
+): ReturnType<typeof composeCanonicalStoryArtifact> {
+  const legacyArtifact = structuredClone(mixedArtifact);
+  const legacyBridge = legacyArtifact.transparency?.beats.at(-1);
+  if (!legacyBridge) {
+    throw new Error("legacy bridge replay fixture is missing transparency");
+  }
+  legacyBridge.evidenceClass = "reader_bridge";
+  legacyArtifact.contentHash = storyArtifactContentHash(legacyArtifact);
+  return legacyArtifact;
 }
 
 function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
@@ -314,35 +372,7 @@ function checkBridgeEvidenceClassification(
   fixture: Fixture,
   failures: string[],
 ): void {
-  const mixedSpec = structuredClone(fixture.storySpec);
-  const mixedBridge = mixedSpec.arc.at(-1);
-  const bridgeFact = mixedSpec.facts.at(-1);
-  if (!mixedBridge || !bridgeFact) {
-    failures.push("reviewed fixture is missing bridge-classification inputs");
-    return;
-  }
-  mixedBridge.canonicalText = [
-    bridgeFact.statement,
-    ...READER_BRIDGE_SENTENCES,
-  ].join(" ");
-  mixedBridge.requiredFactIds = [bridgeFact.factId];
-  mixedBridge.optionalFactIds = [];
-  mixedBridge.sentenceEvidence = [
-    {
-      sentenceIndex: 0,
-      treatment: "historical_claim",
-      factIds: [bridgeFact.factId],
-      interpretationIds: [],
-      quoteIds: [],
-    },
-    ...READER_BRIDGE_SENTENCES.map((_, sentenceIndex) => ({
-      sentenceIndex: sentenceIndex + 1,
-      treatment: "reader_bridge" as const,
-      factIds: [],
-      interpretationIds: [],
-      quoteIds: [],
-    })),
-  ];
+  const { mixedSpec, bridgeFact } = makeMixedBridgeStorySpec(fixture);
   const mixedValidation = validateStorySpec(mixedSpec, {
     forPublish: true,
   });
@@ -369,17 +399,14 @@ function checkBridgeEvidenceClassification(
       "mixed bridge history was projected publicly as unsupported reflection",
     );
   }
-  const legacyArtifact = structuredClone(mixedArtifact);
-  const legacyBridge = legacyArtifact.transparency?.beats.at(-1);
-  if (!legacyBridge) {
-    failures.push("legacy bridge replay fixture is missing transparency");
-    return;
-  }
-  legacyBridge.evidenceClass = "reader_bridge";
-  legacyArtifact.contentHash = storyArtifactContentHash(legacyArtifact);
+  const legacyArtifact = makeLegacyMixedBridgeArtifact(mixedArtifact);
   const legacyEnvelope = storedEnvelope(legacyArtifact);
-  const mismatchedEnvelope = {
+  const eligibleLegacyEnvelope = {
     ...legacyEnvelope,
+    legacyV5ReplayEligible: true,
+  };
+  const mismatchedEnvelope = {
+    ...eligibleLegacyEnvelope,
     contentHash: "0".repeat(64),
   };
   const strictLegacyValidation = validateStoryArtifact(
@@ -390,7 +417,8 @@ function checkBridgeEvidenceClassification(
   if (
     validateStoredStoryTransparency(legacyArtifact.transparency) ||
     validateStoredStoryArtifact(legacyArtifact) ||
-    !validateStoredStoryArtifact(legacyArtifact, legacyEnvelope) ||
+    validateStoredStoryArtifact(legacyArtifact, legacyEnvelope) ||
+    !validateStoredStoryArtifact(legacyArtifact, eligibleLegacyEnvelope) ||
     validateStoredStoryArtifact(legacyArtifact, mismatchedEnvelope) ||
     strictLegacyValidation.valid ||
     !strictLegacyValidation.failureReasons.includes("transparency_invalid")
@@ -778,6 +806,100 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
     failures.push("historical concern storage retained a user/session/story surface");
   }
 
+  const legacyFixture = makeFixture("loss");
+  const { mixedSpec, bridgeFact } =
+    makeMixedBridgeStorySpec(legacyFixture);
+  const mixedArtifact = composeCanonicalStoryArtifact({
+    storySpec: mixedSpec,
+    stage: legacyFixture.stage,
+    matchRecipe: recipe,
+    openingCopy: legacyFixture.artifact.openingCopy,
+    framing: "partial",
+    resonanceBrief: legacyFixture.resonanceBrief,
+  });
+  const legacyMixedArtifact = makeLegacyMixedBridgeArtifact(mixedArtifact);
+  const legacyMixedSessionId = await createSession({
+    userId: LOCAL_DEV_USER_ID,
+    telemetryFlowId: createTelemetryFlowId(),
+    figureKey: legacyMixedArtifact.figureKey,
+    stageId: legacyMixedArtifact.stageId,
+    framing: legacyMixedArtifact.framing,
+    age: 30,
+    feeling: "legacy mixed bridge private input",
+    storyRequestContext: createStoryRequestContext({
+      boundaries: undefined,
+      clarification: undefined,
+    }),
+    matchRecipe: recipe,
+    artifact: legacyMixedArtifact,
+  });
+  let unmarkedReplayRejected = false;
+  try {
+    await getOwnedStoryArtifact(
+      legacyMixedArtifact.artifactId,
+      LOCAL_DEV_USER_ID,
+      legacyMixedSessionId,
+    );
+  } catch (error) {
+    unmarkedReplayRejected =
+      error instanceof Error &&
+      error.message.includes("failed integrity validation");
+  }
+  _markMemoryStoryArtifactLegacyV5ReplayEligible(
+    legacyMixedArtifact.artifactId,
+  );
+  const replayedLegacyMixed = await getOwnedStoryArtifact(
+    legacyMixedArtifact.artifactId,
+    LOCAL_DEV_USER_ID,
+    legacyMixedSessionId,
+  );
+  const replayedLegacyBridge =
+    replayedLegacyMixed?.transparency?.beats.at(-1);
+  const currentBridge = owner.artifact.transparency?.beats.at(-1);
+  const renderedLegacyAfterword = renderToStaticMarkup(
+    React.createElement(StoryAfterword, {
+      sessionId: legacyMixedSessionId,
+      transparency: replayedLegacyMixed?.transparency ?? null,
+    }),
+  );
+  const renderedCurrentAfterword = renderToStaticMarkup(
+    React.createElement(StoryAfterword, {
+      sessionId: ownerSessionId,
+      transparency: owner.artifact.transparency ?? null,
+    }),
+  );
+  const reportsBeforeLegacy = _listHistoricalConcerns().length;
+  const legacyReport = await reportRequest({
+    sessionId: legacyMixedSessionId,
+    factId: bridgeFact.factId,
+    reason: "date_or_sequence",
+  });
+  const reportsAfterLegacy = _listHistoricalConcerns();
+  const legacyQueueItem = reportsAfterLegacy.find(
+    (item) =>
+      item.factId === bridgeFact.factId &&
+      item.reason === "date_or_sequence",
+  );
+  if (
+    !unmarkedReplayRejected ||
+    !replayedLegacyMixed ||
+    replayedLegacyBridge?.evidenceClass !== "reader_bridge" ||
+    !replayedLegacyBridge.factIds.includes(bridgeFact.factId) ||
+    !renderedLegacyAfterword.includes(
+      "Includes historical claims — this earlier saved story uses an older evidence format; evidence links are listed below",
+    ) ||
+    renderedLegacyAfterword.includes("Reflection — not a historical claim") ||
+    !currentBridge ||
+    !renderedCurrentAfterword.includes("Reflection — not a historical claim") ||
+    legacyReport.status !== 202 ||
+    reportsAfterLegacy.length !== reportsBeforeLegacy + 1 ||
+    !legacyQueueItem
+  ) {
+    failures.push(
+      "legacy mixed-bridge persistence, honest labeling, or concern targeting escaped its one-way marker",
+    );
+  }
+
   const beforeInvalid = _listHistoricalConcerns()[0].reportCount;
   const extra = await reportRequest({
     sessionId: ownerSessionId,
@@ -898,6 +1020,7 @@ function checkStaticContracts(failures: string[]): void {
   const migration = read("../supabase/migrations/0007_historical_concern_reports.sql");
   const component = read("../components/StoryAfterword.tsx");
   const player = read("../components/StoryPlayer.tsx");
+  const artifactLoader = read("../lib/story-artifacts.ts");
   const table = /create table historical_concern_reports \([\s\S]*?\n\);/i.exec(migration)?.[0] ?? "";
   const requiredSql = [
     "alter table historical_concern_reports enable row level security",
@@ -944,6 +1067,85 @@ function checkStaticContracts(failures: string[]): void {
     afterwordIndex > saveIndex
   ) {
     failures.push("afterword is not gated at story end before account conversion");
+  }
+
+  const ownedArtifactQuery = artifactLoader.indexOf('.from("story_artifacts")');
+  const artifactFilter = artifactLoader.indexOf(
+    '.eq("artifact_id", artifactId)',
+    ownedArtifactQuery,
+  );
+  const ownerFilter = artifactLoader.indexOf(
+    '.eq("user_id", userId)',
+    artifactFilter,
+  );
+  const sessionFilter = artifactLoader.indexOf(
+    '.eq("session_id", sessionId)',
+    ownerFilter,
+  );
+  const strictValidation = artifactLoader.indexOf(
+    "const strictArtifact = validateStoredStoryArtifact",
+    sessionFilter,
+  );
+  const strictReturn = artifactLoader.indexOf(
+    "if (strictArtifact) return strictArtifact",
+    strictValidation,
+  );
+  const markerQuery = artifactLoader.indexOf(
+    '.from("story_artifact_legacy_v5_replay")',
+    strictReturn,
+  );
+  const markerColumn = artifactLoader.indexOf(
+    '.select("artifact_id")',
+    markerQuery,
+  );
+  const markerFilter = artifactLoader.indexOf(
+    '.eq("artifact_id", row.artifact_id)',
+    markerColumn,
+  );
+  const markerError = artifactLoader.indexOf(
+    "if (marker.error)",
+    markerFilter,
+  );
+  const exactMarker = artifactLoader.indexOf(
+    "const exactMarker = isExactLegacyV5ReplayMarker",
+    markerError,
+  );
+  const malformedMarkerFailure = artifactLoader.indexOf(
+    "stored legacy StoryArtifact eligibility is invalid",
+    exactMarker,
+  );
+  const legacyGrant = artifactLoader.indexOf(
+    "legacyV5ReplayEligible: true",
+    malformedMarkerFailure,
+  );
+  const missingMarkerFailure = artifactLoader.indexOf(
+    'if (!artifact) throw new Error("stored StoryArtifact failed integrity validation")',
+    legacyGrant,
+  );
+  if (
+    ownedArtifactQuery < 0 ||
+    artifactFilter < ownedArtifactQuery ||
+    ownerFilter < artifactFilter ||
+    sessionFilter < ownerFilter ||
+    strictValidation < sessionFilter ||
+    strictReturn < strictValidation ||
+    markerQuery < strictReturn ||
+    markerColumn < markerQuery ||
+    markerFilter < markerColumn ||
+    markerError < markerFilter ||
+    exactMarker < markerError ||
+    malformedMarkerFailure < exactMarker ||
+    legacyGrant < malformedMarkerFailure ||
+    missingMarkerFailure < legacyGrant ||
+    !artifactLoader.includes("if (marker.data !== null && !exactMarker)") ||
+    !artifactLoader.includes("Object.keys(marker).length === 1") ||
+    !artifactLoader.includes(
+      "marker.artifact_id === expectedArtifactId",
+    )
+  ) {
+    failures.push(
+      "owned artifact replay does not keep strict validation ahead of an exact fail-closed database marker",
+    );
   }
 }
 

@@ -469,7 +469,9 @@ function checkPrivacyBoundary(): void {
     "manual help or navigation must interrupt auth between session lookup and sign-in",
   );
 
-  const unavailableStart = form.indexOf("response.status === 503");
+  const unavailableStart = form.indexOf(
+    'if (response.status === 503 || "temporarilyUnavailable" in payload)',
+  );
   const noEligibleStart = form.indexOf('"noEligibleStory" in payload', unavailableStart);
   assert(
     unavailableStart >= 0 && noEligibleStart > unavailableStart,
@@ -493,6 +495,11 @@ function checkPrivacyBoundary(): void {
   );
   assert.match(
     form,
+    /response\.ok\s*\|\|\s*response\.status\s*===\s*503/,
+    "an unreadable 503 must use the same response-loss guidance",
+  );
+  assert.match(
+    form,
     /const ambiguousRequestRecoveryCopy = recoveryToken[\s\S]{0,320}cannot be safely replayed[\s\S]{0,320}telemetryFlowId[\s\S]{0,260}recover the same journey[\s\S]{0,260}another retry may start another story/i,
     "replay copy must distinguish one-shot recovery, idempotent, and legacy requests",
   );
@@ -504,6 +511,11 @@ function checkPrivacyBoundary(): void {
     form,
     /earlier response-lost attempt may have created/i,
     "confirmed current outcomes must disclose an unresolved earlier attempt",
+  );
+  assert.doesNotMatch(
+    form,
+    /Nothing was saved\./,
+    "no-story outcomes must not deny bounded product-event persistence",
   );
   assert(
     (form.match(/if \(recoveryToken\) resetMatchRecovery\(\);/g) ?? []).length >=

@@ -695,10 +695,10 @@ function checkPublicationBoundary(failures: string[]): void {
     "story_spec_publication_schema_health_v1",
     "procedure_row.prorettype = 'trigger'::pg_catalog.regtype",
     "procedure_row.proconfig = array['search_path=public']::text[]",
-    "4319d665aca2de512bf07bdb2b865f3a",
+    "db62d9000d8b9caea8ab97104dd48179",
     "procedure_row.prorettype = 'void'::pg_catalog.regtype",
     "procedure_row.proconfig = array['search_path=pg_catalog, public']::text[]",
-    "7c146e43dcb5754f5e14828276f6e9ea",
+    "7e4a1854906a05e7796dbf7bd76faee8",
     "trigger_row.tgtype = 23::smallint",
     "trigger_row.tgattr = ''::pg_catalog.int2vector",
     "function_namespace.nspname = 'public'",
@@ -740,9 +740,32 @@ function checkPublicationBoundary(failures: string[]): void {
     promotionHealthStart >= 0 && legacyHealthStart > promotionHealthStart
       ? migration.slice(promotionHealthStart, legacyHealthStart)
       : "";
-  if (!promotionHealth || promotionHealth.includes("position(")) {
+  if (
+    !promotionHealth ||
+    promotionHealth.includes("position(") ||
+    promotionHealth.includes("pg_catalog.lower(")
+  ) {
     failures.push(
-      "publication health must fingerprint the exact promotion function rather than scan tokens",
+      "publication health must use a case-preserving exact fingerprint rather than scan or lowercase tokens",
+    );
+  }
+  const lifecycleHelperStart = migration.indexOf(
+    "lifecycle_helper_health as (",
+  );
+  const lifecycleTriggerStart = migration.indexOf(
+    "lifecycle_trigger_health as (",
+    lifecycleHelperStart,
+  );
+  const lifecycleHelperHealth =
+    lifecycleHelperStart >= 0 && lifecycleTriggerStart > lifecycleHelperStart
+      ? migration.slice(lifecycleHelperStart, lifecycleTriggerStart)
+      : "";
+  if (
+    !lifecycleHelperHealth ||
+    lifecycleHelperHealth.includes("pg_catalog.lower(")
+  ) {
+    failures.push(
+      "lifecycle health must preserve case in its exact function fingerprint",
     );
   }
   if (

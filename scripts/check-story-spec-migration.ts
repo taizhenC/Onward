@@ -22,6 +22,7 @@ const publicationMigration = read(
 async function main(): Promise<void> {
   await checkCanonicalPublicationBoundary();
   await checkHostileAclCutover();
+  await checkFigureStagesDefinerBoundary();
   await checkIdentityManifestDriftDetection();
   await checkPostCutoverDriftDetection();
   await checkUnexpectedTriggerFailsCutover();
@@ -32,6 +33,7 @@ async function main(): Promise<void> {
   console.log("PASS exact-snapshot promotion, stale rejection, and retirement");
   console.log("PASS direct service-role publication and retirement are blocked");
   console.log("PASS hostile table, column, and every lifecycle-function ACL is removed");
+  console.log("PASS figure-stage trigger inheritance is closed before and after cutover");
   console.log(
     "PASS identity, owner, overload, trigger, full-index, and ACL drift fail closed",
   );
@@ -249,6 +251,9 @@ async function checkHostileAclCutover(): Promise<void> {
       grant delete, truncate on public.story_specs to onward_adversary;
       grant update(status) on public.story_specs to onward_adversary;
       grant select(story_spec_id) on public.story_specs to public;
+      grant update, delete, truncate, trigger on public.figure_stages
+        to onward_adversary;
+      grant update(status) on public.figure_stages to authenticated;
     `);
 
     await applyPublicationMigration(db);
@@ -265,6 +270,11 @@ async function checkHostileAclCutover(): Promise<void> {
       table_truncate: boolean;
       column_update: boolean;
       public_column_select: boolean;
+      stage_update: boolean;
+      stage_delete: boolean;
+      stage_truncate: boolean;
+      stage_trigger: boolean;
+      stage_column_update: boolean;
     }>(`
       select
         pg_catalog.has_function_privilege(
@@ -318,7 +328,33 @@ async function checkHostileAclCutover(): Promise<void> {
           'public.story_specs',
           'story_spec_id',
           'SELECT'
-        ) as public_column_select
+        ) as public_column_select,
+        pg_catalog.has_table_privilege(
+          'onward_adversary',
+          'public.figure_stages',
+          'UPDATE'
+        ) as stage_update,
+        pg_catalog.has_table_privilege(
+          'onward_adversary',
+          'public.figure_stages',
+          'DELETE'
+        ) as stage_delete,
+        pg_catalog.has_table_privilege(
+          'onward_adversary',
+          'public.figure_stages',
+          'TRUNCATE'
+        ) as stage_truncate,
+        pg_catalog.has_table_privilege(
+          'onward_adversary',
+          'public.figure_stages',
+          'TRIGGER'
+        ) as stage_trigger,
+        pg_catalog.has_column_privilege(
+          'authenticated',
+          'public.figure_stages',
+          'status',
+          'UPDATE'
+        ) as stage_column_update
     `);
     const escapedPrivileges = Object.entries(leaked.rows[0] ?? {})
       .filter(([, granted]) => granted)
@@ -330,6 +366,121 @@ async function checkHostileAclCutover(): Promise<void> {
     }
   } finally {
     await db.close();
+  }
+}
+
+async function checkFigureStagesDefinerBoundary(): Promise<void> {
+  const cutoverDb = await createBaseDatabase();
+  try {
+    await cutoverDb.exec(`
+      create function public.onward_stage_trigger()
+      returns trigger
+      language plpgsql
+      as $$
+      begin
+        update public.story_specs
+        set status = 'published',
+            spec = pg_catalog.jsonb_set(
+              spec,
+              '{status}',
+              pg_catalog.to_jsonb('published'::text),
+              false
+            )
+        where story_spec_id = 'trigger-target';
+        return new;
+      end
+      $$;
+
+      create trigger onward_stage_after
+      after update on public.figure_stages
+      for each row execute function public.onward_stage_trigger();
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(cutoverDb),
+      "pre-existing figure-stage trigger",
+      "figure_stages must not have user triggers",
+    );
+    await expectV2Absent(cutoverDb, "figure-stage-trigger rollback");
+  } finally {
+    await cutoverDb.close();
+  }
+
+  const driftDb = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(driftDb);
+    await driftDb.exec(`
+      create function public.onward_stage_trigger()
+      returns trigger
+      language plpgsql
+      as $$
+      begin
+        return new;
+      end
+      $$;
+    `);
+
+    const triggerPrivilege = await driftDb.query<{ granted: boolean }>(`
+      select pg_catalog.has_table_privilege(
+        'onward_adversary',
+        'public.figure_stages',
+        'TRIGGER'
+      ) as granted
+    `);
+    if (triggerPrivilege.rows[0]?.granted !== false) {
+      throw new Error("adversary retained figure_stages TRIGGER");
+    }
+
+    await driftDb.exec("set role onward_adversary");
+    try {
+      await expectRejected(
+        () =>
+          driftDb.exec(`
+            create trigger onward_stage_after
+            after update on public.figure_stages
+            for each row execute function public.onward_stage_trigger();
+          `),
+        "unprivileged post-cutover figure-stage trigger",
+      );
+    } finally {
+      await driftDb.exec("reset role");
+    }
+
+    await driftDb.exec(`
+      create trigger onward_stage_after
+      after update on public.figure_stages
+      for each row execute function public.onward_stage_trigger();
+    `);
+    await expectHealth(driftDb, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await driftDb.exec(`
+      drop trigger onward_stage_after on public.figure_stages;
+      drop function public.onward_stage_trigger();
+    `);
+    await expectHealth(driftDb, { ok: true });
+
+    await driftDb.exec(`
+      grant trigger on public.figure_stages to onward_adversary;
+    `);
+    await expectHealth(driftDb, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await driftDb.exec(`
+      revoke trigger on public.figure_stages from onward_adversary;
+    `);
+    await expectHealth(driftDb, { ok: true });
+
+    await driftDb.exec(`
+      alter table public.figure_stages owner to onward_adversary;
+    `);
+    await expectHealth(driftDb, {
+      ok: false,
+      boundary_granted: false,
+    });
+  } finally {
+    await driftDb.close();
   }
 }
 

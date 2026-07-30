@@ -54,6 +54,64 @@ function main(): void {
     "reviewed publication fixture",
     publishedFixture,
   );
+  expectRejected(
+    failures,
+    "duplicate published fact source reference",
+    mutate(publishedFixture, (spec) => {
+      spec.facts[0].sourceRefs.push(
+        structuredClone(spec.facts[0].sourceRefs[0]),
+      );
+    }),
+    true,
+    "source references must be bounded and unique",
+  );
+  expectRejected(
+    failures,
+    "oversized published fact statement",
+    mutate(publishedFixture, (spec) => {
+      spec.facts[0].statement = "x".repeat(4_001);
+    }),
+    true,
+    "statement must be non-empty and within the public limit",
+  );
+  expectRejected(
+    failures,
+    "duplicate published quote source reference",
+    mutate(publishedFixture, (spec) => {
+      spec.quotes[1].sourceRefs.push(
+        structuredClone(spec.quotes[1].sourceRefs[0]),
+      );
+    }),
+    true,
+    "source references must be bounded and unique",
+  );
+  expectRejected(
+    failures,
+    "oversized published paraphrase",
+    mutate(publishedFixture, (spec) => {
+      spec.quotes[1].text = "x".repeat(4_001);
+    }),
+    true,
+    "text must be non-empty and within the public limit",
+  );
+  expectRejected(
+    failures,
+    "impossible published review date",
+    mutate(publishedFixture, (spec) => {
+      spec.review.reviewedAt = "2026-99-99";
+    }),
+    true,
+    "reviewedAt must be an ISO date or UTC timestamp",
+  );
+  expectRejected(
+    failures,
+    "nonexistent calendar review date",
+    mutate(publishedFixture, (spec) => {
+      spec.review.reviewedAt = "2026-02-29";
+    }),
+    true,
+    "reviewedAt must be an ISO date or UTC timestamp",
+  );
 
   // Editors narrow evidence claim by claim — the builders must give every
   // fact and quote its own sourceRefs array, never one shared reference.
@@ -577,13 +635,27 @@ function checkPublicationBoundary(failures: string[]): void {
   for (const required of [
     "story_specs_document_identity_strict_check",
     "spec -> 'version' = pg_catalog.to_jsonb(version)",
+    "spec -> 'status' = pg_catalog.to_jsonb(status)",
     ") is true",
+    "andspec->''status''=to_jsonbstatusistrue",
     "promote_story_spec_v2",
     "p_expected_review_spec jsonb",
     "v_target.spec is distinct from p_expected_review_spec",
     "target.status = 'review'",
     "target.spec = p_expected_review_spec",
     "story_spec_publication_schema_health_v1",
+    "procedure_row.prorettype = 'trigger'::pg_catalog.regtype",
+    "procedure_row.proconfig = array['search_path=public']::text[]",
+    "4319d665aca2de512bf07bdb2b865f3a",
+    "trigger_row.tgtype = 23::smallint",
+    "trigger_row.tgattr = ''::pg_catalog.int2vector",
+    "function_namespace.nspname = 'public'",
+    "story_specs_one_published_stage_idx",
+    "index_row.indisunique",
+    "index_row.indpred is not null",
+    "pg_catalog.pg_get_indexdef(",
+    "published_stage_uniqueness_valid boolean",
+    "and publication_index_health.value",
     "legacy_rpc_revoked boolean",
     "boundary_granted boolean",
     "revoke all on function public.promote_story_spec(text) from public, anon, authenticated, service_role",
@@ -628,6 +700,8 @@ function checkPublicationBoundary(failures: string[]): void {
     "const disabled",
     "const uncovered",
     "story_spec_publication_schema_health_v1",
+    "published_stage_uniqueness_valid",
+    "one published version per stage",
   ]) {
     if (!databaseCheck.includes(readinessProof)) {
       failures.push(`database readiness omits: ${readinessProof}`);

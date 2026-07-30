@@ -120,6 +120,118 @@ function main(): void {
     true,
     "sentence-level evidence",
   );
+  const primaryFactId = fixture.facts[0].factId;
+  const secondaryFactId = fixture.facts[1].factId;
+  expectRejected(
+    failures,
+    "mapped disallowed interpretation",
+    evidenceMappingSpec(fixture, {
+      declaredFactIds: [primaryFactId],
+      mappedFactIds: [primaryFactId],
+      interpretation: {
+        interpretationId: "interpretation-blocked",
+        statement: "An editorial interpretation that is explicitly blocked.",
+        supportingFactIds: [primaryFactId],
+        allowed: false,
+      },
+    }),
+    true,
+    "disallowed interpretation",
+  );
+  expectRejected(
+    failures,
+    "undeclared interpretation support",
+    evidenceMappingSpec(fixture, {
+      declaredFactIds: [primaryFactId],
+      mappedFactIds: [primaryFactId],
+      interpretation: {
+        interpretationId: "interpretation-unsupported-here",
+        statement: "An allowed interpretation supported by a different fact.",
+        supportingFactIds: [secondaryFactId],
+        allowed: true,
+      },
+    }),
+    true,
+    `sentence evidence uses undeclared fact ${secondaryFactId}`,
+  );
+  expectRejected(
+    failures,
+    "undeclared sentence fact",
+    evidenceMappingSpec(fixture, {
+      declaredFactIds: [primaryFactId],
+      mappedFactIds: [secondaryFactId],
+    }),
+    true,
+    `sentence evidence uses undeclared fact ${secondaryFactId}`,
+  );
+  expectRejected(
+    failures,
+    "decorative optional fact",
+    evidenceMappingSpec(fixture, {
+      declaredFactIds: [primaryFactId],
+      optionalFactIds: [secondaryFactId],
+      mappedFactIds: [primaryFactId],
+    }),
+    true,
+    `declares fact ${secondaryFactId} without sentence evidence`,
+  );
+  expectRejected(
+    failures,
+    "required optional overlap",
+    evidenceMappingSpec(fixture, {
+      declaredFactIds: [primaryFactId],
+      optionalFactIds: [primaryFactId],
+      mappedFactIds: [primaryFactId],
+    }),
+    true,
+    "required and optional facts must be disjoint",
+  );
+  expectRejected(
+    failures,
+    "duplicate interpretation identity",
+    publishShape(
+      mutate(fixture, (spec) => {
+        const duplicate = {
+          interpretationId: "interpretation-duplicate",
+          statement: "A duplicate editorial identity.",
+          supportingFactIds: [primaryFactId],
+          allowed: true,
+        };
+        spec.interpretations.push(duplicate, structuredClone(duplicate));
+      }),
+    ),
+    true,
+    "interpretation IDs must be unique",
+  );
+
+  expectEvidenceClosureAccepted(
+    failures,
+    "interpretation-only sentence",
+    evidenceMappingSpec(fixture, {
+      declaredFactIds: [primaryFactId],
+      mappedFactIds: [],
+      interpretation: {
+        interpretationId: "interpretation-grounded",
+        statement: "A grounded interpretation without a redundant direct link.",
+        supportingFactIds: [primaryFactId],
+        allowed: true,
+      },
+    }),
+  );
+  expectEvidenceClosureAccepted(
+    failures,
+    "unreferenced blocked interpretation",
+    publishShape(
+      mutate(fixture, (spec) => {
+        spec.interpretations.push({
+          interpretationId: "interpretation-unreferenced",
+          statement: "A retained editorial decision that prose cannot use.",
+          supportingFactIds: [],
+          allowed: false,
+        });
+      }),
+    ),
+  );
   expectRejected(
     failures,
     "invalid content profile",
@@ -141,7 +253,7 @@ function main(): void {
   console.log(`PASS ${specs.length}/${specs.length} structurally valid draft specs`);
   console.log(`PASS ${specs.length}/${specs.length} unreviewed publish attempts rejected`);
   console.log(
-    "PASS negative gates: evidence, entity, quote, chronology, locator, and sentence mapping",
+    "PASS negative gates: evidence closure, entity, quote, chronology, locator, and sentence mapping",
   );
   console.log("PASS untrusted documents require exact nested StorySpec shapes");
   console.log("PASS immutable publication is delegated to migration 0004 lifecycle gates");
@@ -203,6 +315,36 @@ function publishShape(spec: StorySpec): StorySpec {
   return { ...spec, status: "published" };
 }
 
+function evidenceMappingSpec(
+  source: StorySpec,
+  input: Readonly<{
+    declaredFactIds: string[];
+    optionalFactIds?: string[];
+    mappedFactIds: string[];
+    interpretation?: StorySpec["interpretations"][number];
+  }>,
+): StorySpec {
+  return publishShape(
+    mutate(source, (spec) => {
+      const beat = spec.arc[0];
+      beat.requiredFactIds = [...input.declaredFactIds];
+      beat.optionalFactIds = [...(input.optionalFactIds ?? [])];
+      beat.sentenceEvidence = [
+        {
+          sentenceIndex: 0,
+          factIds: [...input.mappedFactIds],
+          interpretationIds: input.interpretation
+            ? [input.interpretation.interpretationId]
+            : [],
+        },
+      ];
+      if (input.interpretation) {
+        spec.interpretations.push(structuredClone(input.interpretation));
+      }
+    }),
+  );
+}
+
 function expectRejected(
   failures: string[],
   name: string,
@@ -223,6 +365,22 @@ function expectDocumentRejected(
 ): void {
   if (parseStorySpecDocument(value) !== null) {
     failures.push(`${name}: exact parser accepted malformed StorySpec JSON`);
+  }
+}
+
+function expectEvidenceClosureAccepted(
+  failures: string[],
+  name: string,
+  spec: StorySpec,
+): void {
+  const closureErrors = validateStorySpec(spec, { forPublish: true }).errors.filter(
+    (error) =>
+      /interpretation IDs must be unique|disallowed interpretation|mapped interpretation|sentence evidence uses undeclared fact|without sentence evidence|required and optional facts must be disjoint/.test(
+        error,
+      ),
+  );
+  if (closureErrors.length > 0) {
+    failures.push(`${name}: valid evidence closure was rejected: ${closureErrors.join("; ")}`);
   }
 }
 

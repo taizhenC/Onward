@@ -31,6 +31,7 @@ import { createStoryRequestContext } from "../lib/story-request-context";
 import {
   composeCanonicalStoryArtifact,
   composeHybridStoryArtifact,
+  StoryCompositionError,
   storyArtifactContentHash,
   validateStoredStoryArtifact,
   validateStoryArtifact,
@@ -174,6 +175,21 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
   ) {
     failures.push("passage evidence classes or fact-to-source links are incomplete");
   }
+  if (
+    transparency.beats.some((beat, index) => {
+      const specBeat = storySpec.arc[index];
+      return (
+        !specBeat ||
+        !sameSet(beat.factIds, [
+          ...specBeat.requiredFactIds,
+          ...specBeat.optionalFactIds,
+        ]) ||
+        !sameSet(beat.quoteIds, specBeat.quoteIds)
+      );
+    })
+  ) {
+    failures.push("public passage evidence diverged from the validated StorySpec closure");
+  }
 
   const hybrid = composeHybridStoryArtifact({
     storySpec,
@@ -209,6 +225,38 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
   credentialSpec.sources[0].url = "https://user:secret@example.test/archive";
   if (validateStorySpec(credentialSpec, { forPublish: true }).valid) {
     failures.push("StorySpec validation accepted credentials in a source URL");
+  }
+
+  const blockedInterpretation = structuredClone(storySpec);
+  blockedInterpretation.interpretations[0].allowed = false;
+  const blockedValidation = validateStoryArtifact(
+    artifact,
+    blockedInterpretation,
+    resonanceBrief,
+  );
+  if (
+    blockedValidation.valid ||
+    !blockedValidation.failureReasons.includes("story_spec_invalid")
+  ) {
+    failures.push("artifact validation accepted a disallowed mapped interpretation");
+  }
+  try {
+    composeCanonicalStoryArtifact({
+      storySpec: blockedInterpretation,
+      stage: fixture.stage,
+      matchRecipe: recipe,
+      openingCopy: artifact.openingCopy,
+      framing: "partial",
+      resonanceBrief,
+    });
+    failures.push("canonical composition accepted a disallowed mapped interpretation");
+  } catch (error) {
+    if (
+      !(error instanceof StoryCompositionError) ||
+      !error.reasons.includes("story_spec_invalid")
+    ) {
+      failures.push("invalid evidence closure escaped the closed composition error");
+    }
   }
 }
 
@@ -266,6 +314,13 @@ function checkPublishedHydration(
   const extraRowField = { ...row, unexpected: true };
   if (parsePublishedStorySpecRow(extraRowField) !== null) {
     failures.push("published StorySpec accepted an extra row-envelope field");
+  }
+
+  const semanticallyInvalid = structuredClone(row);
+  const invalidSpec = semanticallyInvalid.spec as StorySpec;
+  invalidSpec.interpretations[0].allowed = false;
+  if (parsePublishedStorySpecRow(semanticallyInvalid) !== null) {
+    failures.push("published StorySpec hydration accepted invalid evidence closure");
   }
 }
 
@@ -773,6 +828,15 @@ function publishedStorySpec(): StorySpec {
       contentProfileReviewed: true,
     },
   };
+}
+
+function sameSet(left: string[], right: string[]): boolean {
+  const leftSet = [...new Set(left)].sort();
+  const rightSet = [...new Set(right)].sort();
+  return (
+    leftSet.length === rightSet.length &&
+    leftSet.every((value, index) => value === rightSet[index])
+  );
 }
 
 function read(relative: string): string {

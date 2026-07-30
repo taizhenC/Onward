@@ -70,6 +70,27 @@ begin
         from service_members
         where service_members.member_oid = authenticator_role.oid
       )
+      and exists (
+        select 1
+        from pg_catalog.pg_auth_members canonical_membership
+        where canonical_membership.roleid = 'service_role'::regrole
+          and canonical_membership.member = authenticator_role.oid
+          and not canonical_membership.admin_option
+          and not coalesce(
+            (
+              pg_catalog.to_jsonb(canonical_membership)
+                ->> 'inherit_option'
+            )::boolean,
+            authenticator_role.rolinherit
+          )
+          and coalesce(
+            (
+              pg_catalog.to_jsonb(canonical_membership)
+                ->> 'set_option'
+            )::boolean,
+            true
+          )
+      )
   ) then
     raise exception
       'StorySpec service authority role graph is unsafe';
@@ -959,6 +980,27 @@ as $fn$
           select 1
           from service_members
           where service_members.member_oid = authenticator_role.oid
+        )
+        and exists (
+          select 1
+          from pg_catalog.pg_auth_members canonical_membership
+          where canonical_membership.roleid = 'service_role'::regrole
+            and canonical_membership.member = authenticator_role.oid
+            and not canonical_membership.admin_option
+            and not coalesce(
+              (
+                pg_catalog.to_jsonb(canonical_membership)
+                  ->> 'inherit_option'
+              )::boolean,
+              authenticator_role.rolinherit
+            )
+            and coalesce(
+              (
+                pg_catalog.to_jsonb(canonical_membership)
+                  ->> 'set_option'
+              )::boolean,
+              true
+            )
         )
     ) = 1 as value
     from pg_catalog.pg_database database_row

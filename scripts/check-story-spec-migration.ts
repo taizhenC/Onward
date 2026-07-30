@@ -586,6 +586,20 @@ async function checkAuthorityRootDriftDetection(): Promise<void> {
     await expectHealth(db, { ok: true });
 
     await db.exec(`
+      revoke service_role from authenticator;
+      grant service_role to authenticator with inherit true;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from authenticator;
+      grant service_role to authenticator;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
       alter database postgres owner to onward_adversary;
     `);
     await expectHealth(db, {
@@ -1016,6 +1030,25 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     await inheritedServiceDb.close();
   }
 
+  const inheritedAuthenticatorDb = await createBaseDatabase();
+  try {
+    await inheritedAuthenticatorDb.exec(`
+      revoke service_role from authenticator;
+      grant service_role to authenticator with inherit true;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(inheritedAuthenticatorDb),
+      "inheriting authenticator membership",
+      "service authority role graph is unsafe",
+    );
+    await expectV2Absent(
+      inheritedAuthenticatorDb,
+      "inheriting-authenticator rollback",
+    );
+  } finally {
+    await inheritedAuthenticatorDb.close();
+  }
+
   const overloadDb = await createBaseDatabase();
   try {
     await overloadDb.exec(`
@@ -1203,6 +1236,9 @@ async function expectBaseAuthorityGraph(db: PGlite): Promise<void> {
     authenticator_noinherit: boolean;
     authenticator_not_super: boolean;
     authenticator_not_bypass: boolean;
+    canonical_no_admin: boolean;
+    canonical_no_inherit: boolean;
+    canonical_can_set: boolean;
   }>(`
     with recursive owner_members(member_oid) as (
       select membership.member
@@ -1238,8 +1274,26 @@ async function expectBaseAuthorityGraph(db: PGlite): Promise<void> {
       ) as authenticator_member_count,
       not authenticator_role.rolinherit as authenticator_noinherit,
       not authenticator_role.rolsuper as authenticator_not_super,
-      not authenticator_role.rolbypassrls as authenticator_not_bypass
+      not authenticator_role.rolbypassrls as authenticator_not_bypass,
+      not canonical_membership.admin_option as canonical_no_admin,
+      not coalesce(
+        (
+          pg_catalog.to_jsonb(canonical_membership)
+            ->> 'inherit_option'
+        )::boolean,
+        authenticator_role.rolinherit
+      ) as canonical_no_inherit,
+      coalesce(
+        (
+          pg_catalog.to_jsonb(canonical_membership)
+            ->> 'set_option'
+        )::boolean,
+        true
+      ) as canonical_can_set
     from pg_catalog.pg_roles authenticator_role
+    join pg_catalog.pg_auth_members canonical_membership
+      on canonical_membership.roleid = 'service_role'::regrole
+      and canonical_membership.member = authenticator_role.oid
     where authenticator_role.oid = 'authenticator'::regrole
   `);
   const graph = result.rows[0];
@@ -1250,7 +1304,10 @@ async function expectBaseAuthorityGraph(db: PGlite): Promise<void> {
     graph.authenticator_member_count !== 1 ||
     !graph.authenticator_noinherit ||
     !graph.authenticator_not_super ||
-    !graph.authenticator_not_bypass
+    !graph.authenticator_not_bypass ||
+    !graph.canonical_no_admin ||
+    !graph.canonical_no_inherit ||
+    !graph.canonical_can_set
   ) {
     throw new Error(
       `base authority graph is unsafe: ${JSON.stringify(graph ?? null)}`,

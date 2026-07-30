@@ -716,6 +716,9 @@ function checkPublicationBoundary(failures: string[]): void {
     "not authenticator_role.rolbypassrls",
     "(select count(*) from service_members) = 1",
     "service_members.member_oid = authenticator_role.oid",
+    "not canonical_membership.admin_option",
+    "pg_catalog.to_jsonb(canonical_membership) ->> 'inherit_option'",
+    "pg_catalog.to_jsonb(canonical_membership) ->> 'set_option'",
     "storyspec cutover must run as the database owner",
     "other roles must not inherit storyspec publication authority",
     "storyspec service authority role graph is unsafe",
@@ -864,6 +867,11 @@ function checkPublicationBoundary(failures: string[]): void {
     "not authenticator_role.rolbypassrls",
     "(select count(*) from service_members) = 1",
     "where service_members.member_oid = authenticator_role.oid",
+    "canonical_membership.roleid = 'service_role'::regrole",
+    "canonical_membership.member = authenticator_role.oid",
+    "not canonical_membership.admin_option",
+    "pg_catalog.to_jsonb(canonical_membership) ->> 'inherit_option'",
+    "pg_catalog.to_jsonb(canonical_membership) ->> 'set_option'",
     "'public.story_specs'::regclass",
     "'public.figure_stages'::regclass",
     "relation_row.relowner <> authority_owner",
@@ -1423,6 +1431,19 @@ function checkPublicationBoundary(failures: string[]): void {
     ) ||
     !authorityHealth.includes(
       "service_members.member_oid = authenticator_role.oid",
+    ) ||
+    !authorityHealth.includes(
+      "canonical_membership.roleid = 'service_role'::regrole",
+    ) ||
+    !authorityHealth.includes(
+      "canonical_membership.member = authenticator_role.oid",
+    ) ||
+    !authorityHealth.includes("not canonical_membership.admin_option") ||
+    !authorityHealth.includes(
+      "pg_catalog.to_jsonb(canonical_membership) ->> 'inherit_option'",
+    ) ||
+    !authorityHealth.includes(
+      "pg_catalog.to_jsonb(canonical_membership) ->> 'set_option'",
     )
   ) {
     failures.push(

@@ -1,7 +1,7 @@
 # Roadmap Implementation Status
 
 **Authoritative objective:** finish every item in `feature_roadmap.md`.  
-**Status date:** July 28, 2026
+**Status date:** July 29, 2026
 **Evidence rule:** an item is `Complete` only when every acceptance criterion is implemented and directly verified. Passing a neighboring test is not sufficient.
 
 ## Status meanings
@@ -21,7 +21,7 @@
 | P0-03 | In progress | New sessions create a strict short-lived ResonanceBrief and pass only its governed projection into a separate Story Composer/provider boundary. The model can select one allowed transition role and approved transition/bridge template IDs, but cannot author prose or claims. The composer deterministically renders those choices onto the canonical seven-beat StorySpec, preserves exact fact/entity/quote IDs and chronology, validates privacy/tone/zones/recipe/hash, retries once with closed failure codes, then returns a complete canonical artifact on provider, output, privacy, or validator failure. Immutable v5 artifacts pin analyzer/match/model/composer/validator/boundary/template/plan versions plus public provenance; v1-v4 replay remains supported without reconstructing old provenance when the artifact matches its independent immutable storage envelope. Opening-copy and hybrid requests now execute the explicit persisted `storyPromptVersion` through a closed policy/contract registry: local evaluation can exercise an unpromoted supported challenger, while production rejects every non-selected identity before provider use. V1 provider-request bytes and existing server-owned copy are frozen by literal and SHA-256 fixtures, the runtime prompt projection physically excludes the validation-only figure name, and only exact code-reviewed returned eyebrows may reach the reader. The appended v2 challenger lets the model choose three request-scoped allowlisted IDs, then renders the eyebrow and all four preface lines from immutable server catalogs; malformed, echoed, cross-context, or unavailable output atomically restores the universal opening. V2 artifact validation accepts only coherent server-owned line sequences, rejects prompt-version/schema downgrade and missing-version replay, and persists no planning IDs. | Evaluate v2 against v1 on the protected blind benchmark and obtain target-reader resonance plus independent editorial/safety review; add real provider latency/fallback evidence, real Postgres transaction/JSONB round-trip evidence, dashboards, and an editorially safe migration plan for permanent pre-0005 sessions before `Complete`. Promotion must remain a separate protected-selector change after those gates pass. |
 | P0-04 | Complete | All 50 canonical bridges and the demo no longer repeat intake; legacy placeholders are sanitized before chunking. Generated opening and hybrid bridge/transition paths receive only the governed ResonanceBrief projection and are rejected through HMAC exact/eight-word/named-detail/Unicode fingerprints plus placeholder, promise, diagnosis, prescription, equivalence, and closed-template gates. Mock provider capture proves raw text, names, dates, anchors, and hashes do not enter either prose request; artifacts store none of the brief or fingerprints. The approved initial-composition failure owner passes thrown values through a string-hostile reducer that retains only closed error/status/latency buckets; canary tests prove exception messages, stacks, causes, and bodies are discarded. The versioned derived-output contract now defines seven closed lifecycle classes, 20 surfaces (including age, closed hybrid-retry feedback, and owner Save State), five current provider exchanges, opaque consumer-allowlisted outputs, request-only opening candidates, exchange-branded request bodies, reduced errors, and an exact inventory of all current direct TypeScript network paths and provider-boundary imports. Every current application table has a named class, and CI rejects unregistered sinks, consumers, provider calls, storage tables, or direct network paths. | None for this code-scoped bug fix. Provider account settings, infrastructure logs, and backup/PITR behavior remain explicit P0-14 external gates rather than hidden P0-04 claims. |
 | P0-05 | In progress | A versioned deterministic disposition policy converts server-only confidence and age fallback into close, adjacent, one-question, or no-close states. Medium/low first passes ask one six-option question; an answered low match stops honestly without persistence; explicit closest-story acceptance forces partial framing. The preface visibly states that the lives are not the same. Owner/input-bound opaque recovery credits are single-use, purpose-limited, rate-limit safe, and expire in ten minutes. | Calibrate thresholds and prove the question's expected value on the consented holdout; add measured try-another/none-of-these recovery with P0-10; complete browser usability/accessibility evidence and include miss/clarification performance in the release benchmark. |
-| P0-06 | Partial | Functional age/free-text intake, honest expectation copy, just-in-time privacy, optional non-clinical story limits, one bounded clarification, retained in-memory draft across no-eligible/no-close recovery, and gentle focused states are implemented. Client and server now share the same whole-number age plus NFC code-point disclosure limits, including emoji-safe counting. | Stronger initial guided prompt/context, retry across full navigation/reload without unsafe persistence, and browser usability/accessibility evidence. |
+| P0-06 | Partial | Free text remains primary, supported by three concise writing prompts, a clearly fictional valid example, plain-language age rationale, and just-in-time privacy/retention access. Exact shared age/NFC code-point validation produces linked inline errors and focuses the first invalid field. Honest live states describe only observable request/auth/navigation transitions; same-page drafts survive network and rate-limit recovery, `Retry-After` is honored, and copy distinguishes page-only retention, idempotent replay, legacy replay risk, and one-shot recovery. Crisis help stays available before valid form submission and now carries required persistence provenance across interrupted and retried requests. Optional non-clinical limits and one bounded clarification remain available. | Safe draft recovery across full navigation/reload; a real server progress boundary before claiming a distinct returning-user finding/preparing phase; privacy-safe invalid/retry measurement; representative supported-browser keyboard, named screen-reader, zoom, contrast, reduced-motion, and target-user comprehension evidence; and measured intake-to-first-content latency. |
 | P0-07 | In progress | Reader is book-like with visible reveal and explicit Continue/Finish controls; quiet role-based chapter labels and count-agnostic cues orient without a progress bar. Delayed loading, bounded delivery/ACK timeouts, in-place retry, focused failures, deliberate transition focus, and minimum 44px actions are implemented. The final bridge stays mounted, a focused coda separates the emotional landing from afterword/feedback/save, and completed refresh restores the bridge and figure. Desktop browser evidence covers refresh, outage recovery, Back/Forward, same/stale multi-tab, and Finish; see [reader release evidence](reader_release_evidence.md). | Complete representative-phone, zoom/reflow, keyboard-only, named screen-reader, Supabase-auth conversion, and target-reader comprehension/pacing evidence. The in-app viewport override did not produce a phone viewport, so responsive acceptance remains open. |
 | P0-08 | In progress | Immutable v5 artifacts now carry a closed disclosure-safe rationale and explicit gap, pinned StorySpec identity/version, reviewed-vs-draft provenance, safe source projection, only referenced fact/quote evidence, qualified/interpretive/reader-bridge labels, and hybrid-connective disclosure. The end-state reader exposes the rationale plus native source/evidence drawers. An exact three-field owner-scoped API validates fact membership; migration `0007` atomically writes only safe content identifiers and closed reasons into a default-deny, idempotent editorial queue with service-only triage and existing rapid retirement. Synthetic public evidence covers verbatim/paraphrase/disputed quotes; all 50 current drafts are honestly labeled as drafts; v1-v4 replay exposes no fabricated provenance. | Publish a real launch StorySpec with researcher-authored exact/bounded evidence and exercise its quote/source projection; run the migration, RLS/concurrency, triage, and retirement drill against real Postgres; complete keyboard/screen-reader/mobile/zoom testing and target-user trust comprehension before `Complete`. |
 | P0-09 | In progress | Progress moves only on explicit Continue/Finish. Migration `0013` locks the owned session, independently validates the immutable artifact's complete passage layout, derives the only legal next position, and atomically captures the bounded flattened passage ordinal plus final completion. Response-loss replay restores deterministic events/outbox pointers without advancing twice; memory mode mirrors the transaction. The client now retries the exact ACK tuple after connection/timeout/invalid-response failures, fails closed on malformed next contracts, rejects unsafe coordinates, and reloads only on true divergence. Browser evidence proves refresh-mid-reveal, double-click, Back/Forward, outage/reconnect, same-position convergence, stale-tab conflict, and one-shot Finish in memory mode; see [reader release evidence](reader_release_evidence.md). | Real-Postgres concurrency/RLS/rollback and cross-instance evidence remains mandatory. Convert the manual browser matrix into durable route/component E2E coverage, including partial delivery and committed-ACK response loss, before `Complete`. |
@@ -948,6 +948,53 @@ real provider output, blind target-reader resonance scoring, independent
 editorial and safety review, latency/fallback measurement, and real Postgres
 JSONB round-trip evidence. Promotion must be a separate authority-controlled
 selector change; it must not be smuggled into this implementation branch.
+
+### Stacked branch: `codex/p0-guided-intake-validation`
+
+This slice keeps one free-text disclosure instead of introducing diagnostic
+categories. Three short questions explain the useful story context, a
+fictional example models a valid response, and the age field explains why a
+similar life stage matters. Labels, help, errors, character limits, privacy
+access, and first-invalid-field focus now share one immutable presentation
+contract. The submit action remains available for error discovery, crisis
+resources remain independently available, and the existing optional story
+limits and one-question match recovery remain intact.
+
+Submission and recovery copy now follows observable transitions rather than a
+timer. A polite status outside the busy form announces request checking,
+anonymous-session setup when it actually occurs, the authenticated retry, and
+successful navigation. Rate limiting keeps the same-page draft visible,
+honors `Retry-After`, and offers retry, review, and leave actions. Network,
+unreadable-response, and temporary-unavailability copy distinguishes the
+device-only form draft from a request that may already have committed.
+Idempotent flow retries, legacy requests without a recovery ID, and one-shot
+match-recovery attempts receive different instructions.
+
+A small immutable request-privacy state machine separates the current attempt
+from unresolved prior attempts. A later 401, 429, no-eligible, no-close, or
+crisis response can confirm only its own attempt; it cannot erase uncertainty
+from an earlier lost response. `CrisisCard` requires an explicit provenance
+value, and resources plus provenance move atomically. Same-tab navigation and
+manual crisis access interrupt pending auth/response work, modified or
+new-tab links do not abandon the current form, unmount cleanup avoids state
+updates, and successful story navigation preserves first-content timing.
+
+| Command or review | Result |
+|---|---|
+| `npm run check-intake-experience` | Pass; immutable prompts/example, exact validation, truthful live states, request-privacy transitions, interruption points, draft recovery, and CI wiring |
+| `npm run lint` / `npm run typecheck` | Pass; zero lint warnings and no type errors |
+| Every remaining command in `CI / verify` before build | Pass |
+| `npm run eval-crisis` | Pass; 26/26 critical cases with zero critical false negatives |
+| `npm run smoke` | Pass; all 20 application regressions |
+| `NEXT_DIST_DIR=.next-ci PERSISTENCE=memory ONWARD_ALLOW_MEMORY_IN_PRODUCTION=true LLM_PROVIDER=stub EMBEDDING_PROVIDER=stub RETRIEVAL_MODE=keyword npm run build` | Pass; optimized production build generated all 23 app surfaces |
+| Focused local browser QA | Pass for accessible names, first-invalid focus, invalid-age crisis access, successful story navigation, 320px reflow without horizontal overflow, and 44px-or-larger primary targets; automated Tab movement, named screen readers, and full zoom/reduced-motion proof remain open |
+| Independent standards, spec, and privacy/safety review | All release-blocking implementation findings resolved; a future reducer/hook extraction remains a P2 maintainability follow-up |
+
+P0-06 remains `Partial`. Full-navigation/reload draft recovery needs an
+explicit privacy design; a separately announced returning-user
+finding/preparing phase needs a genuine server progress boundary; and the
+measurement, latency, supported-browser accessibility, and target-reader
+acceptance gates still require direct evidence.
 
 ## Completion audit rule
 

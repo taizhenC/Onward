@@ -366,48 +366,49 @@ as $fn$
   ),
   promotion_health as (
     select count(*) filter (
-      where procedure_row.proname = 'promote_story_spec_v2'
+      where namespace_row.nspname = 'public'
+        and procedure_row.proname = 'promote_story_spec_v2'
+        and procedure_row.prokind = 'f'
         and procedure_row.pronargs = 2
         and pg_catalog.oidvectortypes(procedure_row.proargtypes) =
           'text, jsonb'
+        and procedure_row.proallargtypes is null
+        and procedure_row.proargmodes is null
         and procedure_row.proargnames =
           array['p_story_spec_id', 'p_expected_review_spec']::text[]
+        and procedure_row.prorettype = 'void'::pg_catalog.regtype
+        and not procedure_row.proretset
         and procedure_row.prosecdef
+        and procedure_row.provolatile = 'v'
+        and language_row.lanname = 'plpgsql'
         and (owner_role.rolsuper or owner_role.rolbypassrls)
-        and position(
-          'search_path=pg_catalog, public'
-          in pg_catalog.array_to_string(procedure_row.proconfig, ',')
-        ) > 0
-        and position(
-          'for update'
-          in lower(procedure_row.prosrc)
-        ) > 0
-        and position(
-          'v_target.spec is distinct from p_expected_review_spec'
-          in lower(procedure_row.prosrc)
-        ) > position(
-          'for update'
-          in lower(procedure_row.prosrc)
-        )
-        and position(
-          'set status = ''retired'''
-          in lower(procedure_row.prosrc)
-        ) > position(
-          'v_target.spec is distinct from p_expected_review_spec'
-          in lower(procedure_row.prosrc)
-        )
-        and position(
-          'target.status = ''review'''
-          in lower(procedure_row.prosrc)
-        ) > 0
-        and position(
-          'target.spec = p_expected_review_spec'
-          in lower(procedure_row.prosrc)
-        ) > 0
+        and procedure_row.proconfig =
+          array['search_path=pg_catalog, public']::text[]
+        -- The exact body fingerprint makes comments and unreachable lookalike
+        -- tokens insufficient to attest the lock/CAS/retirement transaction.
+        and pg_catalog.md5(
+          pg_catalog.btrim(
+            pg_catalog.regexp_replace(
+              pg_catalog.lower(
+                pg_catalog.regexp_replace(
+                  procedure_row.prosrc,
+                  E'--[^\\n\\r]*',
+                  ' ',
+                  'g'
+                )
+              ),
+              E'\\s+',
+              ' ',
+              'g'
+            )
+          )
+        ) = '7c146e43dcb5754f5e14828276f6e9ea'
     ) = 1 as value
     from pg_catalog.pg_proc procedure_row
     join pg_catalog.pg_namespace namespace_row
       on namespace_row.oid = procedure_row.pronamespace
+    join pg_catalog.pg_language language_row
+      on language_row.oid = procedure_row.prolang
     join pg_catalog.pg_roles owner_role
       on owner_role.oid = procedure_row.proowner
     where namespace_row.nspname = 'public'

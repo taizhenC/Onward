@@ -500,20 +500,29 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
 6. Seed: `npm run seed`, then `npm run seed-story-specs`. New stages and specs stay in `draft`; source mapping and human review are required before an editor moves a spec to `review` and runs `npm run story-spec:status -- publish <storySpecId>`. Production matching considers only valid published StorySpecs. The same command with `retire` immediately removes one stage version from new matching without a deploy. Historical concerns appear in `historical_concern_reports`; triage them through `triage_historical_concern`, and retire the pinned `story_spec_id` when a concern requires immediate unpublication. Reports never auto-retire content. Run `npm run check-db` after publishing the intended launch subset. For semantic retrieval: `npm run check-embeddings` → `npm run seed-embeddings` → `npm run check-embeddings`.
 
 Apply migration `0023` before using the publication command from this version.
-Pause editorial publication during the cutover: the migration validates strict
+Pause editorial writes during the cutover and run the whole file as the database
+owner. The migration rejects any different table/routine owner or unexpected
+controlled-routine overload before changing the schema. It validates strict
 JSON identities, revokes the legacy ID-only promotion RPC, and installs
-snapshot-bound `promote_story_spec_v2`. A review changed after validation fails
-with “reload and revalidate”; do not retry it automatically. Published sentence
-maps must classify every sentence as an evidence-backed historical claim or one
-of the code-owned reader-bridge lines, and every beat-level quote link must
-equal its sentence-level quote links. Run `npm run check-db` before resuming
-publication; any quarantined row, stage/spec mismatch, unexpected active
-trigger, unsafe table/column/function grant, owner drift, policy, or stale schema
-makes readiness fail. `npm run check-story-spec-migration` exercises the atomic
-cutover and hostile drift cases in embedded PostgreSQL, but does not replace the
-managed-Supabase stale-snapshot, lock/concurrency, RLS, rollback, and
-service-role canaries. Roll application code back without re-granting the
-legacy RPC or restoring the nullable identity constraint.
+snapshot-bound `promote_story_spec_v2` plus the audited retirement RPC. The
+service role retains direct draft/review authoring, but direct writes cannot
+create a published row or enter either terminal status; publication and
+retirement must pass through those owner-definer RPCs. A review changed after
+validation fails with “reload and revalidate”; do not retry it automatically.
+Published sentence maps must classify every sentence as an evidence-backed
+historical claim or one of the code-owned reader-bridge lines, and every
+beat-level quote link must equal its sentence-level quote links.
+
+Run `npm run check-db` before resuming editorial work. Any quarantined row,
+stage/spec mismatch, unexpected active trigger, controlled-routine overload,
+unsafe table/column/function grant, owner drift, policy, or stale identity/full
+publication-index fingerprint makes readiness fail. `npm run
+check-story-spec-migration` executes promotion, stale rejection, retirement,
+direct-write denial, hostile ACL cleanup, owner/overload/trigger/full-index
+drift, and atomic rollback cases in embedded PostgreSQL. It does not replace
+managed-Supabase lock/concurrency, RLS/grant, rollback, and service-role
+canaries. Roll application code back without re-granting the legacy RPC,
+restoring direct terminal writes, or restoring the nullable identity constraint.
 
 ### 2. Vercel
 

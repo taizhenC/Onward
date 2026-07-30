@@ -688,7 +688,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "spec -> 'version' = pg_catalog.to_jsonb(version)",
     "spec -> 'status' = pg_catalog.to_jsonb(status)",
     ") is true",
-    "andspec->''status''=to_jsonbstatusistrue",
+    "andspec->''status''::text=to_jsonbstatusistrue",
     "promote_story_spec_v2",
     "p_expected_review_spec jsonb",
     "v_target.spec is distinct from p_expected_review_spec",
@@ -787,11 +787,12 @@ function checkPublicationBoundary(failures: string[]): void {
   if (
     !identityCatalog ||
     identityCatalog.includes("pg_catalog.lower(") ||
+    identityCatalog.includes("'::text', ''") ||
     !casePreservedMigration.includes(
-      "andspec->''storySpecId''=to_jsonbstory_spec_id",
+      "andspec->''storySpecId''::text=to_jsonbstory_spec_id",
     ) ||
     !casePreservedMigration.includes(
-      "andspec->''schemaVersion''=to_jsonbschema_version",
+      "andspec->''schemaVersion''::text=to_jsonbschema_version",
     )
   ) {
     failures.push(
@@ -816,7 +817,8 @@ function checkPublicationBoundary(failures: string[]): void {
   if (
     !publicationIndexHealth ||
     publicationIndexHealth.includes("pg_catalog.lower(") ||
-    !publicationIndexHealth.includes(") = 'status=''published'''")
+    publicationIndexHealth.includes("'::text', ''") ||
+    !publicationIndexHealth.includes(") = 'status=''published''::text'")
   ) {
     failures.push(
       "publication-index health must preserve case in its exact predicate",

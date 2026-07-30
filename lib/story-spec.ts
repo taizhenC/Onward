@@ -113,6 +113,12 @@ export function validateStorySpec(
   const interpretationIds = new Set(
     spec.interpretations.map((interpretation) => interpretation.interpretationId),
   );
+  const interpretationsById = new Map(
+    spec.interpretations.map((interpretation) => [
+      interpretation.interpretationId,
+      interpretation,
+    ]),
+  );
 
   if (spec.schemaVersion !== STORY_SPEC_SCHEMA_VERSION) {
     errors.push(`schemaVersion must be ${STORY_SPEC_SCHEMA_VERSION}`);
@@ -130,6 +136,9 @@ export function validateStorySpec(
   if (factIds.size !== spec.facts.length) errors.push("fact IDs must be unique");
   if (entityIds.size !== spec.entities.length) errors.push("entity IDs must be unique");
   if (quoteIds.size !== spec.quotes.length) errors.push("quote IDs must be unique");
+  if (interpretationIds.size !== spec.interpretations.length) {
+    errors.push("interpretation IDs must be unique");
+  }
   if (spec.sources.length === 0 || spec.facts.length === 0) {
     errors.push("at least one source and fact are required");
   }
@@ -214,7 +223,25 @@ export function validateStorySpec(
     if (/\{feeling\}|You wrote:/i.test(beat.canonicalText)) {
       errors.push(`arc[${index}] contains a forbidden disclosure echo surface`);
     }
-    for (const factId of [...beat.requiredFactIds, ...beat.optionalFactIds]) {
+    const requiredFactIds = new Set(beat.requiredFactIds);
+    const optionalFactIds = new Set(beat.optionalFactIds);
+    const declaredFactIds = new Set([
+      ...beat.requiredFactIds,
+      ...beat.optionalFactIds,
+    ]);
+    const usedFactIds = new Set<string>();
+    if (requiredFactIds.size !== beat.requiredFactIds.length) {
+      errors.push(`arc[${index}] required facts must be unique`);
+    }
+    if (optionalFactIds.size !== beat.optionalFactIds.length) {
+      errors.push(`arc[${index}] optional facts must be unique`);
+    }
+    if (
+      beat.requiredFactIds.some((factId) => optionalFactIds.has(factId))
+    ) {
+      errors.push(`arc[${index}] required and optional facts must be disjoint`);
+    }
+    for (const factId of declaredFactIds) {
       if (!factIds.has(factId)) errors.push(`arc[${index}] references unknown fact ${factId}`);
     }
     for (const entityId of beat.entityIds) {
@@ -242,20 +269,59 @@ export function validateStorySpec(
       if (mapping.factIds.length === 0 && mapping.interpretationIds.length === 0) {
         errors.push(`arc[${index}] sentence evidence cannot be empty`);
       }
+      if (new Set(mapping.factIds).size !== mapping.factIds.length) {
+        errors.push(`arc[${index}] sentence fact links must be unique`);
+      }
+      if (
+        new Set(mapping.interpretationIds).size !==
+        mapping.interpretationIds.length
+      ) {
+        errors.push(`arc[${index}] sentence interpretation links must be unique`);
+      }
       for (const factId of mapping.factIds) {
+        usedFactIds.add(factId);
         if (!factIds.has(factId)) {
           errors.push(`arc[${index}] sentence references unknown fact ${factId}`);
         }
       }
       for (const interpretationId of mapping.interpretationIds) {
-        if (!interpretationIds.has(interpretationId)) {
+        const interpretation = interpretationsById.get(interpretationId);
+        if (!interpretation) {
           errors.push(
             `arc[${index}] sentence references unknown interpretation ${interpretationId}`,
           );
+          continue;
+        }
+        if (!interpretation.allowed) {
+          errors.push(
+            `arc[${index}] sentence references disallowed interpretation ${interpretationId}`,
+          );
+        }
+        if (interpretation.supportingFactIds.length === 0) {
+          errors.push(
+            `arc[${index}] mapped interpretation ${interpretationId} needs supporting facts`,
+          );
+        }
+        for (const factId of interpretation.supportingFactIds) {
+          usedFactIds.add(factId);
         }
       }
     }
     if (options.forPublish) {
+      for (const factId of usedFactIds) {
+        if (!declaredFactIds.has(factId)) {
+          errors.push(
+            `arc[${index}] sentence evidence uses undeclared fact ${factId}`,
+          );
+        }
+      }
+      for (const factId of declaredFactIds) {
+        if (!usedFactIds.has(factId)) {
+          errors.push(
+            `arc[${index}] declares fact ${factId} without sentence evidence`,
+          );
+        }
+      }
       for (const directQuote of extractDirectQuotes(beat.canonicalText)) {
         const approved = spec.quotes.find(
           (quote) => quote.status === "verbatim" && quote.text === directQuote,
@@ -311,6 +377,17 @@ export function validateStorySpec(
   }
 
   for (const interpretation of spec.interpretations) {
+    if (!interpretation.statement.trim()) {
+      errors.push(`${interpretation.interpretationId} statement is empty`);
+    }
+    if (
+      new Set(interpretation.supportingFactIds).size !==
+      interpretation.supportingFactIds.length
+    ) {
+      errors.push(
+        `${interpretation.interpretationId} supporting facts must be unique`,
+      );
+    }
     for (const factId of interpretation.supportingFactIds) {
       if (!factIds.has(factId)) {
         errors.push(`${interpretation.interpretationId} references unknown fact ${factId}`);

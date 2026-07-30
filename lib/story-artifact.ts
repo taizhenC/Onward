@@ -264,6 +264,10 @@ export function validateStoryArtifact(
   boundaries?: StoryBoundaries,
 ): StoryArtifactValidation {
   const failures = new Set<ArtifactValidationFailure>();
+  const storySpecValidation = validateStorySpec(storySpec, {
+    forPublish: storySpec.status === "published",
+  });
+  if (!storySpecValidation.valid) failures.add("story_spec_invalid");
 
   if (artifact.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION) failures.add("schema_invalid");
   if (

@@ -158,6 +158,7 @@ async function checkStorySpecPublicationSchema(): Promise<Step> {
       "lifecycle_trigger_enabled",
       "ok",
       "promotion_cas_valid",
+      "published_stage_uniqueness_valid",
     ].sort();
     const healthOk =
       row !== null &&
@@ -174,7 +175,7 @@ async function checkStorySpecPublicationSchema(): Promise<Step> {
       name,
       ok: true,
       detail:
-        "strict JSON identity, lifecycle trigger, snapshot-bound promotion, legacy revocation, and service-only grants are safe",
+        "strict JSON identity, exact lifecycle enforcement, one published version per stage, snapshot-bound promotion, legacy revocation, and service-only grants are safe",
     };
   } catch (error) {
     return {

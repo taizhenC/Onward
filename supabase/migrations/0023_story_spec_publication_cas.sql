@@ -156,6 +156,7 @@ returns table (
   ok boolean,
   identity_constraint_valid boolean,
   lifecycle_trigger_enabled boolean,
+  published_stage_uniqueness_valid boolean,
   promotion_cas_valid boolean,
   legacy_rpc_revoked boolean,
   boundary_granted boolean
@@ -164,84 +165,204 @@ language sql
 security definer
 set search_path = pg_catalog, public
 as $fn$
-  with identity_health as (
+  with identity_constraint_catalog as (
+    select
+      constraint_row.*,
+      pg_catalog.translate(
+        pg_catalog.replace(
+          pg_catalog.replace(
+            pg_catalog.regexp_replace(
+              pg_catalog.lower(
+                pg_catalog.pg_get_constraintdef(
+                  constraint_row.oid,
+                  true
+                )
+              ),
+              E'\\s+',
+              '',
+              'g'
+            ),
+            '::text',
+            ''
+          ),
+          'pg_catalog.',
+          ''
+        ),
+        '()',
+        ''
+      ) as normalized_definition
+    from pg_catalog.pg_constraint constraint_row
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.conname =
+        'story_specs_document_identity_check'
+  ),
+  identity_health as (
     select count(*) filter (
       where constraint_row.conname =
           'story_specs_document_identity_check'
         and constraint_row.contype = 'c'
         and constraint_row.convalidated
-        and position(
-          'jsonb_typeof(spec)'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) > 0
-        and position(
-          'storyspecid'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) > 0
-        and position(
-          'figurekey'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) > 0
-        and position(
-          'stageid'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) > 0
-        and position(
-          'to_jsonb(version)'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) > 0
-        and position(
-          'schemaversion'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) > 0
-        and position(
-          'is true'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) > 0
-        and position(
-          '->>'
-          in lower(pg_catalog.pg_get_constraintdef(
-            constraint_row.oid,
-            true
-          ))
-        ) = 0
+        and constraint_row.conislocal
+        and constraint_row.coninhcount = 0
+        and not constraint_row.connoinherit
+        and constraint_row.normalized_definition =
+          'checkjsonb_typeofspec=''object'''
+          || 'andspec->''storyspecid''=to_jsonbstory_spec_id'
+          || 'andspec->''figurekey''=to_jsonbfigure_key'
+          || 'andspec->''stageid''=to_jsonbstage_id'
+          || 'andspec->''version''=to_jsonbversion'
+          || 'andspec->''schemaversion''=to_jsonbschema_version'
+          || 'andspec->''status''=to_jsonbstatusistrue'
     ) = 1 as value
-    from pg_catalog.pg_constraint constraint_row
-    where constraint_row.conrelid = 'public.story_specs'::regclass
+    from identity_constraint_catalog constraint_row
   ),
-  lifecycle_health as (
+  lifecycle_helper_health as (
+    select count(*) filter (
+      where namespace_row.nspname = 'public'
+        and procedure_row.proname = 'enforce_story_spec_lifecycle'
+        and procedure_row.prokind = 'f'
+        and procedure_row.pronargs = 0
+        and procedure_row.proallargtypes is null
+        and procedure_row.proargmodes is null
+        and procedure_row.proargnames is null
+        and procedure_row.prorettype = 'trigger'::pg_catalog.regtype
+        and not procedure_row.proretset
+        and not procedure_row.prosecdef
+        and procedure_row.provolatile = 'v'
+        and language_row.lanname = 'plpgsql'
+        and procedure_row.proconfig =
+          array['search_path=public']::text[]
+        -- Fingerprint the 0004 helper after removing comments and normalizing
+        -- case/whitespace so line endings cannot change the live proof.
+        and pg_catalog.md5(
+          pg_catalog.btrim(
+            pg_catalog.regexp_replace(
+              pg_catalog.lower(
+                pg_catalog.regexp_replace(
+                  procedure_row.prosrc,
+                  E'--[^\\n\\r]*',
+                  ' ',
+                  'g'
+                )
+              ),
+              E'\\s+',
+              ' ',
+              'g'
+            )
+          )
+        ) = '4319d665aca2de512bf07bdb2b865f3a'
+    ) = 1 as value
+    from pg_catalog.pg_proc procedure_row
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    join pg_catalog.pg_language language_row
+      on language_row.oid = procedure_row.prolang
+    where namespace_row.nspname = 'public'
+      and procedure_row.proname = 'enforce_story_spec_lifecycle'
+  ),
+  lifecycle_trigger_health as (
     select count(*) filter (
       where trigger_row.tgname = 'story_specs_lifecycle'
         and trigger_row.tgenabled = 'O'
-        and trigger_row.tgrelid = 'public.story_specs'::regclass
+        and not trigger_row.tgisinternal
+        and trigger_row.tgtype = 23::smallint
+        and trigger_row.tgattr = ''::pg_catalog.int2vector
+        and trigger_row.tgqual is null
+        and trigger_row.tgnargs = 0
+        and trigger_row.tgconstraint = 0::pg_catalog.oid
+        and trigger_row.tgoldtable is null
+        and trigger_row.tgnewtable is null
+        and table_namespace.nspname = 'public'
+        and table_relation.relname = 'story_specs'
+        and table_relation.relkind = 'r'
+        and function_namespace.nspname = 'public'
         and procedure_row.proname = 'enforce_story_spec_lifecycle'
+        and procedure_row.pronargs = 0
+        and procedure_row.prorettype = 'trigger'::pg_catalog.regtype
     ) = 1 as value
     from pg_catalog.pg_trigger trigger_row
+    join pg_catalog.pg_class table_relation
+      on table_relation.oid = trigger_row.tgrelid
+    join pg_catalog.pg_namespace table_namespace
+      on table_namespace.oid = table_relation.relnamespace
     join pg_catalog.pg_proc procedure_row
       on procedure_row.oid = trigger_row.tgfoid
-    where not trigger_row.tgisinternal
-      and trigger_row.tgname = 'story_specs_lifecycle'
+    join pg_catalog.pg_namespace function_namespace
+      on function_namespace.oid = procedure_row.pronamespace
+    where trigger_row.tgname = 'story_specs_lifecycle'
+  ),
+  lifecycle_health as (
+    select
+      lifecycle_helper_health.value
+        and lifecycle_trigger_health.value as value
+    from lifecycle_helper_health,
+      lifecycle_trigger_health
+  ),
+  publication_index_health as (
+    select count(*) filter (
+      where table_namespace.nspname = 'public'
+        and table_relation.relname = 'story_specs'
+        and table_relation.relkind = 'r'
+        and index_namespace.nspname = 'public'
+        and index_relation.relname =
+          'story_specs_one_published_stage_idx'
+        and index_relation.relkind = 'i'
+        and access_method.amname = 'btree'
+        and index_row.indisunique
+        and index_row.indisvalid
+        and index_row.indisready
+        and index_row.indislive
+        and not index_row.indisprimary
+        and not index_row.indisexclusion
+        and index_row.indnkeyatts = 2
+        and index_row.indnatts = 2
+        and index_row.indexprs is null
+        and index_row.indpred is not null
+        and pg_catalog.pg_get_indexdef(
+          index_row.indexrelid,
+          1,
+          true
+        ) = 'figure_key'
+        and pg_catalog.pg_get_indexdef(
+          index_row.indexrelid,
+          2,
+          true
+        ) = 'stage_id'
+        and pg_catalog.translate(
+          pg_catalog.replace(
+            pg_catalog.regexp_replace(
+              pg_catalog.lower(
+                pg_catalog.pg_get_expr(
+                  index_row.indpred,
+                  index_row.indrelid,
+                  true
+                )
+              ),
+              E'\\s+',
+              '',
+              'g'
+            ),
+            '::text',
+            ''
+          ),
+          '()',
+          ''
+        ) = 'status=''published'''
+    ) = 1 as value
+    from pg_catalog.pg_index index_row
+    join pg_catalog.pg_class index_relation
+      on index_relation.oid = index_row.indexrelid
+    join pg_catalog.pg_namespace index_namespace
+      on index_namespace.oid = index_relation.relnamespace
+    join pg_catalog.pg_class table_relation
+      on table_relation.oid = index_row.indrelid
+    join pg_catalog.pg_namespace table_namespace
+      on table_namespace.oid = table_relation.relnamespace
+    join pg_catalog.pg_am access_method
+      on access_method.oid = index_relation.relam
+    where index_relation.relname =
+      'story_specs_one_published_stage_idx'
+      and table_relation.oid = 'public.story_specs'::regclass
   ),
   promotion_health as (
     select count(*) filter (
@@ -346,16 +467,20 @@ as $fn$
   select
     identity_health.value
       and lifecycle_health.value
+      and publication_index_health.value
       and promotion_health.value
       and legacy_health.value
       and grant_health.value as ok,
     identity_health.value as identity_constraint_valid,
     lifecycle_health.value as lifecycle_trigger_enabled,
+    publication_index_health.value
+      as published_stage_uniqueness_valid,
     promotion_health.value as promotion_cas_valid,
     legacy_health.value as legacy_rpc_revoked,
     grant_health.value as boundary_granted
   from identity_health,
     lifecycle_health,
+    publication_index_health,
     promotion_health,
     legacy_health,
     grant_health
@@ -367,6 +492,6 @@ grant execute on function public.story_spec_publication_schema_health_v1()
   to service_role;
 
 comment on function public.story_spec_publication_schema_health_v1() is
-  'Returns only booleans proving strict StorySpec identity, lifecycle, compare-and-set promotion, and grants.';
+  'Returns only booleans proving strict StorySpec identity, exact lifecycle enforcement, one published version per stage, compare-and-set promotion, and grants.';
 
 notify pgrst, 'reload schema';

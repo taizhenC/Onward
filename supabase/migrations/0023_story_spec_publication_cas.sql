@@ -4,6 +4,126 @@
 set local lock_timeout = '10s';
 set local statement_timeout = '30s';
 
+-- Migration 0004 creates the editorial table and its three lifecycle routines
+-- under one canonical migration authority. Do not let a coordinated
+-- BYPASSRLS owner or a same-name PostgREST overload become the trust root for
+-- this cutover.
+do $do$
+declare
+  authority_owner oid := (current_user::pg_catalog.regrole)::oid;
+begin
+  if exists (
+    select 1
+    from pg_catalog.pg_class relation_row
+    where relation_row.oid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+      and relation_row.relowner <> authority_owner
+  ) then
+    raise exception
+      'StorySpec cutover must run as the canonical table owner';
+  end if;
+
+  if exists (
+    select 1
+    from pg_catalog.pg_proc procedure_row
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    where namespace_row.nspname = 'public'
+      and procedure_row.proname in (
+        'enforce_story_spec_lifecycle',
+        'promote_story_spec',
+        'promote_story_spec_v2',
+        'retire_story_spec',
+        'story_spec_publication_manifest_v1',
+        'story_spec_publication_schema_health_v1'
+      )
+      and (
+        procedure_row.oid not in (
+          'public.enforce_story_spec_lifecycle()'::regprocedure,
+          'public.promote_story_spec(text)'::regprocedure,
+          'public.retire_story_spec(text)'::regprocedure
+        )
+        or procedure_row.proowner <> authority_owner
+      )
+  ) then
+    raise exception
+      'StorySpec cutover found an unexpected routine, overload, or owner';
+  end if;
+end
+$do$;
+
+-- Only a SECURITY DEFINER routine owned by the canonical table owner may
+-- create a published row or enter either terminal lifecycle state. The service
+-- role keeps draft/review authoring access but cannot publish or retire by
+-- writing the table directly.
+create or replace function public.enforce_story_spec_lifecycle()
+returns trigger
+language plpgsql
+set search_path = pg_catalog, public
+as $fn$
+begin
+  if new.status in ('published', 'retired')
+    and (current_user::pg_catalog.regrole)::oid <> (
+      select relation_row.relowner
+      from pg_catalog.pg_class relation_row
+      where relation_row.oid = 'public.story_specs'::regclass
+    ) then
+    raise exception
+      'published and retired StorySpecs require the owner-definer boundary';
+  end if;
+
+  -- Published evidence, prose, and review records are immutable. Retirement
+  -- is metadata-only; rollback means selecting a new version, never mutation.
+  if tg_op = 'UPDATE' and old.status in ('published', 'retired') then
+    if new.story_spec_id is distinct from old.story_spec_id
+      or new.figure_key is distinct from old.figure_key
+      or new.stage_id is distinct from old.stage_id
+      or new.version is distinct from old.version
+      or new.schema_version is distinct from old.schema_version
+      or new.spec - 'status' is distinct from old.spec - 'status'
+      or new.created_at is distinct from old.created_at
+      or new.published_at is distinct from old.published_at
+      or (
+        old.status = 'retired'
+        and new.retired_at is distinct from old.retired_at
+      ) then
+      raise exception
+        'published StorySpec content and provenance are immutable';
+    end if;
+
+    if old.status = 'retired' and new.status <> 'retired' then
+      raise exception 'a retired StorySpec cannot be reactivated';
+    end if;
+    if old.status = 'published'
+      and new.status not in ('published', 'retired') then
+      raise exception
+        'a published StorySpec can only remain published or retire';
+    end if;
+  end if;
+
+  if new.status = 'published' then
+    if new.published_at is null then
+      new.published_at := pg_catalog.now();
+    end if;
+    new.retired_at := null;
+  elsif new.status = 'retired' then
+    if tg_op = 'INSERT' or old.status <> 'published' then
+      raise exception 'only a published StorySpec can retire';
+    end if;
+    if new.retired_at is null then
+      new.retired_at := pg_catalog.now();
+    end if;
+  else
+    new.published_at := null;
+    new.retired_at := null;
+  end if;
+
+  return new;
+end
+$fn$;
+
 -- The 0004 text comparisons can evaluate to SQL NULL when a JSON identity is
 -- absent, and CHECK accepts NULL. Direct jsonb equality plus IS TRUE rejects
 -- absent/null keys, scalar documents, type drift, and stringified versions.
@@ -37,7 +157,7 @@ alter table public.story_specs
   to story_specs_document_identity_check;
 
 -- Recreate the one-published-version invariant in this same transaction so
--- the exact predicate fingerprint below cannot bless pre-existing drift.
+-- the exact full-index fingerprint below cannot bless pre-existing drift.
 drop index if exists public.story_specs_one_published_stage_idx;
 create unique index story_specs_one_published_stage_idx
   on public.story_specs (figure_key, stage_id)
@@ -66,11 +186,7 @@ begin
     and constraint_row.conname = 'story_specs_document_identity_check';
 
   select pg_catalog.md5(
-    pg_catalog.pg_get_expr(
-      index_row.indpred,
-      index_row.indrelid,
-      true
-    )
+    pg_catalog.pg_get_indexdef(index_row.indexrelid, 0, true)
   )
   into strict publication_index_fingerprint
   from pg_catalog.pg_index index_row
@@ -79,6 +195,31 @@ begin
   where index_relation.relnamespace = 'public'::regnamespace
     and index_relation.relname = 'story_specs_one_published_stage_idx'
     and index_row.indrelid = 'public.story_specs'::regclass;
+
+  -- Keep the code-created fingerprints independently from the mutable object
+  -- comments. Health compares both the live objects and their comments to
+  -- these captured constants, so recomputing a comment over drift is not
+  -- sufficient to turn readiness green.
+  execute pg_catalog.format(
+    $create$
+      create or replace function
+        public.story_spec_publication_manifest_v1()
+      returns table (
+        identity_fingerprint text,
+        publication_index_fingerprint text,
+        authority_owner oid
+      )
+      language sql
+      immutable
+      set search_path = pg_catalog
+      as $manifest$
+        select %L::text, %L::text, %s::oid
+      $manifest$
+    $create$,
+    identity_fingerprint,
+    publication_index_fingerprint,
+    story_specs_owner
+  );
 
   execute pg_catalog.format(
     'comment on constraint story_specs_document_identity_check '
@@ -202,11 +343,69 @@ begin
 end
 $fn$;
 
+-- Retirement is the other terminal transition and must share the same exact
+-- owner-definer, stage lock, body attestation, and ACL boundary as promotion.
+create or replace function public.retire_story_spec(
+  p_story_spec_id text
+)
+returns void
+language plpgsql
+security definer
+set search_path = pg_catalog, public
+as $fn$
+declare
+  v_figure_key text;
+  v_stage_id text;
+begin
+  select target.figure_key, target.stage_id
+  into v_figure_key, v_stage_id
+  from public.story_specs target
+  where target.story_spec_id = p_story_spec_id;
+
+  if not found then
+    raise exception 'published StorySpec not found';
+  end if;
+
+  perform pg_catalog.pg_advisory_xact_lock(
+    pg_catalog.hashtextextended(
+      v_figure_key || ':' || v_stage_id,
+      0
+    )
+  );
+
+  update public.story_specs target
+  set status = 'retired',
+      spec = pg_catalog.jsonb_set(
+        target.spec,
+        '{status}',
+        pg_catalog.to_jsonb('retired'::text),
+        false
+      )
+  where target.story_spec_id = p_story_spec_id
+    and target.status = 'published';
+
+  if not found then
+    raise exception 'published StorySpec not found';
+  end if;
+
+  update public.figure_stages stage
+  set status = 'draft'
+  where stage.figure_key = v_figure_key
+    and stage.stage_id = v_stage_id;
+end
+$fn$;
+
 -- The legacy ID-only RPC remains discoverable for a clear permission failure,
 -- but no application role may execute it after this migration.
 revoke all on function public.promote_story_spec(text)
   from public, anon, authenticated, service_role;
 revoke all on function public.promote_story_spec_v2(text, jsonb)
+  from public, anon, authenticated, service_role;
+revoke all on function public.retire_story_spec(text)
+  from public, anon, authenticated, service_role;
+revoke all on function public.enforce_story_spec_lifecycle()
+  from public, anon, authenticated, service_role;
+revoke all on function public.story_spec_publication_manifest_v1()
   from public, anon, authenticated, service_role;
 
 -- CREATE OR REPLACE preserves old ACL entries. Remove every explicit
@@ -232,8 +431,11 @@ begin
     join pg_catalog.pg_namespace namespace_row
       on namespace_row.oid = procedure_row.pronamespace
     where procedure_row.oid in (
+      'public.enforce_story_spec_lifecycle()'::regprocedure,
       'public.promote_story_spec(text)'::regprocedure,
-      'public.promote_story_spec_v2(text,jsonb)'::regprocedure
+      'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
+      'public.retire_story_spec(text)'::regprocedure,
+      'public.story_spec_publication_manifest_v1()'::regprocedure
     )
   loop
     for grantee_role in
@@ -260,6 +462,8 @@ end
 $do$;
 
 grant execute on function public.promote_story_spec_v2(text, jsonb)
+  to service_role;
+grant execute on function public.retire_story_spec(text)
   to service_role;
 
 -- Preserve the documented editorial data plane while removing DELETE,
@@ -385,7 +589,40 @@ language sql
 security definer
 set search_path = pg_catalog, public
 as $fn$
-  with identity_health as (
+  with publication_manifest as materialized (
+    select manifest.*
+    from public.story_spec_publication_manifest_v1() manifest
+  ),
+  manifest_function_health as (
+    select
+      count(*) = 1
+      and count(*) filter (
+        where procedure_row.oid =
+            'public.story_spec_publication_manifest_v1()'::regprocedure
+          and procedure_row.prokind = 'f'
+          and procedure_row.pronargs = 0
+          and procedure_row.prorettype = 'record'::pg_catalog.regtype
+          and procedure_row.proretset
+          and not procedure_row.prosecdef
+          and procedure_row.provolatile = 'i'
+          and language_row.lanname = 'sql'
+          and procedure_row.proowner = table_relation.relowner
+          and procedure_row.proconfig =
+            array['search_path=pg_catalog']::text[]
+      ) = 1
+      and (select count(*) from publication_manifest) = 1 as value
+    from pg_catalog.pg_proc procedure_row
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    join pg_catalog.pg_language language_row
+      on language_row.oid = procedure_row.prolang
+    cross join pg_catalog.pg_class table_relation
+    where namespace_row.nspname = 'public'
+      and procedure_row.proname =
+        'story_spec_publication_manifest_v1'
+      and table_relation.oid = 'public.story_specs'::regclass
+  ),
+  identity_health as (
     select count(*) filter (
       where constraint_row.conname =
           'story_specs_document_identity_check'
@@ -399,24 +636,30 @@ as $fn$
           'pg_constraint'
         ) =
           'onward-story-spec-identity-v1:'
-          || pg_catalog.md5(
-            pg_catalog.pg_get_constraintdef(
-              constraint_row.oid,
-              true
-            )
-          )
+          || publication_manifest.identity_fingerprint
           || ':owner='
-          || table_relation.relowner::text
+          || publication_manifest.authority_owner::text
+        and pg_catalog.md5(
+          pg_catalog.pg_get_constraintdef(
+            constraint_row.oid,
+            true
+          )
+        ) = publication_manifest.identity_fingerprint
+        and table_relation.relowner =
+          publication_manifest.authority_owner
     ) = 1 as value
     from pg_catalog.pg_constraint constraint_row
     join pg_catalog.pg_class table_relation
       on table_relation.oid = constraint_row.conrelid
+    cross join publication_manifest
     where constraint_row.conrelid = 'public.story_specs'::regclass
       and constraint_row.conname =
         'story_specs_document_identity_check'
   ),
   lifecycle_helper_health as (
-    select count(*) filter (
+    select
+      count(*) = 1
+      and count(*) filter (
       where namespace_row.nspname = 'public'
         and procedure_row.proname = 'enforce_story_spec_lifecycle'
         and procedure_row.prokind = 'f'
@@ -429,10 +672,11 @@ as $fn$
         and not procedure_row.prosecdef
         and procedure_row.provolatile = 'v'
         and language_row.lanname = 'plpgsql'
+        and procedure_row.proowner = table_relation.relowner
         and procedure_row.proconfig =
-          array['search_path=public']::text[]
-        -- Fingerprint the 0004 helper after removing comments and normalizing
-        -- whitespace. Case stays significant because status literals do.
+          array['search_path=pg_catalog, public']::text[]
+        -- The exact replacement body includes the owner-definer transition
+        -- gate as well as the immutable published/retired lifecycle.
         and pg_catalog.md5(
           pg_catalog.btrim(
             pg_catalog.regexp_replace(
@@ -447,15 +691,17 @@ as $fn$
               'g'
             )
           )
-        ) = 'db62d9000d8b9caea8ab97104dd48179'
+        ) = 'bcf8821de64db8fe334eec63c5dd702a'
     ) = 1 as value
     from pg_catalog.pg_proc procedure_row
     join pg_catalog.pg_namespace namespace_row
       on namespace_row.oid = procedure_row.pronamespace
     join pg_catalog.pg_language language_row
       on language_row.oid = procedure_row.prolang
+    cross join pg_catalog.pg_class table_relation
     where namespace_row.nspname = 'public'
       and procedure_row.proname = 'enforce_story_spec_lifecycle'
+      and table_relation.oid = 'public.story_specs'::regclass
   ),
   lifecycle_trigger_health as (
     select
@@ -510,11 +756,18 @@ as $fn$
           'story_specs_one_published_stage_idx'
         and index_relation.relkind = 'i'
         and index_relation.relowner = table_relation.relowner
+        and index_relation.relowner =
+          publication_manifest.authority_owner
+        and index_relation.reloptions is null
         and access_method.amname = 'btree'
         and index_row.indisunique
+        and index_row.indimmediate
         and index_row.indisvalid
         and index_row.indisready
         and index_row.indislive
+        and not index_row.indisclustered
+        and not index_row.indisreplident
+        and not index_row.indnullsnotdistinct
         and not index_row.indisprimary
         and not index_row.indisexclusion
         and index_row.indnkeyatts = 2
@@ -536,15 +789,16 @@ as $fn$
           'pg_class'
         ) =
           'onward-story-spec-published-index-v1:'
-          || pg_catalog.md5(
-            pg_catalog.pg_get_expr(
-              index_row.indpred,
-              index_row.indrelid,
-              true
-            )
-          )
+          || publication_manifest.publication_index_fingerprint
           || ':owner='
-          || table_relation.relowner::text
+          || publication_manifest.authority_owner::text
+        and pg_catalog.md5(
+          pg_catalog.pg_get_indexdef(
+            index_row.indexrelid,
+            0,
+            true
+          )
+        ) = publication_manifest.publication_index_fingerprint
     ) = 1 as value
     from pg_catalog.pg_index index_row
     join pg_catalog.pg_class index_relation
@@ -557,12 +811,15 @@ as $fn$
       on table_namespace.oid = table_relation.relnamespace
     join pg_catalog.pg_am access_method
       on access_method.oid = index_relation.relam
+    cross join publication_manifest
     where index_relation.relname =
       'story_specs_one_published_stage_idx'
       and table_relation.oid = 'public.story_specs'::regclass
   ),
   promotion_health as (
-    select count(*) filter (
+    select
+      count(*) = 1
+      and count(*) filter (
       where namespace_row.nspname = 'public'
         and procedure_row.proname = 'promote_story_spec_v2'
         and procedure_row.prokind = 'f'
@@ -611,9 +868,8 @@ as $fn$
         )
         and procedure_row.proconfig =
           array['search_path=pg_catalog, public']::text[]
-        -- The exact case-preserving body fingerprint makes comments,
-        -- unreachable lookalikes, and JSONPath casing drift insufficient to
-        -- attest the lock/CAS/retirement transaction.
+        -- The exact case-preserving body fingerprint attests the locked
+        -- snapshot comparison, retirement, and promotion transaction.
         and pg_catalog.md5(
           pg_catalog.btrim(
             pg_catalog.regexp_replace(
@@ -640,8 +896,78 @@ as $fn$
     where namespace_row.nspname = 'public'
       and procedure_row.proname = 'promote_story_spec_v2'
   ),
+  retirement_health as (
+    select
+      count(*) = 1
+      and count(*) filter (
+        where procedure_row.oid =
+            'public.retire_story_spec(text)'::regprocedure
+          and namespace_row.nspname = 'public'
+          and procedure_row.proname = 'retire_story_spec'
+          and procedure_row.prokind = 'f'
+          and procedure_row.pronargs = 1
+          and pg_catalog.oidvectortypes(procedure_row.proargtypes) =
+            'text'
+          and procedure_row.proallargtypes is null
+          and procedure_row.proargmodes is null
+          and procedure_row.proargnames =
+            array['p_story_spec_id']::text[]
+          and procedure_row.prorettype = 'void'::pg_catalog.regtype
+          and not procedure_row.proretset
+          and procedure_row.prosecdef
+          and procedure_row.provolatile = 'v'
+          and language_row.lanname = 'plpgsql'
+          and procedure_row.proowner = table_relation.relowner
+          and (owner_role.rolsuper or owner_role.rolbypassrls)
+          and procedure_row.proconfig =
+            array['search_path=pg_catalog, public']::text[]
+          and pg_catalog.has_table_privilege(
+            owner_role.rolname,
+            'public.story_specs',
+            'SELECT'
+          )
+          and pg_catalog.has_table_privilege(
+            owner_role.rolname,
+            'public.story_specs',
+            'UPDATE'
+          )
+          and pg_catalog.has_table_privilege(
+            owner_role.rolname,
+            'public.figure_stages',
+            'UPDATE'
+          )
+          and pg_catalog.md5(
+            pg_catalog.btrim(
+              pg_catalog.regexp_replace(
+                pg_catalog.regexp_replace(
+                  procedure_row.prosrc,
+                  E'--[^\\n\\r]*',
+                  ' ',
+                  'g'
+                ),
+                E'\\s+',
+                ' ',
+                'g'
+              )
+            )
+          ) = '872e89b9ce1e9f19313eeb6e901ea965'
+      ) = 1 as value
+    from pg_catalog.pg_proc procedure_row
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    join pg_catalog.pg_language language_row
+      on language_row.oid = procedure_row.prolang
+    join pg_catalog.pg_roles owner_role
+      on owner_role.oid = procedure_row.proowner
+    cross join pg_catalog.pg_class table_relation
+    where namespace_row.nspname = 'public'
+      and procedure_row.proname = 'retire_story_spec'
+      and table_relation.oid = 'public.story_specs'::regclass
+  ),
   legacy_health as (
-    select count(*) filter (
+    select
+      count(*) = 1
+      and count(*) filter (
       where procedure_row.oid =
           'public.promote_story_spec(text)'::regprocedure
         and procedure_row.proowner = (
@@ -662,13 +988,16 @@ as $fn$
         )
     ) = 1 as value
     from pg_catalog.pg_proc procedure_row
-    where procedure_row.oid =
-      'public.promote_story_spec(text)'::regprocedure
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    where namespace_row.nspname = 'public'
+      and procedure_row.proname = 'promote_story_spec'
   ),
-  function_grant_health as (
+  public_function_grant_health as (
     select count(*) filter (
       where procedure_row.oid in (
           'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
+          'public.retire_story_spec(text)'::regprocedure,
           'public.story_spec_publication_schema_health_v1()'::regprocedure
         )
         and procedure_row.proowner = (
@@ -697,17 +1026,88 @@ as $fn$
             )
           ) acl
           where acl.privilege_type = 'EXECUTE'
-            and acl.grantee not in (
-              procedure_row.proowner,
-              'service_role'::regrole
+            and (
+              acl.grantee not in (
+                procedure_row.proowner,
+                'service_role'::regrole
+              )
+              or (
+                acl.grantee = 'service_role'::regrole
+                and acl.is_grantable
+              )
             )
         )
-    ) = 2 as value
+    ) = 3 as value
     from pg_catalog.pg_proc procedure_row
     where procedure_row.oid in (
       'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
+      'public.retire_story_spec(text)'::regprocedure,
       'public.story_spec_publication_schema_health_v1()'::regprocedure
     )
+  ),
+  private_function_grant_health as (
+    select count(*) filter (
+      where procedure_row.oid in (
+          'public.enforce_story_spec_lifecycle()'::regprocedure,
+          'public.promote_story_spec(text)'::regprocedure,
+          'public.story_spec_publication_manifest_v1()'::regprocedure
+        )
+        and procedure_row.proowner = table_relation.relowner
+        and not exists (
+          select 1
+          from pg_catalog.aclexplode(
+            coalesce(
+              procedure_row.proacl,
+              pg_catalog.acldefault('f', procedure_row.proowner)
+            )
+          ) acl
+          where acl.privilege_type = 'EXECUTE'
+            and acl.grantee <> procedure_row.proowner
+        )
+    ) = 3 as value
+    from pg_catalog.pg_proc procedure_row
+    cross join pg_catalog.pg_class table_relation
+    where procedure_row.oid in (
+        'public.enforce_story_spec_lifecycle()'::regprocedure,
+        'public.promote_story_spec(text)'::regprocedure,
+        'public.story_spec_publication_manifest_v1()'::regprocedure
+      )
+      and table_relation.oid = 'public.story_specs'::regclass
+  ),
+  controlled_routine_inventory_health as (
+    select
+      count(*) = 6
+      and pg_catalog.bool_and(
+        procedure_row.oid in (
+          'public.enforce_story_spec_lifecycle()'::regprocedure,
+          'public.promote_story_spec(text)'::regprocedure,
+          'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
+          'public.retire_story_spec(text)'::regprocedure,
+          'public.story_spec_publication_manifest_v1()'::regprocedure,
+          'public.story_spec_publication_schema_health_v1()'::regprocedure
+        )
+      ) as value
+    from pg_catalog.pg_proc procedure_row
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    where namespace_row.nspname = 'public'
+      and procedure_row.proname in (
+        'enforce_story_spec_lifecycle',
+        'promote_story_spec',
+        'promote_story_spec_v2',
+        'retire_story_spec',
+        'story_spec_publication_manifest_v1',
+        'story_spec_publication_schema_health_v1'
+      )
+  ),
+  function_grant_health as (
+    select
+      public_function_grant_health.value
+        and private_function_grant_health.value
+        and controlled_routine_inventory_health.value as value
+    from public_function_grant_health,
+      private_function_grant_health,
+      controlled_routine_inventory_health
   ),
   table_boundary_health as (
     select count(*) filter (
@@ -715,6 +1115,8 @@ as $fn$
         and table_relation.relname = 'story_specs'
         and table_relation.relkind = 'r'
         and table_relation.relrowsecurity
+        and table_relation.relowner =
+          publication_manifest.authority_owner
         and (owner_role.rolsuper or owner_role.rolbypassrls)
         and owner_role.oid not in (
           'service_role'::regrole,
@@ -770,6 +1172,7 @@ as $fn$
       on table_namespace.oid = table_relation.relnamespace
     join pg_catalog.pg_roles owner_role
       on owner_role.oid = table_relation.relowner
+    cross join publication_manifest
     where table_relation.oid = 'public.story_specs'::regclass
   ),
   grant_health as (
@@ -780,23 +1183,28 @@ as $fn$
       table_boundary_health
   )
   select
-    identity_health.value
+    manifest_function_health.value
+      and identity_health.value
       and lifecycle_health.value
       and publication_index_health.value
       and promotion_health.value
+      and retirement_health.value
       and legacy_health.value
       and grant_health.value as ok,
     identity_health.value as identity_constraint_valid,
     lifecycle_health.value as lifecycle_trigger_enabled,
     publication_index_health.value
       as published_stage_uniqueness_valid,
-    promotion_health.value as promotion_cas_valid,
+    promotion_health.value
+      and retirement_health.value as promotion_cas_valid,
     legacy_health.value as legacy_rpc_revoked,
     grant_health.value as boundary_granted
-  from identity_health,
+  from manifest_function_health,
+    identity_health,
     lifecycle_health,
     publication_index_health,
     promotion_health,
+    retirement_health,
     legacy_health,
     grant_health
 $fn$;

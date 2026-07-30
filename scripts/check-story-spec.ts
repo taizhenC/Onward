@@ -694,6 +694,11 @@ function checkPublicationBoundary(failures: string[]): void {
     "into strict identity_fingerprint",
     "into strict publication_index_fingerprint",
     "|| ':owner=' || story_specs_owner::text",
+    "authority_owner oid := (current_user::pg_catalog.regrole)::oid",
+    "storyspec cutover must run as the canonical table owner",
+    "storyspec cutover found an unexpected routine, overload, or owner",
+    "story_spec_publication_manifest_v1",
+    "select %l::text, %l::text, %s::oid",
     "pg_catalog.obj_description(",
     "promote_story_spec_v2",
     "p_expected_review_spec jsonb",
@@ -702,17 +707,20 @@ function checkPublicationBoundary(failures: string[]): void {
     "target.spec = p_expected_review_spec",
     "story_spec_publication_schema_health_v1",
     "procedure_row.prorettype = 'trigger'::pg_catalog.regtype",
-    "procedure_row.proconfig = array['search_path=public']::text[]",
-    "db62d9000d8b9caea8ab97104dd48179",
-    "procedure_row.prorettype = 'void'::pg_catalog.regtype",
+    "published and retired storyspecs require the owner-definer boundary",
     "procedure_row.proconfig = array['search_path=pg_catalog, public']::text[]",
+    "bcf8821de64db8fe334eec63c5dd702a",
+    "procedure_row.prorettype = 'void'::pg_catalog.regtype",
     "7e4a1854906a05e7796dbf7bd76faee8",
+    "872e89b9ce1e9f19313eeb6e901ea965",
     "trigger_row.tgtype = 23::smallint",
     "trigger_row.tgattr = ''::pg_catalog.int2vector",
     "trigger_row.tgenabled <> 'd'",
     "function_namespace.nspname = 'public'",
     "story_specs_one_published_stage_idx",
     "index_row.indisunique",
+    "index_row.indimmediate",
+    "not index_row.indnullsnotdistinct",
     "index_row.indpred is not null",
     "pg_catalog.pg_get_indexdef(",
     "published_stage_uniqueness_valid boolean",
@@ -727,6 +735,9 @@ function checkPublicationBoundary(failures: string[]): void {
     "acl.grantee not in ( procedure_row.proowner, 'service_role'::regrole )",
     "revoke all on table public.story_specs from public, anon, authenticated, service_role",
     "grant select, insert, update on table public.story_specs to service_role",
+    "public_function_grant_health as (",
+    "private_function_grant_health as (",
+    "controlled_routine_inventory_health as (",
     "function_grant_health as (",
     "table_boundary_health as (",
     "table_relation.relrowsecurity",
@@ -742,6 +753,9 @@ function checkPublicationBoundary(failures: string[]): void {
     "boundary_granted boolean",
     "revoke all on function public.promote_story_spec(text) from public, anon, authenticated, service_role",
     "grant execute on function public.promote_story_spec_v2(text, jsonb) to service_role",
+    "grant execute on function public.retire_story_spec(text) to service_role",
+    "manifest_function_health.value",
+    "and retirement_health.value",
     "select health.ok from public.story_spec_publication_schema_health_v1() health",
   ]) {
     if (!migration.includes(required)) {
@@ -752,7 +766,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "alter table public.story_specs add constraint story_specs_document_identity_strict_check",
   );
   const identityDdlEnd = casePreservedMigration.indexOf(
-    "alter table public.story_specs validate constraint story_specs_document_identity_strict_check",
+    "-- Recreate the one-published-version invariant",
     identityDdlStart,
   );
   const identityDdl =
@@ -772,13 +786,45 @@ function checkPublicationBoundary(failures: string[]): void {
         and spec -> 'status' = pg_catalog.to_jsonb(status)
       ) is true)
       not valid;
+    alter table public.story_specs
+      validate constraint story_specs_document_identity_strict_check;
+    alter table public.story_specs
+      drop constraint story_specs_document_identity_check;
+    alter table public.story_specs
+      rename constraint story_specs_document_identity_strict_check
+      to story_specs_document_identity_check;
   `
     .replace(/\s+/g, " ")
     .trim();
   if (identityDdl !== canonicalIdentityDdl) {
     failures.push(
-      "publication migration must create the exact code-owned strict identity constraint",
+      "publication migration must perform the exact code-owned strict identity handoff",
     );
+  }
+  const authorityAnchorStart = migration.indexOf(
+    "authority_owner oid := (current_user::pg_catalog.regrole)::oid",
+  );
+  const authorityAnchorEnd = migration.indexOf(
+    "create or replace function public.enforce_story_spec_lifecycle()",
+    authorityAnchorStart,
+  );
+  const authorityAnchor =
+    authorityAnchorStart >= 0 && authorityAnchorEnd > authorityAnchorStart
+      ? migration.slice(authorityAnchorStart, authorityAnchorEnd)
+      : "";
+  for (const requiredAuthorityAnchor of [
+    "'public.story_specs'::regclass",
+    "'public.figure_stages'::regclass",
+    "relation_row.relowner <> authority_owner",
+    "procedure_row.proname in ( 'enforce_story_spec_lifecycle', 'promote_story_spec', 'promote_story_spec_v2', 'retire_story_spec', 'story_spec_publication_manifest_v1', 'story_spec_publication_schema_health_v1' )",
+    "procedure_row.oid not in ( 'public.enforce_story_spec_lifecycle()'::regprocedure, 'public.promote_story_spec(text)'::regprocedure, 'public.retire_story_spec(text)'::regprocedure )",
+    "procedure_row.proowner <> authority_owner",
+  ]) {
+    if (!authorityAnchor.includes(requiredAuthorityAnchor)) {
+      failures.push(
+        `publication authority anchor is missing: ${requiredAuthorityAnchor}`,
+      );
+    }
   }
   const publicationIndexDdlStart = casePreservedMigration.indexOf(
     "drop index if exists public.story_specs_one_published_stage_idx;",
@@ -830,14 +876,20 @@ function checkPublicationBoundary(failures: string[]): void {
       "pg_catalog.md5( pg_catalog.pg_get_constraintdef(",
     ) ||
     !schemaCapture.includes(
-      "pg_catalog.md5( pg_catalog.pg_get_expr(",
+      "pg_catalog.md5( pg_catalog.pg_get_indexdef(index_row.indexrelid, 0, true)",
     ) ||
     !schemaCapture.includes(
       "|| ':owner=' || story_specs_owner::text",
+    ) ||
+    !schemaCapture.includes(
+      "create or replace function public.story_spec_publication_manifest_v1()",
+    ) ||
+    !schemaCapture.includes(
+      "select %L::text, %L::text, %s::oid",
     )
   ) {
     failures.push(
-      "schema manifest must capture exact server deparses without normalization",
+      "schema manifest must capture exact constraint/full-index deparses and preserve independent constants",
     );
   }
   const indexRecreateIndex = migration.indexOf(
@@ -865,6 +917,9 @@ function checkPublicationBoundary(failures: string[]): void {
   const v2ServiceGrant = migration.indexOf(
     "grant execute on function public.promote_story_spec_v2",
   );
+  const retirementServiceGrant = migration.indexOf(
+    "grant execute on function public.retire_story_spec",
+  );
   const tableAclScrub = migration.indexOf(
     "revoke all on table public.story_specs",
   );
@@ -881,6 +936,7 @@ function checkPublicationBoundary(failures: string[]): void {
   if (
     functionAclScrub < 0 ||
     v2ServiceGrant <= functionAclScrub ||
+    retirementServiceGrant <= functionAclScrub ||
     tableAclScrub < 0 ||
     columnAclScrub <= tableAclScrub ||
     tableServiceGrant <= tableAclScrub ||
@@ -891,6 +947,31 @@ function checkPublicationBoundary(failures: string[]): void {
     failures.push(
       "publication ACL cutover must scrub unknown grantees before restoring service-role access",
     );
+  }
+  const lifecycleAclTargetStart = migration.indexOf(
+    "for target in select procedure_row.oid",
+  );
+  const lifecycleAclTargetEnd = migration.indexOf(
+    "grant execute on function public.promote_story_spec_v2",
+    lifecycleAclTargetStart,
+  );
+  const lifecycleAclTargets =
+    lifecycleAclTargetStart >= 0 &&
+    lifecycleAclTargetEnd > lifecycleAclTargetStart
+      ? migration.slice(lifecycleAclTargetStart, lifecycleAclTargetEnd)
+      : "";
+  for (const requiredAclTarget of [
+    "'public.enforce_story_spec_lifecycle()'::regprocedure",
+    "'public.promote_story_spec(text)'::regprocedure",
+    "'public.promote_story_spec_v2(text,jsonb)'::regprocedure",
+    "'public.retire_story_spec(text)'::regprocedure",
+    "'public.story_spec_publication_manifest_v1()'::regprocedure",
+  ]) {
+    if (!lifecycleAclTargets.includes(requiredAclTarget)) {
+      failures.push(
+        `publication ACL scrub omits controlled routine: ${requiredAclTarget}`,
+      );
+    }
   }
   const lockIndex = migration.indexOf("for update;");
   const snapshotIndex = migration.indexOf(
@@ -907,13 +988,13 @@ function checkPublicationBoundary(failures: string[]): void {
     );
   }
   const promotionHealthStart = migration.indexOf("promotion_health as (");
-  const legacyHealthStart = migration.indexOf(
-    "legacy_health as (",
+  const retirementHealthStart = migration.indexOf(
+    "retirement_health as (",
     promotionHealthStart,
   );
   const promotionHealth =
-    promotionHealthStart >= 0 && legacyHealthStart > promotionHealthStart
-      ? migration.slice(promotionHealthStart, legacyHealthStart)
+    promotionHealthStart >= 0 && retirementHealthStart > promotionHealthStart
+      ? migration.slice(promotionHealthStart, retirementHealthStart)
       : "";
   if (
     !promotionHealth ||
@@ -930,6 +1011,28 @@ function checkPublicationBoundary(failures: string[]): void {
       "publication health must use a case-preserving exact fingerprint rather than scan or lowercase tokens",
     );
   }
+  const legacyHealthStart = migration.indexOf(
+    "legacy_health as (",
+    retirementHealthStart,
+  );
+  const retirementHealth =
+    retirementHealthStart >= 0 && legacyHealthStart > retirementHealthStart
+      ? migration.slice(retirementHealthStart, legacyHealthStart)
+      : "";
+  if (
+    !retirementHealth ||
+    !retirementHealth.includes(
+      "'public.retire_story_spec(text)'::regprocedure",
+    ) ||
+    !retirementHealth.includes(
+      "procedure_row.proowner = table_relation.relowner",
+    ) ||
+    !retirementHealth.includes("872e89b9ce1e9f19313eeb6e901ea965")
+  ) {
+    failures.push(
+      "retirement health must attest the exact owner-definer body and owner",
+    );
+  }
   const lifecycleHelperStart = migration.indexOf(
     "lifecycle_helper_health as (",
   );
@@ -943,10 +1046,18 @@ function checkPublicationBoundary(failures: string[]): void {
       : "";
   if (
     !lifecycleHelperHealth ||
-    lifecycleHelperHealth.includes("pg_catalog.lower(")
+    lifecycleHelperHealth.includes("pg_catalog.lower(") ||
+    !lifecycleHelperHealth.includes("count(*) = 1") ||
+    !lifecycleHelperHealth.includes(
+      "procedure_row.proowner = table_relation.relowner",
+    ) ||
+    !lifecycleHelperHealth.includes(
+      "array['search_path=pg_catalog, public']::text[]",
+    ) ||
+    !lifecycleHelperHealth.includes("bcf8821de64db8fe334eec63c5dd702a")
   ) {
     failures.push(
-      "lifecycle health must preserve case in its exact function fingerprint",
+      "lifecycle health must attest one exact owner-bound transition helper",
     );
   }
   const identityHealthStart = casePreservedMigration.indexOf(
@@ -969,10 +1080,13 @@ function checkPublicationBoundary(failures: string[]): void {
       identityHealth,
     ) ||
     !identityHealth.includes(
-      "'onward-story-spec-identity-v1:' || pg_catalog.md5( pg_catalog.pg_get_constraintdef(",
+      "'onward-story-spec-identity-v1:' || publication_manifest.identity_fingerprint",
     ) ||
     !identityHealth.includes(
-      "|| ':owner=' || table_relation.relowner::text",
+      "pg_catalog.md5( pg_catalog.pg_get_constraintdef( constraint_row.oid, true ) ) = publication_manifest.identity_fingerprint",
+    ) ||
+    !identityHealth.includes(
+      "table_relation.relowner = publication_manifest.authority_owner",
     )
   ) {
     failures.push(
@@ -1012,17 +1126,23 @@ function checkPublicationBoundary(failures: string[]): void {
       publicationIndexHealth,
     ) ||
     !publicationIndexHealth.includes(
-      "'onward-story-spec-published-index-v1:' || pg_catalog.md5( pg_catalog.pg_get_expr(",
+      "'onward-story-spec-published-index-v1:' || publication_manifest.publication_index_fingerprint",
     ) ||
     !publicationIndexHealth.includes(
-      "|| ':owner=' || table_relation.relowner::text",
+      "pg_catalog.md5( pg_catalog.pg_get_indexdef( index_row.indexrelid, 0, true ) ) = publication_manifest.publication_index_fingerprint",
     ) ||
     !publicationIndexHealth.includes(
       "index_relation.relowner = table_relation.relowner",
-    )
+    ) ||
+    !publicationIndexHealth.includes(
+      "index_relation.relowner = publication_manifest.authority_owner",
+    ) ||
+    !publicationIndexHealth.includes("index_relation.reloptions is null") ||
+    !publicationIndexHealth.includes("index_row.indimmediate") ||
+    !publicationIndexHealth.includes("not index_row.indnullsnotdistinct")
   ) {
     failures.push(
-      "publication-index health must compare the exact server-captured predicate deparse",
+      "publication-index health must compare the exact server-captured full definition",
     );
   }
   const triggerHealthStart = migration.indexOf(
@@ -1048,7 +1168,7 @@ function checkPublicationBoundary(failures: string[]): void {
     );
   }
   const functionGrantHealthStart = migration.indexOf(
-    "function_grant_health as (",
+    "public_function_grant_health as (",
   );
   const tableBoundaryHealthStart = migration.indexOf(
     "table_boundary_health as (",
@@ -1072,7 +1192,21 @@ function checkPublicationBoundary(failures: string[]): void {
     !functionGrantHealth.includes(
       "procedure_row.proowner = ( select table_relation.relowner",
     ) ||
-    !functionGrantHealth.includes("pg_catalog.aclexplode(")
+    !functionGrantHealth.includes("pg_catalog.aclexplode(") ||
+    !functionGrantHealth.includes(
+      "'public.retire_story_spec(text)'::regprocedure",
+    ) ||
+    !functionGrantHealth.includes(
+      "'public.enforce_story_spec_lifecycle()'::regprocedure",
+    ) ||
+    !functionGrantHealth.includes(
+      "'public.story_spec_publication_manifest_v1()'::regprocedure",
+    ) ||
+    !functionGrantHealth.includes("and not acl.is_grantable") ||
+    !functionGrantHealth.includes(
+      "and controlled_routine_inventory_health.value",
+    ) ||
+    !functionGrantHealth.includes("count(*) = 6")
   ) {
     failures.push(
       "publication function grants must be exact and table-owner bound",
@@ -1116,10 +1250,11 @@ function checkPublicationBoundary(failures: string[]): void {
   }
   if (
     !statusCommand.includes('rpc("promote_story_spec_v2"') ||
-    !statusCommand.includes("p_expected_review_spec: stored")
+    !statusCommand.includes("p_expected_review_spec: stored") ||
+    !statusCommand.includes('rpc("retire_story_spec"')
   ) {
     failures.push(
-      "publication command does not submit the exact validated review document",
+      "publication command must use the validated promotion and retirement RPC boundaries",
     );
   }
   for (const readinessProof of [

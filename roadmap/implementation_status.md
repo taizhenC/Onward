@@ -1031,11 +1031,12 @@ registered under the existing Owner Story lifecycle.
 | `NEXT_DIST_DIR=.next-ci PERSISTENCE=memory ONWARD_ALLOW_MEMORY_IN_PRODUCTION=true LLM_PROVIDER=stub EMBEDDING_PROVIDER=stub RETRIEVAL_MODE=keyword npm run build` | Pass; optimized production build generated all 23 app surfaces |
 
 The configured database was queried through the read-only
-`check-story-spec-cutover` gate, but it does not yet contain `story_specs`; the
-gate stopped on the missing relation and performed no writes. This is evidence
-that the target has not received migration `0004` or later, not evidence that
-`0023` works on managed Supabase. Story creation must stay paused during the
-documented cutover, and managed lock/concurrency, role-catalog, RLS/grant,
+`check-story-spec-cutover` gate, but PostgREST did not expose `story_specs`; the
+gate stopped on that schema-cache response and performed no writes. This is
+consistent with migration `0004` not being applied, but an operator must verify
+the actual migration and catalog state in the SQL editor. It is not evidence
+that `0023` works on managed Supabase. Story creation must stay paused during
+the documented cutover, and managed lock/concurrency, role-catalog, RLS/grant,
 rollback, cascade, and terminal-RPC canaries remain required. P0-02, P0-08,
 P0-14, and P0-15 therefore remain incomplete, as do launch-content research and
 human review.

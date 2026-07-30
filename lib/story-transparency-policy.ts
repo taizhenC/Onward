@@ -1,5 +1,25 @@
 import type { SourceRef } from "./story-spec-types";
 
+export const STORY_FACT_CONFIDENCES = [
+  "documented",
+  "probable",
+  "disputed",
+] as const;
+export const STORY_CLAIM_KINDS = [
+  "event",
+  "causal",
+  "sensory",
+  "context",
+] as const;
+export const STORY_QUOTE_STATUSES = [
+  "verbatim",
+  "paraphrase",
+  "disputed",
+  "forbidden",
+  "unverified",
+] as const;
+export const STORY_SOURCE_SCOPES = ["exact", "bounded", "broad"] as const;
+
 export const STORY_TRANSPARENCY_LIMITS = Object.freeze({
   sources: 100,
   facts: 500,

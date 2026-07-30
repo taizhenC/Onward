@@ -20,6 +20,10 @@ import {
   isSafeTransparencyId,
   isSafeTransparencySourceUrl,
   isStoryReviewDate,
+  STORY_CLAIM_KINDS,
+  STORY_FACT_CONFIDENCES,
+  STORY_QUOTE_STATUSES,
+  STORY_SOURCE_SCOPES,
   STORY_TRANSPARENCY_LIMITS,
 } from "./story-transparency-policy";
 export { parseStorySpecDocument } from "./story-spec-document";
@@ -226,7 +230,16 @@ export function validateStorySpec(
     ) {
       errors.push(`${fact.factId} source references must be bounded and unique`);
     }
+    if (
+      !STORY_FACT_CONFIDENCES.includes(fact.confidence) ||
+      !STORY_CLAIM_KINDS.includes(fact.claimKind)
+    ) {
+      errors.push(`${fact.factId} confidence or claim kind is invalid`);
+    }
     for (const ref of fact.sourceRefs) {
+      if (!STORY_SOURCE_SCOPES.includes(ref.scope)) {
+        errors.push(`${fact.factId} source scope is invalid`);
+      }
       if (!sourceIds.has(ref.sourceId)) {
         errors.push(`${fact.factId} references unknown source ${ref.sourceId}`);
       }
@@ -504,7 +517,13 @@ export function validateStorySpec(
     ) {
       errors.push(`${quote.quoteId} source references must be bounded and unique`);
     }
+    if (!STORY_QUOTE_STATUSES.includes(quote.status)) {
+      errors.push(`${quote.quoteId} status is invalid`);
+    }
     for (const ref of quote.sourceRefs) {
+      if (!STORY_SOURCE_SCOPES.includes(ref.scope)) {
+        errors.push(`${quote.quoteId} source scope is invalid`);
+      }
       if (!sourceIds.has(ref.sourceId)) {
         errors.push(`${quote.quoteId} references unknown source ${ref.sourceId}`);
       }

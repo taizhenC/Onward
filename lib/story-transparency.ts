@@ -7,6 +7,10 @@ import {
   isSafeTransparencyId,
   isSafeTransparencySourceUrl,
   isStoryReviewDate,
+  STORY_CLAIM_KINDS,
+  STORY_FACT_CONFIDENCES,
+  STORY_QUOTE_STATUSES,
+  STORY_SOURCE_SCOPES,
   STORY_TRANSPARENCY_LIMITS,
   storySourceRefKey,
 } from "./story-transparency-policy";
@@ -48,16 +52,6 @@ const GAP_COPY: Record<Framing, string> = {
     "This is an adjacent parallel, not an equivalence: the circumstances, stakes, choices, and outcome are different.",
 };
 
-const FACT_CONFIDENCES = ["documented", "probable", "disputed"] as const;
-const CLAIM_KINDS = ["event", "causal", "sensory", "context"] as const;
-const QUOTE_STATUSES = [
-  "verbatim",
-  "paraphrase",
-  "disputed",
-  "forbidden",
-  "unverified",
-] as const;
-const SOURCE_SCOPES = ["exact", "bounded", "broad"] as const;
 export function buildStoryTransparency(
   storySpec: StorySpec,
   resonanceBrief: ResonanceBrief,
@@ -243,8 +237,12 @@ export function validateStoredStoryTransparency(
         1,
         STORY_TRANSPARENCY_LIMITS.factStatement,
       ) ||
-      !FACT_CONFIDENCES.includes(fact.confidence as (typeof FACT_CONFIDENCES)[number]) ||
-      !CLAIM_KINDS.includes(fact.claimKind as (typeof CLAIM_KINDS)[number]) ||
+      !STORY_FACT_CONFIDENCES.includes(
+        fact.confidence as (typeof STORY_FACT_CONFIDENCES)[number],
+      ) ||
+      !STORY_CLAIM_KINDS.includes(
+        fact.claimKind as (typeof STORY_CLAIM_KINDS)[number],
+      ) ||
       !validateSourceRefs(fact.sourceRefs, sourceIds, reviewed) ||
       factIds.has(fact.factId)
     ) return false;
@@ -272,7 +270,9 @@ export function validateStoredStoryTransparency(
           1,
           STORY_TRANSPARENCY_LIMITS.quoteSpeaker,
         )) ||
-      !QUOTE_STATUSES.includes(quote.status as (typeof QUOTE_STATUSES)[number]) ||
+      !STORY_QUOTE_STATUSES.includes(
+        quote.status as (typeof STORY_QUOTE_STATUSES)[number],
+      ) ||
       (reviewed && (quote.status === "forbidden" || quote.status === "unverified")) ||
       !validateSourceRefs(quote.sourceRefs, sourceIds, reviewed) ||
       quoteIds.has(quote.quoteId)
@@ -384,7 +384,9 @@ function validateSourceRefs(
       !hasExactKeys(ref, allowedKeys) ||
       !isSafeTransparencyId(ref.sourceId) ||
       !sourceIds.has(ref.sourceId) ||
-      !SOURCE_SCOPES.includes(ref.scope as (typeof SOURCE_SCOPES)[number]) ||
+      !STORY_SOURCE_SCOPES.includes(
+        ref.scope as (typeof STORY_SOURCE_SCOPES)[number],
+      ) ||
       (ref.locator !== undefined &&
         !isBoundedTransparencyText(
           ref.locator,

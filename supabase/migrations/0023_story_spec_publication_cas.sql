@@ -4,6 +4,12 @@
 set local lock_timeout = '10s';
 set local statement_timeout = '30s';
 
+-- Hold both tables touched by the owner-definer terminal routines for the whole
+-- cutover. This closes the owner/trigger/ACL preflight-to-health race rather
+-- than relying on a sequence of catalog snapshots.
+lock table public.story_specs, public.figure_stages
+  in access exclusive mode;
+
 -- Migration 0004 creates the editorial table and its three lifecycle routines
 -- under one canonical migration authority. Do not let a coordinated
 -- BYPASSRLS owner or a same-name PostgREST overload become the trust root for
@@ -60,6 +66,19 @@ begin
   ) then
     raise exception
       'StorySpec cutover found an unexpected routine, overload, or owner';
+  end if;
+
+  -- A trigger on figure_stages would execute inside the promotion/retirement
+  -- SECURITY DEFINER context. No user trigger is part of the reviewed schema,
+  -- including a disabled one that could later be enabled.
+  if exists (
+    select 1
+    from pg_catalog.pg_trigger trigger_row
+    where trigger_row.tgrelid = 'public.figure_stages'::regclass
+      and not trigger_row.tgisinternal
+  ) then
+    raise exception
+      'figure_stages must not have user triggers';
   end if;
 end
 $do$;
@@ -579,6 +598,112 @@ begin
   ) then
     raise exception
       'story_specs must remain default-deny with no row-level policies';
+  end if;
+end
+$do$;
+
+-- figure_stages is updated inside both owner-definer terminal routines. Close
+-- its full non-owner table/column ACL boundary as well: in particular, no
+-- application or unknown role may retain TRIGGER and execute code under the
+-- outer definer's current_user.
+revoke all on table public.figure_stages
+  from public, anon, authenticated, service_role;
+
+do $do$
+declare
+  target record;
+  grantee_role record;
+begin
+  select
+    relation_row.relowner,
+    relation_row.relacl,
+    pg_catalog.format(
+      '%I.%I',
+      namespace_row.nspname,
+      relation_row.relname
+    ) as signature
+  into strict target
+  from pg_catalog.pg_class relation_row
+  join pg_catalog.pg_namespace namespace_row
+    on namespace_row.oid = relation_row.relnamespace
+  where relation_row.oid = 'public.figure_stages'::regclass;
+
+  for grantee_role in
+    select distinct role_row.rolname
+    from pg_catalog.aclexplode(
+      coalesce(
+        target.relacl,
+        pg_catalog.acldefault('r', target.relowner)
+      )
+    ) acl
+    join pg_catalog.pg_roles role_row
+      on role_row.oid = acl.grantee
+    where acl.grantee <> target.relowner
+  loop
+    execute pg_catalog.format(
+      'revoke all on table %s from %I',
+      target.signature,
+      grantee_role.rolname
+    );
+  end loop;
+end
+$do$;
+
+do $do$
+declare
+  figure_stages_owner oid;
+  column_grant record;
+  grantee_sql text;
+begin
+  select relation_row.relowner
+  into strict figure_stages_owner
+  from pg_catalog.pg_class relation_row
+  where relation_row.oid = 'public.figure_stages'::regclass;
+
+  for column_grant in
+    select distinct
+      attribute_row.attname,
+      acl.grantee,
+      role_row.rolname
+    from pg_catalog.pg_attribute attribute_row
+    cross join lateral pg_catalog.aclexplode(attribute_row.attacl) acl
+    left join pg_catalog.pg_roles role_row
+      on role_row.oid = acl.grantee
+    where attribute_row.attrelid = 'public.figure_stages'::regclass
+      and attribute_row.attnum > 0
+      and not attribute_row.attisdropped
+      and acl.grantee <> figure_stages_owner
+  loop
+    if column_grant.grantee = 0 then
+      grantee_sql := 'PUBLIC';
+    elsif column_grant.rolname is null then
+      raise exception
+        'figure_stages column ACL references an unknown grantee';
+    else
+      grantee_sql := pg_catalog.format('%I', column_grant.rolname);
+    end if;
+
+    execute pg_catalog.format(
+      'revoke all (%I) on table public.figure_stages from %s',
+      column_grant.attname,
+      grantee_sql
+    );
+  end loop;
+end
+$do$;
+
+grant select, insert, update on table public.figure_stages to service_role;
+alter table public.figure_stages enable row level security;
+
+do $do$
+begin
+  if exists (
+    select 1
+    from pg_catalog.pg_policy policy_row
+    where policy_row.polrelid = 'public.figure_stages'::regclass
+  ) then
+    raise exception
+      'figure_stages must remain default-deny with no row-level policies';
   end if;
 end
 $do$;
@@ -1185,12 +1310,86 @@ as $fn$
     cross join publication_manifest
     where table_relation.oid = 'public.story_specs'::regclass
   ),
+  stage_boundary_health as (
+    select count(*) filter (
+      where table_namespace.nspname = 'public'
+        and table_relation.relname = 'figure_stages'
+        and table_relation.relkind = 'r'
+        and table_relation.relrowsecurity
+        and table_relation.relowner =
+          publication_manifest.authority_owner
+        and (owner_role.rolsuper or owner_role.rolbypassrls)
+        and owner_role.oid not in (
+          'service_role'::regrole,
+          'anon'::regrole,
+          'authenticated'::regrole
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_policy policy_row
+          where policy_row.polrelid = table_relation.oid
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_trigger trigger_row
+          where trigger_row.tgrelid = table_relation.oid
+            and not trigger_row.tgisinternal
+        )
+        and (
+          select count(distinct acl.privilege_type)
+          from pg_catalog.aclexplode(
+            coalesce(
+              table_relation.relacl,
+              pg_catalog.acldefault('r', table_relation.relowner)
+            )
+          ) acl
+          where acl.grantee = 'service_role'::regrole
+            and acl.privilege_type in ('SELECT', 'INSERT', 'UPDATE')
+            and not acl.is_grantable
+        ) = 3
+        and not exists (
+          select 1
+          from pg_catalog.aclexplode(
+            coalesce(
+              table_relation.relacl,
+              pg_catalog.acldefault('r', table_relation.relowner)
+            )
+          ) acl
+          where acl.grantee <> table_relation.relowner
+            and (
+              acl.grantee <> 'service_role'::regrole
+              or acl.privilege_type not in ('SELECT', 'INSERT', 'UPDATE')
+              or acl.is_grantable
+            )
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_attribute attribute_row
+          cross join lateral pg_catalog.aclexplode(
+            attribute_row.attacl
+          ) acl
+          where attribute_row.attrelid = table_relation.oid
+            and attribute_row.attnum > 0
+            and not attribute_row.attisdropped
+            and acl.grantee <> table_relation.relowner
+        )
+    ) = 1 as value
+    from pg_catalog.pg_class table_relation
+    join pg_catalog.pg_namespace table_namespace
+      on table_namespace.oid = table_relation.relnamespace
+    join pg_catalog.pg_roles owner_role
+      on owner_role.oid = table_relation.relowner
+    cross join publication_manifest
+    where table_relation.oid = 'public.figure_stages'::regclass
+  ),
   grant_health as (
     select
       function_grant_health.value
-        and table_boundary_health.value as value
+        and table_boundary_health.value
+        and stage_boundary_health.value as value
     from function_grant_health,
-      table_boundary_health
+      table_boundary_health,
+      stage_boundary_health
   )
   select
     manifest_function_health.value

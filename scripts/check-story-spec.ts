@@ -684,6 +684,7 @@ function checkPublicationBoundary(failures: string[]): void {
     .replace(/\s+/g, " ");
 
   for (const required of [
+    "lock table public.story_specs, public.figure_stages in access exclusive mode",
     "story_specs_document_identity_strict_check",
     "spec -> 'version' = pg_catalog.to_jsonb(version)",
     "spec -> 'status' = pg_catalog.to_jsonb(status)",
@@ -700,6 +701,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "storyspec cutover must run as the database owner",
     "storyspec cutover must run as the canonical table owner",
     "storyspec cutover found an unexpected routine, overload, or owner",
+    "figure_stages must not have user triggers",
     "story_spec_publication_manifest_v1",
     "select %l::text, %l::text, %s::oid",
     "pg_catalog.obj_description(",
@@ -738,11 +740,14 @@ function checkPublicationBoundary(failures: string[]): void {
     "acl.grantee not in ( procedure_row.proowner, 'service_role'::regrole )",
     "revoke all on table public.story_specs from public, anon, authenticated, service_role",
     "grant select, insert, update on table public.story_specs to service_role",
+    "revoke all on table public.figure_stages from public, anon, authenticated, service_role",
+    "grant select, insert, update on table public.figure_stages to service_role",
     "public_function_grant_health as (",
     "private_function_grant_health as (",
     "controlled_routine_inventory_health as (",
     "function_grant_health as (",
     "table_boundary_health as (",
+    "stage_boundary_health as (",
     "table_relation.relrowsecurity",
     "(owner_role.rolsuper or owner_role.rolbypassrls)",
     "acl.privilege_type in ('select', 'insert', 'update')",
@@ -759,6 +764,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "grant execute on function public.retire_story_spec(text) to service_role",
     "manifest_function_health.value",
     "and retirement_health.value",
+    "and stage_boundary_health.value",
     "select health.ok from public.story_spec_publication_schema_health_v1() health",
   ]) {
     if (!migration.includes(required)) {
@@ -824,12 +830,25 @@ function checkPublicationBoundary(failures: string[]): void {
     "procedure_row.proname in ( 'enforce_story_spec_lifecycle', 'promote_story_spec', 'promote_story_spec_v2', 'retire_story_spec', 'story_spec_publication_manifest_v1', 'story_spec_publication_schema_health_v1' )",
     "procedure_row.oid not in ( 'public.enforce_story_spec_lifecycle()'::regprocedure, 'public.promote_story_spec(text)'::regprocedure, 'public.retire_story_spec(text)'::regprocedure )",
     "procedure_row.proowner <> authority_owner",
+    "trigger_row.tgrelid = 'public.figure_stages'::regclass",
+    "and not trigger_row.tgisinternal",
   ]) {
     if (!authorityAnchor.includes(requiredAuthorityAnchor)) {
       failures.push(
         `publication authority anchor is missing: ${requiredAuthorityAnchor}`,
       );
     }
+  }
+  const boundaryLockIndex = migration.indexOf(
+    "lock table public.story_specs, public.figure_stages in access exclusive mode",
+  );
+  if (
+    boundaryLockIndex < 0 ||
+    authorityAnchorStart <= boundaryLockIndex
+  ) {
+    failures.push(
+      "publication cutover must lock both owner-definer tables before catalog preflight",
+    );
   }
   const publicationIndexDdlStart = casePreservedMigration.indexOf(
     "drop index if exists public.story_specs_one_published_stage_idx;",
@@ -932,6 +951,16 @@ function checkPublicationBoundary(failures: string[]): void {
     "grant select, insert, update on table public.story_specs",
   );
   const columnAclScrub = migration.indexOf("for column_grant in");
+  const stageTableAclScrub = migration.indexOf(
+    "revoke all on table public.figure_stages",
+  );
+  const stageColumnAclScrub = migration.indexOf(
+    "for column_grant in",
+    columnAclScrub + 1,
+  );
+  const stageServiceGrant = migration.indexOf(
+    "grant select, insert, update on table public.figure_stages",
+  );
   const healthAclScrub = migration.lastIndexOf(
     "acl.grantee <> target.proowner",
   );
@@ -946,7 +975,11 @@ function checkPublicationBoundary(failures: string[]): void {
     columnAclScrub <= tableAclScrub ||
     tableServiceGrant <= tableAclScrub ||
     tableServiceGrant <= columnAclScrub ||
+    stageTableAclScrub <= tableServiceGrant ||
+    stageColumnAclScrub <= stageTableAclScrub ||
+    stageServiceGrant <= stageColumnAclScrub ||
     healthAclScrub <= v2ServiceGrant ||
+    healthAclScrub <= stageServiceGrant ||
     healthServiceGrant <= healthAclScrub
   ) {
     failures.push(
@@ -1179,9 +1212,13 @@ function checkPublicationBoundary(failures: string[]): void {
     "table_boundary_health as (",
     functionGrantHealthStart,
   );
+  const stageBoundaryHealthStart = migration.indexOf(
+    "stage_boundary_health as (",
+    tableBoundaryHealthStart,
+  );
   const grantHealthStart = migration.indexOf(
     "grant_health as (",
-    tableBoundaryHealthStart,
+    stageBoundaryHealthStart,
   );
   const functionGrantHealth =
     functionGrantHealthStart >= 0 &&
@@ -1189,8 +1226,13 @@ function checkPublicationBoundary(failures: string[]): void {
       ? migration.slice(functionGrantHealthStart, tableBoundaryHealthStart)
       : "";
   const tableBoundaryHealth =
-    tableBoundaryHealthStart >= 0 && grantHealthStart > tableBoundaryHealthStart
-      ? migration.slice(tableBoundaryHealthStart, grantHealthStart)
+    tableBoundaryHealthStart >= 0 &&
+    stageBoundaryHealthStart > tableBoundaryHealthStart
+      ? migration.slice(tableBoundaryHealthStart, stageBoundaryHealthStart)
+      : "";
+  const stageBoundaryHealth =
+    stageBoundaryHealthStart >= 0 && grantHealthStart > stageBoundaryHealthStart
+      ? migration.slice(stageBoundaryHealthStart, grantHealthStart)
       : "";
   if (
     !functionGrantHealth ||
@@ -1230,6 +1272,34 @@ function checkPublicationBoundary(failures: string[]): void {
   ) {
     failures.push(
       "publication table health must close owner, table, policy, and column ACL boundaries",
+    );
+  }
+  if (
+    !stageBoundaryHealth ||
+    !stageBoundaryHealth.includes(
+      "table_relation.relname = 'figure_stages'",
+    ) ||
+    !stageBoundaryHealth.includes(
+      "table_relation.relowner = publication_manifest.authority_owner",
+    ) ||
+    !stageBoundaryHealth.includes(
+      "where policy_row.polrelid = table_relation.oid",
+    ) ||
+    !stageBoundaryHealth.includes(
+      "where trigger_row.tgrelid = table_relation.oid and not trigger_row.tgisinternal",
+    ) ||
+    !stageBoundaryHealth.includes(
+      "acl.privilege_type in ('select', 'insert', 'update')",
+    ) ||
+    !stageBoundaryHealth.includes(
+      "acl.grantee <> table_relation.relowner",
+    ) ||
+    !stageBoundaryHealth.includes(
+      "from pg_catalog.pg_attribute attribute_row",
+    )
+  ) {
+    failures.push(
+      "figure-stage health must close inherited trigger, owner, policy, table, and column boundaries",
     );
   }
   const healthServiceGrantIndex = migration.indexOf(

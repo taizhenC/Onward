@@ -64,12 +64,17 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
       where figure_key = 'figure' and stage_id = 'stage';
     `);
 
-    await db.exec(`
-      select public.promote_story_spec_v2(
-        'candidate',
-        ${jsonbLiteral(candidate)}
-      );
-    `);
+    await db.exec("set role service_role");
+    try {
+      await db.exec(`
+        select public.promote_story_spec_v2(
+          'candidate',
+          ${jsonbLiteral(candidate)}
+        );
+      `);
+    } finally {
+      await db.exec("reset role");
+    }
     await expectStoryStates(db, {
       previous: "retired",
       candidate: "published",
@@ -84,17 +89,22 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
         reviewedAt: "2026-07-28",
       },
     };
-    await expectRejected(
-      () =>
-        db.exec(`
-          select public.promote_story_spec_v2(
-            'next-review',
-            ${jsonbLiteral(staleSnapshot)}
-          );
-        `),
-      "stale publication snapshot",
-      "changed; reload and revalidate",
-    );
+    await db.exec("set role service_role");
+    try {
+      await expectRejected(
+        () =>
+          db.exec(`
+            select public.promote_story_spec_v2(
+              'next-review',
+              ${jsonbLiteral(staleSnapshot)}
+            );
+          `),
+        "stale publication snapshot",
+        "changed; reload and revalidate",
+      );
+    } finally {
+      await db.exec("reset role");
+    }
     await expectStoryStates(db, {
       candidate: "published",
       "next-review": "review",
@@ -103,8 +113,16 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
     await db.exec(`
       insert into public.figure_stages (figure_key, stage_id)
       values ('blocked', 'stage');
-      set role service_role;
     `);
+    const directRetireTarget = storySpecDocument(
+      "direct-retire-target",
+      3,
+      "published",
+      "blocked",
+    );
+    await insertStorySpec(db, directRetireTarget);
+
+    await db.exec("set role service_role");
     try {
       await expectRejected(
         () =>
@@ -140,6 +158,20 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
             where story_spec_id = 'direct-draft';
           `),
         "direct service-role published update",
+        "owner-definer boundary",
+      );
+      await expectRejected(
+        () =>
+          db.exec(`
+            update public.story_specs
+            set status = 'retired',
+                spec = ${jsonbLiteral({
+                  ...directRetireTarget,
+                  status: "retired",
+                })}
+            where story_spec_id = 'direct-retire-target';
+          `),
+        "direct service-role retirement",
         "owner-definer boundary",
       );
     } finally {

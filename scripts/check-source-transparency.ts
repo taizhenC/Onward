@@ -43,10 +43,11 @@ import {
   parsePublishedStorySpecRow,
   parseStorySpecRow,
 } from "../lib/story-spec-repository";
-import type { StorySpec, StoryBeatSpec } from "../lib/story-spec-types";
+import type { StorySpec } from "../lib/story-spec-types";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import type { MatchRecipe } from "../lib/types";
+import { buildPublishedStorySpecFixture } from "./_story-spec-fixtures";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -95,7 +96,7 @@ type Fixture = ReturnType<typeof makeFixture>;
 
 function makeFixture(pressure: PrimaryPressure = "rejection") {
   const stage = FIGURE_STAGES[0];
-  const storySpec = publishedStorySpec();
+  const storySpec = buildPublishedStorySpecFixture(stage);
   const resonanceBrief = createResonanceBrief(
     PRIVATE_DISCLOSURE,
     undefined,
@@ -670,177 +671,6 @@ async function reportRequest(
       body: JSON.stringify(body),
     }),
   );
-}
-
-function publishedStorySpec(): StorySpec {
-  const roles: StoryBeatSpec["role"][] = [
-    "scene",
-    "dark_moment",
-    "response",
-    "struggle",
-    "turning_point",
-    "became",
-    "bridge",
-  ];
-  const texts = [
-    "In 2001, the subject began a documented project.",
-    "The first attempt ended in 2002.",
-    'The record preserves the words "We began again."',
-    "Work continued for three years, which the archive describes as a deliberate return.",
-    "In 2005, a second route opened, though one account disputes its timing.",
-    "The project was published in 2006.",
-    "A life can remain distinct and still offer company.",
-  ];
-  const factIds = ["fact-1", "fact-2", "fact-3", "fact-4", "fact-5", "fact-6"];
-  const arc: StoryBeatSpec[] = roles.map((role, index) => {
-    const isBridge = role === "bridge";
-    const factId = isBridge ? undefined : factIds[index];
-    const quoteIds =
-      role === "response"
-        ? ["quote-verbatim"]
-        : role === "struggle"
-          ? ["quote-paraphrase"]
-          : role === "turning_point"
-            ? ["quote-disputed"]
-            : [];
-    return {
-      role,
-      canonicalText: texts[index],
-      requiredFactIds: factId ? [factId] : [],
-      optionalFactIds: [],
-      entityIds: ["entity-subject"],
-      quoteIds,
-      sentenceEvidence: factId
-        ? [
-            {
-              sentenceIndex: 0,
-              factIds: [factId],
-              interpretationIds:
-                role === "struggle" ? ["interpretation-return"] : [],
-            },
-          ]
-        : [],
-      personalizationZones: isBridge
-        ? ["reader_bridge"]
-        : role === "scene" || role === "became"
-          ? ["none"]
-          : ["emphasis", "transition"],
-    };
-  });
-
-  return {
-    storySpecId: "douglass:1838-1841-nyc-to-nantucket:transparency-test-v2",
-    schemaVersion: "story-spec-v1-2026-07",
-    figureKey: FIGURE_STAGES[0].figureKey,
-    stageId: FIGURE_STAGES[0].stageId,
-    version: 2,
-    status: "published",
-    episode: {
-      ageMin: FIGURE_STAGES[0].ageMin,
-      ageMax: FIGURE_STAGES[0].ageMax,
-      startDate: "2001-01-01",
-      endDate: "2006-12-31",
-      throughLine: "A documented project was restarted after an early failure.",
-    },
-    contentProfile: {
-      intensity: "gentle",
-      flags: [],
-      contentNote: "Includes a professional setback.",
-    },
-    sources: [
-      {
-        sourceId: "source-archive",
-        citation: "Example Archive. Project papers, 2001–2006.",
-        locator: "Collection 4",
-        url: "https://example.org/archive/project-papers",
-      },
-      {
-        sourceId: "source-history",
-        citation: "Historian, A. A History of the Project (2020).",
-        locator: "Chapter 3",
-        url: "https://example.org/history/project",
-      },
-    ],
-    facts: factIds.map((factId, index) => ({
-      factId,
-      statement: texts[index],
-      sourceRefs: [
-        {
-          sourceId: index < 3 ? "source-archive" : "source-history",
-          locator: index < 3 ? `Folder ${index + 1}` : `pp. ${40 + index}`,
-          scope: "exact",
-        },
-      ],
-      eventOrder: index + 1,
-      confidence: index === 4 ? "disputed" : "documented",
-      claimKind: index === 3 ? "context" : "event",
-    })),
-    entities: [
-      {
-        entityId: "entity-subject",
-        kind: "person",
-        value: FIGURE_STAGES[0].displayName,
-        aliases: ["the subject"],
-      },
-    ],
-    quotes: [
-      {
-        quoteId: "quote-verbatim",
-        text: "We began again.",
-        status: "verbatim",
-        speaker: "Project record",
-        sourceRefs: [
-          {
-            sourceId: "source-archive",
-            locator: "Folder 3, leaf 2",
-            scope: "exact",
-          },
-        ],
-      },
-      {
-        quoteId: "quote-paraphrase",
-        text: "The work was a deliberate return.",
-        status: "paraphrase",
-        sourceRefs: [
-          {
-            sourceId: "source-history",
-            locator: "p. 43",
-            scope: "bounded",
-          },
-        ],
-      },
-      {
-        quoteId: "quote-disputed",
-        text: "The second route opened in 2005.",
-        status: "disputed",
-        sourceRefs: [
-          {
-            sourceId: "source-history",
-            locator: "pp. 44–45",
-            scope: "bounded",
-          },
-        ],
-      },
-    ],
-    arc,
-    interpretations: [
-      {
-        interpretationId: "interpretation-return",
-        statement: "The continuation can be read as a deliberate return.",
-        supportingFactIds: ["fact-4"],
-        allowed: true,
-      },
-    ],
-    dramatizationLimits: ["No invented dialogue or interior monologue."],
-    avoidRules: ["Do not add unsupported historical claims."],
-    review: {
-      researcherId: "researcher-test",
-      historicalReviewerId: "historian-test",
-      toneReviewerId: "tone-test",
-      reviewedAt: "2026-07-10T10:00:00.000Z",
-      contentProfileReviewed: true,
-    },
-  };
 }
 
 function sameSet(left: string[], right: string[]): boolean {

@@ -694,7 +694,10 @@ function checkPublicationBoundary(failures: string[]): void {
     "into strict identity_fingerprint",
     "into strict publication_index_fingerprint",
     "|| ':owner=' || story_specs_owner::text",
-    "authority_owner oid := (current_user::pg_catalog.regrole)::oid",
+    "select database_row.datdba into strict authority_owner",
+    "where database_row.datname = pg_catalog.current_database()",
+    "(current_user::pg_catalog.regrole)::oid <> authority_owner",
+    "storyspec cutover must run as the database owner",
     "storyspec cutover must run as the canonical table owner",
     "storyspec cutover found an unexpected routine, overload, or owner",
     "story_spec_publication_manifest_v1",
@@ -802,7 +805,7 @@ function checkPublicationBoundary(failures: string[]): void {
     );
   }
   const authorityAnchorStart = migration.indexOf(
-    "authority_owner oid := (current_user::pg_catalog.regrole)::oid",
+    "authority_owner oid; begin select database_row.datdba into strict authority_owner",
   );
   const authorityAnchorEnd = migration.indexOf(
     "create or replace function public.enforce_story_spec_lifecycle()",
@@ -813,6 +816,8 @@ function checkPublicationBoundary(failures: string[]): void {
       ? migration.slice(authorityAnchorStart, authorityAnchorEnd)
       : "";
   for (const requiredAuthorityAnchor of [
+    "where database_row.datname = pg_catalog.current_database()",
+    "(current_user::pg_catalog.regrole)::oid <> authority_owner",
     "'public.story_specs'::regclass",
     "'public.figure_stages'::regclass",
     "relation_row.relowner <> authority_owner",

@@ -10,8 +10,18 @@ set local statement_timeout = '30s';
 -- this cutover.
 do $do$
 declare
-  authority_owner oid := (current_user::pg_catalog.regrole)::oid;
+  authority_owner oid;
 begin
+  select database_row.datdba
+  into strict authority_owner
+  from pg_catalog.pg_database database_row
+  where database_row.datname = pg_catalog.current_database();
+
+  if (current_user::pg_catalog.regrole)::oid <> authority_owner then
+    raise exception
+      'StorySpec cutover must run as the database owner';
+  end if;
+
   if exists (
     select 1
     from pg_catalog.pg_class relation_row

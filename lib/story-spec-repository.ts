@@ -30,6 +30,12 @@ export function storySpecStageKey(figureKey: string, stageId: string): string {
   return `${figureKey}\u0000${stageId}`;
 }
 
+export type PublishedStorySpecInspection = Readonly<{
+  catalog: ReadonlyMap<string, StorySpec>;
+  rawPublishedRowCount: number;
+  quarantinedRowCount: number;
+}>;
+
 export async function listPublishedStorySpecKeys(): Promise<ReadonlySet<string>> {
   const catalog = await listPublishedStorySpecCatalog();
   return new Set(catalog.keys());
@@ -38,6 +44,12 @@ export async function listPublishedStorySpecKeys(): Promise<ReadonlySet<string>>
 export async function listPublishedStorySpecCatalog(): Promise<
   ReadonlyMap<string, StorySpec>
 > {
+  return (await inspectPublishedStorySpecs()).catalog;
+}
+
+export async function inspectPublishedStorySpecs(): Promise<
+  PublishedStorySpecInspection
+> {
   const result = await getSupabase()
     .from("story_specs")
     .select(
@@ -45,13 +57,39 @@ export async function listPublishedStorySpecCatalog(): Promise<
     )
     .eq("status", "published");
   if (result.error) throw new Error(`list published StorySpecs failed: ${result.error.message}`);
+  return inspectPublishedStorySpecRows(result.data ?? []);
+}
+
+export function inspectPublishedStorySpecRows(
+  rows: readonly unknown[],
+): PublishedStorySpecInspection {
   const catalog = new Map<string, StorySpec>();
-  for (const row of result.data ?? []) {
+  const duplicateKeys = new Set<string>();
+  let quarantinedRowCount = 0;
+  for (const row of rows) {
     const spec = parsePublishedStorySpecRow(row);
-    if (!spec) continue;
-    catalog.set(storySpecStageKey(spec.figureKey, spec.stageId), spec);
+    if (!spec) {
+      quarantinedRowCount += 1;
+      continue;
+    }
+    const key = storySpecStageKey(spec.figureKey, spec.stageId);
+    if (duplicateKeys.has(key)) {
+      quarantinedRowCount += 1;
+      continue;
+    }
+    if (catalog.has(key)) {
+      catalog.delete(key);
+      duplicateKeys.add(key);
+      quarantinedRowCount += 2;
+      continue;
+    }
+    catalog.set(key, spec);
   }
-  return catalog;
+  return {
+    catalog,
+    rawPublishedRowCount: rows.length,
+    quarantinedRowCount,
+  };
 }
 
 // Runtime reads fail closed. A malformed or incompletely reviewed document is

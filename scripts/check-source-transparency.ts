@@ -41,6 +41,7 @@ import {
 import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { validateStorySpec } from "../lib/story-spec";
 import {
+  inspectPublishedStorySpecRows,
   parsePublishedStorySpecRow,
   parseStorySpecRow,
 } from "../lib/story-spec-repository";
@@ -531,6 +532,27 @@ function checkPublishedHydration(
   invalidSpec.interpretations[0].allowed = false;
   if (parsePublishedStorySpecRow(semanticallyInvalid) !== null) {
     failures.push("published StorySpec hydration accepted invalid evidence closure");
+  }
+
+  const quarantinedInspection = inspectPublishedStorySpecRows([
+    row,
+    extraDocumentField,
+  ]);
+  if (
+    quarantinedInspection.rawPublishedRowCount !== 2 ||
+    quarantinedInspection.quarantinedRowCount !== 1 ||
+    quarantinedInspection.catalog.size !== 1
+  ) {
+    failures.push("published catalog inspection hid a quarantined StorySpec row");
+  }
+
+  const duplicateInspection = inspectPublishedStorySpecRows([row, row]);
+  if (
+    duplicateInspection.rawPublishedRowCount !== 2 ||
+    duplicateInspection.quarantinedRowCount !== 2 ||
+    duplicateInspection.catalog.size !== 0
+  ) {
+    failures.push("published catalog inspection did not quarantine both duplicate rows");
   }
 }
 

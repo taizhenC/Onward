@@ -1,4 +1,6 @@
 import "./_smoke-bootstrap";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import {
   buildDraftStorySpec,
@@ -46,6 +48,7 @@ function main(): void {
   const fixture = specs[0];
   const publishedFixture = buildPublishedStorySpecFixture(FIGURE_STAGES[0]);
   checkDocumentBoundary(fixture, failures);
+  checkPublicationBoundary(failures);
   expectAccepted(
     failures,
     "reviewed publication fixture",
@@ -405,7 +408,7 @@ function main(): void {
     "PASS negative gates: evidence closure, entity, quote, chronology, locator, and sentence mapping",
   );
   console.log("PASS untrusted documents require exact nested StorySpec shapes");
-  console.log("PASS immutable publication is delegated to migration 0004 lifecycle gates");
+  console.log("PASS immutable publication and compare-and-set authority are migration-gated");
 }
 
 function checkDocumentBoundary(spec: StorySpec, failures: string[]): void {
@@ -556,6 +559,87 @@ function expectAccepted(
       `${name}: valid published StorySpec was rejected: ${result.errors.join("; ")}`,
     );
   }
+}
+
+function checkPublicationBoundary(failures: string[]): void {
+  const migration = read(
+    "../supabase/migrations/0023_story_spec_publication_cas.sql",
+  )
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+  const statusCommand = read("./set-story-spec-status.ts")
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+  const databaseCheck = read("./check-db.ts")
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+  for (const required of [
+    "story_specs_document_identity_strict_check",
+    "spec -> 'version' = pg_catalog.to_jsonb(version)",
+    ") is true",
+    "promote_story_spec_v2",
+    "p_expected_review_spec jsonb",
+    "v_target.spec is distinct from p_expected_review_spec",
+    "target.status = 'review'",
+    "target.spec = p_expected_review_spec",
+    "story_spec_publication_schema_health_v1",
+    "legacy_rpc_revoked boolean",
+    "boundary_granted boolean",
+    "revoke all on function public.promote_story_spec(text) from public, anon, authenticated, service_role",
+    "grant execute on function public.promote_story_spec_v2(text, jsonb) to service_role",
+  ]) {
+    if (!migration.includes(required)) {
+      failures.push(`publication migration is missing: ${required}`);
+    }
+  }
+  const lockIndex = migration.indexOf("for update;");
+  const snapshotIndex = migration.indexOf(
+    "v_target.spec is distinct from p_expected_review_spec",
+  );
+  const retirementIndex = migration.indexOf("set status = 'retired'");
+  if (
+    lockIndex < 0 ||
+    snapshotIndex <= lockIndex ||
+    retirementIndex <= snapshotIndex
+  ) {
+    failures.push(
+      "publication migration does not lock and compare the validated snapshot before retirement",
+    );
+  }
+  if (
+    /grant execute on function public\.promote_story_spec\(text\)/.test(
+      migration,
+    )
+  ) {
+    failures.push("publication migration re-grants the legacy ID-only RPC");
+  }
+  if (
+    !statusCommand.includes('rpc("promote_story_spec_v2"') ||
+    !statusCommand.includes("p_expected_review_spec: stored")
+  ) {
+    failures.push(
+      "publication command does not submit the exact validated review document",
+    );
+  }
+  for (const readinessProof of [
+    "inspectpublishedstoryspecs",
+    "quarantinedrowcount",
+    "const disabled",
+    "const uncovered",
+    "story_spec_publication_schema_health_v1",
+  ]) {
+    if (!databaseCheck.includes(readinessProof)) {
+      failures.push(`database readiness omits: ${readinessProof}`);
+    }
+  }
+}
+
+function read(relative: string): string {
+  return readFileSync(
+    fileURLToPath(new URL(relative, import.meta.url)),
+    "utf8",
+  );
 }
 
 main();

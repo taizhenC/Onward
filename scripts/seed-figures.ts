@@ -65,40 +65,23 @@ async function main(): Promise<void> {
     throw new Error(`seed figures failed: ${figuresResult.error.message}`);
   }
 
-  // Create absent stages as drafts without touching rows another actor already
-  // created or promoted. This removes the read-then-upsert race that could write
-  // a stale lifecycle status over a concurrent publication transition.
-  const insertStagesResult = await supabase
+  // One statement creates absent stages through the database's draft default
+  // and refreshes existing content. `status` is absent from every payload, so
+  // ON CONFLICT cannot overwrite a concurrent publication transition.
+  const stagesResult = await supabase
     .from("figure_stages")
     .upsert(
       stageRows.map(({ identity, content }) => ({
         ...identity,
         ...content,
-        status: "draft",
       })),
       {
         onConflict: "figure_key,stage_id",
-        ignoreDuplicates: true,
+        defaultToNull: false,
       },
     );
-  if (insertStagesResult.error) {
-    throw new Error(`insert missing figure_stages failed: ${insertStagesResult.error.message}`);
-  }
-
-  // Refresh authored content separately. `content` intentionally cannot carry
-  // status, so reseeding an existing stage cannot publish, retire, or demote it.
-  for (const { identity, content } of stageRows) {
-    const updateStageResult = await supabase
-      .from("figure_stages")
-      .update(content)
-      .eq("figure_key", identity.figure_key)
-      .eq("stage_id", identity.stage_id);
-    if (updateStageResult.error) {
-      throw new Error(
-        `refresh figure_stage ${identity.figure_key}/${identity.stage_id} failed: ` +
-          updateStageResult.error.message,
-      );
-    }
+  if (stagesResult.error) {
+    throw new Error(`seed figure_stages failed: ${stagesResult.error.message}`);
   }
 
   console.log(

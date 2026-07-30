@@ -369,6 +369,36 @@ function checkBridgeEvidenceClassification(
       "mixed bridge history was projected publicly as unsupported reflection",
     );
   }
+  const legacyArtifact = structuredClone(mixedArtifact);
+  const legacyBridge = legacyArtifact.transparency?.beats.at(-1);
+  if (!legacyBridge) {
+    failures.push("legacy bridge replay fixture is missing transparency");
+    return;
+  }
+  legacyBridge.evidenceClass = "reader_bridge";
+  legacyArtifact.contentHash = storyArtifactContentHash(legacyArtifact);
+  const legacyEnvelope = storedEnvelope(legacyArtifact);
+  const mismatchedEnvelope = {
+    ...legacyEnvelope,
+    contentHash: "0".repeat(64),
+  };
+  const strictLegacyValidation = validateStoryArtifact(
+    legacyArtifact,
+    mixedSpec,
+    fixture.resonanceBrief,
+  );
+  if (
+    validateStoredStoryTransparency(legacyArtifact.transparency) ||
+    validateStoredStoryArtifact(legacyArtifact) ||
+    !validateStoredStoryArtifact(legacyArtifact, legacyEnvelope) ||
+    validateStoredStoryArtifact(legacyArtifact, mismatchedEnvelope) ||
+    strictLegacyValidation.valid ||
+    !strictLegacyValidation.failureReasons.includes("transparency_invalid")
+  ) {
+    failures.push(
+      "pre-closure mixed-bridge replay escaped its immutable envelope-only seam",
+    );
+  }
 
   const unsupportedSpec = structuredClone(fixture.storySpec);
   const unsupportedBridge = unsupportedSpec.arc.at(-1);

@@ -145,6 +145,25 @@ export function validateStoryTransparency(
 export function validateStoredStoryTransparency(
   value: unknown,
 ): value is StoryTransparency {
+  return validateStoredStoryTransparencyWithPolicy(value, false);
+}
+
+// Replay-only compatibility for immutable pre-closure v5 artifacts. The old
+// projector labeled every bridge `reader_bridge`, including a bridge that also
+// carried historical fact/quote IDs. New composition must never use this seam.
+export function validateLegacyStoredStoryTransparencyV1(
+  value: unknown,
+): value is StoryTransparency {
+  return (
+    validateStoredStoryTransparency(value) ||
+    validateStoredStoryTransparencyWithPolicy(value, true)
+  );
+}
+
+function validateStoredStoryTransparencyWithPolicy(
+  value: unknown,
+  allowLegacyMixedBridge: boolean,
+): value is StoryTransparency {
   if (!isRecord(value) || !hasExactKeys(value, [
     "beats",
     "facts",
@@ -304,13 +323,24 @@ export function validateStoredStoryTransparency(
       !isUniqueIdArray(beat.factIds, factIds) ||
       !isUniqueIdArray(beat.quoteIds, quoteIds) ||
       typeof beat.hasPersonalizedTransition !== "boolean" ||
-      (beat.role === "bridge" && beat.hasPersonalizedTransition) ||
-      (beat.role !== "bridge" && beat.evidenceClass === "reader_bridge") ||
-      (beat.evidenceClass === "reader_bridge" &&
-        (beat.role !== "bridge" ||
-          beat.factIds.length > 0 ||
-          beat.quoteIds.length > 0)) ||
-      (reviewed && beat.evidenceClass !== "reader_bridge" &&
+      (beat.role === "bridge" && beat.hasPersonalizedTransition)
+    ) return false;
+    const strictEvidenceRole =
+      (beat.role === "bridge" ||
+        beat.evidenceClass !== "reader_bridge") &&
+      (beat.evidenceClass !== "reader_bridge" ||
+        (beat.role === "bridge" &&
+          beat.factIds.length === 0 &&
+          beat.quoteIds.length === 0));
+    const legacyEvidenceRole =
+      beat.role === "bridge"
+        ? beat.evidenceClass === "reader_bridge"
+        : beat.evidenceClass !== "reader_bridge";
+    if (
+      (!strictEvidenceRole &&
+        !(allowLegacyMixedBridge && legacyEvidenceRole)) ||
+      (reviewed &&
+        beat.evidenceClass !== "reader_bridge" &&
         (beat.evidenceClass === "review_pending" || beat.factIds.length === 0)) ||
       (reviewed &&
         (beat.evidenceClass as string).startsWith("documented") &&

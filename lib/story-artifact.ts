@@ -19,6 +19,7 @@ import {
 import { CONTENT_FLAGS, type StorySpec } from "./story-spec-types";
 import {
   buildStoryTransparency,
+  validateLegacyStoredStoryTransparencyV1,
   validateStoredStoryTransparency,
   validateStoryTransparency,
 } from "./story-transparency";
@@ -609,7 +610,13 @@ export function validateStoredStoryArtifact(
   }
   if (
     transparencyAwareSchema
-      ? !validateStoredStoryTransparency(artifact.transparency) ||
+      ? !(
+          validateStoredStoryTransparency(artifact.transparency) ||
+          (
+            envelope !== undefined &&
+            validateLegacyStoredStoryTransparencyV1(artifact.transparency)
+          )
+        ) ||
         artifact.transparency.storySpec.storySpecId !== artifact.storySpecId ||
         artifact.transparency.storySpec.version !== artifact.storySpecVersion ||
         artifact.transparency.storySpec.schemaVersion !== artifact.storySpecSchemaVersion

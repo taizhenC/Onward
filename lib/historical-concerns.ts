@@ -3,6 +3,7 @@ import type { StoryArtifact } from "./story-artifact-types";
 import { persistenceMode } from "./persistence";
 import {
   isHistoricalConcernFact,
+  validateLegacyStoredStoryTransparencyV1,
   validateStoredStoryTransparency,
 } from "./story-transparency";
 import type { HistoricalConcernReason } from "./story-transparency-types";
@@ -37,7 +38,10 @@ export async function submitHistoricalConcern(
   );
   const transparency = input.artifact.transparency;
   if (
-    !validateStoredStoryTransparency(transparency) ||
+    !(
+      validateStoredStoryTransparency(transparency) ||
+      validateLegacyStoredStoryTransparencyV1(transparency)
+    ) ||
     transparency.provenance.status !== "editorially_reviewed" ||
     !isHistoricalConcernFact(transparency, input.factId) ||
     !input.artifact.beats.some((beat) => beat.factIds.includes(input.factId))

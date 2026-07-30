@@ -25,6 +25,7 @@ async function main(): Promise<void> {
   await checkFigureStagesDefinerBoundary();
   await checkAuthorityRootDriftDetection();
   await checkIdentityManifestDriftDetection();
+  await checkStageIdentityFailClosed();
   await checkPostCutoverDriftDetection();
   await checkUnexpectedTriggerFailsCutover();
   await checkOwnerAndOverloadBootstrapFailures();
@@ -35,10 +36,13 @@ async function main(): Promise<void> {
   console.log("PASS direct service-role publication and retirement are blocked");
   console.log("PASS hostile table, column, and every lifecycle-function ACL is removed");
   console.log("PASS figure-stage trigger inheritance is closed before and after cutover");
-  console.log("PASS database-owner authority and application-role separation stay live");
+  console.log(
+    "PASS database-owner and service-role membership graphs stay fail-closed",
+  );
   console.log(
     "PASS identity, owner, overload, trigger, full-index, and ACL drift fail closed",
   );
+  console.log("PASS missing or forged stage identity rolls terminal writes back");
   console.log("PASS unsafe bootstrap and active-trigger cutovers roll back atomically");
 }
 
@@ -55,6 +59,40 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
       legacy_rpc_revoked: true,
       boundary_granted: true,
     });
+
+    await db.exec("set role service_role");
+    try {
+      await expectRejected(
+        () =>
+          db.exec(`
+            insert into public.figure_stages (
+              figure_key,
+              stage_id,
+              status
+            ) values ('direct-stage', 'stage', 'published');
+          `),
+        "direct published figure-stage insert",
+        "owner-definer boundary",
+      );
+      await db.exec(`
+        insert into public.figure_stages (figure_key, stage_id)
+        values ('direct-stage', 'stage');
+      `);
+      await expectRejected(
+        () =>
+          db.exec(`
+            update public.figure_stages
+            set status = 'published'
+            where figure_key = 'direct-stage'
+              and stage_id = 'stage';
+          `),
+        "direct figure-stage publication",
+        "owner-definer boundary",
+      );
+    } finally {
+      await db.exec("reset role");
+    }
+    await expectStageStatus(db, "direct-stage", "draft");
 
     await db.exec(`
       insert into public.figure_stages (figure_key, stage_id)
@@ -519,14 +557,31 @@ async function checkAuthorityRootDriftDetection(): Promise<void> {
     await applyPublicationMigration(db);
 
     await db.exec(`
-      grant postgres to service_role;
+      grant postgres to onward_adversary;
     `);
+    await expectRoleMembership(db, "onward_adversary", "postgres", true);
     await expectHealth(db, {
       ok: false,
       boundary_granted: false,
     });
     await db.exec(`
-      revoke postgres from service_role;
+      revoke postgres from onward_adversary;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter role anon inherit;
+      grant service_role to anon;
+    `);
+    await expectRoleMembership(db, "anon", "service_role", true);
+    await expectPublicationAccess(db, "anon");
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from anon;
+      alter role anon noinherit;
     `);
     await expectHealth(db, { ok: true });
 
@@ -602,6 +657,93 @@ async function checkIdentityManifestDriftDetection(): Promise<void> {
         'draft',
         '{}'::jsonb
       );
+    `);
+    await expectHealth(db, {
+      ok: false,
+      identity_constraint_valid: false,
+    });
+  } finally {
+    await db.close();
+  }
+}
+
+async function checkStageIdentityFailClosed(): Promise<void> {
+  const db = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(db);
+    await db.exec(`
+      alter table public.story_specs
+        drop constraint story_specs_stage_fk;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      identity_constraint_valid: false,
+    });
+
+    const orphan = storySpecDocument(
+      "orphan-review",
+      1,
+      "review",
+      "orphan",
+    );
+    await insertStorySpec(db, orphan);
+    await db.exec("set role service_role");
+    try {
+      await expectRejected(
+        () =>
+          db.exec(`
+            select public.promote_story_spec_v2(
+              'orphan-review',
+              ${jsonbLiteral(orphan)}
+            );
+          `),
+        "orphan StorySpec promotion",
+        "StorySpec stage not found",
+      );
+    } finally {
+      await db.exec("reset role");
+    }
+    await expectStoryStates(db, {
+      "orphan-review": "review",
+    });
+
+    await db.exec(`
+      delete from public.story_specs
+      where story_spec_id = 'orphan-review';
+
+      alter table public.story_specs
+        add constraint story_specs_stage_fk
+        foreign key (figure_key, stage_id)
+        references public.figure_stages (figure_key, stage_id)
+        on delete cascade;
+
+      do $do$
+      declare
+        drift_fingerprint text;
+        story_specs_owner oid;
+      begin
+        select
+          pg_catalog.md5(
+            pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+          ),
+          table_relation.relowner
+        into strict drift_fingerprint, story_specs_owner
+        from pg_catalog.pg_constraint constraint_row
+        join pg_catalog.pg_class table_relation
+          on table_relation.oid = constraint_row.conrelid
+        where constraint_row.conrelid = 'public.story_specs'::regclass
+          and constraint_row.conname = 'story_specs_stage_fk';
+
+        execute pg_catalog.format(
+          'comment on constraint story_specs_stage_fk '
+            || 'on public.story_specs is %L',
+          'onward-story-spec-stage-fk-v1:'
+            || drift_fingerprint
+            || ':owner='
+            || story_specs_owner::text
+        );
+      end
+      $do$;
     `);
     await expectHealth(db, {
       ok: false,
@@ -846,16 +988,32 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
   const inheritedOwnerDb = await createBaseDatabase();
   try {
     await inheritedOwnerDb.exec(`
-      grant postgres to service_role;
+      grant postgres to onward_adversary;
     `);
     await expectRejected(
       () => applyPublicationMigration(inheritedOwnerDb),
-      "application-role owner inheritance",
+      "unknown-role owner inheritance",
       "must not inherit StorySpec publication authority",
     );
     await expectV2Absent(inheritedOwnerDb, "owner-inheritance rollback");
   } finally {
     await inheritedOwnerDb.close();
+  }
+
+  const inheritedServiceDb = await createBaseDatabase();
+  try {
+    await inheritedServiceDb.exec(`
+      alter role anon inherit;
+      grant service_role to anon;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(inheritedServiceDb),
+      "anonymous service-role inheritance",
+      "service authority role graph is unsafe",
+    );
+    await expectV2Absent(inheritedServiceDb, "service-inheritance rollback");
+  } finally {
+    await inheritedServiceDb.close();
   }
 
   const overloadDb = await createBaseDatabase();
@@ -1019,17 +1177,135 @@ async function createBaseDatabase(): Promise<PGlite> {
     create role anon noinherit;
     create role authenticated noinherit;
     create role service_role noinherit bypassrls;
+    create role authenticator noinherit;
     create role onward_adversary noinherit bypassrls;
+    grant service_role to authenticator;
 
     create table public.figure_stages (
       figure_key text not null,
       stage_id text not null,
       status text not null default 'draft',
+      constraint figure_stages_status_check
+        check (status in ('draft', 'published')),
       primary key (figure_key, stage_id)
     );
   `);
+  await expectBaseAuthorityGraph(db);
   await db.exec(storySpecsMigration);
   return db;
+}
+
+async function expectBaseAuthorityGraph(db: PGlite): Promise<void> {
+  const result = await db.query<{
+    owner_member_count: number;
+    service_member_count: number;
+    authenticator_member_count: number;
+    authenticator_noinherit: boolean;
+    authenticator_not_super: boolean;
+    authenticator_not_bypass: boolean;
+  }>(`
+    with recursive owner_members(member_oid) as (
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      where membership.roleid = (
+        select database_row.datdba
+        from pg_catalog.pg_database database_row
+        where database_row.datname = pg_catalog.current_database()
+      )
+      union
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      join owner_members inherited
+        on membership.roleid = inherited.member_oid
+    ),
+    service_members(member_oid) as (
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      where membership.roleid = 'service_role'::regrole
+      union
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      join service_members inherited
+        on membership.roleid = inherited.member_oid
+    )
+    select
+      (select count(*)::int from owner_members) as owner_member_count,
+      (select count(*)::int from service_members) as service_member_count,
+      (
+        select count(*)::int
+        from service_members
+        where member_oid = 'authenticator'::regrole
+      ) as authenticator_member_count,
+      not authenticator_role.rolinherit as authenticator_noinherit,
+      not authenticator_role.rolsuper as authenticator_not_super,
+      not authenticator_role.rolbypassrls as authenticator_not_bypass
+    from pg_catalog.pg_roles authenticator_role
+    where authenticator_role.oid = 'authenticator'::regrole
+  `);
+  const graph = result.rows[0];
+  if (
+    !graph ||
+    graph.owner_member_count !== 0 ||
+    graph.service_member_count !== 1 ||
+    graph.authenticator_member_count !== 1 ||
+    !graph.authenticator_noinherit ||
+    !graph.authenticator_not_super ||
+    !graph.authenticator_not_bypass
+  ) {
+    throw new Error(
+      `base authority graph is unsafe: ${JSON.stringify(graph ?? null)}`,
+    );
+  }
+}
+
+async function expectRoleMembership(
+  db: PGlite,
+  member: string,
+  role: string,
+  expected: boolean,
+): Promise<void> {
+  const result = await db.query<{ member: boolean }>(`
+    select pg_catalog.pg_has_role(
+      ${textLiteral(member)},
+      ${textLiteral(role)},
+      'MEMBER'
+    ) as member
+  `);
+  if (result.rows[0]?.member !== expected) {
+    throw new Error(
+      `${member} membership in ${role} was ${String(
+        result.rows[0]?.member,
+      )}; expected ${String(expected)}`,
+    );
+  }
+}
+
+async function expectPublicationAccess(
+  db: PGlite,
+  role: string,
+): Promise<void> {
+  const result = await db.query<{
+    function_access: boolean;
+    table_access: boolean;
+  }>(`
+    select
+      pg_catalog.has_function_privilege(
+        ${textLiteral(role)},
+        'public.promote_story_spec_v2(text,jsonb)',
+        'EXECUTE'
+      ) as function_access,
+      pg_catalog.has_table_privilege(
+        ${textLiteral(role)},
+        'public.story_specs',
+        'SELECT'
+      ) as table_access
+  `);
+  const access = result.rows[0];
+  if (!access?.function_access || !access.table_access) {
+    throw new Error(
+      `${role} did not inherit the expected service-role publication access`,
+    );
+  }
 }
 
 async function applyPublicationMigration(

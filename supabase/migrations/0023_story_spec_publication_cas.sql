@@ -29,23 +29,50 @@ begin
       'StorySpec cutover must run as the database owner';
   end if;
 
-  if pg_catalog.pg_has_role(
-      'service_role'::regrole,
-      authority_owner,
-      'MEMBER'
+  if exists (
+    with recursive owner_members(member_oid) as (
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      where membership.roleid = authority_owner
+      union
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      join owner_members inherited
+        on membership.roleid = inherited.member_oid
     )
-    or pg_catalog.pg_has_role(
-      'anon'::regrole,
-      authority_owner,
-      'MEMBER'
-    )
-    or pg_catalog.pg_has_role(
-      'authenticated'::regrole,
-      authority_owner,
-      'MEMBER'
-    ) then
+    select 1
+    from owner_members
+  ) then
     raise exception
-      'application roles must not inherit StorySpec publication authority';
+      'other roles must not inherit StorySpec publication authority';
+  end if;
+
+  if not exists (
+    with recursive service_members(member_oid) as (
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      where membership.roleid = 'service_role'::regrole
+      union
+      select membership.member
+      from pg_catalog.pg_auth_members membership
+      join service_members inherited
+        on membership.roleid = inherited.member_oid
+    )
+    select 1
+    from pg_catalog.pg_roles authenticator_role
+    where authenticator_role.oid = 'authenticator'::regrole
+      and not authenticator_role.rolinherit
+      and not authenticator_role.rolsuper
+      and not authenticator_role.rolbypassrls
+      and (select count(*) from service_members) = 1
+      and exists (
+        select 1
+        from service_members
+        where service_members.member_oid = authenticator_role.oid
+      )
+  ) then
+    raise exception
+      'StorySpec service authority role graph is unsafe';
   end if;
 
   if exists (
@@ -68,6 +95,7 @@ begin
       on namespace_row.oid = procedure_row.pronamespace
     where namespace_row.nspname = 'public'
       and procedure_row.proname in (
+        'enforce_figure_stage_publication',
         'enforce_story_spec_lifecycle',
         'promote_story_spec',
         'promote_story_spec_v2',
@@ -173,6 +201,83 @@ begin
 end
 $fn$;
 
+-- Replace the 0004 stage reference and the 0001 stage-status check under the
+-- same two-table lock. The exact server deparse is captured below, so later
+-- constraint replacement, disabling, or comment-only self-attestation cannot
+-- keep release readiness green.
+alter table public.story_specs
+  add constraint story_specs_stage_strict_fk
+  foreign key (figure_key, stage_id)
+  references public.figure_stages (figure_key, stage_id)
+  on delete restrict
+  not valid;
+
+alter table public.story_specs
+  validate constraint story_specs_stage_strict_fk;
+
+alter table public.story_specs
+  drop constraint story_specs_stage_fk;
+
+alter table public.story_specs
+  rename constraint story_specs_stage_strict_fk
+  to story_specs_stage_fk;
+
+alter table public.figure_stages
+  add constraint figure_stages_status_strict_check
+  check ((status in ('draft', 'published')) is true)
+  not valid;
+
+alter table public.figure_stages
+  validate constraint figure_stages_status_strict_check;
+
+alter table public.figure_stages
+  drop constraint figure_stages_status_check;
+
+alter table public.figure_stages
+  rename constraint figure_stages_status_strict_check
+  to figure_stages_status_check;
+
+alter table public.figure_stages
+  alter column status set default 'draft',
+  alter column status set not null;
+
+-- figure_stages.status is a projection of the terminal StorySpec lifecycle.
+-- Service-role authoring may create drafts and update stage content, but only
+-- the owner-definer terminal routines may change publication visibility.
+create or replace function public.enforce_figure_stage_publication()
+returns trigger
+language plpgsql
+set search_path = pg_catalog, public
+as $fn$
+begin
+  if new.status not in ('draft', 'published') then
+    raise exception 'figure stage status is outside the publication lifecycle';
+  end if;
+
+  if (current_user::pg_catalog.regrole)::oid <> (
+    select relation_row.relowner
+    from pg_catalog.pg_class relation_row
+    where relation_row.oid = 'public.figure_stages'::regclass
+  ) then
+    if tg_op = 'INSERT' and new.status <> 'draft' then
+      raise exception
+        'published figure stages require the owner-definer boundary';
+    end if;
+
+    if tg_op = 'UPDATE' and new.status is distinct from old.status then
+      raise exception
+        'figure stage publication changes require the owner-definer boundary';
+    end if;
+  end if;
+
+  return new;
+end
+$fn$;
+
+create trigger figure_stages_publication_lifecycle
+before insert or update of status on public.figure_stages
+for each row execute function public.enforce_figure_stage_publication();
+
 -- The 0004 text comparisons can evaluate to SQL NULL when a JSON identity is
 -- absent, and CHECK accepts NULL. Direct jsonb equality plus IS TRUE rejects
 -- absent/null keys, scalar documents, type drift, and stringified versions.
@@ -219,6 +324,9 @@ do $do$
 declare
   identity_fingerprint text;
   publication_index_fingerprint text;
+  stage_fk_fingerprint text;
+  stage_status_fingerprint text;
+  stage_trigger_fingerprint text;
   story_specs_owner oid;
 begin
   select relation_row.relowner
@@ -245,6 +353,31 @@ begin
     and index_relation.relname = 'story_specs_one_published_stage_idx'
     and index_row.indrelid = 'public.story_specs'::regclass;
 
+  select pg_catalog.md5(
+    pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+  )
+  into strict stage_fk_fingerprint
+  from pg_catalog.pg_constraint constraint_row
+  where constraint_row.conrelid = 'public.story_specs'::regclass
+    and constraint_row.conname = 'story_specs_stage_fk';
+
+  select pg_catalog.md5(
+    pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+  )
+  into strict stage_status_fingerprint
+  from pg_catalog.pg_constraint constraint_row
+  where constraint_row.conrelid = 'public.figure_stages'::regclass
+    and constraint_row.conname = 'figure_stages_status_check';
+
+  select pg_catalog.md5(
+    pg_catalog.pg_get_triggerdef(trigger_row.oid, true)
+  )
+  into strict stage_trigger_fingerprint
+  from pg_catalog.pg_trigger trigger_row
+  where trigger_row.tgrelid = 'public.figure_stages'::regclass
+    and trigger_row.tgname = 'figure_stages_publication_lifecycle'
+    and not trigger_row.tgisinternal;
+
   -- Keep the code-created fingerprints independently from the mutable object
   -- comments. Health compares both the live objects and their comments to
   -- these captured constants, so recomputing a comment over drift is not
@@ -256,17 +389,23 @@ begin
       returns table (
         identity_fingerprint text,
         publication_index_fingerprint text,
+        stage_fk_fingerprint text,
+        stage_status_fingerprint text,
+        stage_trigger_fingerprint text,
         authority_owner oid
       )
       language sql
       immutable
       set search_path = pg_catalog
       as $manifest$
-        select %L::text, %L::text, %s::oid
+        select %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid
       $manifest$
     $create$,
     identity_fingerprint,
     publication_index_fingerprint,
+    stage_fk_fingerprint,
+    stage_status_fingerprint,
+    stage_trigger_fingerprint,
     story_specs_owner
   );
 
@@ -282,6 +421,30 @@ begin
     'comment on index public.story_specs_one_published_stage_idx is %L',
     'onward-story-spec-published-index-v1:'
       || publication_index_fingerprint
+      || ':owner='
+      || story_specs_owner::text
+  );
+  execute pg_catalog.format(
+    'comment on constraint story_specs_stage_fk '
+      || 'on public.story_specs is %L',
+    'onward-story-spec-stage-fk-v1:'
+      || stage_fk_fingerprint
+      || ':owner='
+      || story_specs_owner::text
+  );
+  execute pg_catalog.format(
+    'comment on constraint figure_stages_status_check '
+      || 'on public.figure_stages is %L',
+    'onward-figure-stage-status-v1:'
+      || stage_status_fingerprint
+      || ':owner='
+      || story_specs_owner::text
+  );
+  execute pg_catalog.format(
+    'comment on trigger figure_stages_publication_lifecycle '
+      || 'on public.figure_stages is %L',
+    'onward-figure-stage-lifecycle-v1:'
+      || stage_trigger_fingerprint
       || ':owner='
       || story_specs_owner::text
   );
@@ -389,6 +552,10 @@ begin
   set status = 'published'
   where stage.figure_key = v_target.figure_key
     and stage.stage_id = v_target.stage_id;
+
+  if not found then
+    raise exception 'StorySpec stage not found';
+  end if;
 end
 $fn$;
 
@@ -441,6 +608,10 @@ begin
   set status = 'draft'
   where stage.figure_key = v_figure_key
     and stage.stage_id = v_stage_id;
+
+  if not found then
+    raise exception 'StorySpec stage not found';
+  end if;
 end
 $fn$;
 
@@ -451,6 +622,8 @@ revoke all on function public.promote_story_spec(text)
 revoke all on function public.promote_story_spec_v2(text, jsonb)
   from public, anon, authenticated, service_role;
 revoke all on function public.retire_story_spec(text)
+  from public, anon, authenticated, service_role;
+revoke all on function public.enforce_figure_stage_publication()
   from public, anon, authenticated, service_role;
 revoke all on function public.enforce_story_spec_lifecycle()
   from public, anon, authenticated, service_role;
@@ -480,6 +653,7 @@ begin
     join pg_catalog.pg_namespace namespace_row
       on namespace_row.oid = procedure_row.pronamespace
     where procedure_row.oid in (
+      'public.enforce_figure_stage_publication()'::regprocedure,
       'public.enforce_story_spec_lifecycle()'::regprocedure,
       'public.promote_story_spec(text)'::regprocedure,
       'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
@@ -744,9 +918,30 @@ language sql
 security definer
 set search_path = pg_catalog, public
 as $fn$
-  with publication_manifest as materialized (
+  with recursive publication_manifest as materialized (
     select manifest.*
     from public.story_spec_publication_manifest_v1() manifest
+  ),
+  owner_members(member_oid) as (
+    select membership.member
+    from pg_catalog.pg_auth_members membership
+    join publication_manifest
+      on membership.roleid = publication_manifest.authority_owner
+    union
+    select membership.member
+    from pg_catalog.pg_auth_members membership
+    join owner_members inherited
+      on membership.roleid = inherited.member_oid
+  ),
+  service_members(member_oid) as (
+    select membership.member
+    from pg_catalog.pg_auth_members membership
+    where membership.roleid = 'service_role'::regrole
+    union
+    select membership.member
+    from pg_catalog.pg_auth_members membership
+    join service_members inherited
+      on membership.roleid = inherited.member_oid
   ),
   authority_health as (
     select count(*) filter (
@@ -754,27 +949,25 @@ as $fn$
         and database_row.datdba = publication_manifest.authority_owner
         and owner_role.oid = publication_manifest.authority_owner
         and (owner_role.rolsuper or owner_role.rolbypassrls)
-        and not pg_catalog.pg_has_role(
-          'service_role'::regrole,
-          owner_role.oid,
-          'MEMBER'
-        )
-        and not pg_catalog.pg_has_role(
-          'anon'::regrole,
-          owner_role.oid,
-          'MEMBER'
-        )
-        and not pg_catalog.pg_has_role(
-          'authenticated'::regrole,
-          owner_role.oid,
-          'MEMBER'
+        and not exists (select 1 from owner_members)
+        and authenticator_role.oid = 'authenticator'::regrole
+        and not authenticator_role.rolinherit
+        and not authenticator_role.rolsuper
+        and not authenticator_role.rolbypassrls
+        and (select count(*) from service_members) = 1
+        and exists (
+          select 1
+          from service_members
+          where service_members.member_oid = authenticator_role.oid
         )
     ) = 1 as value
     from pg_catalog.pg_database database_row
     join pg_catalog.pg_roles owner_role
       on owner_role.oid = database_row.datdba
+    cross join pg_catalog.pg_roles authenticator_role
     cross join publication_manifest
     where database_row.datname = pg_catalog.current_database()
+      and authenticator_role.oid = 'authenticator'::regrole
   ),
   manifest_function_health as (
     select
@@ -838,6 +1031,153 @@ as $fn$
     where constraint_row.conrelid = 'public.story_specs'::regclass
       and constraint_row.conname =
         'story_specs_document_identity_check'
+  ),
+  stage_fk_health as (
+    select count(*) filter (
+      where constraint_row.conname = 'story_specs_stage_fk'
+        and constraint_row.contype = 'f'
+        and constraint_row.convalidated
+        and constraint_row.conislocal
+        and constraint_row.coninhcount = 0
+        and constraint_row.conparentid = 0
+        and constraint_row.connoinherit
+        and not constraint_row.condeferrable
+        and not constraint_row.condeferred
+        and constraint_row.confupdtype = 'a'
+        and constraint_row.confdeltype = 'r'
+        and constraint_row.confmatchtype = 's'
+        and constraint_row.confrelid =
+          'public.figure_stages'::regclass
+        and constraint_row.conkey = array[
+          (
+            select attribute_row.attnum
+            from pg_catalog.pg_attribute attribute_row
+            where attribute_row.attrelid =
+                'public.story_specs'::regclass
+              and attribute_row.attname = 'figure_key'
+              and not attribute_row.attisdropped
+          ),
+          (
+            select attribute_row.attnum
+            from pg_catalog.pg_attribute attribute_row
+            where attribute_row.attrelid =
+                'public.story_specs'::regclass
+              and attribute_row.attname = 'stage_id'
+              and not attribute_row.attisdropped
+          )
+        ]::smallint[]
+        and constraint_row.confkey = array[
+          (
+            select attribute_row.attnum
+            from pg_catalog.pg_attribute attribute_row
+            where attribute_row.attrelid =
+                'public.figure_stages'::regclass
+              and attribute_row.attname = 'figure_key'
+              and not attribute_row.attisdropped
+          ),
+          (
+            select attribute_row.attnum
+            from pg_catalog.pg_attribute attribute_row
+            where attribute_row.attrelid =
+                'public.figure_stages'::regclass
+              and attribute_row.attname = 'stage_id'
+              and not attribute_row.attisdropped
+          )
+        ]::smallint[]
+        and child_relation.relowner =
+          publication_manifest.authority_owner
+        and parent_relation.relowner =
+          publication_manifest.authority_owner
+        and pg_catalog.obj_description(
+          constraint_row.oid,
+          'pg_constraint'
+        ) =
+          'onward-story-spec-stage-fk-v1:'
+          || publication_manifest.stage_fk_fingerprint
+          || ':owner='
+          || publication_manifest.authority_owner::text
+        and pg_catalog.md5(
+          pg_catalog.pg_get_constraintdef(
+            constraint_row.oid,
+            true
+          )
+        ) = publication_manifest.stage_fk_fingerprint
+        and (
+          select count(*)
+          from pg_catalog.pg_trigger trigger_row
+          where trigger_row.tgconstraint = constraint_row.oid
+            and trigger_row.tgisinternal
+            and trigger_row.tgenabled = 'O'
+            and trigger_row.tgrelid in (
+              constraint_row.conrelid,
+              constraint_row.confrelid
+            )
+        ) = 4
+        and (
+          select count(*)
+          from pg_catalog.pg_trigger trigger_row
+          where trigger_row.tgconstraint = constraint_row.oid
+        ) = 4
+    ) = 1 as value
+    from pg_catalog.pg_constraint constraint_row
+    join pg_catalog.pg_class child_relation
+      on child_relation.oid = constraint_row.conrelid
+    join pg_catalog.pg_class parent_relation
+      on parent_relation.oid = constraint_row.confrelid
+    cross join publication_manifest
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.conname = 'story_specs_stage_fk'
+  ),
+  stage_status_constraint_health as (
+    select count(*) filter (
+      where constraint_row.conname = 'figure_stages_status_check'
+        and constraint_row.contype = 'c'
+        and constraint_row.convalidated
+        and constraint_row.conislocal
+        and constraint_row.coninhcount = 0
+        and constraint_row.conparentid = 0
+        and not constraint_row.connoinherit
+        and table_relation.relowner =
+          publication_manifest.authority_owner
+        and status_attribute.atttypid = 'text'::pg_catalog.regtype
+        and status_attribute.attnotnull
+        and status_attribute.atthasdef
+        and status_attribute.attidentity = ''
+        and status_attribute.attgenerated = ''
+        and pg_catalog.pg_get_expr(
+          status_default.adbin,
+          status_default.adrelid,
+          true
+        ) = '''draft''::text'
+        and pg_catalog.obj_description(
+          constraint_row.oid,
+          'pg_constraint'
+        ) =
+          'onward-figure-stage-status-v1:'
+          || publication_manifest.stage_status_fingerprint
+          || ':owner='
+          || publication_manifest.authority_owner::text
+        and pg_catalog.md5(
+          pg_catalog.pg_get_constraintdef(
+            constraint_row.oid,
+            true
+          )
+        ) = publication_manifest.stage_status_fingerprint
+    ) = 1 as value
+    from pg_catalog.pg_constraint constraint_row
+    join pg_catalog.pg_class table_relation
+      on table_relation.oid = constraint_row.conrelid
+    join pg_catalog.pg_attribute status_attribute
+      on status_attribute.attrelid = table_relation.oid
+      and status_attribute.attname = 'status'
+      and status_attribute.attnum > 0
+      and not status_attribute.attisdropped
+    join pg_catalog.pg_attrdef status_default
+      on status_default.adrelid = status_attribute.attrelid
+      and status_default.adnum = status_attribute.attnum
+    cross join publication_manifest
+    where constraint_row.conrelid = 'public.figure_stages'::regclass
+      and constraint_row.conname = 'figure_stages_status_check'
   ),
   lifecycle_helper_health as (
     select
@@ -928,6 +1268,113 @@ as $fn$
         and lifecycle_trigger_health.value as value
     from lifecycle_helper_health,
       lifecycle_trigger_health
+  ),
+  stage_lifecycle_helper_health as (
+    select
+      count(*) = 1
+      and count(*) filter (
+        where procedure_row.oid =
+            'public.enforce_figure_stage_publication()'::regprocedure
+          and procedure_row.prokind = 'f'
+          and procedure_row.pronargs = 0
+          and procedure_row.proallargtypes is null
+          and procedure_row.proargmodes is null
+          and procedure_row.proargnames is null
+          and procedure_row.prorettype = 'trigger'::pg_catalog.regtype
+          and not procedure_row.proretset
+          and not procedure_row.prosecdef
+          and procedure_row.provolatile = 'v'
+          and language_row.lanname = 'plpgsql'
+          and procedure_row.proowner = table_relation.relowner
+          and table_relation.relowner =
+            publication_manifest.authority_owner
+          and procedure_row.proconfig =
+            array['search_path=pg_catalog, public']::text[]
+          and pg_catalog.md5(
+            pg_catalog.btrim(
+              pg_catalog.regexp_replace(
+                pg_catalog.regexp_replace(
+                  procedure_row.prosrc,
+                  E'--[^\\n\\r]*',
+                  ' ',
+                  'g'
+                ),
+                E'\\s+',
+                ' ',
+                'g'
+              )
+            )
+          ) = '36d8d57e86e730a48930a6f0502e4b56'
+      ) = 1 as value
+    from pg_catalog.pg_proc procedure_row
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    join pg_catalog.pg_language language_row
+      on language_row.oid = procedure_row.prolang
+    cross join pg_catalog.pg_class table_relation
+    cross join publication_manifest
+    where namespace_row.nspname = 'public'
+      and procedure_row.proname =
+        'enforce_figure_stage_publication'
+      and table_relation.oid = 'public.figure_stages'::regclass
+  ),
+  stage_lifecycle_trigger_health as (
+    select
+      count(*) filter (
+        where trigger_row.tgname =
+            'figure_stages_publication_lifecycle'
+          and trigger_row.tgenabled = 'O'
+          and not trigger_row.tgisinternal
+          and trigger_row.tgtype = 23::smallint
+          and trigger_row.tgqual is null
+          and trigger_row.tgnargs = 0
+          and trigger_row.tgconstraint = 0::pg_catalog.oid
+          and trigger_row.tgoldtable is null
+          and trigger_row.tgnewtable is null
+          and table_namespace.nspname = 'public'
+          and table_relation.relname = 'figure_stages'
+          and table_relation.relkind = 'r'
+          and function_namespace.nspname = 'public'
+          and procedure_row.oid =
+            'public.enforce_figure_stage_publication()'::regprocedure
+          and pg_catalog.obj_description(
+            trigger_row.oid,
+            'pg_trigger'
+          ) =
+            'onward-figure-stage-lifecycle-v1:'
+            || publication_manifest.stage_trigger_fingerprint
+            || ':owner='
+            || publication_manifest.authority_owner::text
+          and pg_catalog.md5(
+            pg_catalog.pg_get_triggerdef(
+              trigger_row.oid,
+              true
+            )
+          ) = publication_manifest.stage_trigger_fingerprint
+      ) = 1
+      and count(*) filter (
+        where not trigger_row.tgisinternal
+      ) = 1 as value
+    from pg_catalog.pg_trigger trigger_row
+    join pg_catalog.pg_class table_relation
+      on table_relation.oid = trigger_row.tgrelid
+    join pg_catalog.pg_namespace table_namespace
+      on table_namespace.oid = table_relation.relnamespace
+    join pg_catalog.pg_proc procedure_row
+      on procedure_row.oid = trigger_row.tgfoid
+    join pg_catalog.pg_namespace function_namespace
+      on function_namespace.oid = procedure_row.pronamespace
+    cross join publication_manifest
+    where trigger_row.tgrelid = 'public.figure_stages'::regclass
+  ),
+  stage_lifecycle_health as (
+    select
+      stage_status_constraint_health.value
+        and stage_lifecycle_helper_health.value
+        and stage_lifecycle_trigger_health.value as value
+    from stage_status_constraint_health,
+      stage_lifecycle_helper_health,
+      stage_lifecycle_trigger_health
   ),
   publication_index_health as (
     select count(*) filter (
@@ -1067,7 +1514,7 @@ as $fn$
               'g'
             )
           )
-        ) = '7e4a1854906a05e7796dbf7bd76faee8'
+        ) = '7b030c62cc71ce1e13669bc63baeaeb4'
     ) = 1 as value
     from pg_catalog.pg_proc procedure_row
     join pg_catalog.pg_namespace namespace_row
@@ -1133,7 +1580,7 @@ as $fn$
                 'g'
               )
             )
-          ) = '872e89b9ce1e9f19313eeb6e901ea965'
+          ) = 'b58ebb00db35f1ece3497c14065529c5'
       ) = 1 as value
     from pg_catalog.pg_proc procedure_row
     join pg_catalog.pg_namespace namespace_row
@@ -1231,6 +1678,7 @@ as $fn$
   private_function_grant_health as (
     select count(*) filter (
       where procedure_row.oid in (
+          'public.enforce_figure_stage_publication()'::regprocedure,
           'public.enforce_story_spec_lifecycle()'::regprocedure,
           'public.promote_story_spec(text)'::regprocedure,
           'public.story_spec_publication_manifest_v1()'::regprocedure
@@ -1247,10 +1695,11 @@ as $fn$
           where acl.privilege_type = 'EXECUTE'
             and acl.grantee <> procedure_row.proowner
         )
-    ) = 3 as value
+    ) = 4 as value
     from pg_catalog.pg_proc procedure_row
     cross join pg_catalog.pg_class table_relation
     where procedure_row.oid in (
+        'public.enforce_figure_stage_publication()'::regprocedure,
         'public.enforce_story_spec_lifecycle()'::regprocedure,
         'public.promote_story_spec(text)'::regprocedure,
         'public.story_spec_publication_manifest_v1()'::regprocedure
@@ -1259,9 +1708,10 @@ as $fn$
   ),
   controlled_routine_inventory_health as (
     select
-      count(*) = 6
+      count(*) = 7
       and pg_catalog.bool_and(
         procedure_row.oid in (
+          'public.enforce_figure_stage_publication()'::regprocedure,
           'public.enforce_story_spec_lifecycle()'::regprocedure,
           'public.promote_story_spec(text)'::regprocedure,
           'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
@@ -1275,6 +1725,7 @@ as $fn$
       on namespace_row.oid = procedure_row.pronamespace
     where namespace_row.nspname = 'public'
       and procedure_row.proname in (
+        'enforce_figure_stage_publication',
         'enforce_story_spec_lifecycle',
         'promote_story_spec',
         'promote_story_spec_v2',
@@ -1377,12 +1828,6 @@ as $fn$
           from pg_catalog.pg_policy policy_row
           where policy_row.polrelid = table_relation.oid
         )
-        and not exists (
-          select 1
-          from pg_catalog.pg_trigger trigger_row
-          where trigger_row.tgrelid = table_relation.oid
-            and not trigger_row.tgisinternal
-        )
         and (
           select count(distinct acl.privilege_type)
           from pg_catalog.aclexplode(
@@ -1435,23 +1880,29 @@ as $fn$
       authority_health.value
         and function_grant_health.value
         and table_boundary_health.value
-        and stage_boundary_health.value as value
+        and stage_boundary_health.value
+        and stage_lifecycle_health.value as value
     from authority_health,
       function_grant_health,
       table_boundary_health,
-      stage_boundary_health
+      stage_boundary_health,
+      stage_lifecycle_health
   )
   select
     manifest_function_health.value
       and identity_health.value
+      and stage_fk_health.value
       and lifecycle_health.value
+      and stage_lifecycle_health.value
       and publication_index_health.value
       and promotion_health.value
       and retirement_health.value
       and legacy_health.value
       and grant_health.value as ok,
-    identity_health.value as identity_constraint_valid,
-    lifecycle_health.value as lifecycle_trigger_enabled,
+    identity_health.value
+      and stage_fk_health.value as identity_constraint_valid,
+    lifecycle_health.value
+      and stage_lifecycle_health.value as lifecycle_trigger_enabled,
     publication_index_health.value
       as published_stage_uniqueness_valid,
     promotion_health.value
@@ -1460,7 +1911,9 @@ as $fn$
     grant_health.value as boundary_granted
   from manifest_function_health,
     identity_health,
+    stage_fk_health,
     lifecycle_health,
+    stage_lifecycle_health,
     publication_index_health,
     promotion_health,
     retirement_health,

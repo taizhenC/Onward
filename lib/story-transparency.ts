@@ -88,7 +88,12 @@ export function buildStoryTransparency(
           reviewedAt: storySpec.review.reviewedAt,
         }
       : { status: "review_draft" },
-    sources: storySpec.sources.map((source) => ({ ...source })),
+    sources: storySpec.sources.map((source) => ({
+      sourceId: source.sourceId,
+      citation: source.citation,
+      ...(source.locator !== undefined ? { locator: source.locator } : {}),
+      ...(source.url !== undefined ? { url: source.url } : {}),
+    })),
     facts: storySpec.facts
       .filter((fact) => factSet.has(fact.factId))
       .map((fact) => ({
@@ -96,7 +101,7 @@ export function buildStoryTransparency(
         statement: fact.statement,
         confidence: fact.confidence,
         claimKind: fact.claimKind,
-        sourceRefs: structuredClone(fact.sourceRefs),
+        sourceRefs: projectSourceRefs(fact.sourceRefs),
       })),
     quotes: storySpec.quotes
       .filter((quote) => quoteSet.has(quote.quoteId))
@@ -105,7 +110,7 @@ export function buildStoryTransparency(
         text: quote.text,
         status: quote.status,
         ...(quote.speaker ? { speaker: quote.speaker } : {}),
-        sourceRefs: structuredClone(quote.sourceRefs),
+        sourceRefs: projectSourceRefs(quote.sourceRefs),
       })),
     beats: storySpec.arc.map((beat) => ({
       role: beat.role,
@@ -406,6 +411,14 @@ function validateSourceRefs(
     seen.add(key);
   }
   return true;
+}
+
+function projectSourceRefs(refs: readonly SourceRef[]): SourceRef[] {
+  return refs.map((ref) => ({
+    sourceId: ref.sourceId,
+    scope: ref.scope,
+    ...(ref.locator !== undefined ? { locator: ref.locator } : {}),
+  }));
 }
 
 function isUniqueIdArray(

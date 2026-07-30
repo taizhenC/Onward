@@ -172,11 +172,9 @@ as $fn$
         pg_catalog.replace(
           pg_catalog.replace(
             pg_catalog.regexp_replace(
-              pg_catalog.lower(
-                pg_catalog.pg_get_constraintdef(
-                  constraint_row.oid,
-                  true
-                )
+              pg_catalog.pg_get_constraintdef(
+                constraint_row.oid,
+                true
               ),
               E'\\s+',
               '',
@@ -207,11 +205,11 @@ as $fn$
         and not constraint_row.connoinherit
         and constraint_row.normalized_definition =
           'checkjsonb_typeofspec=''object'''
-          || 'andspec->''storyspecid''=to_jsonbstory_spec_id'
-          || 'andspec->''figurekey''=to_jsonbfigure_key'
-          || 'andspec->''stageid''=to_jsonbstage_id'
+          || 'andspec->''storySpecId''=to_jsonbstory_spec_id'
+          || 'andspec->''figureKey''=to_jsonbfigure_key'
+          || 'andspec->''stageId''=to_jsonbstage_id'
           || 'andspec->''version''=to_jsonbversion'
-          || 'andspec->''schemaversion''=to_jsonbschema_version'
+          || 'andspec->''schemaVersion''=to_jsonbschema_version'
           || 'andspec->''status''=to_jsonbstatusistrue'
     ) = 1 as value
     from identity_constraint_catalog constraint_row
@@ -329,12 +327,10 @@ as $fn$
         and pg_catalog.translate(
           pg_catalog.replace(
             pg_catalog.regexp_replace(
-              pg_catalog.lower(
-                pg_catalog.pg_get_expr(
-                  index_row.indpred,
-                  index_row.indrelid,
-                  true
-                )
+              pg_catalog.pg_get_expr(
+                index_row.indpred,
+                index_row.indrelid,
+                true
               ),
               E'\\s+',
               '',

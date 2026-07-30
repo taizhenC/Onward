@@ -2,14 +2,27 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import type { CrisisResourceOrigin } from "@/lib/intake-request-privacy";
 import type { CrisisResource } from "@/lib/types";
+
+const NO_REQUEST_COPY =
+  "Onward did not save what you wrote and will not start a story from this message. You can return another time.";
+
+const CRISIS_REQUEST_COPY: Readonly<Record<CrisisResourceOrigin, string>> =
+  Object.freeze({
+    server_no_write: NO_REQUEST_COPY,
+    server_confirmed_no_story: NO_REQUEST_COPY,
+    local_no_request: NO_REQUEST_COPY,
+    request_may_have_started:
+      "You opened these resources after a story request was sent. That request may already have created a story; opening these resources does not cancel it, and the story may still open. You can leave the story at any time.",
+  });
 
 export function CrisisCard({
   resources,
-  matchRequestStarted = false,
+  origin,
 }: {
   resources: CrisisResource[];
-  matchRequestStarted?: boolean;
+  origin: CrisisResourceOrigin;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -62,19 +75,9 @@ export function CrisisCard({
         Onward is not therapy and not an emergency service. If you are in
         immediate danger, call your local emergency number.
       </p>
-      {matchRequestStarted ? (
-        <p className="font-ui text-xs leading-relaxed text-[var(--color-ink-soft)]">
-          You opened these resources after a story request was sent. That
-          request may already have created a story; opening this page does not
-          cancel or delete it. Onward will not move you into that story from
-          this screen.
-        </p>
-      ) : (
-        <p className="font-ui text-xs leading-relaxed text-[var(--color-ink-soft)]">
-          Onward did not save what you wrote and will not start a story from
-          this message. You can return another time.
-        </p>
-      )}
+      <p className="font-ui text-xs leading-relaxed text-[var(--color-ink-soft)]">
+        {CRISIS_REQUEST_COPY[origin]}
+      </p>
     </motion.div>
   );
 }

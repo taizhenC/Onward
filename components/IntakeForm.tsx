@@ -33,6 +33,15 @@ import {
   type IntakeSubmissionState,
   validateIntakeDraft,
 } from "@/lib/intake-presentation";
+import {
+  beginMatchRequest,
+  confirmCurrentRequestCreatedNoStory,
+  crisisResourceOrigin,
+  INITIAL_MATCH_REQUEST_PRIVACY,
+  matchRequestMayHaveCreatedStory,
+  type CrisisResourceOrigin,
+  type MatchRequestPrivacy,
+} from "@/lib/intake-request-privacy";
 import { TELEMETRY_FLOW_HEADER } from "@/lib/telemetry-flow-header";
 import type { TelemetryFlowId } from "@/lib/telemetry-types";
 import {
@@ -69,19 +78,28 @@ type MatchPayload =
   | MatchFlowConflict
   | MatchError;
 
+type CrisisPresentation = Readonly<{
+  resources: CrisisResource[];
+  origin: CrisisResourceOrigin;
+}>;
+
 // Invisible anonymous-first auth is attempted only after the server has ruled
 // out the crisis path and returned 401. That keeps reviewed resources independent
 // of cookies and prevents bouncing visitors from minting anonymous users. Without
 // Supabase env (offline/memory dev), the server uses its local development owner.
-async function ensureAuthSession(): Promise<boolean> {
+async function ensureAuthSessionUnless(
+  interrupted: () => boolean,
+): Promise<boolean> {
   try {
+    if (interrupted()) return false;
     const supabase = getSupabaseBrowser();
     if (!supabase) return true;
     const { data, error: sessionError } = await supabase.auth.getSession();
-    if (sessionError) return false;
+    if (sessionError || interrupted()) return false;
     if (data.session) return true;
+    if (interrupted()) return false;
     const { error } = await supabase.auth.signInAnonymously();
-    return !error;
+    return !error && !interrupted();
   } catch {
     // Still post the intake: the route can return crisis resources without an
     // auth cookie, while every non-crisis path remains owner-gated.
@@ -106,12 +124,12 @@ export function IntakeForm({
   const [submissionState, setSubmissionState] =
     useState<IntakeSubmissionState | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [crisisResources, setCrisisResources] = useState<
-    CrisisResource[] | null
-  >(null);
-  const [crisisMatchRequestStarted, setCrisisMatchRequestStarted] =
-    useState(false);
+  const [crisisPresentation, setCrisisPresentation] =
+    useState<CrisisPresentation | null>(null);
   const [rateLimited, setRateLimited] = useState(false);
+  const [rateLimitRetryMinutes, setRateLimitRetryMinutes] = useState<
+    number | null
+  >(null);
   const [boundaryEnabled, setBoundaryEnabled] = useState(false);
   const [maxIntensity, setMaxIntensity] =
     useState<StoryIntensity>("moderate");
@@ -134,6 +152,12 @@ export function IntakeForm({
   const submittingRef = useRef(false);
   const intakeStartedRef = useRef(false);
   const manualCrisisOpenedRef = useRef(false);
+  const matchRequestPrivacyRef = useRef<MatchRequestPrivacy>(
+    INITIAL_MATCH_REQUEST_PRIVACY,
+  );
+  const intakeAbandonedRef = useRef(false);
+  const componentMountedRef = useRef(true);
+  const storyNavigationCommittedRef = useRef(false);
 
   useEffect(() => {
     if (flowConflict) flowConflictRef.current?.focus();
@@ -149,6 +173,19 @@ export function IntakeForm({
     rateLimited,
   ]);
 
+  useEffect(() => {
+    // React Strict Mode runs setup → cleanup → setup in development.
+    componentMountedRef.current = true;
+    intakeAbandonedRef.current = false;
+    return () => {
+      componentMountedRef.current = false;
+      if (!storyNavigationCommittedRef.current) {
+        intakeAbandonedRef.current = true;
+        clearFirstContentRequestStarted();
+      }
+    };
+  }, []);
+
   const ageNum = Number(age);
   const feelingLength = intakeFeelingLength(feeling);
   const intakeValidation = validateIntakeDraft({ age, feeling });
@@ -156,6 +193,17 @@ export function IntakeForm({
     ageTouched || validationAttempted ? intakeValidation.age : null;
   const feelingError =
     feelingTouched || validationAttempted ? intakeValidation.feeling : null;
+  const submissionCopy = submissionState
+    ? INTAKE_SUBMISSION_COPY[submissionState]
+    : null;
+  const ambiguousRequestRecoveryCopy = recoveryToken
+    ? "Check Your stories first. This follow-up cannot be safely replayed because its recovery token may have been used; review your draft and start a fresh match only if no story appeared."
+    : telemetryFlowId
+      ? "Retry the unchanged request and Onward will try to recover the same journey."
+      : "Check Your stories before retrying. Without a recovery ID, another retry may start another story.";
+  const requestHistoryMayHaveCreatedStory = matchRequestMayHaveCreatedStory(
+    matchRequestPrivacyRef.current,
+  );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -176,6 +224,13 @@ export function IntakeForm({
       ? "small"
       : "large";
     void sendIntakeStarted(telemetryFlowId, viewportBucket);
+  }
+
+  async function ensureAuthSession(): Promise<boolean> {
+    return ensureAuthSessionUnless(
+      () =>
+        manualCrisisOpenedRef.current || intakeAbandonedRef.current,
+    );
   }
 
   async function submitMatch(acceptAdjacent: boolean) {
@@ -204,6 +259,7 @@ export function IntakeForm({
     }
     submittingRef.current = true;
     setSubmitting(true);
+    setRateLimited(false);
     setError(null);
     setNoEligibleStory(false);
     setNoCloseMatch(false);
@@ -230,8 +286,11 @@ export function IntakeForm({
         "content-type": "application/json",
       };
       if (telemetryFlowId) headers[TELEMETRY_FLOW_HEADER] = telemetryFlowId;
-      // Overwrite before every dispatch so a 401/auth retry measures from the
-      // request the server ultimately accepts, not from the rejected attempt.
+      // Record uncertainty before dispatch. Beginning a later retry promotes
+      // any still-unresolved current attempt into immutable prior uncertainty.
+      matchRequestPrivacyRef.current = beginMatchRequest(
+        matchRequestPrivacyRef.current,
+      );
       markFirstContentRequestStarted();
       return fetch("/api/match", { method: "POST", headers, body });
     };
@@ -240,20 +299,26 @@ export function IntakeForm({
       // Crisis classification reaches the server before the browser auth SDK.
       // Only a non-crisis 401 creates an anonymous session and retries.
       response = await postMatch();
-      if (stopForManualCrisis()) return;
+      if (stopForInterruptedIntake()) return;
       if (response.status === 401) {
+        matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+          matchRequestPrivacyRef.current,
+        );
         setSubmissionState("securing_session");
       }
       if (response.status === 401 && (await ensureAuthSession())) {
-        if (stopForManualCrisis()) return;
+        if (stopForInterruptedIntake()) return;
         setSubmissionState("finding_story");
         response = await postMatch();
-        if (stopForManualCrisis()) return;
+        if (stopForInterruptedIntake()) return;
       }
+      if (stopForInterruptedIntake()) return;
     } catch {
+      if (stopForInterruptedIntake()) return;
       clearFirstContentRequestStarted();
+      if (recoveryToken) resetMatchRecovery();
       setError(
-        "The connection dropped. What you wrote is still here. Please try again; the server may already have received the request.",
+        `The connection dropped. What you wrote is still in this form on this page; refreshing or leaving will clear it. The server may already have received the request. ${ambiguousRequestRecoveryCopy}`,
       );
       finishSubmitting();
       return;
@@ -262,12 +327,14 @@ export function IntakeForm({
     let payload: MatchPayload;
     try {
       payload = (await response.json()) as MatchPayload;
-      if (stopForManualCrisis()) return;
+      if (stopForInterruptedIntake()) return;
     } catch {
+      if (stopForInterruptedIntake()) return;
       clearFirstContentRequestStarted();
+      if (recoveryToken) resetMatchRecovery();
       setError(
         response.ok
-          ? "Couldn't read the response."
+          ? `Onward received the request, but this page could not read the result. A story may already exist. What you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`
           : `The server returned an error (${response.status}).`,
       );
       finishSubmitting();
@@ -289,6 +356,12 @@ export function IntakeForm({
 
     // A gentle terminal state, not an error: the 429 means "come back in a while".
     if (response.status === 429 || "rateLimited" in payload) {
+      matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+        matchRequestPrivacyRef.current,
+      );
+      setRateLimitRetryMinutes(
+        parseRetryAfterMinutes(response.headers.get("retry-after")),
+      );
       setRateLimited(true);
       finishSubmitting();
       return;
@@ -297,19 +370,25 @@ export function IntakeForm({
     if (response.status === 503 || "temporarilyUnavailable" in payload) {
       if (recoveryToken) resetMatchRecovery();
       setError(
-        "Onward is pausing new stories for a little while. What you wrote was not saved. Please try again later.",
+        `Onward could not confirm a new story. A story may already exist, and what you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`,
       );
       finishSubmitting();
       return;
     }
 
     if ("noEligibleStory" in payload) {
+      matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+        matchRequestPrivacyRef.current,
+      );
       setNoEligibleStory(true);
       finishSubmitting();
       return;
     }
 
     if ("clarificationNeeded" in payload) {
+      matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+        matchRequestPrivacyRef.current,
+      );
       setClarificationNeeded(true);
       setClarification(null);
       setRecoveryToken(payload.recoveryToken);
@@ -318,6 +397,9 @@ export function IntakeForm({
     }
 
     if ("noCloseMatch" in payload) {
+      matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+        matchRequestPrivacyRef.current,
+      );
       setClarificationNeeded(true);
       setNoCloseMatch(true);
       setRecoveryToken(payload.recoveryToken);
@@ -326,6 +408,9 @@ export function IntakeForm({
     }
 
     if (response.status === 401) {
+      matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+        matchRequestPrivacyRef.current,
+      );
       setError(
         "We couldn't start a private session. Your browser may be blocking cookies — they're needed to keep your story yours.",
       );
@@ -343,12 +428,20 @@ export function IntakeForm({
     }
 
     if ("crisis" in payload && payload.crisis) {
-      setCrisisMatchRequestStarted(false);
-      setCrisisResources(payload.resources);
+      matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+        matchRequestPrivacyRef.current,
+      );
+      setCrisisPresentation(
+        Object.freeze({
+          resources: payload.resources,
+          origin: crisisResourceOrigin(matchRequestPrivacyRef.current, true),
+        }),
+      );
       finishSubmitting();
       return;
     }
     if ("sessionId" in payload) {
+      storyNavigationCommittedRef.current = true;
       bindFirstContentStory(payload.sessionId);
       setSubmissionState("opening_story");
       router.push(`/story/${payload.sessionId}`);
@@ -360,19 +453,43 @@ export function IntakeForm({
 
   function finishSubmitting() {
     submittingRef.current = false;
+    if (!componentMountedRef.current) return;
     setSubmitting(false);
     setSubmissionState(null);
   }
 
   function openCrisisResources() {
     manualCrisisOpenedRef.current = true;
-    setCrisisMatchRequestStarted(submittingRef.current);
+    const origin = crisisResourceOrigin(matchRequestPrivacyRef.current);
     clearFirstContentRequestStarted();
-    setCrisisResources(reviewedCrisisResources);
+    setCrisisPresentation(
+      Object.freeze({ resources: reviewedCrisisResources, origin }),
+    );
   }
 
-  function stopForManualCrisis(): boolean {
-    if (!manualCrisisOpenedRef.current) return false;
+  function abandonIntake(event: React.MouseEvent<HTMLAnchorElement>) {
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.currentTarget.target === "_blank"
+    ) {
+      return;
+    }
+    intakeAbandonedRef.current = true;
+    clearFirstContentRequestStarted();
+  }
+
+  function stopForInterruptedIntake(): boolean {
+    if (
+      !manualCrisisOpenedRef.current &&
+      !intakeAbandonedRef.current
+    ) {
+      return false;
+    }
     clearFirstContentRequestStarted();
     finishSubmitting();
     return true;
@@ -408,58 +525,35 @@ export function IntakeForm({
     requestAnimationFrame(() => feelingRef.current?.focus());
   }
 
-  if (crisisResources) {
+  function focusRateLimitedDraft() {
+    requestAnimationFrame(() => feelingRef.current?.focus());
+  }
+
+  if (crisisPresentation) {
     return (
       <CrisisCard
-        resources={crisisResources}
-        matchRequestStarted={crisisMatchRequestStarted}
+        resources={crisisPresentation.resources}
+        origin={crisisPresentation.origin}
       />
     );
   }
 
-  if (rateLimited) {
-    return (
-      <motion.div
-        ref={rateLimitedRef}
-        tabIndex={-1}
-        role="status"
+  return (
+    <>
+      <motion.form
+        onSubmit={handleSubmit}
+        onChange={markIntakeStarted}
+        noValidate
+        aria-busy={submitting}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
-        className="space-y-6 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
+        className="space-y-10"
       >
-        <header className="space-y-3">
-          <h1 className="text-3xl">A pause</h1>
-        </header>
-        <p className="text-[var(--color-ink-soft)] leading-relaxed">
-          Onward has reached a recent story-start limit for this account or
-          connection. This request did not start a story. Please try again
-          later; the limit may be hourly or daily.
-        </p>
-        <Link
-          href="/"
-          className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
-        >
-          Return home
-        </Link>
-      </motion.div>
-    );
-  }
-
-  return (
-    <motion.form
-      onSubmit={handleSubmit}
-      onChange={markIntakeStarted}
-      noValidate
-      aria-busy={submitting}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-      className="space-y-10"
-    >
       <header className="space-y-4">
         <Link
           href="/"
+          onClick={abandonIntake}
           aria-label="Onward home"
           className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline decoration-[var(--color-ink-soft)]/40 underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         >
@@ -615,6 +709,7 @@ export function IntakeForm({
           session after 60 days. It is not repeated back in the story.{" "}
           <Link
             href="/privacy"
+            onClick={abandonIntake}
             className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
           >
             Read the privacy details
@@ -796,10 +891,13 @@ export function IntakeForm({
             We do not have a close enough story yet.
           </p>
           <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            The nearest story is only an adjacent parallel. No story or answer
-            was saved; the temporary key for this step expires within ten
-            minutes. You can read the story with its limitation made clear,
-            revise what you wrote, or leave.
+            The nearest story is only an adjacent parallel.{" "}
+            {requestHistoryMayHaveCreatedStory
+              ? "This latest match saved no story or answer, but an earlier response-lost attempt may have created a story; check Your stories before continuing."
+              : "No story or answer was saved."}{" "}
+            The temporary key for this step expires within ten minutes. You can
+            read the story with its limitation made clear, revise what you
+            wrote, or leave.
           </p>
           <div className="flex flex-wrap gap-3">
             <button
@@ -819,6 +917,7 @@ export function IntakeForm({
             </button>
             <Link
               href="/"
+              onClick={abandonIntake}
               className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
             >
               Leave
@@ -836,8 +935,10 @@ export function IntakeForm({
         >
           <p className="font-ui text-sm font-medium">No reviewed story fits those limits yet.</p>
           <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            Nothing was saved. You can change the limits, edit what you wrote,
-            or leave this here.
+            {requestHistoryMayHaveCreatedStory
+              ? "This latest request saved no story, but an earlier response-lost attempt may have created one; check Your stories before continuing."
+              : "Nothing was saved."}{" "}
+            You can change the limits, edit what you wrote, or leave this here.
           </p>
           <div className="flex flex-wrap gap-3">
             <button
@@ -849,9 +950,62 @@ export function IntakeForm({
             </button>
             <Link
               href="/"
+              onClick={abandonIntake}
               className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
             >
               Leave
+            </Link>
+          </div>
+        </div>
+      ) : null}
+
+      {rateLimited ? (
+        <div
+          ref={rateLimitedRef}
+          tabIndex={-1}
+          role="status"
+          className="space-y-4 border border-[var(--color-ink-soft)]/35 p-5 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
+        >
+          <h2 className="text-xl">A pause</h2>
+          <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            Onward has reached a recent story-start limit for this account or
+            connection. The rate-limited request did not start a story.{" "}
+            {requestHistoryMayHaveCreatedStory
+              ? "An earlier response-lost attempt may still have created one; check Your stories before continuing. "
+              : ""}
+            {rateLimitRetryMinutes === null
+              ? "Please try again later."
+              : `Try again in at least ${rateLimitRetryMinutes} ${
+                  rateLimitRetryMinutes === 1 ? "minute" : "minutes"
+                }.`}{" "}
+            A daily limit can take longer.
+          </p>
+          <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            Your draft remains in this form on this page. Refreshing or leaving
+            will clear it.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <button
+              type="button"
+              disabled={submitting}
+              onClick={() => void submitMatch(false)}
+              className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:opacity-40"
+            >
+              Try again after the wait
+            </button>
+            <button
+              type="button"
+              onClick={focusRateLimitedDraft}
+              className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            >
+              Review what I wrote
+            </button>
+            <Link
+              href="/"
+              onClick={abandonIntake}
+              className="inline-flex min-h-11 items-center font-ui text-xs uppercase tracking-wider underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            >
+              Return home
             </Link>
           </div>
         </div>
@@ -871,6 +1025,7 @@ export function IntakeForm({
           <a
             ref={flowConflictRef}
             href="/begin"
+            onClick={abandonIntake}
             className="font-ui text-xs uppercase tracking-wider underline underline-offset-4"
           >
             Start a fresh story
@@ -878,17 +1033,13 @@ export function IntakeForm({
         </div>
       ) : null}
 
-      {!noCloseMatch && !flowConflict ? (
+      {!noCloseMatch && !flowConflict && !rateLimited ? (
         <div className="space-y-3">
           <p
-            role="status"
-            aria-live="polite"
-            aria-atomic="true"
+            aria-hidden="true"
             className="min-h-5 font-ui text-sm text-[var(--color-ink-soft)]"
           >
-            {submissionState
-              ? INTAKE_SUBMISSION_COPY[submissionState].liveStatus
-              : ""}
+            {submissionCopy?.liveStatus ?? ""}
           </p>
           <button
             type="submit"
@@ -897,16 +1048,32 @@ export function IntakeForm({
             }
             className="min-h-11 border border-[var(--color-ink)] px-6 py-3 font-ui text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
           >
-            {submissionState
-              ? INTAKE_SUBMISSION_COPY[submissionState].buttonLabel
+            {submissionCopy
+              ? submissionCopy.buttonLabel
               : clarificationNeeded
                 ? "Use this answer"
                 : "Begin"}
           </button>
         </div>
       ) : null}
-    </motion.form>
+      </motion.form>
+      <p
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      >
+        {submissionCopy?.liveStatus ?? ""}
+      </p>
+    </>
   );
+}
+
+function parseRetryAfterMinutes(value: string | null): number | null {
+  if (value === null || value.trim() === "") return null;
+  const seconds = Number(value);
+  if (!Number.isFinite(seconds) || seconds <= 0) return null;
+  return Math.max(1, Math.ceil(seconds / 60));
 }
 
 async function sendIntakeStarted(

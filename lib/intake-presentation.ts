@@ -80,7 +80,8 @@ export const INTAKE_SUBMISSION_COPY: Readonly<
 > = Object.freeze({
   checking_request: Object.freeze({
     buttonLabel: "Checking your request...",
-    liveStatus: "Checking your request.",
+    liveStatus:
+      "Checking your request so Onward can find a close life episode and prepare your story.",
   }),
   securing_session: Object.freeze({
     buttonLabel: "Securing a private session...",
@@ -95,12 +96,6 @@ export const INTAKE_SUBMISSION_COPY: Readonly<
     liveStatus: "Your story is ready. Opening it now.",
   }),
 });
-
-export function intakeSubmissionCopy(
-  state: IntakeSubmissionState,
-): IntakeSubmissionCopy {
-  return INTAKE_SUBMISSION_COPY[state];
-}
 
 function ageValidationMessage(ageInput: string): string | null {
   const candidate = ageInput.trim();

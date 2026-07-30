@@ -44,6 +44,7 @@ npm run smoke             # hermetic regression suite (memory + stubs)
 npm run eval              # match eval (set EVAL_RECIPE_ID; use EVAL_CONCURRENCY=1 with real providers)
 npm run seed              # seed figures + figure_stages to Supabase
 npm run check-story-spec  # validate all draft contracts and publish rejection gates
+npm run check-story-spec-cutover # live pre-0023 gate; requires zero published StorySpecs
 npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
 npm run check-source-transparency # validate rationale, evidence, sources, and bounded reports
 npm run check-resonance-feedback # validate bounded post-story feedback and privacy gates
@@ -507,44 +508,86 @@ owner; it locks `story_specs` and `figure_stages` together until commit. The
 migration rejects any different database/table/routine owner, application-role
 inheritance of the database owner, unexpected controlled-routine overload, or
 user trigger on `figure_stages` before changing the schema. The database owner
-must have no actual direct or indirect `pg_auth_members` members. The only
-direct or indirect member of `service_role` may be the managed
-`authenticator`, which must remain `NOINHERIT`, non-superuser, and without
-`BYPASSRLS`. On PostgreSQL 16+, that membership edge must also remain
-`INHERIT FALSE`, `SET TRUE`, and `ADMIN FALSE`; the migration reads these
-per-membership options through a backward-compatible catalog projection. Any
-app/browser/unknown role added to either graph makes readiness fail. Managed
-platform superusers remain an unavoidable database-administration
-trust root, but are not application publication principals and are not modeled
-as membership edges.
+must have no actual direct or indirect `pg_auth_members` members. The managed
+Supabase `service_role` descendant set is closed to `authenticator`, the current
+database-owner OID, and the optional exact `supabase_storage_admin` role reached
+through `authenticator`; any app, browser, or unknown role makes readiness fail.
+`authenticator` must remain `NOINHERIT`, non-superuser, without `BYPASSRLS`,
+`CREATEROLE`, `CREATEDB`, or replication authority. On PostgreSQL 16+, its
+direct membership edge must also remain `INHERIT FALSE`, `SET TRUE`, and
+`ADMIN FALSE`; the migration reads these per-membership options through a
+backward-compatible catalog projection. `service_role` must remain a
+non-login, non-superuser, non-delegating role with `BYPASSRLS`; `anon` and
+`authenticated` must remain non-login, non-superuser, non-delegating roles
+without `BYPASSRLS`. Managed platform superusers and the database owner remain
+unavoidable database-administration trust roots, but they are not application
+publication principals.
+
+Before applying the file, run `npm run check-story-spec-cutover` against the
+target database and save its count in the release evidence. The count of
+published StorySpecs must be zero. If it is not, retire each immutable legacy
+publication with `npm run story-spec:status -- retire <storySpecId>`, preserve
+its already-created artifacts for replay, author a new StorySpec version under
+the current contract, and rerun the check. Never rewrite a published document
+in place. This read-only SQL-editor query independently records the exact stage
+projection set the migration will normalize:
+
+```sql
+select
+  (select count(*)
+   from public.story_specs
+   where status = 'published') as published_story_specs_must_be_zero,
+  (select count(*)
+   from public.figure_stages
+   where status = 'published') as published_stages_to_demote;
+
+select figure_key, stage_id
+from public.figure_stages
+where status = 'published'
+order by figure_key, stage_id;
+```
 
 The migration validates strict JSON identities; replaces and fingerprints the
-exact StorySpec-to-stage foreign key, stage-status constraint, publication
-index, and canonical stage lifecycle trigger; revokes the legacy ID-only
-promotion RPC; and installs snapshot-bound `promote_story_spec_v2` plus the
-audited retirement RPC. The service role retains direct draft/review authoring
-and content-only stage refreshes, but direct writes cannot create a published
-row, change `figure_stages.status`, or enter either terminal StorySpec status.
+exact StorySpec status constraint, StorySpec-to-stage foreign key, stage-status
+constraint, publication index, and canonical stage lifecycle trigger; revokes
+the legacy ID-only promotion RPC; and installs snapshot-bound
+`promote_story_spec_v2` plus the audited retirement RPC. While both tables are
+locked, it reconciles every stage projection: a stage is `published` exactly
+when one published StorySpec exists for it, and every legacy stage-only
+publication becomes `draft`. Inspect that expected demotion set before the
+cutover and keep story creation paused until the reviewed launch subset is
+confirmed. The service role retains direct draft/review authoring and
+content-only stage refreshes, but direct writes cannot create a published row,
+demote a reviewed StorySpec, change `figure_stages.status`, or enter either
+terminal StorySpec status.
 Publication and retirement must pass through the owner-definer RPCs, and either
 RPC rolls its StorySpec transition back if exactly one corresponding stage does
 not exist. `npm run seed` inserts missing stages as drafts and refreshes existing
-content without writing lifecycle status. A review changed after validation
-fails with “reload and revalidate”; do not retry it automatically.
+content in one status-free statement. `npm run seed-story-specs` inserts only
+missing drafts, then refreshes an existing row only while its status is still
+`draft`; reviewed, published, and retired rows are never overwritten. A review
+changed after validation fails with “reload and revalidate”; do not retry it
+automatically.
 Published sentence maps must classify every sentence as an evidence-backed
 historical claim or one of the code-owned reader-bridge lines, and every
 beat-level quote link must equal its sentence-level quote links.
+Pre-closure v5 artifacts remain replayable only through their immutable
+database envelope; the compatibility seam cannot compose a new artifact or
+accept the same rehashed legacy transparency without that envelope.
 
 Run `npm run check-db` before resuming editorial work. Any quarantined row,
-stage/spec mismatch, unexpected active trigger, controlled-routine overload,
-unsafe StorySpec/stage table, column, trigger, or function grant, owner drift,
-policy, unsafe role-membership graph, missing/changed stage FK, changed stage
-status contract, or stale identity/trigger/full publication-index fingerprint
-makes readiness fail. `npm run
+stage/spec mismatch, unexpected enabled or disabled user trigger,
+controlled-routine overload, unsafe StorySpec/stage table, column, trigger, or
+function grant, owner drift, policy, unsafe role-membership graph,
+missing/changed stage FK, changed status constraint, additive status-dependent
+constraint/unique/exclusion index, or stale identity/trigger/full
+publication-index fingerprint makes readiness fail. `npm run
 check-story-spec-migration` executes promotion, stale rejection, retirement,
-direct StorySpec and stage-status denial, hostile ACL cleanup, inherited
-owner/service authority, inherited stage-trigger rejection, orphan-stage
-rollback, forged FK metadata, owner/overload/trigger/full-index drift, and
-atomic cutover rollback in embedded PostgreSQL. It does not replace
+review-demotion and direct stage-status denial, hostile ACL cleanup, managed
+role-graph drift, inherited stage-trigger rejection, stage/spec reconciliation,
+orphan-stage rollback, forged FK metadata, owner/overload/disabled-trigger/
+status-index/full-index drift, and atomic cutover rollback in embedded
+PostgreSQL. It does not replace
 managed-Supabase lock/concurrency, RLS/grant, rollback, role-catalog, and
 service-role canaries. Deploy the guarded application, rerun
 readiness and terminal-RPC canaries, then reopen story creation and editorial

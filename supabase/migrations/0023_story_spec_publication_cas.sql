@@ -1,14 +1,15 @@
 -- Onward - strict StorySpec identity and compare-and-set publication, migration 0023.
--- Apply after 0004. Existing story playback is unaffected; pause and drain new
--- story creation plus editorial writes because both terminal tables are locked.
+-- Apply after 0022. Existing story playback is unaffected; pause and drain new
+-- story creation plus editorial writes because all three source tables are
+-- locked.
 
 set local lock_timeout = '10s';
 set local statement_timeout = '30s';
 
--- Hold both tables touched by the owner-definer terminal routines for the whole
--- cutover. This closes the owner/trigger/ACL preflight-to-health race rather
+-- Hold every table read or written by this cutover for the whole transaction.
+-- This closes the owner/trigger/ACL/pre-closure-artifact snapshot race rather
 -- than relying on a sequence of catalog snapshots.
-lock table public.story_specs, public.figure_stages
+lock table public.story_specs, public.figure_stages, public.story_artifacts
   in access exclusive mode;
 
 -- Migration 0004 creates the editorial table and its three lifecycle routines
@@ -128,6 +129,112 @@ begin
             true
           )
       )
+      and exists (
+        select 1
+        from pg_catalog.pg_auth_members owner_membership
+        where owner_membership.roleid = 'service_role'::regrole
+          and owner_membership.member = authority_owner
+      )
+      and not exists (
+        select 1
+        from pg_catalog.pg_auth_members authenticator_member
+        where authenticator_member.roleid = authenticator_role.oid
+          and not exists (
+            select 1
+            from pg_catalog.pg_roles storage_role
+            where storage_role.rolname = 'supabase_storage_admin'
+              and storage_role.oid = authenticator_member.member
+          )
+      )
+      and (
+        (
+          not exists (
+            select 1
+            from pg_catalog.pg_roles storage_role
+            where storage_role.rolname = 'supabase_storage_admin'
+          )
+          and not exists (
+            select 1
+            from pg_catalog.pg_auth_members storage_membership
+            join pg_catalog.pg_roles storage_role
+              on storage_role.oid = storage_membership.member
+            where storage_role.rolname = 'supabase_storage_admin'
+              and storage_membership.roleid in (
+                'service_role'::regrole,
+                authenticator_role.oid
+              )
+          )
+        )
+        or exists (
+          select 1
+          from pg_catalog.pg_roles storage_role
+          where storage_role.rolname = 'supabase_storage_admin'
+            and (
+              (
+                exists (
+                  select 1
+                  from pg_catalog.pg_auth_members storage_membership
+                  where storage_membership.roleid =
+                      'service_role'::regrole
+                    and storage_membership.member = storage_role.oid
+                    and not storage_membership.admin_option
+                    and not coalesce(
+                      (
+                        pg_catalog.to_jsonb(storage_membership)
+                          ->> 'inherit_option'
+                      )::boolean,
+                      storage_role.rolinherit
+                    )
+                    and coalesce(
+                      (
+                        pg_catalog.to_jsonb(storage_membership)
+                          ->> 'set_option'
+                      )::boolean,
+                      true
+                    )
+                )
+                and not exists (
+                  select 1
+                  from pg_catalog.pg_auth_members storage_membership
+                  where storage_membership.roleid =
+                      authenticator_role.oid
+                    and storage_membership.member = storage_role.oid
+                )
+              )
+              or (
+                not exists (
+                  select 1
+                  from pg_catalog.pg_auth_members storage_membership
+                  where storage_membership.roleid =
+                      'service_role'::regrole
+                    and storage_membership.member = storage_role.oid
+                )
+                and exists (
+                  select 1
+                  from pg_catalog.pg_auth_members storage_membership
+                  where storage_membership.roleid =
+                      authenticator_role.oid
+                    and storage_membership.member = storage_role.oid
+                    and not storage_membership.admin_option
+                    and not coalesce(
+                      (
+                        pg_catalog.to_jsonb(storage_membership)
+                          ->> 'inherit_option'
+                      )::boolean,
+                      storage_role.rolinherit
+                    )
+                    and coalesce(
+                      (
+                        pg_catalog.to_jsonb(storage_membership)
+                          ->> 'set_option'
+                      )::boolean,
+                      true
+                    )
+                )
+              )
+            )
+        )
+      )
   ) then
     raise exception
       'StorySpec service authority role graph is unsafe';
@@ -138,12 +245,190 @@ begin
     from pg_catalog.pg_class relation_row
     where relation_row.oid in (
         'public.story_specs'::regclass,
-        'public.figure_stages'::regclass
+        'public.figure_stages'::regclass,
+        'public.story_artifacts'::regclass
       )
       and relation_row.relowner <> authority_owner
   ) then
     raise exception
       'StorySpec cutover must run as the canonical table owner';
+  end if;
+
+  -- PostgreSQL inheritance and partition attachment route parent-table reads
+  -- through descendants without inheriting the parent's triggers, RLS, primary
+  -- keys, foreign keys, or unique publication index. Reject either direction
+  -- before changing the schema; otherwise a child ACL can become a second,
+  -- browser-reachable publication plane.
+  if exists (
+    select 1
+    from pg_catalog.pg_inherits inheritance_row
+    where inheritance_row.inhparent in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass,
+        'public.story_artifacts'::regclass
+      )
+      or inheritance_row.inhrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass,
+        'public.story_artifacts'::regclass
+      )
+  ) then
+    raise exception
+      'StorySpec cutover forbids inheritance and partition edges';
+  end if;
+
+  if exists (
+    select 1
+    from pg_catalog.pg_rewrite rewrite_row
+    where rewrite_row.ev_class in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass,
+        'public.story_artifacts'::regclass
+      )
+  ) then
+    raise exception
+      'StorySpec cutover forbids table rewrite rules';
+  end if;
+
+  -- The marker is created exactly once from the locked pre-cutover artifact
+  -- snapshot. An existing relation at this name could pre-seed or redirect the
+  -- compatibility boundary and must never be adopted.
+  if pg_catalog.to_regclass(
+    'public.story_artifact_legacy_v5_replay'
+  ) is not null then
+    raise exception
+      'legacy StoryArtifact replay marker relation already exists';
+  end if;
+
+  -- The reviewed publication schemas have no generated columns. A stored
+  -- expression is another owner-context write hook: even an ordinary immutable
+  -- helper can reject or side-effect a later publication transition.
+  if exists (
+    select 1
+    from pg_catalog.pg_attribute attribute_row
+    where attribute_row.attrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+      and attribute_row.attnum > 0
+      and not attribute_row.attisdropped
+      and attribute_row.attgenerated <> ''
+  ) then
+    raise exception
+      'StorySpec cutover forbids generated columns on publication tables';
+  end if;
+
+  -- The promotion RPC addresses and locks exactly one immutable document by
+  -- story_spec_id. Without this exact key, SELECT ... FOR UPDATE is not a
+  -- single-row snapshot and the compare-and-set claim is false.
+  if (
+    select count(*)
+    from pg_catalog.pg_constraint constraint_row
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.contype = 'p'
+  ) <> 1 or not exists (
+    select 1
+    from pg_catalog.pg_constraint constraint_row
+    join pg_catalog.pg_index index_row
+      on index_row.indexrelid = constraint_row.conindid
+    join pg_catalog.pg_attribute identity_attribute
+      on identity_attribute.attrelid = constraint_row.conrelid
+      and identity_attribute.attname = 'story_spec_id'
+      and identity_attribute.attnum > 0
+      and not identity_attribute.attisdropped
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.conname = 'story_specs_pkey'
+      and constraint_row.contype = 'p'
+      and constraint_row.convalidated
+      and constraint_row.conislocal
+      and constraint_row.coninhcount = 0
+      and constraint_row.conparentid = 0
+      and constraint_row.connoinherit
+      and not constraint_row.condeferrable
+      and not constraint_row.condeferred
+      and constraint_row.conkey =
+        array[identity_attribute.attnum]::smallint[]
+      and identity_attribute.atttypid = 'text'::pg_catalog.regtype
+      and identity_attribute.attnotnull
+      and not identity_attribute.atthasdef
+      and identity_attribute.attidentity = ''
+      and identity_attribute.attgenerated = ''
+      and index_row.indisprimary
+      and index_row.indisunique
+      and index_row.indimmediate
+      and index_row.indisvalid
+      and index_row.indisready
+      and index_row.indislive
+      and index_row.indnkeyatts = 1
+      and index_row.indnatts = 1
+      and index_row.indexprs is null
+      and index_row.indpred is null
+  ) then
+    raise exception
+      'StorySpec identity primary key is unsafe';
+  end if;
+
+  -- Terminal transitions mutate both the row status and its JSON identity
+  -- mirror plus the two lifecycle timestamps. Extra constraints or indexes on
+  -- any of those surfaces can make a green schema unable to publish or retire;
+  -- an ordinary expression or partial index can execute user-defined code too.
+  if exists (
+    select 1
+    from pg_catalog.pg_constraint constraint_row
+    join pg_catalog.pg_attribute terminal_attribute
+      on terminal_attribute.attrelid = constraint_row.conrelid
+      and terminal_attribute.attnum = any(constraint_row.conkey)
+      and terminal_attribute.attname in (
+        'status',
+        'spec',
+        'published_at',
+        'retired_at'
+      )
+      and not terminal_attribute.attisdropped
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.contype <> 'n'
+      and constraint_row.conname not in (
+        'story_specs_status_check',
+        'story_specs_document_identity_check'
+      )
+  ) or exists (
+    select 1
+    from pg_catalog.pg_index index_row
+    join pg_catalog.pg_class index_relation
+      on index_relation.oid = index_row.indexrelid
+    where index_row.indrelid = 'public.story_specs'::regclass
+      and index_relation.relname <>
+        'story_specs_one_published_stage_idx'
+      and exists (
+        select 1
+        from pg_catalog.pg_attribute terminal_attribute
+        where terminal_attribute.attrelid = index_row.indrelid
+          and terminal_attribute.attname in (
+            'status',
+            'spec',
+            'published_at',
+            'retired_at'
+          )
+          and not terminal_attribute.attisdropped
+          and (
+            terminal_attribute.attnum = any(index_row.indkey)
+            or exists (
+              select 1
+              from pg_catalog.pg_depend dependency
+              where dependency.classid =
+                  'pg_catalog.pg_class'::regclass
+                and dependency.objid = index_row.indexrelid
+                and dependency.refclassid =
+                  'pg_catalog.pg_class'::regclass
+                and dependency.refobjid = index_row.indrelid
+                and dependency.refobjsubid =
+                  terminal_attribute.attnum
+            )
+          )
+      )
+  ) then
+    raise exception
+      'StorySpec terminal lifecycle has an unsafe schema dependency';
   end if;
 
   if exists (
@@ -201,6 +486,81 @@ begin
   end if;
 end
 $do$;
+
+-- Freeze the one-time compatibility cohort while story_artifacts is locked.
+-- Current and future v5 artifacts are validated strictly unless their immutable
+-- database envelope has an artifact_id captured by this exact cutover.
+create table public.story_artifact_legacy_v5_replay (
+  artifact_id text not null,
+  constraint story_artifact_legacy_v5_replay_pkey
+    primary key (artifact_id),
+  constraint story_artifact_legacy_v5_replay_artifact_fk
+    foreign key (artifact_id)
+    references public.story_artifacts (artifact_id)
+    on delete cascade
+);
+
+comment on table public.story_artifact_legacy_v5_replay is
+  'onward-story-artifact-legacy-v5-replay-v1';
+
+insert into public.story_artifact_legacy_v5_replay (artifact_id)
+select artifact.artifact_id
+from only public.story_artifacts artifact
+where artifact.schema_version = 'story-artifact-v5-2026-07';
+
+alter table public.story_artifact_legacy_v5_replay
+  enable row level security;
+alter table public.story_artifact_legacy_v5_replay
+  force row level security;
+
+revoke all on table public.story_artifact_legacy_v5_replay
+  from public, anon, authenticated, service_role;
+
+-- ALTER DEFAULT PRIVILEGES can introduce unknown table grantees at CREATE
+-- time. Scrub all non-owner ACLs before restoring the one read-only app edge.
+do $do$
+declare
+  target record;
+  grantee_role record;
+begin
+  select
+    relation_row.relowner,
+    relation_row.relacl,
+    pg_catalog.format(
+      '%I.%I',
+      namespace_row.nspname,
+      relation_row.relname
+    ) as signature
+  into strict target
+  from pg_catalog.pg_class relation_row
+  join pg_catalog.pg_namespace namespace_row
+    on namespace_row.oid = relation_row.relnamespace
+  where relation_row.oid =
+    'public.story_artifact_legacy_v5_replay'::regclass;
+
+  for grantee_role in
+    select distinct role_row.rolname
+    from pg_catalog.aclexplode(
+      coalesce(
+        target.relacl,
+        pg_catalog.acldefault('r', target.relowner)
+      )
+    ) acl
+    join pg_catalog.pg_roles role_row
+      on role_row.oid = acl.grantee
+    where acl.grantee <> target.relowner
+  loop
+    execute pg_catalog.format(
+      'revoke all on table %s from %I',
+      target.signature,
+      grantee_role.rolname
+    );
+  end loop;
+end
+$do$;
+
+grant select on table public.story_artifact_legacy_v5_replay
+  to service_role;
 
 -- Only a SECURITY DEFINER routine owned by the canonical table owner may
 -- create a published row or enter either terminal lifecycle state. The service
@@ -287,7 +647,7 @@ end
 $fn$;
 
 -- Replace the 0004 stage reference and the 0001 stage-status check under the
--- same two-table lock. The exact server deparse is captured below, so later
+-- same three-table lock. The exact server deparse is captured below, so later
 -- constraint replacement, disabling, or comment-only self-attestation cannot
 -- keep release readiness green.
 alter table public.story_specs
@@ -346,8 +706,9 @@ alter table public.figure_stages
   alter column status set not null;
 
 -- Status is a materialized projection for the matching catalog, not a second
--- publication authority. Normalize every pre-cutover row while both tables are
--- locked: a stage is visible exactly when one StorySpec is published for it.
+-- publication authority. Normalize every pre-cutover row while all source
+-- tables are locked: a stage is visible exactly when one StorySpec is
+-- published for it.
 update public.figure_stages stage
 set status = case
   when exists (
@@ -1163,6 +1524,113 @@ as $fn$
               true
             )
         )
+        and exists (
+          select 1
+          from pg_catalog.pg_auth_members owner_membership
+          where owner_membership.roleid = 'service_role'::regrole
+            and owner_membership.member =
+              publication_manifest.authority_owner
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_auth_members authenticator_member
+          where authenticator_member.roleid = authenticator_role.oid
+            and not exists (
+              select 1
+              from pg_catalog.pg_roles storage_role
+              where storage_role.rolname = 'supabase_storage_admin'
+                and storage_role.oid = authenticator_member.member
+            )
+        )
+        and (
+          (
+            not exists (
+              select 1
+              from pg_catalog.pg_roles storage_role
+              where storage_role.rolname = 'supabase_storage_admin'
+            )
+            and not exists (
+              select 1
+              from pg_catalog.pg_auth_members storage_membership
+              join pg_catalog.pg_roles storage_role
+                on storage_role.oid = storage_membership.member
+              where storage_role.rolname = 'supabase_storage_admin'
+                and storage_membership.roleid in (
+                  'service_role'::regrole,
+                  authenticator_role.oid
+                )
+            )
+          )
+          or exists (
+            select 1
+            from pg_catalog.pg_roles storage_role
+            where storage_role.rolname = 'supabase_storage_admin'
+              and (
+                (
+                  exists (
+                    select 1
+                    from pg_catalog.pg_auth_members storage_membership
+                    where storage_membership.roleid =
+                        'service_role'::regrole
+                      and storage_membership.member = storage_role.oid
+                      and not storage_membership.admin_option
+                      and not coalesce(
+                        (
+                          pg_catalog.to_jsonb(storage_membership)
+                            ->> 'inherit_option'
+                        )::boolean,
+                        storage_role.rolinherit
+                      )
+                      and coalesce(
+                        (
+                          pg_catalog.to_jsonb(storage_membership)
+                            ->> 'set_option'
+                        )::boolean,
+                        true
+                      )
+                  )
+                  and not exists (
+                    select 1
+                    from pg_catalog.pg_auth_members storage_membership
+                    where storage_membership.roleid =
+                        authenticator_role.oid
+                      and storage_membership.member = storage_role.oid
+                  )
+                )
+                or (
+                  not exists (
+                    select 1
+                    from pg_catalog.pg_auth_members storage_membership
+                    where storage_membership.roleid =
+                        'service_role'::regrole
+                      and storage_membership.member = storage_role.oid
+                  )
+                  and exists (
+                    select 1
+                    from pg_catalog.pg_auth_members storage_membership
+                    where storage_membership.roleid =
+                        authenticator_role.oid
+                      and storage_membership.member = storage_role.oid
+                      and not storage_membership.admin_option
+                      and not coalesce(
+                        (
+                          pg_catalog.to_jsonb(storage_membership)
+                            ->> 'inherit_option'
+                        )::boolean,
+                        storage_role.rolinherit
+                      )
+                      and coalesce(
+                        (
+                          pg_catalog.to_jsonb(storage_membership)
+                            ->> 'set_option'
+                        )::boolean,
+                        true
+                      )
+                  )
+                )
+              )
+          )
+        )
     ) = 1 as value
     from pg_catalog.pg_database database_row
     join pg_catalog.pg_roles owner_role
@@ -1177,6 +1645,251 @@ as $fn$
       and service_authority_role.oid = 'service_role'::regrole
       and anonymous_role.oid = 'anon'::regrole
       and authenticated_role.oid = 'authenticated'::regrole
+  ),
+  relation_graph_health as (
+    select
+      (
+        select count(*)
+        from pg_catalog.pg_class relation_row
+        where relation_row.oid in (
+            'public.story_specs'::regclass,
+            'public.figure_stages'::regclass,
+            'public.story_artifacts'::regclass,
+            'public.story_artifact_legacy_v5_replay'::regclass
+          )
+          and relation_row.relkind = 'r'
+          and relation_row.relpersistence = 'p'
+          and relation_row.relowner =
+            publication_manifest.authority_owner
+      ) = 4
+      and not exists (
+        select 1
+        from pg_catalog.pg_inherits inheritance_row
+        where inheritance_row.inhparent in (
+            'public.story_specs'::regclass,
+            'public.figure_stages'::regclass,
+            'public.story_artifacts'::regclass,
+            'public.story_artifact_legacy_v5_replay'::regclass
+          )
+          or inheritance_row.inhrelid in (
+            'public.story_specs'::regclass,
+            'public.figure_stages'::regclass,
+            'public.story_artifacts'::regclass,
+            'public.story_artifact_legacy_v5_replay'::regclass
+          )
+      ) as value
+    from publication_manifest
+  ),
+  rewrite_rule_health as (
+    select not exists (
+      select 1
+      from pg_catalog.pg_rewrite rewrite_row
+      where rewrite_row.ev_class in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass,
+        'public.story_artifacts'::regclass,
+        'public.story_artifact_legacy_v5_replay'::regclass
+      )
+    ) as value
+  ),
+  legacy_marker_health as (
+    select count(*) filter (
+      where marker_namespace.nspname = 'public'
+        and marker_relation.relname =
+          'story_artifact_legacy_v5_replay'
+        and marker_relation.relkind = 'r'
+        and marker_relation.relpersistence = 'p'
+        and marker_relation.relowner =
+          publication_manifest.authority_owner
+        and marker_relation.relrowsecurity
+        and marker_relation.relforcerowsecurity
+        and pg_catalog.obj_description(
+          marker_relation.oid,
+          'pg_class'
+        ) = 'onward-story-artifact-legacy-v5-replay-v1'
+        and marker_relation.relnatts = 1
+        and (
+          select count(*)
+          from pg_catalog.pg_attribute attribute_row
+          where attribute_row.attrelid = marker_relation.oid
+            and attribute_row.attnum > 0
+            and not attribute_row.attisdropped
+        ) = 1
+        and exists (
+          select 1
+          from pg_catalog.pg_attribute attribute_row
+          where attribute_row.attrelid = marker_relation.oid
+            and attribute_row.attname = 'artifact_id'
+            and attribute_row.atttypid = 'text'::pg_catalog.regtype
+            and attribute_row.attnotnull
+            and not attribute_row.atthasdef
+            and attribute_row.attidentity = ''
+            and attribute_row.attgenerated = ''
+            and attribute_row.attacl is null
+        )
+        and (
+          select count(*)
+          from pg_catalog.pg_constraint constraint_row
+          where constraint_row.conrelid = marker_relation.oid
+            and constraint_row.contype <> 'n'
+        ) = 2
+        and exists (
+          select 1
+          from pg_catalog.pg_constraint constraint_row
+          join pg_catalog.pg_index index_row
+            on index_row.indexrelid = constraint_row.conindid
+          join pg_catalog.pg_class index_relation
+            on index_relation.oid = index_row.indexrelid
+          where constraint_row.conrelid = marker_relation.oid
+            and constraint_row.conname =
+              'story_artifact_legacy_v5_replay_pkey'
+            and constraint_row.contype = 'p'
+            and constraint_row.convalidated
+            and constraint_row.conislocal
+            and constraint_row.coninhcount = 0
+            and constraint_row.conparentid = 0
+            and constraint_row.connoinherit
+            and not constraint_row.condeferrable
+            and not constraint_row.condeferred
+            and constraint_row.conkey = array[
+              (
+                select attribute_row.attnum
+                from pg_catalog.pg_attribute attribute_row
+                where attribute_row.attrelid = marker_relation.oid
+                  and attribute_row.attname = 'artifact_id'
+                  and not attribute_row.attisdropped
+              )
+            ]::smallint[]
+            and index_relation.relname =
+              'story_artifact_legacy_v5_replay_pkey'
+            and index_relation.relowner =
+              publication_manifest.authority_owner
+            and index_row.indisprimary
+            and index_row.indisunique
+            and index_row.indimmediate
+            and index_row.indisvalid
+            and index_row.indisready
+            and index_row.indislive
+            and index_row.indnkeyatts = 1
+            and index_row.indnatts = 1
+            and index_row.indexprs is null
+            and index_row.indpred is null
+        )
+        and (
+          select count(*)
+          from pg_catalog.pg_index index_row
+          where index_row.indrelid = marker_relation.oid
+        ) = 1
+        and exists (
+          select 1
+          from pg_catalog.pg_constraint constraint_row
+          where constraint_row.conrelid = marker_relation.oid
+            and constraint_row.conname =
+              'story_artifact_legacy_v5_replay_artifact_fk'
+            and constraint_row.contype = 'f'
+            and constraint_row.convalidated
+            and constraint_row.conislocal
+            and constraint_row.coninhcount = 0
+            and constraint_row.conparentid = 0
+            and constraint_row.connoinherit
+            and not constraint_row.condeferrable
+            and not constraint_row.condeferred
+            and constraint_row.confupdtype = 'a'
+            and constraint_row.confdeltype = 'c'
+            and constraint_row.confmatchtype = 's'
+            and constraint_row.confrelid =
+              'public.story_artifacts'::regclass
+            and constraint_row.conkey = array[
+              (
+                select attribute_row.attnum
+                from pg_catalog.pg_attribute attribute_row
+                where attribute_row.attrelid = marker_relation.oid
+                  and attribute_row.attname = 'artifact_id'
+                  and not attribute_row.attisdropped
+              )
+            ]::smallint[]
+            and constraint_row.confkey = array[
+              (
+                select attribute_row.attnum
+                from pg_catalog.pg_attribute attribute_row
+                where attribute_row.attrelid =
+                    'public.story_artifacts'::regclass
+                  and attribute_row.attname = 'artifact_id'
+                  and not attribute_row.attisdropped
+              )
+            ]::smallint[]
+            and (
+              select count(*)
+              from pg_catalog.pg_trigger trigger_row
+              where trigger_row.tgconstraint = constraint_row.oid
+                and trigger_row.tgisinternal
+                and trigger_row.tgenabled = 'O'
+            ) = 4
+            and (
+              select count(*)
+              from pg_catalog.pg_trigger trigger_row
+              where trigger_row.tgconstraint = constraint_row.oid
+            ) = 4
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_policy policy_row
+          where policy_row.polrelid = marker_relation.oid
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_trigger trigger_row
+          where trigger_row.tgrelid = marker_relation.oid
+            and not trigger_row.tgisinternal
+        )
+        and (
+          select count(*)
+          from pg_catalog.aclexplode(
+            coalesce(
+              marker_relation.relacl,
+              pg_catalog.acldefault(
+                'r',
+                marker_relation.relowner
+              )
+            )
+          ) acl
+          where acl.grantee = 'service_role'::regrole
+            and acl.privilege_type = 'SELECT'
+            and not acl.is_grantable
+        ) = 1
+        and not exists (
+          select 1
+          from pg_catalog.aclexplode(
+            coalesce(
+              marker_relation.relacl,
+              pg_catalog.acldefault(
+                'r',
+                marker_relation.relowner
+              )
+            )
+          ) acl
+          where acl.grantee <> marker_relation.relowner
+            and (
+              acl.grantee <> 'service_role'::regrole
+              or acl.privilege_type <> 'SELECT'
+              or acl.is_grantable
+            )
+        )
+        and not exists (
+          select 1
+          from only public.story_artifact_legacy_v5_replay marker
+          join only public.story_artifacts artifact
+            on artifact.artifact_id = marker.artifact_id
+          where artifact.schema_version <>
+            'story-artifact-v5-2026-07'
+        )
+    ) = 1 as value
+    from pg_catalog.pg_class marker_relation
+    join pg_catalog.pg_namespace marker_namespace
+      on marker_namespace.oid = marker_relation.relnamespace
+    cross join publication_manifest
+    where marker_relation.oid =
+      'public.story_artifact_legacy_v5_replay'::regclass
   ),
   manifest_function_health as (
     select
@@ -1206,6 +1919,60 @@ as $fn$
       and procedure_row.proname =
         'story_spec_publication_manifest_v1'
       and table_relation.oid = 'public.story_specs'::regclass
+  ),
+  story_identity_key_health as (
+    select
+      count(*) = 1
+      and count(*) filter (
+        where constraint_row.conname = 'story_specs_pkey'
+          and constraint_row.convalidated
+          and constraint_row.conislocal
+          and constraint_row.coninhcount = 0
+          and constraint_row.conparentid = 0
+          and constraint_row.connoinherit
+          and not constraint_row.condeferrable
+          and not constraint_row.condeferred
+          and constraint_row.conkey =
+            array[identity_attribute.attnum]::smallint[]
+          and table_relation.relowner =
+            publication_manifest.authority_owner
+          and identity_attribute.atttypid =
+            'text'::pg_catalog.regtype
+          and identity_attribute.attnotnull
+          and not identity_attribute.atthasdef
+          and identity_attribute.attidentity = ''
+          and identity_attribute.attgenerated = ''
+          and index_relation.relname = 'story_specs_pkey'
+          and index_relation.relkind = 'i'
+          and index_relation.relowner =
+            publication_manifest.authority_owner
+          and index_relation.reloptions is null
+          and index_row.indisprimary
+          and index_row.indisunique
+          and index_row.indimmediate
+          and index_row.indisvalid
+          and index_row.indisready
+          and index_row.indislive
+          and index_row.indnkeyatts = 1
+          and index_row.indnatts = 1
+          and index_row.indexprs is null
+          and index_row.indpred is null
+      ) = 1 as value
+    from pg_catalog.pg_constraint constraint_row
+    join pg_catalog.pg_class table_relation
+      on table_relation.oid = constraint_row.conrelid
+    join pg_catalog.pg_attribute identity_attribute
+      on identity_attribute.attrelid = table_relation.oid
+      and identity_attribute.attname = 'story_spec_id'
+      and identity_attribute.attnum > 0
+      and not identity_attribute.attisdropped
+    join pg_catalog.pg_index index_row
+      on index_row.indexrelid = constraint_row.conindid
+    join pg_catalog.pg_class index_relation
+      on index_relation.oid = index_row.indexrelid
+    cross join publication_manifest
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.contype = 'p'
   ),
   identity_health as (
     select count(*) filter (
@@ -1284,8 +2051,21 @@ as $fn$
             and other_constraint.contype <> 'n'
             and other_constraint.conname <>
               'story_specs_document_identity_check'
-            and status_attribute.attnum =
-              any(other_constraint.conkey)
+            and exists (
+              select 1
+              from pg_catalog.pg_attribute terminal_attribute
+              where terminal_attribute.attrelid =
+                  other_constraint.conrelid
+                and terminal_attribute.attname in (
+                  'status',
+                  'spec',
+                  'published_at',
+                  'retired_at'
+                )
+                and not terminal_attribute.attisdropped
+                and terminal_attribute.attnum =
+                  any(other_constraint.conkey)
+            )
         )
         and not exists (
           select 1
@@ -1294,25 +2074,32 @@ as $fn$
             and other_index.indexrelid <>
               'public.story_specs_one_published_stage_idx'::regclass
             and (
-              other_index.indisunique
-              or other_index.indisexclusion
-            )
-            and (
-              status_attribute.attnum = any(other_index.indkey)
-              or exists (
-                select 1
-                from pg_catalog.pg_depend dependency
-                where dependency.classid =
-                    'pg_catalog.pg_class'::regclass
-                  and dependency.objid =
-                    other_index.indexrelid
-                  and dependency.refclassid =
-                    'pg_catalog.pg_class'::regclass
-                  and dependency.refobjid =
-                    table_relation.oid
-                  and dependency.refobjsubid =
-                    status_attribute.attnum
+              select pg_catalog.bool_or(
+                terminal_attribute.attnum = any(other_index.indkey)
+                or exists (
+                  select 1
+                  from pg_catalog.pg_depend dependency
+                  where dependency.classid =
+                      'pg_catalog.pg_class'::regclass
+                    and dependency.objid =
+                      other_index.indexrelid
+                    and dependency.refclassid =
+                      'pg_catalog.pg_class'::regclass
+                    and dependency.refobjid =
+                      table_relation.oid
+                    and dependency.refobjsubid =
+                      terminal_attribute.attnum
+                )
               )
+              from pg_catalog.pg_attribute terminal_attribute
+              where terminal_attribute.attrelid = table_relation.oid
+                and terminal_attribute.attname in (
+                  'status',
+                  'spec',
+                  'published_at',
+                  'retired_at'
+                )
+                and not terminal_attribute.attisdropped
             )
         )
     ) = 1 as value
@@ -1475,10 +2262,6 @@ as $fn$
           select 1
           from pg_catalog.pg_index other_index
           where other_index.indrelid = table_relation.oid
-            and (
-              other_index.indisunique
-              or other_index.indisexclusion
-            )
             and (
               status_attribute.attnum = any(other_index.indkey)
               or exists (
@@ -2221,21 +3004,43 @@ as $fn$
     cross join publication_manifest
     where table_relation.oid = 'public.figure_stages'::regclass
   ),
+  generated_column_health as (
+    select not exists (
+      select 1
+      from pg_catalog.pg_attribute attribute_row
+      where attribute_row.attrelid in (
+          'public.story_specs'::regclass,
+          'public.figure_stages'::regclass
+        )
+        and attribute_row.attnum > 0
+        and not attribute_row.attisdropped
+        and attribute_row.attgenerated <> ''
+    ) as value
+  ),
   grant_health as (
     select
-      authority_health.value
+      generated_column_health.value
+        and authority_health.value
         and function_grant_health.value
         and table_boundary_health.value
         and stage_boundary_health.value
-        and stage_lifecycle_health.value as value
+        and stage_lifecycle_health.value
+        and relation_graph_health.value
+        and rewrite_rule_health.value
+        and legacy_marker_health.value as value
     from authority_health,
       function_grant_health,
       table_boundary_health,
       stage_boundary_health,
-      stage_lifecycle_health
+      stage_lifecycle_health,
+      relation_graph_health,
+      rewrite_rule_health,
+      legacy_marker_health,
+      generated_column_health
   )
   select
     manifest_function_health.value
+      and story_identity_key_health.value
       and identity_health.value
       and stage_fk_health.value
       and lifecycle_health.value
@@ -2247,21 +3052,33 @@ as $fn$
       and retirement_health.value
       and legacy_health.value
       and grant_health.value as ok,
-    identity_health.value
-      and stage_fk_health.value as identity_constraint_valid,
-    lifecycle_health.value
+    story_identity_key_health.value
+      and identity_health.value
+      and stage_fk_health.value
+      and relation_graph_health.value as identity_constraint_valid,
+    generated_column_health.value
+      and lifecycle_health.value
       and stage_lifecycle_health.value
       and story_status_constraint_health.value
+      and relation_graph_health.value
+      and rewrite_rule_health.value
       as lifecycle_trigger_enabled,
     publication_index_health.value
       and story_status_constraint_health.value
       and catalog_alignment_health.value
+      and relation_graph_health.value
       as published_stage_uniqueness_valid,
-    promotion_health.value
-      and retirement_health.value as promotion_cas_valid,
+    generated_column_health.value
+      and story_identity_key_health.value
+      and promotion_health.value
+      and retirement_health.value
+      and story_status_constraint_health.value
+      and relation_graph_health.value
+      and rewrite_rule_health.value as promotion_cas_valid,
     legacy_health.value as legacy_rpc_revoked,
     grant_health.value as boundary_granted
   from manifest_function_health,
+    story_identity_key_health,
     identity_health,
     stage_fk_health,
     lifecycle_health,
@@ -2272,7 +3089,10 @@ as $fn$
     promotion_health,
     retirement_health,
     legacy_health,
-    grant_health
+    relation_graph_health,
+    rewrite_rule_health,
+    grant_health,
+    generated_column_health
 $fn$;
 
 revoke all on function public.story_spec_publication_schema_health_v1()

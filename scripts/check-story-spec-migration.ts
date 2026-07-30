@@ -21,6 +21,10 @@ const publicationMigration = read(
 
 async function main(): Promise<void> {
   await checkCanonicalPublicationBoundary();
+  await checkLegacyReplayMarkerBoundary();
+  await checkRelationGraphBoundary();
+  await checkRewriteRuleBoundary();
+  await checkGeneratedColumnBoundary();
   await checkHostileAclCutover();
   await checkFigureStagesDefinerBoundary();
   await checkAuthorityRootDriftDetection();
@@ -36,6 +40,10 @@ async function main(): Promise<void> {
   console.log("Onward StorySpec migration");
   console.log("==========================");
   console.log("PASS exact-snapshot promotion, stale rejection, and retirement");
+  console.log("PASS pre-cutover v5 replay markers are one-way and read-only");
+  console.log("PASS inheritance and partition publication planes fail closed");
+  console.log("PASS table rewrite hooks fail closed before and after cutover");
+  console.log("PASS generated-column publication hooks fail closed");
   console.log("PASS direct service-role publication and retirement are blocked");
   console.log("PASS hostile table, column, and every lifecycle-function ACL is removed");
   console.log("PASS figure-stage trigger inheritance is closed before and after cutover");
@@ -331,6 +339,357 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
     );
   } finally {
     await db.close();
+  }
+}
+
+async function checkLegacyReplayMarkerBoundary(): Promise<void> {
+  const db = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(db);
+
+    const initial = await db.query<{ artifact_id: string }>(`
+      select marker.artifact_id
+      from public.story_artifact_legacy_v5_replay marker
+      order by marker.artifact_id
+    `);
+    if (
+      initial.rows.length !== 1 ||
+      initial.rows[0]?.artifact_id !== "precutover-v5"
+    ) {
+      throw new Error(
+        `legacy marker snapshot was not v5-only: ${JSON.stringify(initial.rows)}`,
+      );
+    }
+
+    await db.exec("set role service_role");
+    try {
+      const readable = await db.query<{ marker_count: number }>(`
+        select count(*)::int as marker_count
+        from public.story_artifact_legacy_v5_replay
+      `);
+      if (readable.rows[0]?.marker_count !== 1) {
+        throw new Error("service role could not read the legacy marker snapshot");
+      }
+      await expectRejected(
+        () =>
+          db.exec(`
+            insert into public.story_artifact_legacy_v5_replay (artifact_id)
+            values ('precutover-v4');
+          `),
+        "service-role legacy marker insert",
+        "permission denied",
+      );
+    } finally {
+      await db.exec("reset role");
+    }
+
+    await db.exec("set role anon");
+    try {
+      await expectRejected(
+        () =>
+          db.query(`
+            select artifact_id
+            from public.story_artifact_legacy_v5_replay
+          `),
+        "anonymous legacy marker read",
+        "permission denied",
+      );
+    } finally {
+      await db.exec("reset role");
+    }
+
+    await db.exec(`
+      insert into public.story_artifacts (artifact_id, schema_version)
+      values ('postcutover-v5', 'story-artifact-v5-2026-07');
+    `);
+    const postCutover = await db.query<{ marked: boolean }>(`
+      select exists (
+        select 1
+        from public.story_artifact_legacy_v5_replay marker
+        where marker.artifact_id = 'postcutover-v5'
+      ) as marked
+    `);
+    if (postCutover.rows[0]?.marked !== false) {
+      throw new Error("post-cutover v5 artifact entered the legacy cohort");
+    }
+    await expectHealth(db, { ok: true, boundary_granted: true });
+
+    await db.exec(`
+      insert into public.story_artifact_legacy_v5_replay (artifact_id)
+      values ('precutover-v4');
+    `);
+    await expectHealth(db, { ok: false, boundary_granted: false });
+    await db.exec(`
+      delete from public.story_artifact_legacy_v5_replay
+      where artifact_id = 'precutover-v4';
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      grant insert on public.story_artifact_legacy_v5_replay
+        to service_role;
+    `);
+    await expectHealth(db, { ok: false, boundary_granted: false });
+    await db.exec(`
+      revoke insert on public.story_artifact_legacy_v5_replay
+        from service_role;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter table public.story_artifact_legacy_v5_replay
+        no force row level security;
+    `);
+    await expectHealth(db, { ok: false, boundary_granted: false });
+    await db.exec(`
+      alter table public.story_artifact_legacy_v5_replay
+        force row level security;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      delete from public.story_artifacts
+      where artifact_id = 'precutover-v5';
+    `);
+    const cascaded = await db.query<{ marker_count: number }>(`
+      select count(*)::int as marker_count
+      from public.story_artifact_legacy_v5_replay marker
+      where marker.artifact_id = 'precutover-v5'
+    `);
+    if (cascaded.rows[0]?.marker_count !== 0) {
+      throw new Error("artifact deletion did not cascade its legacy marker");
+    }
+    await expectHealth(db, { ok: true });
+  } finally {
+    await db.close();
+  }
+}
+
+async function checkRelationGraphBoundary(): Promise<void> {
+  const bootstrapTargets = [
+    "story_specs",
+    "figure_stages",
+    "story_artifacts",
+  ] as const;
+  for (const target of bootstrapTargets) {
+    const db = await createBaseDatabase();
+    try {
+      await db.exec(`
+        create table public.onward_${target}_child ()
+          inherits (public.${target});
+        grant select, insert, update
+          on public.onward_${target}_child to anon;
+      `);
+      await expectRejected(
+        () => applyPublicationMigration(db),
+        `${target} inherited-child bootstrap`,
+        "forbids inheritance and partition edges",
+      );
+      await expectV2Absent(db, `${target} inherited-child rollback`);
+    } finally {
+      await db.close();
+    }
+  }
+
+  const reservedMarkerDb = await createBaseDatabase();
+  try {
+    await reservedMarkerDb.exec(`
+      create table public.story_artifact_legacy_v5_replay (
+        artifact_id text primary key
+      );
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(reservedMarkerDb),
+      "pre-seeded legacy marker relation",
+      "marker relation already exists",
+    );
+    await expectV2Absent(reservedMarkerDb, "pre-seeded marker rollback");
+  } finally {
+    await reservedMarkerDb.close();
+  }
+
+  const liveDb = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(liveDb);
+    const liveTargets = [
+      "story_specs",
+      "figure_stages",
+      "story_artifacts",
+      "story_artifact_legacy_v5_replay",
+    ] as const;
+    for (const target of liveTargets) {
+      await liveDb.exec(`
+        create table public.onward_${target}_child ()
+          inherits (public.${target});
+      `);
+      await expectHealth(liveDb, {
+        ok: false,
+        boundary_granted: false,
+      });
+      await liveDb.exec(`
+        drop table public.onward_${target}_child;
+      `);
+      await expectHealth(liveDb, { ok: true });
+    }
+  } finally {
+    await liveDb.close();
+  }
+}
+
+async function checkRewriteRuleBoundary(): Promise<void> {
+  const bootstrapDb = await createBaseDatabase();
+  try {
+    await bootstrapDb.exec(`
+      create rule onward_story_spec_update_rule
+      as on update to public.story_specs
+      do instead nothing;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(bootstrapDb),
+      "pre-cutover StorySpec rewrite rule",
+      "forbids table rewrite rules",
+    );
+    await expectV2Absent(bootstrapDb, "rewrite-rule bootstrap rollback");
+  } finally {
+    await bootstrapDb.close();
+  }
+
+  const liveDb = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(liveDb);
+    const targets = [
+      "story_specs",
+      "figure_stages",
+      "story_artifacts",
+      "story_artifact_legacy_v5_replay",
+    ] as const;
+    for (const target of targets) {
+      const ruleName = `onward_${target}_update_rule`;
+      await liveDb.exec(`
+        create rule ${ruleName}
+        as on update to public.${target}
+        do instead nothing;
+      `);
+      await expectHealth(liveDb, {
+        ok: false,
+        lifecycle_trigger_enabled: false,
+        boundary_granted: false,
+      });
+      await liveDb.exec(`
+        drop rule ${ruleName} on public.${target};
+      `);
+      await expectHealth(liveDb, { ok: true });
+    }
+  } finally {
+    await liveDb.close();
+  }
+}
+
+async function checkGeneratedColumnBoundary(): Promise<void> {
+  const bootstrapDb = await createBaseDatabase();
+  try {
+    await bootstrapDb.exec(`
+      create function public.onward_block_generated_story_status(
+        p_status text
+      )
+      returns text
+      language plpgsql
+      immutable
+      as $$
+      begin
+        if p_status in ('published', 'retired') then
+          raise exception 'generated column blocked terminal write';
+        end if;
+        return p_status;
+      end
+      $$;
+
+      alter table public.story_specs
+        add column onward_terminal_guard text
+        generated always as (
+          public.onward_block_generated_story_status(status)
+        ) stored;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(bootstrapDb),
+      "StorySpec generated-column bootstrap",
+      "forbids generated columns",
+    );
+    await expectV2Absent(
+      bootstrapDb,
+      "StorySpec generated-column rollback",
+    );
+  } finally {
+    await bootstrapDb.close();
+  }
+
+  const liveDb = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(liveDb);
+    const blockingReview = storySpecDocument(
+      "blocking-generated-column",
+      1,
+      "review",
+      "blocking-generated-column",
+    );
+    await liveDb.exec(`
+      insert into public.figure_stages (figure_key, stage_id)
+      values ('blocking-generated-column', 'stage');
+
+      create function public.onward_block_generated_stage_status(
+        p_status text
+      )
+      returns text
+      language plpgsql
+      immutable
+      as $$
+      begin
+        if p_status = 'published' then
+          raise exception 'generated column blocked terminal write';
+        end if;
+        return p_status;
+      end
+      $$;
+    `);
+    await insertStorySpec(liveDb, blockingReview);
+    await liveDb.exec(`
+      alter table public.figure_stages
+        add column onward_terminal_guard text
+        generated always as (
+          public.onward_block_generated_stage_status(status)
+        ) stored;
+    `);
+    await expectHealth(liveDb, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+      promotion_cas_valid: false,
+    });
+    await expectRejected(
+      () =>
+        liveDb.query(
+          `
+            select public.promote_story_spec_v2(
+              $1::text,
+              $2::jsonb
+            )
+          `,
+          [blockingReview.storySpecId, JSON.stringify(blockingReview)],
+        ),
+      "generated-column terminal write",
+      "generated column blocked terminal write",
+    );
+    await expectStoryStates(liveDb, {
+      [blockingReview.storySpecId]: "review",
+    });
+    await expectStageStatus(liveDb, blockingReview.figureKey, "draft");
+    await liveDb.exec(`
+      alter table public.figure_stages
+        drop column onward_terminal_guard;
+      drop function public.onward_block_generated_stage_status(text);
+    `);
+    await expectHealth(liveDb, { ok: true });
+  } finally {
+    await liveDb.close();
   }
 }
 
@@ -657,6 +1016,86 @@ async function checkAuthorityRootDriftDetection(): Promise<void> {
     await expectHealth(db, { ok: true });
 
     await db.exec(`
+      revoke authenticator from supabase_storage_admin;
+      grant authenticator to supabase_storage_admin with admin option;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke authenticator from supabase_storage_admin;
+      grant authenticator to supabase_storage_admin;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      revoke authenticator from supabase_storage_admin;
+      grant authenticator to supabase_storage_admin with inherit true;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke authenticator from supabase_storage_admin;
+      grant authenticator to supabase_storage_admin with set false;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke authenticator from supabase_storage_admin;
+      grant authenticator to supabase_storage_admin;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      grant service_role to supabase_storage_admin;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from supabase_storage_admin;
+      revoke authenticator from supabase_storage_admin;
+      grant service_role to supabase_storage_admin;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      revoke service_role from supabase_storage_admin;
+      grant service_role to supabase_storage_admin with inherit true;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from supabase_storage_admin;
+      grant service_role to supabase_storage_admin with set false;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from supabase_storage_admin;
+      grant service_role to supabase_storage_admin with admin option;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from supabase_storage_admin;
+      grant authenticator to supabase_storage_admin;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
       alter role service_role superuser;
     `);
     await expectHealth(db, {
@@ -931,6 +1370,21 @@ async function checkPostCutoverDriftDetection(): Promise<void> {
     await applyPublicationMigration(db);
 
     await db.exec(`
+      alter table public.story_specs
+        drop constraint story_specs_pkey;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      identity_constraint_valid: false,
+      promotion_cas_valid: false,
+    });
+    await db.exec(`
+      alter table public.story_specs
+        add constraint story_specs_pkey primary key (story_spec_id);
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
       alter table public.figure_stages
         add constraint onward_stage_draft_only
         check (status = 'draft')
@@ -959,6 +1413,92 @@ async function checkPostCutoverDriftDetection(): Promise<void> {
     await db.exec(`
       alter table public.story_specs
         drop constraint onward_story_spec_no_publish;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter table public.story_specs
+        add constraint onward_story_spec_json_no_publish
+        check ((spec ->> 'status') <> 'published')
+        not valid;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+      promotion_cas_valid: false,
+    });
+    await db.exec(`
+      alter table public.story_specs
+        drop constraint onward_story_spec_json_no_publish;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      create unique index onward_story_spec_terminal_timestamps
+        on public.story_specs (published_at, retired_at);
+    `);
+    await expectHealth(db, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+      promotion_cas_valid: false,
+    });
+    await db.exec(`
+      drop index public.onward_story_spec_terminal_timestamps;
+    `);
+    await expectHealth(db, { ok: true });
+
+    const blockingReview = storySpecDocument(
+      "blocking-terminal-index",
+      1,
+      "review",
+      "blocking-terminal-index",
+    );
+    await db.exec(`
+      insert into public.figure_stages (figure_key, stage_id)
+      values ('blocking-terminal-index', 'stage');
+
+      create function public.onward_block_terminal_index(p_status text)
+      returns text
+      language plpgsql
+      immutable
+      as $$
+      begin
+        if p_status in ('published', 'retired') then
+          raise exception 'ordinary index blocked terminal write';
+        end if;
+        return p_status;
+      end
+      $$;
+    `);
+    await insertStorySpec(db, blockingReview);
+    await db.exec(`
+      create index onward_story_spec_terminal_expression
+        on public.story_specs (
+          public.onward_block_terminal_index(status)
+        );
+    `);
+    await expectHealth(db, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+      promotion_cas_valid: false,
+    });
+    await expectRejected(
+      () =>
+        db.query(
+          `
+            select public.promote_story_spec_v2(
+              $1::text,
+              $2::jsonb
+            )
+          `,
+          [blockingReview.storySpecId, JSON.stringify(blockingReview)],
+        ),
+      "ordinary expression-index terminal write",
+      "ordinary index blocked terminal write",
+    );
+    await db.exec(`
+      drop index public.onward_story_spec_terminal_expression;
+      drop function public.onward_block_terminal_index(text);
     `);
     await expectHealth(db, { ok: true });
 
@@ -1203,11 +1743,80 @@ async function checkStatusIndexFailsCutover(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(storyIndexDb),
       "StorySpec status-index bootstrap",
-      "closed health boundary",
+      "terminal lifecycle has an unsafe schema dependency",
     );
     await expectV2Absent(storyIndexDb, "StorySpec status-index rollback");
   } finally {
     await storyIndexDb.close();
+  }
+
+  const ordinaryPartialIndexDb = await createBaseDatabase();
+  try {
+    await ordinaryPartialIndexDb.exec(`
+      create function public.onward_block_terminal_index(p_status text)
+      returns boolean
+      language plpgsql
+      immutable
+      as $$
+      begin
+        if p_status in ('published', 'retired') then
+          raise exception 'ordinary index blocked terminal write';
+        end if;
+        return true;
+      end
+      $$;
+
+      create index onward_story_spec_terminal_partial
+        on public.story_specs (story_spec_id)
+        where public.onward_block_terminal_index(status);
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(ordinaryPartialIndexDb),
+      "ordinary partial-index bootstrap",
+      "terminal lifecycle has an unsafe schema dependency",
+    );
+    await expectV2Absent(
+      ordinaryPartialIndexDb,
+      "ordinary partial-index rollback",
+    );
+  } finally {
+    await ordinaryPartialIndexDb.close();
+  }
+
+  const storyMirrorDb = await createBaseDatabase();
+  try {
+    await storyMirrorDb.exec(`
+      alter table public.story_specs
+        add constraint onward_story_spec_json_no_publish
+        check ((spec ->> 'status') <> 'published');
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(storyMirrorDb),
+      "StorySpec JSON-status dependency bootstrap",
+      "terminal lifecycle has an unsafe schema dependency",
+    );
+    await expectV2Absent(storyMirrorDb, "JSON-status dependency rollback");
+  } finally {
+    await storyMirrorDb.close();
+  }
+
+  const terminalTimestampDb = await createBaseDatabase();
+  try {
+    await terminalTimestampDb.exec(`
+      create unique index onward_story_spec_terminal_timestamps
+        on public.story_specs (published_at, retired_at);
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(terminalTimestampDb),
+      "StorySpec terminal-timestamp dependency bootstrap",
+      "terminal lifecycle has an unsafe schema dependency",
+    );
+    await expectV2Absent(
+      terminalTimestampDb,
+      "terminal-timestamp dependency rollback",
+    );
+  } finally {
+    await terminalTimestampDb.close();
   }
 }
 
@@ -1243,6 +1852,25 @@ async function checkLegacyPublicationFailsCutover(): Promise<void> {
 }
 
 async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
+  const missingIdentityKeyDb = await createBaseDatabase();
+  try {
+    await missingIdentityKeyDb.exec(`
+      alter table public.story_specs
+        drop constraint story_specs_pkey;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(missingIdentityKeyDb),
+      "missing StorySpec identity key bootstrap",
+      "identity primary key is unsafe",
+    );
+    await expectV2Absent(
+      missingIdentityKeyDb,
+      "missing identity-key rollback",
+    );
+  } finally {
+    await missingIdentityKeyDb.close();
+  }
+
   const hostileOwnerDb = await createBaseDatabase();
   try {
     await hostileOwnerDb.exec(`
@@ -1263,6 +1891,7 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     await coordinatedOwnerDb.exec(`
       alter table public.story_specs owner to onward_adversary;
       alter table public.figure_stages owner to onward_adversary;
+      alter table public.story_artifacts owner to onward_adversary;
       alter function public.enforce_story_spec_lifecycle()
         owner to onward_adversary;
       alter function public.promote_story_spec(text)
@@ -1333,6 +1962,43 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     );
   } finally {
     await inheritedAuthenticatorDb.close();
+  }
+
+  const delegatingStorageDb = await createBaseDatabase();
+  try {
+    await delegatingStorageDb.exec(`
+      revoke authenticator from supabase_storage_admin;
+      grant authenticator to supabase_storage_admin with admin option;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(delegatingStorageDb),
+      "delegating storage-admin bootstrap",
+      "service authority role graph is unsafe",
+    );
+    await expectV2Absent(
+      delegatingStorageDb,
+      "delegating-storage rollback",
+    );
+  } finally {
+    await delegatingStorageDb.close();
+  }
+
+  const dualStoragePathDb = await createBaseDatabase();
+  try {
+    await dualStoragePathDb.exec(`
+      grant service_role to supabase_storage_admin;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(dualStoragePathDb),
+      "dual storage-admin path bootstrap",
+      "service authority role graph is unsafe",
+    );
+    await expectV2Absent(
+      dualStoragePathDb,
+      "dual-storage-path rollback",
+    );
+  } finally {
+    await dualStoragePathDb.close();
   }
 
   const privilegedServiceDb = await createBaseDatabase();
@@ -1547,6 +2213,16 @@ async function createBaseDatabase(): Promise<PGlite> {
         check (status in ('draft', 'published')),
       primary key (figure_key, stage_id)
     );
+
+    create table public.story_artifacts (
+      artifact_id text primary key,
+      schema_version text not null
+    );
+
+    insert into public.story_artifacts (artifact_id, schema_version)
+    values
+      ('precutover-v5', 'story-artifact-v5-2026-07'),
+      ('precutover-v4', 'story-artifact-v4-2026-07');
   `);
   await expectBaseAuthorityGraph(db);
   await db.exec(storySpecsMigration);
@@ -1751,14 +2427,15 @@ async function expectPublicationLocks(db: PGlite): Promise<void> {
       and lock_row.mode = 'AccessExclusiveLock'
       and lock_row.relation in (
         'public.story_specs'::regclass,
-        'public.figure_stages'::regclass
+        'public.figure_stages'::regclass,
+        'public.story_artifacts'::regclass
       )
   `);
-  if (result.rows[0]?.locked_relations !== 2) {
+  if (result.rows[0]?.locked_relations !== 3) {
     throw new Error(
       `publication cutover held ${String(
         result.rows[0]?.locked_relations,
-      )}/2 required AccessExclusiveLock rows`,
+      )}/3 required AccessExclusiveLock rows`,
     );
   }
 }

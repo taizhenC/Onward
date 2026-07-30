@@ -690,9 +690,25 @@ function checkPublicationBoundary(failures: string[]): void {
   const packageSource = read("../package.json")
     .toLowerCase()
     .replace(/\s+/g, " ");
+  const countOccurrences = (value: string, needle: string): number =>
+    value.split(needle).length - 1;
 
   for (const required of [
-    "lock table public.story_specs, public.figure_stages in access exclusive mode",
+    "lock table public.story_specs, public.figure_stages, public.story_artifacts in access exclusive mode",
+    "from pg_catalog.pg_inherits inheritance_row",
+    "from pg_catalog.pg_rewrite rewrite_row",
+    "storyspec cutover forbids inheritance and partition edges",
+    "storyspec cutover forbids table rewrite rules",
+    "storyspec cutover forbids generated columns on publication tables",
+    "storyspec identity primary key is unsafe",
+    "storyspec terminal lifecycle has an unsafe schema dependency",
+    "story_artifact_legacy_v5_replay",
+    "onward-story-artifact-legacy-v5-replay-v1",
+    "relation_graph_health as (",
+    "rewrite_rule_health as (",
+    "generated_column_health as (",
+    "legacy_marker_health as (",
+    "story_identity_key_health as (",
     "story_specs_document_identity_strict_check",
     "story_specs_status_strict_check",
     "story_specs_stage_strict_fk",
@@ -772,7 +788,6 @@ function checkPublicationBoundary(failures: string[]): void {
     "story_status_constraint_health as (",
     "catalog_alignment_health as (",
     "pg_catalog.pg_depend dependency",
-    "other_index.indisexclusion",
     "status_attribute.attnum = any(other_index.indkey)",
     "published_stage_uniqueness_valid boolean",
     "and publication_index_health.value",
@@ -946,6 +961,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "pg_catalog.to_jsonb(canonical_membership) ->> 'set_option'",
     "'public.story_specs'::regclass",
     "'public.figure_stages'::regclass",
+    "'public.story_artifacts'::regclass",
     "relation_row.relowner <> authority_owner",
     "procedure_row.proname in ( 'enforce_figure_stage_publication', 'enforce_story_spec_lifecycle', 'promote_story_spec', 'promote_story_spec_v2', 'retire_story_spec', 'story_spec_publication_manifest_v1', 'story_spec_publication_schema_health_v1' )",
     "procedure_row.oid not in ( 'public.enforce_story_spec_lifecycle()'::regprocedure, 'public.promote_story_spec(text)'::regprocedure, 'public.retire_story_spec(text)'::regprocedure )",
@@ -959,20 +975,328 @@ function checkPublicationBoundary(failures: string[]): void {
       );
     }
   }
+  const preflightStorageGraphStart = authorityAnchor.indexOf(
+    "and not exists ( select 1 from pg_catalog.pg_auth_members authenticator_member",
+  );
+  const preflightStorageGraphEnd = authorityAnchor.indexOf(
+    ") then raise exception 'storyspec service authority role graph is unsafe'",
+    preflightStorageGraphStart,
+  );
+  const preflightStorageGraph =
+    preflightStorageGraphStart >= 0 &&
+    preflightStorageGraphEnd > preflightStorageGraphStart
+      ? authorityAnchor.slice(
+          preflightStorageGraphStart,
+          preflightStorageGraphEnd,
+        )
+      : "";
+  const storageGraphRequirements = [
+    "storage_role.rolname = 'supabase_storage_admin' and storage_role.oid = authenticator_member.member",
+    "storage_membership.roleid in ( 'service_role'::regrole, authenticator_role.oid )",
+    "and not exists ( select 1 from pg_catalog.pg_auth_members storage_membership where storage_membership.roleid = authenticator_role.oid and storage_membership.member = storage_role.oid )",
+    "not exists ( select 1 from pg_catalog.pg_auth_members storage_membership where storage_membership.roleid = 'service_role'::regrole and storage_membership.member = storage_role.oid )",
+  ];
+  if (
+    !preflightStorageGraph ||
+    storageGraphRequirements.some(
+      (required) => !preflightStorageGraph.includes(required),
+    ) ||
+    countOccurrences(
+      preflightStorageGraph,
+      "storage_membership.roleid = 'service_role'::regrole",
+    ) !== 2 ||
+    countOccurrences(
+      preflightStorageGraph,
+      "storage_membership.roleid = authenticator_role.oid",
+    ) !== 2 ||
+    countOccurrences(
+      preflightStorageGraph,
+      "not storage_membership.admin_option",
+    ) !== 2 ||
+    countOccurrences(
+      preflightStorageGraph,
+      "pg_catalog.to_jsonb(storage_membership) ->> 'inherit_option'",
+    ) !== 2 ||
+    countOccurrences(
+      preflightStorageGraph,
+      "pg_catalog.to_jsonb(storage_membership) ->> 'set_option'",
+    ) !== 2 ||
+    countOccurrences(preflightStorageGraph, "storage_role.rolinherit") !== 2
+  ) {
+    failures.push(
+      "publication preflight must allow exactly one direct-or-indirect storage-admin edge with canonical membership options",
+    );
+  }
   if (migration.includes("pg_catalog.pg_has_role(")) {
     failures.push(
       "publication authority must inspect the actual recursive membership graph rather than effective pg_has_role privileges",
     );
   }
   const boundaryLockIndex = migration.indexOf(
-    "lock table public.story_specs, public.figure_stages in access exclusive mode",
+    "lock table public.story_specs, public.figure_stages, public.story_artifacts in access exclusive mode",
   );
   if (
     boundaryLockIndex < 0 ||
     authorityAnchorStart <= boundaryLockIndex
   ) {
     failures.push(
-      "publication cutover must lock both owner-definer tables before catalog preflight",
+      "publication cutover must lock all three source tables before catalog preflight",
+    );
+  }
+  const preflightProtectedRelations = [
+    "'public.story_specs'::regclass",
+    "'public.figure_stages'::regclass",
+    "'public.story_artifacts'::regclass",
+  ];
+  const preflightInheritanceStart = authorityAnchor.indexOf(
+    "if exists ( select 1 from pg_catalog.pg_inherits inheritance_row",
+  );
+  const preflightRewriteStart = authorityAnchor.indexOf(
+    "if exists ( select 1 from pg_catalog.pg_rewrite rewrite_row",
+    preflightInheritanceStart,
+  );
+  const markerPreflightStart = authorityAnchor.indexOf(
+    "if pg_catalog.to_regclass(",
+    preflightRewriteStart,
+  );
+  const preflightInheritance =
+    preflightInheritanceStart >= 0 &&
+    preflightRewriteStart > preflightInheritanceStart
+      ? authorityAnchor.slice(
+          preflightInheritanceStart,
+          preflightRewriteStart,
+        )
+      : "";
+  const preflightRewrite =
+    preflightRewriteStart >= 0 &&
+    markerPreflightStart > preflightRewriteStart
+      ? authorityAnchor.slice(preflightRewriteStart, markerPreflightStart)
+      : "";
+  if (
+    !preflightInheritance.includes(
+      "where inheritance_row.inhparent in (",
+    ) ||
+    !preflightInheritance.includes(
+      "or inheritance_row.inhrelid in (",
+    ) ||
+    !preflightInheritance.includes(
+      "storyspec cutover forbids inheritance and partition edges",
+    ) ||
+    preflightInheritance.includes(
+      "'public.story_artifact_legacy_v5_replay'::regclass",
+    ) ||
+    preflightProtectedRelations.some(
+      (relation) =>
+        countOccurrences(preflightInheritance, relation) !== 2,
+    )
+  ) {
+    failures.push(
+      "publication preflight must reject both directions of every locked-table inheritance or partition edge",
+    );
+  }
+  if (
+    !preflightRewrite.includes("where rewrite_row.ev_class in (") ||
+    !preflightRewrite.includes(
+      "storyspec cutover forbids table rewrite rules",
+    ) ||
+    preflightRewrite.includes(
+      "'public.story_artifact_legacy_v5_replay'::regclass",
+    ) ||
+    preflightProtectedRelations.some(
+      (relation) => countOccurrences(preflightRewrite, relation) !== 1,
+    )
+  ) {
+    failures.push(
+      "publication preflight must reject rewrite rules on every locked source table",
+    );
+  }
+  const preflightGeneratedColumnStart = authorityAnchor.indexOf(
+    "if exists ( select 1 from pg_catalog.pg_attribute attribute_row",
+    markerPreflightStart,
+  );
+  const preflightIdentityKeyStart = authorityAnchor.indexOf(
+    "if ( select count(*) from pg_catalog.pg_constraint constraint_row",
+    preflightGeneratedColumnStart,
+  );
+  const preflightLifecycleDependencyStart = authorityAnchor.indexOf(
+    "if exists ( select 1 from pg_catalog.pg_constraint constraint_row join pg_catalog.pg_attribute terminal_attribute",
+    preflightIdentityKeyStart,
+  );
+  const preflightRoutineInventoryStart = authorityAnchor.indexOf(
+    "if exists ( select 1 from pg_catalog.pg_proc procedure_row",
+    preflightLifecycleDependencyStart,
+  );
+  const preflightGeneratedColumn =
+    preflightGeneratedColumnStart >= 0 &&
+    preflightIdentityKeyStart > preflightGeneratedColumnStart
+      ? authorityAnchor.slice(
+          preflightGeneratedColumnStart,
+          preflightIdentityKeyStart,
+        )
+      : "";
+  if (
+    !preflightGeneratedColumn.includes(
+      "where attribute_row.attrelid in (",
+    ) ||
+    !preflightGeneratedColumn.includes("attribute_row.attnum > 0") ||
+    !preflightGeneratedColumn.includes(
+      "not attribute_row.attisdropped",
+    ) ||
+    !preflightGeneratedColumn.includes("attribute_row.attgenerated <> ''") ||
+    !preflightGeneratedColumn.includes(
+      "storyspec cutover forbids generated columns on publication tables",
+    ) ||
+    countOccurrences(
+      preflightGeneratedColumn,
+      "'public.story_specs'::regclass",
+    ) !== 1 ||
+    countOccurrences(
+      preflightGeneratedColumn,
+      "'public.figure_stages'::regclass",
+    ) !== 1 ||
+    preflightGeneratedColumn.includes(
+      "'public.story_artifacts'::regclass",
+    ) ||
+    preflightGeneratedColumn.includes(
+      "'public.story_artifact_legacy_v5_replay'::regclass",
+    )
+  ) {
+    failures.push(
+      "publication preflight must reject every generated column on either publication table",
+    );
+  }
+  const preflightIdentityKey =
+    preflightIdentityKeyStart >= 0 &&
+    preflightLifecycleDependencyStart > preflightIdentityKeyStart
+      ? authorityAnchor.slice(
+          preflightIdentityKeyStart,
+          preflightLifecycleDependencyStart,
+        )
+      : "";
+  const identityKeyRequirements = [
+    "constraint_row.conname = 'story_specs_pkey'",
+    "constraint_row.contype = 'p'",
+    "constraint_row.convalidated",
+    "constraint_row.conislocal",
+    "constraint_row.coninhcount = 0",
+    "constraint_row.conparentid = 0",
+    "constraint_row.connoinherit",
+    "not constraint_row.condeferrable",
+    "not constraint_row.condeferred",
+    "constraint_row.conkey = array[identity_attribute.attnum]::smallint[]",
+    "identity_attribute.atttypid = 'text'::pg_catalog.regtype",
+    "identity_attribute.attnotnull",
+    "not identity_attribute.atthasdef",
+    "identity_attribute.attidentity = ''",
+    "identity_attribute.attgenerated = ''",
+    "index_row.indisprimary",
+    "index_row.indisunique",
+    "index_row.indimmediate",
+    "index_row.indisvalid",
+    "index_row.indisready",
+    "index_row.indislive",
+    "index_row.indnkeyatts = 1",
+    "index_row.indnatts = 1",
+    "index_row.indexprs is null",
+    "index_row.indpred is null",
+    "storyspec identity primary key is unsafe",
+  ];
+  if (
+    !preflightIdentityKey.includes(
+      "where constraint_row.conrelid = 'public.story_specs'::regclass and constraint_row.contype = 'p' ) <> 1",
+    ) ||
+    identityKeyRequirements.some(
+      (required) => !preflightIdentityKey.includes(required),
+    )
+  ) {
+    failures.push(
+      "publication preflight must prove one exact non-null text StorySpec identity primary key",
+    );
+  }
+  const preflightLifecycleDependency =
+    preflightLifecycleDependencyStart >= 0 &&
+    preflightRoutineInventoryStart > preflightLifecycleDependencyStart
+      ? authorityAnchor.slice(
+          preflightLifecycleDependencyStart,
+          preflightRoutineInventoryStart,
+        )
+      : "";
+  const lifecycleSurfaceInventory =
+    "terminal_attribute.attname in ( 'status', 'spec', 'published_at', 'retired_at' )";
+  if (
+    countOccurrences(
+      preflightLifecycleDependency,
+      lifecycleSurfaceInventory,
+    ) !== 2 ||
+    !preflightLifecycleDependency.includes(
+      "constraint_row.contype <> 'n'",
+    ) ||
+    !preflightLifecycleDependency.includes(
+      "constraint_row.conname not in ( 'story_specs_status_check', 'story_specs_document_identity_check' )",
+    ) ||
+    !preflightLifecycleDependency.includes(
+      "index_relation.relname <> 'story_specs_one_published_stage_idx'",
+    ) ||
+    preflightLifecycleDependency.includes("index_row.indisunique") ||
+    preflightLifecycleDependency.includes("index_row.indisexclusion") ||
+    !preflightLifecycleDependency.includes(
+      "terminal_attribute.attnum = any(index_row.indkey)",
+    ) ||
+    !preflightLifecycleDependency.includes(
+      "from pg_catalog.pg_depend dependency",
+    ) ||
+    !preflightLifecycleDependency.includes(
+      "dependency.refobjsubid = terminal_attribute.attnum",
+    ) ||
+    !preflightLifecycleDependency.includes(
+      "storyspec terminal lifecycle has an unsafe schema dependency",
+    )
+  ) {
+    failures.push(
+      "publication preflight must inventory every constraint and extra-index dependency on all four terminal lifecycle surfaces",
+    );
+  }
+  const markerDdlStart = migration.indexOf(
+    "create table public.story_artifact_legacy_v5_replay (",
+  );
+  const markerDdlEnd = migration.indexOf(
+    "create or replace function public.enforce_story_spec_lifecycle()",
+    markerDdlStart,
+  );
+  const markerDdl =
+    markerDdlStart >= 0 && markerDdlEnd > markerDdlStart
+      ? migration.slice(markerDdlStart, markerDdlEnd)
+      : "";
+  const markerDdlRequirements = [
+    "artifact_id text not null",
+    "constraint story_artifact_legacy_v5_replay_pkey primary key (artifact_id)",
+    "constraint story_artifact_legacy_v5_replay_artifact_fk foreign key (artifact_id) references public.story_artifacts (artifact_id) on delete cascade",
+    "comment on table public.story_artifact_legacy_v5_replay is 'onward-story-artifact-legacy-v5-replay-v1'",
+    "insert into public.story_artifact_legacy_v5_replay (artifact_id) select artifact.artifact_id from only public.story_artifacts artifact where artifact.schema_version = 'story-artifact-v5-2026-07'",
+    "alter table public.story_artifact_legacy_v5_replay enable row level security",
+    "alter table public.story_artifact_legacy_v5_replay force row level security",
+    "revoke all on table public.story_artifact_legacy_v5_replay from public, anon, authenticated, service_role",
+    "where acl.grantee <> target.relowner",
+    "grant select on table public.story_artifact_legacy_v5_replay to service_role",
+  ];
+  if (
+    countOccurrences(
+      migration,
+      "create table public.story_artifact_legacy_v5_replay (",
+    ) !== 1 ||
+    !authorityAnchor.includes(
+      "if pg_catalog.to_regclass( 'public.story_artifact_legacy_v5_replay' ) is not null then raise exception 'legacy storyartifact replay marker relation already exists'",
+    ) ||
+    markerDdlRequirements.some(
+      (required) => !markerDdl.includes(required),
+    ) ||
+    markerDdl.includes("create policy") ||
+    /grant\s+(?:insert|update|delete|truncate|references|trigger|all)\s+on table public\.story_artifact_legacy_v5_replay/.test(
+      markerDdl,
+    )
+  ) {
+    failures.push(
+      "legacy-v5 replay eligibility must be a one-time, v5-only, owner-controlled marker with a forced-RLS read-only boundary",
     );
   }
   const publicationIndexDdlStart = casePreservedMigration.indexOf(
@@ -1232,6 +1556,64 @@ function checkPublicationBoundary(failures: string[]): void {
       "lifecycle health must attest one exact owner-bound transition helper",
     );
   }
+  const storyIdentityKeyHealthStart = migration.indexOf(
+    "story_identity_key_health as (",
+  );
+  const identityHealthBoundaryStart = migration.indexOf(
+    "identity_health as (",
+    storyIdentityKeyHealthStart,
+  );
+  const storyIdentityKeyHealth =
+    storyIdentityKeyHealthStart >= 0 &&
+    identityHealthBoundaryStart > storyIdentityKeyHealthStart
+      ? migration.slice(
+          storyIdentityKeyHealthStart,
+          identityHealthBoundaryStart,
+        )
+      : "";
+  const identityKeyHealthRequirements = [
+    "count(*) = 1 and count(*) filter (",
+    "constraint_row.conname = 'story_specs_pkey'",
+    "constraint_row.convalidated",
+    "constraint_row.conislocal",
+    "constraint_row.coninhcount = 0",
+    "constraint_row.conparentid = 0",
+    "constraint_row.connoinherit",
+    "not constraint_row.condeferrable",
+    "not constraint_row.condeferred",
+    "constraint_row.conkey = array[identity_attribute.attnum]::smallint[]",
+    "table_relation.relowner = publication_manifest.authority_owner",
+    "identity_attribute.atttypid = 'text'::pg_catalog.regtype",
+    "identity_attribute.attnotnull",
+    "not identity_attribute.atthasdef",
+    "identity_attribute.attidentity = ''",
+    "identity_attribute.attgenerated = ''",
+    "index_relation.relname = 'story_specs_pkey'",
+    "index_relation.relkind = 'i'",
+    "index_relation.relowner = publication_manifest.authority_owner",
+    "index_relation.reloptions is null",
+    "index_row.indisprimary",
+    "index_row.indisunique",
+    "index_row.indimmediate",
+    "index_row.indisvalid",
+    "index_row.indisready",
+    "index_row.indislive",
+    "index_row.indnkeyatts = 1",
+    "index_row.indnatts = 1",
+    "index_row.indexprs is null",
+    "index_row.indpred is null",
+    "where constraint_row.conrelid = 'public.story_specs'::regclass and constraint_row.contype = 'p'",
+  ];
+  if (
+    !storyIdentityKeyHealth ||
+    identityKeyHealthRequirements.some(
+      (required) => !storyIdentityKeyHealth.includes(required),
+    )
+  ) {
+    failures.push(
+      "publication health must attest the exact owner-bound non-null StorySpec identity key and primary index",
+    );
+  }
   const identityHealthStart = casePreservedMigration.indexOf(
     "identity_health as (",
   );
@@ -1361,14 +1743,25 @@ function checkPublicationBoundary(failures: string[]): void {
       "'onward-story-spec-status-v1:' || publication_manifest.story_status_fingerprint",
     ) ||
     !storyStatusHealth.includes("other_constraint.contype <> 'n'") ||
+    countOccurrences(
+      storyStatusHealth,
+      lifecycleSurfaceInventory,
+    ) !== 2 ||
+    !storyStatusHealth.includes(
+      "terminal_attribute.attnum = any(other_constraint.conkey)",
+    ) ||
     !storyStatusHealth.includes(
       "other_index.indexrelid <> 'public.story_specs_one_published_stage_idx'::regclass",
     ) ||
-    !storyStatusHealth.includes("other_index.indisexclusion") ||
-    !storyStatusHealth.includes("pg_catalog.pg_depend dependency")
+    storyStatusHealth.includes("other_index.indisunique") ||
+    storyStatusHealth.includes("other_index.indisexclusion") ||
+    !storyStatusHealth.includes("pg_catalog.pg_depend dependency") ||
+    !storyStatusHealth.includes(
+      "dependency.refobjsubid = terminal_attribute.attnum",
+    )
   ) {
     failures.push(
-      "StorySpec status health must reject additive constraints and status-dependent indexes",
+      "StorySpec status health must reject additive dependencies across every terminal lifecycle surface",
     );
   }
   const stageStatusHealthStart = migration.indexOf(
@@ -1425,7 +1818,8 @@ function checkPublicationBoundary(failures: string[]): void {
       "'onward-figure-stage-status-v1:' || publication_manifest.stage_status_fingerprint",
     ) ||
     !stageStatusHealth.includes("other_constraint.contype <> 'n'") ||
-    !stageStatusHealth.includes("other_index.indisexclusion") ||
+    stageStatusHealth.includes("other_index.indisunique") ||
+    stageStatusHealth.includes("other_index.indisexclusion") ||
     !stageStatusHealth.includes("pg_catalog.pg_depend dependency")
   ) {
     failures.push(
@@ -1606,6 +2000,200 @@ function checkPublicationBoundary(failures: string[]): void {
       "publication authority health must bind the database owner and the exact managed Supabase service-role descendant set",
     );
   }
+  const healthStorageGraphStart = authorityHealth.indexOf(
+    "and not exists ( select 1 from pg_catalog.pg_auth_members authenticator_member",
+  );
+  const healthStorageGraphEnd = authorityHealth.indexOf(
+    ") = 1 as value from pg_catalog.pg_database",
+    healthStorageGraphStart,
+  );
+  const healthStorageGraph =
+    healthStorageGraphStart >= 0 &&
+    healthStorageGraphEnd > healthStorageGraphStart
+      ? authorityHealth.slice(
+          healthStorageGraphStart,
+          healthStorageGraphEnd,
+        )
+      : "";
+  if (
+    !healthStorageGraph ||
+    healthStorageGraph !== preflightStorageGraph ||
+    storageGraphRequirements.some(
+      (required) => !healthStorageGraph.includes(required),
+    ) ||
+    countOccurrences(
+      healthStorageGraph,
+      "storage_membership.roleid = 'service_role'::regrole",
+    ) !== 2 ||
+    countOccurrences(
+      healthStorageGraph,
+      "storage_membership.roleid = authenticator_role.oid",
+    ) !== 2 ||
+    countOccurrences(
+      healthStorageGraph,
+      "not storage_membership.admin_option",
+    ) !== 2 ||
+    countOccurrences(
+      healthStorageGraph,
+      "pg_catalog.to_jsonb(storage_membership) ->> 'inherit_option'",
+    ) !== 2 ||
+    countOccurrences(
+      healthStorageGraph,
+      "pg_catalog.to_jsonb(storage_membership) ->> 'set_option'",
+    ) !== 2 ||
+    countOccurrences(healthStorageGraph, "storage_role.rolinherit") !== 2
+  ) {
+    failures.push(
+      "publication health must mirror the exact mutually-exclusive direct-or-indirect storage-admin graph and options",
+    );
+  }
+  const relationGraphHealthStart = migration.indexOf(
+    "relation_graph_health as (",
+    authorityHealthStart,
+  );
+  const rewriteRuleHealthStart = migration.indexOf(
+    "rewrite_rule_health as (",
+    relationGraphHealthStart,
+  );
+  const legacyMarkerHealthStart = migration.indexOf(
+    "legacy_marker_health as (",
+    rewriteRuleHealthStart,
+  );
+  const relationGraphHealth =
+    relationGraphHealthStart >= 0 &&
+    rewriteRuleHealthStart > relationGraphHealthStart
+      ? migration.slice(relationGraphHealthStart, rewriteRuleHealthStart)
+      : "";
+  const rewriteRuleHealth =
+    rewriteRuleHealthStart >= 0 &&
+    legacyMarkerHealthStart > rewriteRuleHealthStart
+      ? migration.slice(rewriteRuleHealthStart, legacyMarkerHealthStart)
+      : "";
+  const legacyMarkerHealth =
+    legacyMarkerHealthStart >= 0 &&
+    manifestHealthStart > legacyMarkerHealthStart
+      ? migration.slice(legacyMarkerHealthStart, manifestHealthStart)
+      : "";
+  const healthProtectedRelations = [
+    ...preflightProtectedRelations,
+    "'public.story_artifact_legacy_v5_replay'::regclass",
+  ];
+  if (
+    !relationGraphHealth.includes(
+      "from pg_catalog.pg_class relation_row",
+    ) ||
+    !relationGraphHealth.includes("relation_row.relkind = 'r'") ||
+    !relationGraphHealth.includes("relation_row.relpersistence = 'p'") ||
+    !relationGraphHealth.includes(
+      "relation_row.relowner = publication_manifest.authority_owner",
+    ) ||
+    !relationGraphHealth.includes(") = 4") ||
+    !relationGraphHealth.includes(
+      "from pg_catalog.pg_inherits inheritance_row",
+    ) ||
+    !relationGraphHealth.includes(
+      "where inheritance_row.inhparent in (",
+    ) ||
+    !relationGraphHealth.includes(
+      "or inheritance_row.inhrelid in (",
+    ) ||
+    healthProtectedRelations.some(
+      (relation) => countOccurrences(relationGraphHealth, relation) !== 3,
+    )
+  ) {
+    failures.push(
+      "publication health must close both inheritance directions across all source and marker relations",
+    );
+  }
+  if (
+    !rewriteRuleHealth.includes(
+      "from pg_catalog.pg_rewrite rewrite_row",
+    ) ||
+    !rewriteRuleHealth.includes("where rewrite_row.ev_class in (") ||
+    healthProtectedRelations.some(
+      (relation) => countOccurrences(rewriteRuleHealth, relation) !== 1,
+    )
+  ) {
+    failures.push(
+      "publication health must reject rewrite rules across all source and marker relations",
+    );
+  }
+  const legacyMarkerHealthRequirements = [
+    "marker_namespace.nspname = 'public'",
+    "marker_relation.relname = 'story_artifact_legacy_v5_replay'",
+    "marker_relation.relkind = 'r'",
+    "marker_relation.relpersistence = 'p'",
+    "marker_relation.relowner = publication_manifest.authority_owner",
+    "marker_relation.relrowsecurity",
+    "marker_relation.relforcerowsecurity",
+    "pg_catalog.obj_description( marker_relation.oid, 'pg_class' ) = 'onward-story-artifact-legacy-v5-replay-v1'",
+    "marker_relation.relnatts = 1",
+    "attribute_row.attname = 'artifact_id'",
+    "attribute_row.atttypid = 'text'::pg_catalog.regtype",
+    "attribute_row.attnotnull",
+    "not attribute_row.atthasdef",
+    "attribute_row.attidentity = ''",
+    "attribute_row.attgenerated = ''",
+    "attribute_row.attacl is null",
+    "constraint_row.conname = 'story_artifact_legacy_v5_replay_pkey'",
+    "constraint_row.contype = 'p'",
+    "constraint_row.connoinherit",
+    "constraint_row.conkey = array[",
+    "index_relation.relname = 'story_artifact_legacy_v5_replay_pkey'",
+    "index_relation.relowner = publication_manifest.authority_owner",
+    "index_row.indisprimary",
+    "index_row.indisunique",
+    "index_row.indimmediate",
+    "index_row.indisvalid",
+    "index_row.indisready",
+    "index_row.indislive",
+    "index_row.indnkeyatts = 1",
+    "index_row.indnatts = 1",
+    "index_row.indexprs is null",
+    "index_row.indpred is null",
+    "constraint_row.conname = 'story_artifact_legacy_v5_replay_artifact_fk'",
+    "constraint_row.contype = 'f'",
+    "constraint_row.confdeltype = 'c'",
+    "constraint_row.confrelid = 'public.story_artifacts'::regclass",
+    "trigger_row.tgconstraint = constraint_row.oid",
+    "trigger_row.tgisinternal",
+    "trigger_row.tgenabled = 'o'",
+    "where policy_row.polrelid = marker_relation.oid",
+    "where trigger_row.tgrelid = marker_relation.oid and not trigger_row.tgisinternal",
+    "acl.grantee = 'service_role'::regrole",
+    "acl.privilege_type = 'select'",
+    "not acl.is_grantable",
+    "acl.grantee <> marker_relation.relowner",
+    "acl.grantee <> 'service_role'::regrole or acl.privilege_type <> 'select' or acl.is_grantable",
+    "from only public.story_artifact_legacy_v5_replay marker join only public.story_artifacts artifact",
+    "artifact.schema_version <> 'story-artifact-v5-2026-07'",
+    "where marker_relation.oid = 'public.story_artifact_legacy_v5_replay'::regclass",
+  ];
+  if (
+    !legacyMarkerHealth ||
+    legacyMarkerHealthRequirements.some(
+      (required) => !legacyMarkerHealth.includes(required),
+    ) ||
+    countOccurrences(
+      legacyMarkerHealth,
+      "where constraint_row.conrelid = marker_relation.oid and constraint_row.contype <> 'n'",
+    ) !== 1 ||
+    !legacyMarkerHealth.includes(") = 2") ||
+    countOccurrences(
+      legacyMarkerHealth,
+      "where index_row.indrelid = marker_relation.oid",
+    ) !== 1 ||
+    !legacyMarkerHealth.includes(") = 1") ||
+    countOccurrences(
+      legacyMarkerHealth,
+      "where trigger_row.tgconstraint = constraint_row.oid",
+    ) !== 2 ||
+    countOccurrences(legacyMarkerHealth, ") = 4") !== 2
+  ) {
+    failures.push(
+      "legacy marker health must attest its exact v5-only schema, owner, PK/FK cascade, forced RLS, empty-policy set, and service SELECT-only ACL",
+    );
+  }
   const functionGrantHealthStart = migration.indexOf(
     "public_function_grant_health as (",
   );
@@ -1617,9 +2205,13 @@ function checkPublicationBoundary(failures: string[]): void {
     "stage_boundary_health as (",
     tableBoundaryHealthStart,
   );
+  const generatedColumnHealthStart = migration.indexOf(
+    "generated_column_health as (",
+    stageBoundaryHealthStart,
+  );
   const grantHealthStart = migration.indexOf(
     "grant_health as (",
-    stageBoundaryHealthStart,
+    generatedColumnHealthStart,
   );
   const functionGrantHealth =
     functionGrantHealthStart >= 0 &&
@@ -1632,8 +2224,17 @@ function checkPublicationBoundary(failures: string[]): void {
       ? migration.slice(tableBoundaryHealthStart, stageBoundaryHealthStart)
       : "";
   const stageBoundaryHealth =
-    stageBoundaryHealthStart >= 0 && grantHealthStart > stageBoundaryHealthStart
-      ? migration.slice(stageBoundaryHealthStart, grantHealthStart)
+    stageBoundaryHealthStart >= 0 &&
+    generatedColumnHealthStart > stageBoundaryHealthStart
+      ? migration.slice(
+          stageBoundaryHealthStart,
+          generatedColumnHealthStart,
+        )
+      : "";
+  const generatedColumnHealth =
+    generatedColumnHealthStart >= 0 &&
+    grantHealthStart > generatedColumnHealthStart
+      ? migration.slice(generatedColumnHealthStart, grantHealthStart)
       : "";
   if (
     !functionGrantHealth ||
@@ -1702,6 +2303,76 @@ function checkPublicationBoundary(failures: string[]): void {
     failures.push(
       "figure-stage health must close owner, policy, table, and column boundaries",
     );
+  }
+  if (
+    !generatedColumnHealth.includes(
+      "from pg_catalog.pg_attribute attribute_row",
+    ) ||
+    !generatedColumnHealth.includes(
+      "where attribute_row.attrelid in (",
+    ) ||
+    !generatedColumnHealth.includes("attribute_row.attnum > 0") ||
+    !generatedColumnHealth.includes("not attribute_row.attisdropped") ||
+    !generatedColumnHealth.includes("attribute_row.attgenerated <> ''") ||
+    countOccurrences(
+      generatedColumnHealth,
+      "'public.story_specs'::regclass",
+    ) !== 1 ||
+    countOccurrences(
+      generatedColumnHealth,
+      "'public.figure_stages'::regclass",
+    ) !== 1 ||
+    generatedColumnHealth.includes("'public.story_artifacts'::regclass") ||
+    generatedColumnHealth.includes(
+      "'public.story_artifact_legacy_v5_replay'::regclass",
+    )
+  ) {
+    failures.push(
+      "publication health must reject every generated column on either publication table",
+    );
+  }
+  const closedOutputStart = migration.indexOf(
+    "select manifest_function_health.value",
+    grantHealthStart,
+  );
+  const closedOutputEnd = migration.indexOf("$fn$;", closedOutputStart);
+  const grantHealth =
+    grantHealthStart >= 0 && closedOutputStart > grantHealthStart
+      ? migration.slice(grantHealthStart, closedOutputStart)
+      : "";
+  const closedOutputs =
+    closedOutputStart >= 0 && closedOutputEnd > closedOutputStart
+      ? migration.slice(closedOutputStart, closedOutputEnd)
+      : "";
+  for (const requiredClosedGrant of [
+    "generated_column_health.value and authority_health.value",
+    "and relation_graph_health.value",
+    "and rewrite_rule_health.value",
+    "and legacy_marker_health.value as value",
+    "relation_graph_health, rewrite_rule_health, legacy_marker_health, generated_column_health",
+  ]) {
+    if (!grantHealth.includes(requiredClosedGrant)) {
+      failures.push(
+        `closed publication grant health omits: ${requiredClosedGrant}`,
+      );
+    }
+  }
+  for (const requiredClosedOutput of [
+    "manifest_function_health.value and story_identity_key_health.value",
+    "and grant_health.value as ok",
+    "story_identity_key_health.value and identity_health.value and stage_fk_health.value and relation_graph_health.value as identity_constraint_valid",
+    "generated_column_health.value and lifecycle_health.value and stage_lifecycle_health.value and story_status_constraint_health.value and relation_graph_health.value and rewrite_rule_health.value as lifecycle_trigger_enabled",
+    "publication_index_health.value and story_status_constraint_health.value and catalog_alignment_health.value and relation_graph_health.value as published_stage_uniqueness_valid",
+    "generated_column_health.value and story_identity_key_health.value and promotion_health.value and retirement_health.value and story_status_constraint_health.value and relation_graph_health.value and rewrite_rule_health.value as promotion_cas_valid",
+    "legacy_health.value as legacy_rpc_revoked, grant_health.value as boundary_granted",
+    "from manifest_function_health, story_identity_key_health, identity_health",
+    "legacy_health, relation_graph_health, rewrite_rule_health, grant_health, generated_column_health",
+  ]) {
+    if (!closedOutputs.includes(requiredClosedOutput)) {
+      failures.push(
+        `closed publication readiness outputs omit: ${requiredClosedOutput}`,
+      );
+    }
   }
   const healthServiceGrantIndex = migration.indexOf(
     "grant execute on function public.story_spec_publication_schema_health_v1",

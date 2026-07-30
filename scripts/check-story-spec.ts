@@ -688,7 +688,13 @@ function checkPublicationBoundary(failures: string[]): void {
     "spec -> 'version' = pg_catalog.to_jsonb(version)",
     "spec -> 'status' = pg_catalog.to_jsonb(status)",
     ") is true",
-    "andspec->''status''::text=to_jsonbstatusistrue",
+    "drop index if exists public.story_specs_one_published_stage_idx",
+    "onward-story-spec-identity-v1:",
+    "onward-story-spec-published-index-v1:",
+    "into strict identity_fingerprint",
+    "into strict publication_index_fingerprint",
+    "|| ':owner=' || story_specs_owner::text",
+    "pg_catalog.obj_description(",
     "promote_story_spec_v2",
     "p_expected_review_spec jsonb",
     "v_target.spec is distinct from p_expected_review_spec",
@@ -703,6 +709,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "7e4a1854906a05e7796dbf7bd76faee8",
     "trigger_row.tgtype = 23::smallint",
     "trigger_row.tgattr = ''::pg_catalog.int2vector",
+    "trigger_row.tgenabled <> 'd'",
     "function_namespace.nspname = 'public'",
     "story_specs_one_published_stage_idx",
     "index_row.indisunique",
@@ -710,14 +717,180 @@ function checkPublicationBoundary(failures: string[]): void {
     "pg_catalog.pg_get_indexdef(",
     "published_stage_uniqueness_valid boolean",
     "and publication_index_health.value",
+    "pg_catalog.has_table_privilege(",
+    "'public.story_specs', 'select'",
+    "'public.story_specs', 'update'",
+    "'public.figure_stages', 'select'",
+    "'public.figure_stages', 'update'",
+    "pg_catalog.aclexplode(",
+    "acl.grantee <> target.proowner",
+    "acl.grantee not in ( procedure_row.proowner, 'service_role'::regrole )",
+    "revoke all on table public.story_specs from public, anon, authenticated, service_role",
+    "grant select, insert, update on table public.story_specs to service_role",
+    "function_grant_health as (",
+    "table_boundary_health as (",
+    "table_relation.relrowsecurity",
+    "(owner_role.rolsuper or owner_role.rolbypassrls)",
+    "acl.privilege_type in ('select', 'insert', 'update')",
+    "acl.privilege_type not in ('select', 'insert', 'update')",
+    "attribute_row.attacl",
+    "pg_catalog.aclexplode(attribute_row.attacl)",
+    "revoke all (%i) on table public.story_specs from %s",
+    "acl.grantee <> story_specs_owner",
+    "from pg_catalog.pg_policy policy_row",
     "legacy_rpc_revoked boolean",
     "boundary_granted boolean",
     "revoke all on function public.promote_story_spec(text) from public, anon, authenticated, service_role",
     "grant execute on function public.promote_story_spec_v2(text, jsonb) to service_role",
+    "select health.ok from public.story_spec_publication_schema_health_v1() health",
   ]) {
     if (!migration.includes(required)) {
       failures.push(`publication migration is missing: ${required}`);
     }
+  }
+  const identityDdlStart = casePreservedMigration.indexOf(
+    "alter table public.story_specs add constraint story_specs_document_identity_strict_check",
+  );
+  const identityDdlEnd = casePreservedMigration.indexOf(
+    "alter table public.story_specs validate constraint story_specs_document_identity_strict_check",
+    identityDdlStart,
+  );
+  const identityDdl =
+    identityDdlStart >= 0 && identityDdlEnd > identityDdlStart
+      ? casePreservedMigration.slice(identityDdlStart, identityDdlEnd).trim()
+      : "";
+  const canonicalIdentityDdl = `
+    alter table public.story_specs
+      add constraint story_specs_document_identity_strict_check
+      check ((
+        pg_catalog.jsonb_typeof(spec) = 'object'
+        and spec -> 'storySpecId' = pg_catalog.to_jsonb(story_spec_id)
+        and spec -> 'figureKey' = pg_catalog.to_jsonb(figure_key)
+        and spec -> 'stageId' = pg_catalog.to_jsonb(stage_id)
+        and spec -> 'version' = pg_catalog.to_jsonb(version)
+        and spec -> 'schemaVersion' = pg_catalog.to_jsonb(schema_version)
+        and spec -> 'status' = pg_catalog.to_jsonb(status)
+      ) is true)
+      not valid;
+  `
+    .replace(/\s+/g, " ")
+    .trim();
+  if (identityDdl !== canonicalIdentityDdl) {
+    failures.push(
+      "publication migration must create the exact code-owned strict identity constraint",
+    );
+  }
+  const publicationIndexDdlStart = casePreservedMigration.indexOf(
+    "drop index if exists public.story_specs_one_published_stage_idx;",
+  );
+  const publicationIndexDdlEnd = casePreservedMigration.indexOf(
+    "-- Capture the server's own exact deparse",
+    publicationIndexDdlStart,
+  );
+  const publicationIndexDdl =
+    publicationIndexDdlStart >= 0 &&
+    publicationIndexDdlEnd > publicationIndexDdlStart
+      ? casePreservedMigration
+          .slice(publicationIndexDdlStart, publicationIndexDdlEnd)
+          .trim()
+      : "";
+  const canonicalPublicationIndexDdl = `
+    drop index if exists public.story_specs_one_published_stage_idx;
+    create unique index story_specs_one_published_stage_idx
+      on public.story_specs (figure_key, stage_id)
+      where status = 'published';
+  `
+    .replace(/\s+/g, " ")
+    .trim();
+  if (publicationIndexDdl !== canonicalPublicationIndexDdl) {
+    failures.push(
+      "publication migration must recreate the exact code-owned published-stage index",
+    );
+  }
+  const schemaCaptureStart = casePreservedMigration.indexOf(
+    "identity_fingerprint text;",
+  );
+  const promotionDefinitionStart = casePreservedMigration.indexOf(
+    "create or replace function public.promote_story_spec_v2",
+    schemaCaptureStart,
+  );
+  const schemaCapture =
+    schemaCaptureStart >= 0 && promotionDefinitionStart > schemaCaptureStart
+      ? casePreservedMigration.slice(
+          schemaCaptureStart,
+          promotionDefinitionStart,
+        )
+      : "";
+  if (
+    !schemaCapture ||
+    /pg_catalog\.(?:lower|translate|replace|regexp_replace)\(/.test(
+      schemaCapture,
+    ) ||
+    !schemaCapture.includes(
+      "pg_catalog.md5( pg_catalog.pg_get_constraintdef(",
+    ) ||
+    !schemaCapture.includes(
+      "pg_catalog.md5( pg_catalog.pg_get_expr(",
+    ) ||
+    !schemaCapture.includes(
+      "|| ':owner=' || story_specs_owner::text",
+    )
+  ) {
+    failures.push(
+      "schema manifest must capture exact server deparses without normalization",
+    );
+  }
+  const indexRecreateIndex = migration.indexOf(
+    "create unique index story_specs_one_published_stage_idx",
+  );
+  const schemaCaptureIndex = migration.indexOf(
+    "into strict identity_fingerprint",
+  );
+  if (
+    indexRecreateIndex < 0 ||
+    schemaCaptureIndex <= indexRecreateIndex
+  ) {
+    failures.push(
+      "schema manifest must follow canonical publication-index recreation",
+    );
+  }
+  if (migration.includes("has_function_privilege(")) {
+    failures.push(
+      "publication ACL health must enumerate every EXECUTE grantee",
+    );
+  }
+  const functionAclScrub = migration.indexOf(
+    "acl.grantee <> target.proowner",
+  );
+  const v2ServiceGrant = migration.indexOf(
+    "grant execute on function public.promote_story_spec_v2",
+  );
+  const tableAclScrub = migration.indexOf(
+    "revoke all on table public.story_specs",
+  );
+  const tableServiceGrant = migration.indexOf(
+    "grant select, insert, update on table public.story_specs",
+  );
+  const columnAclScrub = migration.indexOf("for column_grant in");
+  const healthAclScrub = migration.lastIndexOf(
+    "acl.grantee <> target.proowner",
+  );
+  const healthServiceGrant = migration.indexOf(
+    "grant execute on function public.story_spec_publication_schema_health_v1",
+  );
+  if (
+    functionAclScrub < 0 ||
+    v2ServiceGrant <= functionAclScrub ||
+    tableAclScrub < 0 ||
+    columnAclScrub <= tableAclScrub ||
+    tableServiceGrant <= tableAclScrub ||
+    tableServiceGrant <= columnAclScrub ||
+    healthAclScrub <= v2ServiceGrant ||
+    healthServiceGrant <= healthAclScrub
+  ) {
+    failures.push(
+      "publication ACL cutover must scrub unknown grantees before restoring service-role access",
+    );
   }
   const lockIndex = migration.indexOf("for update;");
   const snapshotIndex = migration.indexOf(
@@ -745,7 +918,13 @@ function checkPublicationBoundary(failures: string[]): void {
   if (
     !promotionHealth ||
     promotionHealth.includes("position(") ||
-    promotionHealth.includes("pg_catalog.lower(")
+    promotionHealth.includes("pg_catalog.lower(") ||
+    !promotionHealth.includes(
+      "procedure_row.proowner = ( select table_relation.relowner",
+    ) ||
+    !promotionHealth.includes(
+      "'public.figure_stages', 'select'",
+    )
   ) {
     failures.push(
       "publication health must use a case-preserving exact fingerprint rather than scan or lowercase tokens",
@@ -770,34 +949,47 @@ function checkPublicationBoundary(failures: string[]): void {
       "lifecycle health must preserve case in its exact function fingerprint",
     );
   }
-  const identityCatalogStart = casePreservedMigration.indexOf(
-    "identity_constraint_catalog as (",
-  );
   const identityHealthStart = casePreservedMigration.indexOf(
     "identity_health as (",
-    identityCatalogStart,
   );
-  const identityCatalog =
-    identityCatalogStart >= 0 && identityHealthStart > identityCatalogStart
+  const lifecycleHelperCaseStart = casePreservedMigration.indexOf(
+    "lifecycle_helper_health as (",
+    identityHealthStart,
+  );
+  const identityHealth =
+    identityHealthStart >= 0 && lifecycleHelperCaseStart > identityHealthStart
       ? casePreservedMigration.slice(
-          identityCatalogStart,
           identityHealthStart,
+          lifecycleHelperCaseStart,
         )
       : "";
   if (
-    !identityCatalog ||
-    identityCatalog.includes("pg_catalog.lower(") ||
-    identityCatalog.includes("'::text', ''") ||
-    !casePreservedMigration.includes(
-      "andspec->''storySpecId''::text=to_jsonbstory_spec_id",
+    !identityHealth ||
+    /pg_catalog\.(?:lower|translate|replace|regexp_replace)\(/.test(
+      identityHealth,
     ) ||
-    !casePreservedMigration.includes(
-      "andspec->''schemaVersion''::text=to_jsonbschema_version",
+    !identityHealth.includes(
+      "'onward-story-spec-identity-v1:' || pg_catalog.md5( pg_catalog.pg_get_constraintdef(",
+    ) ||
+    !identityHealth.includes(
+      "|| ':owner=' || table_relation.relowner::text",
     )
   ) {
     failures.push(
-      "identity health must preserve case for exact StorySpec document keys",
+      "identity health must compare the exact server-captured constraint deparse",
     );
+  }
+  for (const exactDocumentKey of [
+    "spec -> 'storySpecId' =",
+    "spec -> 'figureKey' =",
+    "spec -> 'stageId' =",
+    "spec -> 'schemaVersion' =",
+  ]) {
+    if (!casePreservedMigration.includes(exactDocumentKey)) {
+      failures.push(
+        `strict identity constraint omits exact key: ${exactDocumentKey}`,
+      );
+    }
   }
   const publicationIndexStart = casePreservedMigration.indexOf(
     "publication_index_health as (",
@@ -816,12 +1008,103 @@ function checkPublicationBoundary(failures: string[]): void {
       : "";
   if (
     !publicationIndexHealth ||
-    publicationIndexHealth.includes("pg_catalog.lower(") ||
-    publicationIndexHealth.includes("'::text', ''") ||
-    !publicationIndexHealth.includes(") = 'status=''published''::text'")
+    /pg_catalog\.(?:lower|translate|replace|regexp_replace)\(/.test(
+      publicationIndexHealth,
+    ) ||
+    !publicationIndexHealth.includes(
+      "'onward-story-spec-published-index-v1:' || pg_catalog.md5( pg_catalog.pg_get_expr(",
+    ) ||
+    !publicationIndexHealth.includes(
+      "|| ':owner=' || table_relation.relowner::text",
+    ) ||
+    !publicationIndexHealth.includes(
+      "index_relation.relowner = table_relation.relowner",
+    )
   ) {
     failures.push(
-      "publication-index health must preserve case in its exact predicate",
+      "publication-index health must compare the exact server-captured predicate deparse",
+    );
+  }
+  const triggerHealthStart = migration.indexOf(
+    "lifecycle_trigger_health as (",
+  );
+  const lifecycleHealthStart = migration.indexOf(
+    "lifecycle_health as (",
+    triggerHealthStart,
+  );
+  const triggerHealth =
+    triggerHealthStart >= 0 && lifecycleHealthStart > triggerHealthStart
+      ? migration.slice(triggerHealthStart, lifecycleHealthStart)
+      : "";
+  if (
+    !triggerHealth ||
+    !triggerHealth.includes("trigger_row.tgenabled <> 'd'") ||
+    !triggerHealth.includes(
+      "count(*) filter ( where not trigger_row.tgisinternal",
+    )
+  ) {
+    failures.push(
+      "lifecycle health must reject every extra enabled user trigger",
+    );
+  }
+  const functionGrantHealthStart = migration.indexOf(
+    "function_grant_health as (",
+  );
+  const tableBoundaryHealthStart = migration.indexOf(
+    "table_boundary_health as (",
+    functionGrantHealthStart,
+  );
+  const grantHealthStart = migration.indexOf(
+    "grant_health as (",
+    tableBoundaryHealthStart,
+  );
+  const functionGrantHealth =
+    functionGrantHealthStart >= 0 &&
+    tableBoundaryHealthStart > functionGrantHealthStart
+      ? migration.slice(functionGrantHealthStart, tableBoundaryHealthStart)
+      : "";
+  const tableBoundaryHealth =
+    tableBoundaryHealthStart >= 0 && grantHealthStart > tableBoundaryHealthStart
+      ? migration.slice(tableBoundaryHealthStart, grantHealthStart)
+      : "";
+  if (
+    !functionGrantHealth ||
+    !functionGrantHealth.includes(
+      "procedure_row.proowner = ( select table_relation.relowner",
+    ) ||
+    !functionGrantHealth.includes("pg_catalog.aclexplode(")
+  ) {
+    failures.push(
+      "publication function grants must be exact and table-owner bound",
+    );
+  }
+  if (
+    !tableBoundaryHealth ||
+    !tableBoundaryHealth.includes(
+      "(owner_role.rolsuper or owner_role.rolbypassrls)",
+    ) ||
+    !tableBoundaryHealth.includes("from pg_catalog.pg_attribute attribute_row") ||
+    !tableBoundaryHealth.includes("attribute_row.attacl") ||
+    !tableBoundaryHealth.includes(
+      "acl.grantee <> table_relation.relowner",
+    )
+  ) {
+    failures.push(
+      "publication table health must close owner, table, policy, and column ACL boundaries",
+    );
+  }
+  const healthServiceGrantIndex = migration.indexOf(
+    "grant execute on function public.story_spec_publication_schema_health_v1",
+  );
+  const closedCutoverCheckIndex = migration.indexOf(
+    "select health.ok from public.story_spec_publication_schema_health_v1() health",
+  );
+  if (
+    healthServiceGrantIndex < 0 ||
+    closedCutoverCheckIndex <= healthServiceGrantIndex
+  ) {
+    failures.push(
+      "publication migration must evaluate closed schema health after restoring final grants",
     );
   }
   if (

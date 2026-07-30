@@ -36,6 +36,68 @@ alter table public.story_specs
   rename constraint story_specs_document_identity_strict_check
   to story_specs_document_identity_check;
 
+-- Recreate the one-published-version invariant in this same transaction so
+-- the exact predicate fingerprint below cannot bless pre-existing drift.
+drop index if exists public.story_specs_one_published_stage_idx;
+create unique index story_specs_one_published_stage_idx
+  on public.story_specs (figure_key, stage_id)
+  where status = 'published';
+
+-- Capture the server's own exact deparse after creating the reviewed objects.
+-- Future health checks compare byte-for-byte output, avoiding unsafe
+-- case/cast/parenthesis/whitespace normalization and PostgreSQL-version guesses.
+do $do$
+declare
+  identity_fingerprint text;
+  publication_index_fingerprint text;
+  story_specs_owner oid;
+begin
+  select relation_row.relowner
+  into strict story_specs_owner
+  from pg_catalog.pg_class relation_row
+  where relation_row.oid = 'public.story_specs'::regclass;
+
+  select pg_catalog.md5(
+    pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+  )
+  into strict identity_fingerprint
+  from pg_catalog.pg_constraint constraint_row
+  where constraint_row.conrelid = 'public.story_specs'::regclass
+    and constraint_row.conname = 'story_specs_document_identity_check';
+
+  select pg_catalog.md5(
+    pg_catalog.pg_get_expr(
+      index_row.indpred,
+      index_row.indrelid,
+      true
+    )
+  )
+  into strict publication_index_fingerprint
+  from pg_catalog.pg_index index_row
+  join pg_catalog.pg_class index_relation
+    on index_relation.oid = index_row.indexrelid
+  where index_relation.relnamespace = 'public'::regnamespace
+    and index_relation.relname = 'story_specs_one_published_stage_idx'
+    and index_row.indrelid = 'public.story_specs'::regclass;
+
+  execute pg_catalog.format(
+    'comment on constraint story_specs_document_identity_check '
+      || 'on public.story_specs is %L',
+    'onward-story-spec-identity-v1:'
+      || identity_fingerprint
+      || ':owner='
+      || story_specs_owner::text
+  );
+  execute pg_catalog.format(
+    'comment on index public.story_specs_one_published_stage_idx is %L',
+    'onward-story-spec-published-index-v1:'
+      || publication_index_fingerprint
+      || ':owner='
+      || story_specs_owner::text
+  );
+end
+$do$;
+
 -- The caller validates one exact review document in TypeScript. This function
 -- locks the row and proves that same document is still current before it
 -- retires anything, eliminating the validation-to-promotion race.
@@ -146,8 +208,166 @@ revoke all on function public.promote_story_spec(text)
   from public, anon, authenticated, service_role;
 revoke all on function public.promote_story_spec_v2(text, jsonb)
   from public, anon, authenticated, service_role;
+
+-- CREATE OR REPLACE preserves old ACL entries. Remove every explicit
+-- non-owner EXECUTE grantee, including roles unknown to the application, before
+-- adding back the single reviewed service boundary.
+do $do$
+declare
+  target record;
+  grantee_role record;
+begin
+  for target in
+    select
+      procedure_row.oid,
+      procedure_row.proowner,
+      procedure_row.proacl,
+      pg_catalog.format(
+        '%I.%I(%s)',
+        namespace_row.nspname,
+        procedure_row.proname,
+        pg_catalog.pg_get_function_identity_arguments(procedure_row.oid)
+      ) as signature
+    from pg_catalog.pg_proc procedure_row
+    join pg_catalog.pg_namespace namespace_row
+      on namespace_row.oid = procedure_row.pronamespace
+    where procedure_row.oid in (
+      'public.promote_story_spec(text)'::regprocedure,
+      'public.promote_story_spec_v2(text,jsonb)'::regprocedure
+    )
+  loop
+    for grantee_role in
+      select distinct role_row.rolname
+      from pg_catalog.aclexplode(
+        coalesce(
+          target.proacl,
+          pg_catalog.acldefault('f', target.proowner)
+        )
+      ) acl
+      join pg_catalog.pg_roles role_row
+        on role_row.oid = acl.grantee
+      where acl.privilege_type = 'EXECUTE'
+        and acl.grantee <> target.proowner
+    loop
+      execute pg_catalog.format(
+        'revoke all on function %s from %I',
+        target.signature,
+        grantee_role.rolname
+      );
+    end loop;
+  end loop;
+end
+$do$;
+
 grant execute on function public.promote_story_spec_v2(text, jsonb)
   to service_role;
+
+-- Preserve the documented editorial data plane while removing DELETE,
+-- TRUNCATE, browser, PUBLIC, and unknown-role bypasses.
+revoke all on table public.story_specs
+  from public, anon, authenticated, service_role;
+
+do $do$
+declare
+  target record;
+  grantee_role record;
+begin
+  select
+    relation_row.relowner,
+    relation_row.relacl,
+    pg_catalog.format(
+      '%I.%I',
+      namespace_row.nspname,
+      relation_row.relname
+    ) as signature
+  into strict target
+  from pg_catalog.pg_class relation_row
+  join pg_catalog.pg_namespace namespace_row
+    on namespace_row.oid = relation_row.relnamespace
+  where relation_row.oid = 'public.story_specs'::regclass;
+
+  for grantee_role in
+    select distinct role_row.rolname
+    from pg_catalog.aclexplode(
+      coalesce(
+        target.relacl,
+        pg_catalog.acldefault('r', target.relowner)
+      )
+    ) acl
+    join pg_catalog.pg_roles role_row
+      on role_row.oid = acl.grantee
+    where acl.grantee <> target.relowner
+  loop
+    execute pg_catalog.format(
+      'revoke all on table %s from %I',
+      target.signature,
+      grantee_role.rolname
+    );
+  end loop;
+end
+$do$;
+
+-- Table-level REVOKE does not remove grants made against individual columns.
+-- Scrub every explicit non-owner column grantee before restoring the narrow
+-- table-level service role boundary.
+do $do$
+declare
+  story_specs_owner oid;
+  column_grant record;
+  grantee_sql text;
+begin
+  select relation_row.relowner
+  into strict story_specs_owner
+  from pg_catalog.pg_class relation_row
+  where relation_row.oid = 'public.story_specs'::regclass;
+
+  for column_grant in
+    select distinct
+      attribute_row.attname,
+      acl.grantee,
+      role_row.rolname
+    from pg_catalog.pg_attribute attribute_row
+    cross join lateral pg_catalog.aclexplode(attribute_row.attacl) acl
+    left join pg_catalog.pg_roles role_row
+      on role_row.oid = acl.grantee
+    where attribute_row.attrelid = 'public.story_specs'::regclass
+      and attribute_row.attnum > 0
+      and not attribute_row.attisdropped
+      and acl.grantee <> story_specs_owner
+  loop
+    if column_grant.grantee = 0 then
+      grantee_sql := 'PUBLIC';
+    elsif column_grant.rolname is null then
+      raise exception
+        'story_specs column ACL references an unknown grantee';
+    else
+      grantee_sql := pg_catalog.format('%I', column_grant.rolname);
+    end if;
+
+    execute pg_catalog.format(
+      'revoke all (%I) on table public.story_specs from %s',
+      column_grant.attname,
+      grantee_sql
+    );
+  end loop;
+end
+$do$;
+
+grant select, insert, update on table public.story_specs to service_role;
+alter table public.story_specs enable row level security;
+
+do $do$
+begin
+  if exists (
+    select 1
+    from pg_catalog.pg_policy policy_row
+    where policy_row.polrelid = 'public.story_specs'::regclass
+  ) then
+    raise exception
+      'story_specs must remain default-deny with no row-level policies';
+  end if;
+end
+$do$;
 
 -- Boolean-only live proof for release readiness. It exposes no StorySpec,
 -- reviewer, source, stage, row-count, or timestamp data.
@@ -165,32 +385,7 @@ language sql
 security definer
 set search_path = pg_catalog, public
 as $fn$
-  with identity_constraint_catalog as (
-    select
-      constraint_row.*,
-      pg_catalog.translate(
-        pg_catalog.replace(
-          pg_catalog.regexp_replace(
-            pg_catalog.pg_get_constraintdef(
-              constraint_row.oid,
-              true
-            ),
-            E'\\s+',
-            '',
-            'g'
-          ),
-          'pg_catalog.',
-          ''
-        ),
-        '()',
-        ''
-      ) as normalized_definition
-    from pg_catalog.pg_constraint constraint_row
-    where constraint_row.conrelid = 'public.story_specs'::regclass
-      and constraint_row.conname =
-        'story_specs_document_identity_check'
-  ),
-  identity_health as (
+  with identity_health as (
     select count(*) filter (
       where constraint_row.conname =
           'story_specs_document_identity_check'
@@ -199,16 +394,26 @@ as $fn$
         and constraint_row.conislocal
         and constraint_row.coninhcount = 0
         and not constraint_row.connoinherit
-        and constraint_row.normalized_definition =
-          'checkjsonb_typeofspec=''object''::text'
-          || 'andspec->''storySpecId''::text=to_jsonbstory_spec_id'
-          || 'andspec->''figureKey''::text=to_jsonbfigure_key'
-          || 'andspec->''stageId''::text=to_jsonbstage_id'
-          || 'andspec->''version''::text=to_jsonbversion'
-          || 'andspec->''schemaVersion''::text=to_jsonbschema_version'
-          || 'andspec->''status''::text=to_jsonbstatusistrue'
+        and pg_catalog.obj_description(
+          constraint_row.oid,
+          'pg_constraint'
+        ) =
+          'onward-story-spec-identity-v1:'
+          || pg_catalog.md5(
+            pg_catalog.pg_get_constraintdef(
+              constraint_row.oid,
+              true
+            )
+          )
+          || ':owner='
+          || table_relation.relowner::text
     ) = 1 as value
-    from identity_constraint_catalog constraint_row
+    from pg_catalog.pg_constraint constraint_row
+    join pg_catalog.pg_class table_relation
+      on table_relation.oid = constraint_row.conrelid
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.conname =
+        'story_specs_document_identity_check'
   ),
   lifecycle_helper_health as (
     select count(*) filter (
@@ -253,25 +458,30 @@ as $fn$
       and procedure_row.proname = 'enforce_story_spec_lifecycle'
   ),
   lifecycle_trigger_health as (
-    select count(*) filter (
-      where trigger_row.tgname = 'story_specs_lifecycle'
-        and trigger_row.tgenabled = 'O'
-        and not trigger_row.tgisinternal
-        and trigger_row.tgtype = 23::smallint
-        and trigger_row.tgattr = ''::pg_catalog.int2vector
-        and trigger_row.tgqual is null
-        and trigger_row.tgnargs = 0
-        and trigger_row.tgconstraint = 0::pg_catalog.oid
-        and trigger_row.tgoldtable is null
-        and trigger_row.tgnewtable is null
-        and table_namespace.nspname = 'public'
-        and table_relation.relname = 'story_specs'
-        and table_relation.relkind = 'r'
-        and function_namespace.nspname = 'public'
-        and procedure_row.proname = 'enforce_story_spec_lifecycle'
-        and procedure_row.pronargs = 0
-        and procedure_row.prorettype = 'trigger'::pg_catalog.regtype
-    ) = 1 as value
+    select
+      count(*) filter (
+        where trigger_row.tgname = 'story_specs_lifecycle'
+          and trigger_row.tgenabled = 'O'
+          and not trigger_row.tgisinternal
+          and trigger_row.tgtype = 23::smallint
+          and trigger_row.tgattr = ''::pg_catalog.int2vector
+          and trigger_row.tgqual is null
+          and trigger_row.tgnargs = 0
+          and trigger_row.tgconstraint = 0::pg_catalog.oid
+          and trigger_row.tgoldtable is null
+          and trigger_row.tgnewtable is null
+          and table_namespace.nspname = 'public'
+          and table_relation.relname = 'story_specs'
+          and table_relation.relkind = 'r'
+          and function_namespace.nspname = 'public'
+          and procedure_row.proname = 'enforce_story_spec_lifecycle'
+          and procedure_row.pronargs = 0
+          and procedure_row.prorettype = 'trigger'::pg_catalog.regtype
+      ) = 1
+      and count(*) filter (
+        where not trigger_row.tgisinternal
+          and trigger_row.tgenabled <> 'D'
+      ) = 1 as value
     from pg_catalog.pg_trigger trigger_row
     join pg_catalog.pg_class table_relation
       on table_relation.oid = trigger_row.tgrelid
@@ -281,7 +491,7 @@ as $fn$
       on procedure_row.oid = trigger_row.tgfoid
     join pg_catalog.pg_namespace function_namespace
       on function_namespace.oid = procedure_row.pronamespace
-    where trigger_row.tgname = 'story_specs_lifecycle'
+    where trigger_row.tgrelid = 'public.story_specs'::regclass
   ),
   lifecycle_health as (
     select
@@ -299,6 +509,7 @@ as $fn$
         and index_relation.relname =
           'story_specs_one_published_stage_idx'
         and index_relation.relkind = 'i'
+        and index_relation.relowner = table_relation.relowner
         and access_method.amname = 'btree'
         and index_row.indisunique
         and index_row.indisvalid
@@ -320,20 +531,20 @@ as $fn$
           2,
           true
         ) = 'stage_id'
-        and pg_catalog.translate(
-          pg_catalog.regexp_replace(
+        and pg_catalog.obj_description(
+          index_relation.oid,
+          'pg_class'
+        ) =
+          'onward-story-spec-published-index-v1:'
+          || pg_catalog.md5(
             pg_catalog.pg_get_expr(
               index_row.indpred,
               index_row.indrelid,
               true
-            ),
-            E'\\s+',
-            '',
-            'g'
-          ),
-          '()',
-          ''
-        ) = 'status=''published''::text'
+            )
+          )
+          || ':owner='
+          || table_relation.relowner::text
     ) = 1 as value
     from pg_catalog.pg_index index_row
     join pg_catalog.pg_class index_relation
@@ -367,7 +578,37 @@ as $fn$
         and procedure_row.prosecdef
         and procedure_row.provolatile = 'v'
         and language_row.lanname = 'plpgsql'
+        and procedure_row.proowner = (
+          select table_relation.relowner
+          from pg_catalog.pg_class table_relation
+          where table_relation.oid = 'public.story_specs'::regclass
+        )
         and (owner_role.rolsuper or owner_role.rolbypassrls)
+        and owner_role.oid not in (
+          'service_role'::regrole,
+          'anon'::regrole,
+          'authenticated'::regrole
+        )
+        and pg_catalog.has_table_privilege(
+          owner_role.rolname,
+          'public.story_specs',
+          'SELECT'
+        )
+        and pg_catalog.has_table_privilege(
+          owner_role.rolname,
+          'public.story_specs',
+          'UPDATE'
+        )
+        and pg_catalog.has_table_privilege(
+          owner_role.rolname,
+          'public.figure_stages',
+          'SELECT'
+        )
+        and pg_catalog.has_table_privilege(
+          owner_role.rolname,
+          'public.figure_stages',
+          'UPDATE'
+        )
         and procedure_row.proconfig =
           array['search_path=pg_catalog, public']::text[]
         -- The exact case-preserving body fingerprint makes comments,
@@ -400,55 +641,143 @@ as $fn$
       and procedure_row.proname = 'promote_story_spec_v2'
   ),
   legacy_health as (
-    select
-      not pg_catalog.has_function_privilege(
-        'service_role',
-        'public.promote_story_spec(text)',
-        'EXECUTE'
-      )
-      and not pg_catalog.has_function_privilege(
-        'anon',
-        'public.promote_story_spec(text)',
-        'EXECUTE'
-      )
-      and not pg_catalog.has_function_privilege(
-        'authenticated',
-        'public.promote_story_spec(text)',
-        'EXECUTE'
-      ) as value
+    select count(*) filter (
+      where procedure_row.oid =
+          'public.promote_story_spec(text)'::regprocedure
+        and procedure_row.proowner = (
+          select table_relation.relowner
+          from pg_catalog.pg_class table_relation
+          where table_relation.oid = 'public.story_specs'::regclass
+        )
+        and not exists (
+          select 1
+          from pg_catalog.aclexplode(
+            coalesce(
+              procedure_row.proacl,
+              pg_catalog.acldefault('f', procedure_row.proowner)
+            )
+          ) acl
+          where acl.privilege_type = 'EXECUTE'
+            and acl.grantee <> procedure_row.proowner
+        )
+    ) = 1 as value
+    from pg_catalog.pg_proc procedure_row
+    where procedure_row.oid =
+      'public.promote_story_spec(text)'::regprocedure
+  ),
+  function_grant_health as (
+    select count(*) filter (
+      where procedure_row.oid in (
+          'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
+          'public.story_spec_publication_schema_health_v1()'::regprocedure
+        )
+        and procedure_row.proowner = (
+          select table_relation.relowner
+          from pg_catalog.pg_class table_relation
+          where table_relation.oid = 'public.story_specs'::regclass
+        )
+        and exists (
+          select 1
+          from pg_catalog.aclexplode(
+            coalesce(
+              procedure_row.proacl,
+              pg_catalog.acldefault('f', procedure_row.proowner)
+            )
+          ) acl
+          where acl.privilege_type = 'EXECUTE'
+            and acl.grantee = 'service_role'::regrole
+            and not acl.is_grantable
+        )
+        and not exists (
+          select 1
+          from pg_catalog.aclexplode(
+            coalesce(
+              procedure_row.proacl,
+              pg_catalog.acldefault('f', procedure_row.proowner)
+            )
+          ) acl
+          where acl.privilege_type = 'EXECUTE'
+            and acl.grantee not in (
+              procedure_row.proowner,
+              'service_role'::regrole
+            )
+        )
+    ) = 2 as value
+    from pg_catalog.pg_proc procedure_row
+    where procedure_row.oid in (
+      'public.promote_story_spec_v2(text,jsonb)'::regprocedure,
+      'public.story_spec_publication_schema_health_v1()'::regprocedure
+    )
+  ),
+  table_boundary_health as (
+    select count(*) filter (
+      where table_namespace.nspname = 'public'
+        and table_relation.relname = 'story_specs'
+        and table_relation.relkind = 'r'
+        and table_relation.relrowsecurity
+        and (owner_role.rolsuper or owner_role.rolbypassrls)
+        and owner_role.oid not in (
+          'service_role'::regrole,
+          'anon'::regrole,
+          'authenticated'::regrole
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_policy policy_row
+          where policy_row.polrelid = table_relation.oid
+        )
+        and (
+          select count(distinct acl.privilege_type)
+          from pg_catalog.aclexplode(
+            coalesce(
+              table_relation.relacl,
+              pg_catalog.acldefault('r', table_relation.relowner)
+            )
+          ) acl
+          where acl.grantee = 'service_role'::regrole
+            and acl.privilege_type in ('SELECT', 'INSERT', 'UPDATE')
+            and not acl.is_grantable
+        ) = 3
+        and not exists (
+          select 1
+          from pg_catalog.aclexplode(
+            coalesce(
+              table_relation.relacl,
+              pg_catalog.acldefault('r', table_relation.relowner)
+            )
+          ) acl
+          where acl.grantee <> table_relation.relowner
+            and (
+              acl.grantee <> 'service_role'::regrole
+              or acl.privilege_type not in ('SELECT', 'INSERT', 'UPDATE')
+              or acl.is_grantable
+            )
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_attribute attribute_row
+          cross join lateral pg_catalog.aclexplode(
+            attribute_row.attacl
+          ) acl
+          where attribute_row.attrelid = table_relation.oid
+            and attribute_row.attnum > 0
+            and not attribute_row.attisdropped
+            and acl.grantee <> table_relation.relowner
+        )
+    ) = 1 as value
+    from pg_catalog.pg_class table_relation
+    join pg_catalog.pg_namespace table_namespace
+      on table_namespace.oid = table_relation.relnamespace
+    join pg_catalog.pg_roles owner_role
+      on owner_role.oid = table_relation.relowner
+    where table_relation.oid = 'public.story_specs'::regclass
   ),
   grant_health as (
     select
-      pg_catalog.has_function_privilege(
-        'service_role',
-        'public.promote_story_spec_v2(text,jsonb)',
-        'EXECUTE'
-      )
-      and not pg_catalog.has_function_privilege(
-        'anon',
-        'public.promote_story_spec_v2(text,jsonb)',
-        'EXECUTE'
-      )
-      and not pg_catalog.has_function_privilege(
-        'authenticated',
-        'public.promote_story_spec_v2(text,jsonb)',
-        'EXECUTE'
-      )
-      and pg_catalog.has_function_privilege(
-        'service_role',
-        'public.story_spec_publication_schema_health_v1()',
-        'EXECUTE'
-      )
-      and not pg_catalog.has_function_privilege(
-        'anon',
-        'public.story_spec_publication_schema_health_v1()',
-        'EXECUTE'
-      )
-      and not pg_catalog.has_function_privilege(
-        'authenticated',
-        'public.story_spec_publication_schema_health_v1()',
-        'EXECUTE'
-      ) as value
+      function_grant_health.value
+        and table_boundary_health.value as value
+    from function_grant_health,
+      table_boundary_health
   )
   select
     identity_health.value
@@ -474,8 +803,69 @@ $fn$;
 
 revoke all on function public.story_spec_publication_schema_health_v1()
   from public, anon, authenticated, service_role;
+
+do $do$
+declare
+  target record;
+  grantee_role record;
+begin
+  select
+    procedure_row.proowner,
+    procedure_row.proacl,
+    pg_catalog.format(
+      '%I.%I(%s)',
+      namespace_row.nspname,
+      procedure_row.proname,
+      pg_catalog.pg_get_function_identity_arguments(procedure_row.oid)
+    ) as signature
+  into strict target
+  from pg_catalog.pg_proc procedure_row
+  join pg_catalog.pg_namespace namespace_row
+    on namespace_row.oid = procedure_row.pronamespace
+  where procedure_row.oid =
+    'public.story_spec_publication_schema_health_v1()'::regprocedure;
+
+  for grantee_role in
+    select distinct role_row.rolname
+    from pg_catalog.aclexplode(
+      coalesce(
+        target.proacl,
+        pg_catalog.acldefault('f', target.proowner)
+      )
+    ) acl
+    join pg_catalog.pg_roles role_row
+      on role_row.oid = acl.grantee
+    where acl.privilege_type = 'EXECUTE'
+      and acl.grantee <> target.proowner
+  loop
+    execute pg_catalog.format(
+      'revoke all on function %s from %I',
+      target.signature,
+      grantee_role.rolname
+    );
+  end loop;
+end
+$do$;
+
 grant execute on function public.story_spec_publication_schema_health_v1()
   to service_role;
+
+-- Do not commit a partially hardened cutover. This evaluates after every
+-- owner, object, trigger, policy, table/column ACL, and function ACL change.
+do $do$
+begin
+  if not coalesce(
+    (
+      select health.ok
+      from public.story_spec_publication_schema_health_v1() health
+    ),
+    false
+  ) then
+    raise exception
+      'StorySpec publication schema did not pass its closed health boundary';
+  end if;
+end
+$do$;
 
 comment on function public.story_spec_publication_schema_health_v1() is
   'Returns only booleans proving strict StorySpec identity, exact lifecycle enforcement, one published version per stage, compare-and-set promotion, and grants.';

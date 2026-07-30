@@ -170,18 +170,14 @@ as $fn$
       constraint_row.*,
       pg_catalog.translate(
         pg_catalog.replace(
-          pg_catalog.replace(
-            pg_catalog.regexp_replace(
-              pg_catalog.pg_get_constraintdef(
-                constraint_row.oid,
-                true
-              ),
-              E'\\s+',
-              '',
-              'g'
+          pg_catalog.regexp_replace(
+            pg_catalog.pg_get_constraintdef(
+              constraint_row.oid,
+              true
             ),
-            '::text',
-            ''
+            E'\\s+',
+            '',
+            'g'
           ),
           'pg_catalog.',
           ''
@@ -204,13 +200,13 @@ as $fn$
         and constraint_row.coninhcount = 0
         and not constraint_row.connoinherit
         and constraint_row.normalized_definition =
-          'checkjsonb_typeofspec=''object'''
-          || 'andspec->''storySpecId''=to_jsonbstory_spec_id'
-          || 'andspec->''figureKey''=to_jsonbfigure_key'
-          || 'andspec->''stageId''=to_jsonbstage_id'
-          || 'andspec->''version''=to_jsonbversion'
-          || 'andspec->''schemaVersion''=to_jsonbschema_version'
-          || 'andspec->''status''=to_jsonbstatusistrue'
+          'checkjsonb_typeofspec=''object''::text'
+          || 'andspec->''storySpecId''::text=to_jsonbstory_spec_id'
+          || 'andspec->''figureKey''::text=to_jsonbfigure_key'
+          || 'andspec->''stageId''::text=to_jsonbstage_id'
+          || 'andspec->''version''::text=to_jsonbversion'
+          || 'andspec->''schemaVersion''::text=to_jsonbschema_version'
+          || 'andspec->''status''::text=to_jsonbstatusistrue'
     ) = 1 as value
     from identity_constraint_catalog constraint_row
   ),
@@ -325,23 +321,19 @@ as $fn$
           true
         ) = 'stage_id'
         and pg_catalog.translate(
-          pg_catalog.replace(
-            pg_catalog.regexp_replace(
-              pg_catalog.pg_get_expr(
-                index_row.indpred,
-                index_row.indrelid,
-                true
-              ),
-              E'\\s+',
-              '',
-              'g'
+          pg_catalog.regexp_replace(
+            pg_catalog.pg_get_expr(
+              index_row.indpred,
+              index_row.indrelid,
+              true
             ),
-            '::text',
-            ''
+            E'\\s+',
+            '',
+            'g'
           ),
           '()',
           ''
-        ) = 'status=''published'''
+        ) = 'status=''published''::text'
     ) = 1 as value
     from pg_catalog.pg_index index_row
     join pg_catalog.pg_class index_relation

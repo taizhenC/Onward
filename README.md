@@ -506,13 +506,27 @@ story playback remains available. Run the whole migration file as the database
 owner; it locks `story_specs` and `figure_stages` together until commit. The
 migration rejects any different database/table/routine owner, application-role
 inheritance of the database owner, unexpected controlled-routine overload, or
-user trigger on `figure_stages` before changing the schema. It validates strict
-JSON identities, revokes the legacy ID-only promotion RPC, and installs
-snapshot-bound `promote_story_spec_v2` plus the audited retirement RPC. The
-service role retains direct draft/review authoring, but direct writes cannot
-create a published row or enter either terminal status; publication and
-retirement must pass through those owner-definer RPCs. A review changed after
-validation fails with “reload and revalidate”; do not retry it automatically.
+user trigger on `figure_stages` before changing the schema. The database owner
+must have no actual direct or indirect `pg_auth_members` members. The only
+direct or indirect member of `service_role` may be the managed
+`authenticator`, which must remain `NOINHERIT`, non-superuser, and without
+`BYPASSRLS`; any app/browser/unknown role added to either graph makes readiness
+fail. Managed platform superusers remain an unavoidable database-administration
+trust root, but are not application publication principals and are not modeled
+as membership edges.
+
+The migration validates strict JSON identities; replaces and fingerprints the
+exact StorySpec-to-stage foreign key, stage-status constraint, publication
+index, and canonical stage lifecycle trigger; revokes the legacy ID-only
+promotion RPC; and installs snapshot-bound `promote_story_spec_v2` plus the
+audited retirement RPC. The service role retains direct draft/review authoring
+and content-only stage refreshes, but direct writes cannot create a published
+row, change `figure_stages.status`, or enter either terminal StorySpec status.
+Publication and retirement must pass through the owner-definer RPCs, and either
+RPC rolls its StorySpec transition back if exactly one corresponding stage does
+not exist. `npm run seed` inserts missing stages as drafts and refreshes existing
+content without writing lifecycle status. A review changed after validation
+fails with “reload and revalidate”; do not retry it automatically.
 Published sentence maps must classify every sentence as an evidence-backed
 historical claim or one of the code-owned reader-bridge lines, and every
 beat-level quote link must equal its sentence-level quote links.
@@ -520,13 +534,16 @@ beat-level quote link must equal its sentence-level quote links.
 Run `npm run check-db` before resuming editorial work. Any quarantined row,
 stage/spec mismatch, unexpected active trigger, controlled-routine overload,
 unsafe StorySpec/stage table, column, trigger, or function grant, owner drift,
-policy, or stale identity/full publication-index fingerprint makes readiness
-fail. `npm run
+policy, unsafe role-membership graph, missing/changed stage FK, changed stage
+status contract, or stale identity/trigger/full publication-index fingerprint
+makes readiness fail. `npm run
 check-story-spec-migration` executes promotion, stale rejection, retirement,
-direct-write denial, hostile ACL cleanup, inherited stage-trigger rejection,
-owner/overload/trigger/full-index drift, and atomic rollback cases in embedded
-PostgreSQL. It does not replace managed-Supabase lock/concurrency, RLS/grant,
-rollback, and service-role canaries. Deploy the guarded application, rerun
+direct StorySpec and stage-status denial, hostile ACL cleanup, inherited
+owner/service authority, inherited stage-trigger rejection, orphan-stage
+rollback, forged FK metadata, owner/overload/trigger/full-index drift, and
+atomic cutover rollback in embedded PostgreSQL. It does not replace
+managed-Supabase lock/concurrency, RLS/grant, rollback, role-catalog, and
+service-role canaries. Deploy the guarded application, rerun
 readiness and terminal-RPC canaries, then reopen story creation and editorial
 work. Roll application code back without re-granting the legacy RPC, restoring
 direct terminal writes, or restoring the nullable identity constraint.

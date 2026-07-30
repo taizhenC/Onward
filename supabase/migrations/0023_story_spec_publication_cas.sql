@@ -233,24 +233,22 @@ as $fn$
         and procedure_row.proconfig =
           array['search_path=public']::text[]
         -- Fingerprint the 0004 helper after removing comments and normalizing
-        -- case/whitespace so line endings cannot change the live proof.
+        -- whitespace. Case stays significant because status literals do.
         and pg_catalog.md5(
           pg_catalog.btrim(
             pg_catalog.regexp_replace(
-              pg_catalog.lower(
-                pg_catalog.regexp_replace(
-                  procedure_row.prosrc,
-                  E'--[^\\n\\r]*',
-                  ' ',
-                  'g'
-                )
+              pg_catalog.regexp_replace(
+                procedure_row.prosrc,
+                E'--[^\\n\\r]*',
+                ' ',
+                'g'
               ),
               E'\\s+',
               ' ',
               'g'
             )
           )
-        ) = '4319d665aca2de512bf07bdb2b865f3a'
+        ) = 'db62d9000d8b9caea8ab97104dd48179'
     ) = 1 as value
     from pg_catalog.pg_proc procedure_row
     join pg_catalog.pg_namespace namespace_row
@@ -384,25 +382,24 @@ as $fn$
         and (owner_role.rolsuper or owner_role.rolbypassrls)
         and procedure_row.proconfig =
           array['search_path=pg_catalog, public']::text[]
-        -- The exact body fingerprint makes comments and unreachable lookalike
-        -- tokens insufficient to attest the lock/CAS/retirement transaction.
+        -- The exact case-preserving body fingerprint makes comments,
+        -- unreachable lookalikes, and JSONPath casing drift insufficient to
+        -- attest the lock/CAS/retirement transaction.
         and pg_catalog.md5(
           pg_catalog.btrim(
             pg_catalog.regexp_replace(
-              pg_catalog.lower(
-                pg_catalog.regexp_replace(
-                  procedure_row.prosrc,
-                  E'--[^\\n\\r]*',
-                  ' ',
-                  'g'
-                )
+              pg_catalog.regexp_replace(
+                procedure_row.prosrc,
+                E'--[^\\n\\r]*',
+                ' ',
+                'g'
               ),
               E'\\s+',
               ' ',
               'g'
             )
           )
-        ) = '7c146e43dcb5754f5e14828276f6e9ea'
+        ) = '7e4a1854906a05e7796dbf7bd76faee8'
     ) = 1 as value
     from pg_catalog.pg_proc procedure_row
     join pg_catalog.pg_namespace namespace_row

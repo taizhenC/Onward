@@ -75,6 +75,7 @@ async function main(): Promise<void> {
 
   checkPublishedProjection(fixture, failures);
   checkBridgeEvidenceClassification(fixture, failures);
+  checkQuoteEvidenceClosure(fixture, failures);
   checkRationalePrivacy(failures);
   checkTamperAndLegacyReplay(fixture, failures);
   await checkHistoricalConcernFlow(failures);
@@ -289,12 +290,14 @@ function checkBridgeEvidenceClassification(
       treatment: "historical_claim",
       factIds: [bridgeFact.factId],
       interpretationIds: [],
+      quoteIds: [],
     },
     ...READER_BRIDGE_SENTENCES.map((_, sentenceIndex) => ({
       sentenceIndex: sentenceIndex + 1,
       treatment: "reader_bridge" as const,
       factIds: [],
       interpretationIds: [],
+      quoteIds: [],
     })),
   ];
   const mixedValidation = validateStorySpec(mixedSpec, {
@@ -338,6 +341,7 @@ function checkBridgeEvidenceClassification(
       treatment: "reader_bridge",
       factIds: [],
       interpretationIds: [],
+      quoteIds: [],
     },
   ];
   const unsupportedValidation = validateStorySpec(unsupportedSpec, {
@@ -370,6 +374,89 @@ function checkBridgeEvidenceClassification(
         "unsupported bridge history escaped the closed composition error",
       );
     }
+  }
+}
+
+function checkQuoteEvidenceClosure(
+  fixture: Fixture,
+  failures: string[],
+): void {
+  const ghostQuoteSpec = structuredClone(fixture.storySpec);
+  ghostQuoteSpec.arc[0].quoteIds.push("quote-verbatim");
+  const ghostValidation = validateStorySpec(ghostQuoteSpec, {
+    forPublish: true,
+  });
+  if (
+    ghostValidation.valid ||
+    !ghostValidation.errors.some((error) =>
+      error.includes("without sentence evidence"),
+    )
+  ) {
+    failures.push("a passage could claim a quote it never used");
+  }
+  const artifactValidation = validateStoryArtifact(
+    fixture.artifact,
+    ghostQuoteSpec,
+    fixture.resonanceBrief,
+  );
+  if (
+    artifactValidation.valid ||
+    !artifactValidation.failureReasons.includes("story_spec_invalid")
+  ) {
+    failures.push("artifact validation accepted a ghost quote attribution");
+  }
+  try {
+    composeCanonicalStoryArtifact({
+      storySpec: ghostQuoteSpec,
+      stage: fixture.stage,
+      matchRecipe: recipe,
+      openingCopy: fixture.artifact.openingCopy,
+      framing: "partial",
+      resonanceBrief: fixture.resonanceBrief,
+    });
+    failures.push("canonical composition accepted a ghost quote attribution");
+  } catch (error) {
+    if (
+      !(error instanceof StoryCompositionError) ||
+      !error.reasons.includes("story_spec_invalid")
+    ) {
+      failures.push(
+        "ghost quote attribution escaped the closed composition error",
+      );
+    }
+  }
+
+  const wrongSentenceSpec = structuredClone(fixture.storySpec);
+  const quoteBeat = wrongSentenceSpec.arc[2];
+  const factId = quoteBeat.requiredFactIds[0];
+  quoteBeat.canonicalText =
+    'The record preserves the words "We began again." Work resumed.';
+  quoteBeat.sentenceEvidence = [
+    {
+      sentenceIndex: 0,
+      treatment: "historical_claim",
+      factIds: [factId],
+      interpretationIds: [],
+      quoteIds: [],
+    },
+    {
+      sentenceIndex: 1,
+      treatment: "historical_claim",
+      factIds: [factId],
+      interpretationIds: [],
+      quoteIds: ["quote-verbatim"],
+    },
+  ];
+  const wrongSentenceValidation = validateStorySpec(wrongSentenceSpec, {
+    forPublish: true,
+  });
+  if (
+    wrongSentenceValidation.valid ||
+    !wrongSentenceValidation.errors.some((error) =>
+      error.includes("direct quote is not linked in its sentence evidence"),
+    )
+  ) {
+    failures.push("a verbatim quote could be attributed to the wrong sentence");
   }
 }
 

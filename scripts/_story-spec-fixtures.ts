@@ -62,6 +62,7 @@ export function buildPublishedStorySpecFixture(
               factIds: [factId],
               interpretationIds:
                 role === "struggle" ? ["interpretation-return"] : [],
+              quoteIds: [...quoteIds],
             },
           ]
         : READER_BRIDGE_SENTENCES.map((_, sentenceIndex) => ({
@@ -69,6 +70,7 @@ export function buildPublishedStorySpecFixture(
             treatment: "reader_bridge" as const,
             factIds: [],
             interpretationIds: [],
+            quoteIds: [],
           })),
       personalizationZones: isBridge
         ? ["reader_bridge"]

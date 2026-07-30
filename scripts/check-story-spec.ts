@@ -98,6 +98,80 @@ function main(): void {
   );
   expectRejected(
     failures,
+    "beat quote linked to no sentence",
+    mutate(publishedFixture, (spec) => {
+      spec.arc[0].quoteIds.push("quote-verbatim");
+    }),
+    true,
+    "declares quote quote-verbatim without sentence evidence",
+  );
+  expectRejected(
+    failures,
+    "sentence quote absent from beat declaration",
+    mutate(publishedFixture, (spec) => {
+      spec.arc[0].sentenceEvidence[0].quoteIds.push("quote-paraphrase");
+    }),
+    true,
+    "sentence evidence uses undeclared quote quote-paraphrase",
+  );
+  expectRejected(
+    failures,
+    "duplicate beat quote link",
+    mutate(publishedFixture, (spec) => {
+      spec.arc[2].quoteIds.push("quote-verbatim");
+    }),
+    true,
+    "quote links must be unique",
+  );
+  expectRejected(
+    failures,
+    "duplicate sentence quote link",
+    mutate(publishedFixture, (spec) => {
+      spec.arc[2].sentenceEvidence[0].quoteIds.push("quote-verbatim");
+    }),
+    true,
+    "sentence quote links must be unique",
+  );
+  expectRejected(
+    failures,
+    "mapped verbatim quote absent from prose",
+    mutate(publishedFixture, (spec) => {
+      spec.arc[2].canonicalText =
+        "The record documents that the work began again.";
+    }),
+    true,
+    "mapped verbatim quote quote-verbatim does not appear in its sentence",
+  );
+  expectRejected(
+    failures,
+    "verbatim quote mapped to a different sentence",
+    mutate(publishedFixture, (spec) => {
+      const beat = spec.arc[2];
+      const factId = beat.requiredFactIds[0];
+      beat.canonicalText =
+        'The record preserves the words "We began again." Work resumed.';
+      beat.sentenceEvidence = [
+        {
+          sentenceIndex: 0,
+          treatment: "historical_claim",
+          factIds: [factId],
+          interpretationIds: [],
+          quoteIds: [],
+        },
+        {
+          sentenceIndex: 1,
+          treatment: "historical_claim",
+          factIds: [factId],
+          interpretationIds: [],
+          quoteIds: ["quote-verbatim"],
+        },
+      ];
+    }),
+    true,
+    "direct quote is not linked in its sentence evidence",
+  );
+  expectRejected(
+    failures,
     "impossible chronology",
     mutate(fixture, (spec) => {
       spec.facts[1].eventOrder = 0;
@@ -173,6 +247,7 @@ function main(): void {
           treatment: "reader_bridge",
           factIds: [],
           interpretationIds: [],
+          quoteIds: [],
         },
       ];
     }),
@@ -192,6 +267,7 @@ function main(): void {
           treatment: "historical_claim",
           factIds: [],
           interpretationIds: [],
+          quoteIds: [],
         },
       ];
     }),
@@ -377,6 +453,20 @@ function checkDocumentBoundary(spec: StorySpec, failures: string[]): void {
     invalidTreatment,
   );
 
+  const missingSentenceQuoteIds = JSON.parse(
+    JSON.stringify(buildPublishedStorySpecFixture(FIGURE_STAGES[0])),
+  ) as StorySpec;
+  delete (
+    missingSentenceQuoteIds.arc[0].sentenceEvidence[0] as Partial<
+      StorySpec["arc"][number]["sentenceEvidence"][number]
+    >
+  ).quoteIds;
+  expectDocumentRejected(
+    failures,
+    "missing sentence quote links",
+    missingSentenceQuoteIds,
+  );
+
   const malformedArray = structuredClone(spec);
   malformedArray.facts = [null] as unknown as StorySpec["facts"];
   expectDocumentRejected(failures, "malformed fact member", malformedArray);
@@ -422,6 +512,7 @@ function evidenceMappingSpec(
           interpretationIds: input.interpretation
             ? [input.interpretation.interpretationId]
             : [],
+          quoteIds: [],
         },
       ];
       if (input.interpretation) {

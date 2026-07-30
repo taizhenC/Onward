@@ -242,11 +242,13 @@ function isSentenceEvidenceArray(value: unknown): boolean {
           "treatment",
           "factIds",
           "interpretationIds",
+          "quoteIds",
         ]) &&
         isFiniteNumber(mapping.sentenceIndex) &&
         isMember(mapping.treatment, SENTENCE_TREATMENTS) &&
         isStringArray(mapping.factIds) &&
-        isStringArray(mapping.interpretationIds),
+        isStringArray(mapping.interpretationIds) &&
+        isStringArray(mapping.quoteIds),
     )
   );
 }

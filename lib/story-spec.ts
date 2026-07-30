@@ -111,6 +111,9 @@ export function validateStorySpec(
   const factIds = new Set(spec.facts.map((fact) => fact.factId));
   const entityIds = new Set(spec.entities.map((entity) => entity.entityId));
   const quoteIds = new Set(spec.quotes.map((quote) => quote.quoteId));
+  const quotesById = new Map(
+    spec.quotes.map((quote) => [quote.quoteId, quote]),
+  );
   const interpretationIds = new Set(
     spec.interpretations.map((interpretation) => interpretation.interpretationId),
   );
@@ -231,6 +234,8 @@ export function validateStorySpec(
       ...beat.optionalFactIds,
     ]);
     const usedFactIds = new Set<string>();
+    const declaredQuoteIds = new Set(beat.quoteIds);
+    const usedQuoteIds = new Set<string>();
     if (requiredFactIds.size !== beat.requiredFactIds.length) {
       errors.push(`arc[${index}] required facts must be unique`);
     }
@@ -241,6 +246,9 @@ export function validateStorySpec(
       beat.requiredFactIds.some((factId) => optionalFactIds.has(factId))
     ) {
       errors.push(`arc[${index}] required and optional facts must be disjoint`);
+    }
+    if (declaredQuoteIds.size !== beat.quoteIds.length) {
+      errors.push(`arc[${index}] quote links must be unique`);
     }
     for (const factId of declaredFactIds) {
       if (!factIds.has(factId)) errors.push(`arc[${index}] references unknown fact ${factId}`);
@@ -274,7 +282,11 @@ export function validateStorySpec(
             `arc[${index}] reader-bridge treatment is only legal on the bridge`,
           );
         }
-        if (mapping.factIds.length > 0 || mapping.interpretationIds.length > 0) {
+        if (
+          mapping.factIds.length > 0 ||
+          mapping.interpretationIds.length > 0 ||
+          mapping.quoteIds.length > 0
+        ) {
           errors.push(
             `arc[${index}] reader-bridge treatment cannot reference historical evidence`,
           );
@@ -299,6 +311,9 @@ export function validateStorySpec(
         mapping.interpretationIds.length
       ) {
         errors.push(`arc[${index}] sentence interpretation links must be unique`);
+      }
+      if (new Set(mapping.quoteIds).size !== mapping.quoteIds.length) {
+        errors.push(`arc[${index}] sentence quote links must be unique`);
       }
       for (const factId of mapping.factIds) {
         usedFactIds.add(factId);
@@ -328,6 +343,12 @@ export function validateStorySpec(
           usedFactIds.add(factId);
         }
       }
+      for (const quoteId of mapping.quoteIds) {
+        usedQuoteIds.add(quoteId);
+        if (!quoteIds.has(quoteId)) {
+          errors.push(`arc[${index}] sentence references unknown quote ${quoteId}`);
+        }
+      }
     }
     if (options.forPublish) {
       for (const factId of usedFactIds) {
@@ -344,13 +365,52 @@ export function validateStorySpec(
           );
         }
       }
-      for (const directQuote of extractDirectQuotes(beat.canonicalText)) {
-        const approved = spec.quotes.find(
-          (quote) => quote.status === "verbatim" && quote.text === directQuote,
+      for (const quoteId of usedQuoteIds) {
+        if (!declaredQuoteIds.has(quoteId)) {
+          errors.push(
+            `arc[${index}] sentence evidence uses undeclared quote ${quoteId}`,
+          );
+        }
+      }
+      for (const quoteId of declaredQuoteIds) {
+        if (!usedQuoteIds.has(quoteId)) {
+          errors.push(
+            `arc[${index}] declares quote ${quoteId} without sentence evidence`,
+          );
+        }
+      }
+      for (const mapping of beat.sentenceEvidence) {
+        const sentence = sentences[mapping.sentenceIndex];
+        if (sentence === undefined) continue;
+        const directQuotes = extractDirectQuotes(sentence);
+        for (const quoteId of mapping.quoteIds) {
+          const quote = quotesById.get(quoteId);
+          if (
+            quote?.status === "verbatim" &&
+            !directQuotes.includes(quote.text)
+          ) {
+            errors.push(
+              `arc[${index}] mapped verbatim quote ${quoteId} does not appear in its sentence`,
+            );
+          }
+        }
+      }
+      for (const [sentenceIndex, sentence] of sentences.entries()) {
+        const mapping = beat.sentenceEvidence.find(
+          (candidate) => candidate.sentenceIndex === sentenceIndex,
         );
-        if (!approved) errors.push(`arc[${index}] contains unsupported direct quote`);
-        else if (!beat.quoteIds.includes(approved.quoteId)) {
-          errors.push(`arc[${index}] direct quote is not linked to its quote ID`);
+        for (const directQuote of extractDirectQuotes(sentence)) {
+          const approved = spec.quotes.find(
+            (quote) =>
+              quote.status === "verbatim" && quote.text === directQuote,
+          );
+          if (!approved) {
+            errors.push(`arc[${index}] contains unsupported direct quote`);
+          } else if (!mapping?.quoteIds.includes(approved.quoteId)) {
+            errors.push(
+              `arc[${index}] direct quote is not linked in its sentence evidence`,
+            );
+          }
         }
       }
       if (mappedSentenceIndexes.size !== sentenceCount) {
@@ -521,7 +581,9 @@ function splitCanonicalSentences(text: string): string[] {
   return text
     .replace(/\s+/g, " ")
     .trim()
-    .split(/(?<=[.!?])\s+(?=[A-Z0-9"'\u201c\u2018])/)
+    .split(
+      /(?:(?<=[.!?])|(?<=[.!?]["'\u201d\u2019]))\s+(?=[A-Z0-9"'\u201c\u2018])/,
+    )
     .map((sentence) => sentence.trim())
     .filter(Boolean);
 }

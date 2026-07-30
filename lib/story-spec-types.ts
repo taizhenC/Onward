@@ -91,6 +91,7 @@ export type StoryBeatSpec = {
     treatment: SentenceTreatment;
     factIds: string[];
     interpretationIds: string[];
+    quoteIds: string[];
   }>;
   personalizationZones: PersonalizationZone[];
   sourceNote?: string;

@@ -510,8 +510,11 @@ user trigger on `figure_stages` before changing the schema. The database owner
 must have no actual direct or indirect `pg_auth_members` members. The only
 direct or indirect member of `service_role` may be the managed
 `authenticator`, which must remain `NOINHERIT`, non-superuser, and without
-`BYPASSRLS`; any app/browser/unknown role added to either graph makes readiness
-fail. Managed platform superusers remain an unavoidable database-administration
+`BYPASSRLS`. On PostgreSQL 16+, that membership edge must also remain
+`INHERIT FALSE`, `SET TRUE`, and `ADMIN FALSE`; the migration reads these
+per-membership options through a backward-compatible catalog projection. Any
+app/browser/unknown role added to either graph makes readiness fail. Managed
+platform superusers remain an unavoidable database-administration
 trust root, but are not application publication principals and are not modeled
 as membership edges.
 

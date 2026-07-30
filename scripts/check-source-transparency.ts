@@ -39,7 +39,10 @@ import {
 } from "../lib/story-artifact";
 import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { validateStorySpec } from "../lib/story-spec";
-import { parsePublishedStorySpecRow } from "../lib/story-spec-repository";
+import {
+  parsePublishedStorySpecRow,
+  parseStorySpecRow,
+} from "../lib/story-spec-repository";
 import type { StorySpec, StoryBeatSpec } from "../lib/story-spec-types";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
@@ -314,6 +317,16 @@ function checkPublishedHydration(
   const extraRowField = { ...row, unexpected: true };
   if (parsePublishedStorySpecRow(extraRowField) !== null) {
     failures.push("published StorySpec accepted an extra row-envelope field");
+  }
+
+  const reviewRow = structuredClone(row);
+  reviewRow.status = "review";
+  (reviewRow.spec as StorySpec).status = "review";
+  if (
+    parseStorySpecRow(reviewRow, "review") === null ||
+    parsePublishedStorySpecRow(reviewRow) !== null
+  ) {
+    failures.push("review-state StorySpec row did not honor the explicit status boundary");
   }
 
   const semanticallyInvalid = structuredClone(row);

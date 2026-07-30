@@ -1,10 +1,8 @@
 import "./_smoke-bootstrap";
 import { loadEnvLocal } from "./_load-env";
 import { getSupabase } from "../lib/db";
-import {
-  parseStorySpecDocument,
-  validateStorySpec,
-} from "../lib/story-spec";
+import { validateStorySpec } from "../lib/story-spec";
+import { parseStorySpecRow } from "../lib/story-spec-repository";
 
 type Action = "publish" | "retire";
 
@@ -19,15 +17,15 @@ async function main(): Promise<void> {
   if (action === "publish") {
     const result = await supabase
       .from("story_specs")
-      .select("spec,status")
+      .select(
+        "story_spec_id,figure_key,stage_id,version,schema_version,status,spec",
+      )
       .eq("story_spec_id", storySpecId)
       .single();
     if (result.error) throw new Error(`read StorySpec failed: ${result.error.message}`);
-    if (result.data.status !== "review") throw new Error("StorySpec must be in review state");
-
-    const stored = parseStorySpecDocument(result.data.spec);
-    if (!stored || stored.status !== "review") {
-      throw new Error("StorySpec document shape or status is invalid");
+    const stored = parseStorySpecRow(result.data, "review");
+    if (!stored || stored.storySpecId !== storySpecId) {
+      throw new Error("StorySpec row failed its review-state integrity boundary");
     }
     const candidate = { ...stored, status: "published" as const };
     const validation = validateStorySpec(candidate, { forPublish: true });

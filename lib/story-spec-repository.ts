@@ -85,6 +85,13 @@ export async function getPublishedStorySpec(
 }
 
 export function parsePublishedStorySpecRow(value: unknown): StorySpec | null {
+  return parseStorySpecRow(value, "published");
+}
+
+export function parseStorySpecRow(
+  value: unknown,
+  expectedStatus: "review" | "published",
+): StorySpec | null {
   if (!isRecord(value) || !hasExactKeys(value, STORY_SPEC_ROW_KEYS)) {
     return null;
   }
@@ -98,7 +105,7 @@ export function parsePublishedStorySpecRow(value: unknown): StorySpec | null {
     typeof row.version !== "number" ||
     !Number.isFinite(row.version) ||
     typeof row.schema_version !== "string" ||
-    row.status !== "published" ||
+    row.status !== expectedStatus ||
     spec.storySpecId !== row.story_spec_id ||
     spec.figureKey !== row.figure_key ||
     spec.stageId !== row.stage_id ||
@@ -108,7 +115,9 @@ export function parsePublishedStorySpecRow(value: unknown): StorySpec | null {
   ) {
     return null;
   }
-  const validation = validateStorySpec(spec, { forPublish: true });
+  const validation = validateStorySpec(spec, {
+    forPublish: expectedStatus === "published",
+  });
   if (!validation.valid) return null;
   return deepFreeze(structuredClone(spec));
 }

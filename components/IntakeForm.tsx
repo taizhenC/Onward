@@ -333,7 +333,7 @@ export function IntakeForm({
       clearFirstContentRequestStarted();
       if (recoveryToken) resetMatchRecovery();
       setError(
-        response.ok
+        response.ok || response.status === 503
           ? `Onward received the request, but this page could not read the result. A story may already exist. What you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`
           : `The server returned an error (${response.status}).`,
       );
@@ -936,8 +936,8 @@ export function IntakeForm({
           <p className="font-ui text-sm font-medium">No reviewed story fits those limits yet.</p>
           <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
             {requestHistoryMayHaveCreatedStory
-              ? "This latest request saved no story, but an earlier response-lost attempt may have created one; check Your stories before continuing."
-              : "Nothing was saved."}{" "}
+              ? "This latest request saved no story or answer, but an earlier response-lost attempt may have created a story; check Your stories before continuing."
+              : "No story or answer was saved."}{" "}
             You can change the limits, edit what you wrote, or leave this here.
           </p>
           <div className="flex flex-wrap gap-3">

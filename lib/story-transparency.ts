@@ -267,9 +267,12 @@ export function validateStoredStoryTransparency(
       !isUniqueIdArray(beat.quoteIds, quoteIds) ||
       typeof beat.hasPersonalizedTransition !== "boolean" ||
       (beat.role === "bridge" && beat.hasPersonalizedTransition) ||
-      (beat.role === "bridge" && beat.evidenceClass !== "reader_bridge") ||
       (beat.role !== "bridge" && beat.evidenceClass === "reader_bridge") ||
-      (reviewed && beat.role !== "bridge" &&
+      (beat.evidenceClass === "reader_bridge" &&
+        (beat.role !== "bridge" ||
+          beat.factIds.length > 0 ||
+          beat.quoteIds.length > 0)) ||
+      (reviewed && beat.evidenceClass !== "reader_bridge" &&
         (beat.evidenceClass === "review_pending" || beat.factIds.length === 0)) ||
       (reviewed &&
         (beat.evidenceClass as string).startsWith("documented") &&
@@ -300,7 +303,14 @@ function evidenceClassForBeat(
   reviewed: boolean,
   factsById: ReadonlyMap<string, StorySpec["facts"][number]>,
 ): StoryEvidenceClass {
-  if (beat.role === "bridge") return "reader_bridge";
+  if (
+    beat.role === "bridge" &&
+    !beat.sentenceEvidence.some(
+      (mapping) => mapping.treatment === "historical_claim",
+    )
+  ) {
+    return "reader_bridge";
+  }
   if (!reviewed) return "review_pending";
   const hasInterpretation = beat.sentenceEvidence.some(
     (mapping) => mapping.interpretationIds.length > 0,

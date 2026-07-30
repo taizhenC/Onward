@@ -26,6 +26,7 @@ import {
   DEFAULT_PREFACE_LINES,
   NEUTRAL_EYEBROW,
 } from "../lib/opening-copy";
+import { READER_BRIDGE_SENTENCES } from "../lib/reader-bridge-copy";
 import { createSession } from "../lib/session";
 import { createStoryRequestContext } from "../lib/story-request-context";
 import {
@@ -73,6 +74,7 @@ async function main(): Promise<void> {
   const fixture = makeFixture();
 
   checkPublishedProjection(fixture, failures);
+  checkBridgeEvidenceClassification(fixture, failures);
   checkRationalePrivacy(failures);
   checkTamperAndLegacyReplay(fixture, failures);
   await checkHistoricalConcernFlow(failures);
@@ -260,6 +262,113 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
       !error.reasons.includes("story_spec_invalid")
     ) {
       failures.push("invalid evidence closure escaped the closed composition error");
+    }
+  }
+}
+
+function checkBridgeEvidenceClassification(
+  fixture: Fixture,
+  failures: string[],
+): void {
+  const mixedSpec = structuredClone(fixture.storySpec);
+  const mixedBridge = mixedSpec.arc.at(-1);
+  const bridgeFact = mixedSpec.facts.at(-1);
+  if (!mixedBridge || !bridgeFact) {
+    failures.push("reviewed fixture is missing bridge-classification inputs");
+    return;
+  }
+  mixedBridge.canonicalText = [
+    bridgeFact.statement,
+    ...READER_BRIDGE_SENTENCES,
+  ].join(" ");
+  mixedBridge.requiredFactIds = [bridgeFact.factId];
+  mixedBridge.optionalFactIds = [];
+  mixedBridge.sentenceEvidence = [
+    {
+      sentenceIndex: 0,
+      treatment: "historical_claim",
+      factIds: [bridgeFact.factId],
+      interpretationIds: [],
+    },
+    ...READER_BRIDGE_SENTENCES.map((_, sentenceIndex) => ({
+      sentenceIndex: sentenceIndex + 1,
+      treatment: "reader_bridge" as const,
+      factIds: [],
+      interpretationIds: [],
+    })),
+  ];
+  const mixedValidation = validateStorySpec(mixedSpec, {
+    forPublish: true,
+  });
+  if (!mixedValidation.valid) {
+    failures.push(
+      `mixed historical bridge was rejected: ${mixedValidation.errors.join("; ")}`,
+    );
+    return;
+  }
+  const mixedArtifact = composeCanonicalStoryArtifact({
+    storySpec: mixedSpec,
+    stage: fixture.stage,
+    matchRecipe: recipe,
+    openingCopy: fixture.artifact.openingCopy,
+    framing: "partial",
+    resonanceBrief: fixture.resonanceBrief,
+  });
+  const projectedBridge = mixedArtifact.transparency?.beats.at(-1);
+  if (
+    projectedBridge?.evidenceClass !== "documented_scene" ||
+    !projectedBridge.factIds.includes(bridgeFact.factId)
+  ) {
+    failures.push(
+      "mixed bridge history was projected publicly as unsupported reflection",
+    );
+  }
+
+  const unsupportedSpec = structuredClone(fixture.storySpec);
+  const unsupportedBridge = unsupportedSpec.arc.at(-1);
+  if (!unsupportedBridge) {
+    failures.push("reviewed fixture is missing its bridge");
+    return;
+  }
+  unsupportedBridge.canonicalText =
+    "In 2007, the project won an unsupported award.";
+  unsupportedBridge.sentenceEvidence = [
+    {
+      sentenceIndex: 0,
+      treatment: "reader_bridge",
+      factIds: [],
+      interpretationIds: [],
+    },
+  ];
+  const unsupportedValidation = validateStorySpec(unsupportedSpec, {
+    forPublish: true,
+  });
+  if (
+    unsupportedValidation.valid ||
+    !unsupportedValidation.errors.some((error) =>
+      error.includes("reviewed reader copy"),
+    )
+  ) {
+    failures.push("unsupported bridge history escaped reader-copy validation");
+  }
+  try {
+    composeCanonicalStoryArtifact({
+      storySpec: unsupportedSpec,
+      stage: fixture.stage,
+      matchRecipe: recipe,
+      openingCopy: fixture.artifact.openingCopy,
+      framing: "partial",
+      resonanceBrief: fixture.resonanceBrief,
+    });
+    failures.push("canonical composition accepted unsupported bridge history");
+  } catch (error) {
+    if (
+      !(error instanceof StoryCompositionError) ||
+      !error.reasons.includes("story_spec_invalid")
+    ) {
+      failures.push(
+        "unsupported bridge history escaped the closed composition error",
+      );
     }
   }
 }

@@ -15,6 +15,7 @@ export type PersonalizationZone =
   | "emphasis"
   | "transition"
   | "reader_bridge";
+export type SentenceTreatment = "historical_claim" | "reader_bridge";
 
 export const CONTENT_FLAGS = [
   "death_or_grief",
@@ -87,6 +88,7 @@ export type StoryBeatSpec = {
   quoteIds: string[];
   sentenceEvidence: Array<{
     sentenceIndex: number;
+    treatment: SentenceTreatment;
     factIds: string[];
     interpretationIds: string[];
   }>;

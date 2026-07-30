@@ -127,6 +127,77 @@ function main(): void {
     true,
     "sentence-level evidence",
   );
+  expectRejected(
+    failures,
+    "missing bridge sentence classification",
+    mutate(publishedFixture, (spec) => {
+      spec.arc.at(-1)?.sentenceEvidence.pop();
+    }),
+    true,
+    "sentence-level evidence or reader-bridge classification",
+  );
+  expectRejected(
+    failures,
+    "reader treatment outside bridge",
+    mutate(publishedFixture, (spec) => {
+      const mapping = spec.arc[0].sentenceEvidence[0];
+      mapping.treatment = "reader_bridge";
+      mapping.factIds = [];
+      mapping.interpretationIds = [];
+    }),
+    true,
+    "reader-bridge treatment is only legal on the bridge",
+  );
+  expectRejected(
+    failures,
+    "reader treatment with historical evidence",
+    mutate(publishedFixture, (spec) => {
+      const bridge = spec.arc.at(-1);
+      if (!bridge) throw new Error("reviewed fixture is missing its bridge");
+      bridge.requiredFactIds = [spec.facts[0].factId];
+      bridge.sentenceEvidence[0].factIds = [spec.facts[0].factId];
+    }),
+    true,
+    "reader-bridge treatment cannot reference historical evidence",
+  );
+  expectRejected(
+    failures,
+    "unsupported historical claim labeled as reflection",
+    mutate(publishedFixture, (spec) => {
+      const bridge = spec.arc.at(-1);
+      if (!bridge) throw new Error("reviewed fixture is missing its bridge");
+      bridge.canonicalText = "In 2007, the project won an award.";
+      bridge.sentenceEvidence = [
+        {
+          sentenceIndex: 0,
+          treatment: "reader_bridge",
+          factIds: [],
+          interpretationIds: [],
+        },
+      ];
+    }),
+    true,
+    "reader-bridge treatment must use reviewed reader copy",
+  );
+  expectRejected(
+    failures,
+    "historical bridge sentence without evidence",
+    mutate(publishedFixture, (spec) => {
+      const bridge = spec.arc.at(-1);
+      if (!bridge) throw new Error("reviewed fixture is missing its bridge");
+      bridge.canonicalText = "The project was published in 2006.";
+      bridge.sentenceEvidence = [
+        {
+          sentenceIndex: 0,
+          treatment: "historical_claim",
+          factIds: [],
+          interpretationIds: [],
+        },
+      ];
+    }),
+    true,
+    "historical sentence evidence cannot be empty",
+  );
   const primaryFactId = fixture.facts[0].factId;
   const secondaryFactId = fixture.facts[1].factId;
   expectRejected(
@@ -294,6 +365,18 @@ function checkDocumentBoundary(spec: StorySpec, failures: string[]): void {
   ).intensity = "extreme";
   expectDocumentRejected(failures, "unknown content intensity", invalidEnum);
 
+  const invalidTreatment = buildPublishedStorySpecFixture(FIGURE_STAGES[0]);
+  (
+    invalidTreatment.arc[0].sentenceEvidence[0] as unknown as {
+      treatment: string;
+    }
+  ).treatment = "editorial_guess";
+  expectDocumentRejected(
+    failures,
+    "unknown sentence treatment",
+    invalidTreatment,
+  );
+
   const malformedArray = structuredClone(spec);
   malformedArray.facts = [null] as unknown as StorySpec["facts"];
   expectDocumentRejected(failures, "malformed fact member", malformedArray);
@@ -334,6 +417,7 @@ function evidenceMappingSpec(
       beat.sentenceEvidence = [
         {
           sentenceIndex: 0,
+          treatment: "historical_claim",
           factIds: [...input.mappedFactIds],
           interpretationIds: input.interpretation
             ? [input.interpretation.interpretationId]

@@ -13,6 +13,7 @@ import {
   type StorySpecValidation,
 } from "./story-spec-types";
 import { containsDisclosureEcho } from "./story-privacy";
+import { isReaderBridgeSentence } from "./reader-bridge-copy";
 export { parseStorySpecDocument } from "./story-spec-document";
 
 const EXPECTED_ROLES = [
@@ -252,7 +253,8 @@ export function validateStorySpec(
     for (const quoteId of beat.quoteIds) {
       if (!quoteIds.has(quoteId)) errors.push(`arc[${index}] references unknown quote ${quoteId}`);
     }
-    const sentenceCount = splitFactSentences(beat.canonicalText).length;
+    const sentences = splitCanonicalSentences(beat.canonicalText);
+    const sentenceCount = sentences.length;
     const mappedSentenceIndexes = new Set<number>();
     for (const mapping of beat.sentenceEvidence) {
       if (
@@ -266,8 +268,28 @@ export function validateStorySpec(
         errors.push(`arc[${index}] maps one sentence more than once`);
       }
       mappedSentenceIndexes.add(mapping.sentenceIndex);
-      if (mapping.factIds.length === 0 && mapping.interpretationIds.length === 0) {
-        errors.push(`arc[${index}] sentence evidence cannot be empty`);
+      if (mapping.treatment === "reader_bridge") {
+        if (beat.role !== "bridge") {
+          errors.push(
+            `arc[${index}] reader-bridge treatment is only legal on the bridge`,
+          );
+        }
+        if (mapping.factIds.length > 0 || mapping.interpretationIds.length > 0) {
+          errors.push(
+            `arc[${index}] reader-bridge treatment cannot reference historical evidence`,
+          );
+        }
+        const sentence = sentences[mapping.sentenceIndex];
+        if (sentence !== undefined && !isReaderBridgeSentence(sentence)) {
+          errors.push(
+            `arc[${index}] reader-bridge treatment must use reviewed reader copy`,
+          );
+        }
+      } else if (
+        mapping.factIds.length === 0 &&
+        mapping.interpretationIds.length === 0
+      ) {
+        errors.push(`arc[${index}] historical sentence evidence cannot be empty`);
       }
       if (new Set(mapping.factIds).size !== mapping.factIds.length) {
         errors.push(`arc[${index}] sentence fact links must be unique`);
@@ -331,11 +353,19 @@ export function validateStorySpec(
           errors.push(`arc[${index}] direct quote is not linked to its quote ID`);
         }
       }
-      if (beat.role !== "bridge" && mappedSentenceIndexes.size !== sentenceCount) {
-        errors.push(`arc[${index}] requires sentence-level evidence before publish`);
+      if (mappedSentenceIndexes.size !== sentenceCount) {
+        errors.push(
+          `arc[${index}] requires sentence-level evidence or reader-bridge classification before publish`,
+        );
       }
     }
-    if (options.forPublish && beat.role !== "bridge" && beat.requiredFactIds.length === 0) {
+    if (
+      options.forPublish &&
+      beat.sentenceEvidence.some(
+        (mapping) => mapping.treatment === "historical_claim",
+      ) &&
+      beat.requiredFactIds.length === 0
+    ) {
       errors.push(`arc[${index}] requires at least one supporting fact before publish`);
     }
   });
@@ -479,6 +509,15 @@ function buildFactAtoms(stage: FigureStageRow, sources: SourceRecord[]): FactAto
 }
 
 function splitFactSentences(text: string): string[] {
+  return text
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(/(?<=[.!?])\s+(?=[A-Z0-9"'\u201c\u2018])/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+}
+
+function splitCanonicalSentences(text: string): string[] {
   return text
     .replace(/\s+/g, " ")
     .trim()

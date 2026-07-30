@@ -4,6 +4,7 @@ import {
   type StorySpec,
 } from "../lib/story-spec-types";
 import type { FigureStageRow } from "../lib/types";
+import { READER_BRIDGE_SENTENCES } from "../lib/reader-bridge-copy";
 
 export function buildPublishedStorySpecFixture(
   stage: FigureStageRow,
@@ -24,7 +25,7 @@ export function buildPublishedStorySpecFixture(
     "Work continued for three years, which the archive describes as a deliberate return.",
     "In 2005, a second route opened, though one account disputes its timing.",
     "The project was published in 2006.",
-    "A life can remain distinct and still offer company.",
+    READER_BRIDGE_SENTENCES.join(" "),
   ];
   const factIds = [
     "fact-1",
@@ -57,12 +58,18 @@ export function buildPublishedStorySpecFixture(
         ? [
             {
               sentenceIndex: 0,
+              treatment: "historical_claim",
               factIds: [factId],
               interpretationIds:
                 role === "struggle" ? ["interpretation-return"] : [],
             },
           ]
-        : [],
+        : READER_BRIDGE_SENTENCES.map((_, sentenceIndex) => ({
+            sentenceIndex,
+            treatment: "reader_bridge" as const,
+            factIds: [],
+            interpretationIds: [],
+          })),
       personalizationZones: isBridge
         ? ["reader_bridge"]
         : role === "scene" || role === "became"

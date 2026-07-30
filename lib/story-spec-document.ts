@@ -42,6 +42,10 @@ const PERSONALIZATION_ZONES = [
   "transition",
   "reader_bridge",
 ] as const;
+const SENTENCE_TREATMENTS = [
+  "historical_claim",
+  "reader_bridge",
+] as const;
 const INTENSITIES = ["gentle", "moderate", "direct"] as const;
 
 const TOP_LEVEL_KEYS = [
@@ -235,10 +239,12 @@ function isSentenceEvidenceArray(value: unknown): boolean {
         isRecord(mapping) &&
         hasExactKeys(mapping, [
           "sentenceIndex",
+          "treatment",
           "factIds",
           "interpretationIds",
         ]) &&
         isFiniteNumber(mapping.sentenceIndex) &&
+        isMember(mapping.treatment, SENTENCE_TREATMENTS) &&
         isStringArray(mapping.factIds) &&
         isStringArray(mapping.interpretationIds),
     )

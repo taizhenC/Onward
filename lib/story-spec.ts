@@ -13,6 +13,7 @@ import {
   type StorySpecValidation,
 } from "./story-spec-types";
 import { containsDisclosureEcho } from "./story-privacy";
+export { parseStorySpecDocument } from "./story-spec-document";
 
 const EXPECTED_ROLES = [
   "scene",

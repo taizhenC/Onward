@@ -38,6 +38,7 @@ import {
 } from "../lib/story-artifact";
 import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { validateStorySpec } from "../lib/story-spec";
+import { parsePublishedStorySpecRow } from "../lib/story-spec-repository";
 import type { StorySpec, StoryBeatSpec } from "../lib/story-spec-types";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
@@ -119,6 +120,7 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
     failures.push(`published fixture is invalid: ${specValidation.errors.join("; ")}`);
     return;
   }
+  checkPublishedHydration(storySpec, failures);
   if (
     !transparency ||
     transparency.provenance.status !== "editorially_reviewed" ||
@@ -207,6 +209,63 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
   credentialSpec.sources[0].url = "https://user:secret@example.test/archive";
   if (validateStorySpec(credentialSpec, { forPublish: true }).valid) {
     failures.push("StorySpec validation accepted credentials in a source URL");
+  }
+}
+
+function checkPublishedHydration(
+  storySpec: StorySpec,
+  failures: string[],
+): void {
+  const row = {
+    story_spec_id: storySpec.storySpecId,
+    figure_key: storySpec.figureKey,
+    stage_id: storySpec.stageId,
+    version: storySpec.version,
+    schema_version: storySpec.schemaVersion,
+    status: storySpec.status,
+    spec: JSON.parse(JSON.stringify(storySpec)) as unknown,
+  };
+  const hydrated = parsePublishedStorySpecRow(row);
+  if (
+    hydrated === null ||
+    !Object.isFrozen(hydrated) ||
+    !Object.isFrozen(hydrated.arc) ||
+    hydrated === storySpec
+  ) {
+    failures.push("published StorySpec row did not hydrate as an immutable clone");
+  }
+
+  for (const field of [
+    "story_spec_id",
+    "figure_key",
+    "stage_id",
+    "version",
+    "schema_version",
+    "status",
+  ] as const) {
+    const mismatch: Record<string, unknown> = structuredClone(row);
+    if (field === "version") {
+      mismatch[field] = Number(mismatch[field]) + 1;
+    } else {
+      mismatch[field] = `${String(mismatch[field])}-mismatch`;
+    }
+    if (parsePublishedStorySpecRow(mismatch) !== null) {
+      failures.push(`published StorySpec accepted mismatched row ${field}`);
+    }
+  }
+
+  const extraDocumentField = structuredClone(row);
+  extraDocumentField.spec = {
+    ...(extraDocumentField.spec as Record<string, unknown>),
+    unexpected: true,
+  };
+  if (parsePublishedStorySpecRow(extraDocumentField) !== null) {
+    failures.push("published StorySpec accepted an extra document field");
+  }
+
+  const extraRowField = { ...row, unexpected: true };
+  if (parsePublishedStorySpecRow(extraRowField) !== null) {
+    failures.push("published StorySpec accepted an extra row-envelope field");
   }
 }
 

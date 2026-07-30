@@ -1,8 +1,10 @@
 import "./_smoke-bootstrap";
 import { loadEnvLocal } from "./_load-env";
 import { getSupabase } from "../lib/db";
-import { validateStorySpec } from "../lib/story-spec";
-import type { StorySpec } from "../lib/story-spec-types";
+import {
+  parseStorySpecDocument,
+  validateStorySpec,
+} from "../lib/story-spec";
 
 type Action = "publish" | "retire";
 
@@ -23,13 +25,12 @@ async function main(): Promise<void> {
     if (result.error) throw new Error(`read StorySpec failed: ${result.error.message}`);
     if (result.data.status !== "review") throw new Error("StorySpec must be in review state");
 
-    const candidate = { ...(result.data.spec as StorySpec), status: "published" as const };
-    let validation;
-    try {
-      validation = validateStorySpec(candidate, { forPublish: true });
-    } catch {
-      throw new Error("StorySpec document shape is invalid");
+    const stored = parseStorySpecDocument(result.data.spec);
+    if (!stored || stored.status !== "review") {
+      throw new Error("StorySpec document shape or status is invalid");
     }
+    const candidate = { ...stored, status: "published" as const };
+    const validation = validateStorySpec(candidate, { forPublish: true });
     if (!validation.valid) throw new Error(validation.errors.join("; "));
 
     const promoted = await supabase.rpc("promote_story_spec", {

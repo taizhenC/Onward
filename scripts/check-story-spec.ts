@@ -2,6 +2,7 @@ import "./_smoke-bootstrap";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import {
   buildDraftStorySpec,
+  parseStorySpecDocument,
   storySpecContainsDisclosure,
   validateStorySpec,
 } from "../lib/story-spec";
@@ -42,6 +43,7 @@ function main(): void {
   }
 
   const fixture = specs[0];
+  checkDocumentBoundary(fixture, failures);
 
   // Editors narrow evidence claim by claim — the builders must give every
   // fact and quote its own sourceRefs array, never one shared reference.
@@ -141,7 +143,54 @@ function main(): void {
   console.log(
     "PASS negative gates: evidence, entity, quote, chronology, locator, and sentence mapping",
   );
+  console.log("PASS untrusted documents require exact nested StorySpec shapes");
   console.log("PASS immutable publication is delegated to migration 0004 lifecycle gates");
+}
+
+function checkDocumentBoundary(spec: StorySpec, failures: string[]): void {
+  const jsonRoundTrip = JSON.parse(JSON.stringify(spec)) as unknown;
+  if (parseStorySpecDocument(jsonRoundTrip) === null) {
+    failures.push("exact parser rejected a generated draft StorySpec");
+  }
+
+  const extraTopLevel = { ...structuredClone(spec), unexpected: true };
+  expectDocumentRejected(failures, "extra top-level field", extraTopLevel);
+
+  const extraEpisode = structuredClone(spec);
+  (
+    extraEpisode.episode as StorySpec["episode"] & {
+      unexpected?: boolean;
+    }
+  ).unexpected = true;
+  expectDocumentRejected(failures, "extra episode field", extraEpisode);
+
+  const extraFact = structuredClone(spec);
+  (
+    extraFact.facts[0] as StorySpec["facts"][number] & {
+      unexpected?: boolean;
+    }
+  ).unexpected = true;
+  expectDocumentRejected(failures, "extra fact field", extraFact);
+
+  const invalidEnum = structuredClone(spec);
+  (
+    invalidEnum.contentProfile as unknown as {
+      intensity: string;
+    }
+  ).intensity = "extreme";
+  expectDocumentRejected(failures, "unknown content intensity", invalidEnum);
+
+  const malformedArray = structuredClone(spec);
+  malformedArray.facts = [null] as unknown as StorySpec["facts"];
+  expectDocumentRejected(failures, "malformed fact member", malformedArray);
+
+  const invalidOptional = structuredClone(spec);
+  (
+    invalidOptional.sources[0] as StorySpec["sources"][number] & {
+      locator?: string | undefined;
+    }
+  ).locator = undefined;
+  expectDocumentRejected(failures, "present undefined optional field", invalidOptional);
 }
 
 function mutate(source: StorySpec, change: (copy: StorySpec) => void): StorySpec {
@@ -164,6 +213,16 @@ function expectRejected(
   const result = validateStorySpec(spec, { forPublish });
   if (result.valid || !result.errors.some((error) => error.includes(expectedError))) {
     failures.push(`${name}: expected rejection containing "${expectedError}"`);
+  }
+}
+
+function expectDocumentRejected(
+  failures: string[],
+  name: string,
+  value: unknown,
+): void {
+  if (parseStorySpecDocument(value) !== null) {
+    failures.push(`${name}: exact parser accepted malformed StorySpec JSON`);
   }
 }
 

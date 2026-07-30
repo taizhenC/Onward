@@ -682,10 +682,19 @@ function checkPublicationBoundary(failures: string[]): void {
   const databaseCheck = read("./check-db.ts")
     .toLowerCase()
     .replace(/\s+/g, " ");
+  const storySpecSeed = read("./seed-story-specs.ts").replace(/\s+/g, " ");
+  const figureSeed = read("./seed-figures.ts").replace(/\s+/g, " ");
+  const cutoverCheck = read("./check-story-spec-cutover.ts")
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+  const packageSource = read("../package.json")
+    .toLowerCase()
+    .replace(/\s+/g, " ");
 
   for (const required of [
     "lock table public.story_specs, public.figure_stages in access exclusive mode",
     "story_specs_document_identity_strict_check",
+    "story_specs_status_strict_check",
     "story_specs_stage_strict_fk",
     "figure_stages_status_strict_check",
     "enforce_figure_stage_publication",
@@ -698,6 +707,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "onward-story-spec-published-index-v1:",
     "into strict identity_fingerprint",
     "into strict publication_index_fingerprint",
+    "into strict story_status_fingerprint",
     "into strict stage_fk_fingerprint",
     "into strict stage_status_fingerprint",
     "into strict stage_trigger_fingerprint",
@@ -714,8 +724,13 @@ function checkPublicationBoundary(failures: string[]): void {
     "not authenticator_role.rolinherit",
     "not authenticator_role.rolsuper",
     "not authenticator_role.rolbypassrls",
-    "(select count(*) from service_members) = 1",
+    "not authenticator_role.rolcreaterole",
+    "service_authority_role.oid = 'service_role'::regrole",
+    "service_authority_role.rolbypassrls",
+    "anonymous_role.oid = 'anon'::regrole",
+    "authenticated_role.oid = 'authenticated'::regrole",
     "service_members.member_oid = authenticator_role.oid",
+    "member_role.rolname <> 'supabase_storage_admin'",
     "not canonical_membership.admin_option",
     "pg_catalog.to_jsonb(canonical_membership) ->> 'inherit_option'",
     "pg_catalog.to_jsonb(canonical_membership) ->> 'set_option'",
@@ -725,8 +740,9 @@ function checkPublicationBoundary(failures: string[]): void {
     "storyspec cutover must run as the canonical table owner",
     "storyspec cutover found an unexpected routine, overload, or owner",
     "figure_stages must not have user triggers",
+    "retire every published storyspec before the evidence-contract cutover",
     "story_spec_publication_manifest_v1",
-    "select %l::text, %l::text, %l::text, %l::text, %l::text, %s::oid",
+    "select %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %s::oid",
     "pg_catalog.obj_description(",
     "promote_story_spec_v2",
     "p_expected_review_spec jsonb",
@@ -736,15 +752,16 @@ function checkPublicationBoundary(failures: string[]): void {
     "story_spec_publication_schema_health_v1",
     "procedure_row.prorettype = 'trigger'::pg_catalog.regtype",
     "published and retired storyspecs require the owner-definer boundary",
+    "reviewed storyspecs require an owner-controlled transition",
     "procedure_row.proconfig = array['search_path=pg_catalog, public']::text[]",
-    "bcf8821de64db8fe334eec63c5dd702a",
+    "332ff0ca21935141c04d83c125b016af",
     "36d8d57e86e730a48930a6f0502e4b56",
     "procedure_row.prorettype = 'void'::pg_catalog.regtype",
     "7b030c62cc71ce1e13669bc63baeaeb4",
     "b58ebb00db35f1ece3497c14065529c5",
     "trigger_row.tgtype = 23::smallint",
     "trigger_row.tgattr = ''::pg_catalog.int2vector",
-    "trigger_row.tgenabled <> 'd'",
+    "count(*) filter ( where not trigger_row.tgisinternal ) = 1",
     "function_namespace.nspname = 'public'",
     "story_specs_one_published_stage_idx",
     "index_row.indisunique",
@@ -752,6 +769,11 @@ function checkPublicationBoundary(failures: string[]): void {
     "not index_row.indnullsnotdistinct",
     "index_row.indpred is not null",
     "pg_catalog.pg_get_indexdef(",
+    "story_status_constraint_health as (",
+    "catalog_alignment_health as (",
+    "pg_catalog.pg_depend dependency",
+    "other_index.indisexclusion",
+    "status_attribute.attnum = any(other_index.indkey)",
     "published_stage_uniqueness_valid boolean",
     "and publication_index_health.value",
     "pg_catalog.has_table_privilege(",
@@ -799,6 +821,50 @@ function checkPublicationBoundary(failures: string[]): void {
     if (!migration.includes(required)) {
       failures.push(`publication migration is missing: ${required}`);
     }
+  }
+  const draftRefreshStart = storySpecSeed.indexOf(".update({");
+  const draftRefreshEnd = storySpecSeed.indexOf(
+    '}) .eq("story_spec_id"',
+    draftRefreshStart,
+  );
+  const draftRefresh =
+    draftRefreshStart >= 0 && draftRefreshEnd > draftRefreshStart
+      ? storySpecSeed.slice(draftRefreshStart, draftRefreshEnd)
+      : "";
+  if (
+    !storySpecSeed.includes("ignoreDuplicates: true") ||
+    !storySpecSeed.includes('.eq("status", "draft")') ||
+    storySpecSeed.includes('.select("story_spec_id,status")') ||
+    !draftRefresh ||
+    draftRefresh.includes("status:")
+  ) {
+    failures.push(
+      "StorySpec seeding must insert missing rows and refresh content only through a draft-status CAS",
+    );
+  }
+  if (
+    !figureSeed.includes('onConflict: "figure_key,stage_id"') ||
+    !figureSeed.includes("defaultToNull: false") ||
+    figureSeed.includes("status:") ||
+    figureSeed.includes(
+      "for (const { identity, content } of stageRows)",
+    )
+  ) {
+    failures.push(
+      "figure-stage seeding must use one status-free bulk upsert",
+    );
+  }
+  if (
+    !packageSource.includes(
+      '"check-story-spec-cutover": "tsx scripts/check-story-spec-cutover.ts"',
+    ) ||
+    !cutoverCheck.includes("inspectpublishedstoryspecs()") ||
+    !cutoverCheck.includes("inspection.rawpublishedrowcount !== 0") ||
+    !cutoverCheck.includes('.eq("status", "published")')
+  ) {
+    failures.push(
+      "the release must expose a read-only zero-publication StorySpec cutover gate",
+    );
   }
   const identityDdlStart = casePreservedMigration.indexOf(
     "alter table public.story_specs add constraint story_specs_document_identity_strict_check",
@@ -865,8 +931,14 @@ function checkPublicationBoundary(failures: string[]): void {
     "not authenticator_role.rolinherit",
     "not authenticator_role.rolsuper",
     "not authenticator_role.rolbypassrls",
-    "(select count(*) from service_members) = 1",
+    "not authenticator_role.rolcreaterole",
+    "service_authority_role.oid = 'service_role'::regrole",
+    "service_authority_role.rolbypassrls",
+    "anonymous_role.oid = 'anon'::regrole",
+    "authenticated_role.oid = 'authenticated'::regrole",
     "where service_members.member_oid = authenticator_role.oid",
+    "service_members.member_oid not in ( authenticator_role.oid, authority_owner )",
+    "member_role.rolname <> 'supabase_storage_admin'",
     "canonical_membership.roleid = 'service_role'::regrole",
     "canonical_membership.member = authenticator_role.oid",
     "not canonical_membership.admin_option",
@@ -955,10 +1027,12 @@ function checkPublicationBoundary(failures: string[]): void {
     !schemaCapture.includes(
       "pg_catalog.md5( pg_catalog.pg_get_indexdef(index_row.indexrelid, 0, true)",
     ) ||
+    !schemaCapture.includes("into strict story_status_fingerprint") ||
     !schemaCapture.includes("into strict stage_fk_fingerprint") ||
     !schemaCapture.includes("into strict stage_status_fingerprint") ||
     !schemaCapture.includes("into strict stage_trigger_fingerprint") ||
     !schemaCapture.includes("onward-story-spec-stage-fk-v1:") ||
+    !schemaCapture.includes("onward-story-spec-status-v1:") ||
     !schemaCapture.includes("onward-figure-stage-status-v1:") ||
     !schemaCapture.includes("onward-figure-stage-lifecycle-v1:") ||
     !schemaCapture.includes(
@@ -968,7 +1042,7 @@ function checkPublicationBoundary(failures: string[]): void {
       "create or replace function public.story_spec_publication_manifest_v1()",
     ) ||
     !schemaCapture.includes(
-      "select %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid",
+      "select %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid",
     )
   ) {
     failures.push(
@@ -1152,7 +1226,7 @@ function checkPublicationBoundary(failures: string[]): void {
     !lifecycleHelperHealth.includes(
       "array['search_path=pg_catalog, public']::text[]",
     ) ||
-    !lifecycleHelperHealth.includes("bcf8821de64db8fe334eec63c5dd702a")
+    !lifecycleHelperHealth.includes("332ff0ca21935141c04d83c125b016af")
   ) {
     failures.push(
       "lifecycle health must attest one exact owner-bound transition helper",
@@ -1256,16 +1330,47 @@ function checkPublicationBoundary(failures: string[]): void {
       : "";
   if (
     !triggerHealth ||
-    !triggerHealth.includes("trigger_row.tgenabled <> 'd'") ||
+    !triggerHealth.includes("trigger_row.tgenabled = 'o'") ||
     !triggerHealth.includes(
-      "count(*) filter ( where not trigger_row.tgisinternal",
-    )
+      "count(*) filter ( where not trigger_row.tgisinternal ) = 1",
+    ) ||
+    triggerHealth.includes("trigger_row.tgenabled <> 'd'")
   ) {
     failures.push(
-      "lifecycle health must reject every extra enabled user trigger",
+      "lifecycle health must attest the sole user trigger, including disabled rows",
     );
   }
   const stageFkHealthStart = migration.indexOf("stage_fk_health as (");
+  const storyStatusHealthStart = casePreservedMigration.indexOf(
+    "story_status_constraint_health as (",
+  );
+  const storyStatusHealth =
+    storyStatusHealthStart >= 0 &&
+    stageFkHealthStart > storyStatusHealthStart
+      ? casePreservedMigration.slice(
+          storyStatusHealthStart,
+          stageFkHealthStart,
+        )
+      : "";
+  if (
+    !storyStatusHealth ||
+    !storyStatusHealth.includes(
+      "constraint_row.conname = 'story_specs_status_check'",
+    ) ||
+    !storyStatusHealth.includes(
+      "'onward-story-spec-status-v1:' || publication_manifest.story_status_fingerprint",
+    ) ||
+    !storyStatusHealth.includes("other_constraint.contype <> 'n'") ||
+    !storyStatusHealth.includes(
+      "other_index.indexrelid <> 'public.story_specs_one_published_stage_idx'::regclass",
+    ) ||
+    !storyStatusHealth.includes("other_index.indisexclusion") ||
+    !storyStatusHealth.includes("pg_catalog.pg_depend dependency")
+  ) {
+    failures.push(
+      "StorySpec status health must reject additive constraints and status-dependent indexes",
+    );
+  }
   const stageStatusHealthStart = migration.indexOf(
     "stage_status_constraint_health as (",
     stageFkHealthStart,
@@ -1318,10 +1423,13 @@ function checkPublicationBoundary(failures: string[]): void {
     !stageStatusHealth.includes("= '''draft''::text'") ||
     !stageStatusHealth.includes(
       "'onward-figure-stage-status-v1:' || publication_manifest.stage_status_fingerprint",
-    )
+    ) ||
+    !stageStatusHealth.includes("other_constraint.contype <> 'n'") ||
+    !stageStatusHealth.includes("other_index.indisexclusion") ||
+    !stageStatusHealth.includes("pg_catalog.pg_depend dependency")
   ) {
     failures.push(
-      "figure-stage status health must attest the exact constraint and draft-only column default",
+      "figure-stage status health must attest its exact draft contract and reject additive status DDL",
     );
   }
   const stageLifecycleHelperStart = migration.indexOf(
@@ -1378,6 +1486,40 @@ function checkPublicationBoundary(failures: string[]): void {
       "both terminal StorySpec routines must fail atomically when their stage projection is missing",
     );
   }
+  const catalogAlignmentStart = migration.indexOf(
+    "catalog_alignment_health as (",
+  );
+  const publicationIndexHealthStart = migration.indexOf(
+    "publication_index_health as (",
+    catalogAlignmentStart,
+  );
+  const catalogAlignmentHealth =
+    catalogAlignmentStart >= 0 &&
+    publicationIndexHealthStart > catalogAlignmentStart
+      ? migration.slice(
+          catalogAlignmentStart,
+          publicationIndexHealthStart,
+        )
+      : "";
+  if (
+    !catalogAlignmentHealth ||
+    !catalogAlignmentHealth.includes(
+      "(stage.status = 'published') is distinct from exists",
+    ) ||
+    !catalogAlignmentHealth.includes(
+      "story_spec.figure_key = stage.figure_key",
+    ) ||
+    !catalogAlignmentHealth.includes(
+      "story_spec.stage_id = stage.stage_id",
+    ) ||
+    !catalogAlignmentHealth.includes(
+      "story_spec.status = 'published'",
+    )
+  ) {
+    failures.push(
+      "schema health must prove the stage catalog is exactly aligned to published StorySpecs",
+    );
+  }
   const authorityHealthStart = migration.indexOf("authority_health as (");
   const healthRoleGraphStart = migration.indexOf(
     "with recursive publication_manifest as materialized (",
@@ -1426,11 +1568,25 @@ function checkPublicationBoundary(failures: string[]): void {
     !authorityHealth.includes("not authenticator_role.rolinherit") ||
     !authorityHealth.includes("not authenticator_role.rolsuper") ||
     !authorityHealth.includes("not authenticator_role.rolbypassrls") ||
+    !authorityHealth.includes("not authenticator_role.rolcreaterole") ||
     !authorityHealth.includes(
-      "(select count(*) from service_members) = 1",
+      "service_authority_role.oid = 'service_role'::regrole",
+    ) ||
+    !authorityHealth.includes("service_authority_role.rolbypassrls") ||
+    !authorityHealth.includes(
+      "anonymous_role.oid = 'anon'::regrole",
+    ) ||
+    !authorityHealth.includes(
+      "authenticated_role.oid = 'authenticated'::regrole",
     ) ||
     !authorityHealth.includes(
       "service_members.member_oid = authenticator_role.oid",
+    ) ||
+    !authorityHealth.includes(
+      "service_members.member_oid not in ( authenticator_role.oid, publication_manifest.authority_owner )",
+    ) ||
+    !authorityHealth.includes(
+      "member_role.rolname <> 'supabase_storage_admin'",
     ) ||
     !authorityHealth.includes(
       "canonical_membership.roleid = 'service_role'::regrole",
@@ -1447,7 +1603,7 @@ function checkPublicationBoundary(failures: string[]): void {
     )
   ) {
     failures.push(
-      "publication authority health must bind the database owner, reject owner members, and preserve only the non-inheriting authenticator service gateway",
+      "publication authority health must bind the database owner and the exact managed Supabase service-role descendant set",
     );
   }
   const functionGrantHealthStart = migration.indexOf(

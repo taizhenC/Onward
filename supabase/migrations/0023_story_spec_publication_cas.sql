@@ -60,15 +60,52 @@ begin
     )
     select 1
     from pg_catalog.pg_roles authenticator_role
+    cross join pg_catalog.pg_roles service_authority_role
+    cross join pg_catalog.pg_roles anonymous_role
+    cross join pg_catalog.pg_roles authenticated_role
     where authenticator_role.oid = 'authenticator'::regrole
       and not authenticator_role.rolinherit
       and not authenticator_role.rolsuper
       and not authenticator_role.rolbypassrls
-      and (select count(*) from service_members) = 1
+      and not authenticator_role.rolcreaterole
+      and not authenticator_role.rolcreatedb
+      and not authenticator_role.rolreplication
+      and service_authority_role.oid = 'service_role'::regrole
+      and not service_authority_role.rolsuper
+      and not service_authority_role.rolcreaterole
+      and not service_authority_role.rolcreatedb
+      and not service_authority_role.rolreplication
+      and not service_authority_role.rolcanlogin
+      and service_authority_role.rolbypassrls
+      and anonymous_role.oid = 'anon'::regrole
+      and not anonymous_role.rolsuper
+      and not anonymous_role.rolcreaterole
+      and not anonymous_role.rolcreatedb
+      and not anonymous_role.rolreplication
+      and not anonymous_role.rolcanlogin
+      and not anonymous_role.rolbypassrls
+      and authenticated_role.oid = 'authenticated'::regrole
+      and not authenticated_role.rolsuper
+      and not authenticated_role.rolcreaterole
+      and not authenticated_role.rolcreatedb
+      and not authenticated_role.rolreplication
+      and not authenticated_role.rolcanlogin
+      and not authenticated_role.rolbypassrls
       and exists (
         select 1
         from service_members
         where service_members.member_oid = authenticator_role.oid
+      )
+      and not exists (
+        select 1
+        from service_members
+        join pg_catalog.pg_roles member_role
+          on member_role.oid = service_members.member_oid
+        where service_members.member_oid not in (
+            authenticator_role.oid,
+            authority_owner
+          )
+          and member_role.rolname <> 'supabase_storage_admin'
       )
       and exists (
         select 1
@@ -149,6 +186,19 @@ begin
     raise exception
       'figure_stages must not have user triggers';
   end if;
+
+  -- This migration tightens the evidence contract without relabeling the
+  -- existing StorySpec schema identifier. Pre-closure published rows cannot be
+  -- distinguished reliably from post-closure rows by schema_version alone, so
+  -- require an explicit retirement handoff before installing the new boundary.
+  if exists (
+    select 1
+    from public.story_specs story_spec
+    where story_spec.status = 'published'
+  ) then
+    raise exception
+      'retire every published StorySpec before the evidence-contract cutover';
+  end if;
 end
 $do$;
 
@@ -170,6 +220,20 @@ begin
     ) then
     raise exception
       'published and retired StorySpecs require the owner-definer boundary';
+  end if;
+
+  -- Review is an editorial handoff, not a seedable draft state. A stale
+  -- service-role writer must not be able to demote a row after review begins.
+  if tg_op = 'UPDATE'
+    and old.status = 'review'
+    and new.status is distinct from 'review'
+    and (current_user::pg_catalog.regrole)::oid <> (
+      select relation_row.relowner
+      from pg_catalog.pg_class relation_row
+      where relation_row.oid = 'public.story_specs'::regclass
+    ) then
+    raise exception
+      'reviewed StorySpecs require an owner-controlled transition';
   end if;
 
   -- Published evidence, prose, and review records are immutable. Retirement
@@ -227,6 +291,25 @@ $fn$;
 -- constraint replacement, disabling, or comment-only self-attestation cannot
 -- keep release readiness green.
 alter table public.story_specs
+  add constraint story_specs_status_strict_check
+  check ((status in ('draft', 'review', 'published', 'retired')) is true)
+  not valid;
+
+alter table public.story_specs
+  validate constraint story_specs_status_strict_check;
+
+alter table public.story_specs
+  drop constraint story_specs_status_check;
+
+alter table public.story_specs
+  rename constraint story_specs_status_strict_check
+  to story_specs_status_check;
+
+alter table public.story_specs
+  alter column status set default 'draft',
+  alter column status set not null;
+
+alter table public.story_specs
   add constraint story_specs_stage_strict_fk
   foreign key (figure_key, stage_id)
   references public.figure_stages (figure_key, stage_id)
@@ -261,6 +344,31 @@ alter table public.figure_stages
 alter table public.figure_stages
   alter column status set default 'draft',
   alter column status set not null;
+
+-- Status is a materialized projection for the matching catalog, not a second
+-- publication authority. Normalize every pre-cutover row while both tables are
+-- locked: a stage is visible exactly when one StorySpec is published for it.
+update public.figure_stages stage
+set status = case
+  when exists (
+    select 1
+    from public.story_specs story_spec
+    where story_spec.figure_key = stage.figure_key
+      and story_spec.stage_id = stage.stage_id
+      and story_spec.status = 'published'
+  ) then 'published'
+  else 'draft'
+end
+where stage.status is distinct from case
+  when exists (
+    select 1
+    from public.story_specs story_spec
+    where story_spec.figure_key = stage.figure_key
+      and story_spec.stage_id = stage.stage_id
+      and story_spec.status = 'published'
+  ) then 'published'
+  else 'draft'
+end;
 
 -- figure_stages.status is a projection of the terminal StorySpec lifecycle.
 -- Service-role authoring may create drafts and update stage content, but only
@@ -345,6 +453,7 @@ do $do$
 declare
   identity_fingerprint text;
   publication_index_fingerprint text;
+  story_status_fingerprint text;
   stage_fk_fingerprint text;
   stage_status_fingerprint text;
   stage_trigger_fingerprint text;
@@ -373,6 +482,14 @@ begin
   where index_relation.relnamespace = 'public'::regnamespace
     and index_relation.relname = 'story_specs_one_published_stage_idx'
     and index_row.indrelid = 'public.story_specs'::regclass;
+
+  select pg_catalog.md5(
+    pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+  )
+  into strict story_status_fingerprint
+  from pg_catalog.pg_constraint constraint_row
+  where constraint_row.conrelid = 'public.story_specs'::regclass
+    and constraint_row.conname = 'story_specs_status_check';
 
   select pg_catalog.md5(
     pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
@@ -410,6 +527,7 @@ begin
       returns table (
         identity_fingerprint text,
         publication_index_fingerprint text,
+        story_status_fingerprint text,
         stage_fk_fingerprint text,
         stage_status_fingerprint text,
         stage_trigger_fingerprint text,
@@ -419,11 +537,12 @@ begin
       immutable
       set search_path = pg_catalog
       as $manifest$
-        select %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid
+        select %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid
       $manifest$
     $create$,
     identity_fingerprint,
     publication_index_fingerprint,
+    story_status_fingerprint,
     stage_fk_fingerprint,
     stage_status_fingerprint,
     stage_trigger_fingerprint,
@@ -442,6 +561,14 @@ begin
     'comment on index public.story_specs_one_published_stage_idx is %L',
     'onward-story-spec-published-index-v1:'
       || publication_index_fingerprint
+      || ':owner='
+      || story_specs_owner::text
+  );
+  execute pg_catalog.format(
+    'comment on constraint story_specs_status_check '
+      || 'on public.story_specs is %L',
+    'onward-story-spec-status-v1:'
+      || story_status_fingerprint
       || ':owner='
       || story_specs_owner::text
   );
@@ -975,11 +1102,45 @@ as $fn$
         and not authenticator_role.rolinherit
         and not authenticator_role.rolsuper
         and not authenticator_role.rolbypassrls
-        and (select count(*) from service_members) = 1
+        and not authenticator_role.rolcreaterole
+        and not authenticator_role.rolcreatedb
+        and not authenticator_role.rolreplication
+        and service_authority_role.oid = 'service_role'::regrole
+        and not service_authority_role.rolsuper
+        and not service_authority_role.rolcreaterole
+        and not service_authority_role.rolcreatedb
+        and not service_authority_role.rolreplication
+        and not service_authority_role.rolcanlogin
+        and service_authority_role.rolbypassrls
+        and anonymous_role.oid = 'anon'::regrole
+        and not anonymous_role.rolsuper
+        and not anonymous_role.rolcreaterole
+        and not anonymous_role.rolcreatedb
+        and not anonymous_role.rolreplication
+        and not anonymous_role.rolcanlogin
+        and not anonymous_role.rolbypassrls
+        and authenticated_role.oid = 'authenticated'::regrole
+        and not authenticated_role.rolsuper
+        and not authenticated_role.rolcreaterole
+        and not authenticated_role.rolcreatedb
+        and not authenticated_role.rolreplication
+        and not authenticated_role.rolcanlogin
+        and not authenticated_role.rolbypassrls
         and exists (
           select 1
           from service_members
           where service_members.member_oid = authenticator_role.oid
+        )
+        and not exists (
+          select 1
+          from service_members
+          join pg_catalog.pg_roles member_role
+            on member_role.oid = service_members.member_oid
+          where service_members.member_oid not in (
+              authenticator_role.oid,
+              publication_manifest.authority_owner
+            )
+            and member_role.rolname <> 'supabase_storage_admin'
         )
         and exists (
           select 1
@@ -1007,9 +1168,15 @@ as $fn$
     join pg_catalog.pg_roles owner_role
       on owner_role.oid = database_row.datdba
     cross join pg_catalog.pg_roles authenticator_role
+    cross join pg_catalog.pg_roles service_authority_role
+    cross join pg_catalog.pg_roles anonymous_role
+    cross join pg_catalog.pg_roles authenticated_role
     cross join publication_manifest
     where database_row.datname = pg_catalog.current_database()
       and authenticator_role.oid = 'authenticator'::regrole
+      and service_authority_role.oid = 'service_role'::regrole
+      and anonymous_role.oid = 'anon'::regrole
+      and authenticated_role.oid = 'authenticated'::regrole
   ),
   manifest_function_health as (
     select
@@ -1073,6 +1240,96 @@ as $fn$
     where constraint_row.conrelid = 'public.story_specs'::regclass
       and constraint_row.conname =
         'story_specs_document_identity_check'
+  ),
+  story_status_constraint_health as (
+    select count(*) filter (
+      where constraint_row.conname = 'story_specs_status_check'
+        and constraint_row.contype = 'c'
+        and constraint_row.convalidated
+        and constraint_row.conislocal
+        and constraint_row.coninhcount = 0
+        and constraint_row.conparentid = 0
+        and not constraint_row.connoinherit
+        and table_relation.relowner =
+          publication_manifest.authority_owner
+        and status_attribute.atttypid = 'text'::pg_catalog.regtype
+        and status_attribute.attnotnull
+        and status_attribute.atthasdef
+        and status_attribute.attidentity = ''
+        and status_attribute.attgenerated = ''
+        and pg_catalog.pg_get_expr(
+          status_default.adbin,
+          status_default.adrelid,
+          true
+        ) = '''draft''::text'
+        and pg_catalog.obj_description(
+          constraint_row.oid,
+          'pg_constraint'
+        ) =
+          'onward-story-spec-status-v1:'
+          || publication_manifest.story_status_fingerprint
+          || ':owner='
+          || publication_manifest.authority_owner::text
+        and pg_catalog.md5(
+          pg_catalog.pg_get_constraintdef(
+            constraint_row.oid,
+            true
+          )
+        ) = publication_manifest.story_status_fingerprint
+        and not exists (
+          select 1
+          from pg_catalog.pg_constraint other_constraint
+          where other_constraint.conrelid = table_relation.oid
+            and other_constraint.oid <> constraint_row.oid
+            and other_constraint.contype <> 'n'
+            and other_constraint.conname <>
+              'story_specs_document_identity_check'
+            and status_attribute.attnum =
+              any(other_constraint.conkey)
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_index other_index
+          where other_index.indrelid = table_relation.oid
+            and other_index.indexrelid <>
+              'public.story_specs_one_published_stage_idx'::regclass
+            and (
+              other_index.indisunique
+              or other_index.indisexclusion
+            )
+            and (
+              status_attribute.attnum = any(other_index.indkey)
+              or exists (
+                select 1
+                from pg_catalog.pg_depend dependency
+                where dependency.classid =
+                    'pg_catalog.pg_class'::regclass
+                  and dependency.objid =
+                    other_index.indexrelid
+                  and dependency.refclassid =
+                    'pg_catalog.pg_class'::regclass
+                  and dependency.refobjid =
+                    table_relation.oid
+                  and dependency.refobjsubid =
+                    status_attribute.attnum
+              )
+            )
+        )
+    ) = 1 as value
+    from pg_catalog.pg_constraint constraint_row
+    join pg_catalog.pg_class table_relation
+      on table_relation.oid = constraint_row.conrelid
+    join pg_catalog.pg_attribute status_attribute
+      on status_attribute.attrelid = table_relation.oid
+      and status_attribute.attname = 'status'
+      and status_attribute.attnum > 0
+      and not status_attribute.attisdropped
+    join pg_catalog.pg_attrdef status_default
+      on status_default.adrelid = status_attribute.attrelid
+      and status_default.adnum = status_attribute.attnum
+    cross join publication_manifest
+    where constraint_row.conrelid = 'public.story_specs'::regclass
+      and constraint_row.conname = 'story_specs_status_check'
   ),
   stage_fk_health as (
     select count(*) filter (
@@ -1205,6 +1462,41 @@ as $fn$
             true
           )
         ) = publication_manifest.stage_status_fingerprint
+        and not exists (
+          select 1
+          from pg_catalog.pg_constraint other_constraint
+          where other_constraint.conrelid = table_relation.oid
+            and other_constraint.oid <> constraint_row.oid
+            and other_constraint.contype <> 'n'
+            and status_attribute.attnum =
+              any(other_constraint.conkey)
+        )
+        and not exists (
+          select 1
+          from pg_catalog.pg_index other_index
+          where other_index.indrelid = table_relation.oid
+            and (
+              other_index.indisunique
+              or other_index.indisexclusion
+            )
+            and (
+              status_attribute.attnum = any(other_index.indkey)
+              or exists (
+                select 1
+                from pg_catalog.pg_depend dependency
+                where dependency.classid =
+                    'pg_catalog.pg_class'::regclass
+                  and dependency.objid =
+                    other_index.indexrelid
+                  and dependency.refclassid =
+                    'pg_catalog.pg_class'::regclass
+                  and dependency.refobjid =
+                    table_relation.oid
+                  and dependency.refobjsubid =
+                    status_attribute.attnum
+              )
+            )
+        )
     ) = 1 as value
     from pg_catalog.pg_constraint constraint_row
     join pg_catalog.pg_class table_relation
@@ -1256,7 +1548,7 @@ as $fn$
               'g'
             )
           )
-        ) = 'bcf8821de64db8fe334eec63c5dd702a'
+        ) = '332ff0ca21935141c04d83c125b016af'
     ) = 1 as value
     from pg_catalog.pg_proc procedure_row
     join pg_catalog.pg_namespace namespace_row
@@ -1291,7 +1583,6 @@ as $fn$
       ) = 1
       and count(*) filter (
         where not trigger_row.tgisinternal
-          and trigger_row.tgenabled <> 'D'
       ) = 1 as value
     from pg_catalog.pg_trigger trigger_row
     join pg_catalog.pg_class table_relation
@@ -1417,6 +1708,19 @@ as $fn$
     from stage_status_constraint_health,
       stage_lifecycle_helper_health,
       stage_lifecycle_trigger_health
+  ),
+  catalog_alignment_health as (
+    select not exists (
+      select 1
+      from public.figure_stages stage
+      where (stage.status = 'published') is distinct from exists (
+        select 1
+        from public.story_specs story_spec
+        where story_spec.figure_key = stage.figure_key
+          and story_spec.stage_id = stage.stage_id
+          and story_spec.status = 'published'
+      )
+    ) as value
   ),
   publication_index_health as (
     select count(*) filter (
@@ -1936,6 +2240,8 @@ as $fn$
       and stage_fk_health.value
       and lifecycle_health.value
       and stage_lifecycle_health.value
+      and story_status_constraint_health.value
+      and catalog_alignment_health.value
       and publication_index_health.value
       and promotion_health.value
       and retirement_health.value
@@ -1944,8 +2250,12 @@ as $fn$
     identity_health.value
       and stage_fk_health.value as identity_constraint_valid,
     lifecycle_health.value
-      and stage_lifecycle_health.value as lifecycle_trigger_enabled,
+      and stage_lifecycle_health.value
+      and story_status_constraint_health.value
+      as lifecycle_trigger_enabled,
     publication_index_health.value
+      and story_status_constraint_health.value
+      and catalog_alignment_health.value
       as published_stage_uniqueness_valid,
     promotion_health.value
       and retirement_health.value as promotion_cas_valid,
@@ -1956,6 +2266,8 @@ as $fn$
     stage_fk_health,
     lifecycle_health,
     stage_lifecycle_health,
+    story_status_constraint_health,
+    catalog_alignment_health,
     publication_index_health,
     promotion_health,
     retirement_health,

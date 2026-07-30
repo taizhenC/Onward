@@ -26,8 +26,11 @@ async function main(): Promise<void> {
   await checkAuthorityRootDriftDetection();
   await checkIdentityManifestDriftDetection();
   await checkStageIdentityFailClosed();
+  await checkCatalogAlignmentDriftDetection();
   await checkPostCutoverDriftDetection();
   await checkUnexpectedTriggerFailsCutover();
+  await checkStatusIndexFailsCutover();
+  await checkLegacyPublicationFailsCutover();
   await checkOwnerAndOverloadBootstrapFailures();
 
   console.log("Onward StorySpec migration");
@@ -43,12 +46,22 @@ async function main(): Promise<void> {
     "PASS identity, owner, overload, trigger, full-index, and ACL drift fail closed",
   );
   console.log("PASS missing or forged stage identity rolls terminal writes back");
-  console.log("PASS unsafe bootstrap and active-trigger cutovers roll back atomically");
+  console.log("PASS cutover and live health keep stage visibility aligned");
+  console.log(
+    "PASS legacy publication and unsafe schema cutovers roll back atomically",
+  );
 }
 
 async function checkCanonicalPublicationBoundary(): Promise<void> {
   const db = await createBaseDatabase();
   try {
+    await db.exec(`
+      insert into public.figure_stages (figure_key, stage_id, status)
+      values
+        ('precutover-stage-only', 'stage', 'published'),
+        ('precutover-spec-only', 'stage', 'draft');
+    `);
+
     await applyPublicationMigration(db, () => expectPublicationLocks(db));
     await expectHealth(db, {
       ok: true,
@@ -59,6 +72,8 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
       legacy_rpc_revoked: true,
       boundary_granted: true,
     });
+    await expectStageStatus(db, "precutover-stage-only", "draft");
+    await expectStageStatus(db, "precutover-spec-only", "draft");
 
     await db.exec("set role service_role");
     try {
@@ -146,6 +161,20 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
           `),
         "stale publication snapshot",
         "changed; reload and revalidate",
+      );
+      await expectRejected(
+        () =>
+          db.exec(`
+            update public.story_specs
+            set status = 'draft',
+                spec = ${jsonbLiteral({
+                  ...nextReview,
+                  status: "draft",
+                })}
+            where story_spec_id = 'next-review';
+          `),
+        "stale seed demotion after editorial review",
+        "owner-controlled transition",
       );
     } finally {
       await db.exec("reset role");
@@ -600,6 +629,90 @@ async function checkAuthorityRootDriftDetection(): Promise<void> {
     await expectHealth(db, { ok: true });
 
     await db.exec(`
+      revoke service_role from authenticator;
+      grant service_role to authenticator with admin option;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from authenticator;
+      grant service_role to authenticator;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      revoke service_role from authenticator;
+      grant service_role to authenticator with set false;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke service_role from authenticator;
+      grant service_role to authenticator;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter role service_role superuser;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      alter role service_role nosuperuser;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter role authenticator createrole;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      alter role authenticator nocreaterole;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter role service_role nobypassrls;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      alter role service_role bypassrls;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter role anon superuser;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      alter role anon nosuperuser;
+      alter role authenticated superuser;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      alter role authenticated nosuperuser;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
       alter database postgres owner to onward_adversary;
     `);
     await expectHealth(db, {
@@ -768,10 +881,113 @@ async function checkStageIdentityFailClosed(): Promise<void> {
   }
 }
 
+async function checkCatalogAlignmentDriftDetection(): Promise<void> {
+  const db = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(db);
+    await db.exec(`
+      insert into public.figure_stages (figure_key, stage_id)
+      values ('alignment', 'stage');
+    `);
+    await insertStorySpec(
+      db,
+      storySpecDocument(
+        "alignment-published",
+        1,
+        "published",
+        "alignment",
+      ),
+    );
+    await expectHealth(db, {
+      ok: false,
+      published_stage_uniqueness_valid: false,
+    });
+    await db.exec(`
+      update public.figure_stages
+      set status = 'published'
+      where figure_key = 'alignment'
+        and stage_id = 'stage';
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      update public.figure_stages
+      set status = 'draft'
+      where figure_key = 'alignment'
+        and stage_id = 'stage';
+    `);
+    await expectHealth(db, {
+      ok: false,
+      published_stage_uniqueness_valid: false,
+    });
+  } finally {
+    await db.close();
+  }
+}
+
 async function checkPostCutoverDriftDetection(): Promise<void> {
   const db = await createBaseDatabase();
   try {
     await applyPublicationMigration(db);
+
+    await db.exec(`
+      alter table public.figure_stages
+        add constraint onward_stage_draft_only
+        check (status = 'draft')
+        not valid;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+    });
+    await db.exec(`
+      alter table public.figure_stages
+        drop constraint onward_stage_draft_only;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter table public.story_specs
+        add constraint onward_story_spec_no_publish
+        check (status <> 'published')
+        not valid;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+    });
+    await db.exec(`
+      alter table public.story_specs
+        drop constraint onward_story_spec_no_publish;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      create unique index onward_stage_status_unique
+        on public.figure_stages (status);
+    `);
+    await expectHealth(db, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+    });
+    await db.exec(`
+      drop index public.onward_stage_status_unique;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      create unique index onward_story_spec_status_unique
+        on public.story_specs (figure_key)
+        where status = 'draft';
+    `);
+    await expectHealth(db, {
+      ok: false,
+      lifecycle_trigger_enabled: false,
+    });
+    await db.exec(`
+      drop index public.onward_story_spec_status_unique;
+    `);
+    await expectHealth(db, { ok: true });
 
     await db.exec(`
       create function public.onward_test_trigger()
@@ -786,6 +1002,8 @@ async function checkPostCutoverDriftDetection(): Promise<void> {
       create trigger onward_test_after
       after update on public.story_specs
       for each row execute function public.onward_test_trigger();
+      alter table public.story_specs
+        disable trigger onward_test_after;
     `);
     await expectHealth(db, {
       ok: false,
@@ -944,13 +1162,81 @@ async function checkUnexpectedTriggerFailsCutover(): Promise<void> {
       create trigger onward_test_after
       after update on public.story_specs
       for each row execute function public.onward_test_trigger();
+      alter table public.story_specs
+        disable trigger onward_test_after;
     `);
     await expectRejected(
       () => applyPublicationMigration(db),
-      "unexpected active trigger",
+      "unexpected disabled trigger",
       "closed health boundary",
     );
-    await expectV2Absent(db, "active-trigger rollback");
+    await expectV2Absent(db, "disabled-trigger rollback");
+  } finally {
+    await db.close();
+  }
+}
+
+async function checkStatusIndexFailsCutover(): Promise<void> {
+  const stageIndexDb = await createBaseDatabase();
+  try {
+    await stageIndexDb.exec(`
+      create unique index onward_stage_status_unique
+        on public.figure_stages (status);
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(stageIndexDb),
+      "stage status-index bootstrap",
+      "closed health boundary",
+    );
+    await expectV2Absent(stageIndexDb, "stage status-index rollback");
+  } finally {
+    await stageIndexDb.close();
+  }
+
+  const storyIndexDb = await createBaseDatabase();
+  try {
+    await storyIndexDb.exec(`
+      create unique index onward_story_spec_status_unique
+        on public.story_specs (figure_key)
+        where status = 'draft';
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(storyIndexDb),
+      "StorySpec status-index bootstrap",
+      "closed health boundary",
+    );
+    await expectV2Absent(storyIndexDb, "StorySpec status-index rollback");
+  } finally {
+    await storyIndexDb.close();
+  }
+}
+
+async function checkLegacyPublicationFailsCutover(): Promise<void> {
+  const db = await createBaseDatabase();
+  try {
+    await db.exec(`
+      insert into public.figure_stages (figure_key, stage_id, status)
+      values ('legacy-publication', 'stage', 'published');
+    `);
+    await insertStorySpec(
+      db,
+      storySpecDocument(
+        "legacy-publication",
+        1,
+        "published",
+        "legacy-publication",
+      ),
+    );
+    await expectRejected(
+      () => applyPublicationMigration(db),
+      "legacy published StorySpec",
+      "retire every published StorySpec",
+    );
+    await expectV2Absent(db, "legacy-publication rollback");
+    await expectStoryStates(db, {
+      "legacy-publication": "published",
+    });
+    await expectStageStatus(db, "legacy-publication", "published");
   } finally {
     await db.close();
   }
@@ -1047,6 +1333,42 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     );
   } finally {
     await inheritedAuthenticatorDb.close();
+  }
+
+  const privilegedServiceDb = await createBaseDatabase();
+  try {
+    await privilegedServiceDb.exec(`
+      alter role service_role superuser;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(privilegedServiceDb),
+      "superuser service-role bootstrap",
+      "service authority role graph is unsafe",
+    );
+    await expectV2Absent(
+      privilegedServiceDb,
+      "superuser-service rollback",
+    );
+  } finally {
+    await privilegedServiceDb.close();
+  }
+
+  const delegatingAuthenticatorDb = await createBaseDatabase();
+  try {
+    await delegatingAuthenticatorDb.exec(`
+      alter role authenticator createrole;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(delegatingAuthenticatorDb),
+      "delegating authenticator bootstrap",
+      "service authority role graph is unsafe",
+    );
+    await expectV2Absent(
+      delegatingAuthenticatorDb,
+      "delegating-authenticator rollback",
+    );
+  } finally {
+    await delegatingAuthenticatorDb.close();
   }
 
   const overloadDb = await createBaseDatabase();
@@ -1211,8 +1533,11 @@ async function createBaseDatabase(): Promise<PGlite> {
     create role authenticated noinherit;
     create role service_role noinherit bypassrls;
     create role authenticator noinherit;
+    create role supabase_storage_admin noinherit createrole login;
     create role onward_adversary noinherit bypassrls;
     grant service_role to authenticator;
+    grant service_role to postgres;
+    grant authenticator to supabase_storage_admin;
 
     create table public.figure_stages (
       figure_key text not null,
@@ -1233,6 +1558,9 @@ async function expectBaseAuthorityGraph(db: PGlite): Promise<void> {
     owner_member_count: number;
     service_member_count: number;
     authenticator_member_count: number;
+    owner_member_count_in_service: number;
+    storage_member_count: number;
+    unexpected_service_member_count: number;
     authenticator_noinherit: boolean;
     authenticator_not_super: boolean;
     authenticator_not_bypass: boolean;
@@ -1272,6 +1600,37 @@ async function expectBaseAuthorityGraph(db: PGlite): Promise<void> {
         from service_members
         where member_oid = 'authenticator'::regrole
       ) as authenticator_member_count,
+      (
+        select count(*)::int
+        from service_members
+        where member_oid = (
+          select database_row.datdba
+          from pg_catalog.pg_database database_row
+          where database_row.datname = pg_catalog.current_database()
+        )
+      ) as owner_member_count_in_service,
+      (
+        select count(*)::int
+        from service_members
+        join pg_catalog.pg_roles member_role
+          on member_role.oid = service_members.member_oid
+        where member_role.rolname = 'supabase_storage_admin'
+      ) as storage_member_count,
+      (
+        select count(*)::int
+        from service_members
+        join pg_catalog.pg_roles member_role
+          on member_role.oid = service_members.member_oid
+        where service_members.member_oid not in (
+            'authenticator'::regrole,
+            (
+              select database_row.datdba
+              from pg_catalog.pg_database database_row
+              where database_row.datname = pg_catalog.current_database()
+            )
+          )
+          and member_role.rolname <> 'supabase_storage_admin'
+      ) as unexpected_service_member_count,
       not authenticator_role.rolinherit as authenticator_noinherit,
       not authenticator_role.rolsuper as authenticator_not_super,
       not authenticator_role.rolbypassrls as authenticator_not_bypass,
@@ -1300,8 +1659,11 @@ async function expectBaseAuthorityGraph(db: PGlite): Promise<void> {
   if (
     !graph ||
     graph.owner_member_count !== 0 ||
-    graph.service_member_count !== 1 ||
+    graph.service_member_count !== 3 ||
     graph.authenticator_member_count !== 1 ||
+    graph.owner_member_count_in_service !== 1 ||
+    graph.storage_member_count !== 1 ||
+    graph.unexpected_service_member_count !== 0 ||
     !graph.authenticator_noinherit ||
     !graph.authenticator_not_super ||
     !graph.authenticator_not_bypass ||

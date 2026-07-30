@@ -500,9 +500,13 @@ The alternate capability expiry is a **start-by** deadline: a claim must begin b
 6. Seed: `npm run seed`, then `npm run seed-story-specs`. New stages and specs stay in `draft`; source mapping and human review are required before an editor moves a spec to `review` and runs `npm run story-spec:status -- publish <storySpecId>`. Production matching considers only valid published StorySpecs. The same command with `retire` immediately removes one stage version from new matching without a deploy. Historical concerns appear in `historical_concern_reports`; triage them through `triage_historical_concern`, and retire the pinned `story_spec_id` when a concern requires immediate unpublication. Reports never auto-retire content. Run `npm run check-db` after publishing the intended launch subset. For semantic retrieval: `npm run check-embeddings` → `npm run seed-embeddings` → `npm run check-embeddings`.
 
 Apply migration `0023` before using the publication command from this version.
-Pause editorial writes during the cutover and run the whole file as the database
-owner. The migration rejects any different table/routine owner or unexpected
-controlled-routine overload before changing the schema. It validates strict
+Set `STORY_CREATION_ENABLED=false`, verify a new intake is paused, drain
+in-flight creation, and pause editorial writes before the cutover. Existing
+story playback remains available. Run the whole migration file as the database
+owner; it locks `story_specs` and `figure_stages` together until commit. The
+migration rejects any different database/table/routine owner, application-role
+inheritance of the database owner, unexpected controlled-routine overload, or
+user trigger on `figure_stages` before changing the schema. It validates strict
 JSON identities, revokes the legacy ID-only promotion RPC, and installs
 snapshot-bound `promote_story_spec_v2` plus the audited retirement RPC. The
 service role retains direct draft/review authoring, but direct writes cannot
@@ -515,14 +519,17 @@ beat-level quote link must equal its sentence-level quote links.
 
 Run `npm run check-db` before resuming editorial work. Any quarantined row,
 stage/spec mismatch, unexpected active trigger, controlled-routine overload,
-unsafe table/column/function grant, owner drift, policy, or stale identity/full
-publication-index fingerprint makes readiness fail. `npm run
+unsafe StorySpec/stage table, column, trigger, or function grant, owner drift,
+policy, or stale identity/full publication-index fingerprint makes readiness
+fail. `npm run
 check-story-spec-migration` executes promotion, stale rejection, retirement,
-direct-write denial, hostile ACL cleanup, owner/overload/trigger/full-index
-drift, and atomic rollback cases in embedded PostgreSQL. It does not replace
-managed-Supabase lock/concurrency, RLS/grant, rollback, and service-role
-canaries. Roll application code back without re-granting the legacy RPC,
-restoring direct terminal writes, or restoring the nullable identity constraint.
+direct-write denial, hostile ACL cleanup, inherited stage-trigger rejection,
+owner/overload/trigger/full-index drift, and atomic rollback cases in embedded
+PostgreSQL. It does not replace managed-Supabase lock/concurrency, RLS/grant,
+rollback, and service-role canaries. Deploy the guarded application, rerun
+readiness and terminal-RPC canaries, then reopen story creation and editorial
+work. Roll application code back without re-granting the legacy RPC, restoring
+direct terminal writes, or restoring the nullable identity constraint.
 
 ### 2. Vercel
 

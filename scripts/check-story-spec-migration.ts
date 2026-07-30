@@ -22,6 +22,7 @@ const publicationMigration = read(
 async function main(): Promise<void> {
   await checkCanonicalPublicationBoundary();
   await checkHostileAclCutover();
+  await checkIdentityManifestDriftDetection();
   await checkPostCutoverDriftDetection();
   await checkUnexpectedTriggerFailsCutover();
   await checkOwnerAndOverloadBootstrapFailures();
@@ -31,7 +32,9 @@ async function main(): Promise<void> {
   console.log("PASS exact-snapshot promotion, stale rejection, and retirement");
   console.log("PASS direct service-role publication and retirement are blocked");
   console.log("PASS hostile table, column, and every lifecycle-function ACL is removed");
-  console.log("PASS owner, overload, trigger, full-index, and ACL drift fail closed");
+  console.log(
+    "PASS identity, owner, overload, trigger, full-index, and ACL drift fail closed",
+  );
   console.log("PASS unsafe bootstrap and active-trigger cutovers roll back atomically");
 }
 
@@ -325,6 +328,76 @@ async function checkHostileAclCutover(): Promise<void> {
         `hostile ACL cutover leaked: ${escapedPrivileges.join(", ")}`,
       );
     }
+  } finally {
+    await db.close();
+  }
+}
+
+async function checkIdentityManifestDriftDetection(): Promise<void> {
+  const db = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(db);
+    await db.exec(`
+      alter table public.story_specs
+        drop constraint story_specs_document_identity_check;
+      alter table public.story_specs
+        add constraint story_specs_document_identity_check
+        check (pg_catalog.jsonb_typeof(spec) = 'object');
+
+      do $do$
+      declare
+        drift_fingerprint text;
+        story_specs_owner oid;
+      begin
+        select
+          pg_catalog.md5(
+            pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+          ),
+          table_relation.relowner
+        into strict drift_fingerprint, story_specs_owner
+        from pg_catalog.pg_constraint constraint_row
+        join pg_catalog.pg_class table_relation
+          on table_relation.oid = constraint_row.conrelid
+        where constraint_row.conrelid = 'public.story_specs'::regclass
+          and constraint_row.conname =
+            'story_specs_document_identity_check';
+
+        execute pg_catalog.format(
+          'comment on constraint story_specs_document_identity_check '
+            || 'on public.story_specs is %L',
+          'onward-story-spec-identity-v1:'
+            || drift_fingerprint
+            || ':owner='
+            || story_specs_owner::text
+        );
+      end
+      $do$;
+
+      insert into public.figure_stages (figure_key, stage_id)
+      values ('weak-identity', 'stage');
+
+      insert into public.story_specs (
+        story_spec_id,
+        figure_key,
+        stage_id,
+        version,
+        schema_version,
+        status,
+        spec
+      ) values (
+        'weak-identity',
+        'weak-identity',
+        'stage',
+        1,
+        'v1',
+        'draft',
+        '{}'::jsonb
+      );
+    `);
+    await expectHealth(db, {
+      ok: false,
+      identity_constraint_valid: false,
+    });
   } finally {
     await db.close();
   }

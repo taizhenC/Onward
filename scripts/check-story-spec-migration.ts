@@ -23,6 +23,7 @@ async function main(): Promise<void> {
   await checkCanonicalPublicationBoundary();
   await checkHostileAclCutover();
   await checkFigureStagesDefinerBoundary();
+  await checkAuthorityRootDriftDetection();
   await checkIdentityManifestDriftDetection();
   await checkPostCutoverDriftDetection();
   await checkUnexpectedTriggerFailsCutover();
@@ -34,6 +35,7 @@ async function main(): Promise<void> {
   console.log("PASS direct service-role publication and retirement are blocked");
   console.log("PASS hostile table, column, and every lifecycle-function ACL is removed");
   console.log("PASS figure-stage trigger inheritance is closed before and after cutover");
+  console.log("PASS database-owner authority and application-role separation stay live");
   console.log(
     "PASS identity, owner, overload, trigger, full-index, and ACL drift fail closed",
   );
@@ -43,7 +45,7 @@ async function main(): Promise<void> {
 async function checkCanonicalPublicationBoundary(): Promise<void> {
   const db = await createBaseDatabase();
   try {
-    await applyPublicationMigration(db);
+    await applyPublicationMigration(db, () => expectPublicationLocks(db));
     await expectHealth(db, {
       ok: true,
       identity_constraint_valid: true,
@@ -203,6 +205,33 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
     if (stage.rows[0]?.status !== "draft") {
       throw new Error("retirement did not return the figure stage to draft");
     }
+
+    await db.exec(`
+      insert into public.figure_stages (figure_key, stage_id)
+      values ('initial', 'stage');
+    `);
+    const initialCandidate = storySpecDocument(
+      "initial-candidate",
+      1,
+      "review",
+      "initial",
+    );
+    await insertStorySpec(db, initialCandidate);
+    await db.exec("set role service_role");
+    try {
+      await db.exec(`
+        select public.promote_story_spec_v2(
+          'initial-candidate',
+          ${jsonbLiteral(initialCandidate)}
+        );
+      `);
+    } finally {
+      await db.exec("reset role");
+    }
+    await expectStoryStates(db, {
+      "initial-candidate": "published",
+    });
+    await expectStageStatus(db, "initial", "published");
 
     await expectRejected(
       () =>
@@ -481,6 +510,35 @@ async function checkFigureStagesDefinerBoundary(): Promise<void> {
     });
   } finally {
     await driftDb.close();
+  }
+}
+
+async function checkAuthorityRootDriftDetection(): Promise<void> {
+  const db = await createBaseDatabase();
+  try {
+    await applyPublicationMigration(db);
+
+    await db.exec(`
+      grant postgres to service_role;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await db.exec(`
+      revoke postgres from service_role;
+    `);
+    await expectHealth(db, { ok: true });
+
+    await db.exec(`
+      alter database postgres owner to onward_adversary;
+    `);
+    await expectHealth(db, {
+      ok: false,
+      boundary_granted: false,
+    });
+  } finally {
+    await db.close();
   }
 }
 
@@ -785,6 +843,21 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     await coordinatedOwnerDb.close();
   }
 
+  const inheritedOwnerDb = await createBaseDatabase();
+  try {
+    await inheritedOwnerDb.exec(`
+      grant postgres to service_role;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(inheritedOwnerDb),
+      "application-role owner inheritance",
+      "must not inherit StorySpec publication authority",
+    );
+    await expectV2Absent(inheritedOwnerDb, "owner-inheritance rollback");
+  } finally {
+    await inheritedOwnerDb.close();
+  }
+
   const overloadDb = await createBaseDatabase();
   try {
     await overloadDb.exec(`
@@ -901,6 +974,26 @@ async function expectStoryStates(
   }
 }
 
+async function expectStageStatus(
+  db: PGlite,
+  figureKey: string,
+  expectedStatus: string,
+): Promise<void> {
+  const result = await db.query<{ status: string }>(`
+    select status
+    from public.figure_stages
+    where figure_key = ${textLiteral(figureKey)}
+      and stage_id = 'stage'
+  `);
+  if (result.rows[0]?.status !== expectedStatus) {
+    throw new Error(
+      `${figureKey} stage was ${String(
+        result.rows[0]?.status,
+      )}; expected ${expectedStatus}`,
+    );
+  }
+}
+
 async function expectV2Absent(db: PGlite, label: string): Promise<void> {
   const rollback = await db.query<{ v2_absent: boolean }>(`
     select pg_catalog.to_regprocedure(
@@ -939,14 +1032,39 @@ async function createBaseDatabase(): Promise<PGlite> {
   return db;
 }
 
-async function applyPublicationMigration(db: PGlite): Promise<void> {
+async function applyPublicationMigration(
+  db: PGlite,
+  beforeCommit?: () => Promise<void>,
+): Promise<void> {
   await db.exec("begin");
   try {
     await db.exec(publicationMigration);
+    await beforeCommit?.();
     await db.exec("commit");
   } catch (error) {
     await db.exec("rollback");
     throw error;
+  }
+}
+
+async function expectPublicationLocks(db: PGlite): Promise<void> {
+  const result = await db.query<{ locked_relations: number }>(`
+    select count(distinct lock_row.relation)::int as locked_relations
+    from pg_catalog.pg_locks lock_row
+    where lock_row.pid = pg_catalog.pg_backend_pid()
+      and lock_row.granted
+      and lock_row.mode = 'AccessExclusiveLock'
+      and lock_row.relation in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+  `);
+  if (result.rows[0]?.locked_relations !== 2) {
+    throw new Error(
+      `publication cutover held ${String(
+        result.rows[0]?.locked_relations,
+      )}/2 required AccessExclusiveLock rows`,
+    );
   }
 }
 

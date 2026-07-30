@@ -14,6 +14,14 @@ import {
 } from "./story-spec-types";
 import { containsDisclosureEcho } from "./story-privacy";
 import { isReaderBridgeSentence } from "./reader-bridge-copy";
+import {
+  hasUniqueStorySourceRefs,
+  isBoundedTransparencyText,
+  isSafeTransparencyId,
+  isSafeTransparencySourceUrl,
+  isStoryReviewDate,
+  STORY_TRANSPARENCY_LIMITS,
+} from "./story-transparency-policy";
 export { parseStorySpecDocument } from "./story-spec-document";
 
 const EXPECTED_ROLES = [
@@ -130,6 +138,9 @@ export function validateStorySpec(
   if (!spec.storySpecId || !spec.figureKey || !spec.stageId) {
     errors.push("storySpecId, figureKey, and stageId are required");
   }
+  if (!isSafeTransparencyId(spec.storySpecId)) {
+    errors.push("storySpecId must use the bounded public identifier format");
+  }
   if (!Number.isInteger(spec.version) || spec.version < 1) {
     errors.push("version must be a positive integer");
   }
@@ -147,6 +158,13 @@ export function validateStorySpec(
     errors.push("at least one source and fact are required");
   }
   if (
+    spec.sources.length > STORY_TRANSPARENCY_LIMITS.sources ||
+    spec.facts.length > STORY_TRANSPARENCY_LIMITS.facts ||
+    spec.quotes.length > STORY_TRANSPARENCY_LIMITS.quotes
+  ) {
+    errors.push("source, fact, or quote count exceeds the public projection limit");
+  }
+  if (
     !["gentle", "moderate", "direct"].includes(spec.contentProfile.intensity) ||
     !Array.isArray(spec.contentProfile.flags) ||
     spec.contentProfile.flags.some(
@@ -162,12 +180,15 @@ export function validateStorySpec(
   }
 
   spec.sources.forEach((source) => {
-    if (!/^[A-Za-z0-9][A-Za-z0-9:._-]{0,127}$/.test(source.sourceId)) {
+    if (!isSafeTransparencyId(source.sourceId)) {
       errors.push("source IDs must use the bounded public identifier format");
     }
     if (
-      !source.citation.trim() ||
-      source.citation.length > 2_000 ||
+      !isBoundedTransparencyText(
+        source.citation,
+        1,
+        STORY_TRANSPARENCY_LIMITS.citation,
+      ) ||
       hasUnsafeControl(source.citation)
     ) {
       errors.push(`${source.sourceId} citation is empty or unsafe`);
@@ -175,14 +196,35 @@ export function validateStorySpec(
     if (source.locator !== undefined && !isSafeLocator(source.locator)) {
       errors.push(`${source.sourceId} locator is invalid`);
     }
-    if (source.url !== undefined && !isSafeSourceUrl(source.url)) {
+    if (
+      source.url !== undefined &&
+      !isSafeTransparencySourceUrl(source.url)
+    ) {
       errors.push(`${source.sourceId} URL must be a credential-free HTTPS URL`);
     }
   });
 
   for (const [index, fact] of spec.facts.entries()) {
-    if (!fact.statement.trim() || fact.sourceRefs.length === 0) {
-      errors.push(`${fact.factId} requires a statement and source reference`);
+    if (!isSafeTransparencyId(fact.factId)) {
+      errors.push(`${fact.factId} must use the bounded public identifier format`);
+    }
+    if (
+      !isBoundedTransparencyText(
+        fact.statement,
+        1,
+        STORY_TRANSPARENCY_LIMITS.factStatement,
+      ) ||
+      fact.sourceRefs.length === 0
+    ) {
+      errors.push(
+        `${fact.factId} statement must be non-empty and within the public limit, with a source reference`,
+      );
+    }
+    if (
+      fact.sourceRefs.length > STORY_TRANSPARENCY_LIMITS.sourceRefs ||
+      !hasUniqueStorySourceRefs(fact.sourceRefs)
+    ) {
+      errors.push(`${fact.factId} source references must be bounded and unique`);
     }
     for (const ref of fact.sourceRefs) {
       if (!sourceIds.has(ref.sourceId)) {
@@ -431,8 +473,36 @@ export function validateStorySpec(
   });
 
   for (const quote of spec.quotes) {
-    if (!quote.text.trim() || quote.sourceRefs.length === 0) {
-      errors.push(`${quote.quoteId} requires text and source references`);
+    if (!isSafeTransparencyId(quote.quoteId)) {
+      errors.push(`${quote.quoteId} must use the bounded public identifier format`);
+    }
+    if (
+      !isBoundedTransparencyText(
+        quote.text,
+        1,
+        STORY_TRANSPARENCY_LIMITS.quoteText,
+      ) ||
+      quote.sourceRefs.length === 0
+    ) {
+      errors.push(
+        `${quote.quoteId} text must be non-empty and within the public limit, with source references`,
+      );
+    }
+    if (
+      quote.speaker !== undefined &&
+      !isBoundedTransparencyText(
+        quote.speaker,
+        1,
+        STORY_TRANSPARENCY_LIMITS.quoteSpeaker,
+      )
+    ) {
+      errors.push(`${quote.quoteId} speaker is empty or exceeds the public limit`);
+    }
+    if (
+      quote.sourceRefs.length > STORY_TRANSPARENCY_LIMITS.sourceRefs ||
+      !hasUniqueStorySourceRefs(quote.sourceRefs)
+    ) {
+      errors.push(`${quote.quoteId} source references must be bounded and unique`);
     }
     for (const ref of quote.sourceRefs) {
       if (!sourceIds.has(ref.sourceId)) {
@@ -507,12 +577,7 @@ export function validateStorySpec(
     ) {
       errors.push("a reviewed, spoiler-light content note is required before publish");
     }
-    if (
-      spec.review.reviewedAt &&
-      !/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?Z)?$/.test(
-        spec.review.reviewedAt,
-      )
-    ) {
+    if (spec.review.reviewedAt && !isStoryReviewDate(spec.review.reviewedAt)) {
       errors.push("reviewedAt must be an ISO date or UTC timestamp");
     }
   } else {
@@ -534,18 +599,12 @@ function buildSources(stage: FigureStageRow): SourceRecord[] {
   }));
 }
 
-function isSafeSourceUrl(value: string): boolean {
-  if (value.length > 2_000 || hasUnsafeControl(value)) return false;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" && !url.username && !url.password;
-  } catch {
-    return false;
-  }
-}
-
 function isSafeLocator(value: string): boolean {
-  return value.trim().length > 0 && value.length <= 500 && !hasUnsafeControl(value);
+  return (
+    value.trim().length > 0 &&
+    value.length <= STORY_TRANSPARENCY_LIMITS.locator &&
+    !hasUnsafeControl(value)
+  );
 }
 
 function hasUnsafeControl(value: string): boolean {

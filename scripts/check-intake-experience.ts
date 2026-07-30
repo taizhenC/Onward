@@ -7,35 +7,24 @@ import {
   INTAKE_MIN_FEELING_LENGTH,
   isValidIntakeFeeling,
 } from "../lib/intake-constraints";
-import * as intakePresentationModule from "../lib/intake-presentation";
-
-type IntakeField = "age" | "feeling";
-
-type Draft = Readonly<{
-  age: string;
-  feeling: string;
-}>;
-
-type DraftValidation = Readonly<{
-  age: string | null;
-  feeling: string | null;
-}>;
-
-type SubmissionCopy = Readonly<{
-  buttonLabel: string;
-  liveStatus: string;
-}>;
-
-type IntakePresentationContract = Readonly<{
-  INTAKE_WRITING_PROMPTS: readonly unknown[];
-  INTAKE_FICTIONAL_EXAMPLE: unknown;
-  INTAKE_SUBMISSION_COPY: Readonly<Record<string, SubmissionCopy>>;
-  validateIntakeDraft: (draft: Draft) => DraftValidation;
-  firstInvalidIntakeField: (validation: DraftValidation) => IntakeField | null;
-}>;
-
-const presentation =
-  intakePresentationModule as unknown as IntakePresentationContract;
+import {
+  INTAKE_FICTIONAL_EXAMPLE,
+  INTAKE_SUBMISSION_COPY,
+  INTAKE_WRITING_PROMPTS,
+  firstInvalidIntakeField,
+  type IntakeDraft,
+  type IntakeDraftValidation,
+  type IntakeField,
+  type IntakeSubmissionState,
+  validateIntakeDraft,
+} from "../lib/intake-presentation";
+import {
+  beginMatchRequest,
+  confirmCurrentRequestCreatedNoStory,
+  crisisResourceOrigin,
+  INITIAL_MATCH_REQUEST_PRIVACY,
+  matchRequestMayHaveCreatedStory,
+} from "../lib/intake-request-privacy";
 
 const VALID_FEELING =
   "I keep meeting closed doors and I am unsure what to try next.";
@@ -46,6 +35,7 @@ function main(): void {
   checkGuidanceContract();
   checkValidationContract();
   checkSubmissionCopyContract();
+  checkRequestPrivacyStateMachine();
   checkAccessibleComponentWiring();
   checkTruthfulTransitionWiring();
   checkPrivacyBoundary();
@@ -56,18 +46,23 @@ function main(): void {
   console.log("PASS guidance asks for useful context without adding diagnostic inputs");
   console.log("PASS exact age and disclosure boundaries produce focused inline errors");
   console.log("PASS submission copy describes only observable client transitions");
+  console.log("PASS response-loss uncertainty survives later retries and confirmations");
   console.log("PASS the intake form wires descriptions, errors, focus, and a polite live status");
   console.log("PASS guidance stays outside request, telemetry, and browser persistence");
   console.log("PASS the guided-intake contract is required by the pull-request CI gate");
 }
 
 function checkGuidanceContract(): void {
-  const prompts = presentation.INTAKE_WRITING_PROMPTS;
+  const prompts = INTAKE_WRITING_PROMPTS;
   assert(Array.isArray(prompts), "writing prompts must be a closed array");
   assert.equal(prompts.length, 3, "intake must offer exactly three writing prompts");
   assert(Object.isFrozen(prompts), "writing prompt catalog must be immutable");
 
-  const promptTexts = prompts.map(promptText);
+  const promptTexts = [...prompts];
+  assert(
+    promptTexts.every((prompt) => prompt.trim().length > 0),
+    "writing prompts must not be empty",
+  );
   assert.equal(
     new Set(promptTexts.map(normalizeCopy)).size,
     prompts.length,
@@ -104,7 +99,7 @@ function checkGuidanceContract(): void {
     );
   }
 
-  const example = exampleText(presentation.INTAKE_FICTIONAL_EXAMPLE);
+  const example = INTAKE_FICTIONAL_EXAMPLE;
   assert.match(
     example,
     /\bfictional\b/i,
@@ -123,12 +118,12 @@ function checkGuidanceContract(): void {
 
 function checkValidationContract(): void {
   assert.equal(
-    typeof presentation.validateIntakeDraft,
+    typeof validateIntakeDraft,
     "function",
     "intake presentation must export validateIntakeDraft",
   );
   assert.equal(
-    typeof presentation.firstInvalidIntakeField,
+    typeof firstInvalidIntakeField,
     "function",
     "intake presentation must export firstInvalidIntakeField",
   );
@@ -197,7 +192,7 @@ function checkValidationContract(): void {
 }
 
 function checkSubmissionCopyContract(): void {
-  const states = presentation.INTAKE_SUBMISSION_COPY;
+  const states = INTAKE_SUBMISSION_COPY;
   assert(Object.isFrozen(states), "submission copy catalog must be immutable");
   assert.deepEqual(Object.keys(states).sort(), [
     "checking_request",
@@ -206,15 +201,16 @@ function checkSubmissionCopyContract(): void {
     "securing_session",
   ]);
 
-  const expectedSemantics = {
+  const expectedSemantics: Readonly<Record<IntakeSubmissionState, RegExp>> = {
     checking_request: /\bcheck(?:ing)?\b[\s\S]*\brequest\b/i,
     securing_session: /\b(?:securing|private)\b[\s\S]*\bsession\b/i,
     finding_story: /\bfind(?:ing)?\b[\s\S]*\b(?:story|life episode)\b/i,
     opening_story: /\b(?:open(?:ing)?|ready)\b[\s\S]*\bstory\b/i,
-  } as const;
+  };
   const renderedCopy: string[] = [];
 
-  for (const [state, semanticPattern] of Object.entries(expectedSemantics)) {
+  for (const state of Object.keys(expectedSemantics) as IntakeSubmissionState[]) {
+    const semanticPattern = expectedSemantics[state];
     const copy = states[state];
     assert(copy, `submission copy is missing ${state}`);
     assert(Object.isFrozen(copy), `${state} copy must be immutable`);
@@ -233,6 +229,56 @@ function checkSubmissionCopyContract(): void {
     new Set(renderedCopy).size,
     renderedCopy.length,
     "each observable submission transition needs distinct copy",
+  );
+}
+
+function checkRequestPrivacyStateMachine(): void {
+  const firstAttempt = beginMatchRequest(INITIAL_MATCH_REQUEST_PRIVACY);
+  assert(Object.isFrozen(firstAttempt), "request privacy state must be immutable");
+  assert.equal(
+    crisisResourceOrigin(firstAttempt),
+    "request_may_have_started",
+    "an in-flight or response-lost request must remain uncertain",
+  );
+
+  const firstAttemptConfirmed =
+    confirmCurrentRequestCreatedNoStory(firstAttempt);
+  assert.equal(
+    crisisResourceOrigin(firstAttemptConfirmed),
+    "server_confirmed_no_story",
+    "a confirmed first attempt may use the no-story copy",
+  );
+  assert.equal(
+    crisisResourceOrigin(firstAttemptConfirmed, true),
+    "server_no_write",
+    "the authoritative crisis response has its own no-write provenance",
+  );
+
+  const retryAfterConfirmed = beginMatchRequest(firstAttemptConfirmed);
+  assert.equal(
+    retryAfterConfirmed.priorAttemptMayHaveCreatedStory,
+    false,
+    "a proven no-story response must not create phantom uncertainty",
+  );
+
+  const retryAfterLostResponse = beginMatchRequest(firstAttempt);
+  assert.equal(
+    retryAfterLostResponse.priorAttemptMayHaveCreatedStory,
+    true,
+    "dispatching a retry must preserve an unresolved earlier attempt",
+  );
+  const laterRateLimit =
+    confirmCurrentRequestCreatedNoStory(retryAfterLostResponse);
+  assert.equal(matchRequestMayHaveCreatedStory(laterRateLimit), true);
+  assert.equal(
+    crisisResourceOrigin(laterRateLimit),
+    "request_may_have_started",
+    "a later confirmation must not erase an earlier ambiguous commit",
+  );
+  assert.equal(
+    crisisResourceOrigin(laterRateLimit, true),
+    "request_may_have_started",
+    "even a later crisis response cannot prove an earlier attempt wrote nothing",
   );
 }
 
@@ -280,26 +326,38 @@ function checkAccessibleComponentWiring(): void {
     !/\bdisabled(?:=|\s|>)/.test(crisisAction),
     "the always-available crisis action must remain enabled during submission",
   );
-  const requestStartedProp =
-    /(?:matchRequestStarted|requestStarted|requestWasSent)\??\s*:\s*boolean/;
   assert.match(
     crisisCard,
-    requestStartedProp,
-    "CrisisCard needs a boolean describing whether a match request started",
+    /origin:\s*CrisisResourceOrigin;/,
+    "CrisisCard requires a provenance value for its persistence copy",
+  );
+  assert.match(
+    crisisCard,
+    /Readonly<Record<CrisisResourceOrigin,\s*string>>/,
+    "every crisis-resource origin needs explicit persistence copy",
+  );
+  const uncertainCopyStart = crisisCard.indexOf("request_may_have_started:");
+  const uncertainCopyEnd = crisisCard.indexOf("});", uncertainCopyStart);
+  assert(
+    uncertainCopyStart >= 0 && uncertainCopyEnd > uncertainCopyStart,
+    "uncertain request copy must be auditable",
+  );
+  const uncertainCopy = crisisCard.slice(uncertainCopyStart, uncertainCopyEnd);
+  assert.match(uncertainCopy, /may already have created a story/i);
+  assert.doesNotMatch(
+    uncertainCopy,
+    /(?:did not|was not|wasn't|nothing was)\s+(?:save|saved|sent|start)/i,
+    "an uncertain request must never receive a no-save guarantee",
   );
   assert.match(
     form,
-    /<CrisisCard[\s\S]{0,250}(?:matchRequestStarted|requestStarted|requestWasSent)=\{/,
-    "the intake form must project request-start state into CrisisCard",
+    /type CrisisPresentation[\s\S]{0,180}resources:\s*CrisisResource\[\][\s\S]{0,100}origin:\s*CrisisResourceOrigin/,
+    "resource data and persistence provenance must move atomically",
   );
-  assert(
-    /(?:matchRequestStarted|requestStarted|requestWasSent)\s*\?[\s\S]{0,700}:[\s\S]{0,500}(?:did not save|nothing (?:was|has been) sent)/i.test(
-      crisisCard,
-    ) ||
-      /!(?:matchRequestStarted|requestStarted|requestWasSent)\s*\?[\s\S]{0,500}(?:did not save|nothing (?:was|has been) sent)[\s\S]{0,700}:/i.test(
-        crisisCard,
-    ),
-    "CrisisCard may promise no save only on the no-request branch",
+  assert.match(
+    form,
+    /<CrisisCard[\s\S]{0,180}resources=\{crisisPresentation\.resources\}[\s\S]{0,100}origin=\{crisisPresentation\.origin\}/,
+    "the intake form must pass the atomic crisis presentation to CrisisCard",
   );
   assert(
     form.indexOf("containsCrisisLanguage(feeling)") <
@@ -312,13 +370,27 @@ function checkAccessibleComponentWiring(): void {
     "manual resource access must record its interruption before rendering",
   );
   assert(
-    (form.match(/if \(stopForManualCrisis\(\)\) return;/g) ?? []).length >= 4,
-    "every awaited match/auth/response boundary must stop after manual crisis access",
+    (form.match(/if \(stopForInterruptedIntake\(\)\) return;/g) ?? []).length >= 7,
+    "every awaited match/auth/response boundary must stop after crisis access or navigation",
   );
   assert.match(
     form,
-    /function stopForManualCrisis\(\)[\s\S]{0,350}clearFirstContentRequestStarted\(\)[\s\S]{0,200}finishSubmitting\(\)/,
-    "manual crisis access must clear pending visibility timing and preparation state",
+    /function stopForInterruptedIntake\(\)[\s\S]{0,400}clearFirstContentRequestStarted\(\)[\s\S]{0,200}finishSubmitting\(\)/,
+    "interrupted intake must clear pending visibility timing and preparation state",
+  );
+  assert.match(
+    form,
+    /event\.metaKey[\s\S]{0,100}event\.ctrlKey[\s\S]{0,100}event\.shiftKey[\s\S]{0,100}event\.altKey/,
+    "new-tab and modifier-key links must not abandon the current intake",
+  );
+  assert(
+    form.lastIndexOf("</motion.form>") < form.lastIndexOf('aria-live="polite"'),
+    "the screen-reader submission status must stay outside the busy form subtree",
+  );
+  assert.match(
+    form,
+    /if \(!storyNavigationCommittedRef\.current\)[\s\S]{0,180}clearFirstContentRequestStarted\(\)/,
+    "unmount cleanup must preserve successful story visibility timing",
   );
 }
 
@@ -382,6 +454,91 @@ function checkPrivacyBoundary(): void {
     );
   }
 
+  const requestBegin = form.indexOf("beginMatchRequest(", postStart);
+  const fetchDispatch = form.indexOf('fetch("/api/match"', postStart);
+  assert(
+    requestBegin >= postStart && fetchDispatch > requestBegin,
+    "privacy state must become uncertain before the browser dispatches a match",
+  );
+
+  const getSession = form.indexOf("supabase.auth.getSession()");
+  const authInterruption = form.indexOf("sessionError || interrupted()", getSession);
+  const signIn = form.indexOf("supabase.auth.signInAnonymously()", getSession);
+  assert(
+    getSession >= 0 && authInterruption > getSession && signIn > authInterruption,
+    "manual help or navigation must interrupt auth between session lookup and sign-in",
+  );
+
+  const unavailableStart = form.indexOf("response.status === 503");
+  const noEligibleStart = form.indexOf('"noEligibleStory" in payload', unavailableStart);
+  assert(
+    unavailableStart >= 0 && noEligibleStart > unavailableStart,
+    "temporary-unavailability handling must be auditable",
+  );
+  const unavailableBranch = form.slice(unavailableStart, noEligibleStart);
+  assert.doesNotMatch(
+    unavailableBranch,
+    /confirmCurrentRequestCreatedNoStory/,
+    "503 cannot prove that createSession did not commit before response loss",
+  );
+  assert.match(
+    unavailableBranch,
+    /story may already exist/i,
+    "503 copy must disclose ambiguous persistence",
+  );
+  assert.match(
+    form,
+    /could not read the result[\s\S]{0,120}story may already exist/i,
+    "a successful response with unreadable JSON must disclose possible creation",
+  );
+  assert.match(
+    form,
+    /const ambiguousRequestRecoveryCopy = recoveryToken[\s\S]{0,320}cannot be safely replayed[\s\S]{0,320}telemetryFlowId[\s\S]{0,260}recover the same journey[\s\S]{0,260}another retry may start another story/i,
+    "replay copy must distinguish one-shot recovery, idempotent, and legacy requests",
+  );
+  assert(
+    (form.match(/requestHistoryMayHaveCreatedStory/g) ?? []).length >= 4,
+    "no-close, no-eligible, and rate-limit copy must retain prior uncertainty",
+  );
+  assert.match(
+    form,
+    /earlier response-lost attempt may have created/i,
+    "confirmed current outcomes must disclose an unresolved earlier attempt",
+  );
+  assert(
+    (form.match(/if \(recoveryToken\) resetMatchRecovery\(\);/g) ?? []).length >=
+      3,
+    "ambiguous one-shot recovery responses must not offer an unsafe replay",
+  );
+  assert.match(
+    form,
+    /connection dropped[\s\S]{0,220}refreshing or leaving will clear it[\s\S]{0,140}server may already have received/i,
+    "connection-loss copy must distinguish the page draft from server uncertainty",
+  );
+
+  const successfulNavigation = form.indexOf(
+    "storyNavigationCommittedRef.current = true",
+  );
+  const bindVisibility = form.indexOf("bindFirstContentStory(", successfulNavigation);
+  const routeStory = form.indexOf("router.push(", successfulNavigation);
+  assert(
+    successfulNavigation >= 0 &&
+      bindVisibility > successfulNavigation &&
+      routeStory > bindVisibility,
+    "successful navigation must preserve visibility timing before unmount",
+  );
+
+  assert.match(
+    form,
+    /response\.headers\.get\(["']retry-after["']\)/,
+    "rate-limit recovery must honor the server Retry-After header",
+  );
+  assert.doesNotMatch(
+    form,
+    /if\s*\(\s*rateLimited\s*\)\s*return\s*\(/,
+    "rate limiting must keep the device-only draft available in the form",
+  );
+
   const telemetryStart = form.indexOf("async function sendIntakeStarted");
   assert(telemetryStart >= 0, "intake telemetry integration is missing");
   const telemetrySource = form.slice(telemetryStart);
@@ -410,8 +567,8 @@ function checkAutomationWiring(): void {
   );
 }
 
-function validate(draft: Draft): DraftValidation {
-  const result = presentation.validateIntakeDraft(draft);
+function validate(draft: IntakeDraft): IntakeDraftValidation {
+  const result = validateIntakeDraft(draft);
   assert(result && typeof result === "object", "validation must return an object");
   assert.deepEqual(
     Object.keys(result).sort(),
@@ -430,8 +587,10 @@ function validate(draft: Draft): DraftValidation {
   return result;
 }
 
-function firstInvalid(validation: DraftValidation): IntakeField | null {
-  const result = presentation.firstInvalidIntakeField(validation);
+function firstInvalid(
+  validation: IntakeDraftValidation,
+): IntakeField | null {
+  const result = firstInvalidIntakeField(validation);
   assert(
     result === "age" || result === "feeling" || result === null,
     "first invalid field must remain closed",
@@ -443,37 +602,6 @@ function requiredError(value: string | null): string {
   assert(typeof value === "string", "expected an inline validation message");
   assert(value.trim(), "inline validation message must not be empty");
   return value;
-}
-
-function promptText(prompt: unknown): string {
-  if (typeof prompt === "string") {
-    assert(prompt.trim(), "writing prompt must not be empty");
-    return prompt;
-  }
-  assert(prompt && typeof prompt === "object", "writing prompt must be text");
-  const candidate = prompt as Record<string, unknown>;
-  const text = ["label", "text", "prompt"]
-    .map((key) => candidate[key])
-    .find((value): value is string => typeof value === "string");
-  assert(
-    typeof text === "string" && text.trim(),
-    "writing prompt object needs label, text, or prompt copy",
-  );
-  return text;
-}
-
-function exampleText(example: unknown): string {
-  if (typeof example === "string") {
-    assert(example.trim(), "fictional example must not be empty");
-    return example;
-  }
-  assert(example && typeof example === "object", "fictional example must be text");
-  const values = Object.values(example as Record<string, unknown>).filter(
-    (value): value is string => typeof value === "string",
-  );
-  const text = values.join(": ");
-  assert(text.trim(), "fictional example object contains no copy");
-  return text;
 }
 
 function normalizeCopy(value: string): string {

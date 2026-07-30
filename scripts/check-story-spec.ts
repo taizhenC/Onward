@@ -7,6 +7,7 @@ import {
   validateStorySpec,
 } from "../lib/story-spec";
 import type { StorySpec } from "../lib/story-spec-types";
+import { buildPublishedStorySpecFixture } from "./_story-spec-fixtures";
 
 const syntheticDisclosure =
   "I feel unusually marooned after a private problem nobody in this biography could possibly know.";
@@ -43,7 +44,13 @@ function main(): void {
   }
 
   const fixture = specs[0];
+  const publishedFixture = buildPublishedStorySpecFixture(FIGURE_STAGES[0]);
   checkDocumentBoundary(fixture, failures);
+  expectAccepted(
+    failures,
+    "reviewed publication fixture",
+    publishedFixture,
+  );
 
   // Editors narrow evidence claim by claim — the builders must give every
   // fact and quote its own sourceRefs array, never one shared reference.
@@ -204,33 +211,28 @@ function main(): void {
     "interpretation IDs must be unique",
   );
 
-  expectEvidenceClosureAccepted(
+  expectAccepted(
     failures,
     "interpretation-only sentence",
-    evidenceMappingSpec(fixture, {
-      declaredFactIds: [primaryFactId],
-      mappedFactIds: [],
-      interpretation: {
-        interpretationId: "interpretation-grounded",
-        statement: "A grounded interpretation without a redundant direct link.",
-        supportingFactIds: [primaryFactId],
-        allowed: true,
-      },
+    mutate(publishedFixture, (spec) => {
+      const beat = spec.arc.find((candidate) => candidate.role === "struggle");
+      if (!beat?.sentenceEvidence[0]) {
+        throw new Error("reviewed fixture is missing struggle sentence evidence");
+      }
+      beat.sentenceEvidence[0].factIds = [];
     }),
   );
-  expectEvidenceClosureAccepted(
+  expectAccepted(
     failures,
     "unreferenced blocked interpretation",
-    publishShape(
-      mutate(fixture, (spec) => {
-        spec.interpretations.push({
-          interpretationId: "interpretation-unreferenced",
-          statement: "A retained editorial decision that prose cannot use.",
-          supportingFactIds: [],
-          allowed: false,
-        });
-      }),
-    ),
+    mutate(publishedFixture, (spec) => {
+      spec.interpretations.push({
+        interpretationId: "interpretation-unreferenced",
+        statement: "A retained editorial decision that prose cannot use.",
+        supportingFactIds: [],
+        allowed: false,
+      });
+    }),
   );
   expectRejected(
     failures,
@@ -368,19 +370,16 @@ function expectDocumentRejected(
   }
 }
 
-function expectEvidenceClosureAccepted(
+function expectAccepted(
   failures: string[],
   name: string,
   spec: StorySpec,
 ): void {
-  const closureErrors = validateStorySpec(spec, { forPublish: true }).errors.filter(
-    (error) =>
-      /interpretation IDs must be unique|disallowed interpretation|mapped interpretation|sentence evidence uses undeclared fact|without sentence evidence|required and optional facts must be disjoint/.test(
-        error,
-      ),
-  );
-  if (closureErrors.length > 0) {
-    failures.push(`${name}: valid evidence closure was rejected: ${closureErrors.join("; ")}`);
+  const result = validateStorySpec(spec, { forPublish: true });
+  if (!result.valid) {
+    failures.push(
+      `${name}: valid published StorySpec was rejected: ${result.errors.join("; ")}`,
+    );
   }
 }
 

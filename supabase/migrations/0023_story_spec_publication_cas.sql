@@ -5,12 +5,87 @@
 
 set local lock_timeout = '10s';
 set local statement_timeout = '30s';
+set local search_path = pg_catalog, public;
 
 -- Hold every table read or written by this cutover for the whole transaction.
 -- This closes the owner/trigger/ACL/pre-closure-artifact snapshot race rather
 -- than relying on a sequence of catalog snapshots.
 lock table public.story_specs, public.figure_stages, public.story_artifacts
   in access exclusive mode;
+
+-- Build the 0001/0004 publication contract in this server so the preflight can
+-- compare native catalog deparses without hard-coding output that changes
+-- between supported PostgreSQL releases. These probes are transaction-local
+-- and are removed before any durable cutover object is created.
+create temporary table onward_story_spec_figures_contract_probe (
+  key pg_catalog.text not null,
+  constraint onward_figures_contract_pkey primary key (key)
+) using heap on commit drop;
+
+create temporary table onward_story_spec_stage_contract_probe (
+  figure_key pg_catalog.text not null,
+  stage_id pg_catalog.text not null,
+  stage_label pg_catalog.text not null,
+  age_min pg_catalog.int4 not null,
+  age_max pg_catalog.int4 not null,
+  shape_sentences pg_catalog.text[] not null,
+  facets pg_catalog.jsonb not null,
+  biographical_facts pg_catalog.text not null,
+  themes pg_catalog.text[] not null,
+  anti_themes pg_catalog.text[] not null default '{}',
+  beats pg_catalog.jsonb not null,
+  sources pg_catalog.text[] not null,
+  -- Migration 0005 changes the original 0001 default to draft.
+  status pg_catalog.text not null default 'draft',
+  constraint onward_stage_contract_figure_fk
+    foreign key (figure_key)
+    references onward_story_spec_figures_contract_probe (key)
+    on delete cascade,
+  constraint onward_stage_contract_pkey
+    primary key (figure_key, stage_id),
+  constraint onward_stage_contract_status_check
+    check (status in ('draft', 'published')),
+  constraint onward_stage_contract_age_check
+    check (age_min <= age_max)
+) using heap on commit drop;
+
+create temporary table onward_story_spec_contract_probe (
+  story_spec_id pg_catalog.text not null,
+  figure_key pg_catalog.text not null,
+  stage_id pg_catalog.text not null,
+  version pg_catalog.int4 not null,
+  schema_version pg_catalog.text not null,
+  status pg_catalog.text not null default 'draft',
+  spec pg_catalog.jsonb not null,
+  created_at pg_catalog.timestamptz not null default pg_catalog.now(),
+  published_at pg_catalog.timestamptz,
+  retired_at pg_catalog.timestamptz,
+  constraint onward_story_contract_pkey primary key (story_spec_id),
+  constraint onward_story_contract_stage_fk
+    foreign key (figure_key, stage_id)
+    references onward_story_spec_stage_contract_probe (figure_key, stage_id)
+    on delete restrict,
+  constraint onward_story_contract_version_check check (version > 0),
+  constraint onward_story_contract_status_check
+    check (status in ('draft', 'review', 'published', 'retired')),
+  constraint onward_story_contract_identity_unique
+    unique (figure_key, stage_id, version),
+  constraint onward_story_contract_document_identity_check check (
+    spec ->> 'storySpecId' = story_spec_id
+    and spec ->> 'figureKey' = figure_key
+    and spec ->> 'stageId' = stage_id
+    and (spec ->> 'version')::pg_catalog.int4 = version
+    and spec ->> 'schemaVersion' = schema_version
+    and spec ->> 'status' = status
+  )
+) using heap on commit drop;
+
+create unique index onward_story_contract_published_idx
+  on onward_story_spec_contract_probe (figure_key, stage_id)
+  where status = 'published';
+
+create index onward_story_contract_history_idx
+  on onward_story_spec_contract_probe (figure_key, stage_id, version desc);
 
 -- Migration 0004 creates the editorial table and its three lifecycle routines
 -- under one canonical migration authority. Do not let a coordinated
@@ -243,15 +318,23 @@ begin
   if exists (
     select 1
     from pg_catalog.pg_class relation_row
+    left join pg_catalog.pg_am table_access_method
+      on table_access_method.oid = relation_row.relam
     where relation_row.oid in (
         'public.story_specs'::regclass,
         'public.figure_stages'::regclass,
         'public.story_artifacts'::regclass
       )
-      and relation_row.relowner <> authority_owner
+      and (
+        relation_row.relowner <> authority_owner
+        or relation_row.relkind <> 'r'
+        or relation_row.relpersistence <> 'p'
+        or relation_row.reloftype <> 0
+        or table_access_method.amname is distinct from 'heap'
+      )
   ) then
     raise exception
-      'StorySpec cutover must run as the canonical table owner';
+      'StorySpec cutover requires canonical untyped heap tables and owner';
   end if;
 
   -- PostgreSQL inheritance and partition attachment route parent-table reads
@@ -316,6 +399,490 @@ begin
   ) then
     raise exception
       'StorySpec cutover forbids generated columns on publication tables';
+  end if;
+
+  -- The owner-definer routines compile against the complete table row types.
+  -- Compare every live column with a server-native 0001/0004 probe, including
+  -- order, built-in type, collation, null/default state, and inheritance state.
+  -- This makes a missing or altered lifecycle timestamp a preflight failure
+  -- rather than a latent error on the first real promotion.
+  if (
+    select coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          case attribute_row.attrelid
+            when 'public.story_specs'::regclass then 'story_specs'
+            else 'figure_stages'
+          end,
+          attribute_row.attnum,
+          attribute_row.attname,
+          attribute_row.atttypid,
+          attribute_row.atttypmod,
+          attribute_row.attndims,
+          attribute_row.attnotnull,
+          attribute_row.atthasdef,
+          pg_catalog.pg_get_expr(
+            default_row.adbin,
+            default_row.adrelid,
+            true
+          ),
+          attribute_row.attidentity,
+          attribute_row.attgenerated,
+          attribute_row.attcollation,
+          attribute_row.attislocal,
+          attribute_row.attinhcount,
+          attribute_row.attstorage,
+          pg_catalog.to_jsonb(attribute_row) ->> 'attcompression',
+          attribute_row.atthasmissing,
+          pg_catalog.to_jsonb(attribute_row) -> 'attmissingval'
+        ) order by
+          case attribute_row.attrelid
+            when 'public.story_specs'::regclass then 1
+            else 2
+          end,
+          attribute_row.attnum
+      ),
+      '[]'::pg_catalog.jsonb
+    )
+    from pg_catalog.pg_attribute attribute_row
+    left join pg_catalog.pg_attrdef default_row
+      on default_row.adrelid = attribute_row.attrelid
+      and default_row.adnum = attribute_row.attnum
+    where attribute_row.attrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+      and attribute_row.attnum > 0
+      and not attribute_row.attisdropped
+  ) is distinct from (
+    select coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          case attribute_row.attrelid
+            when 'pg_temp.onward_story_spec_contract_probe'::regclass
+              then 'story_specs'
+            else 'figure_stages'
+          end,
+          attribute_row.attnum,
+          attribute_row.attname,
+          attribute_row.atttypid,
+          attribute_row.atttypmod,
+          attribute_row.attndims,
+          attribute_row.attnotnull,
+          attribute_row.atthasdef,
+          pg_catalog.pg_get_expr(
+            default_row.adbin,
+            default_row.adrelid,
+            true
+          ),
+          attribute_row.attidentity,
+          attribute_row.attgenerated,
+          attribute_row.attcollation,
+          attribute_row.attislocal,
+          attribute_row.attinhcount,
+          attribute_row.attstorage,
+          pg_catalog.to_jsonb(attribute_row) ->> 'attcompression',
+          attribute_row.atthasmissing,
+          pg_catalog.to_jsonb(attribute_row) -> 'attmissingval'
+        ) order by
+          case attribute_row.attrelid
+            when 'pg_temp.onward_story_spec_contract_probe'::regclass
+              then 1
+            else 2
+          end,
+          attribute_row.attnum
+      ),
+      '[]'::pg_catalog.jsonb
+    )
+    from pg_catalog.pg_attribute attribute_row
+    left join pg_catalog.pg_attrdef default_row
+      on default_row.adrelid = attribute_row.attrelid
+      and default_row.adnum = attribute_row.attnum
+    where attribute_row.attrelid in (
+        'pg_temp.onward_story_spec_contract_probe'::regclass,
+        'pg_temp.onward_story_spec_stage_contract_probe'::regclass
+      )
+      and attribute_row.attnum > 0
+      and not attribute_row.attisdropped
+  ) then
+    raise exception
+      'StorySpec publication table column contract is unsafe';
+  end if;
+
+  -- Constraint names are not proof of behavior. Compare the complete closed
+  -- non-NOT-NULL inventory with native probe definitions and catalog flags, so
+  -- both extra CHECK(false) hooks and same-name replacements fail preflight.
+  if (
+    select coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          case constraint_row.conrelid
+            when 'public.story_specs'::regclass then 'story_specs'
+            else 'figure_stages'
+          end,
+          constraint_row.conname,
+          constraint_row.contype,
+          constraint_row.condeferrable,
+          constraint_row.condeferred,
+          constraint_row.convalidated,
+          constraint_row.conislocal,
+          constraint_row.coninhcount,
+          constraint_row.connoinherit,
+          constraint_row.conparentid,
+          referenced_namespace.nspname,
+          referenced_relation.relname,
+          constraint_row.confupdtype,
+          constraint_row.confdeltype,
+          constraint_row.confmatchtype,
+          constraint_row.conkey,
+          constraint_row.confkey,
+          constraint_row.conpfeqop,
+          constraint_row.conppeqop,
+          constraint_row.conffeqop,
+          constraint_row.conexclop,
+          pg_catalog.to_jsonb(constraint_row) ->> 'conperiod',
+          pg_catalog.to_jsonb(constraint_row) ->> 'conenforced',
+          (
+            select count(*)
+            from pg_catalog.pg_trigger trigger_row
+            where trigger_row.tgconstraint = constraint_row.oid
+          ),
+          (
+            select count(*)
+            from pg_catalog.pg_trigger trigger_row
+            where trigger_row.tgconstraint = constraint_row.oid
+              and trigger_row.tgenabled = 'O'
+          ),
+          pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+        ) order by
+          case constraint_row.conrelid
+            when 'public.story_specs'::regclass then 1
+            else 2
+          end,
+          constraint_row.conname
+      ),
+      '[]'::pg_catalog.jsonb
+    )
+    from pg_catalog.pg_constraint constraint_row
+    left join pg_catalog.pg_class referenced_relation
+      on referenced_relation.oid = constraint_row.confrelid
+    left join pg_catalog.pg_namespace referenced_namespace
+      on referenced_namespace.oid = referenced_relation.relnamespace
+    where constraint_row.conrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+      and constraint_row.contype <> 'n'
+  ) is distinct from (
+    with expected_constraint(
+      table_name,
+      live_name,
+      probe_relation,
+      probe_name
+    ) as (
+      values
+        (
+          'story_specs',
+          'story_specs_pkey',
+          'pg_temp.onward_story_spec_contract_probe'::regclass,
+          'onward_story_contract_pkey'
+        ),
+        (
+          'story_specs',
+          'story_specs_stage_fk',
+          'pg_temp.onward_story_spec_contract_probe'::regclass,
+          'onward_story_contract_stage_fk'
+        ),
+        (
+          'story_specs',
+          'story_specs_version_check',
+          'pg_temp.onward_story_spec_contract_probe'::regclass,
+          'onward_story_contract_version_check'
+        ),
+        (
+          'story_specs',
+          'story_specs_status_check',
+          'pg_temp.onward_story_spec_contract_probe'::regclass,
+          'onward_story_contract_status_check'
+        ),
+        (
+          'story_specs',
+          'story_specs_identity_unique',
+          'pg_temp.onward_story_spec_contract_probe'::regclass,
+          'onward_story_contract_identity_unique'
+        ),
+        (
+          'story_specs',
+          'story_specs_document_identity_check',
+          'pg_temp.onward_story_spec_contract_probe'::regclass,
+          'onward_story_contract_document_identity_check'
+        ),
+        (
+          'figure_stages',
+          'figure_stages_figure_key_fkey',
+          'pg_temp.onward_story_spec_stage_contract_probe'::regclass,
+          'onward_stage_contract_figure_fk'
+        ),
+        (
+          'figure_stages',
+          'figure_stages_pkey',
+          'pg_temp.onward_story_spec_stage_contract_probe'::regclass,
+          'onward_stage_contract_pkey'
+        ),
+        (
+          'figure_stages',
+          'figure_stages_status_check',
+          'pg_temp.onward_story_spec_stage_contract_probe'::regclass,
+          'onward_stage_contract_status_check'
+        ),
+        (
+          'figure_stages',
+          'figure_stages_age_check',
+          'pg_temp.onward_story_spec_stage_contract_probe'::regclass,
+          'onward_stage_contract_age_check'
+        )
+    )
+    select coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          expected_constraint.table_name,
+          expected_constraint.live_name,
+          constraint_row.contype,
+          constraint_row.condeferrable,
+          constraint_row.condeferred,
+          constraint_row.convalidated,
+          constraint_row.conislocal,
+          constraint_row.coninhcount,
+          constraint_row.connoinherit,
+          constraint_row.conparentid,
+          case expected_constraint.live_name
+            when 'story_specs_stage_fk' then 'public'
+            when 'figure_stages_figure_key_fkey' then 'public'
+            else null
+          end,
+          case expected_constraint.live_name
+            when 'story_specs_stage_fk' then 'figure_stages'
+            when 'figure_stages_figure_key_fkey' then 'figures'
+            else null
+          end,
+          constraint_row.confupdtype,
+          constraint_row.confdeltype,
+          constraint_row.confmatchtype,
+          constraint_row.conkey,
+          constraint_row.confkey,
+          constraint_row.conpfeqop,
+          constraint_row.conppeqop,
+          constraint_row.conffeqop,
+          constraint_row.conexclop,
+          pg_catalog.to_jsonb(constraint_row) ->> 'conperiod',
+          pg_catalog.to_jsonb(constraint_row) ->> 'conenforced',
+          (
+            select count(*)
+            from pg_catalog.pg_trigger trigger_row
+            where trigger_row.tgconstraint = constraint_row.oid
+          ),
+          (
+            select count(*)
+            from pg_catalog.pg_trigger trigger_row
+            where trigger_row.tgconstraint = constraint_row.oid
+              and trigger_row.tgenabled = 'O'
+          ),
+          pg_catalog.replace(
+            pg_catalog.replace(
+              pg_catalog.pg_get_constraintdef(constraint_row.oid, true),
+              'onward_story_spec_stage_contract_probe',
+              'figure_stages'
+            ),
+            'onward_story_spec_figures_contract_probe',
+            'figures'
+          )
+        ) order by
+          expected_constraint.table_name desc,
+          expected_constraint.live_name
+      ),
+      '[]'::pg_catalog.jsonb
+    )
+    from expected_constraint
+    join pg_catalog.pg_constraint constraint_row
+      on constraint_row.conrelid = expected_constraint.probe_relation
+      and constraint_row.conname = expected_constraint.probe_name
+  ) then
+    raise exception
+      'StorySpec publication constraint inventory is unsafe';
+  end if;
+
+  -- Any fifth StorySpec index or second figure-stage index is a write hook,
+  -- even when its expression/predicate avoids the status column. Compare the
+  -- complete index catalogs and every key/expression/predicate descriptor.
+  if (
+    select coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          case index_row.indrelid
+            when 'public.story_specs'::regclass then 'story_specs'
+            else 'figure_stages'
+          end,
+          index_relation.relname,
+          access_method.amname,
+          index_relation.relkind,
+          index_relation.relowner = authority_owner,
+          index_relation.reloptions,
+          index_row.indisunique,
+          index_row.indnullsnotdistinct,
+          index_row.indisprimary,
+          index_row.indisexclusion,
+          index_row.indimmediate,
+          index_row.indisclustered,
+          index_row.indisvalid,
+          index_row.indcheckxmin,
+          index_row.indisready,
+          index_row.indislive,
+          index_row.indisreplident,
+          index_row.indnkeyatts,
+          index_row.indnatts,
+          index_row.indkey,
+          index_row.indcollation,
+          index_row.indclass,
+          index_row.indoption,
+          pg_catalog.pg_get_expr(
+            index_row.indexprs,
+            index_row.indrelid,
+            true
+          ),
+          pg_catalog.pg_get_expr(
+            index_row.indpred,
+            index_row.indrelid,
+            true
+          ),
+          (
+            select pg_catalog.jsonb_agg(
+              pg_catalog.pg_get_indexdef(
+                index_row.indexrelid,
+                key_position,
+                true
+              ) order by key_position
+            )
+            from pg_catalog.generate_series(
+              1,
+              index_row.indnatts
+            ) key_position
+          )
+        ) order by
+          case index_row.indrelid
+            when 'public.story_specs'::regclass then 1
+            else 2
+          end,
+          index_relation.relname
+      ),
+      '[]'::pg_catalog.jsonb
+    )
+    from pg_catalog.pg_index index_row
+    join pg_catalog.pg_class index_relation
+      on index_relation.oid = index_row.indexrelid
+    join pg_catalog.pg_am access_method
+      on access_method.oid = index_relation.relam
+    where index_row.indrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+  ) is distinct from (
+    with expected_index(
+      table_name,
+      live_name,
+      probe_index
+    ) as (
+      values
+        (
+          'story_specs',
+          'story_specs_pkey',
+          'pg_temp.onward_story_contract_pkey'::regclass
+        ),
+        (
+          'story_specs',
+          'story_specs_identity_unique',
+          'pg_temp.onward_story_contract_identity_unique'::regclass
+        ),
+        (
+          'story_specs',
+          'story_specs_one_published_stage_idx',
+          'pg_temp.onward_story_contract_published_idx'::regclass
+        ),
+        (
+          'story_specs',
+          'story_specs_stage_history_idx',
+          'pg_temp.onward_story_contract_history_idx'::regclass
+        ),
+        (
+          'figure_stages',
+          'figure_stages_pkey',
+          'pg_temp.onward_stage_contract_pkey'::regclass
+        )
+    )
+    select coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          expected_index.table_name,
+          expected_index.live_name,
+          access_method.amname,
+          index_relation.relkind,
+          index_relation.relowner = authority_owner,
+          index_relation.reloptions,
+          index_row.indisunique,
+          index_row.indnullsnotdistinct,
+          index_row.indisprimary,
+          index_row.indisexclusion,
+          index_row.indimmediate,
+          index_row.indisclustered,
+          index_row.indisvalid,
+          index_row.indcheckxmin,
+          index_row.indisready,
+          index_row.indislive,
+          index_row.indisreplident,
+          index_row.indnkeyatts,
+          index_row.indnatts,
+          index_row.indkey,
+          index_row.indcollation,
+          index_row.indclass,
+          index_row.indoption,
+          pg_catalog.pg_get_expr(
+            index_row.indexprs,
+            index_row.indrelid,
+            true
+          ),
+          pg_catalog.pg_get_expr(
+            index_row.indpred,
+            index_row.indrelid,
+            true
+          ),
+          (
+            select pg_catalog.jsonb_agg(
+              pg_catalog.pg_get_indexdef(
+                index_row.indexrelid,
+                key_position,
+                true
+              ) order by key_position
+            )
+            from pg_catalog.generate_series(
+              1,
+              index_row.indnatts
+            ) key_position
+          )
+        ) order by
+          expected_index.table_name desc,
+          expected_index.live_name
+      ),
+      '[]'::pg_catalog.jsonb
+    )
+    from expected_index
+    join pg_catalog.pg_index index_row
+      on index_row.indexrelid = expected_index.probe_index
+    join pg_catalog.pg_class index_relation
+      on index_relation.oid = index_row.indexrelid
+    join pg_catalog.pg_am access_method
+      on access_method.oid = index_relation.relam
+  ) then
+    raise exception
+      'StorySpec publication index inventory is unsafe';
   end if;
 
   -- The promotion RPC addresses and locks exactly one immutable document by
@@ -487,6 +1054,10 @@ begin
 end
 $do$;
 
+drop table pg_temp.onward_story_spec_contract_probe;
+drop table pg_temp.onward_story_spec_stage_contract_probe;
+drop table pg_temp.onward_story_spec_figures_contract_probe;
+
 -- Freeze the one-time compatibility cohort while story_artifacts is locked.
 -- Current and future v5 artifacts are validated strictly unless their immutable
 -- database envelope has an artifact_id captured by this exact cutover.
@@ -498,7 +1069,7 @@ create table public.story_artifact_legacy_v5_replay (
     foreign key (artifact_id)
     references public.story_artifacts (artifact_id)
     on delete cascade
-);
+) using heap;
 
 comment on table public.story_artifact_legacy_v5_replay is
   'onward-story-artifact-legacy-v5-replay-v1';
@@ -818,6 +1389,9 @@ declare
   stage_fk_fingerprint text;
   stage_status_fingerprint text;
   stage_trigger_fingerprint text;
+  column_inventory_fingerprint text;
+  constraint_inventory_fingerprint text;
+  index_inventory_fingerprint text;
   story_specs_owner oid;
 begin
   select relation_row.relowner
@@ -877,6 +1451,199 @@ begin
     and trigger_row.tgname = 'figure_stages_publication_lifecycle'
     and not trigger_row.tgisinternal;
 
+  select pg_catalog.md5(
+    coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          case attribute_row.attrelid
+            when 'public.story_specs'::regclass then 'story_specs'
+            else 'figure_stages'
+          end,
+          attribute_row.attnum,
+          attribute_row.attname,
+          pg_catalog.format_type(
+            attribute_row.atttypid,
+            attribute_row.atttypmod
+          ),
+          attribute_row.attndims,
+          attribute_row.attnotnull,
+          attribute_row.atthasdef,
+          pg_catalog.pg_get_expr(
+            default_row.adbin,
+            default_row.adrelid,
+            true
+          ),
+          attribute_row.attidentity,
+          attribute_row.attgenerated,
+          collation_namespace.nspname,
+          collation_row.collname,
+          attribute_row.attislocal,
+          attribute_row.attinhcount,
+          attribute_row.attstorage,
+          pg_catalog.to_jsonb(attribute_row) ->> 'attcompression',
+          attribute_row.atthasmissing,
+          pg_catalog.to_jsonb(attribute_row) -> 'attmissingval'
+        ) order by
+          case attribute_row.attrelid
+            when 'public.story_specs'::regclass then 1
+            else 2
+          end,
+          attribute_row.attnum
+      )::pg_catalog.text,
+      '[]'
+    )
+  )
+  into strict column_inventory_fingerprint
+  from pg_catalog.pg_attribute attribute_row
+  left join pg_catalog.pg_attrdef default_row
+    on default_row.adrelid = attribute_row.attrelid
+    and default_row.adnum = attribute_row.attnum
+  left join pg_catalog.pg_collation collation_row
+    on collation_row.oid = attribute_row.attcollation
+  left join pg_catalog.pg_namespace collation_namespace
+    on collation_namespace.oid = collation_row.collnamespace
+  where attribute_row.attrelid in (
+      'public.story_specs'::regclass,
+      'public.figure_stages'::regclass
+    )
+    and attribute_row.attnum > 0
+    and not attribute_row.attisdropped;
+
+  select pg_catalog.md5(
+    coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          case constraint_row.conrelid
+            when 'public.story_specs'::regclass then 'story_specs'
+            else 'figure_stages'
+          end,
+          constraint_row.conname,
+          constraint_row.contype,
+          constraint_row.condeferrable,
+          constraint_row.condeferred,
+          constraint_row.convalidated,
+          constraint_row.conislocal,
+          constraint_row.coninhcount,
+          constraint_row.connoinherit,
+          constraint_row.conparentid,
+          referenced_namespace.nspname,
+          referenced_relation.relname,
+          constraint_row.confupdtype,
+          constraint_row.confdeltype,
+          constraint_row.confmatchtype,
+          constraint_row.conkey,
+          constraint_row.confkey,
+          constraint_row.conexclop is not null,
+          pg_catalog.to_jsonb(constraint_row) ->> 'conperiod',
+          pg_catalog.to_jsonb(constraint_row) ->> 'conenforced',
+          (
+            select count(*)
+            from pg_catalog.pg_trigger trigger_row
+            where trigger_row.tgconstraint = constraint_row.oid
+          ),
+          (
+            select count(*)
+            from pg_catalog.pg_trigger trigger_row
+            where trigger_row.tgconstraint = constraint_row.oid
+              and trigger_row.tgenabled = 'O'
+          ),
+          pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+        ) order by
+          case constraint_row.conrelid
+            when 'public.story_specs'::regclass then 1
+            else 2
+          end,
+          constraint_row.conname
+      )::pg_catalog.text,
+      '[]'
+    )
+  )
+  into strict constraint_inventory_fingerprint
+  from pg_catalog.pg_constraint constraint_row
+  left join pg_catalog.pg_class referenced_relation
+    on referenced_relation.oid = constraint_row.confrelid
+  left join pg_catalog.pg_namespace referenced_namespace
+    on referenced_namespace.oid = referenced_relation.relnamespace
+  where constraint_row.conrelid in (
+      'public.story_specs'::regclass,
+      'public.figure_stages'::regclass
+    )
+    and constraint_row.contype <> 'n';
+
+  select pg_catalog.md5(
+    coalesce(
+      pg_catalog.jsonb_agg(
+        pg_catalog.jsonb_build_array(
+          case index_row.indrelid
+            when 'public.story_specs'::regclass then 'story_specs'
+            else 'figure_stages'
+          end,
+          index_relation.relname,
+          access_method.amname,
+          index_relation.relkind,
+          index_relation.relowner = story_specs_owner,
+          index_relation.reloptions,
+          tablespace_row.spcname,
+          index_row.indisunique,
+          index_row.indnullsnotdistinct,
+          index_row.indisprimary,
+          index_row.indisexclusion,
+          index_row.indimmediate,
+          index_row.indisclustered,
+          index_row.indisvalid,
+          index_row.indcheckxmin,
+          index_row.indisready,
+          index_row.indislive,
+          index_row.indisreplident,
+          index_row.indnkeyatts,
+          index_row.indnatts,
+          index_row.indkey,
+          pg_catalog.pg_get_expr(
+            index_row.indexprs,
+            index_row.indrelid,
+            true
+          ),
+          pg_catalog.pg_get_expr(
+            index_row.indpred,
+            index_row.indrelid,
+            true
+          ),
+          (
+            select pg_catalog.jsonb_agg(
+              pg_catalog.pg_get_indexdef(
+                index_row.indexrelid,
+                key_position,
+                true
+              ) order by key_position
+            )
+            from pg_catalog.generate_series(
+              1,
+              index_row.indnatts
+            ) key_position
+          )
+        ) order by
+          case index_row.indrelid
+            when 'public.story_specs'::regclass then 1
+            else 2
+          end,
+          index_relation.relname
+      )::pg_catalog.text,
+      '[]'
+    )
+  )
+  into strict index_inventory_fingerprint
+  from pg_catalog.pg_index index_row
+  join pg_catalog.pg_class index_relation
+    on index_relation.oid = index_row.indexrelid
+  join pg_catalog.pg_am access_method
+    on access_method.oid = index_relation.relam
+  left join pg_catalog.pg_tablespace tablespace_row
+    on tablespace_row.oid = index_relation.reltablespace
+  where index_row.indrelid in (
+      'public.story_specs'::regclass,
+      'public.figure_stages'::regclass
+    );
+
   -- Keep the code-created fingerprints independently from the mutable object
   -- comments. Health compares both the live objects and their comments to
   -- these captured constants, so recomputing a comment over drift is not
@@ -892,13 +1659,17 @@ begin
         stage_fk_fingerprint text,
         stage_status_fingerprint text,
         stage_trigger_fingerprint text,
+        column_inventory_fingerprint text,
+        constraint_inventory_fingerprint text,
+        index_inventory_fingerprint text,
         authority_owner oid
       )
       language sql
       immutable
       set search_path = pg_catalog
       as $manifest$
-        select %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid
+        select %L::text, %L::text, %L::text, %L::text, %L::text, %L::text,
+          %L::text, %L::text, %L::text, %s::oid
       $manifest$
     $create$,
     identity_fingerprint,
@@ -907,6 +1678,9 @@ begin
     stage_fk_fingerprint,
     stage_status_fingerprint,
     stage_trigger_fingerprint,
+    column_inventory_fingerprint,
+    constraint_inventory_fingerprint,
+    index_inventory_fingerprint,
     story_specs_owner
   );
 
@@ -1651,6 +2425,8 @@ as $fn$
       (
         select count(*)
         from pg_catalog.pg_class relation_row
+        join pg_catalog.pg_am table_access_method
+          on table_access_method.oid = relation_row.relam
         where relation_row.oid in (
             'public.story_specs'::regclass,
             'public.figure_stages'::regclass,
@@ -1659,6 +2435,8 @@ as $fn$
           )
           and relation_row.relkind = 'r'
           and relation_row.relpersistence = 'p'
+          and relation_row.reloftype = 0
+          and table_access_method.amname = 'heap'
           and relation_row.relowner =
             publication_manifest.authority_owner
       ) = 4
@@ -3017,9 +3795,220 @@ as $fn$
         and attribute_row.attgenerated <> ''
     ) as value
   ),
+  column_inventory_health as (
+    select pg_catalog.md5(
+      coalesce(
+        pg_catalog.jsonb_agg(
+          pg_catalog.jsonb_build_array(
+            case attribute_row.attrelid
+              when 'public.story_specs'::regclass then 'story_specs'
+              else 'figure_stages'
+            end,
+            attribute_row.attnum,
+            attribute_row.attname,
+            pg_catalog.format_type(
+              attribute_row.atttypid,
+              attribute_row.atttypmod
+            ),
+            attribute_row.attndims,
+            attribute_row.attnotnull,
+            attribute_row.atthasdef,
+            pg_catalog.pg_get_expr(
+              default_row.adbin,
+              default_row.adrelid,
+              true
+            ),
+            attribute_row.attidentity,
+            attribute_row.attgenerated,
+            collation_namespace.nspname,
+            collation_row.collname,
+            attribute_row.attislocal,
+            attribute_row.attinhcount,
+            attribute_row.attstorage,
+            pg_catalog.to_jsonb(attribute_row) ->> 'attcompression',
+            attribute_row.atthasmissing,
+            pg_catalog.to_jsonb(attribute_row) -> 'attmissingval'
+          ) order by
+            case attribute_row.attrelid
+              when 'public.story_specs'::regclass then 1
+              else 2
+            end,
+            attribute_row.attnum
+        )::pg_catalog.text,
+        '[]'
+      )
+    ) = publication_manifest.column_inventory_fingerprint as value
+    from pg_catalog.pg_attribute attribute_row
+    left join pg_catalog.pg_attrdef default_row
+      on default_row.adrelid = attribute_row.attrelid
+      and default_row.adnum = attribute_row.attnum
+    left join pg_catalog.pg_collation collation_row
+      on collation_row.oid = attribute_row.attcollation
+    left join pg_catalog.pg_namespace collation_namespace
+      on collation_namespace.oid = collation_row.collnamespace
+    cross join publication_manifest
+    where attribute_row.attrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+      and attribute_row.attnum > 0
+      and not attribute_row.attisdropped
+    group by publication_manifest.column_inventory_fingerprint
+  ),
+  constraint_inventory_health as (
+    select pg_catalog.md5(
+      coalesce(
+        pg_catalog.jsonb_agg(
+          pg_catalog.jsonb_build_array(
+            case constraint_row.conrelid
+              when 'public.story_specs'::regclass then 'story_specs'
+              else 'figure_stages'
+            end,
+            constraint_row.conname,
+            constraint_row.contype,
+            constraint_row.condeferrable,
+            constraint_row.condeferred,
+            constraint_row.convalidated,
+            constraint_row.conislocal,
+            constraint_row.coninhcount,
+            constraint_row.connoinherit,
+            constraint_row.conparentid,
+            referenced_namespace.nspname,
+            referenced_relation.relname,
+            constraint_row.confupdtype,
+            constraint_row.confdeltype,
+            constraint_row.confmatchtype,
+            constraint_row.conkey,
+            constraint_row.confkey,
+            constraint_row.conexclop is not null,
+            pg_catalog.to_jsonb(constraint_row) ->> 'conperiod',
+            pg_catalog.to_jsonb(constraint_row) ->> 'conenforced',
+            (
+              select count(*)
+              from pg_catalog.pg_trigger trigger_row
+              where trigger_row.tgconstraint = constraint_row.oid
+            ),
+            (
+              select count(*)
+              from pg_catalog.pg_trigger trigger_row
+              where trigger_row.tgconstraint = constraint_row.oid
+                and trigger_row.tgenabled = 'O'
+            ),
+            pg_catalog.pg_get_constraintdef(constraint_row.oid, true)
+          ) order by
+            case constraint_row.conrelid
+              when 'public.story_specs'::regclass then 1
+              else 2
+            end,
+            constraint_row.conname
+        )::pg_catalog.text,
+        '[]'
+      )
+    ) = publication_manifest.constraint_inventory_fingerprint as value
+    from pg_catalog.pg_constraint constraint_row
+    left join pg_catalog.pg_class referenced_relation
+      on referenced_relation.oid = constraint_row.confrelid
+    left join pg_catalog.pg_namespace referenced_namespace
+      on referenced_namespace.oid = referenced_relation.relnamespace
+    cross join publication_manifest
+    where constraint_row.conrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+      and constraint_row.contype <> 'n'
+    group by publication_manifest.constraint_inventory_fingerprint
+  ),
+  index_inventory_health as (
+    select pg_catalog.md5(
+      coalesce(
+        pg_catalog.jsonb_agg(
+          pg_catalog.jsonb_build_array(
+            case index_row.indrelid
+              when 'public.story_specs'::regclass then 'story_specs'
+              else 'figure_stages'
+            end,
+            index_relation.relname,
+            access_method.amname,
+            index_relation.relkind,
+            index_relation.relowner = publication_manifest.authority_owner,
+            index_relation.reloptions,
+            tablespace_row.spcname,
+            index_row.indisunique,
+            index_row.indnullsnotdistinct,
+            index_row.indisprimary,
+            index_row.indisexclusion,
+            index_row.indimmediate,
+            index_row.indisclustered,
+            index_row.indisvalid,
+            index_row.indcheckxmin,
+            index_row.indisready,
+            index_row.indislive,
+            index_row.indisreplident,
+            index_row.indnkeyatts,
+            index_row.indnatts,
+            index_row.indkey,
+            pg_catalog.pg_get_expr(
+              index_row.indexprs,
+              index_row.indrelid,
+              true
+            ),
+            pg_catalog.pg_get_expr(
+              index_row.indpred,
+              index_row.indrelid,
+              true
+            ),
+            (
+              select pg_catalog.jsonb_agg(
+                pg_catalog.pg_get_indexdef(
+                  index_row.indexrelid,
+                  key_position,
+                  true
+                ) order by key_position
+              )
+              from pg_catalog.generate_series(
+                1,
+                index_row.indnatts
+              ) key_position
+            )
+          ) order by
+            case index_row.indrelid
+              when 'public.story_specs'::regclass then 1
+              else 2
+            end,
+            index_relation.relname
+        )::pg_catalog.text,
+        '[]'
+      )
+    ) = publication_manifest.index_inventory_fingerprint as value
+    from pg_catalog.pg_index index_row
+    join pg_catalog.pg_class index_relation
+      on index_relation.oid = index_row.indexrelid
+    join pg_catalog.pg_am access_method
+      on access_method.oid = index_relation.relam
+    left join pg_catalog.pg_tablespace tablespace_row
+      on tablespace_row.oid = index_relation.reltablespace
+    cross join publication_manifest
+    where index_row.indrelid in (
+        'public.story_specs'::regclass,
+        'public.figure_stages'::regclass
+      )
+    group by
+      publication_manifest.index_inventory_fingerprint,
+      publication_manifest.authority_owner
+  ),
+  publication_catalog_inventory_health as (
+    select
+      column_inventory_health.value
+        and constraint_inventory_health.value
+        and index_inventory_health.value as value
+    from column_inventory_health,
+      constraint_inventory_health,
+      index_inventory_health
+  ),
   grant_health as (
     select
       generated_column_health.value
+        and publication_catalog_inventory_health.value
         and authority_health.value
         and function_grant_health.value
         and table_boundary_health.value
@@ -3036,7 +4025,8 @@ as $fn$
       relation_graph_health,
       rewrite_rule_health,
       legacy_marker_health,
-      generated_column_health
+      generated_column_health,
+      publication_catalog_inventory_health
   )
   select
     manifest_function_health.value
@@ -3051,12 +4041,15 @@ as $fn$
       and promotion_health.value
       and retirement_health.value
       and legacy_health.value
+      and publication_catalog_inventory_health.value
       and grant_health.value as ok,
     story_identity_key_health.value
       and identity_health.value
       and stage_fk_health.value
+      and publication_catalog_inventory_health.value
       and relation_graph_health.value as identity_constraint_valid,
     generated_column_health.value
+      and publication_catalog_inventory_health.value
       and lifecycle_health.value
       and stage_lifecycle_health.value
       and story_status_constraint_health.value
@@ -3064,11 +4057,13 @@ as $fn$
       and rewrite_rule_health.value
       as lifecycle_trigger_enabled,
     publication_index_health.value
+      and publication_catalog_inventory_health.value
       and story_status_constraint_health.value
       and catalog_alignment_health.value
       and relation_graph_health.value
       as published_stage_uniqueness_valid,
     generated_column_health.value
+      and publication_catalog_inventory_health.value
       and story_identity_key_health.value
       and promotion_health.value
       and retirement_health.value
@@ -3092,7 +4087,8 @@ as $fn$
     relation_graph_health,
     rewrite_rule_health,
     grant_health,
-    generated_column_health
+    generated_column_health,
+    publication_catalog_inventory_health
 $fn$;
 
 revoke all on function public.story_spec_publication_schema_health_v1()

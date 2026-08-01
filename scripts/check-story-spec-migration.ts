@@ -25,6 +25,7 @@ async function main(): Promise<void> {
   await checkRelationGraphBoundary();
   await checkRewriteRuleBoundary();
   await checkGeneratedColumnBoundary();
+  await checkPublicationCatalogInventoryBoundary();
   await checkHostileAclCutover();
   await checkFigureStagesDefinerBoundary();
   await checkAuthorityRootDriftDetection();
@@ -44,6 +45,9 @@ async function main(): Promise<void> {
   console.log("PASS inheritance and partition publication planes fail closed");
   console.log("PASS table rewrite hooks fail closed before and after cutover");
   console.log("PASS generated-column publication hooks fail closed");
+  console.log(
+    "PASS exact publication columns, constraints, and indexes fail closed",
+  );
   console.log("PASS direct service-role publication and retirement are blocked");
   console.log("PASS hostile table, column, and every lifecycle-function ACL is removed");
   console.log("PASS figure-stage trigger inheritance is closed before and after cutover");
@@ -64,10 +68,8 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
   const db = await createBaseDatabase();
   try {
     await db.exec(`
-      insert into public.figure_stages (figure_key, stage_id, status)
-      values
-        ('precutover-stage-only', 'stage', 'published'),
-        ('precutover-spec-only', 'stage', 'draft');
+      ${figureStageInsertSql("precutover-stage-only", "published")}
+      ${figureStageInsertSql("precutover-spec-only")}
     `);
 
     await applyPublicationMigration(db, () => expectPublicationLocks(db));
@@ -80,6 +82,7 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
       legacy_rpc_revoked: true,
       boundary_granted: true,
     });
+    await expectCanonicalPublicationCatalogCounts(db);
     await expectStageStatus(db, "precutover-stage-only", "draft");
     await expectStageStatus(db, "precutover-spec-only", "draft");
 
@@ -87,20 +90,11 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
     try {
       await expectRejected(
         () =>
-          db.exec(`
-            insert into public.figure_stages (
-              figure_key,
-              stage_id,
-              status
-            ) values ('direct-stage', 'stage', 'published');
-          `),
+          db.exec(figureStageInsertSql("direct-stage", "published")),
         "direct published figure-stage insert",
         "owner-definer boundary",
       );
-      await db.exec(`
-        insert into public.figure_stages (figure_key, stage_id)
-        values ('direct-stage', 'stage');
-      `);
+      await db.exec(figureStageInsertSql("direct-stage"));
       await expectRejected(
         () =>
           db.exec(`
@@ -117,10 +111,7 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
     }
     await expectStageStatus(db, "direct-stage", "draft");
 
-    await db.exec(`
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('figure', 'stage');
-    `);
+    await db.exec(figureStageInsertSql("figure"));
 
     const previous = storySpecDocument("previous", 1, "published");
     const candidate = storySpecDocument("candidate", 2, "review");
@@ -192,10 +183,7 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
       "next-review": "review",
     });
 
-    await db.exec(`
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('blocked', 'stage');
-    `);
+    await db.exec(figureStageInsertSql("blocked"));
     const directRetireTarget = storySpecDocument(
       "direct-retire-target",
       3,
@@ -281,10 +269,7 @@ async function checkCanonicalPublicationBoundary(): Promise<void> {
       throw new Error("retirement did not return the figure stage to draft");
     }
 
-    await db.exec(`
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('initial', 'stage');
-    `);
+    await db.exec(figureStageInsertSql("initial"));
     const initialCandidate = storySpecDocument(
       "initial-candidate",
       1,
@@ -491,6 +476,34 @@ async function checkRelationGraphBoundary(): Promise<void> {
     }
   }
 
+  const typedBootstrapDb = await createBaseDatabase();
+  try {
+    await typedBootstrapDb.exec(`
+      create type public.onward_story_spec_typed_contract as (
+        story_spec_id text,
+        figure_key text,
+        stage_id text,
+        version int,
+        schema_version text,
+        status text,
+        spec jsonb,
+        created_at timestamptz,
+        published_at timestamptz,
+        retired_at timestamptz
+      );
+      alter table public.story_specs
+        of public.onward_story_spec_typed_contract;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(typedBootstrapDb),
+      "typed StorySpec table bootstrap",
+      "untyped heap tables and owner",
+    );
+    await expectV2Absent(typedBootstrapDb, "typed-table bootstrap rollback");
+  } finally {
+    await typedBootstrapDb.close();
+  }
+
   const reservedMarkerDb = await createBaseDatabase();
   try {
     await reservedMarkerDb.exec(`
@@ -531,6 +544,33 @@ async function checkRelationGraphBoundary(): Promise<void> {
       `);
       await expectHealth(liveDb, { ok: true });
     }
+
+
+    await liveDb.exec(`
+      create type public.onward_story_spec_typed_contract as (
+        story_spec_id text,
+        figure_key text,
+        stage_id text,
+        version int,
+        schema_version text,
+        status text,
+        spec jsonb,
+        created_at timestamptz,
+        published_at timestamptz,
+        retired_at timestamptz
+      );
+      alter table public.story_specs
+        of public.onward_story_spec_typed_contract;
+    `);
+    await expectHealth(liveDb, {
+      ok: false,
+      boundary_granted: false,
+    });
+    await liveDb.exec(`
+      alter table public.story_specs not of;
+      drop type public.onward_story_spec_typed_contract;
+    `);
+    await expectHealth(liveDb, { ok: true });
   } finally {
     await liveDb.close();
   }
@@ -633,8 +673,7 @@ async function checkGeneratedColumnBoundary(): Promise<void> {
       "blocking-generated-column",
     );
     await liveDb.exec(`
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('blocking-generated-column', 'stage');
+      ${figureStageInsertSql("blocking-generated-column")}
 
       create function public.onward_block_generated_stage_status(
         p_status text
@@ -690,6 +729,382 @@ async function checkGeneratedColumnBoundary(): Promise<void> {
     await expectHealth(liveDb, { ok: true });
   } finally {
     await liveDb.close();
+  }
+}
+
+async function checkPublicationCatalogInventoryBoundary(): Promise<void> {
+  const columnBootstrapCases = [
+    {
+      label: "missing created_at column",
+      sql: `alter table public.story_specs drop column created_at;`,
+    },
+    {
+      label: "altered published_at type",
+      sql: `
+        alter table public.story_specs
+          alter column published_at type text
+          using published_at::text;
+      `,
+    },
+    {
+      label: "altered retired_at default",
+      sql: `
+        alter table public.story_specs
+          alter column retired_at set default pg_catalog.now();
+      `,
+    },
+    {
+      label: "missing figure-stage source column",
+      sql: `alter table public.figure_stages drop column sources;`,
+    },
+  ] as const;
+
+  for (const testCase of columnBootstrapCases) {
+    const db = await createBaseDatabase();
+    try {
+      await db.exec(testCase.sql);
+      await expectRejected(
+        () => applyPublicationMigration(db),
+        `${testCase.label} bootstrap`,
+        "publication table column contract is unsafe",
+      );
+      await expectV2Absent(db, `${testCase.label} rollback`);
+    } finally {
+      await db.close();
+    }
+  }
+
+  const missingValueDb = await createBaseDatabase({
+    applyStorySpecsMigration: false,
+  });
+  try {
+    const missingValueReview = storySpecDocument(
+      "catalog-missing-value-review",
+      1,
+      "review",
+      "catalog-column-contract",
+    );
+    await missingValueDb.exec(`
+      ${figureStageInsertSql("catalog-column-contract")}
+
+      create table public.story_specs (
+        story_spec_id text primary key,
+        figure_key text not null,
+        stage_id text not null,
+        version int not null,
+        schema_version text not null,
+        status text not null default 'draft',
+        spec jsonb not null,
+        created_at timestamptz not null default pg_catalog.now(),
+        constraint story_specs_stage_fk
+          foreign key (figure_key, stage_id)
+          references public.figure_stages (figure_key, stage_id)
+          on delete restrict,
+        constraint story_specs_version_check check (version > 0),
+        constraint story_specs_status_check
+          check (status in ('draft', 'review', 'published', 'retired')),
+        constraint story_specs_identity_unique
+          unique (figure_key, stage_id, version),
+        constraint story_specs_document_identity_check check (
+          spec ->> 'storySpecId' = story_spec_id
+          and spec ->> 'figureKey' = figure_key
+          and spec ->> 'stageId' = stage_id
+          and (spec ->> 'version')::int = version
+          and spec ->> 'schemaVersion' = schema_version
+          and spec ->> 'status' = status
+        )
+      );
+
+      insert into public.story_specs (
+        story_spec_id,
+        figure_key,
+        stage_id,
+        version,
+        schema_version,
+        status,
+        spec
+      ) values (
+        ${textLiteral(missingValueReview.storySpecId)},
+        ${textLiteral(missingValueReview.figureKey)},
+        ${textLiteral(missingValueReview.stageId)},
+        ${missingValueReview.version},
+        ${textLiteral(missingValueReview.schemaVersion)},
+        ${textLiteral(missingValueReview.status)},
+        ${jsonbLiteral(missingValueReview)}
+      );
+
+      alter table public.story_specs
+        add column published_at timestamptz
+        default '2001-01-01T00:00:00Z'::timestamptz;
+      alter table public.story_specs
+        alter column published_at drop default;
+      alter table public.story_specs
+        add column retired_at timestamptz;
+    `);
+    await missingValueDb.exec(storySpecsMigration);
+    const missingValueFixture = await missingValueDb.query<{
+      atthasmissing: boolean;
+      missing_value_present: boolean;
+      stale_value_visible: boolean;
+    }>(`
+      select
+        attribute_row.atthasmissing,
+        pg_catalog.to_jsonb(attribute_row) -> 'attmissingval'
+          is distinct from 'null'::jsonb as missing_value_present,
+        story_spec.published_at =
+          '2001-01-01T00:00:00Z'::timestamptz as stale_value_visible
+      from public.story_specs story_spec
+      join pg_catalog.pg_attribute attribute_row
+        on attribute_row.attrelid = 'public.story_specs'::regclass
+        and attribute_row.attname = 'published_at'
+      where story_spec.story_spec_id =
+        ${textLiteral(missingValueReview.storySpecId)}
+    `);
+    if (
+      !missingValueFixture.rows[0]?.atthasmissing ||
+      !missingValueFixture.rows[0]?.missing_value_present ||
+      !missingValueFixture.rows[0]?.stale_value_visible
+    ) {
+      throw new Error(
+        `fast-default missing-value fixture did not retain stale publication time: ${JSON.stringify(
+          missingValueFixture.rows[0] ?? null,
+        )}`,
+      );
+    }
+    await expectRejected(
+      () => applyPublicationMigration(missingValueDb),
+      "StorySpec fast-default catalog missing value bootstrap",
+      "publication table column contract is unsafe",
+    );
+    await expectV2Absent(missingValueDb, "catalog missing-value rollback");
+  } finally {
+    await missingValueDb.close();
+  }
+
+  const constraintBootstrapCases = [
+    {
+      label: "constant-false StorySpec constraint",
+      sql: `
+        alter table public.story_specs
+          add constraint onward_story_specs_false_check
+          check (false) not valid;
+      `,
+    },
+    {
+      label: "same-name StorySpec constraint replacement",
+      sql: `
+        alter table public.story_specs
+          drop constraint story_specs_version_check;
+        alter table public.story_specs
+          add constraint story_specs_version_check
+          check (false) not valid;
+      `,
+    },
+    {
+      label: "same-name figure-stage constraint replacement",
+      sql: `
+        alter table public.figure_stages
+          drop constraint figure_stages_age_check;
+        alter table public.figure_stages
+          add constraint figure_stages_age_check
+          check (false) not valid;
+      `,
+    },
+  ] as const;
+
+  for (const testCase of constraintBootstrapCases) {
+    const db = await createBaseDatabase();
+    try {
+      await db.exec(testCase.sql);
+      await expectRejected(
+        () => applyPublicationMigration(db),
+        `${testCase.label} bootstrap`,
+        "publication constraint inventory is unsafe",
+      );
+      await expectV2Absent(db, `${testCase.label} rollback`);
+    } finally {
+      await db.close();
+    }
+  }
+
+  const unrelatedIndexDb = await createBaseDatabase();
+  try {
+    await unrelatedIndexDb.exec(`
+      create function public.onward_catalog_stage_index_key(p_age int)
+      returns int
+      language sql
+      immutable
+      as $$ select p_age $$;
+
+      create index onward_stage_unrelated_expression_idx
+        on public.figure_stages (
+          public.onward_catalog_stage_index_key(age_min)
+        )
+        where age_max >= age_min;
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(unrelatedIndexDb),
+      "unrelated figure-stage expression/partial index bootstrap",
+      "publication index inventory is unsafe",
+    );
+    await expectV2Absent(
+      unrelatedIndexDb,
+      "unrelated figure-stage index rollback",
+    );
+  } finally {
+    await unrelatedIndexDb.close();
+  }
+
+  const sameNameIndexDb = await createBaseDatabase();
+  try {
+    await sameNameIndexDb.exec(`
+      create function public.onward_catalog_story_index_key(
+        p_created_at timestamptz
+      )
+      returns timestamptz
+      language sql
+      immutable
+      as $$ select p_created_at $$;
+
+      drop index public.story_specs_stage_history_idx;
+      create index story_specs_stage_history_idx
+        on public.story_specs (
+          public.onward_catalog_story_index_key(created_at)
+        )
+        where schema_version <> '';
+    `);
+    await expectRejected(
+      () => applyPublicationMigration(sameNameIndexDb),
+      "same-name StorySpec expression/partial index bootstrap",
+      "publication index inventory is unsafe",
+    );
+    await expectV2Absent(sameNameIndexDb, "same-name index rollback");
+  } finally {
+    await sameNameIndexDb.close();
+  }
+
+  const missingColumnDb = await createBaseDatabase();
+  try {
+    const review = await prepareCatalogReview(
+      missingColumnDb,
+      "catalog-column-contract",
+    );
+    await missingColumnDb.exec(`
+      alter table public.story_specs drop column published_at;
+    `);
+    await expectHealth(missingColumnDb, {
+      ok: false,
+      promotion_cas_valid: false,
+    });
+    await expectPromotionBlockedAndRolledBack(
+      missingColumnDb,
+      review,
+      "missing published_at promotion",
+      "published_at",
+    );
+  } finally {
+    await missingColumnDb.close();
+  }
+
+  const storyConstraintDb = await createBaseDatabase();
+  try {
+    const review = await prepareCatalogReview(
+      storyConstraintDb,
+      "catalog-constraint-contract",
+    );
+    await storyConstraintDb.exec(`
+      alter table public.story_specs
+        drop constraint story_specs_version_check;
+      alter table public.story_specs
+        add constraint story_specs_version_check
+        check (false) not valid;
+    `);
+    await expectHealth(storyConstraintDb, {
+      ok: false,
+      promotion_cas_valid: false,
+    });
+    await expectPromotionBlockedAndRolledBack(
+      storyConstraintDb,
+      review,
+      "same-name StorySpec constraint promotion",
+      "story_specs_version_check",
+    );
+  } finally {
+    await storyConstraintDb.close();
+  }
+
+  const stageConstraintDb = await createBaseDatabase();
+  try {
+    const review = await prepareCatalogReview(
+      stageConstraintDb,
+      "catalog-constraint-contract",
+    );
+    await stageConstraintDb.exec(`
+      alter table public.figure_stages
+        drop constraint figure_stages_age_check;
+      alter table public.figure_stages
+        add constraint figure_stages_age_check
+        check (false) not valid;
+    `);
+    await expectHealth(stageConstraintDb, {
+      ok: false,
+      promotion_cas_valid: false,
+    });
+    await expectPromotionBlockedAndRolledBack(
+      stageConstraintDb,
+      review,
+      "same-name figure-stage constraint promotion",
+      "figure_stages_age_check",
+    );
+  } finally {
+    await stageConstraintDb.close();
+  }
+
+  const indexHookDb = await createBaseDatabase();
+  try {
+    const review = await prepareCatalogReview(
+      indexHookDb,
+      "catalog-index-contract",
+    );
+    await indexHookDb.exec(`
+      create function public.onward_catalog_blocking_index(
+        p_created_at timestamptz
+      )
+      returns timestamptz
+      language plpgsql
+      immutable
+      as $$
+      begin
+        if pg_catalog.current_setting(
+          'onward.block_catalog_index',
+          true
+        ) = 'on' then
+          raise exception 'catalog index hook blocked terminal write';
+        end if;
+        return p_created_at;
+      end
+      $$;
+
+      drop index public.story_specs_stage_history_idx;
+      create index story_specs_stage_history_idx
+        on public.story_specs (
+          public.onward_catalog_blocking_index(created_at)
+        )
+        where schema_version <> '';
+    `);
+    await expectHealth(indexHookDb, {
+      ok: false,
+      promotion_cas_valid: false,
+    });
+    await indexHookDb.exec(`set onward.block_catalog_index = 'on';`);
+    await expectPromotionBlockedAndRolledBack(
+      indexHookDb,
+      review,
+      "same-name unrelated StorySpec index hook promotion",
+      "catalog index hook blocked terminal write",
+    );
+  } finally {
+    await indexHookDb.close();
   }
 }
 
@@ -1203,8 +1618,7 @@ async function checkIdentityManifestDriftDetection(): Promise<void> {
       end
       $do$;
 
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('weak-identity', 'stage');
+      ${figureStageInsertSql("weak-identity")}
 
       insert into public.story_specs (
         story_spec_id,
@@ -1324,10 +1738,7 @@ async function checkCatalogAlignmentDriftDetection(): Promise<void> {
   const db = await createBaseDatabase();
   try {
     await applyPublicationMigration(db);
-    await db.exec(`
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('alignment', 'stage');
-    `);
+    await db.exec(figureStageInsertSql("alignment"));
     await insertStorySpec(
       db,
       storySpecDocument(
@@ -1454,8 +1865,7 @@ async function checkPostCutoverDriftDetection(): Promise<void> {
       "blocking-terminal-index",
     );
     await db.exec(`
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('blocking-terminal-index', 'stage');
+      ${figureStageInsertSql("blocking-terminal-index")}
 
       create function public.onward_block_terminal_index(p_status text)
       returns text
@@ -1656,8 +2066,7 @@ async function checkPostCutoverDriftDetection(): Promise<void> {
       end
       $do$;
 
-      insert into public.figure_stages (figure_key, stage_id)
-      values ('duplicate', 'stage');
+      ${figureStageInsertSql("duplicate")}
     `);
     await insertStorySpec(
       db,
@@ -1726,7 +2135,7 @@ async function checkStatusIndexFailsCutover(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(stageIndexDb),
       "stage status-index bootstrap",
-      "closed health boundary",
+      "publication index inventory is unsafe",
     );
     await expectV2Absent(stageIndexDb, "stage status-index rollback");
   } finally {
@@ -1743,7 +2152,7 @@ async function checkStatusIndexFailsCutover(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(storyIndexDb),
       "StorySpec status-index bootstrap",
-      "terminal lifecycle has an unsafe schema dependency",
+      "publication index inventory is unsafe",
     );
     await expectV2Absent(storyIndexDb, "StorySpec status-index rollback");
   } finally {
@@ -1773,7 +2182,7 @@ async function checkStatusIndexFailsCutover(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(ordinaryPartialIndexDb),
       "ordinary partial-index bootstrap",
-      "terminal lifecycle has an unsafe schema dependency",
+      "publication index inventory is unsafe",
     );
     await expectV2Absent(
       ordinaryPartialIndexDb,
@@ -1793,7 +2202,7 @@ async function checkStatusIndexFailsCutover(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(storyMirrorDb),
       "StorySpec JSON-status dependency bootstrap",
-      "terminal lifecycle has an unsafe schema dependency",
+      "publication constraint inventory is unsafe",
     );
     await expectV2Absent(storyMirrorDb, "JSON-status dependency rollback");
   } finally {
@@ -1809,7 +2218,7 @@ async function checkStatusIndexFailsCutover(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(terminalTimestampDb),
       "StorySpec terminal-timestamp dependency bootstrap",
-      "terminal lifecycle has an unsafe schema dependency",
+      "publication index inventory is unsafe",
     );
     await expectV2Absent(
       terminalTimestampDb,
@@ -1823,10 +2232,7 @@ async function checkStatusIndexFailsCutover(): Promise<void> {
 async function checkLegacyPublicationFailsCutover(): Promise<void> {
   const db = await createBaseDatabase();
   try {
-    await db.exec(`
-      insert into public.figure_stages (figure_key, stage_id, status)
-      values ('legacy-publication', 'stage', 'published');
-    `);
+    await db.exec(figureStageInsertSql("legacy-publication", "published"));
     await insertStorySpec(
       db,
       storySpecDocument(
@@ -1861,7 +2267,7 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(missingIdentityKeyDb),
       "missing StorySpec identity key bootstrap",
-      "identity primary key is unsafe",
+      "publication constraint inventory is unsafe",
     );
     await expectV2Absent(
       missingIdentityKeyDb,
@@ -1879,7 +2285,7 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     await expectRejected(
       () => applyPublicationMigration(hostileOwnerDb),
       "hostile table-owner bootstrap",
-      "canonical table owner",
+      "untyped heap tables and owner",
     );
     await expectV2Absent(hostileOwnerDb, "hostile-owner rollback");
   } finally {
@@ -2129,6 +2535,53 @@ async function insertStorySpec(
   `);
 }
 
+async function prepareCatalogReview(
+  db: PGlite,
+  figureKey: string,
+): Promise<ReturnType<typeof storySpecDocument>> {
+  await applyPublicationMigration(db);
+  await db.exec(figureStageInsertSql(figureKey));
+  const review = storySpecDocument(
+    `${figureKey}-review`,
+    1,
+    "review",
+    figureKey,
+  );
+  await insertStorySpec(db, review);
+  return review;
+}
+
+async function expectPromotionBlockedAndRolledBack(
+  db: PGlite,
+  review: ReturnType<typeof storySpecDocument>,
+  label: string,
+  expectedMessage: string,
+): Promise<void> {
+  await db.exec("set role service_role");
+  try {
+    await expectRejected(
+      () =>
+        db.query(
+          `
+            select public.promote_story_spec_v2(
+              $1::text,
+              $2::jsonb
+            )
+          `,
+          [review.storySpecId, JSON.stringify(review)],
+        ),
+      label,
+      expectedMessage,
+    );
+  } finally {
+    await db.exec("reset role");
+  }
+  await expectStoryStates(db, {
+    [review.storySpecId]: "review",
+  });
+  await expectStageStatus(db, review.figureKey, "draft");
+}
+
 async function expectStoryStates(
   db: PGlite,
   expected: Readonly<Record<string, string>>,
@@ -2192,7 +2645,46 @@ function jsonbLiteral(value: unknown): string {
   return `${textLiteral(JSON.stringify(value))}::jsonb`;
 }
 
-async function createBaseDatabase(): Promise<PGlite> {
+function figureStageInsertSql(
+  figureKey: string,
+  status: "draft" | "published" = "draft",
+): string {
+  return `
+    insert into public.figure_stages (
+      figure_key,
+      stage_id,
+      stage_label,
+      age_min,
+      age_max,
+      shape_sentences,
+      facets,
+      biographical_facts,
+      themes,
+      anti_themes,
+      beats,
+      sources,
+      status
+    ) values (
+      ${textLiteral(figureKey)},
+      'stage',
+      'Migration contract fixture',
+      20,
+      21,
+      array['A bounded emotional episode.']::text[],
+      '{}'::jsonb,
+      'A bounded biographical fact.',
+      array['identity']::text[],
+      '{}'::text[],
+      '[]'::jsonb,
+      array['https://example.com/source']::text[],
+      ${textLiteral(status)}
+    );
+  `;
+}
+
+async function createBaseDatabase(
+  options: Readonly<{ applyStorySpecsMigration?: boolean }> = {},
+): Promise<PGlite> {
   const db = new PGlite();
   await db.exec(`
     create role anon noinherit;
@@ -2205,13 +2697,53 @@ async function createBaseDatabase(): Promise<PGlite> {
     grant service_role to postgres;
     grant authenticator to supabase_storage_admin;
 
+    create table public.figures (
+      key text primary key,
+      display_name text not null,
+      birth_year int,
+      death_year int
+    );
+
+    insert into public.figures (key, display_name)
+    select fixture.key, fixture.key
+    from (
+      values
+        ('precutover-stage-only'),
+        ('precutover-spec-only'),
+        ('direct-stage'),
+        ('figure'),
+        ('blocked'),
+        ('initial'),
+        ('blocking-generated-column'),
+        ('weak-identity'),
+        ('alignment'),
+        ('blocking-terminal-index'),
+        ('duplicate'),
+        ('legacy-publication'),
+        ('catalog-column-contract'),
+        ('catalog-constraint-contract'),
+        ('catalog-index-contract')
+    ) as fixture(key);
+
     create table public.figure_stages (
-      figure_key text not null,
+      figure_key text not null
+        references public.figures (key) on delete cascade,
       stage_id text not null,
+      stage_label text not null,
+      age_min int not null,
+      age_max int not null,
+      shape_sentences text[] not null,
+      facets jsonb not null,
+      biographical_facts text not null,
+      themes text[] not null,
+      anti_themes text[] not null default '{}',
+      beats jsonb not null,
+      sources text[] not null,
       status text not null default 'draft',
+      primary key (figure_key, stage_id),
       constraint figure_stages_status_check
         check (status in ('draft', 'published')),
-      primary key (figure_key, stage_id)
+      constraint figure_stages_age_check check (age_min <= age_max)
     );
 
     create table public.story_artifacts (
@@ -2225,7 +2757,9 @@ async function createBaseDatabase(): Promise<PGlite> {
       ('precutover-v4', 'story-artifact-v4-2026-07');
   `);
   await expectBaseAuthorityGraph(db);
-  await db.exec(storySpecsMigration);
+  if (options.applyStorySpecsMigration !== false) {
+    await db.exec(storySpecsMigration);
+  }
   return db;
 }
 
@@ -2436,6 +2970,73 @@ async function expectPublicationLocks(db: PGlite): Promise<void> {
       `publication cutover held ${String(
         result.rows[0]?.locked_relations,
       )}/3 required AccessExclusiveLock rows`,
+    );
+  }
+}
+
+async function expectCanonicalPublicationCatalogCounts(
+  db: PGlite,
+): Promise<void> {
+  const result = await db.query<{
+    story_columns: number;
+    stage_columns: number;
+    story_constraints: number;
+    stage_constraints: number;
+    story_indexes: number;
+    stage_indexes: number;
+  }>(`
+    select
+      (
+        select count(*)::int
+        from pg_catalog.pg_attribute attribute_row
+        where attribute_row.attrelid = 'public.story_specs'::regclass
+          and attribute_row.attnum > 0
+          and not attribute_row.attisdropped
+      ) as story_columns,
+      (
+        select count(*)::int
+        from pg_catalog.pg_attribute attribute_row
+        where attribute_row.attrelid = 'public.figure_stages'::regclass
+          and attribute_row.attnum > 0
+          and not attribute_row.attisdropped
+      ) as stage_columns,
+      (
+        select count(*)::int
+        from pg_catalog.pg_constraint constraint_row
+        where constraint_row.conrelid = 'public.story_specs'::regclass
+          and constraint_row.contype <> 'n'
+      ) as story_constraints,
+      (
+        select count(*)::int
+        from pg_catalog.pg_constraint constraint_row
+        where constraint_row.conrelid = 'public.figure_stages'::regclass
+          and constraint_row.contype <> 'n'
+      ) as stage_constraints,
+      (
+        select count(*)::int
+        from pg_catalog.pg_index index_row
+        where index_row.indrelid = 'public.story_specs'::regclass
+      ) as story_indexes,
+      (
+        select count(*)::int
+        from pg_catalog.pg_index index_row
+        where index_row.indrelid = 'public.figure_stages'::regclass
+      ) as stage_indexes
+  `);
+  const counts = result.rows[0];
+  if (
+    !counts ||
+    counts.story_columns !== 10 ||
+    counts.stage_columns !== 13 ||
+    counts.story_constraints !== 6 ||
+    counts.stage_constraints !== 4 ||
+    counts.story_indexes !== 4 ||
+    counts.stage_indexes !== 1
+  ) {
+    throw new Error(
+      `publication catalog counts are not canonical: ${JSON.stringify(
+        counts ?? null,
+      )}`,
     );
   }
 }

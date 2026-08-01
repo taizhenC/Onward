@@ -676,6 +676,11 @@ function checkPublicationBoundary(failures: string[]): void {
     .toLowerCase()
     .replace(/\s+/g, " ");
   const casePreservedMigration = migrationSource.replace(/\s+/g, " ");
+  const catalogSql = migrationSource
+    .replace(/--[^\r\n]*/g, " ")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
   const statusCommand = read("./set-story-spec-status.ts")
     .toLowerCase()
     .replace(/\s+/g, " ");
@@ -692,8 +697,78 @@ function checkPublicationBoundary(failures: string[]): void {
     .replace(/\s+/g, " ");
   const countOccurrences = (value: string, needle: string): number =>
     value.split(needle).length - 1;
+  const statementFrom = (value: string, start: string): string => {
+    const startIndex = value.indexOf(start);
+    const endIndex = value.indexOf(";", startIndex);
+    return startIndex >= 0 && endIndex > startIndex
+      ? value.slice(startIndex, endIndex + 1)
+      : "";
+  };
+  const includesInOrder = (value: string, needles: readonly string[]): boolean => {
+    let offset = 0;
+    for (const needle of needles) {
+      const next = value.indexOf(needle, offset);
+      if (next < 0) {
+        return false;
+      }
+      offset = next + needle.length;
+    }
+    return true;
+  };
+  const sqlCallArgumentLists = (
+    value: string,
+    callPrefix: string,
+  ): string[][] => {
+    const lists: string[][] = [];
+    let searchOffset = 0;
+    while (searchOffset < value.length) {
+      const callStart = value.indexOf(callPrefix, searchOffset);
+      if (callStart < 0) {
+        break;
+      }
+      const argumentsStart = callStart + callPrefix.length;
+      const args: string[] = [];
+      let argumentStart = argumentsStart;
+      let depth = 1;
+      let quoted = false;
+      let cursor = argumentsStart;
+      for (; cursor < value.length; cursor += 1) {
+        const char = value[cursor];
+        if (char === "'") {
+          if (quoted && value[cursor + 1] === "'") {
+            cursor += 1;
+            continue;
+          }
+          quoted = !quoted;
+          continue;
+        }
+        if (quoted) {
+          continue;
+        }
+        if (char === "(") {
+          depth += 1;
+        } else if (char === ")") {
+          depth -= 1;
+          if (depth === 0) {
+            args.push(value.slice(argumentStart, cursor).trim());
+            break;
+          }
+        } else if (char === "," && depth === 1) {
+          args.push(value.slice(argumentStart, cursor).trim());
+          argumentStart = cursor + 1;
+        }
+      }
+      if (depth !== 0 || quoted) {
+        return [];
+      }
+      lists.push(args);
+      searchOffset = cursor + 1;
+    }
+    return lists;
+  };
 
   for (const required of [
+    "set local search_path = pg_catalog, public",
     "lock table public.story_specs, public.figure_stages, public.story_artifacts in access exclusive mode",
     "from pg_catalog.pg_inherits inheritance_row",
     "from pg_catalog.pg_rewrite rewrite_row",
@@ -753,12 +828,25 @@ function checkPublicationBoundary(failures: string[]): void {
     "storyspec cutover must run as the database owner",
     "other roles must not inherit storyspec publication authority",
     "storyspec service authority role graph is unsafe",
-    "storyspec cutover must run as the canonical table owner",
+    "storyspec cutover requires canonical untyped heap tables and owner",
+    "storyspec publication table column contract is unsafe",
+    "storyspec publication constraint inventory is unsafe",
+    "storyspec publication index inventory is unsafe",
     "storyspec cutover found an unexpected routine, overload, or owner",
     "figure_stages must not have user triggers",
     "retire every published storyspec before the evidence-contract cutover",
     "story_spec_publication_manifest_v1",
-    "select %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %s::oid",
+    "column_inventory_fingerprint text",
+    "constraint_inventory_fingerprint text",
+    "index_inventory_fingerprint text",
+    "into strict column_inventory_fingerprint",
+    "into strict constraint_inventory_fingerprint",
+    "into strict index_inventory_fingerprint",
+    "column_inventory_health as (",
+    "constraint_inventory_health as (",
+    "index_inventory_health as (",
+    "publication_catalog_inventory_health as (",
+    "select %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %s::oid",
     "pg_catalog.obj_description(",
     "promote_story_spec_v2",
     "p_expected_review_spec jsonb",
@@ -836,6 +924,119 @@ function checkPublicationBoundary(failures: string[]): void {
     if (!migration.includes(required)) {
       failures.push(`publication migration is missing: ${required}`);
     }
+  }
+  const canonicalProbeStatements = [
+    `create temporary table onward_story_spec_figures_contract_probe (
+      key pg_catalog.text not null,
+      constraint onward_figures_contract_pkey primary key (key)
+    ) using heap on commit drop;`,
+    `create temporary table onward_story_spec_stage_contract_probe (
+      figure_key pg_catalog.text not null,
+      stage_id pg_catalog.text not null,
+      stage_label pg_catalog.text not null,
+      age_min pg_catalog.int4 not null,
+      age_max pg_catalog.int4 not null,
+      shape_sentences pg_catalog.text[] not null,
+      facets pg_catalog.jsonb not null,
+      biographical_facts pg_catalog.text not null,
+      themes pg_catalog.text[] not null,
+      anti_themes pg_catalog.text[] not null default '{}',
+      beats pg_catalog.jsonb not null,
+      sources pg_catalog.text[] not null,
+      status pg_catalog.text not null default 'draft',
+      constraint onward_stage_contract_figure_fk
+        foreign key (figure_key)
+        references onward_story_spec_figures_contract_probe (key)
+        on delete cascade,
+      constraint onward_stage_contract_pkey
+        primary key (figure_key, stage_id),
+      constraint onward_stage_contract_status_check
+        check (status in ('draft', 'published')),
+      constraint onward_stage_contract_age_check
+        check (age_min <= age_max)
+    ) using heap on commit drop;`,
+    `create temporary table onward_story_spec_contract_probe (
+      story_spec_id pg_catalog.text not null,
+      figure_key pg_catalog.text not null,
+      stage_id pg_catalog.text not null,
+      version pg_catalog.int4 not null,
+      schema_version pg_catalog.text not null,
+      status pg_catalog.text not null default 'draft',
+      spec pg_catalog.jsonb not null,
+      created_at pg_catalog.timestamptz not null default pg_catalog.now(),
+      published_at pg_catalog.timestamptz,
+      retired_at pg_catalog.timestamptz,
+      constraint onward_story_contract_pkey primary key (story_spec_id),
+      constraint onward_story_contract_stage_fk
+        foreign key (figure_key, stage_id)
+        references onward_story_spec_stage_contract_probe (figure_key, stage_id)
+        on delete restrict,
+      constraint onward_story_contract_version_check check (version > 0),
+      constraint onward_story_contract_status_check
+        check (status in ('draft', 'review', 'published', 'retired')),
+      constraint onward_story_contract_identity_unique
+        unique (figure_key, stage_id, version),
+      constraint onward_story_contract_document_identity_check check (
+        spec ->> 'storySpecId' = story_spec_id
+        and spec ->> 'figureKey' = figure_key
+        and spec ->> 'stageId' = stage_id
+        and (spec ->> 'version')::pg_catalog.int4 = version
+        and spec ->> 'schemaVersion' = schema_version
+        and spec ->> 'status' = status
+      )
+    ) using heap on commit drop;`,
+    `create unique index onward_story_contract_published_idx
+      on onward_story_spec_contract_probe (figure_key, stage_id)
+      where status = 'published';`,
+    `create index onward_story_contract_history_idx
+      on onward_story_spec_contract_probe (figure_key, stage_id, version desc);`,
+  ].map((statement) => statement.toLowerCase().replace(/\s+/g, " ").trim());
+  for (const canonicalProbe of canonicalProbeStatements) {
+    const statementName = canonicalProbe.slice(
+      0,
+      canonicalProbe.indexOf(" (") > 0
+        ? canonicalProbe.indexOf(" (")
+        : canonicalProbe.indexOf(" on "),
+    );
+    if (statementFrom(catalogSql, statementName) !== canonicalProbe) {
+      failures.push(
+        `publication migration must build the exact server-native probe: ${statementName}`,
+      );
+    }
+  }
+  for (const probeStart of [
+    "create temporary table onward_story_spec_figures_contract_probe",
+    "create temporary table onward_story_spec_stage_contract_probe",
+    "create temporary table onward_story_spec_contract_probe",
+  ]) {
+    if (countOccurrences(catalogSql, probeStart) !== 1) {
+      failures.push(`publication probe must be created exactly once: ${probeStart}`);
+    }
+  }
+  if (countOccurrences(catalogSql, ") using heap on commit drop;") !== 3) {
+    failures.push(
+      "publication migration must create exactly three transaction-local heap probes",
+    );
+  }
+  const probeCreationIndex = catalogSql.indexOf(
+    "create temporary table onward_story_spec_figures_contract_probe",
+  );
+  const preflightIndex = catalogSql.indexOf("do $do$ declare authority_owner oid;");
+  const probeDropIndex = catalogSql.indexOf(
+    "drop table pg_temp.onward_story_spec_contract_probe; drop table pg_temp.onward_story_spec_stage_contract_probe; drop table pg_temp.onward_story_spec_figures_contract_probe;",
+  );
+  const durableMarkerIndex = catalogSql.indexOf(
+    "create table public.story_artifact_legacy_v5_replay",
+  );
+  if (
+    probeCreationIndex < 0 ||
+    preflightIndex <= probeCreationIndex ||
+    probeDropIndex <= preflightIndex ||
+    durableMarkerIndex <= probeDropIndex
+  ) {
+    failures.push(
+      "publication probes must be transaction-local, precede preflight, and be dropped before durable cutover DDL",
+    );
   }
   const draftRefreshStart = storySpecSeed.indexOf(".update({");
   const draftRefreshEnd = storySpecSeed.indexOf(
@@ -1048,8 +1249,13 @@ function checkPublicationBoundary(failures: string[]): void {
     "'public.figure_stages'::regclass",
     "'public.story_artifacts'::regclass",
   ];
+  const preflightRelationBoundaryStart = authorityAnchor.indexOf(
+    "if exists ( select 1 from pg_catalog.pg_class relation_row left join pg_catalog.pg_am table_access_method",
+    preflightStorageGraphEnd,
+  );
   const preflightInheritanceStart = authorityAnchor.indexOf(
     "if exists ( select 1 from pg_catalog.pg_inherits inheritance_row",
+    preflightRelationBoundaryStart,
   );
   const preflightRewriteStart = authorityAnchor.indexOf(
     "if exists ( select 1 from pg_catalog.pg_rewrite rewrite_row",
@@ -1067,11 +1273,41 @@ function checkPublicationBoundary(failures: string[]): void {
           preflightRewriteStart,
         )
       : "";
+  const preflightRelationBoundary =
+    preflightRelationBoundaryStart >= 0 &&
+    preflightInheritanceStart > preflightRelationBoundaryStart
+      ? authorityAnchor.slice(
+          preflightRelationBoundaryStart,
+          preflightInheritanceStart,
+        )
+      : "";
   const preflightRewrite =
     preflightRewriteStart >= 0 &&
     markerPreflightStart > preflightRewriteStart
       ? authorityAnchor.slice(preflightRewriteStart, markerPreflightStart)
       : "";
+  if (
+    !preflightRelationBoundary.includes(
+      "on table_access_method.oid = relation_row.relam",
+    ) ||
+    !preflightRelationBoundary.includes("relation_row.relowner <> authority_owner") ||
+    !preflightRelationBoundary.includes("relation_row.relkind <> 'r'") ||
+    !preflightRelationBoundary.includes("relation_row.relpersistence <> 'p'") ||
+    !preflightRelationBoundary.includes("relation_row.reloftype <> 0") ||
+    !preflightRelationBoundary.includes(
+      "table_access_method.amname is distinct from 'heap'",
+    ) ||
+    !preflightRelationBoundary.includes(
+      "storyspec cutover requires canonical untyped heap tables and owner",
+    ) ||
+    preflightProtectedRelations.some(
+      (relation) => countOccurrences(preflightRelationBoundary, relation) !== 1,
+    )
+  ) {
+    failures.push(
+      "publication preflight must bind every source relation to an owner-controlled permanent untyped heap",
+    );
+  }
   if (
     !preflightInheritance.includes(
       "where inheritance_row.inhparent in (",
@@ -1114,9 +1350,21 @@ function checkPublicationBoundary(failures: string[]): void {
     "if exists ( select 1 from pg_catalog.pg_attribute attribute_row",
     markerPreflightStart,
   );
+  const preflightColumnInventoryStart = authorityAnchor.indexOf(
+    "if ( select coalesce( pg_catalog.jsonb_agg( pg_catalog.jsonb_build_array( case attribute_row.attrelid",
+    preflightGeneratedColumnStart,
+  );
+  const preflightConstraintInventoryStart = authorityAnchor.indexOf(
+    "if ( select coalesce( pg_catalog.jsonb_agg( pg_catalog.jsonb_build_array( case constraint_row.conrelid",
+    preflightColumnInventoryStart,
+  );
+  const preflightIndexInventoryStart = authorityAnchor.indexOf(
+    "if ( select coalesce( pg_catalog.jsonb_agg( pg_catalog.jsonb_build_array( case index_row.indrelid",
+    preflightConstraintInventoryStart,
+  );
   const preflightIdentityKeyStart = authorityAnchor.indexOf(
     "if ( select count(*) from pg_catalog.pg_constraint constraint_row",
-    preflightGeneratedColumnStart,
+    preflightIndexInventoryStart,
   );
   const preflightLifecycleDependencyStart = authorityAnchor.indexOf(
     "if exists ( select 1 from pg_catalog.pg_constraint constraint_row join pg_catalog.pg_attribute terminal_attribute",
@@ -1128,10 +1376,10 @@ function checkPublicationBoundary(failures: string[]): void {
   );
   const preflightGeneratedColumn =
     preflightGeneratedColumnStart >= 0 &&
-    preflightIdentityKeyStart > preflightGeneratedColumnStart
+    preflightColumnInventoryStart > preflightGeneratedColumnStart
       ? authorityAnchor.slice(
           preflightGeneratedColumnStart,
-          preflightIdentityKeyStart,
+          preflightColumnInventoryStart,
         )
       : "";
   if (
@@ -1163,6 +1411,257 @@ function checkPublicationBoundary(failures: string[]): void {
   ) {
     failures.push(
       "publication preflight must reject every generated column on either publication table",
+    );
+  }
+  const preflightColumnInventory =
+    preflightColumnInventoryStart >= 0 &&
+    preflightConstraintInventoryStart > preflightColumnInventoryStart
+      ? authorityAnchor.slice(
+          preflightColumnInventoryStart,
+          preflightConstraintInventoryStart,
+        )
+      : "";
+  const preflightConstraintInventory =
+    preflightConstraintInventoryStart >= 0 &&
+    preflightIndexInventoryStart > preflightConstraintInventoryStart
+      ? authorityAnchor.slice(
+          preflightConstraintInventoryStart,
+          preflightIndexInventoryStart,
+        )
+      : "";
+  const preflightIndexInventory =
+    preflightIndexInventoryStart >= 0 &&
+    preflightIdentityKeyStart > preflightIndexInventoryStart
+      ? authorityAnchor.slice(
+          preflightIndexInventoryStart,
+          preflightIdentityKeyStart,
+        )
+      : "";
+  const preflightColumnSignature = `attribute_row.attnum,
+    attribute_row.attname,
+    attribute_row.atttypid,
+    attribute_row.atttypmod,
+    attribute_row.attndims,
+    attribute_row.attnotnull,
+    attribute_row.atthasdef,
+    pg_catalog.pg_get_expr(
+      default_row.adbin,
+      default_row.adrelid,
+      true
+    ),
+    attribute_row.attidentity,
+    attribute_row.attgenerated,
+    attribute_row.attcollation,
+    attribute_row.attislocal,
+    attribute_row.attinhcount,
+    attribute_row.attstorage,
+    pg_catalog.to_jsonb(attribute_row) ->> 'attcompression',
+    attribute_row.atthasmissing,
+    pg_catalog.to_jsonb(attribute_row) -> 'attmissingval'
+  ) order by case attribute_row.attrelid`
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+  const preflightColumnArguments = sqlCallArgumentLists(
+    preflightColumnInventory,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !preflightColumnInventory ||
+    preflightColumnArguments.length !== 2 ||
+    preflightColumnArguments.some((args) => args.length !== 18) ||
+    preflightColumnArguments[0]?.[0] !==
+      "case attribute_row.attrelid when 'public.story_specs'::regclass then 'story_specs' else 'figure_stages' end" ||
+    preflightColumnArguments[1]?.[0] !==
+      "case attribute_row.attrelid when 'pg_temp.onward_story_spec_contract_probe'::regclass then 'story_specs' else 'figure_stages' end" ||
+    countOccurrences(preflightColumnInventory, preflightColumnSignature) !== 2 ||
+    countOccurrences(
+      preflightColumnInventory,
+      "from pg_catalog.pg_attribute attribute_row left join pg_catalog.pg_attrdef default_row",
+    ) !== 2 ||
+    countOccurrences(
+      preflightColumnInventory,
+      "and attribute_row.attnum > 0 and not attribute_row.attisdropped",
+    ) !== 2 ||
+    !preflightColumnInventory.includes(
+      "where attribute_row.attrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass )",
+    ) ||
+    !preflightColumnInventory.includes(
+      "where attribute_row.attrelid in ( 'pg_temp.onward_story_spec_contract_probe'::regclass, 'pg_temp.onward_story_spec_stage_contract_probe'::regclass )",
+    ) ||
+    !preflightColumnInventory.includes(
+      ") is distinct from ( select coalesce(",
+    ) ||
+    !preflightColumnInventory.includes(
+      "storyspec publication table column contract is unsafe",
+    )
+  ) {
+    failures.push(
+      "publication preflight must compare the complete ordered 10/13-column catalog to server-native probes",
+    );
+  }
+  const expectedConstraintMappings = [
+    "'story_specs', 'story_specs_pkey', 'pg_temp.onward_story_spec_contract_probe'::regclass, 'onward_story_contract_pkey'",
+    "'story_specs', 'story_specs_stage_fk', 'pg_temp.onward_story_spec_contract_probe'::regclass, 'onward_story_contract_stage_fk'",
+    "'story_specs', 'story_specs_version_check', 'pg_temp.onward_story_spec_contract_probe'::regclass, 'onward_story_contract_version_check'",
+    "'story_specs', 'story_specs_status_check', 'pg_temp.onward_story_spec_contract_probe'::regclass, 'onward_story_contract_status_check'",
+    "'story_specs', 'story_specs_identity_unique', 'pg_temp.onward_story_spec_contract_probe'::regclass, 'onward_story_contract_identity_unique'",
+    "'story_specs', 'story_specs_document_identity_check', 'pg_temp.onward_story_spec_contract_probe'::regclass, 'onward_story_contract_document_identity_check'",
+    "'figure_stages', 'figure_stages_figure_key_fkey', 'pg_temp.onward_story_spec_stage_contract_probe'::regclass, 'onward_stage_contract_figure_fk'",
+    "'figure_stages', 'figure_stages_pkey', 'pg_temp.onward_story_spec_stage_contract_probe'::regclass, 'onward_stage_contract_pkey'",
+    "'figure_stages', 'figure_stages_status_check', 'pg_temp.onward_story_spec_stage_contract_probe'::regclass, 'onward_stage_contract_status_check'",
+    "'figure_stages', 'figure_stages_age_check', 'pg_temp.onward_story_spec_stage_contract_probe'::regclass, 'onward_stage_contract_age_check'",
+  ] as const;
+  const constraintCatalogFields = [
+    "constraint_row.contype",
+    "constraint_row.condeferrable",
+    "constraint_row.condeferred",
+    "constraint_row.convalidated",
+    "constraint_row.conislocal",
+    "constraint_row.coninhcount",
+    "constraint_row.connoinherit",
+    "constraint_row.conparentid",
+    "constraint_row.confupdtype",
+    "constraint_row.confdeltype",
+    "constraint_row.confmatchtype",
+    "constraint_row.conkey",
+    "constraint_row.confkey",
+    "constraint_row.conpfeqop",
+    "constraint_row.conppeqop",
+    "constraint_row.conffeqop",
+    "constraint_row.conexclop",
+    "pg_catalog.to_jsonb(constraint_row) ->> 'conperiod'",
+    "pg_catalog.to_jsonb(constraint_row) ->> 'conenforced'",
+  ] as const;
+  const preflightConstraintArguments = sqlCallArgumentLists(
+    preflightConstraintInventory,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !preflightConstraintInventory ||
+    preflightConstraintArguments.length !== 2 ||
+    preflightConstraintArguments.some((args) => args.length !== 26) ||
+    preflightConstraintArguments[0]?.[0] !==
+      "case constraint_row.conrelid when 'public.story_specs'::regclass then 'story_specs' else 'figure_stages' end" ||
+    preflightConstraintArguments[0]?.[1] !== "constraint_row.conname" ||
+    preflightConstraintArguments[1]?.[0] !==
+      "expected_constraint.table_name" ||
+    preflightConstraintArguments[1]?.[1] !==
+      "expected_constraint.live_name" ||
+    !preflightConstraintInventory.includes(
+      "where constraint_row.conrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass ) and constraint_row.contype <> 'n'",
+    ) ||
+    !preflightConstraintInventory.includes(
+      "with expected_constraint( table_name, live_name, probe_relation, probe_name ) as ( values",
+    ) ||
+    expectedConstraintMappings.some(
+      (mapping) =>
+        countOccurrences(preflightConstraintInventory, mapping) !== 1,
+    ) ||
+    !includesInOrder(preflightConstraintInventory, constraintCatalogFields) ||
+    countOccurrences(
+      preflightConstraintInventory,
+      "where trigger_row.tgconstraint = constraint_row.oid",
+    ) !== 4 ||
+    countOccurrences(
+      preflightConstraintInventory,
+      "and trigger_row.tgenabled = 'o'",
+    ) !== 2 ||
+    !preflightConstraintInventory.includes(
+      "when 'story_specs_stage_fk' then 'public'",
+    ) ||
+    !preflightConstraintInventory.includes(
+      "when 'story_specs_stage_fk' then 'figure_stages'",
+    ) ||
+    !preflightConstraintInventory.includes(
+      "when 'figure_stages_figure_key_fkey' then 'figures'",
+    ) ||
+    !preflightConstraintInventory.includes(
+      "from expected_constraint join pg_catalog.pg_constraint constraint_row on constraint_row.conrelid = expected_constraint.probe_relation and constraint_row.conname = expected_constraint.probe_name",
+    ) ||
+    !preflightConstraintInventory.includes(
+      "pg_catalog.replace( pg_catalog.replace( pg_catalog.pg_get_constraintdef(constraint_row.oid, true), 'onward_story_spec_stage_contract_probe', 'figure_stages' ), 'onward_story_spec_figures_contract_probe', 'figures' )",
+    ) ||
+    !preflightConstraintInventory.includes(
+      "storyspec publication constraint inventory is unsafe",
+    )
+  ) {
+    failures.push(
+      "publication preflight must compare the exact closed constraint inventory, FK targets, and RI-trigger counts",
+    );
+  }
+  const expectedIndexMappings = [
+    "'story_specs', 'story_specs_pkey', 'pg_temp.onward_story_contract_pkey'::regclass",
+    "'story_specs', 'story_specs_identity_unique', 'pg_temp.onward_story_contract_identity_unique'::regclass",
+    "'story_specs', 'story_specs_one_published_stage_idx', 'pg_temp.onward_story_contract_published_idx'::regclass",
+    "'story_specs', 'story_specs_stage_history_idx', 'pg_temp.onward_story_contract_history_idx'::regclass",
+    "'figure_stages', 'figure_stages_pkey', 'pg_temp.onward_stage_contract_pkey'::regclass",
+  ] as const;
+  const indexCatalogFields = [
+    "access_method.amname",
+    "index_relation.relkind",
+    "index_relation.reloptions",
+    "index_row.indisunique",
+    "index_row.indnullsnotdistinct",
+    "index_row.indisprimary",
+    "index_row.indisexclusion",
+    "index_row.indimmediate",
+    "index_row.indisclustered",
+    "index_row.indisvalid",
+    "index_row.indcheckxmin",
+    "index_row.indisready",
+    "index_row.indislive",
+    "index_row.indisreplident",
+    "index_row.indnkeyatts",
+    "index_row.indnatts",
+    "index_row.indkey",
+    "index_row.indcollation",
+    "index_row.indclass",
+    "index_row.indoption",
+    "pg_catalog.pg_get_expr( index_row.indexprs, index_row.indrelid, true )",
+    "pg_catalog.pg_get_expr( index_row.indpred, index_row.indrelid, true )",
+    "from pg_catalog.generate_series( 1, index_row.indnatts ) key_position",
+  ] as const;
+  const preflightIndexArguments = sqlCallArgumentLists(
+    preflightIndexInventory,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !preflightIndexInventory ||
+    preflightIndexArguments.length !== 2 ||
+    preflightIndexArguments.some((args) => args.length !== 26) ||
+    preflightIndexArguments[0]?.[0] !==
+      "case index_row.indrelid when 'public.story_specs'::regclass then 'story_specs' else 'figure_stages' end" ||
+    preflightIndexArguments[0]?.[1] !== "index_relation.relname" ||
+    preflightIndexArguments[1]?.[0] !== "expected_index.table_name" ||
+    preflightIndexArguments[1]?.[1] !== "expected_index.live_name" ||
+    !preflightIndexInventory.includes(
+      "where index_row.indrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass )",
+    ) ||
+    !preflightIndexInventory.includes(
+      "with expected_index( table_name, live_name, probe_index ) as ( values",
+    ) ||
+    expectedIndexMappings.some(
+      (mapping) => countOccurrences(preflightIndexInventory, mapping) !== 1,
+    ) ||
+    countOccurrences(preflightIndexInventory, "index_relation.relowner = authority_owner") !==
+      2 ||
+    countOccurrences(
+      preflightIndexInventory,
+      "from pg_catalog.pg_index index_row",
+    ) !== 1 ||
+    !includesInOrder(preflightIndexInventory, indexCatalogFields) ||
+    !preflightIndexInventory.includes(
+      "from expected_index join pg_catalog.pg_index index_row on index_row.indexrelid = expected_index.probe_index",
+    ) ||
+    !preflightIndexInventory.includes(
+      "storyspec publication index inventory is unsafe",
+    ) ||
+    preflightIndexInventory.includes("terminal_attribute") ||
+    preflightIndexInventory.includes("attname in ( 'status'")
+  ) {
+    failures.push(
+      "publication preflight must compare every index and cannot fall back to a terminal-column allowlist",
     );
   }
   const preflightIdentityKey =
@@ -1271,6 +1770,7 @@ function checkPublicationBoundary(failures: string[]): void {
     "artifact_id text not null",
     "constraint story_artifact_legacy_v5_replay_pkey primary key (artifact_id)",
     "constraint story_artifact_legacy_v5_replay_artifact_fk foreign key (artifact_id) references public.story_artifacts (artifact_id) on delete cascade",
+    ") using heap;",
     "comment on table public.story_artifact_legacy_v5_replay is 'onward-story-artifact-legacy-v5-replay-v1'",
     "insert into public.story_artifact_legacy_v5_replay (artifact_id) select artifact.artifact_id from only public.story_artifacts artifact where artifact.schema_version = 'story-artifact-v5-2026-07'",
     "alter table public.story_artifact_legacy_v5_replay enable row level security",
@@ -1366,11 +1866,222 @@ function checkPublicationBoundary(failures: string[]): void {
       "create or replace function public.story_spec_publication_manifest_v1()",
     ) ||
     !schemaCapture.includes(
-      "select %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid",
+      "select %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %L::text, %s::oid",
     )
   ) {
     failures.push(
       "schema manifest must capture exact identity, stage, trigger, and full-index deparses as independent constants",
+    );
+  }
+  const normalizedSchemaCapture = schemaCapture.toLowerCase();
+  const columnCaptureStart = normalizedSchemaCapture.indexOf(
+    "select pg_catalog.md5( coalesce( pg_catalog.jsonb_agg(",
+    normalizedSchemaCapture.indexOf("into strict stage_trigger_fingerprint"),
+  );
+  const constraintCaptureStart = normalizedSchemaCapture.indexOf(
+    "select pg_catalog.md5( coalesce( pg_catalog.jsonb_agg(",
+    normalizedSchemaCapture.indexOf(
+      "into strict column_inventory_fingerprint",
+      columnCaptureStart,
+    ),
+  );
+  const indexCaptureStart = normalizedSchemaCapture.indexOf(
+    "select pg_catalog.md5( coalesce( pg_catalog.jsonb_agg(",
+    normalizedSchemaCapture.indexOf(
+      "into strict constraint_inventory_fingerprint",
+      constraintCaptureStart,
+    ),
+  );
+  const manifestDefinitionStart = normalizedSchemaCapture.indexOf(
+    "execute pg_catalog.format( $create$ create or replace function public.story_spec_publication_manifest_v1()",
+    indexCaptureStart,
+  );
+  const columnCapture =
+    columnCaptureStart >= 0 && constraintCaptureStart > columnCaptureStart
+      ? normalizedSchemaCapture.slice(columnCaptureStart, constraintCaptureStart)
+      : "";
+  const constraintCapture =
+    constraintCaptureStart >= 0 && indexCaptureStart > constraintCaptureStart
+      ? normalizedSchemaCapture.slice(
+          constraintCaptureStart,
+          indexCaptureStart,
+        )
+      : "";
+  const indexCapture =
+    indexCaptureStart >= 0 && manifestDefinitionStart > indexCaptureStart
+      ? normalizedSchemaCapture.slice(indexCaptureStart, manifestDefinitionStart)
+      : "";
+  const liveColumnCatalogFields = [
+    "attribute_row.attnum",
+    "attribute_row.attname",
+    "pg_catalog.format_type( attribute_row.atttypid, attribute_row.atttypmod )",
+    "attribute_row.attndims",
+    "attribute_row.attnotnull",
+    "attribute_row.atthasdef",
+    "pg_catalog.pg_get_expr( default_row.adbin, default_row.adrelid, true )",
+    "attribute_row.attidentity",
+    "attribute_row.attgenerated",
+    "collation_namespace.nspname",
+    "collation_row.collname",
+    "attribute_row.attislocal",
+    "attribute_row.attinhcount",
+    "attribute_row.attstorage",
+    "pg_catalog.to_jsonb(attribute_row) ->> 'attcompression'",
+    "attribute_row.atthasmissing",
+    "pg_catalog.to_jsonb(attribute_row) -> 'attmissingval'",
+  ] as const;
+  const columnCaptureArguments = sqlCallArgumentLists(
+    columnCapture,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !columnCapture ||
+    columnCaptureArguments.length !== 1 ||
+    columnCaptureArguments[0]?.length !== 18 ||
+    !columnCapture.startsWith(
+      "select pg_catalog.md5( coalesce( pg_catalog.jsonb_agg( pg_catalog.jsonb_build_array(",
+    ) ||
+    !includesInOrder(columnCapture, liveColumnCatalogFields) ||
+    !columnCapture.includes(
+      ")::pg_catalog.text, '[]' ) ) into strict column_inventory_fingerprint",
+    ) ||
+    !columnCapture.includes(
+      "left join pg_catalog.pg_collation collation_row on collation_row.oid = attribute_row.attcollation left join pg_catalog.pg_namespace collation_namespace on collation_namespace.oid = collation_row.collnamespace",
+    ) ||
+    !columnCapture.includes(
+      "where attribute_row.attrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass ) and attribute_row.attnum > 0 and not attribute_row.attisdropped",
+    )
+  ) {
+    failures.push(
+      "schema manifest must aggregate the complete ordered publication-column catalog, including fast-default state",
+    );
+  }
+  const manifestConstraintFields = [
+    "constraint_row.conname",
+    "constraint_row.contype",
+    "constraint_row.condeferrable",
+    "constraint_row.condeferred",
+    "constraint_row.convalidated",
+    "constraint_row.conislocal",
+    "constraint_row.coninhcount",
+    "constraint_row.connoinherit",
+    "constraint_row.conparentid",
+    "referenced_namespace.nspname",
+    "referenced_relation.relname",
+    "constraint_row.confupdtype",
+    "constraint_row.confdeltype",
+    "constraint_row.confmatchtype",
+    "constraint_row.conkey",
+    "constraint_row.confkey",
+    "constraint_row.conexclop is not null",
+    "pg_catalog.to_jsonb(constraint_row) ->> 'conperiod'",
+    "pg_catalog.to_jsonb(constraint_row) ->> 'conenforced'",
+  ] as const;
+  const constraintCaptureArguments = sqlCallArgumentLists(
+    constraintCapture,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !constraintCapture ||
+    constraintCaptureArguments.length !== 1 ||
+    constraintCaptureArguments[0]?.length !== 23 ||
+    !includesInOrder(constraintCapture, manifestConstraintFields) ||
+    countOccurrences(
+      constraintCapture,
+      "where trigger_row.tgconstraint = constraint_row.oid",
+    ) !== 2 ||
+    countOccurrences(
+      constraintCapture,
+      "and trigger_row.tgenabled = 'o'",
+    ) !== 1 ||
+    !constraintCapture.includes(
+      ")::pg_catalog.text, '[]' ) ) into strict constraint_inventory_fingerprint",
+    ) ||
+    !constraintCapture.includes(
+      "left join pg_catalog.pg_class referenced_relation on referenced_relation.oid = constraint_row.confrelid left join pg_catalog.pg_namespace referenced_namespace on referenced_namespace.oid = referenced_relation.relnamespace",
+    ) ||
+    !constraintCapture.includes(
+      "where constraint_row.conrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass ) and constraint_row.contype <> 'n'",
+    )
+  ) {
+    failures.push(
+      "schema manifest must aggregate every publication constraint with exact FK targets and RI-trigger state",
+    );
+  }
+  const manifestIndexFields = [
+    "index_relation.relname",
+    "access_method.amname",
+    "index_relation.relkind",
+    "index_relation.relowner = story_specs_owner",
+    "index_relation.reloptions",
+    "tablespace_row.spcname",
+    "index_row.indisunique",
+    "index_row.indnullsnotdistinct",
+    "index_row.indisprimary",
+    "index_row.indisexclusion",
+    "index_row.indimmediate",
+    "index_row.indisclustered",
+    "index_row.indisvalid",
+    "index_row.indcheckxmin",
+    "index_row.indisready",
+    "index_row.indislive",
+    "index_row.indisreplident",
+    "index_row.indnkeyatts",
+    "index_row.indnatts",
+    "index_row.indkey",
+    "pg_catalog.pg_get_expr( index_row.indexprs, index_row.indrelid, true )",
+    "pg_catalog.pg_get_expr( index_row.indpred, index_row.indrelid, true )",
+    "from pg_catalog.generate_series( 1, index_row.indnatts ) key_position",
+  ] as const;
+  const indexCaptureArguments = sqlCallArgumentLists(
+    indexCapture,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !indexCapture ||
+    indexCaptureArguments.length !== 1 ||
+    indexCaptureArguments[0]?.length !== 24 ||
+    !includesInOrder(indexCapture, manifestIndexFields) ||
+    !indexCapture.includes(
+      ")::pg_catalog.text, '[]' ) ) into strict index_inventory_fingerprint",
+    ) ||
+    !indexCapture.includes(
+      "left join pg_catalog.pg_tablespace tablespace_row on tablespace_row.oid = index_relation.reltablespace",
+    ) ||
+    !indexCapture.includes(
+      "where index_row.indrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass )",
+    ) ||
+    indexCapture.includes("terminal_attribute")
+  ) {
+    failures.push(
+      "schema manifest must fingerprint the complete publication-index catalog rather than terminal-column dependencies",
+    );
+  }
+  const manifestDefinitionEnd = normalizedSchemaCapture.indexOf(
+    "execute pg_catalog.format( 'comment on constraint story_specs_document_identity_check '",
+    manifestDefinitionStart,
+  );
+  const manifestDefinition =
+    manifestDefinitionStart >= 0 && manifestDefinitionEnd > manifestDefinitionStart
+      ? normalizedSchemaCapture.slice(
+          manifestDefinitionStart,
+          manifestDefinitionEnd,
+        )
+      : "";
+  const manifestReturnShape =
+    "returns table ( identity_fingerprint text, publication_index_fingerprint text, story_status_fingerprint text, stage_fk_fingerprint text, stage_status_fingerprint text, stage_trigger_fingerprint text, column_inventory_fingerprint text, constraint_inventory_fingerprint text, index_inventory_fingerprint text, authority_owner oid )";
+  const manifestLiteralShape =
+    "select %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %l::text, %s::oid";
+  const manifestArgumentOrder =
+    "$create$, identity_fingerprint, publication_index_fingerprint, story_status_fingerprint, stage_fk_fingerprint, stage_status_fingerprint, stage_trigger_fingerprint, column_inventory_fingerprint, constraint_inventory_fingerprint, index_inventory_fingerprint, story_specs_owner );";
+  if (
+    !manifestDefinition.includes(manifestReturnShape) ||
+    !manifestDefinition.includes("language sql immutable set search_path = pg_catalog") ||
+    !manifestDefinition.includes(manifestLiteralShape) ||
+    !manifestDefinition.includes(manifestArgumentOrder)
+  ) {
+    failures.push(
+      "publication manifest must expose the exact nine immutable fingerprints and canonical owner in order",
     );
   }
   const indexRecreateIndex = migration.indexOf(
@@ -1777,11 +2488,24 @@ function checkPublicationBoundary(failures: string[]): void {
     !stageFkHealth.includes("constraint_row.conname = 'story_specs_stage_fk'") ||
     !stageFkHealth.includes("constraint_row.contype = 'f'") ||
     !stageFkHealth.includes("constraint_row.convalidated") ||
+    !stageFkHealth.includes("constraint_row.conislocal") ||
+    !stageFkHealth.includes("constraint_row.coninhcount = 0") ||
+    !stageFkHealth.includes("constraint_row.conparentid = 0") ||
     !stageFkHealth.includes("constraint_row.connoinherit") ||
+    !stageFkHealth.includes("not constraint_row.condeferrable") ||
+    !stageFkHealth.includes("not constraint_row.condeferred") ||
+    !stageFkHealth.includes("constraint_row.confupdtype = 'a'") ||
     !stageFkHealth.includes("constraint_row.confdeltype = 'r'") ||
+    !stageFkHealth.includes("constraint_row.confmatchtype = 's'") ||
     !stageFkHealth.includes(
       "constraint_row.confrelid = 'public.figure_stages'::regclass",
     ) ||
+    !stageFkHealth.includes("constraint_row.conkey = array[") ||
+    !stageFkHealth.includes("constraint_row.confkey = array[") ||
+    countOccurrences(stageFkHealth, "attribute_row.attname = 'figure_key'") !==
+      2 ||
+    countOccurrences(stageFkHealth, "attribute_row.attname = 'stage_id'") !==
+      2 ||
     !stageFkHealth.includes(
       "'onward-story-spec-stage-fk-v1:' || publication_manifest.stage_fk_fingerprint",
     ) ||
@@ -1789,8 +2513,16 @@ function checkPublicationBoundary(failures: string[]): void {
       ") = publication_manifest.stage_fk_fingerprint",
     ) ||
     !stageFkHealth.includes("trigger_row.tgconstraint = constraint_row.oid") ||
+    !stageFkHealth.includes("trigger_row.tgisinternal") ||
     !stageFkHealth.includes("trigger_row.tgenabled = 'o'") ||
-    !stageFkHealth.includes(") = 4")
+    !stageFkHealth.includes(
+      "trigger_row.tgrelid in ( constraint_row.conrelid, constraint_row.confrelid )",
+    ) ||
+    countOccurrences(
+      stageFkHealth,
+      "where trigger_row.tgconstraint = constraint_row.oid",
+    ) !== 2 ||
+    countOccurrences(stageFkHealth, ") = 4") !== 2
   ) {
     failures.push(
       "stage foreign-key health must attest its exact identity, owner, definition, and enabled internal triggers",
@@ -2082,8 +2814,13 @@ function checkPublicationBoundary(failures: string[]): void {
     !relationGraphHealth.includes(
       "from pg_catalog.pg_class relation_row",
     ) ||
+    !relationGraphHealth.includes(
+      "join pg_catalog.pg_am table_access_method on table_access_method.oid = relation_row.relam",
+    ) ||
     !relationGraphHealth.includes("relation_row.relkind = 'r'") ||
     !relationGraphHealth.includes("relation_row.relpersistence = 'p'") ||
+    !relationGraphHealth.includes("relation_row.reloftype = 0") ||
+    !relationGraphHealth.includes("table_access_method.amname = 'heap'") ||
     !relationGraphHealth.includes(
       "relation_row.relowner = publication_manifest.authority_owner",
     ) ||
@@ -2209,9 +2946,25 @@ function checkPublicationBoundary(failures: string[]): void {
     "generated_column_health as (",
     stageBoundaryHealthStart,
   );
+  const columnInventoryHealthStart = migration.indexOf(
+    "column_inventory_health as (",
+    generatedColumnHealthStart,
+  );
+  const constraintInventoryHealthStart = migration.indexOf(
+    "constraint_inventory_health as (",
+    columnInventoryHealthStart,
+  );
+  const indexInventoryHealthStart = migration.indexOf(
+    "index_inventory_health as (",
+    constraintInventoryHealthStart,
+  );
+  const publicationCatalogInventoryHealthStart = migration.indexOf(
+    "publication_catalog_inventory_health as (",
+    indexInventoryHealthStart,
+  );
   const grantHealthStart = migration.indexOf(
     "grant_health as (",
-    generatedColumnHealthStart,
+    publicationCatalogInventoryHealthStart,
   );
   const functionGrantHealth =
     functionGrantHealthStart >= 0 &&
@@ -2233,8 +2986,43 @@ function checkPublicationBoundary(failures: string[]): void {
       : "";
   const generatedColumnHealth =
     generatedColumnHealthStart >= 0 &&
-    grantHealthStart > generatedColumnHealthStart
-      ? migration.slice(generatedColumnHealthStart, grantHealthStart)
+    columnInventoryHealthStart > generatedColumnHealthStart
+      ? migration.slice(
+          generatedColumnHealthStart,
+          columnInventoryHealthStart,
+        )
+      : "";
+  const columnInventoryHealth =
+    columnInventoryHealthStart >= 0 &&
+    constraintInventoryHealthStart > columnInventoryHealthStart
+      ? migration.slice(
+          columnInventoryHealthStart,
+          constraintInventoryHealthStart,
+        )
+      : "";
+  const constraintInventoryHealth =
+    constraintInventoryHealthStart >= 0 &&
+    indexInventoryHealthStart > constraintInventoryHealthStart
+      ? migration.slice(
+          constraintInventoryHealthStart,
+          indexInventoryHealthStart,
+        )
+      : "";
+  const indexInventoryHealth =
+    indexInventoryHealthStart >= 0 &&
+    publicationCatalogInventoryHealthStart > indexInventoryHealthStart
+      ? migration.slice(
+          indexInventoryHealthStart,
+          publicationCatalogInventoryHealthStart,
+        )
+      : "";
+  const publicationCatalogInventoryHealth =
+    publicationCatalogInventoryHealthStart >= 0 &&
+    grantHealthStart > publicationCatalogInventoryHealthStart
+      ? migration.slice(
+          publicationCatalogInventoryHealthStart,
+          grantHealthStart,
+        )
       : "";
   if (
     !functionGrantHealth ||
@@ -2331,6 +3119,118 @@ function checkPublicationBoundary(failures: string[]): void {
       "publication health must reject every generated column on either publication table",
     );
   }
+  const columnHealthArguments = sqlCallArgumentLists(
+    columnInventoryHealth,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !columnInventoryHealth ||
+    columnHealthArguments.length !== 1 ||
+    columnHealthArguments[0]?.length !== 18 ||
+    !includesInOrder(columnInventoryHealth, liveColumnCatalogFields) ||
+    !columnInventoryHealth.includes(
+      ")::pg_catalog.text, '[]' ) ) = publication_manifest.column_inventory_fingerprint as value",
+    ) ||
+    !columnInventoryHealth.includes(
+      "left join pg_catalog.pg_collation collation_row on collation_row.oid = attribute_row.attcollation left join pg_catalog.pg_namespace collation_namespace on collation_namespace.oid = collation_row.collnamespace cross join publication_manifest",
+    ) ||
+    !columnInventoryHealth.includes(
+      "where attribute_row.attrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass ) and attribute_row.attnum > 0 and not attribute_row.attisdropped group by publication_manifest.column_inventory_fingerprint",
+    )
+  ) {
+    failures.push(
+      "publication health must recompute the complete ordered column fingerprint, including fast-default state",
+    );
+  }
+  const constraintHealthArguments = sqlCallArgumentLists(
+    constraintInventoryHealth,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !constraintInventoryHealth ||
+    constraintHealthArguments.length !== 1 ||
+    constraintHealthArguments[0]?.length !== 23 ||
+    !includesInOrder(constraintInventoryHealth, manifestConstraintFields) ||
+    countOccurrences(
+      constraintInventoryHealth,
+      "where trigger_row.tgconstraint = constraint_row.oid",
+    ) !== 2 ||
+    countOccurrences(
+      constraintInventoryHealth,
+      "and trigger_row.tgenabled = 'o'",
+    ) !== 1 ||
+    !constraintInventoryHealth.includes(
+      ")::pg_catalog.text, '[]' ) ) = publication_manifest.constraint_inventory_fingerprint as value",
+    ) ||
+    !constraintInventoryHealth.includes(
+      "left join pg_catalog.pg_class referenced_relation on referenced_relation.oid = constraint_row.confrelid left join pg_catalog.pg_namespace referenced_namespace on referenced_namespace.oid = referenced_relation.relnamespace cross join publication_manifest",
+    ) ||
+    !constraintInventoryHealth.includes(
+      "where constraint_row.conrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass ) and constraint_row.contype <> 'n' group by publication_manifest.constraint_inventory_fingerprint",
+    )
+  ) {
+    failures.push(
+      "publication health must recompute every constraint, exact FK target, and RI-trigger count",
+    );
+  }
+  const healthIndexCatalogFields = [
+    "index_relation.relname",
+    "access_method.amname",
+    "index_relation.relkind",
+    "index_relation.relowner = publication_manifest.authority_owner",
+    "index_relation.reloptions",
+    "tablespace_row.spcname",
+    "index_row.indisunique",
+    "index_row.indnullsnotdistinct",
+    "index_row.indisprimary",
+    "index_row.indisexclusion",
+    "index_row.indimmediate",
+    "index_row.indisclustered",
+    "index_row.indisvalid",
+    "index_row.indcheckxmin",
+    "index_row.indisready",
+    "index_row.indislive",
+    "index_row.indisreplident",
+    "index_row.indnkeyatts",
+    "index_row.indnatts",
+    "index_row.indkey",
+    "pg_catalog.pg_get_expr( index_row.indexprs, index_row.indrelid, true )",
+    "pg_catalog.pg_get_expr( index_row.indpred, index_row.indrelid, true )",
+    "from pg_catalog.generate_series( 1, index_row.indnatts ) key_position",
+  ] as const;
+  const indexHealthArguments = sqlCallArgumentLists(
+    indexInventoryHealth,
+    "pg_catalog.jsonb_build_array(",
+  );
+  if (
+    !indexInventoryHealth ||
+    indexHealthArguments.length !== 1 ||
+    indexHealthArguments[0]?.length !== 24 ||
+    !includesInOrder(indexInventoryHealth, healthIndexCatalogFields) ||
+    !indexInventoryHealth.includes(
+      ")::pg_catalog.text, '[]' ) ) = publication_manifest.index_inventory_fingerprint as value",
+    ) ||
+    !indexInventoryHealth.includes(
+      "left join pg_catalog.pg_tablespace tablespace_row on tablespace_row.oid = index_relation.reltablespace cross join publication_manifest",
+    ) ||
+    !indexInventoryHealth.includes(
+      "where index_row.indrelid in ( 'public.story_specs'::regclass, 'public.figure_stages'::regclass ) group by publication_manifest.index_inventory_fingerprint, publication_manifest.authority_owner",
+    ) ||
+    indexInventoryHealth.includes("terminal_attribute")
+  ) {
+    failures.push(
+      "publication health must recompute the complete index catalog rather than a terminal-only allowlist",
+    );
+  }
+  if (
+    !publicationCatalogInventoryHealth.includes(
+      "select column_inventory_health.value and constraint_inventory_health.value and index_inventory_health.value as value from column_inventory_health, constraint_inventory_health, index_inventory_health",
+    )
+  ) {
+    failures.push(
+      "publication catalog health must conjunct all three live inventory fingerprints",
+    );
+  }
   const closedOutputStart = migration.indexOf(
     "select manifest_function_health.value",
     grantHealthStart,
@@ -2345,11 +3245,11 @@ function checkPublicationBoundary(failures: string[]): void {
       ? migration.slice(closedOutputStart, closedOutputEnd)
       : "";
   for (const requiredClosedGrant of [
-    "generated_column_health.value and authority_health.value",
+    "generated_column_health.value and publication_catalog_inventory_health.value and authority_health.value",
     "and relation_graph_health.value",
     "and rewrite_rule_health.value",
     "and legacy_marker_health.value as value",
-    "relation_graph_health, rewrite_rule_health, legacy_marker_health, generated_column_health",
+    "relation_graph_health, rewrite_rule_health, legacy_marker_health, generated_column_health, publication_catalog_inventory_health",
   ]) {
     if (!grantHealth.includes(requiredClosedGrant)) {
       failures.push(
@@ -2359,14 +3259,14 @@ function checkPublicationBoundary(failures: string[]): void {
   }
   for (const requiredClosedOutput of [
     "manifest_function_health.value and story_identity_key_health.value",
-    "and grant_health.value as ok",
-    "story_identity_key_health.value and identity_health.value and stage_fk_health.value and relation_graph_health.value as identity_constraint_valid",
-    "generated_column_health.value and lifecycle_health.value and stage_lifecycle_health.value and story_status_constraint_health.value and relation_graph_health.value and rewrite_rule_health.value as lifecycle_trigger_enabled",
-    "publication_index_health.value and story_status_constraint_health.value and catalog_alignment_health.value and relation_graph_health.value as published_stage_uniqueness_valid",
-    "generated_column_health.value and story_identity_key_health.value and promotion_health.value and retirement_health.value and story_status_constraint_health.value and relation_graph_health.value and rewrite_rule_health.value as promotion_cas_valid",
+    "and publication_catalog_inventory_health.value and grant_health.value as ok",
+    "story_identity_key_health.value and identity_health.value and stage_fk_health.value and publication_catalog_inventory_health.value and relation_graph_health.value as identity_constraint_valid",
+    "generated_column_health.value and publication_catalog_inventory_health.value and lifecycle_health.value and stage_lifecycle_health.value and story_status_constraint_health.value and relation_graph_health.value and rewrite_rule_health.value as lifecycle_trigger_enabled",
+    "publication_index_health.value and publication_catalog_inventory_health.value and story_status_constraint_health.value and catalog_alignment_health.value and relation_graph_health.value as published_stage_uniqueness_valid",
+    "generated_column_health.value and publication_catalog_inventory_health.value and story_identity_key_health.value and promotion_health.value and retirement_health.value and story_status_constraint_health.value and relation_graph_health.value and rewrite_rule_health.value as promotion_cas_valid",
     "legacy_health.value as legacy_rpc_revoked, grant_health.value as boundary_granted",
     "from manifest_function_health, story_identity_key_health, identity_health",
-    "legacy_health, relation_graph_health, rewrite_rule_health, grant_health, generated_column_health",
+    "legacy_health, relation_graph_health, rewrite_rule_health, grant_health, generated_column_health, publication_catalog_inventory_health",
   ]) {
     if (!closedOutputs.includes(requiredClosedOutput)) {
       failures.push(

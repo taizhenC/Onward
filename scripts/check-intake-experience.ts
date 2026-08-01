@@ -599,63 +599,91 @@ function checkTruthfulTransitionWiring(): void {
 function checkPrivacyBoundary(): void {
   const form = source("components/IntakeForm.tsx");
   const boundaryEditor = source("components/StoryBoundaryEditor.tsx");
+  const matchRequestBuilder = source("lib/intake-match-request.ts");
   assert.doesNotMatch(
-    `${form}\n${boundaryEditor}`,
+    `${form}\n${boundaryEditor}\n${matchRequestBuilder}`,
     /\b(?:localStorage|sessionStorage|indexedDB)\b/,
     "raw intake must not be persisted in browser storage",
   );
   assert.doesNotMatch(
-    boundaryEditor,
-    /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|Worker|SharedWorker|BroadcastChannel|useEffect|useState|navigator|window|document|globalThis|location|history|postMessage|Image|console)\b|\/api\//,
-    "the boundary editor must remain controlled, presentational, and sink-free",
+    `${boundaryEditor}\n${matchRequestBuilder}`,
+    /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|Worker|SharedWorker|BroadcastChannel|useEffect|useState|navigator|window|document|globalThis|location|history|postMessage|Image|console|eval|Function|createElement)\b|\/api\//,
+    "story-limit presentation and request projection must remain sink-free",
   );
-  const editorSourceFile = ts.createSourceFile(
+  const editorModules = inspectModuleSurface(
+    boundaryEditor,
     "components/StoryBoundaryEditor.tsx",
-    boundaryEditor,
-    ts.ScriptTarget.Latest,
-    true,
-    ts.ScriptKind.TSX,
   );
-  const editorImports: string[] = [];
-  const forbiddenModuleLoads: string[] = [];
-  const visitEditor = (node: ts.Node): void => {
-    if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
-      if (node.moduleSpecifier) {
-        if (ts.isStringLiteral(node.moduleSpecifier)) {
-          editorImports.push(node.moduleSpecifier.text);
-        } else {
-          forbiddenModuleLoads.push("non-literal static module specifier");
-        }
-      }
-    }
-    if (ts.isImportEqualsDeclaration(node)) {
-      forbiddenModuleLoads.push("TypeScript import-equals");
-    }
-    if (
-      ts.isCallExpression(node) &&
-      node.expression.kind === ts.SyntaxKind.ImportKeyword
-    ) {
-      forbiddenModuleLoads.push("dynamic import()");
-    }
-    if (
-      ts.isCallExpression(node) &&
-      ts.isIdentifier(node.expression) &&
-      node.expression.text === "require"
-    ) {
-      forbiddenModuleLoads.push("CommonJS require()");
-    }
-    ts.forEachChild(node, visitEditor);
-  };
-  visitEditor(editorSourceFile);
   assert.deepEqual(
-    forbiddenModuleLoads,
+    editorModules.forbiddenLoads,
     [],
     "the boundary editor must not load modules outside auditable static imports",
   );
   assert.deepEqual(
-    editorImports.sort(),
-    ["@/lib/story-boundaries", "@/lib/story-spec-types", "react"].sort(),
+    sortModuleImports(editorModules.imports),
+    sortModuleImports([
+      { moduleSpecifier: "@/lib/story-boundaries", typeOnly: false },
+      { moduleSpecifier: "@/lib/story-spec-types", typeOnly: true },
+      { moduleSpecifier: "react", typeOnly: false },
+    ]),
     "the boundary editor import surface must remain closed to React and reviewed catalogs",
+  );
+  const editorJsx = inspectJsxSurface(
+    boundaryEditor,
+    "components/StoryBoundaryEditor.tsx",
+  );
+  assert.deepEqual(editorJsx.forbiddenSyntax, []);
+  assert.deepEqual(editorJsx.tags, [
+    "div",
+    "fieldset",
+    "input",
+    "label",
+    "legend",
+    "span",
+  ]);
+  assert.deepEqual(editorJsx.attributes, [
+    "aria-controls",
+    "aria-describedby",
+    "aria-expanded",
+    "aria-labelledby",
+    "checked",
+    "className",
+    "disabled",
+    "htmlFor",
+    "id",
+    "key",
+    "name",
+    "onChange",
+    "ref",
+    "tabIndex",
+    "type",
+    "value",
+  ]);
+
+  const requestModules = inspectModuleSurface(
+    matchRequestBuilder,
+    "lib/intake-match-request.ts",
+  );
+  assert.deepEqual(
+    requestModules.forbiddenLoads,
+    [],
+    "the request builder must not use dynamic or CommonJS module loading",
+  );
+  assert.deepEqual(
+    sortModuleImports(requestModules.imports),
+    sortModuleImports([
+      { moduleSpecifier: "./match-recovery", typeOnly: true },
+      { moduleSpecifier: "./story-boundaries", typeOnly: true },
+    ]),
+    "the sensitive request builder may depend only on erased domain types",
+  );
+  assert.deepEqual(
+    runtimeInvocations(
+      matchRequestBuilder,
+      "lib/intake-match-request.ts",
+    ),
+    [],
+    "the request builder must stay a pure projection with no runtime calls",
   );
 
   const bodyStart = form.indexOf("const body = JSON.stringify");
@@ -868,6 +896,151 @@ function openingButtonBeforeText(contents: string, text: string): string {
   const tagEnd = contents.indexOf(">", tagStart);
   assert(tagStart >= 0 && tagEnd >= 0 && tagEnd < textIndex);
   return contents.slice(tagStart, tagEnd + 1);
+}
+
+type StaticModuleImport = Readonly<{
+  moduleSpecifier: string;
+  typeOnly: boolean;
+}>;
+
+function inspectModuleSurface(
+  contents: string,
+  relativePath: string,
+): Readonly<{
+  imports: StaticModuleImport[];
+  forbiddenLoads: string[];
+}> {
+  const sourceFile = parsedSource(contents, relativePath);
+  const imports: StaticModuleImport[] = [];
+  const forbiddenLoads: string[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isImportDeclaration(node) && node.moduleSpecifier) {
+      if (ts.isStringLiteral(node.moduleSpecifier)) {
+        imports.push({
+          moduleSpecifier: node.moduleSpecifier.text,
+          typeOnly: importDeclarationIsTypeOnly(node),
+        });
+      } else {
+        forbiddenLoads.push("non-literal import declaration");
+      }
+    }
+    if (ts.isExportDeclaration(node) && node.moduleSpecifier) {
+      if (ts.isStringLiteral(node.moduleSpecifier)) {
+        imports.push({
+          moduleSpecifier: node.moduleSpecifier.text,
+          typeOnly: node.isTypeOnly,
+        });
+      } else {
+        forbiddenLoads.push("non-literal export declaration");
+      }
+    }
+    if (ts.isImportEqualsDeclaration(node)) {
+      forbiddenLoads.push("TypeScript import-equals");
+    }
+    if (
+      ts.isCallExpression(node) &&
+      node.expression.kind === ts.SyntaxKind.ImportKeyword
+    ) {
+      forbiddenLoads.push("dynamic import()");
+    }
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === "require"
+    ) {
+      forbiddenLoads.push("CommonJS require()");
+    }
+    if (
+      ts.isMetaProperty(node) &&
+      node.keywordToken === ts.SyntaxKind.ImportKeyword
+    ) {
+      forbiddenLoads.push("import.meta");
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return { imports, forbiddenLoads };
+}
+
+function importDeclarationIsTypeOnly(node: ts.ImportDeclaration): boolean {
+  const clause = node.importClause;
+  if (!clause) return false;
+  if (clause.isTypeOnly) return true;
+  if (clause.name || !clause.namedBindings) return false;
+  return (
+    ts.isNamedImports(clause.namedBindings) &&
+    clause.namedBindings.elements.length > 0 &&
+    clause.namedBindings.elements.every((element) => element.isTypeOnly)
+  );
+}
+
+function sortModuleImports(
+  imports: ReadonlyArray<StaticModuleImport>,
+): StaticModuleImport[] {
+  return [...imports].sort((left, right) =>
+    left.moduleSpecifier.localeCompare(right.moduleSpecifier),
+  );
+}
+
+function inspectJsxSurface(
+  contents: string,
+  relativePath: string,
+): Readonly<{
+  tags: string[];
+  attributes: string[];
+  forbiddenSyntax: string[];
+}> {
+  const sourceFile = parsedSource(contents, relativePath);
+  const tags = new Set<string>();
+  const attributes = new Set<string>();
+  const forbiddenSyntax: string[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+      tags.add(node.tagName.getText(sourceFile));
+      for (const property of node.attributes.properties) {
+        if (ts.isJsxSpreadAttribute(property)) {
+          forbiddenSyntax.push("JSX spread attribute");
+        } else {
+          attributes.add(property.name.getText(sourceFile));
+        }
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return {
+    tags: [...tags].sort(),
+    attributes: [...attributes].sort(),
+    forbiddenSyntax,
+  };
+}
+
+function runtimeInvocations(
+  contents: string,
+  relativePath: string,
+): string[] {
+  const sourceFile = parsedSource(contents, relativePath);
+  const invocations: string[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isCallExpression(node)) invocations.push("call expression");
+    if (ts.isNewExpression(node)) invocations.push("new expression");
+    if (ts.isTaggedTemplateExpression(node)) {
+      invocations.push("tagged template expression");
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return invocations;
+}
+
+function parsedSource(contents: string, relativePath: string): ts.SourceFile {
+  return ts.createSourceFile(
+    relativePath,
+    contents,
+    ts.ScriptTarget.Latest,
+    true,
+    relativePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  );
 }
 
 function source(relativePath: string): string {

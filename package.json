@@ -65,7 +65,9 @@
     "story-spec:status": "tsx scripts/set-story-spec-status.ts",
     "seed-embeddings": "tsx scripts/seed-embeddings.ts",
     "check-db": "tsx scripts/check-db.ts",
-    "check-embeddings": "tsx scripts/check-embeddings.ts"
+    "check-embeddings": "tsx scripts/check-embeddings.ts",
+    "audit:high": "npm audit --audit-level=high",
+    "check-sharp-runtime": "node scripts/check-sharp-runtime.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.7.0",

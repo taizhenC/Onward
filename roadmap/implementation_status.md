@@ -1021,14 +1021,17 @@ registered under the existing Owner Story lifecycle.
 
 | Command or review | Result |
 |---|---|
-| `npm run check-story-spec` | Pass; exact publication contract, catalog preflight, marker, and closed-health outputs |
-| `npm run check-story-spec-migration` | Pass; promotion/retirement, one-way marker, hostile catalog/role/relation shapes, and atomic rollback execute in embedded PostgreSQL |
+| `npm run check-story-spec` | Pass; exact 10/13-column, 6/4-constraint, and 4/1-index publication catalogs, server-native probes, aggregate manifests, marker, and closed-health outputs |
+| `npm run check-story-spec-migration` | Pass; promotion/retirement, one-way marker, hostile catalog/role/relation shapes, fast-default stale values, executable constraint/index hooks, and atomic rollback execute in embedded PostgreSQL |
 | `npm run check-source-transparency` | Pass; strict current replay, marked legacy mixed-v5 replay, actual afterword labels, and owner-scoped concern submission |
 | `npm run check-story-artifact` | Pass; complete artifact, disclosure-exclusion, tamper, and immutable persistence gates |
 | `npm run check-derived-output-retention` | Pass; 7 classes, 20 surfaces, 5 provider exchanges, 23 application tables, and 35 sensitive columns |
 | `npm run lint` / `npm run typecheck` | Pass; zero lint warnings and no type errors |
 | `npm run smoke` | Pass; all 20 application regressions |
 | `NEXT_DIST_DIR=.next-ci PERSISTENCE=memory ONWARD_ALLOW_MEMORY_IN_PRODUCTION=true LLM_PROVIDER=stub EMBEDDING_PROVIDER=stub RETRIEVAL_MODE=keyword npm run build` | Pass; optimized production build generated all 23 app surfaces |
+| Recipe, prompt, and protected story-quality immutability checks against `3296a6b` | Pass; the stacked slice does not mutate protected release evidence |
+| Every command in `CI / verify` | Pass in the exact workflow environment |
+| Independent catalog, replay, standards, and release-evidence reviews | All P0/P1 findings resolved; final adversarial catalog audit found no remaining actionable issue |
 
 The configured database was queried through the read-only
 `check-story-spec-cutover` gate, but PostgREST did not expose `story_specs`; the

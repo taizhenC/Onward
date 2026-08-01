@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import ts from "typescript";
 
 import {
   INTAKE_MAX_FEELING_LENGTH,
@@ -25,6 +26,12 @@ import {
   INITIAL_MATCH_REQUEST_PRIVACY,
   matchRequestMayHaveCreatedStory,
 } from "../lib/intake-request-privacy";
+import { buildIntakeMatchRequest } from "../lib/intake-match-request";
+import {
+  selectedStoryBoundaries,
+  type StoryBoundaryEditorValue,
+  updateStoryBoundaryEditorValue,
+} from "../components/StoryBoundaryEditor";
 
 const VALID_FEELING =
   "I keep meeting closed doors and I am unsure what to try next.";
@@ -34,6 +41,7 @@ const PRIVATE_CANARY =
 function main(): void {
   checkGuidanceContract();
   checkValidationContract();
+  checkBoundaryRequestContract();
   checkSubmissionCopyContract();
   checkRequestPrivacyStateMachine();
   checkAccessibleComponentWiring();
@@ -45,6 +53,7 @@ function main(): void {
   console.log("==========================================");
   console.log("PASS guidance asks for useful context without adding diagnostic inputs");
   console.log("PASS exact age and disclosure boundaries produce focused inline errors");
+  console.log("PASS story limits project to one exact optional request shape");
   console.log("PASS submission copy describes only observable client transitions");
   console.log("PASS response-loss uncertainty survives later retries and confirmations");
   console.log("PASS the intake form wires descriptions, errors, focus, and a polite live status");
@@ -191,6 +200,107 @@ function checkValidationContract(): void {
   );
 }
 
+function checkBoundaryRequestContract(): void {
+  const hiddenDraft: StoryBoundaryEditorValue = {
+    enabled: false,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+  };
+  Object.freeze(hiddenDraft.boundaries.excludedFlags);
+  Object.freeze(hiddenDraft.boundaries);
+  Object.freeze(hiddenDraft);
+
+  const hiddenSelection = selectedStoryBoundaries(hiddenDraft);
+  assert.equal(
+    hiddenSelection,
+    undefined,
+    "a disabled editor must not project its retained draft",
+  );
+  const baseRequest = buildIntakeMatchRequest({
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: hiddenSelection,
+    clarification: null,
+    acceptAdjacent: false,
+    recoveryToken: null,
+  });
+  assert.deepEqual(
+    baseRequest,
+    { age: 28, feeling: VALID_FEELING },
+    "an initial request must omit every inactive optional field",
+  );
+  const serializedBaseRequest = JSON.stringify(baseRequest);
+  for (const hiddenCanary of [
+    "boundaries",
+    "maxIntensity",
+    "excludedFlags",
+    "gentle",
+    "addiction",
+  ]) {
+    assert(
+      !serializedBaseRequest.includes(hiddenCanary),
+      `an inactive story limit leaked ${hiddenCanary} into the request`,
+    );
+  }
+
+  const enabledDraft = updateStoryBoundaryEditorValue(hiddenDraft, {
+    type: "set_enabled",
+    enabled: true,
+  });
+  const enabledSelection = selectedStoryBoundaries(enabledDraft);
+  assert(enabledSelection, "a re-enabled editor must project its restored draft");
+  const boundaryRequest = buildIntakeMatchRequest({
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: enabledSelection,
+    clarification: null,
+    acceptAdjacent: false,
+    recoveryToken: null,
+  });
+  assert.deepEqual(boundaryRequest, {
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+  });
+  assert.notEqual(
+    boundaryRequest.boundaries?.excludedFlags,
+    enabledDraft.boundaries.excludedFlags,
+    "the request builder must isolate its boundary array from editor state",
+  );
+
+  const recoveryRequest = buildIntakeMatchRequest({
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: enabledSelection,
+    clarification: "uncertainty",
+    acceptAdjacent: true,
+    recoveryToken: "recovery-token-canary",
+  });
+  assert.deepEqual(recoveryRequest, {
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+    clarification: "uncertainty",
+    acceptAdjacent: true,
+    recoveryToken: "recovery-token-canary",
+  });
+  assert.deepEqual(hiddenDraft, {
+    enabled: false,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+  });
+}
+
 function checkSubmissionCopyContract(): void {
   const states = INTAKE_SUBMISSION_COPY;
   assert(Object.isFrozen(states), "submission copy catalog must be immutable");
@@ -329,14 +439,49 @@ function checkAccessibleComponentWiring(): void {
   assert.match(boundaryEditor, /const id = useId\(\)/);
   assert.match(boundaryEditor, /<fieldset[\s\S]{0,180}disabled=\{disabled\}/);
   assert.match(boundaryEditor, /aria-expanded=\{value\.enabled\}/);
+  assert.match(boundaryEditor, /aria-labelledby=/);
   assert.match(boundaryEditor, /STORY_INTENSITIES\.map/);
   assert.match(boundaryEditor, /BOUNDARY_TOPICS\.map/);
   assert.doesNotMatch(boundaryEditor, /\.(?:preventDefault|stopPropagation)\(/);
   assert.equal(
-    (boundaryEditor.match(/\bonChange\(\{/g) ?? []).length,
+    (
+      boundaryEditor.match(
+        /\bonChange\(\s*updateStoryBoundaryEditorValue/g,
+      ) ?? []
+    ).length,
     3,
     "each editor interaction path must emit one controlled value",
   );
+  const toggleStart = boundaryEditor.indexOf(
+    '<label htmlFor={`${id}-toggle`}',
+  );
+  const intensityStart = boundaryEditor.indexOf("STORY_INTENSITIES.map");
+  const topicStart = boundaryEditor.indexOf("BOUNDARY_TOPICS.map");
+  assert(
+    toggleStart >= 0 && intensityStart > toggleStart && topicStart > intensityStart,
+    "boundary editor action regions must remain auditable",
+  );
+  const toggleRegion = boundaryEditor.slice(toggleStart, intensityStart);
+  const intensityRegion = boundaryEditor.slice(intensityStart, topicStart);
+  const topicRegion = boundaryEditor.slice(topicStart);
+  assert.match(
+    toggleRegion,
+    /type="checkbox"[\s\S]*type:\s*"set_enabled"[\s\S]*enabled:\s*event\.target\.checked/,
+    "the disclosure toggle must emit only its checked enabled state",
+  );
+  assert.doesNotMatch(toggleRegion, /type:\s*"(?:set_intensity|toggle_topic)"/);
+  assert.match(
+    intensityRegion,
+    /type="radio"[\s\S]*type:\s*"set_intensity"[\s\S]*maxIntensity:\s*intensity/,
+    "each intensity radio must emit its catalog intensity",
+  );
+  assert.doesNotMatch(intensityRegion, /type:\s*"(?:set_enabled|toggle_topic)"/);
+  assert.match(
+    topicRegion,
+    /type="checkbox"[\s\S]*type:\s*"toggle_topic"[\s\S]*flag:\s*topic\.flag/,
+    "each topic checkbox must emit its catalog flag",
+  );
+  assert.doesNotMatch(topicRegion, /type:\s*"(?:set_enabled|set_intensity)"/);
 
   const submitTag = openingTagContaining(form, 'type="submit"');
   assert(
@@ -461,8 +606,56 @@ function checkPrivacyBoundary(): void {
   );
   assert.doesNotMatch(
     boundaryEditor,
-    /\b(?:fetch|XMLHttpRequest|sendBeacon|useEffect|useState)\b|\/api\/|document\.cookie|@\/lib\/(?:db|supabase|telemetry)/,
+    /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|Worker|SharedWorker|BroadcastChannel|useEffect|useState|navigator|window|document|globalThis|location|history|postMessage|Image|console)\b|\/api\//,
     "the boundary editor must remain controlled, presentational, and sink-free",
+  );
+  const editorSourceFile = ts.createSourceFile(
+    "components/StoryBoundaryEditor.tsx",
+    boundaryEditor,
+    ts.ScriptTarget.Latest,
+    true,
+    ts.ScriptKind.TSX,
+  );
+  const editorImports: string[] = [];
+  const forbiddenModuleLoads: string[] = [];
+  const visitEditor = (node: ts.Node): void => {
+    if (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) {
+      if (node.moduleSpecifier) {
+        if (ts.isStringLiteral(node.moduleSpecifier)) {
+          editorImports.push(node.moduleSpecifier.text);
+        } else {
+          forbiddenModuleLoads.push("non-literal static module specifier");
+        }
+      }
+    }
+    if (ts.isImportEqualsDeclaration(node)) {
+      forbiddenModuleLoads.push("TypeScript import-equals");
+    }
+    if (
+      ts.isCallExpression(node) &&
+      node.expression.kind === ts.SyntaxKind.ImportKeyword
+    ) {
+      forbiddenModuleLoads.push("dynamic import()");
+    }
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === "require"
+    ) {
+      forbiddenModuleLoads.push("CommonJS require()");
+    }
+    ts.forEachChild(node, visitEditor);
+  };
+  visitEditor(editorSourceFile);
+  assert.deepEqual(
+    forbiddenModuleLoads,
+    [],
+    "the boundary editor must not load modules outside auditable static imports",
+  );
+  assert.deepEqual(
+    editorImports.sort(),
+    ["@/lib/story-boundaries", "@/lib/story-spec-types", "react"].sort(),
+    "the boundary editor import surface must remain closed to React and reviewed catalogs",
   );
 
   const bodyStart = form.indexOf("const body = JSON.stringify");
@@ -471,13 +664,13 @@ function checkPrivacyBoundary(): void {
   const requestBody = form.slice(bodyStart, postStart);
   assert.match(
     requestBody,
-    /storyBoundaryEditorValue\.enabled[\s\S]{0,120}\{ boundaries: storyBoundaryEditorValue\.boundaries \}[\s\S]{0,80}: \{\}/,
-    "disabled story limits must be omitted while enabled limits keep the exact nested shape",
+    /buildIntakeMatchRequest\([\s\S]{0,180}boundaries:\s*selectedStoryBoundaries\(storyBoundaryEditorValue\)/,
+    "match requests must project limits through the exact controlled-value seam",
   );
-  assert.doesNotMatch(
-    requestBody,
-    /\bboundaryEnabled\b|\bmaxIntensity\b|\bexcludedFlags\b/,
-    "boundary editor implementation fields must not leak into the match request",
+  assert.equal(
+    (requestBody.match(/storyBoundaryEditorValue/g) ?? []).length,
+    1,
+    "the match request must reference the editor value only through its bounded projection",
   );
   for (const forbidden of [
     "INTAKE_WRITING_PROMPTS",

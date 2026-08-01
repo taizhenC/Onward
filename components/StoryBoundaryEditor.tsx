@@ -33,6 +33,57 @@ export type StoryBoundaryEditorValue = Readonly<{
   boundaries: StoryBoundaries;
 }>;
 
+export type StoryBoundaryEditorAction =
+  | Readonly<{ type: "set_enabled"; enabled: boolean }>
+  | Readonly<{ type: "set_intensity"; maxIntensity: StoryIntensity }>
+  | Readonly<{ type: "toggle_topic"; flag: ContentFlag }>;
+
+export function updateStoryBoundaryEditorValue(
+  value: StoryBoundaryEditorValue,
+  action: StoryBoundaryEditorAction,
+): StoryBoundaryEditorValue {
+  if (action.type === "set_enabled") {
+    return {
+      enabled: action.enabled,
+      boundaries: cloneStoryBoundaries(value.boundaries),
+    };
+  }
+  if (action.type === "set_intensity") {
+    return {
+      enabled: value.enabled,
+      boundaries: {
+        maxIntensity: action.maxIntensity,
+        excludedFlags: [...value.boundaries.excludedFlags],
+      },
+    };
+  }
+  const excludedFlags = value.boundaries.excludedFlags.includes(action.flag)
+    ? value.boundaries.excludedFlags.filter(
+        (candidate) => candidate !== action.flag,
+      )
+    : [...value.boundaries.excludedFlags, action.flag];
+  return {
+    enabled: value.enabled,
+    boundaries: {
+      maxIntensity: value.boundaries.maxIntensity,
+      excludedFlags,
+    },
+  };
+}
+
+export function selectedStoryBoundaries(
+  value: StoryBoundaryEditorValue,
+): StoryBoundaries | undefined {
+  return value.enabled ? cloneStoryBoundaries(value.boundaries) : undefined;
+}
+
+function cloneStoryBoundaries(boundaries: StoryBoundaries): StoryBoundaries {
+  return {
+    maxIntensity: boundaries.maxIntensity,
+    excludedFlags: [...boundaries.excludedFlags],
+  };
+}
+
 type StoryBoundaryEditorProps = Readonly<{
   value: StoryBoundaryEditorValue;
   onChange: (next: StoryBoundaryEditorValue) => void;
@@ -45,41 +96,9 @@ export const StoryBoundaryEditor = forwardRef<
 >(function StoryBoundaryEditor({ value, onChange, disabled = false }, ref) {
   const id = useId();
   const optionsId = `${id}-options`;
+  const toggleLabelId = `${id}-toggle-label`;
   const toggleDescriptionId = `${id}-toggle-description`;
   const radioName = `${id}-intensity`;
-
-  function setEnabled(enabled: boolean) {
-    onChange({
-      enabled,
-      boundaries: {
-        maxIntensity: value.boundaries.maxIntensity,
-        excludedFlags: [...value.boundaries.excludedFlags],
-      },
-    });
-  }
-
-  function setIntensity(maxIntensity: StoryIntensity) {
-    onChange({
-      enabled: value.enabled,
-      boundaries: {
-        maxIntensity,
-        excludedFlags: [...value.boundaries.excludedFlags],
-      },
-    });
-  }
-
-  function toggleExcludedFlag(flag: ContentFlag) {
-    const excludedFlags = value.boundaries.excludedFlags.includes(flag)
-      ? value.boundaries.excludedFlags.filter((candidate) => candidate !== flag)
-      : [...value.boundaries.excludedFlags, flag];
-    onChange({
-      enabled: value.enabled,
-      boundaries: {
-        maxIntensity: value.boundaries.maxIntensity,
-        excludedFlags,
-      },
-    });
-  }
 
   return (
     <fieldset
@@ -97,14 +116,25 @@ export const StoryBoundaryEditor = forwardRef<
           id={`${id}-toggle`}
           type="checkbox"
           checked={value.enabled}
-          onChange={(event) => setEnabled(event.target.checked)}
+          onChange={(event) =>
+            onChange(
+              updateStoryBoundaryEditorValue(value, {
+                type: "set_enabled",
+                enabled: event.target.checked,
+              }),
+            )
+          }
           aria-expanded={value.enabled}
           aria-controls={value.enabled ? optionsId : undefined}
+          aria-labelledby={toggleLabelId}
           aria-describedby={toggleDescriptionId}
           className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
         />
         <span>
-          <span className="block font-ui text-sm font-medium">
+          <span
+            id={toggleLabelId}
+            className="block font-ui text-sm font-medium"
+          >
             Set limits for this story
           </span>
           <span
@@ -129,6 +159,7 @@ export const StoryBoundaryEditor = forwardRef<
             {STORY_INTENSITIES.map((intensity) => {
               const presentation = INTENSITY_PRESENTATION[intensity];
               const inputId = `${id}-intensity-${intensity}`;
+              const labelId = `${inputId}-label`;
               const descriptionId = `${inputId}-description`;
               return (
                 <label
@@ -142,12 +173,23 @@ export const StoryBoundaryEditor = forwardRef<
                     name={radioName}
                     value={intensity}
                     checked={value.boundaries.maxIntensity === intensity}
-                    onChange={() => setIntensity(intensity)}
+                    onChange={() =>
+                      onChange(
+                        updateStoryBoundaryEditorValue(value, {
+                          type: "set_intensity",
+                          maxIntensity: intensity,
+                        }),
+                      )
+                    }
+                    aria-labelledby={labelId}
                     aria-describedby={descriptionId}
                     className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
                   />
                   <span>
-                    <span className="block font-ui text-sm font-medium">
+                    <span
+                      id={labelId}
+                      className="block font-ui text-sm font-medium"
+                    >
                       {presentation.label}
                     </span>
                     <span
@@ -169,6 +211,7 @@ export const StoryBoundaryEditor = forwardRef<
             <div className="grid gap-3 sm:grid-cols-2">
               {BOUNDARY_TOPICS.map((topic) => {
                 const inputId = `${id}-topic-${topic.flag}`;
+                const labelId = `${inputId}-label`;
                 const descriptionId = `${inputId}-description`;
                 return (
                   <label
@@ -182,12 +225,23 @@ export const StoryBoundaryEditor = forwardRef<
                       checked={value.boundaries.excludedFlags.includes(
                         topic.flag,
                       )}
-                      onChange={() => toggleExcludedFlag(topic.flag)}
+                      onChange={() =>
+                        onChange(
+                          updateStoryBoundaryEditorValue(value, {
+                            type: "toggle_topic",
+                            flag: topic.flag,
+                          }),
+                        )
+                      }
+                      aria-labelledby={labelId}
                       aria-describedby={descriptionId}
                       className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
                     />
                     <span>
-                      <span className="block font-ui text-sm font-medium">
+                      <span
+                        id={labelId}
+                        className="block font-ui text-sm font-medium"
+                      >
                         {topic.label}
                       </span>
                       <span

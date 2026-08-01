@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { CrisisCard } from "./CrisisCard";
 import {
+  selectedStoryBoundaries,
   StoryBoundaryEditor,
   type StoryBoundaryEditorValue,
 } from "./StoryBoundaryEditor";
@@ -23,6 +24,7 @@ import {
   normalizeIntakeFeeling,
 } from "@/lib/intake-constraints";
 import { containsCrisisLanguage } from "@/lib/crisis-language";
+import { buildIntakeMatchRequest } from "@/lib/intake-match-request";
 import {
   INTAKE_FICTIONAL_EXAMPLE,
   INTAKE_SUBMISSION_COPY,
@@ -268,16 +270,16 @@ export function IntakeForm({
     setFlowConflict(false);
 
     let response: Response;
-    const body = JSON.stringify({
-      age: ageNum,
-      feeling,
-      ...(storyBoundaryEditorValue.enabled
-        ? { boundaries: storyBoundaryEditorValue.boundaries }
-        : {}),
-      ...(clarification ? { clarification } : {}),
-      ...(acceptAdjacent ? { acceptAdjacent: true } : {}),
-      ...(recoveryToken ? { recoveryToken } : {}),
-    });
+    const body = JSON.stringify(
+      buildIntakeMatchRequest({
+        age: ageNum,
+        feeling,
+        boundaries: selectedStoryBoundaries(storyBoundaryEditorValue),
+        clarification,
+        acceptAdjacent,
+        recoveryToken,
+      }),
+    );
     const postMatch = () => {
       const headers: Record<string, string> = {
         "content-type": "application/json",

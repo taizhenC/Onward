@@ -2,8 +2,10 @@ import "./_smoke-bootstrap";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import {
+  selectedStoryBoundaries,
   StoryBoundaryEditor,
   type StoryBoundaryEditorValue,
+  updateStoryBoundaryEditorValue,
 } from "../components/StoryBoundaryEditor";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import {
@@ -109,6 +111,7 @@ function checkParsing(failures: string[]): void {
 }
 
 function checkEditorPresentation(failures: string[]): void {
+  checkEditorTransitions(failures);
   const hiddenDraft: StoryBoundaryEditorValue = {
     enabled: false,
     boundaries: {
@@ -122,6 +125,9 @@ function checkEditorPresentation(failures: string[]): void {
   }
   if (/type="radio"|Topics to leave out/.test(hidden)) {
     failures.push("disabled boundary selection exposed its retained draft controls");
+  }
+  if (/gentle|addiction|maxIntensity|excludedFlags/.test(hidden)) {
+    failures.push("disabled boundary selection serialized its hidden draft");
   }
   if (!/aria-expanded="false"/.test(hidden)) {
     failures.push("disabled boundary selection did not announce its collapsed state");
@@ -160,17 +166,45 @@ function checkEditorPresentation(failures: string[]): void {
   if (ids.length !== idSet.size) {
     failures.push("boundary editor rendered duplicate control or description IDs");
   }
-  for (const match of enabled.matchAll(/\sfor="([^"]+)"/g)) {
-    if (!idSet.has(match[1])) {
-      failures.push(`boundary editor label targets missing ID ${match[1]}`);
+  const inputIds = new Set(
+    [...enabled.matchAll(/<input[^>]*\sid="([^"]+)"/g)].map((match) => match[1]),
+  );
+  const spanIds = new Set(
+    [...enabled.matchAll(/<span[^>]*\sid="([^"]+)"/g)].map((match) => match[1]),
+  );
+  const labelTargets = [...enabled.matchAll(/\sfor="([^"]+)"/g)].map(
+    (match) => match[1],
+  );
+  const namedTargets = [...enabled.matchAll(/aria-labelledby="([^"]+)"/g)].map(
+    (match) => match[1],
+  );
+  const describedTargets = [
+    ...enabled.matchAll(/aria-describedby="([^"]+)"/g),
+  ].flatMap((match) => match[1].split(/\s+/));
+  if (
+    labelTargets.length !== 12 ||
+    namedTargets.length !== 12 ||
+    describedTargets.length !== 12
+  ) {
+    failures.push("boundary editor does not expose exactly 12 label/description pairs");
+  }
+  for (const target of labelTargets) {
+    if (!inputIds.has(target)) {
+      failures.push(`boundary editor label targets non-input ID ${target}`);
     }
   }
-  for (const match of enabled.matchAll(/aria-describedby="([^"]+)"/g)) {
-    for (const describedId of match[1].split(/\s+/)) {
-      if (!idSet.has(describedId)) {
-        failures.push(`boundary editor description targets missing ID ${describedId}`);
-      }
+  for (const target of namedTargets) {
+    if (!spanIds.has(target) || !target.endsWith("-label")) {
+      failures.push(`boundary editor accessible name targets invalid ID ${target}`);
     }
+  }
+  for (const target of describedTargets) {
+    if (!spanIds.has(target) || !target.endsWith("-description")) {
+      failures.push(`boundary editor description targets invalid ID ${target}`);
+    }
+  }
+  if (namedTargets.some((target) => describedTargets.includes(target))) {
+    failures.push("boundary editor reused one node as both name and description");
   }
   const controlledId = enabled.match(/aria-controls="([^"]+)"/)?.[1];
   if (!controlledId || !idSet.has(controlledId)) {
@@ -202,6 +236,118 @@ function checkEditorPresentation(failures: string[]): void {
   const uniqueRadioNames = new Set(radioNames);
   if (radioNames.length !== 6 || uniqueRadioNames.size !== 2) {
     failures.push("two boundary editors did not receive independent radio groups");
+  }
+}
+
+function checkEditorTransitions(failures: string[]): void {
+  const original: StoryBoundaryEditorValue = {
+    enabled: true,
+    boundaries: {
+      maxIntensity: "moderate",
+      excludedFlags: ["addiction", "serious_illness"],
+    },
+  };
+  Object.freeze(original.boundaries.excludedFlags);
+  Object.freeze(original.boundaries);
+  Object.freeze(original);
+
+  const disabled = updateStoryBoundaryEditorValue(original, {
+    type: "set_enabled",
+    enabled: false,
+  });
+  if (
+    disabled.enabled ||
+    disabled.boundaries.maxIntensity !== "moderate" ||
+    disabled.boundaries.excludedFlags.join(",") !==
+      "addiction,serious_illness" ||
+    disabled === original ||
+    disabled.boundaries === original.boundaries ||
+    disabled.boundaries.excludedFlags === original.boundaries.excludedFlags
+  ) {
+    failures.push("disabling the editor did not retain and clone its hidden draft");
+  }
+  if (selectedStoryBoundaries(disabled) !== undefined) {
+    failures.push("disabled editor projected an explicit boundary request");
+  }
+
+  const restored = updateStoryBoundaryEditorValue(disabled, {
+    type: "set_enabled",
+    enabled: true,
+  });
+  const restoredSelection = selectedStoryBoundaries(restored);
+  if (
+    !restoredSelection ||
+    restoredSelection.maxIntensity !== "moderate" ||
+    restoredSelection.excludedFlags.join(",") !==
+      "addiction,serious_illness" ||
+    restoredSelection.excludedFlags === restored.boundaries.excludedFlags
+  ) {
+    failures.push("re-enabled editor did not restore an isolated boundary selection");
+  }
+
+  for (const maxIntensity of ["gentle", "moderate", "direct"] as const) {
+    const changed = updateStoryBoundaryEditorValue(original, {
+      type: "set_intensity",
+      maxIntensity,
+    });
+    if (
+      !changed.enabled ||
+      changed.boundaries.maxIntensity !== maxIntensity ||
+      changed.boundaries.excludedFlags.join(",") !==
+        "addiction,serious_illness" ||
+      changed === original ||
+      changed.boundaries === original.boundaries ||
+      changed.boundaries.excludedFlags === original.boundaries.excludedFlags
+    ) {
+      failures.push(
+        `changing to ${maxIntensity} did not preserve enabled state in a fresh value`,
+      );
+    }
+  }
+
+  let topicValue: StoryBoundaryEditorValue = {
+    enabled: true,
+    boundaries: { maxIntensity: "direct", excludedFlags: [] },
+  };
+  for (const flag of CONTENT_FLAGS) {
+    const priorTopicValue = topicValue;
+    const nextTopicValue = updateStoryBoundaryEditorValue(priorTopicValue, {
+      type: "toggle_topic",
+      flag,
+    });
+    if (
+      !nextTopicValue.enabled ||
+      nextTopicValue.boundaries.maxIntensity !== "direct" ||
+      nextTopicValue === priorTopicValue ||
+      nextTopicValue.boundaries === priorTopicValue.boundaries ||
+      nextTopicValue.boundaries.excludedFlags ===
+        priorTopicValue.boundaries.excludedFlags
+    ) {
+      failures.push(`adding ${flag} did not preserve state in a fresh value`);
+    }
+    topicValue = nextTopicValue;
+  }
+  if (topicValue.boundaries.excludedFlags.join(",") !== CONTENT_FLAGS.join(",")) {
+    failures.push("topic toggles did not append the closed flags in reviewed order");
+  }
+  const withoutFirst = updateStoryBoundaryEditorValue(topicValue, {
+    type: "toggle_topic",
+    flag: CONTENT_FLAGS[0],
+  });
+  if (
+    !withoutFirst.enabled ||
+    withoutFirst.boundaries.maxIntensity !== "direct" ||
+    withoutFirst.boundaries.excludedFlags.join(",") !==
+      CONTENT_FLAGS.slice(1).join(",") ||
+    new Set(withoutFirst.boundaries.excludedFlags).size !==
+      withoutFirst.boundaries.excludedFlags.length ||
+    withoutFirst === topicValue ||
+    withoutFirst.boundaries === topicValue.boundaries ||
+    withoutFirst.boundaries.excludedFlags === topicValue.boundaries.excludedFlags
+  ) {
+    failures.push(
+      "topic removal changed enabled/intensity/order or reused prior state",
+    );
   }
 }
 

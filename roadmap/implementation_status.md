@@ -1100,14 +1100,16 @@ serialization shape.
 Disabling limits continues to omit `boundaries` entirely while retaining the
 hidden draft selections for re-enable. An enabled `moderate + []` remains an
 explicit boundary choice rather than being collapsed into omission. The editor
-has no network, browser-storage, Supabase, telemetry, or effect seam and does
-not stop native change-event bubbling, so the existing first-interaction event
-and privacy contract remain intact.
+has a closed native-JSX and import surface with no network, browser-storage,
+Supabase, telemetry, or effect seam; the sensitive request builder admits only
+two erased domain-type imports and no runtime calls. The editor does not stop
+native change-event bubbling, so the existing first-interaction event and
+privacy contract remain intact.
 
 | Command or review | Result |
 |---|---|
 | `npm run check-story-boundaries` | Pass; exact closed topic catalog, all 12 input/name/description associations, collapsed draft privacy, immutable enable/intensity/topic transitions, atomic disabled state, and independent radio groups across two rendered editors |
-| `npm run check-intake-experience` | Pass; one controlled editor, forwarded focus, recovery invalidation, exact enabled/omitted and recovery request objects, isolated arrays, and a closed editor import/sink surface |
+| `npm run check-intake-experience` | Pass; one controlled editor, forwarded focus, recovery invalidation, exact enabled/omitted and recovery request objects, isolated arrays, an exact native JSX surface, and closed editor/request-builder import and invocation surfaces |
 | `npm run check-try-another` | Pass; current alternate stories still reuse the exact original stored boundaries |
 | `npm run check-telemetry-lifecycle` / `check-telemetry-producers` | Pass; no boundary choice enters telemetry and intake-start bubbling remains unchanged |
 | `npm run check-resonance-brief` / `check-story-composer` | Pass; current boundary enforcement and artifact privacy are unchanged |

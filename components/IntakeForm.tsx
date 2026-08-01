@@ -5,14 +5,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { CrisisCard } from "./CrisisCard";
+import {
+  StoryBoundaryEditor,
+  type StoryBoundaryEditorValue,
+} from "./StoryBoundaryEditor";
 import { getSupabaseBrowser } from "@/lib/supabase/client";
 import type { CrisisResource } from "@/lib/types";
-import {
-  BOUNDARY_TOPICS,
-  type StoryBoundaries,
-  type StoryIntensity,
-} from "@/lib/story-boundaries";
-import type { ContentFlag } from "@/lib/story-spec-types";
 import {
   MATCH_CLARIFICATION_OPTIONS,
   type MatchClarification,
@@ -130,10 +128,14 @@ export function IntakeForm({
   const [rateLimitRetryMinutes, setRateLimitRetryMinutes] = useState<
     number | null
   >(null);
-  const [boundaryEnabled, setBoundaryEnabled] = useState(false);
-  const [maxIntensity, setMaxIntensity] =
-    useState<StoryIntensity>("moderate");
-  const [excludedFlags, setExcludedFlags] = useState<ContentFlag[]>([]);
+  const [storyBoundaryEditorValue, setStoryBoundaryEditorValue] =
+    useState<StoryBoundaryEditorValue>({
+      enabled: false,
+      boundaries: {
+        maxIntensity: "moderate",
+        excludedFlags: [],
+      },
+    });
   const [noEligibleStory, setNoEligibleStory] = useState(false);
   const [clarificationNeeded, setClarificationNeeded] = useState(false);
   const [clarification, setClarification] =
@@ -269,13 +271,8 @@ export function IntakeForm({
     const body = JSON.stringify({
       age: ageNum,
       feeling,
-      ...(boundaryEnabled
-        ? {
-            boundaries: {
-              maxIntensity,
-              excludedFlags,
-            } satisfies StoryBoundaries,
-          }
+      ...(storyBoundaryEditorValue.enabled
+        ? { boundaries: storyBoundaryEditorValue.boundaries }
         : {}),
       ...(clarification ? { clarification } : {}),
       ...(acceptAdjacent ? { acceptAdjacent: true } : {}),
@@ -495,13 +492,9 @@ export function IntakeForm({
     return true;
   }
 
-  function toggleExcludedFlag(flag: ContentFlag) {
+  function handleBoundaryEditorChange(next: StoryBoundaryEditorValue) {
+    setStoryBoundaryEditorValue(next);
     resetMatchRecovery();
-    setExcludedFlags((current) =>
-      current.includes(flag)
-        ? current.filter((candidate) => candidate !== flag)
-        : [...current, flag],
-    );
   }
 
   function focusBoundaries() {
@@ -718,110 +711,12 @@ export function IntakeForm({
         </p>
       </div>
 
-      <fieldset
+      <StoryBoundaryEditor
         ref={boundaryRef}
-        tabIndex={-1}
+        value={storyBoundaryEditorValue}
+        onChange={handleBoundaryEditorChange}
         disabled={submitting}
-        className="space-y-5 border border-[var(--color-ink-soft)]/35 p-5 focus:outline-2 focus:outline-offset-4 focus:outline-[var(--color-accent)]"
-      >
-        <legend className="px-2 font-ui text-xs font-medium uppercase tracking-widest text-[var(--color-ink-soft)]">
-          Keep this story…
-        </legend>
-
-        <label className="flex items-start gap-3">
-          <input
-            type="checkbox"
-            checked={boundaryEnabled}
-            onChange={(event) => {
-              setBoundaryEnabled(event.target.checked);
-              resetMatchRecovery();
-            }}
-            className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
-          />
-          <span>
-            <span className="block font-ui text-sm font-medium">
-              Set limits for this story
-            </span>
-            <span className="mt-1 block text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              Optional. These limits are used only to choose this story and are
-              not added to it.
-            </span>
-          </span>
-        </label>
-
-        {boundaryEnabled ? (
-          <div className="space-y-6 border-t border-[var(--color-ink-soft)]/20 pt-5">
-            <fieldset className="space-y-3">
-              <legend className="font-ui text-sm font-medium">Level of detail</legend>
-              {[
-                {
-                  value: "gentle" as const,
-                  label: "Gentle",
-                  note: "Keep difficult events at a greater distance.",
-                },
-                {
-                  value: "moderate" as const,
-                  label: "Balanced",
-                  note: "Name difficult events without dwelling on them.",
-                },
-                {
-                  value: "direct" as const,
-                  label: "More direct",
-                  note: "Still non-graphic, with less distance from hard facts.",
-                },
-              ].map((option) => (
-                <label key={option.value} className="flex items-start gap-3">
-                  <input
-                    type="radio"
-                    name="story-intensity"
-                    value={option.value}
-                    checked={maxIntensity === option.value}
-                    onChange={() => {
-                      setMaxIntensity(option.value);
-                      resetMatchRecovery();
-                    }}
-                    className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
-                  />
-                  <span>
-                    <span className="block font-ui text-sm font-medium">
-                      {option.label}
-                    </span>
-                    <span className="block text-sm text-[var(--color-ink-soft)]">
-                      {option.note}
-                    </span>
-                  </span>
-                </label>
-              ))}
-            </fieldset>
-
-            <fieldset className="space-y-3">
-              <legend className="font-ui text-sm font-medium">
-                Topics to leave out
-              </legend>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {BOUNDARY_TOPICS.map((topic) => (
-                  <label key={topic.flag} className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      checked={excludedFlags.includes(topic.flag)}
-                      onChange={() => toggleExcludedFlag(topic.flag)}
-                      className="mt-1 h-4 w-4 accent-[var(--color-accent)]"
-                    />
-                    <span>
-                      <span className="block font-ui text-sm font-medium">
-                        {topic.label}
-                      </span>
-                      <span className="block text-xs leading-relaxed text-[var(--color-ink-soft)]">
-                        {topic.description}
-                      </span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-          </div>
-        ) : null}
-      </fieldset>
+      />
 
       {clarificationNeeded ? (
         <fieldset

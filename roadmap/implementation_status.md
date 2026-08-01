@@ -1057,11 +1057,12 @@ the complete installed tree has no high or critical advisory.
 
 CI now runs the high-severity audit immediately after `npm ci`. It then loads
 the optional native Sharp runtime, encodes a one-pixel PNG, verifies the PNG
-signature and dimensions, decodes it again, and requires both Sharp and libvips
-version identities. This catches the cross-platform lock/install failure mode
-that a package-version assertion alone would miss. The app does not currently
-use `next/image`; if that changes, add an optimizer-route integration test in
-the same release gate.
+signature and dimensions, decodes it again, requires both Sharp and libvips
+version identities, and rejects the Emscripten/WebAssembly fallback. This
+catches the cross-platform lock/install failure mode that a package-version or
+successful image assertion alone would miss. The app does not currently use
+`next/image`; if that changes, add an optimizer-route integration test in the
+same release gate.
 
 | Command or review | Result |
 |---|---|

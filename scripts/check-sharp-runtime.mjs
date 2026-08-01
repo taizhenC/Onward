@@ -29,6 +29,11 @@ assert.equal(decoded.width, 1, "Sharp decoded the wrong runtime probe width.");
 assert.equal(decoded.height, 1, "Sharp decoded the wrong runtime probe height.");
 assert.ok(sharp.versions.sharp, "Sharp did not expose its package version.");
 assert.ok(sharp.versions.vips, "Sharp did not expose its libvips version.");
+assert.equal(
+  sharp.versions.emscripten,
+  undefined,
+  "Sharp loaded its WebAssembly fallback instead of a platform-native binary.",
+);
 
 console.log(
   `PASS sharp runtime probe (sharp ${sharp.versions.sharp}, libvips ${sharp.versions.vips})`,

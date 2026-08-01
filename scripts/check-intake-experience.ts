@@ -284,6 +284,7 @@ function checkRequestPrivacyStateMachine(): void {
 
 function checkAccessibleComponentWiring(): void {
   const form = source("components/IntakeForm.tsx");
+  const boundaryEditor = source("components/StoryBoundaryEditor.tsx");
   const crisisCard = source("components/CrisisCard.tsx");
   assert.match(form, /INTAKE_WRITING_PROMPTS/);
   assert.match(form, /INTAKE_FICTIONAL_EXAMPLE/);
@@ -314,6 +315,28 @@ function checkAccessibleComponentWiring(): void {
   );
   assert.match(form, /ageRef\.current\?\.focus\(\)/);
   assert.match(form, /feelingRef\.current\?\.focus\(\)/);
+  assert.match(
+    form,
+    /<StoryBoundaryEditor[\s\S]{0,220}ref=\{boundaryRef\}[\s\S]{0,220}value=\{storyBoundaryEditorValue\}[\s\S]{0,220}onChange=\{handleBoundaryEditorChange\}[\s\S]{0,220}disabled=\{submitting\}/,
+    "intake must use the controlled boundary editor and preserve its focus target",
+  );
+  assert.match(
+    form,
+    /function handleBoundaryEditorChange\([\s\S]{0,220}setStoryBoundaryEditorValue\(next\)[\s\S]{0,120}resetMatchRecovery\(\)/,
+    "every story-limit edit must invalidate clarification and recovery state",
+  );
+  assert.match(boundaryEditor, /forwardRef<\s*HTMLFieldSetElement/);
+  assert.match(boundaryEditor, /const id = useId\(\)/);
+  assert.match(boundaryEditor, /<fieldset[\s\S]{0,180}disabled=\{disabled\}/);
+  assert.match(boundaryEditor, /aria-expanded=\{value\.enabled\}/);
+  assert.match(boundaryEditor, /STORY_INTENSITIES\.map/);
+  assert.match(boundaryEditor, /BOUNDARY_TOPICS\.map/);
+  assert.doesNotMatch(boundaryEditor, /\.(?:preventDefault|stopPropagation)\(/);
+  assert.equal(
+    (boundaryEditor.match(/\bonChange\(\{/g) ?? []).length,
+    3,
+    "each editor interaction path must emit one controlled value",
+  );
 
   const submitTag = openingTagContaining(form, 'type="submit"');
   assert(
@@ -430,16 +453,32 @@ function checkTruthfulTransitionWiring(): void {
 
 function checkPrivacyBoundary(): void {
   const form = source("components/IntakeForm.tsx");
+  const boundaryEditor = source("components/StoryBoundaryEditor.tsx");
   assert.doesNotMatch(
-    form,
+    `${form}\n${boundaryEditor}`,
     /\b(?:localStorage|sessionStorage|indexedDB)\b/,
     "raw intake must not be persisted in browser storage",
+  );
+  assert.doesNotMatch(
+    boundaryEditor,
+    /\b(?:fetch|XMLHttpRequest|sendBeacon|useEffect|useState)\b|\/api\/|document\.cookie|@\/lib\/(?:db|supabase|telemetry)/,
+    "the boundary editor must remain controlled, presentational, and sink-free",
   );
 
   const bodyStart = form.indexOf("const body = JSON.stringify");
   const postStart = form.indexOf("const postMatch", bodyStart);
   assert(bodyStart >= 0 && postStart > bodyStart, "match request body is not auditable");
   const requestBody = form.slice(bodyStart, postStart);
+  assert.match(
+    requestBody,
+    /storyBoundaryEditorValue\.enabled[\s\S]{0,120}\{ boundaries: storyBoundaryEditorValue\.boundaries \}[\s\S]{0,80}: \{\}/,
+    "disabled story limits must be omitted while enabled limits keep the exact nested shape",
+  );
+  assert.doesNotMatch(
+    requestBody,
+    /\bboundaryEnabled\b|\bmaxIntensity\b|\bexcludedFlags\b/,
+    "boundary editor implementation fields must not leak into the match request",
+  );
   for (const forbidden of [
     "INTAKE_WRITING_PROMPTS",
     "INTAKE_FICTIONAL_EXAMPLE",

@@ -1,4 +1,10 @@
 import "./_smoke-bootstrap";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import {
+  StoryBoundaryEditor,
+  type StoryBoundaryEditorValue,
+} from "../components/StoryBoundaryEditor";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import {
   BOUNDARY_TOPICS,
@@ -23,7 +29,7 @@ import { _sessionCount } from "../lib/session";
 import { _storyArtifactCount } from "../lib/story-artifacts";
 import { reviewedStoryContentNote } from "../lib/story-playback";
 import { createResonanceBrief } from "../lib/resonance-brief";
-import type { StorySpec } from "../lib/story-spec-types";
+import { CONTENT_FLAGS, type StorySpec } from "../lib/story-spec-types";
 import type { MatchRecipe } from "../lib/types";
 import { POST as matchRoutePost } from "../app/api/match/route";
 import { createTelemetryFlowId } from "../lib/telemetry";
@@ -53,6 +59,7 @@ const rank: Record<StoryIntensity, number> = { gentle: 0, moderate: 1, direct: 2
 async function main(): Promise<void> {
   const failures: string[] = [];
   checkParsing(failures);
+  checkEditorPresentation(failures);
   checkEligibilityMatrix(failures);
   await checkRetrievalAndArtifactDefense(failures);
   await checkIntakeRecovery(failures);
@@ -65,6 +72,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   console.log("PASS strict optional boundary parsing and closed enums");
+  console.log("PASS reusable native boundary editor and independent radio groups");
   console.log("PASS intensity/topic eligibility matrix");
   console.log("PASS prohibited stages cannot re-enter retrieval or composition");
   console.log("PASS no-eligible and invalid-input paths persist nothing");
@@ -92,7 +100,126 @@ function checkParsing(failures: string[]): void {
       failures.push(`${name} boundaries were accepted`);
     }
   }
-  if (BOUNDARY_TOPICS.length !== 8) failures.push("boundary topic UI catalog is incomplete");
+  if (
+    JSON.stringify(BOUNDARY_TOPICS.map((topic) => topic.flag)) !==
+    JSON.stringify(CONTENT_FLAGS)
+  ) {
+    failures.push("boundary topic UI catalog drifted from the closed content flags");
+  }
+}
+
+function checkEditorPresentation(failures: string[]): void {
+  const hiddenDraft: StoryBoundaryEditorValue = {
+    enabled: false,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+  };
+  const hidden = renderBoundaryEditor(hiddenDraft);
+  if (countMatches(hidden, /type="checkbox"/g) !== 1) {
+    failures.push("disabled boundary selection did not render one native toggle");
+  }
+  if (/type="radio"|Topics to leave out/.test(hidden)) {
+    failures.push("disabled boundary selection exposed its retained draft controls");
+  }
+  if (!/aria-expanded="false"/.test(hidden)) {
+    failures.push("disabled boundary selection did not announce its collapsed state");
+  }
+
+  const enabledValue: StoryBoundaryEditorValue = {
+    ...hiddenDraft,
+    enabled: true,
+  };
+  const enabled = renderBoundaryEditor(enabledValue);
+  if (countMatches(enabled, /<fieldset/g) !== 3) {
+    failures.push("enabled boundary editor lost its native grouped fieldsets");
+  }
+  if (countMatches(enabled, /type="radio"/g) !== 3) {
+    failures.push("boundary editor did not render all three native intensities");
+  }
+  if (countMatches(enabled, /type="checkbox"/g) !== BOUNDARY_TOPICS.length + 1) {
+    failures.push("boundary editor did not render the toggle plus every topic checkbox");
+  }
+  if (/\srole=/.test(enabled)) {
+    failures.push("boundary editor replaced native semantics with ARIA roles");
+  }
+  for (const intensity of ["gentle", "moderate", "direct"] as const) {
+    if (!enabled.includes(`value="${intensity}"`)) {
+      failures.push(`boundary editor omitted the ${intensity} intensity`);
+    }
+  }
+  for (const topic of BOUNDARY_TOPICS) {
+    if (!enabled.includes(topic.label) || !enabled.includes(topic.description)) {
+      failures.push(`boundary editor omitted reviewed copy for ${topic.flag}`);
+    }
+  }
+
+  const ids = [...enabled.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
+  const idSet = new Set(ids);
+  if (ids.length !== idSet.size) {
+    failures.push("boundary editor rendered duplicate control or description IDs");
+  }
+  for (const match of enabled.matchAll(/\sfor="([^"]+)"/g)) {
+    if (!idSet.has(match[1])) {
+      failures.push(`boundary editor label targets missing ID ${match[1]}`);
+    }
+  }
+  for (const match of enabled.matchAll(/aria-describedby="([^"]+)"/g)) {
+    for (const describedId of match[1].split(/\s+/)) {
+      if (!idSet.has(describedId)) {
+        failures.push(`boundary editor description targets missing ID ${describedId}`);
+      }
+    }
+  }
+  const controlledId = enabled.match(/aria-controls="([^"]+)"/)?.[1];
+  if (!controlledId || !idSet.has(controlledId)) {
+    failures.push("expanded boundary toggle does not control the rendered options panel");
+  }
+
+  const disabled = renderBoundaryEditor(enabledValue, true);
+  if (!/^<fieldset[^>]*disabled=""/.test(disabled)) {
+    failures.push("boundary editor did not disable every control through its fieldset");
+  }
+
+  const pair = renderToStaticMarkup(
+    createElement(
+      "div",
+      null,
+      createElement(StoryBoundaryEditor, {
+        value: enabledValue,
+        onChange: () => undefined,
+      }),
+      createElement(StoryBoundaryEditor, {
+        value: enabledValue,
+        onChange: () => undefined,
+      }),
+    ),
+  );
+  const radioNames = [...pair.matchAll(/type="radio"[^>]*name="([^"]+)"/g)].map(
+    (match) => match[1],
+  );
+  const uniqueRadioNames = new Set(radioNames);
+  if (radioNames.length !== 6 || uniqueRadioNames.size !== 2) {
+    failures.push("two boundary editors did not receive independent radio groups");
+  }
+}
+
+function renderBoundaryEditor(
+  value: StoryBoundaryEditorValue,
+  disabled = false,
+): string {
+  return renderToStaticMarkup(
+    createElement(StoryBoundaryEditor, {
+      value,
+      disabled,
+      onChange: () => undefined,
+    }),
+  );
+}
+
+function countMatches(value: string, pattern: RegExp): number {
+  return value.match(pattern)?.length ?? 0;
 }
 
 function checkEligibilityMatrix(failures: string[]): void {

@@ -1089,10 +1089,13 @@ This behavior-preserving slice moves the reviewed story-limit presentation out
 of the large intake form and behind one controlled module interface:
 `value`, `onChange`, `disabled`, and a forwarded fieldset ref. The module owns
 the fixed copy, closed intensity/topic catalogs, immutable add/remove mechanics,
-native grouping, description links, conditional detail panel, and per-instance
-radio identity. The intake form still owns the current value, recovery-token
-invalidation, exact request serialization, submission state, and no-eligible
-focus recovery.
+native grouping, separate accessible names and descriptions, conditional detail
+panel, and per-instance radio identity. Its exported pure transition and
+selection functions make draft restoration and request omission executable
+contracts instead of source-shape assumptions. The intake form still owns the
+current value, recovery-token invalidation, submission state, and no-eligible
+focus recovery; a narrow request builder owns the one permitted optional
+serialization shape.
 
 Disabling limits continues to omit `boundaries` entirely while retaining the
 hidden draft selections for re-enable. An enabled `moderate + []` remains an
@@ -1103,8 +1106,8 @@ and privacy contract remain intact.
 
 | Command or review | Result |
 |---|---|
-| `npm run check-story-boundaries` | Pass; exact closed topic catalog, native grouped markup, labels/descriptions, collapsed draft privacy, atomic disabled state, and independent radio groups across two rendered editors |
-| `npm run check-intake-experience` | Pass; one controlled editor, forwarded focus, recovery invalidation, exact enabled/omitted request projection, and no new client sink |
+| `npm run check-story-boundaries` | Pass; exact closed topic catalog, all 12 input/name/description associations, collapsed draft privacy, immutable enable/intensity/topic transitions, atomic disabled state, and independent radio groups across two rendered editors |
+| `npm run check-intake-experience` | Pass; one controlled editor, forwarded focus, recovery invalidation, exact enabled/omitted and recovery request objects, isolated arrays, and a closed editor import/sink surface |
 | `npm run check-try-another` | Pass; current alternate stories still reuse the exact original stored boundaries |
 | `npm run check-telemetry-lifecycle` / `check-telemetry-producers` | Pass; no boundary choice enters telemetry and intake-start bubbling remains unchanged |
 | `npm run check-resonance-brief` / `check-story-composer` | Pass; current boundary enforcement and artifact privacy are unchanged |

@@ -511,9 +511,9 @@ migration rejects any different database/table/routine owner, application-role
 inheritance of the database owner, unexpected controlled-routine overload, or
 user trigger on `figure_stages` before changing the schema. It also rejects
 inheritance or partition edges, table rewrite rules, a missing or altered
-`story_specs(story_spec_id)` primary key, generated columns on either
-publication table, and additive constraints or indexes that depend on `status`,
-`spec`, `published_at`, or `retired_at`. The
+`story_specs(story_spec_id)` primary key, any missing or altered publication
+column, generated columns, and every constraint or index outside the exact
+reviewed inventory on either publication table. The
 database owner must have no actual direct or indirect
 `pg_auth_members` members. The managed
 Supabase `service_role` descendant set is closed to `authenticator`, the current
@@ -599,15 +599,14 @@ stage/spec mismatch, unexpected enabled or disabled user trigger,
 controlled-routine overload, unsafe StorySpec/stage table, column, trigger, or
 function grant, replay-marker shape, owner, FORCE-RLS, policy, rule, trigger,
 inheritance, or ACL drift, other controlled-object owner drift or policy,
-unsafe role-membership graph, missing/changed StorySpec primary key or stage FK,
-changed status constraint, generated publication column, additive
-terminal-column constraint/index, or stale identity/trigger/full
-publication-index fingerprint makes readiness fail. `npm run
+unsafe role-membership graph, missing/changed publication column, constraint,
+primary key, stage FK, or index, generated publication column, or stale
+identity/trigger/full publication-index fingerprint makes readiness fail. `npm run
 check-story-spec-migration` executes promotion, stale rejection, retirement,
 review-demotion and direct stage-status denial, hostile ACL cleanup, managed
 role-graph drift, inherited stage-trigger rejection, stage/spec reconciliation,
 orphan-stage rollback, forged FK metadata, owner/overload/disabled-trigger/
-status-index/full-index/generated-column drift, and atomic cutover rollback in
+column/constraint/index/generated-column drift, and atomic cutover rollback in
 embedded
 PostgreSQL. It does not replace
 managed-Supabase lock/concurrency, RLS/grant, rollback, role-catalog, and

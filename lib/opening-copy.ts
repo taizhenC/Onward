@@ -74,12 +74,28 @@ export type EyebrowPromptSurface = {
   displayName: string;
 };
 
+// The exact provider-visible projection. Keep the display name on the preparation
+// surface for output validation, but remove it from the runtime object handed to a
+// prompt policy so a future policy cannot accidentally serialize it.
+export type EyebrowProviderSurface = Readonly<
+  Pick<EyebrowPromptSurface, "resonance" | "throughLine">
+>;
+
 export function toEyebrowSurface(input: OpeningCopyInput): EyebrowPromptSurface {
   return {
     resonance: toResonancePromptSurface(input.resonanceBrief),
     throughLine: input.stage.shapeSentences[0] ?? "",
     displayName: input.stage.displayName,
   };
+}
+
+export function toEyebrowProviderSurface(
+  surface: EyebrowPromptSurface,
+): EyebrowProviderSurface {
+  return Object.freeze({
+    resonance: Object.freeze({ ...surface.resonance }),
+    throughLine: surface.throughLine,
+  });
 }
 
 // Runtime guard: validation is a property of the code, not a hope. A usable eyebrow

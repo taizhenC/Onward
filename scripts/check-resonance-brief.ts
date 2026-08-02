@@ -2,7 +2,13 @@ import "./_smoke-bootstrap";
 import { consumeDerivedOutput } from "../lib/derived-output-retention";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { writeOpeningCopy } from "../lib/llm";
-import { NEUTRAL_EYEBROW, toEyebrowSurface } from "../lib/opening-copy";
+import { STORY_PROMPT_VERSION } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+  toEyebrowProviderSurface,
+  toEyebrowSurface,
+} from "../lib/opening-copy";
 import {
   PRIMARY_PRESSURES,
   RESONANCE_BRIEF_SENSITIVITY,
@@ -169,8 +175,10 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
   }
   const brief = createResonanceBrief(PRIVATE_DISCLOSURE);
   const surface = toEyebrowSurface({ resonanceBrief: brief, stage });
-  const surfaceJson = JSON.stringify(surface);
+  const providerSurface = toEyebrowProviderSurface(surface);
+  const surfaceJson = JSON.stringify(providerSurface);
   if (
+    "displayName" in providerSurface ||
     surfaceJson.includes("Priya") ||
     surfaceJson.includes("Boston") ||
     surfaceJson.includes("2024") ||
@@ -198,12 +206,18 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
 
   try {
     const safe = consumeDerivedOutput(
-      await writeOpeningCopy({ resonanceBrief: brief, stage }),
+      await writeOpeningCopy(
+        { resonanceBrief: brief, stage },
+        STORY_PROMPT_VERSION,
+      ),
       "provider_health_check",
     );
     modelOutput = "Priya";
     const echo = consumeDerivedOutput(
-      await writeOpeningCopy({ resonanceBrief: brief, stage }),
+      await writeOpeningCopy(
+        { resonanceBrief: brief, stage },
+        STORY_PROMPT_VERSION,
+      ),
       "provider_health_check",
     );
     const providerPayload = capturedBodies.join("\n");
@@ -212,6 +226,14 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
     }
     if (echo.eyebrow !== NEUTRAL_EYEBROW) {
       failures.push("named-detail provider output did not fall back safely");
+    }
+    if (
+      JSON.stringify(safe.prefaceLines) !==
+        JSON.stringify(DEFAULT_PREFACE_LINES) ||
+      JSON.stringify(echo.prefaceLines) !==
+        JSON.stringify(DEFAULT_PREFACE_LINES)
+    ) {
+      failures.push("v1 provider output changed the universal preface fallback");
     }
     if (
       capturedBodies.length !== 2 ||

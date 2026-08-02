@@ -2,6 +2,7 @@ import "./_smoke-bootstrap";
 import { loadEnvLocal } from "./_load-env";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import {
+  activeRecipe,
   pickFigure,
   requestHybridPlan,
   RerankError,
@@ -185,13 +186,16 @@ async function checkOpeningCopy(): Promise<Step> {
   const start = performance.now();
   try {
     const { eyebrow } = consumeDerivedOutput(
-      await writeOpeningCopy({
-        // Synthetic probe — NOT a real user disclosure.
-        resonanceBrief: createResonanceBrief(
-          "I keep working at something and it never seems to get better.",
-        ),
-        stage,
-      }),
+      await writeOpeningCopy(
+        {
+          // Synthetic probe — NOT a real user disclosure.
+          resonanceBrief: createResonanceBrief(
+            "I keep working at something and it never seems to get better.",
+          ),
+          stage,
+        },
+        activeRecipe().storyPromptVersion,
+      ),
       "provider_health_check",
     );
     const ms = Math.round(performance.now() - start);
@@ -231,7 +235,7 @@ async function checkHybridPlan(): Promise<Step> {
   const start = performance.now();
   try {
     const candidate = consumeDerivedOutput(
-      await requestHybridPlan(request),
+      await requestHybridPlan(request, activeRecipe().storyPromptVersion),
       "provider_health_check",
     );
     const validation = validateHybridCompositionPlan(candidate, request);

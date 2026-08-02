@@ -1133,6 +1133,7 @@ function checkStaticProviderCoverage(): void {
     provider_health_check: [
       "scripts/check-provider.ts",
       "scripts/check-embeddings.ts",
+      "scripts/check-opening-copy-policy.ts",
       "scripts/check-resonance-brief.ts",
       "scripts/check-story-composer.ts",
       "scripts/check-derived-output-retention.ts",
@@ -1384,6 +1385,7 @@ function auditOpaqueBoundaryCalls(sources: readonly AuditedSource[]): void {
     },
     "lib/story-generation.ts": { story_validator: 1 },
     "scripts/check-embeddings.ts": { provider_health_check: 1 },
+    "scripts/check-opening-copy-policy.ts": { provider_health_check: 1 },
     "scripts/check-provider.ts": { provider_health_check: 3 },
     "scripts/check-resonance-brief.ts": { provider_health_check: 2 },
     "scripts/check-story-composer.ts": { provider_health_check: 1 },
@@ -1409,6 +1411,9 @@ function auditOpaqueBoundaryCalls(sources: readonly AuditedSource[]): void {
     "lib/story-generation.ts": ["story_validator@prepareStory"],
     "scripts/check-embeddings.ts": [
       "provider_health_check@probeEmbedder",
+    ],
+    "scripts/check-opening-copy-policy.ts": [
+      "provider_health_check@assertProviderRequestBytes",
     ],
     "scripts/check-provider.ts": [
       "provider_health_check@checkHybridPlan",

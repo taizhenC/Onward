@@ -74,7 +74,10 @@ export async function composeStoryArtifact(
     options.requestPlan ??
     (async (request) =>
       consumeDerivedOutput(
-        await requestHybridPlan(request),
+        await requestHybridPlan(
+          request,
+          compositionInput.matchRecipe.storyPromptVersion ?? "",
+        ),
         "composition_plan_validator",
       ));
   const failures: HybridPlanFailureReason[] = [];

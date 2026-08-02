@@ -13,13 +13,21 @@ import {
 import {
   RERANK_PROMPT_VERSION,
   STORY_PROMPT_VERSION,
+  storyPromptContractFor,
 } from "./llm-recipe-constants";
-import type { HybridPlanRequest } from "./hybrid-composition";
+import {
+  HybridPlanProviderError,
+  type HybridPlanRequest,
+} from "./hybrid-composition";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 import {
   classifyDerivedOutput,
   type DerivedOutput,
 } from "./derived-output-retention";
+import {
+  OpeningCopyPolicyError,
+  openingCopyPolicyForStoryPromptVersion,
+} from "./opening-copy-policy";
 
 // The single LLM boundary. Everything outside lib/ imports from here — never from
 // llm-stub / llm-real directly (CLAUDE.md: the provider is invisible outside lib/).
@@ -68,25 +76,38 @@ export async function pickFigure(
   return classifyDerivedOutput("rerank_response", pick);
 }
 
-// Opening copy (eyebrow) generation. Prose, so the real path uses the Llama prose model,
-// not the GPT-OSS reranker. Best-effort by contract — the real implementation never throws;
-// it degrades to a neutral fallback rather than blocking the story.
+// Opening-copy generation is best-effort after a supported recipe identity is
+// selected. Provider and output failures degrade to a safe fallback; an unknown
+// or production-unselected prompt identity fails closed before provider use.
 export async function writeOpeningCopy(
   input: OpeningCopyInput,
+  storyPromptVersion: string,
 ): Promise<DerivedOutput<"opening_copy_candidate">> {
+  const policy = openingCopyPolicyForStoryPromptVersion(storyPromptVersion);
+  if (!storyPromptVersionIsExecutable(storyPromptVersion)) {
+    throw new OpeningCopyPolicyError();
+  }
   const copy =
     resolveProvider() === "real"
-      ? await writeOpeningCopyReal(input)
-      : await writeOpeningCopyStub(input);
+      ? await writeOpeningCopyReal(input, policy)
+      : await writeOpeningCopyStub(input, policy);
   return classifyDerivedOutput("opening_copy_candidate", copy);
 }
 
 export async function requestHybridPlan(
   input: HybridPlanRequest,
+  storyPromptVersion: string,
 ): Promise<DerivedOutput<"composition_plan_candidate">> {
+  const contract = storyPromptContractFor(storyPromptVersion);
+  if (!contract || !storyPromptVersionIsExecutable(storyPromptVersion)) {
+    throw new HybridPlanProviderError(
+      "provider_error",
+      "Story prompt policy is unavailable.",
+    );
+  }
   const candidate =
     resolveProvider() === "real"
-      ? await requestHybridPlanReal(input)
+      ? await requestHybridPlanReal(input, contract)
       : await requestHybridPlanStub(input);
   return classifyDerivedOutput("composition_plan_candidate", candidate);
 }
@@ -105,6 +126,21 @@ export function activeRecipe(): {
     rerankModelId: rerankModelId(),
     proseModelId: proseModelId(),
     rerankPromptVersion: RERANK_PROMPT_VERSION,
-    storyPromptVersion: STORY_PROMPT_VERSION,
+    storyPromptVersion: resolveStoryPromptVersion(),
   };
+}
+
+function resolveStoryPromptVersion(): string {
+  return (
+    productionStoryRecipeExecutionPlan()?.storyPromptVersion ??
+    STORY_PROMPT_VERSION
+  );
+}
+
+function storyPromptVersionIsExecutable(storyPromptVersion: string): boolean {
+  const production = productionStoryRecipeExecutionPlan();
+  return (
+    production === null ||
+    production.storyPromptVersion === storyPromptVersion
+  );
 }

@@ -110,8 +110,14 @@ export async function prepareStory(input: {
     input.clarification,
   );
   const matchRecipe = activeMatchRecipe(input.match, input.mode);
+  if (!matchRecipe.storyPromptVersion) {
+    throw new Error("The story prompt identity is not approved.");
+  }
   const generatedOpeningCopy = consumeDerivedOutput(
-    await writeOpeningCopy({ resonanceBrief, stage }),
+    await writeOpeningCopy(
+      { resonanceBrief, stage },
+      matchRecipe.storyPromptVersion,
+    ),
     "story_validator",
   );
   const artifact = await composeStoryArtifact({

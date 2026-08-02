@@ -3,6 +3,7 @@ import {
   RERANK_PROMPT_CONTRACT,
   STORY_PROMPT_CONTRACT,
   canonicalPromptContract,
+  type StoryPromptContract,
 } from "./llm-prompts";
 import { sha256Hex } from "./sha256-edge";
 
@@ -22,12 +23,55 @@ export const RERANK_PROMPT_VERSION = activePromptRelease(
 export const DEFAULT_PROSE_MODEL_ID = "gpt-oss-120b";
 export const DEFAULT_STORY_TEMPERATURE = 0.3;
 export const DEFAULT_PROSE_TIMEOUT_MS = 8000;
-export const STORY_PROMPT_VERSION = activePromptRelease(
-  "story",
-  sha256Hex(canonicalPromptContract(STORY_PROMPT_CONTRACT)),
+export const STORY_PROMPT_VERSION_V1 =
+  "opening-copy-prompt-v1-2026-07" as const;
+const STORY_PROMPT_RELEASE_V1 = releasedStoryPromptContract(
+  STORY_PROMPT_VERSION_V1,
+  STORY_PROMPT_CONTRACT,
 );
+export const SUPPORTED_STORY_PROMPT_RELEASES = Object.freeze(
+  [STORY_PROMPT_RELEASE_V1] satisfies ReadonlyArray<{
+    version: string;
+    contract: StoryPromptContract;
+  }>,
+);
+// Default for local development only. Released policies bind to their explicit
+// immutable identity above rather than to this movable default alias.
+export const STORY_PROMPT_VERSION = STORY_PROMPT_VERSION_V1;
+
+export function storyPromptContractFor(
+  version: string,
+): StoryPromptContract | null {
+  return (
+    SUPPORTED_STORY_PROMPT_RELEASES.find(
+      (release) => release.version === version,
+    )?.contract ?? null
+  );
+}
+
+export function isSupportedStoryPromptVersion(version: string): boolean {
+  return storyPromptContractFor(version) !== null;
+}
 
 type PromptReleaseKind = "rerank" | "story";
+
+function releasedStoryPromptContract(
+  version: string,
+  contract: StoryPromptContract,
+): Readonly<{ version: string; contract: StoryPromptContract }> {
+  if (
+    activePromptRelease(
+      "story",
+      sha256Hex(canonicalPromptContract(contract)),
+    ) !== version
+  ) {
+    throw new Error("Story prompt release identity does not match its content.");
+  }
+  return Object.freeze({
+    version,
+    contract,
+  });
+}
 
 function activePromptRelease(
   kind: PromptReleaseKind,

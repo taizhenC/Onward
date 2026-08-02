@@ -276,19 +276,19 @@ export async function writeOpeningCopyReal(
   policy: OpeningCopyPolicy,
 ): Promise<OpeningCopy> {
   const surface = toEyebrowSurface(input);
-  const raw = await generateEyebrowLine(
+  const raw = await generateOpeningCandidate(
     toEyebrowProviderSurface(surface),
     policy,
   );
   return policy.fromRealCandidate(raw, input);
 }
 
-// Returns the raw model line, or null on any failure. Never throws, and never logs the
-// prompt, derived brief, or raw error (privacy floor).
-async function generateEyebrowLine(
+// Returns the raw v1 line or parsed v2 plan, and null on any failure. It never
+// logs the prompt, bounded brief, provider body, response, or raw error.
+async function generateOpeningCandidate(
   surface: EyebrowProviderSurface,
   policy: OpeningCopyPolicy,
-): Promise<string | null> {
+): Promise<unknown> {
   const key = apiKey();
   if (!key) return null;
   const prompts = policy.providerPrompts(surface);
@@ -298,6 +298,9 @@ async function generateEyebrowLine(
     temperature: proseTemperature(),
     systemPrompt: prompts.systemPrompt,
     userPrompt: prompts.userPrompt,
+    ...(prompts.responseMode === "json_object"
+      ? { responseFormat: prompts.responseMode }
+      : {}),
   });
 
   const controller = new AbortController();
@@ -330,7 +333,10 @@ async function generateEyebrowLine(
     const envelope = (await response.json()) as {
       choices?: Array<{ message?: { content?: string } }>;
     };
-    return envelope.choices?.[0]?.message?.content ?? null;
+    const content = envelope.choices?.[0]?.message?.content;
+    if (typeof content !== "string") return null;
+    if (prompts.responseMode === "line") return content;
+    return JSON.parse(content);
   } catch {
     return null;
   }

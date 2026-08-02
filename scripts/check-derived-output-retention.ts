@@ -430,6 +430,16 @@ function checkOpaqueOutputs(): void {
     }),
   );
   assert.throws(() =>
+    classifyDerivedOutput("opening_copy_candidate", {
+      eyebrow: "valid",
+      prefaceLines: ["valid"],
+      acknowledgementTemplateId: "must-not-cross-the-boundary",
+    } as unknown as {
+      eyebrow: string;
+      prefaceLines: readonly string[];
+    }),
+  );
+  assert.throws(() =>
     classifyDerivedOutput(
       "not_registered" as DerivedOutputKind,
       null as never,
@@ -610,10 +620,13 @@ function checkRelationalEnvelope(): void {
   );
   assert(
     artifactStore.includes(
-      '.select("artifact, retention_class, retention_policy_version")',
+      '"artifact_id, schema_version, content_hash, artifact, retention_class, retention_policy_version"',
     ) &&
-      artifactStore.includes("parsePersistedRetentionLabel("),
-    "durable artifacts must fail reads with unknown retention labels",
+      artifactStore.includes("parsePersistedRetentionLabel(") &&
+      artifactStore.includes(
+        "validateStoredStoryArtifact(row.artifact, {",
+      ),
+    "durable artifacts must bind immutable row identity and fail reads with unknown retention labels",
   );
   const sessionStore = readFileSync(
     resolve(LIB, "session-store-supabase.ts"),
@@ -1134,6 +1147,7 @@ function checkStaticProviderCoverage(): void {
       "scripts/check-provider.ts",
       "scripts/check-embeddings.ts",
       "scripts/check-opening-copy-policy.ts",
+      "scripts/check-personalized-preface.ts",
       "scripts/check-resonance-brief.ts",
       "scripts/check-story-composer.ts",
       "scripts/check-derived-output-retention.ts",
@@ -1386,6 +1400,7 @@ function auditOpaqueBoundaryCalls(sources: readonly AuditedSource[]): void {
     "lib/story-generation.ts": { story_validator: 1 },
     "scripts/check-embeddings.ts": { provider_health_check: 1 },
     "scripts/check-opening-copy-policy.ts": { provider_health_check: 1 },
+    "scripts/check-personalized-preface.ts": { provider_health_check: 7 },
     "scripts/check-provider.ts": { provider_health_check: 3 },
     "scripts/check-resonance-brief.ts": { provider_health_check: 2 },
     "scripts/check-story-composer.ts": { provider_health_check: 1 },
@@ -1414,6 +1429,15 @@ function auditOpaqueBoundaryCalls(sources: readonly AuditedSource[]): void {
     ],
     "scripts/check-opening-copy-policy.ts": [
       "provider_health_check@assertProviderRequestBytes",
+    ],
+    "scripts/check-personalized-preface.ts": [
+      "provider_health_check@assertProviderBoundary",
+      "provider_health_check@assertProviderBoundary",
+      "provider_health_check@assertProviderBoundary",
+      "provider_health_check@assertProviderBoundary",
+      "provider_health_check@assertProviderBoundary",
+      "provider_health_check@assertProviderBoundary",
+      "provider_health_check@assertProviderBoundary",
     ],
     "scripts/check-provider.ts": [
       "provider_health_check@checkHybridPlan",
@@ -1624,7 +1648,7 @@ function auditProviderCallSites(
 
   const llmExpected = {
     pickFigureReal: "cerebras.rerank",
-    generateEyebrowLine: "cerebras.opening_copy",
+    generateOpeningCandidate: "cerebras.opening_copy",
     requestHybridPlanReal: "cerebras.hybrid_plan",
   } as const;
   const llmObserved: Record<
@@ -2139,6 +2163,21 @@ async function checkProviderTransportBoundary(): Promise<void> {
           temperature: 0,
           systemPrompt: "contract system prompt",
           userPrompt: PRIVATE_CANARY,
+        }),
+      },
+      {
+        exchange: "cerebras.opening_copy" as const,
+        path: "/chat/completions",
+        headers: {
+          "content-type": "application/json",
+          authorization: "Bearer contract-test",
+        },
+        body: buildCerebrasOpeningCopyRequestBody({
+          model: "contract-test",
+          temperature: 0,
+          systemPrompt: "contract system prompt",
+          userPrompt: PRIVATE_CANARY,
+          responseFormat: "json_object",
         }),
       },
       {

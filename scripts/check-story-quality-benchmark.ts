@@ -18,6 +18,21 @@ import {
   RESONANCE_BRIEF_VERSION,
   createResonanceBrief,
 } from "../lib/resonance-brief";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+  toEyebrowProviderSurface,
+  toEyebrowSurface,
+} from "../lib/opening-copy";
+import {
+  buildPrefacePlanRequest,
+  firstCompatiblePrefacePlan,
+  renderPersonalizedOpeningCopy,
+} from "../lib/preface-plan";
+import {
+  STORY_PROMPT_VERSION_V1,
+  STORY_PROMPT_VERSION_V2,
+} from "../lib/llm-recipe-constants";
 import { MATCH_RECOVERY_POLICY_VERSION } from "../lib/match-recovery";
 import { crisisRegexVersion } from "../lib/safety";
 import { STORY_BOUNDARY_POLICY_VERSION } from "../lib/story-boundaries";
@@ -127,7 +142,13 @@ type PacketOptions = {
   visibility?: "synthetic" | "protected_holdout";
   purpose?: StoryQualityPacket["run"]["purpose"];
   candidateScore?: number;
-  candidateComposition?: "hybrid" | "canonical_fallback";
+  candidateComposition?:
+    | "hybrid"
+    | "canonical_fallback"
+    | "opening"
+    | "opening_fallback";
+  candidateRecipe?: SyntheticRecipeManifest;
+  candidatePersonalizationAttempted?: boolean;
   disclosure?: string;
 };
 
@@ -147,6 +168,16 @@ type ReviewBindingContext = {
 
 const baselineRecipe = createRecipe("quality-baseline-v1", false);
 const candidateRecipe = createRecipe("quality-candidate-v1", true);
+const openingRecipe = createRecipe(
+  "quality-opening-v2",
+  false,
+  STORY_PROMPT_VERSION_V2,
+);
+const unsupportedOpeningHybridRecipe = createRecipe(
+  "quality-opening-hybrid-unsupported",
+  true,
+  STORY_PROMPT_VERSION_V2,
+);
 const registry: QualityRecipeRegistry = {
   datasets: [
     {
@@ -156,6 +187,14 @@ const registry: QualityRecipeRegistry = {
     },
   ],
   recipes: [baselineRecipe, candidateRecipe],
+};
+const openingRegistry: QualityRecipeRegistry = {
+  ...registry,
+  recipes: [baselineRecipe, openingRecipe],
+};
+const unsupportedOpeningHybridRegistry: QualityRecipeRegistry = {
+  ...registry,
+  recipes: [baselineRecipe, unsupportedOpeningHybridRecipe],
 };
 
 let assertionCount = 0;
@@ -215,6 +254,7 @@ function main(): void {
   checkExactSchemas(smallPacket, smallEvidence);
   checkCommitmentAndPrivacy(smallPacket);
   checkContentBindings(smallPacket);
+  checkOpeningPersonalizationModes();
   checkCoverageAndQualityGates(smallPacket, smallEvidence);
   checkPolicyAndEvidenceTamper(policy, smallEvidence);
   checkSafeAggregate(smallPacket, smallEvidence);
@@ -540,6 +580,76 @@ function checkContentBindings(packet: StoryQualityPacket): void {
     "content_invalid",
     () => evaluate(legacyArtifact),
     "a legacy artifact entered benchmark evidence",
+  );
+}
+
+function checkOpeningPersonalizationModes(): void {
+  const personalizedPacket = buildPacket({
+    candidateRecipe: openingRecipe,
+    candidateComposition: "opening",
+  });
+  const personalizedEvidence = evaluate(
+    personalizedPacket,
+    undefined,
+    openingRegistry,
+  );
+  const personalizedArm = candidateEvidence(personalizedEvidence);
+  check(
+    personalizedArm.personalizationAttempted &&
+      personalizedArm.outcomes.firstPassValidation.numerator === 1 &&
+      personalizedArm.outcomes.canonicalFallback?.numerator === 0 &&
+      personalizedArm.outcomes.canonicalFallback.denominator === 1,
+    "a valid preface-only candidate was not measured as first-pass personalization",
+  );
+
+  const fallbackPacket = buildPacket({
+    candidateRecipe: openingRecipe,
+    candidateComposition: "opening_fallback",
+  });
+  const fallbackEvidence = evaluate(
+    fallbackPacket,
+    undefined,
+    openingRegistry,
+  );
+  check(
+    candidateEvidence(fallbackEvidence).outcomes.canonicalFallback
+      ?.numerator === 1 &&
+      candidateEvidence(fallbackEvidence).outcomes
+        .firstPassValidation.numerator === 0,
+    "a universal v2 opening was not measured as a personalization fallback",
+  );
+
+  const falseFlag = mutableClone(personalizedPacket);
+  candidateArm(falseFlag).personalizationAttempted = false;
+  expectQualityError(
+    "binding_invalid",
+    () => evaluate(falseFlag, undefined, openingRegistry),
+    "a v2 opening arm suppressed its personalization-attempt flag",
+  );
+
+  const mismatchedOutcome = mutableClone(personalizedPacket);
+  candidateObservation(
+    mismatchedOutcome,
+  ).outcome.compositionOutcome = "canonical_fallback";
+  expectQualityError(
+    "binding_invalid",
+    () => evaluate(mismatchedOutcome, undefined, openingRegistry),
+    "a personalized v2 opening claimed the fallback outcome",
+  );
+
+  const unsupportedHybrid = buildPacket({
+    candidateRecipe: unsupportedOpeningHybridRecipe,
+    candidateComposition: "hybrid",
+  });
+  expectQualityError(
+    "binding_invalid",
+    () =>
+      evaluate(
+        unsupportedHybrid,
+        undefined,
+        unsupportedOpeningHybridRegistry,
+      ),
+    "the unsupported v2-opening plus hybrid-composer combination was admitted",
   );
 }
 
@@ -1129,6 +1239,8 @@ function buildPacket(options: PacketOptions = {}): StoryQualityPacket {
   const count = options.count ?? 1;
   const visibility = options.visibility ?? "synthetic";
   const purpose = options.purpose ?? "contract_test";
+  const selectedCandidateRecipe =
+    options.candidateRecipe ?? candidateRecipe;
   const policy = loadStoryQualityPolicy();
   const policySha256 = storyQualityPolicySha256(policy);
   const protocolSha256 = sha256File(
@@ -1226,7 +1338,7 @@ function buildPacket(options: PacketOptions = {}): StoryQualityPacket {
         caseId,
         index,
         disclosure,
-        recipe: candidateRecipe,
+        recipe: selectedCandidateRecipe,
         score: options.candidateScore ?? 5,
         composition: options.candidateComposition ?? "hybrid",
         generationDeploymentVersion:
@@ -1238,7 +1350,8 @@ function buildPacket(options: PacketOptions = {}): StoryQualityPacket {
           analysisPlanSha256,
           caseInputCommitment: cases[index].inputCommitment,
           armId: "candidate-arm",
-          recipeManifestSha256: candidateRecipe.manifestSha256,
+          recipeManifestSha256:
+            selectedCandidateRecipe.manifestSha256,
           policyVersion: policy.policyVersion,
           policySha256,
           protocolVersion: policy.protocolVersion,
@@ -1279,9 +1392,11 @@ function buildPacket(options: PacketOptions = {}): StoryQualityPacket {
       {
         armId: "candidate-arm",
         role: "candidate",
-        personalizationAttempted: true,
-        recipeId: candidateRecipe.recipeId,
-        recipeManifestSha256: candidateRecipe.manifestSha256,
+        personalizationAttempted:
+          options.candidatePersonalizationAttempted ?? true,
+        recipeId: selectedCandidateRecipe.recipeId,
+        recipeManifestSha256:
+          selectedCandidateRecipe.manifestSha256,
         generationDeploymentVersion:
           GENERATION_DEPLOYMENT_VERSION,
         observations: candidateObservations,
@@ -1298,7 +1413,11 @@ function createObservation(input: {
   disclosure: string;
   recipe: SyntheticRecipeManifest;
   score: number;
-  composition: "hybrid" | "canonical_fallback";
+  composition:
+    | "hybrid"
+    | "canonical_fallback"
+    | "opening"
+    | "opening_fallback";
   generationDeploymentVersion: string;
   reviewBinding: ReviewBindingContext;
 }): StoryQualityObservation {
@@ -1309,14 +1428,30 @@ function createObservation(input: {
     input.recipe,
     input.generationDeploymentVersion,
   );
+  let openingCopy = {
+    eyebrow: NEUTRAL_EYEBROW,
+    prefaceLines: DEFAULT_PREFACE_LINES,
+  };
+  if (input.composition === "opening") {
+    const planRequest = buildPrefacePlanRequest(
+      toEyebrowProviderSurface(
+        toEyebrowSurface({ resonanceBrief, stage }),
+      ),
+    );
+    const renderedOpening = renderPersonalizedOpeningCopy(
+      firstCompatiblePrefacePlan(planRequest),
+      resonanceBrief,
+    );
+    if (!renderedOpening) {
+      throw new Error("opening personalization fixture did not render");
+    }
+    openingCopy = renderedOpening;
+  }
   const common = {
     storySpec,
     stage,
     matchRecipe,
-    openingCopy: {
-      eyebrow: "A documented life in a difficult middle",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
-    },
+    openingCopy,
     framing: "partial" as const,
     resonanceBrief,
     now: FIXED_NOW,
@@ -1337,6 +1472,20 @@ function createObservation(input: {
       attemptCount: 1,
     });
     compositionOutcome = "first_pass_validated";
+  } else if (
+    input.arm === "candidate" &&
+    (input.composition === "opening" ||
+      input.composition === "opening_fallback")
+  ) {
+    artifact = composeCanonicalStoryArtifact({
+      ...common,
+      fallbackReason: "canonical_only",
+      attemptCount: 0,
+    });
+    compositionOutcome =
+      input.composition === "opening"
+        ? "first_pass_validated"
+        : "canonical_fallback";
   } else {
     const personalizedFallback = input.arm === "candidate";
     artifact = composeCanonicalStoryArtifact({
@@ -1521,6 +1670,7 @@ function createReviewAssignment(input: {
 function createRecipe(
   recipeId: string,
   hybridStoryComposerEnabled: boolean,
+  storyPromptVersion: string = STORY_PROMPT_VERSION_V1,
 ): SyntheticRecipeManifest {
   const identity = {
     recipeId,
@@ -1533,7 +1683,7 @@ function createRecipe(
     proseModelId: "synthetic-prose",
     embeddingModelId: null,
     rerankPromptVersion: "quality-rerank-prompt-v1",
-    storyPromptVersion: "quality-story-prompt-v1",
+    storyPromptVersion,
     rerankTemperature: 0,
     rerankReasoningEffort: "low",
     rerankTopK: 6,
@@ -1775,10 +1925,11 @@ function publishedStorySpec(): StorySpec {
 function evaluate(
   packet: unknown,
   custodianTrust?: Readonly<{ publicKeyPem: string }>,
+  recipeRegistry: QualityRecipeRegistry = registry,
 ): StoryQualityEvidence {
   return evaluateStoryQualityPacket(packet, {
     hmacSecret: HMAC_SECRET,
-    registry,
+    registry: recipeRegistry,
     provenance: COMPLETE_PROVENANCE,
     custodianTrust,
   });

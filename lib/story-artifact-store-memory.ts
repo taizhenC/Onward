@@ -1,4 +1,5 @@
 import "server-only";
+import type { StoredStoryArtifactEnvelope } from "./story-artifact";
 import type { StoryArtifact } from "./story-artifact-types";
 import {
   LEGACY_DERIVED_OUTPUT_RETENTION_POLICY_VERSION,
@@ -11,6 +12,7 @@ type OwnedArtifact = {
   sessionId: string;
   userId: string;
   artifact: StoryArtifact;
+  envelope?: StoredStoryArtifactEnvelope;
   // Optional only for globalThis rows created before the retention contract
   // during a development hot reload.
   retention?: PersistedRetentionLabel;
@@ -46,6 +48,11 @@ export function putMemoryStoryArtifact(
     sessionId,
     userId,
     artifact,
+    envelope: Object.freeze({
+      artifactId: artifact.artifactId,
+      schemaVersion: artifact.schemaVersion,
+      contentHash: artifact.contentHash,
+    }),
     retention: CURRENT_ARTIFACT_RETENTION,
   });
 }
@@ -58,8 +65,22 @@ export async function getOwnedMemoryStoryArtifact(
   artifactId: string,
   userId: string,
   sessionId: string,
-): Promise<StoryArtifact | null> {
-  return getOwnedMemoryStoryArtifactSync(artifactId, userId, sessionId);
+): Promise<
+  Readonly<{
+    artifact: StoryArtifact;
+    envelope?: StoredStoryArtifactEnvelope;
+  }> | null
+> {
+  const artifact = getOwnedMemoryStoryArtifactSync(
+    artifactId,
+    userId,
+    sessionId,
+  );
+  if (!artifact) return null;
+  return {
+    artifact,
+    envelope: artifacts.get(artifactId)?.envelope,
+  };
 }
 
 export function getOwnedMemoryStoryArtifactSync(

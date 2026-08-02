@@ -10,6 +10,9 @@ import { validateStoredStoryArtifact } from "./story-artifact";
 import { parsePersistedRetentionLabel } from "./derived-output-retention";
 
 type StoredArtifactRow = {
+  artifact_id: unknown;
+  schema_version: unknown;
+  content_hash: unknown;
   artifact: unknown;
   retention_class: unknown;
   retention_policy_version: unknown;
@@ -23,14 +26,19 @@ export async function getOwnedStoryArtifact(
   if (persistenceMode() === "memory") {
     const stored = await getOwnedMemoryStoryArtifact(artifactId, userId, sessionId);
     if (!stored) return null;
-    const artifact = validateStoredStoryArtifact(stored);
+    const artifact = validateStoredStoryArtifact(
+      stored.artifact,
+      stored.envelope,
+    );
     if (!artifact) throw new Error("stored StoryArtifact failed integrity validation");
     return artifact;
   }
 
   const result = await getSupabase()
     .from("story_artifacts")
-    .select("artifact, retention_class, retention_policy_version")
+    .select(
+      "artifact_id, schema_version, content_hash, artifact, retention_class, retention_policy_version",
+    )
     .eq("artifact_id", artifactId)
     .eq("user_id", userId)
     .eq("session_id", sessionId)
@@ -45,7 +53,18 @@ export async function getOwnedStoryArtifact(
     },
     "owned_story",
   );
-  const artifact = validateStoredStoryArtifact(row.artifact);
+  if (
+    typeof row.artifact_id !== "string" ||
+    typeof row.schema_version !== "string" ||
+    typeof row.content_hash !== "string"
+  ) {
+    throw new Error("stored StoryArtifact envelope is invalid");
+  }
+  const artifact = validateStoredStoryArtifact(row.artifact, {
+    artifactId: row.artifact_id,
+    schemaVersion: row.schema_version,
+    contentHash: row.content_hash,
+  });
   if (!artifact) throw new Error("stored StoryArtifact failed integrity validation");
   return artifact;
 }

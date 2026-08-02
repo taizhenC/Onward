@@ -21,6 +21,11 @@ import {
   STORY_ARTIFACT_SCHEMA_VERSION,
   type StoryArtifact,
 } from "../lib/story-artifact-types";
+import { STORY_PROMPT_VERSION_V2 } from "../lib/llm-recipe-constants";
+import {
+  isUniversalOpeningCopy,
+  validatePersonalizedOpeningCopy,
+} from "../lib/preface-plan";
 import {
   parseStoryBoundaries,
   type StoryBoundaries,
@@ -371,6 +376,11 @@ type QualityRecipeManifest = Readonly<{
   boundaryPolicyVersion: string;
   resonanceBriefVersion: string;
 }>;
+
+type StoryQualityPersonalizationMode =
+  | "none"
+  | "opening"
+  | "hybrid";
 
 export type QualityRecipeRegistry = Readonly<{
   datasets: readonly Readonly<{
@@ -1038,9 +1048,11 @@ function evaluateStoryQualityPacketUnsafe(
       recipeManifestDigest(recipe!) === recipe!.manifestSha256,
     );
     assertBinding(datasets.has(recipe!.datasetVersion));
+    const personalizationMode = personalizationModeFor(recipe!);
+    assertBinding(personalizationMode !== null);
     assertBinding(
       arm.personalizationAttempted ===
-        recipe!.hybridStoryComposerEnabled,
+        (personalizationMode !== "none"),
     );
     for (const observation of arm.observations) {
       const benchmarkCase = caseById.get(observation.caseId);
@@ -2310,7 +2322,9 @@ function validateObservationContent(
           assignment.protocolSha256 === protocolSha256,
       );
     }
-    if (arm.personalizationAttempted) {
+    const personalizationMode = personalizationModeFor(recipe);
+    assertBinding(personalizationMode !== null);
+    if (personalizationMode === "hybrid") {
       if (observation.outcome.compositionOutcome === "canonical_fallback") {
         assertBinding(artifact.composition.mode === "canonical_fallback");
         assertBinding(
@@ -2325,6 +2339,21 @@ function validateObservationContent(
               : "retry_validated"),
         );
       }
+    } else if (personalizationMode === "opening") {
+      assertBinding(
+        artifact.composition.mode === "canonical_fallback" &&
+          artifact.composition.fallbackReason === "canonical_only" &&
+          artifact.composition.attemptCount === 0,
+      );
+      assertContent(
+        validatePersonalizedOpeningCopy(artifact.openingCopy, brief),
+      );
+      assertBinding(
+        observation.outcome.compositionOutcome ===
+          (isUniversalOpeningCopy(artifact.openingCopy)
+            ? "canonical_fallback"
+            : "first_pass_validated"),
+      );
     } else {
       assertBinding(
         observation.outcome.compositionOutcome ===
@@ -2339,6 +2368,19 @@ function validateObservationContent(
     if (error instanceof StoryQualityError) throw error;
     throw new StoryQualityError("content_invalid");
   }
+}
+
+function personalizationModeFor(
+  recipe: QualityRecipeManifest,
+): StoryQualityPersonalizationMode | null {
+  if (recipe.hybridStoryComposerEnabled) {
+    return recipe.storyPromptVersion === STORY_PROMPT_VERSION_V2
+      ? null
+      : "hybrid";
+  }
+  return recipe.storyPromptVersion === STORY_PROMPT_VERSION_V2
+    ? "opening"
+    : "none";
 }
 
 function buildArmEvidence(

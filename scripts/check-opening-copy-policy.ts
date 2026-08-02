@@ -25,6 +25,7 @@ import {
   DEFAULT_PREFACE_LINES,
   NEUTRAL_EYEBROW,
   curatedEyebrow,
+  isSafeStoredEyebrow,
   toEyebrowProviderSurface,
   toEyebrowSurface,
 } from "../lib/opening-copy";
@@ -211,6 +212,15 @@ function assertV1MappingIsCompatible(
     ["multiline", "One line\nA second line"],
     ["figure name", input.stage.displayName],
     ["disclosure echo", "Priya"],
+    ["crisis language", "Suicide made every road narrow"],
+    ["third-person crisis language", "He wanted to die"],
+    ["person and place", "Maya waited alone in Lisbon"],
+    ["place and year", "Alone in Paris in 1938"],
+    ["lowercase place", "In paris after the door closed"],
+    ["lowercase person and place", "Waiting beside priya in boston"],
+    ["sensitive assault", "After the physical assault"],
+    ["sensitive violence", "Living after being beaten"],
+    ["sensitive history", "Under the weight of enslavement"],
     ["overlong", "x".repeat(73)],
   ] as const) {
     assertOpeningCopy(
@@ -218,6 +228,20 @@ function assertV1MappingIsCompatible(
       LEGACY_NEUTRAL_EYEBROW,
       name,
     );
+  }
+  for (const unsafe of [
+    "He wanted to die",
+    "Alone in Paris in 1938",
+    "Priya waited alone in Boston",
+    "In paris after the door closed",
+    "Waiting beside priya in boston",
+    "After the physical assault",
+    "Living after being beaten",
+    "Under the weight of enslavement",
+  ]) {
+    if (isSafeStoredEyebrow(unsafe, input.stage.displayName)) {
+      throw new Error(`unsafe v1 eyebrow passed replay guard: ${unsafe}`);
+    }
   }
   assertOpeningCopy(
     policy.fromStub(input),

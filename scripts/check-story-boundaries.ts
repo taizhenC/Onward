@@ -27,6 +27,11 @@ import type { StorySpec } from "../lib/story-spec-types";
 import type { MatchRecipe } from "../lib/types";
 import { POST as matchRoutePost } from "../app/api/match/route";
 import { createTelemetryFlowId } from "../lib/telemetry";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -40,6 +45,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 const rank: Record<StoryIntensity, number> = { gentle: 0, moderate: 1, direct: 2 };
@@ -295,8 +301,8 @@ function compose(
     stage,
     matchRecipe: recipe,
     openingCopy: {
-      eyebrow: "A story for the difficult middle",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: createResonanceBrief(

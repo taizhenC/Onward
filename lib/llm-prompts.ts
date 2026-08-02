@@ -1,3 +1,9 @@
+import {
+  PERSONALIZED_PREFACE_PROMPT_CONTRACT,
+  type PersonalizedPrefacePromptContract,
+  type PrefacePlanRequest,
+} from "./preface-plan-contract";
+
 type TemplateValue = string | number | readonly string[];
 
 export type PromptRerankCandidate = Readonly<{
@@ -42,6 +48,7 @@ export type StoryPromptContract = Readonly<{
     responseFormat: "json_object";
     temperature: number;
   }>;
+  personalizedPreface?: PersonalizedPrefacePromptContract;
 }>;
 
 export const RERANK_PROMPT_CONTRACT = Object.freeze({
@@ -127,6 +134,12 @@ export const STORY_PROMPT_CONTRACT = Object.freeze({
   }),
 }) satisfies StoryPromptContract;
 
+export const STORY_PROMPT_CONTRACT_V2 = Object.freeze({
+  eyebrow: STORY_PROMPT_CONTRACT.eyebrow,
+  hybridPlan: STORY_PROMPT_CONTRACT.hybridPlan,
+  personalizedPreface: PERSONALIZED_PREFACE_PROMPT_CONTRACT,
+}) satisfies StoryPromptContract;
+
 export const RERANK_SYSTEM_PROMPT = RERANK_PROMPT_CONTRACT.system;
 export const EYEBROW_SYSTEM_PROMPT = STORY_PROMPT_CONTRACT.eyebrow.system;
 export const HYBRID_PLAN_SYSTEM_PROMPT = STORY_PROMPT_CONTRACT.hybridPlan.system;
@@ -171,6 +184,24 @@ export function buildHybridPlanUserPrompt(
       input.priorFailureReasons.length > 0
         ? input.priorFailureReasons
         : "none",
+  });
+}
+
+export function buildPrefacePlanUserPrompt(
+  input: PrefacePlanRequest,
+  contract: StoryPromptContract,
+): string {
+  if (!contract.personalizedPreface) {
+    throw new Error("Personalized preface prompt is unavailable.");
+  }
+  return renderTemplate(contract.personalizedPreface.user, {
+    schemaVersion: input.schemaVersion,
+    ...input.resonance,
+    episodeShape: input.episodeShape,
+    allowedEyebrowTemplateIds: input.allowedEyebrowTemplateIds,
+    allowedAcknowledgementTemplateIds:
+      input.allowedAcknowledgementTemplateIds,
+    allowedDistanceTemplateIds: input.allowedDistanceTemplateIds,
   });
 }
 

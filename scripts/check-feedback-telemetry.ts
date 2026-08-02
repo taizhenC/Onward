@@ -9,7 +9,12 @@ import {
 import { ALTERNATE_STORY_POLICY_VERSION } from "../lib/alternate-story-types";
 import { LOCAL_DEV_USER_ID } from "../lib/auth";
 import { FIGURE_STAGES } from "../lib/figures-data";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import {
   ResonanceFeedbackConflictError,
@@ -72,6 +77,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 type Fixture = {
@@ -624,8 +630,8 @@ function makeArtifact(
     stage,
     matchRecipe,
     openingCopy: {
-      eyebrow: "A true story",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: createResonanceBrief(PRIVATE_CANARY),

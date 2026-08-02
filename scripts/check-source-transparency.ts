@@ -21,6 +21,11 @@ import {
   createResonanceBrief,
   type PrimaryPressure,
 } from "../lib/resonance-brief";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import { createSession } from "../lib/session";
 import { createStoryRequestContext } from "../lib/story-request-context";
 import {
@@ -29,6 +34,7 @@ import {
   storyArtifactContentHash,
   validateStoredStoryArtifact,
   validateStoryArtifact,
+  type StoredStoryArtifactEnvelope,
 } from "../lib/story-artifact";
 import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { validateStorySpec } from "../lib/story-spec";
@@ -53,6 +59,7 @@ const recipe: MatchRecipe = {
   embeddingModelId: "stub",
   retrievalMode: "keyword",
   resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 async function main(): Promise<void> {
@@ -94,8 +101,8 @@ function makeFixture(pressure: PrimaryPressure = "rejection") {
     stage,
     matchRecipe: recipe,
     openingCopy: {
-      eyebrow: "A documented life in a difficult middle",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief,
@@ -271,13 +278,20 @@ function checkTamperAndLegacyReplay(
   legacy.schemaVersion = HYBRID_STORY_ARTIFACT_SCHEMA_VERSION;
   delete legacy.transparency;
   legacy.contentHash = storyArtifactContentHash(legacy);
-  if (!validateStoredStoryArtifact(legacy)) {
+  if (
+    !validateStoredStoryArtifact(legacy, storedEnvelope(legacy))
+  ) {
     failures.push("v4 artifact without transparency no longer replays");
   }
   const fabricatedLegacy = structuredClone(legacy);
   fabricatedLegacy.transparency = structuredClone(artifact.transparency);
   fabricatedLegacy.contentHash = storyArtifactContentHash(fabricatedLegacy);
-  if (validateStoredStoryArtifact(fabricatedLegacy)) {
+  if (
+    validateStoredStoryArtifact(
+      fabricatedLegacy,
+      storedEnvelope(fabricatedLegacy),
+    )
+  ) {
     failures.push("legacy replay accepted fabricated current provenance");
   }
 }
@@ -704,6 +718,20 @@ function publishedStorySpec(): StorySpec {
 
 function read(relative: string): string {
   return readFileSync(fileURLToPath(new URL(relative, import.meta.url)), "utf8");
+}
+
+function storedEnvelope(
+  artifact: Readonly<{
+    artifactId: string;
+    schemaVersion: string;
+    contentHash: string;
+  }>,
+): StoredStoryArtifactEnvelope {
+  return {
+    artifactId: artifact.artifactId,
+    schemaVersion: artifact.schemaVersion,
+    contentHash: artifact.contentHash,
+  };
 }
 
 main().catch((error) => {

@@ -9,7 +9,12 @@ import {
   _setMemoryAuthContextForTests,
 } from "../lib/auth";
 import { FIGURE_STAGES } from "../lib/figures-data";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import {
   ALTERNATE_STORY_POLICY_VERSION,
 } from "../lib/alternate-story-types";
@@ -76,6 +81,7 @@ const recipe: MatchRecipe = {
   embeddingModelId: "stub",
   retrievalMode: "keyword",
   resonanceBriefVersion: RESONANCE_BRIEF_VERSION,
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 async function main(): Promise<void> {
@@ -619,8 +625,8 @@ function makeArtifact(
     stage,
     matchRecipe: recipe,
     openingCopy: {
-      eyebrow: "A documented life in a difficult middle",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: createResonanceBrief(disclosure),

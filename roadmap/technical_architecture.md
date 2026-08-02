@@ -493,11 +493,18 @@ without retry or sensitive logging; failed HTTP and stalled bodies are canceled
 inside the same deadline. CI uses the TypeScript syntax tree to permit
 `llm-real.ts` as the sole signal importer and reject aliases, dynamic provider
 loads, tagger references, or `dominantMode` consumers. The facade also hard
-returns the null stub under `NODE_ENV=production`. A later shadow slice may
-remove that runtime gate only after deriving an immutable execution plan from
-the exact manifest-v2 tagger identity and proving every literal/schema matches.
-Until then, shadow invocation, retrieval weights, manifest-v2 execution,
-evaluation, and promotion remain later evidence-gated releases.
+returns the null stub under `NODE_ENV=production`.
+`facetTaggerExecutionPlan(recipe)` is a separate pure identity boundary: it
+accepts only manifest v2, compares all eleven nested axes to installed
+edge-safe constants, and returns an explicit detached frozen object. It does
+not recompute the manifest hash, prove database registration, join the generic
+story execution plan, call the provider, or relax the blanket v2 runtime/eval
+rejection. The AST authority check rejects every production consumer outside
+its own definition. A later shadow slice may remove the production hard-off
+only after resolving one exact registered, hash-verified v2 recipe and binding
+the provider request to that derived plan. Until then, shadow invocation,
+retrieval weights, manifest-v2 execution, evaluation, and promotion remain
+later evidence-gated releases.
 `dominantMode` is informational only and has no retrieval authority.
 
 Detailed eval trials remain local. Metrics-only results are append-only and

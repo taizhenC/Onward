@@ -409,11 +409,19 @@ async function checkTimeoutAndNoRetry(): Promise<void> {
 }
 
 function checkStaticAuthorityBoundary(): void {
-  const productionFiles = ["app", "components", "lib"].flatMap((directory) =>
-    sourceFiles(join(process.cwd(), directory)),
-  );
+  const productionFiles = [
+    ...["app", "components", "lib"].flatMap((directory) =>
+      sourceFiles(join(process.cwd(), directory)),
+    ),
+    ...rootSourceFiles(process.cwd()),
+  ].sort();
   const llmFacade = join(process.cwd(), "lib", "llm.ts");
   const facetSignal = join(process.cwd(), "lib", "facet-signal.ts");
+  const storyRecipeRuntime = join(
+    process.cwd(),
+    "lib",
+    "story-recipe-runtime.ts",
+  );
   const audits = productionFiles.map(inspectAuthoritySource);
 
   const providerImporters = audits
@@ -445,6 +453,28 @@ function checkStaticAuthorityBoundary(): void {
     "non-authoritative dominantMode was imported, destructured, or referenced",
   );
 
+  const executionPlanConsumers = audits
+    .filter(({ path }) => path !== storyRecipeRuntime)
+    .filter(({ exactSymbols }) =>
+      exactSymbols.has("facetTaggerExecutionPlan"),
+    )
+    .map(({ path }) => path);
+  assert.deepEqual(
+    executionPlanConsumers,
+    [],
+    "dormant facet-tagger execution plan gained a production consumer",
+  );
+  const executionPlanDefinition = audits.find(
+    ({ path }) => path === storyRecipeRuntime,
+  );
+  assert.equal(
+    executionPlanDefinition?.identifierCounts.get(
+      "facetTaggerExecutionPlan",
+    ),
+    1,
+    "dormant facet-tagger execution plan was referenced or aliased inside its defining module",
+  );
+
   const stubPath = join(process.cwd(), "lib", "llm-stub.ts");
   const stubSource = parseTypeScriptSource(stubPath);
   const stub = stubSource.statements.find(
@@ -470,14 +500,22 @@ function checkStaticAuthorityBoundary(): void {
 function inspectAuthoritySource(path: string): Readonly<{
   path: string;
   exactSymbols: ReadonlySet<string>;
+  identifierCounts: ReadonlyMap<string, number>;
   referencesRealProviderModule: boolean;
 }> {
   const source = parseTypeScriptSource(path);
   const exactSymbols = new Set<string>();
+  const identifierCounts = new Map<string, number>();
   let referencesRealProviderModule = false;
   const visit = (node: ts.Node): void => {
     if (ts.isIdentifier(node) || ts.isStringLiteralLike(node)) {
       exactSymbols.add(node.text);
+      if (ts.isIdentifier(node)) {
+        identifierCounts.set(
+          node.text,
+          (identifierCounts.get(node.text) ?? 0) + 1,
+        );
+      }
       if (
         ts.isStringLiteralLike(node) &&
         /(?:^|[\\/])llm-real(?:\.[cm]?[jt]sx?)?$/u.test(node.text)
@@ -488,7 +526,12 @@ function inspectAuthoritySource(path: string): Readonly<{
     ts.forEachChild(node, visit);
   };
   visit(source);
-  return { path, exactSymbols, referencesRealProviderModule };
+  return {
+    path,
+    exactSymbols,
+    identifierCounts,
+    referencesRealProviderModule,
+  };
 }
 
 function subtreeContainsExactSymbol(node: ts.Node, symbol: string): boolean {
@@ -621,6 +664,16 @@ function sourceFiles(directory: string): string[] {
     else if (entry.isFile() && /\.(?:ts|tsx)$/u.test(entry.name)) files.push(path);
   }
   return files.sort();
+}
+
+function rootSourceFiles(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true })
+    .filter(
+      (entry) =>
+        entry.isFile() && /\.(?:ts|tsx)$/u.test(entry.name),
+    )
+    .map((entry) => join(directory, entry.name))
+    .sort();
 }
 
 function restoreEnvironment(): void {

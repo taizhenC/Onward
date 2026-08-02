@@ -1,9 +1,10 @@
 import "server-only";
 import { FACET_TYPES, type FacetType } from "./types";
 
-export const FACET_SIGNAL_SCHEMA_VERSION = "facet-signal-v1-2026-07";
-export const FACET_PROJECTION_SCHEMA_VERSION =
-  "facet-query-template-catalog-v1-2026-07";
+export {
+  FACET_PROJECTION_SCHEMA_VERSION,
+  FACET_SIGNAL_SCHEMA_VERSION,
+} from "./facet-tagger-recipe-constants";
 
 export const FACET_SIGNAL_MIN_CONFIDENCE = 0.55;
 export const FACET_SIGNAL_IMPORTANT_LANE_THRESHOLD = 0.3;

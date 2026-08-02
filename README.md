@@ -280,9 +280,12 @@ adapter: fixed model/tuning, one request, a three-second deadline, an IDs-only
 template catalog, strict UTF-8/response limits, and silent null fallback. CI
 proves that no production matching or retrieval path references it, and the
 facade itself returns the null stub whenever `NODE_ENV=production`.
-Manifest-v2 execution, shadow invocation, weighting changes, and promotion
-remain separate reviewed gates; shadow wiring must first derive and verify an
-immutable tagger execution plan from the exact v2 recipe.
+A pure `facetTaggerExecutionPlan` can now derive a detached frozen plan only
+when all eleven nested manifest-v2 axes match installed code, but it verifies
+neither recipe registration/hash nor execution authority and has no production
+consumer. Manifest-v2 execution, shadow invocation, weighting changes, and
+promotion remain separate reviewed gates; future shadow wiring must resolve an
+exact registered/hash-verified recipe before it may use the plan.
 
 Before the first challenger promotion, create a protected GitHub environment
 named `recipe-promotion`, require independent reviewers, and add a dedicated

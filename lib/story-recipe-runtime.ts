@@ -1,12 +1,25 @@
 import registryDocument from "../config/story-recipes.json";
 import type { RetrievalMode } from "./types";
 import {
+  DEFAULT_FACET_TAGGER_MODEL_ID,
+  DEFAULT_FACET_TAGGER_REASONING_EFFORT,
+  DEFAULT_FACET_TAGGER_TEMPERATURE,
+  DEFAULT_FACET_TAGGER_TIMEOUT_MS,
   DEFAULT_LLM_BASE_URL,
   DEFAULT_PROSE_TIMEOUT_MS,
   DEFAULT_RERANK_TIMEOUT_MS,
+  FACET_TAGGER_PROMPT_VERSION,
   RERANK_PROMPT_VERSION,
   isSupportedStoryPromptVersion,
 } from "./llm-recipe-constants";
+import {
+  FACET_PROJECTION_SCHEMA_VERSION,
+  FACET_SIGNAL_SCHEMA_VERSION,
+  FACET_TAGGER_EXPANSION_ENABLED,
+  FACET_TAGGER_MODE,
+  FACET_TAGGER_QUERY_MODE,
+  FACET_TAGGER_WEIGHTING_MODE,
+} from "./facet-tagger-recipe-constants";
 import {
   DEFAULT_EMBEDDING_BASE_URL,
   DEFAULT_EMBEDDING_DIM,
@@ -144,6 +157,20 @@ export type StoryRecipeExecutionPlan = Readonly<{
   }> | null;
 }>;
 
+export type FacetTaggerExecutionPlan = Readonly<{
+  mode: typeof FACET_TAGGER_MODE;
+  modelId: typeof DEFAULT_FACET_TAGGER_MODEL_ID;
+  promptVersion: string;
+  temperature: typeof DEFAULT_FACET_TAGGER_TEMPERATURE;
+  reasoningEffort: typeof DEFAULT_FACET_TAGGER_REASONING_EFFORT;
+  timeoutMs: typeof DEFAULT_FACET_TAGGER_TIMEOUT_MS;
+  signalSchemaVersion: typeof FACET_SIGNAL_SCHEMA_VERSION;
+  projectionSchemaVersion: typeof FACET_PROJECTION_SCHEMA_VERSION;
+  queryMode: typeof FACET_TAGGER_QUERY_MODE;
+  weightingMode: typeof FACET_TAGGER_WEIGHTING_MODE;
+  expansionEnabled: typeof FACET_TAGGER_EXPANSION_ENABLED;
+}>;
+
 export type StoryRecipeRuntimeErrorCode =
   | "registry_invalid"
   | "recipe_id_required"
@@ -275,6 +302,48 @@ export function storyRecipeExecutionPlan(
     storyComposerMode: recipe.storyComposerMode,
     hybridStoryComposerEnabled: recipe.hybridStoryComposerEnabled,
     embedding,
+  });
+}
+
+/**
+ * Derives only the installed facet-tagger identity from a parsed manifest-v2
+ * recipe. This deliberately does not authorize the recipe, verify its stored
+ * hash/registration, call a provider, or relax the generic v2 runtime block.
+ */
+export function facetTaggerExecutionPlan(
+  recipe: StoryRecipeManifest,
+): FacetTaggerExecutionPlan {
+  if (!isStoryRecipeManifestV2(recipe)) {
+    throw new StoryRecipeRuntimeError("code_identity_invalid");
+  }
+  const tagger = recipe.facetTagger;
+  if (
+    tagger.mode !== FACET_TAGGER_MODE ||
+    tagger.modelId !== DEFAULT_FACET_TAGGER_MODEL_ID ||
+    tagger.promptVersion !== FACET_TAGGER_PROMPT_VERSION ||
+    tagger.temperature !== DEFAULT_FACET_TAGGER_TEMPERATURE ||
+    tagger.reasoningEffort !== DEFAULT_FACET_TAGGER_REASONING_EFFORT ||
+    tagger.timeoutMs !== DEFAULT_FACET_TAGGER_TIMEOUT_MS ||
+    tagger.signalSchemaVersion !== FACET_SIGNAL_SCHEMA_VERSION ||
+    tagger.projectionSchemaVersion !== FACET_PROJECTION_SCHEMA_VERSION ||
+    tagger.queryMode !== FACET_TAGGER_QUERY_MODE ||
+    tagger.weightingMode !== FACET_TAGGER_WEIGHTING_MODE ||
+    tagger.expansionEnabled !== FACET_TAGGER_EXPANSION_ENABLED
+  ) {
+    throw new StoryRecipeRuntimeError("code_identity_invalid");
+  }
+  return Object.freeze({
+    mode: tagger.mode,
+    modelId: tagger.modelId,
+    promptVersion: tagger.promptVersion,
+    temperature: tagger.temperature,
+    reasoningEffort: tagger.reasoningEffort,
+    timeoutMs: tagger.timeoutMs,
+    signalSchemaVersion: tagger.signalSchemaVersion,
+    projectionSchemaVersion: tagger.projectionSchemaVersion,
+    queryMode: tagger.queryMode,
+    weightingMode: tagger.weightingMode,
+    expansionEnabled: tagger.expansionEnabled,
   });
 }
 

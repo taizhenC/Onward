@@ -4,8 +4,8 @@ import { FIGURE_STAGES } from "../lib/figures-data";
 import { getSupabase } from "../lib/db";
 
 // Bulk seeder: writes the authored library (lib/figures-data.ts) into Supabase so the DB-backed
-// figure source (PERSISTENCE=supabase) and future pgvector/editorial work have data. Idempotent
-// (upsert on the pks), so re-running is safe. These 3 are the proven live set → status='published'.
+// figure source (PERSISTENCE=supabase) and future pgvector/editorial work have data. Idempotent,
+// while leaving the publication lifecycle under the database-owned transition functions.
 // The future per-draft editorial seeder (scripts/seed-figure.ts in CLAUDE.md) is a separate tool
 // that uses draft→promote.
 //
@@ -37,36 +37,24 @@ async function main(): Promise<void> {
   }
   const figureRows = [...figuresByKey.values()];
 
-  // Content lifecycle is editorial state. Reseeding prose must never republish
-  // a retired stage or demote a reviewed one; new rows begin as draft.
-  const statusResult = await supabase
-    .from("figure_stages")
-    .select("figure_key,stage_id,status");
-  if (statusResult.error) {
-    throw new Error(`read figure stage status failed: ${statusResult.error.message}`);
-  }
-  const existingStatus = new Map(
-    (statusResult.data ?? []).map((row) => [
-      `${row.figure_key}\u0000${row.stage_id}`,
-      row.status === "published" ? "published" : "draft",
-    ]),
-  );
-
   // figure_stages: scalars/arrays mapped to snake_case; facets/beats written as jsonb verbatim.
   const stageRows = FIGURE_STAGES.map((stage) => ({
-    figure_key: stage.figureKey,
-    stage_id: stage.stageId,
-    stage_label: stage.stageLabel,
-    age_min: stage.ageMin,
-    age_max: stage.ageMax,
-    shape_sentences: stage.shapeSentences,
-    facets: stage.facets,
-    biographical_facts: stage.biographicalFacts,
-    themes: stage.themes,
-    anti_themes: stage.antiThemes,
-    beats: stage.beats,
-    sources: stage.sources,
-    status: existingStatus.get(`${stage.figureKey}\u0000${stage.stageId}`) ?? "draft",
+    identity: {
+      figure_key: stage.figureKey,
+      stage_id: stage.stageId,
+    },
+    content: {
+      stage_label: stage.stageLabel,
+      age_min: stage.ageMin,
+      age_max: stage.ageMax,
+      shape_sentences: stage.shapeSentences,
+      facets: stage.facets,
+      biographical_facts: stage.biographicalFacts,
+      themes: stage.themes,
+      anti_themes: stage.antiThemes,
+      beats: stage.beats,
+      sources: stage.sources,
+    },
   }));
 
   // figures first (FK parent), then stages.
@@ -77,9 +65,21 @@ async function main(): Promise<void> {
     throw new Error(`seed figures failed: ${figuresResult.error.message}`);
   }
 
+  // One statement creates absent stages through the database's draft default
+  // and refreshes existing content. `status` is absent from every payload, so
+  // ON CONFLICT cannot overwrite a concurrent publication transition.
   const stagesResult = await supabase
     .from("figure_stages")
-    .upsert(stageRows, { onConflict: "figure_key,stage_id" });
+    .upsert(
+      stageRows.map(({ identity, content }) => ({
+        ...identity,
+        ...content,
+      })),
+      {
+        onConflict: "figure_key,stage_id",
+        defaultToNull: false,
+      },
+    );
   if (stagesResult.error) {
     throw new Error(`seed figure_stages failed: ${stagesResult.error.message}`);
   }

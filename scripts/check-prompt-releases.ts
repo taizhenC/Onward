@@ -4,13 +4,13 @@ import { readFileSync } from "node:fs";
 import {
   FACET_TAGGER_PROMPT_CONTRACT,
   RERANK_PROMPT_CONTRACT,
-  STORY_PROMPT_CONTRACT,
   buildFacetTaggerUserPrompt,
   canonicalPromptContract,
 } from "../lib/llm-prompts";
 import {
   FACET_TAGGER_PROMPT_VERSION,
   RERANK_PROMPT_VERSION,
+  SUPPORTED_STORY_PROMPT_RELEASES,
   STORY_PROMPT_VERSION,
 } from "../lib/llm-recipe-constants";
 import { sha256Hex } from "../lib/sha256-edge";
@@ -40,19 +40,31 @@ function main(): void {
     JSON.parse(readFileSync(REGISTRY_PATH, "utf8")) as unknown,
     "current prompt release registry",
   );
-  const actual = {
-    rerank: verifiedSha256(canonicalPromptContract(RERANK_PROMPT_CONTRACT)),
-    story: verifiedSha256(canonicalPromptContract(STORY_PROMPT_CONTRACT)),
-    facetTagger: verifiedSha256(
-      canonicalPromptContract(FACET_TAGGER_PROMPT_CONTRACT),
+  const rerankSha256 = verifiedSha256(
+    canonicalPromptContract(RERANK_PROMPT_CONTRACT),
+  );
+  assertActiveRelease(
+    registry.rerank,
+    RERANK_PROMPT_VERSION,
+    rerankSha256,
+  );
+  for (const release of SUPPORTED_STORY_PROMPT_RELEASES) {
+    assertActiveRelease(
+      registry.story,
+      release.version,
+      verifiedSha256(canonicalPromptContract(release.contract)),
+    );
+  }
+  assert(
+    SUPPORTED_STORY_PROMPT_RELEASES.some(
+      (release) => release.version === STORY_PROMPT_VERSION,
     ),
-  } as const;
-  assertActiveRelease(registry.rerank, RERANK_PROMPT_VERSION, actual.rerank);
-  assertActiveRelease(registry.story, STORY_PROMPT_VERSION, actual.story);
+    "default story prompt is not an executable release",
+  );
   assertActiveRelease(
     registry.facetTagger,
     FACET_TAGGER_PROMPT_VERSION,
-    actual.facetTagger,
+    verifiedSha256(canonicalPromptContract(FACET_TAGGER_PROMPT_CONTRACT)),
   );
   assertFacetTaggerArtifacts(registry);
   checkFacetTaggerRendering();
@@ -61,7 +73,7 @@ function main(): void {
   const base = process.argv[2]?.trim();
   if (base) assertAppendOnlyFromBase(base, registry);
   console.log(
-    `Prompt release check passed (rerank=${RERANK_PROMPT_VERSION}; story=${STORY_PROMPT_VERSION}; facetTagger=${FACET_TAGGER_PROMPT_VERSION}).`,
+    `Prompt release check passed (rerank=${RERANK_PROMPT_VERSION}; story=${STORY_PROMPT_VERSION}; executableStoryReleases=${SUPPORTED_STORY_PROMPT_RELEASES.length}; facetTagger=${FACET_TAGGER_PROMPT_VERSION}).`,
   );
 }
 

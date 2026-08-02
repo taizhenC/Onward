@@ -1,10 +1,15 @@
 import "server-only";
 import type { FigureStageRow } from "./types";
 import {
+  PREFACE_EYEBROW_TEMPLATES,
+  PREFACE_FALLBACK_LINES,
+} from "./preface-plan-contract";
+import {
   toResonancePromptSurface,
   type ResonanceBrief,
   type ResonancePromptSurface,
 } from "./resonance-brief";
+import { containsCrisisLanguage } from "./safety";
 
 // Neutral fallback eyebrow. Returned by the stub for any uncurated stage, and by the
 // real generator whenever the LLM call fails or its output fails the runtime guard
@@ -37,16 +42,28 @@ export function curatedEyebrow(figureKey: string, stageId: string): string {
 // the real generator's per-brief personalization is deferred (lib/llm-real.ts returns
 // these lines today and will keep them as its fallback once generation lands). Tone bar
 // (CLAUDE.md): comfort without false promises, no dismissive "don't worry" language.
-export const DEFAULT_PREFACE_LINES: readonly string[] = [
-  "That hurts.",
-  "You do not have to solve everything right now.",
-  "Here is someone who stood in a similar kind of weight.",
-  "Let's start with their story.",
-];
+export const DEFAULT_PREFACE_LINES: readonly string[] =
+  PREFACE_FALLBACK_LINES;
 
 // A quiet chapter-eyebrow is a few words; anything sentence-length is the model
 // ignoring instructions, so we fall back rather than show it.
 const EYEBROW_MAX_LENGTH = 72;
+
+// V1's request contract predates ID-only selection. Keep its provider bytes
+// frozen, but never display arbitrary returned prose: only exact, code-reviewed
+// lines can survive this boundary. Everything else degrades atomically to the
+// neutral eyebrow. The final entry freezes the released provider success
+// fixture; the other entries are the production fallback, curated stub lines,
+// and the reviewed v2 catalog.
+const APPROVED_EYEBROW_LINES = new Set([
+  NEUTRAL_EYEBROW,
+  ...Object.values(CURATED_EYEBROWS),
+  ...PREFACE_EYEBROW_TEMPLATES.map((template) => template.line),
+  "A closed door after a long effort",
+]);
+
+const SENSITIVE_EYEBROW_LANGUAGE =
+  /\b(?:suicid\w*|self[-\s]?harm\w*|kill\w*|die|dies|died|dying|death|dead|overdos\w*|rape\w*|sexual assault|abus\w*|violence|murder\w*)\b/i;
 
 const FIGURE_NAME_STOP_WORDS = new Set([
   "and",
@@ -74,12 +91,28 @@ export type EyebrowPromptSurface = {
   displayName: string;
 };
 
+// The exact provider-visible projection. Keep the display name on the preparation
+// surface for output validation, but remove it from the runtime object handed to a
+// prompt policy so a future policy cannot accidentally serialize it.
+export type EyebrowProviderSurface = Readonly<
+  Pick<EyebrowPromptSurface, "resonance" | "throughLine">
+>;
+
 export function toEyebrowSurface(input: OpeningCopyInput): EyebrowPromptSurface {
   return {
     resonance: toResonancePromptSurface(input.resonanceBrief),
     throughLine: input.stage.shapeSentences[0] ?? "",
     displayName: input.stage.displayName,
   };
+}
+
+export function toEyebrowProviderSurface(
+  surface: EyebrowPromptSurface,
+): EyebrowProviderSurface {
+  return Object.freeze({
+    resonance: Object.freeze({ ...surface.resonance }),
+    throughLine: surface.throughLine,
+  });
 }
 
 // Runtime guard: validation is a property of the code, not a hope. A usable eyebrow
@@ -103,9 +136,23 @@ export function sanitizeEyebrow(raw: string | null, displayName: string): string
   if (unquoted.length === 0 || unquoted.length > EYEBROW_MAX_LENGTH) {
     return NEUTRAL_EYEBROW;
   }
-  if (namesFigure(unquoted, displayName)) return NEUTRAL_EYEBROW;
+  if (
+    !APPROVED_EYEBROW_LINES.has(unquoted) ||
+    namesFigure(unquoted, displayName) ||
+    containsCrisisLanguage(unquoted) ||
+    SENSITIVE_EYEBROW_LANGUAGE.test(unquoted)
+  ) {
+    return NEUTRAL_EYEBROW;
+  }
 
   return unquoted;
+}
+
+export function isSafeStoredEyebrow(
+  value: string,
+  displayName: string,
+): boolean {
+  return sanitizeEyebrow(value, displayName) === value;
 }
 
 // Reject meaningful whole-word tokens from the figure's display name, so the eyebrow

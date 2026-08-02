@@ -18,6 +18,7 @@ import {
 import { prepareResonanceFeedbackTelemetry } from "./resonance-feedback-telemetry";
 import { issueAlternateStoryCapability } from "./alternate-story-flow";
 import { persistenceMode } from "./persistence";
+import { assertRetentionSink } from "./derived-output-retention";
 
 export class ResonanceFeedbackTargetError extends Error {}
 export class ResonanceFeedbackIncompleteError extends Error {}
@@ -29,6 +30,10 @@ export async function submitResonanceFeedback(input: {
   artifact: StoryArtifact;
   feedback: ResonanceFeedbackInput;
 }): Promise<"created" | "duplicate"> {
+  assertRetentionSink(
+    "feedback.closed_response",
+    "bounded_feedback_store",
+  );
   const { userId, session, artifact, feedback } = input;
   if (
     session.userId !== userId ||

@@ -149,6 +149,10 @@ function checkHistoricalV1Identity(): void {
     llmProvider: "real",
     rerankModelId: "gpt-oss-120b",
     proseModelId: "gpt-oss-120b",
+    // Pinned literals, not the movable exported constants: this assertion
+    // fixes the immutable historical baseline's resolved prompt identity.
+    rerankPromptVersion: "rerank-prompt-v1-2026-07",
+    storyPromptVersion: "opening-copy-prompt-v1-2026-07",
     rerankTemperature: 0,
     rerankReasoningEffort: "low",
     storyTemperature: 0.3,

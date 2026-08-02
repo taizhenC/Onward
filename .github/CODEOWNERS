@@ -5,9 +5,12 @@
 /.github/CODEOWNERS @taizhenC
 /config/story-recipes.json @taizhenC
 /config/prompt-releases.json @taizhenC
+/config/story-quality-policy.json @taizhenC
 /config/recipe-decisions/ @taizhenC
 /evals/history/ @taizhenC
 /evals/shadow/ @taizhenC
+/evals/story-quality/ @taizhenC
+/roadmap/story_quality_benchmark.md @taizhenC
 /scripts/check-recipe-governance.ts @taizhenC
 /scripts/check-recipe-deployment.ts @taizhenC
 /scripts/check-recipe-failure-boundary.ts @taizhenC
@@ -17,6 +20,10 @@
 /scripts/trusted/ @taizhenC
 /scripts/recipe-evidence.ts @taizhenC
 /scripts/check-prompt-releases.ts @taizhenC
+/scripts/story-quality-evidence.ts @taizhenC
+/scripts/eval-story-quality.ts @taizhenC
+/scripts/check-story-quality-benchmark.ts @taizhenC
+/scripts/check-story-quality-immutability.ts @taizhenC
 /app/api/match/route.ts @taizhenC
 /app/api/match/handler.ts @taizhenC
 /instrumentation.ts @taizhenC
@@ -35,6 +42,7 @@
 /lib/intake.ts @taizhenC
 /lib/alternate-story.ts @taizhenC
 /lib/resonance-brief.ts @taizhenC
+/lib/story-privacy.ts @taizhenC
 /lib/story-composer.ts @taizhenC
 /lib/story-generation.ts @taizhenC
 /supabase/migrations/ @taizhenC

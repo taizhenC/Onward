@@ -19,6 +19,7 @@ The prioritized backlog contains **43 items: 17 P0, 18 P1, and 8 P2**. The expan
 3. [Technical architecture](./technical_architecture.md) — current-state review, target story-composition pipeline, data model, service boundaries, privacy model, and refactor rationale.
 4. [Release and measurement plan](./release_and_measurement.md) — delivery sequence, quality gates, metrics, rollout, ownership, dependencies, and risks.
 5. [Implementation status](./implementation_status.md) — live evidence ledger for all 43 items; an item is complete only when every acceptance criterion is directly verified.
+6. [Story-quality benchmark protocol](./story_quality_benchmark.md) — consented blind-holdout design, independent review contract, privacy boundary, release thresholds, and custodian attestation requirements.
 
 ## Priority and tag contract
 

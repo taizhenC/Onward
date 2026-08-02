@@ -13,6 +13,10 @@ import {
   type AuthUserContext,
 } from "../lib/auth";
 import {
+  _clearMemoryOwnerStorySaveStatesForTests,
+  _recordMemoryOwnerStorySaveTransitionForTests,
+} from "../lib/owner-story-save-store-memory";
+import {
   claimMemoryTelemetryFlowOwner,
   registerMemoryTelemetryFlow,
   revokeMemoryTelemetryFlow,
@@ -35,6 +39,7 @@ import {
   listMemoryProductEventOutbox,
   listMemoryProductEvents,
 } from "../lib/telemetry-store-memory";
+import { listSessionsByUser } from "../lib/session";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import type { TelemetryFlowId } from "../lib/telemetry-types";
 
@@ -300,6 +305,26 @@ async function checkUnprovedAuthenticationStaysSilent(): Promise<void> {
     }),
   );
   try {
+    _clearMemoryOwnerStorySaveStatesForTests();
+    const storiesBefore = await listSessionsByUser("auth-context-test");
+    const uncoveredPermanentRetry = await postMatch(
+      permanentFlow,
+      challenge,
+      VALID_INTAKE,
+    );
+    assert.equal(uncoveredPermanentRetry.status, 503);
+    assert.equal(authEventsForFlow(permanentFlow).length, 0);
+    assert.equal(getMemoryTelemetryFlowByFlow(permanentFlow), null);
+    assert.equal(
+      (await listSessionsByUser("auth-context-test")).length,
+      storiesBefore.length,
+    );
+
+    _recordMemoryOwnerStorySaveTransitionForTests({
+      userId: "auth-context-test",
+      evidenceKind: "anonymous_upgrade",
+      occurredAt: Date.now(),
+    });
     const permanentRetry = await postMatch(
       permanentFlow,
       challenge,
@@ -307,7 +332,12 @@ async function checkUnprovedAuthenticationStaysSilent(): Promise<void> {
     );
     assert.equal(permanentRetry.status, 200);
     assert.equal(authEventsForFlow(permanentFlow).length, 0);
+    assert.equal(
+      (await listSessionsByUser("auth-context-test")).length,
+      storiesBefore.length + 1,
+    );
   } finally {
+    _clearMemoryOwnerStorySaveStatesForTests();
     _setMemoryAuthContextForTests(undefined);
   }
 }
@@ -455,6 +485,7 @@ function checkPrivacyShape(): void {
 function checkStaticIntegration(): void {
   const handler = source("app/api/match/handler.ts");
   const intakeForm = source("components/IntakeForm.tsx");
+  const signInForm = source("components/SignInForm.tsx");
   const workflow = source(".github/workflows/ci.yml");
 
   assert(
@@ -486,6 +517,11 @@ function checkStaticIntegration(): void {
       "response.status === 401 && (await ensureAuthSession())",
     ),
   );
+  assert.match(
+    signInForm,
+    /signInWithOtp\s*\(\s*\{[\s\S]*?options\s*:\s*\{\s*shouldCreateUser\s*:\s*false\s*\}/,
+  );
+  assert(!signInForm.includes("signUp("));
   assert(workflow.includes("npm run check-auth-telemetry"));
 
   for (const relativePath of [

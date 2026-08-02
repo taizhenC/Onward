@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import ts from "typescript";
 
 import {
   INTAKE_MAX_FEELING_LENGTH,
@@ -25,6 +26,12 @@ import {
   INITIAL_MATCH_REQUEST_PRIVACY,
   matchRequestMayHaveCreatedStory,
 } from "../lib/intake-request-privacy";
+import { buildIntakeMatchRequest } from "../lib/intake-match-request";
+import {
+  selectedStoryBoundaries,
+  type StoryBoundaryEditorValue,
+  updateStoryBoundaryEditorValue,
+} from "../components/StoryBoundaryEditor";
 
 const VALID_FEELING =
   "I keep meeting closed doors and I am unsure what to try next.";
@@ -34,6 +41,7 @@ const PRIVATE_CANARY =
 function main(): void {
   checkGuidanceContract();
   checkValidationContract();
+  checkBoundaryRequestContract();
   checkSubmissionCopyContract();
   checkRequestPrivacyStateMachine();
   checkAccessibleComponentWiring();
@@ -45,6 +53,7 @@ function main(): void {
   console.log("==========================================");
   console.log("PASS guidance asks for useful context without adding diagnostic inputs");
   console.log("PASS exact age and disclosure boundaries produce focused inline errors");
+  console.log("PASS story limits project to one exact optional request shape");
   console.log("PASS submission copy describes only observable client transitions");
   console.log("PASS response-loss uncertainty survives later retries and confirmations");
   console.log("PASS the intake form wires descriptions, errors, focus, and a polite live status");
@@ -191,6 +200,107 @@ function checkValidationContract(): void {
   );
 }
 
+function checkBoundaryRequestContract(): void {
+  const hiddenDraft: StoryBoundaryEditorValue = {
+    enabled: false,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+  };
+  Object.freeze(hiddenDraft.boundaries.excludedFlags);
+  Object.freeze(hiddenDraft.boundaries);
+  Object.freeze(hiddenDraft);
+
+  const hiddenSelection = selectedStoryBoundaries(hiddenDraft);
+  assert.equal(
+    hiddenSelection,
+    undefined,
+    "a disabled editor must not project its retained draft",
+  );
+  const baseRequest = buildIntakeMatchRequest({
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: hiddenSelection,
+    clarification: null,
+    acceptAdjacent: false,
+    recoveryToken: null,
+  });
+  assert.deepEqual(
+    baseRequest,
+    { age: 28, feeling: VALID_FEELING },
+    "an initial request must omit every inactive optional field",
+  );
+  const serializedBaseRequest = JSON.stringify(baseRequest);
+  for (const hiddenCanary of [
+    "boundaries",
+    "maxIntensity",
+    "excludedFlags",
+    "gentle",
+    "addiction",
+  ]) {
+    assert(
+      !serializedBaseRequest.includes(hiddenCanary),
+      `an inactive story limit leaked ${hiddenCanary} into the request`,
+    );
+  }
+
+  const enabledDraft = updateStoryBoundaryEditorValue(hiddenDraft, {
+    type: "set_enabled",
+    enabled: true,
+  });
+  const enabledSelection = selectedStoryBoundaries(enabledDraft);
+  assert(enabledSelection, "a re-enabled editor must project its restored draft");
+  const boundaryRequest = buildIntakeMatchRequest({
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: enabledSelection,
+    clarification: null,
+    acceptAdjacent: false,
+    recoveryToken: null,
+  });
+  assert.deepEqual(boundaryRequest, {
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+  });
+  assert.notEqual(
+    boundaryRequest.boundaries?.excludedFlags,
+    enabledDraft.boundaries.excludedFlags,
+    "the request builder must isolate its boundary array from editor state",
+  );
+
+  const recoveryRequest = buildIntakeMatchRequest({
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: enabledSelection,
+    clarification: "uncertainty",
+    acceptAdjacent: true,
+    recoveryToken: "recovery-token-canary",
+  });
+  assert.deepEqual(recoveryRequest, {
+    age: 28,
+    feeling: VALID_FEELING,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+    clarification: "uncertainty",
+    acceptAdjacent: true,
+    recoveryToken: "recovery-token-canary",
+  });
+  assert.deepEqual(hiddenDraft, {
+    enabled: false,
+    boundaries: {
+      maxIntensity: "gentle",
+      excludedFlags: ["addiction"],
+    },
+  });
+}
+
 function checkSubmissionCopyContract(): void {
   const states = INTAKE_SUBMISSION_COPY;
   assert(Object.isFrozen(states), "submission copy catalog must be immutable");
@@ -284,6 +394,7 @@ function checkRequestPrivacyStateMachine(): void {
 
 function checkAccessibleComponentWiring(): void {
   const form = source("components/IntakeForm.tsx");
+  const boundaryEditor = source("components/StoryBoundaryEditor.tsx");
   const crisisCard = source("components/CrisisCard.tsx");
   assert.match(form, /INTAKE_WRITING_PROMPTS/);
   assert.match(form, /INTAKE_FICTIONAL_EXAMPLE/);
@@ -314,6 +425,63 @@ function checkAccessibleComponentWiring(): void {
   );
   assert.match(form, /ageRef\.current\?\.focus\(\)/);
   assert.match(form, /feelingRef\.current\?\.focus\(\)/);
+  assert.match(
+    form,
+    /<StoryBoundaryEditor[\s\S]{0,220}ref=\{boundaryRef\}[\s\S]{0,220}value=\{storyBoundaryEditorValue\}[\s\S]{0,220}onChange=\{handleBoundaryEditorChange\}[\s\S]{0,220}disabled=\{submitting\}/,
+    "intake must use the controlled boundary editor and preserve its focus target",
+  );
+  assert.match(
+    form,
+    /function handleBoundaryEditorChange\([\s\S]{0,220}setStoryBoundaryEditorValue\(next\)[\s\S]{0,120}resetMatchRecovery\(\)/,
+    "every story-limit edit must invalidate clarification and recovery state",
+  );
+  assert.match(boundaryEditor, /forwardRef<\s*HTMLFieldSetElement/);
+  assert.match(boundaryEditor, /const id = useId\(\)/);
+  assert.match(boundaryEditor, /<fieldset[\s\S]{0,180}disabled=\{disabled\}/);
+  assert.match(boundaryEditor, /aria-expanded=\{value\.enabled\}/);
+  assert.match(boundaryEditor, /aria-labelledby=/);
+  assert.match(boundaryEditor, /STORY_INTENSITIES\.map/);
+  assert.match(boundaryEditor, /BOUNDARY_TOPICS\.map/);
+  assert.doesNotMatch(boundaryEditor, /\.(?:preventDefault|stopPropagation)\(/);
+  assert.equal(
+    (
+      boundaryEditor.match(
+        /\bonChange\(\s*updateStoryBoundaryEditorValue/g,
+      ) ?? []
+    ).length,
+    3,
+    "each editor interaction path must emit one controlled value",
+  );
+  const toggleStart = boundaryEditor.indexOf(
+    '<label htmlFor={`${id}-toggle`}',
+  );
+  const intensityStart = boundaryEditor.indexOf("STORY_INTENSITIES.map");
+  const topicStart = boundaryEditor.indexOf("BOUNDARY_TOPICS.map");
+  assert(
+    toggleStart >= 0 && intensityStart > toggleStart && topicStart > intensityStart,
+    "boundary editor action regions must remain auditable",
+  );
+  const toggleRegion = boundaryEditor.slice(toggleStart, intensityStart);
+  const intensityRegion = boundaryEditor.slice(intensityStart, topicStart);
+  const topicRegion = boundaryEditor.slice(topicStart);
+  assert.match(
+    toggleRegion,
+    /type="checkbox"[\s\S]*type:\s*"set_enabled"[\s\S]*enabled:\s*event\.target\.checked/,
+    "the disclosure toggle must emit only its checked enabled state",
+  );
+  assert.doesNotMatch(toggleRegion, /type:\s*"(?:set_intensity|toggle_topic)"/);
+  assert.match(
+    intensityRegion,
+    /type="radio"[\s\S]*type:\s*"set_intensity"[\s\S]*maxIntensity:\s*intensity/,
+    "each intensity radio must emit its catalog intensity",
+  );
+  assert.doesNotMatch(intensityRegion, /type:\s*"(?:set_enabled|toggle_topic)"/);
+  assert.match(
+    topicRegion,
+    /type="checkbox"[\s\S]*type:\s*"toggle_topic"[\s\S]*flag:\s*topic\.flag/,
+    "each topic checkbox must emit its catalog flag",
+  );
+  assert.doesNotMatch(topicRegion, /type:\s*"(?:set_enabled|set_intensity)"/);
 
   const submitTag = openingTagContaining(form, 'type="submit"');
   assert(
@@ -430,16 +598,108 @@ function checkTruthfulTransitionWiring(): void {
 
 function checkPrivacyBoundary(): void {
   const form = source("components/IntakeForm.tsx");
+  const boundaryEditor = source("components/StoryBoundaryEditor.tsx");
+  const matchRequestBuilder = source("lib/intake-match-request.ts");
   assert.doesNotMatch(
-    form,
+    `${form}\n${boundaryEditor}\n${matchRequestBuilder}`,
     /\b(?:localStorage|sessionStorage|indexedDB)\b/,
     "raw intake must not be persisted in browser storage",
+  );
+  assert.doesNotMatch(
+    `${boundaryEditor}\n${matchRequestBuilder}`,
+    /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|Worker|SharedWorker|BroadcastChannel|useEffect|useState|navigator|window|document|globalThis|location|history|postMessage|Image|console|eval|Function|createElement)\b|\/api\//,
+    "story-limit presentation and request projection must remain sink-free",
+  );
+  const editorModules = inspectModuleSurface(
+    boundaryEditor,
+    "components/StoryBoundaryEditor.tsx",
+  );
+  assert.deepEqual(
+    editorModules.forbiddenLoads,
+    [],
+    "the boundary editor must not load modules outside auditable static imports",
+  );
+  assert.deepEqual(
+    sortModuleImports(editorModules.imports),
+    sortModuleImports([
+      { moduleSpecifier: "@/lib/story-boundaries", typeOnly: false },
+      { moduleSpecifier: "@/lib/story-spec-types", typeOnly: true },
+      { moduleSpecifier: "react", typeOnly: false },
+    ]),
+    "the boundary editor import surface must remain closed to React and reviewed catalogs",
+  );
+  const editorJsx = inspectJsxSurface(
+    boundaryEditor,
+    "components/StoryBoundaryEditor.tsx",
+  );
+  assert.deepEqual(editorJsx.forbiddenSyntax, []);
+  assert.deepEqual(editorJsx.tags, [
+    "div",
+    "fieldset",
+    "input",
+    "label",
+    "legend",
+    "span",
+  ]);
+  assert.deepEqual(editorJsx.attributes, [
+    "aria-controls",
+    "aria-describedby",
+    "aria-expanded",
+    "aria-labelledby",
+    "checked",
+    "className",
+    "disabled",
+    "htmlFor",
+    "id",
+    "key",
+    "name",
+    "onChange",
+    "ref",
+    "tabIndex",
+    "type",
+    "value",
+  ]);
+
+  const requestModules = inspectModuleSurface(
+    matchRequestBuilder,
+    "lib/intake-match-request.ts",
+  );
+  assert.deepEqual(
+    requestModules.forbiddenLoads,
+    [],
+    "the request builder must not use dynamic or CommonJS module loading",
+  );
+  assert.deepEqual(
+    sortModuleImports(requestModules.imports),
+    sortModuleImports([
+      { moduleSpecifier: "./match-recovery", typeOnly: true },
+      { moduleSpecifier: "./story-boundaries", typeOnly: true },
+    ]),
+    "the sensitive request builder may depend only on erased domain types",
+  );
+  assert.deepEqual(
+    runtimeInvocations(
+      matchRequestBuilder,
+      "lib/intake-match-request.ts",
+    ),
+    [],
+    "the request builder must stay a pure projection with no runtime calls",
   );
 
   const bodyStart = form.indexOf("const body = JSON.stringify");
   const postStart = form.indexOf("const postMatch", bodyStart);
   assert(bodyStart >= 0 && postStart > bodyStart, "match request body is not auditable");
   const requestBody = form.slice(bodyStart, postStart);
+  assert.match(
+    requestBody,
+    /buildIntakeMatchRequest\([\s\S]{0,180}boundaries:\s*selectedStoryBoundaries\(storyBoundaryEditorValue\)/,
+    "match requests must project limits through the exact controlled-value seam",
+  );
+  assert.equal(
+    (requestBody.match(/storyBoundaryEditorValue/g) ?? []).length,
+    1,
+    "the match request must reference the editor value only through its bounded projection",
+  );
   for (const forbidden of [
     "INTAKE_WRITING_PROMPTS",
     "INTAKE_FICTIONAL_EXAMPLE",
@@ -636,6 +896,151 @@ function openingButtonBeforeText(contents: string, text: string): string {
   const tagEnd = contents.indexOf(">", tagStart);
   assert(tagStart >= 0 && tagEnd >= 0 && tagEnd < textIndex);
   return contents.slice(tagStart, tagEnd + 1);
+}
+
+type StaticModuleImport = Readonly<{
+  moduleSpecifier: string;
+  typeOnly: boolean;
+}>;
+
+function inspectModuleSurface(
+  contents: string,
+  relativePath: string,
+): Readonly<{
+  imports: StaticModuleImport[];
+  forbiddenLoads: string[];
+}> {
+  const sourceFile = parsedSource(contents, relativePath);
+  const imports: StaticModuleImport[] = [];
+  const forbiddenLoads: string[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isImportDeclaration(node) && node.moduleSpecifier) {
+      if (ts.isStringLiteral(node.moduleSpecifier)) {
+        imports.push({
+          moduleSpecifier: node.moduleSpecifier.text,
+          typeOnly: importDeclarationIsTypeOnly(node),
+        });
+      } else {
+        forbiddenLoads.push("non-literal import declaration");
+      }
+    }
+    if (ts.isExportDeclaration(node) && node.moduleSpecifier) {
+      if (ts.isStringLiteral(node.moduleSpecifier)) {
+        imports.push({
+          moduleSpecifier: node.moduleSpecifier.text,
+          typeOnly: node.isTypeOnly,
+        });
+      } else {
+        forbiddenLoads.push("non-literal export declaration");
+      }
+    }
+    if (ts.isImportEqualsDeclaration(node)) {
+      forbiddenLoads.push("TypeScript import-equals");
+    }
+    if (
+      ts.isCallExpression(node) &&
+      node.expression.kind === ts.SyntaxKind.ImportKeyword
+    ) {
+      forbiddenLoads.push("dynamic import()");
+    }
+    if (
+      ts.isCallExpression(node) &&
+      ts.isIdentifier(node.expression) &&
+      node.expression.text === "require"
+    ) {
+      forbiddenLoads.push("CommonJS require()");
+    }
+    if (
+      ts.isMetaProperty(node) &&
+      node.keywordToken === ts.SyntaxKind.ImportKeyword
+    ) {
+      forbiddenLoads.push("import.meta");
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return { imports, forbiddenLoads };
+}
+
+function importDeclarationIsTypeOnly(node: ts.ImportDeclaration): boolean {
+  const clause = node.importClause;
+  if (!clause) return false;
+  if (clause.isTypeOnly) return true;
+  if (clause.name || !clause.namedBindings) return false;
+  return (
+    ts.isNamedImports(clause.namedBindings) &&
+    clause.namedBindings.elements.length > 0 &&
+    clause.namedBindings.elements.every((element) => element.isTypeOnly)
+  );
+}
+
+function sortModuleImports(
+  imports: ReadonlyArray<StaticModuleImport>,
+): StaticModuleImport[] {
+  return [...imports].sort((left, right) =>
+    left.moduleSpecifier.localeCompare(right.moduleSpecifier),
+  );
+}
+
+function inspectJsxSurface(
+  contents: string,
+  relativePath: string,
+): Readonly<{
+  tags: string[];
+  attributes: string[];
+  forbiddenSyntax: string[];
+}> {
+  const sourceFile = parsedSource(contents, relativePath);
+  const tags = new Set<string>();
+  const attributes = new Set<string>();
+  const forbiddenSyntax: string[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) {
+      tags.add(node.tagName.getText(sourceFile));
+      for (const property of node.attributes.properties) {
+        if (ts.isJsxSpreadAttribute(property)) {
+          forbiddenSyntax.push("JSX spread attribute");
+        } else {
+          attributes.add(property.name.getText(sourceFile));
+        }
+      }
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return {
+    tags: [...tags].sort(),
+    attributes: [...attributes].sort(),
+    forbiddenSyntax,
+  };
+}
+
+function runtimeInvocations(
+  contents: string,
+  relativePath: string,
+): string[] {
+  const sourceFile = parsedSource(contents, relativePath);
+  const invocations: string[] = [];
+  const visit = (node: ts.Node): void => {
+    if (ts.isCallExpression(node)) invocations.push("call expression");
+    if (ts.isNewExpression(node)) invocations.push("new expression");
+    if (ts.isTaggedTemplateExpression(node)) {
+      invocations.push("tagged template expression");
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  return invocations;
+}
+
+function parsedSource(contents: string, relativePath: string): ts.SourceFile {
+  return ts.createSourceFile(
+    relativePath,
+    contents,
+    ts.ScriptTarget.Latest,
+    true,
+    relativePath.endsWith(".tsx") ? ts.ScriptKind.TSX : ts.ScriptKind.TS,
+  );
 }
 
 function source(relativePath: string): string {

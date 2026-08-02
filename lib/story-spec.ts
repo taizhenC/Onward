@@ -13,6 +13,20 @@ import {
   type StorySpecValidation,
 } from "./story-spec-types";
 import { containsDisclosureEcho } from "./story-privacy";
+import { isReaderBridgeSentence } from "./reader-bridge-copy";
+import {
+  hasUniqueStorySourceRefs,
+  isBoundedTransparencyText,
+  isSafeTransparencyId,
+  isSafeTransparencySourceUrl,
+  isStoryReviewDate,
+  STORY_CLAIM_KINDS,
+  STORY_FACT_CONFIDENCES,
+  STORY_QUOTE_STATUSES,
+  STORY_SOURCE_SCOPES,
+  STORY_TRANSPARENCY_LIMITS,
+} from "./story-transparency-policy";
+export { parseStorySpecDocument } from "./story-spec-document";
 
 const EXPECTED_ROLES = [
   "scene",
@@ -109,8 +123,17 @@ export function validateStorySpec(
   const factIds = new Set(spec.facts.map((fact) => fact.factId));
   const entityIds = new Set(spec.entities.map((entity) => entity.entityId));
   const quoteIds = new Set(spec.quotes.map((quote) => quote.quoteId));
+  const quotesById = new Map(
+    spec.quotes.map((quote) => [quote.quoteId, quote]),
+  );
   const interpretationIds = new Set(
     spec.interpretations.map((interpretation) => interpretation.interpretationId),
+  );
+  const interpretationsById = new Map(
+    spec.interpretations.map((interpretation) => [
+      interpretation.interpretationId,
+      interpretation,
+    ]),
   );
 
   if (spec.schemaVersion !== STORY_SPEC_SCHEMA_VERSION) {
@@ -118,6 +141,9 @@ export function validateStorySpec(
   }
   if (!spec.storySpecId || !spec.figureKey || !spec.stageId) {
     errors.push("storySpecId, figureKey, and stageId are required");
+  }
+  if (!isSafeTransparencyId(spec.storySpecId)) {
+    errors.push("storySpecId must use the bounded public identifier format");
   }
   if (!Number.isInteger(spec.version) || spec.version < 1) {
     errors.push("version must be a positive integer");
@@ -129,8 +155,18 @@ export function validateStorySpec(
   if (factIds.size !== spec.facts.length) errors.push("fact IDs must be unique");
   if (entityIds.size !== spec.entities.length) errors.push("entity IDs must be unique");
   if (quoteIds.size !== spec.quotes.length) errors.push("quote IDs must be unique");
+  if (interpretationIds.size !== spec.interpretations.length) {
+    errors.push("interpretation IDs must be unique");
+  }
   if (spec.sources.length === 0 || spec.facts.length === 0) {
     errors.push("at least one source and fact are required");
+  }
+  if (
+    spec.sources.length > STORY_TRANSPARENCY_LIMITS.sources ||
+    spec.facts.length > STORY_TRANSPARENCY_LIMITS.facts ||
+    spec.quotes.length > STORY_TRANSPARENCY_LIMITS.quotes
+  ) {
+    errors.push("source, fact, or quote count exceeds the public projection limit");
   }
   if (
     !["gentle", "moderate", "direct"].includes(spec.contentProfile.intensity) ||
@@ -148,12 +184,15 @@ export function validateStorySpec(
   }
 
   spec.sources.forEach((source) => {
-    if (!/^[A-Za-z0-9][A-Za-z0-9:._-]{0,127}$/.test(source.sourceId)) {
+    if (!isSafeTransparencyId(source.sourceId)) {
       errors.push("source IDs must use the bounded public identifier format");
     }
     if (
-      !source.citation.trim() ||
-      source.citation.length > 2_000 ||
+      !isBoundedTransparencyText(
+        source.citation,
+        1,
+        STORY_TRANSPARENCY_LIMITS.citation,
+      ) ||
       hasUnsafeControl(source.citation)
     ) {
       errors.push(`${source.sourceId} citation is empty or unsafe`);
@@ -161,16 +200,46 @@ export function validateStorySpec(
     if (source.locator !== undefined && !isSafeLocator(source.locator)) {
       errors.push(`${source.sourceId} locator is invalid`);
     }
-    if (source.url !== undefined && !isSafeSourceUrl(source.url)) {
+    if (
+      source.url !== undefined &&
+      !isSafeTransparencySourceUrl(source.url)
+    ) {
       errors.push(`${source.sourceId} URL must be a credential-free HTTPS URL`);
     }
   });
 
   for (const [index, fact] of spec.facts.entries()) {
-    if (!fact.statement.trim() || fact.sourceRefs.length === 0) {
-      errors.push(`${fact.factId} requires a statement and source reference`);
+    if (!isSafeTransparencyId(fact.factId)) {
+      errors.push(`${fact.factId} must use the bounded public identifier format`);
+    }
+    if (
+      !isBoundedTransparencyText(
+        fact.statement,
+        1,
+        STORY_TRANSPARENCY_LIMITS.factStatement,
+      ) ||
+      fact.sourceRefs.length === 0
+    ) {
+      errors.push(
+        `${fact.factId} statement must be non-empty and within the public limit, with a source reference`,
+      );
+    }
+    if (
+      fact.sourceRefs.length > STORY_TRANSPARENCY_LIMITS.sourceRefs ||
+      !hasUniqueStorySourceRefs(fact.sourceRefs)
+    ) {
+      errors.push(`${fact.factId} source references must be bounded and unique`);
+    }
+    if (
+      !STORY_FACT_CONFIDENCES.includes(fact.confidence) ||
+      !STORY_CLAIM_KINDS.includes(fact.claimKind)
+    ) {
+      errors.push(`${fact.factId} confidence or claim kind is invalid`);
     }
     for (const ref of fact.sourceRefs) {
+      if (!STORY_SOURCE_SCOPES.includes(ref.scope)) {
+        errors.push(`${fact.factId} source scope is invalid`);
+      }
       if (!sourceIds.has(ref.sourceId)) {
         errors.push(`${fact.factId} references unknown source ${ref.sourceId}`);
       }
@@ -213,7 +282,30 @@ export function validateStorySpec(
     if (/\{feeling\}|You wrote:/i.test(beat.canonicalText)) {
       errors.push(`arc[${index}] contains a forbidden disclosure echo surface`);
     }
-    for (const factId of [...beat.requiredFactIds, ...beat.optionalFactIds]) {
+    const requiredFactIds = new Set(beat.requiredFactIds);
+    const optionalFactIds = new Set(beat.optionalFactIds);
+    const declaredFactIds = new Set([
+      ...beat.requiredFactIds,
+      ...beat.optionalFactIds,
+    ]);
+    const usedFactIds = new Set<string>();
+    const declaredQuoteIds = new Set(beat.quoteIds);
+    const usedQuoteIds = new Set<string>();
+    if (requiredFactIds.size !== beat.requiredFactIds.length) {
+      errors.push(`arc[${index}] required facts must be unique`);
+    }
+    if (optionalFactIds.size !== beat.optionalFactIds.length) {
+      errors.push(`arc[${index}] optional facts must be unique`);
+    }
+    if (
+      beat.requiredFactIds.some((factId) => optionalFactIds.has(factId))
+    ) {
+      errors.push(`arc[${index}] required and optional facts must be disjoint`);
+    }
+    if (declaredQuoteIds.size !== beat.quoteIds.length) {
+      errors.push(`arc[${index}] quote links must be unique`);
+    }
+    for (const factId of declaredFactIds) {
       if (!factIds.has(factId)) errors.push(`arc[${index}] references unknown fact ${factId}`);
     }
     for (const entityId of beat.entityIds) {
@@ -224,7 +316,8 @@ export function validateStorySpec(
     for (const quoteId of beat.quoteIds) {
       if (!quoteIds.has(quoteId)) errors.push(`arc[${index}] references unknown quote ${quoteId}`);
     }
-    const sentenceCount = splitFactSentences(beat.canonicalText).length;
+    const sentences = splitCanonicalSentences(beat.canonicalText);
+    const sentenceCount = sentences.length;
     const mappedSentenceIndexes = new Set<number>();
     for (const mapping of beat.sentenceEvidence) {
       if (
@@ -238,46 +331,199 @@ export function validateStorySpec(
         errors.push(`arc[${index}] maps one sentence more than once`);
       }
       mappedSentenceIndexes.add(mapping.sentenceIndex);
-      if (mapping.factIds.length === 0 && mapping.interpretationIds.length === 0) {
-        errors.push(`arc[${index}] sentence evidence cannot be empty`);
+      if (mapping.treatment === "reader_bridge") {
+        if (beat.role !== "bridge") {
+          errors.push(
+            `arc[${index}] reader-bridge treatment is only legal on the bridge`,
+          );
+        }
+        if (
+          mapping.factIds.length > 0 ||
+          mapping.interpretationIds.length > 0 ||
+          mapping.quoteIds.length > 0
+        ) {
+          errors.push(
+            `arc[${index}] reader-bridge treatment cannot reference historical evidence`,
+          );
+        }
+        const sentence = sentences[mapping.sentenceIndex];
+        if (sentence !== undefined && !isReaderBridgeSentence(sentence)) {
+          errors.push(
+            `arc[${index}] reader-bridge treatment must use reviewed reader copy`,
+          );
+        }
+      } else if (
+        mapping.factIds.length === 0 &&
+        mapping.interpretationIds.length === 0
+      ) {
+        errors.push(`arc[${index}] historical sentence evidence cannot be empty`);
+      }
+      if (new Set(mapping.factIds).size !== mapping.factIds.length) {
+        errors.push(`arc[${index}] sentence fact links must be unique`);
+      }
+      if (
+        new Set(mapping.interpretationIds).size !==
+        mapping.interpretationIds.length
+      ) {
+        errors.push(`arc[${index}] sentence interpretation links must be unique`);
+      }
+      if (new Set(mapping.quoteIds).size !== mapping.quoteIds.length) {
+        errors.push(`arc[${index}] sentence quote links must be unique`);
       }
       for (const factId of mapping.factIds) {
+        usedFactIds.add(factId);
         if (!factIds.has(factId)) {
           errors.push(`arc[${index}] sentence references unknown fact ${factId}`);
         }
       }
       for (const interpretationId of mapping.interpretationIds) {
-        if (!interpretationIds.has(interpretationId)) {
+        const interpretation = interpretationsById.get(interpretationId);
+        if (!interpretation) {
           errors.push(
             `arc[${index}] sentence references unknown interpretation ${interpretationId}`,
           );
+          continue;
+        }
+        if (!interpretation.allowed) {
+          errors.push(
+            `arc[${index}] sentence references disallowed interpretation ${interpretationId}`,
+          );
+        }
+        if (interpretation.supportingFactIds.length === 0) {
+          errors.push(
+            `arc[${index}] mapped interpretation ${interpretationId} needs supporting facts`,
+          );
+        }
+        for (const factId of interpretation.supportingFactIds) {
+          usedFactIds.add(factId);
+        }
+      }
+      for (const quoteId of mapping.quoteIds) {
+        usedQuoteIds.add(quoteId);
+        if (!quoteIds.has(quoteId)) {
+          errors.push(`arc[${index}] sentence references unknown quote ${quoteId}`);
         }
       }
     }
     if (options.forPublish) {
-      for (const directQuote of extractDirectQuotes(beat.canonicalText)) {
-        const approved = spec.quotes.find(
-          (quote) => quote.status === "verbatim" && quote.text === directQuote,
-        );
-        if (!approved) errors.push(`arc[${index}] contains unsupported direct quote`);
-        else if (!beat.quoteIds.includes(approved.quoteId)) {
-          errors.push(`arc[${index}] direct quote is not linked to its quote ID`);
+      for (const factId of usedFactIds) {
+        if (!declaredFactIds.has(factId)) {
+          errors.push(
+            `arc[${index}] sentence evidence uses undeclared fact ${factId}`,
+          );
         }
       }
-      if (beat.role !== "bridge" && mappedSentenceIndexes.size !== sentenceCount) {
-        errors.push(`arc[${index}] requires sentence-level evidence before publish`);
+      for (const factId of declaredFactIds) {
+        if (!usedFactIds.has(factId)) {
+          errors.push(
+            `arc[${index}] declares fact ${factId} without sentence evidence`,
+          );
+        }
+      }
+      for (const quoteId of usedQuoteIds) {
+        if (!declaredQuoteIds.has(quoteId)) {
+          errors.push(
+            `arc[${index}] sentence evidence uses undeclared quote ${quoteId}`,
+          );
+        }
+      }
+      for (const quoteId of declaredQuoteIds) {
+        if (!usedQuoteIds.has(quoteId)) {
+          errors.push(
+            `arc[${index}] declares quote ${quoteId} without sentence evidence`,
+          );
+        }
+      }
+      for (const mapping of beat.sentenceEvidence) {
+        const sentence = sentences[mapping.sentenceIndex];
+        if (sentence === undefined) continue;
+        const directQuotes = extractDirectQuotes(sentence);
+        for (const quoteId of mapping.quoteIds) {
+          const quote = quotesById.get(quoteId);
+          if (
+            quote?.status === "verbatim" &&
+            !directQuotes.includes(quote.text)
+          ) {
+            errors.push(
+              `arc[${index}] mapped verbatim quote ${quoteId} does not appear in its sentence`,
+            );
+          }
+        }
+      }
+      for (const [sentenceIndex, sentence] of sentences.entries()) {
+        const mapping = beat.sentenceEvidence.find(
+          (candidate) => candidate.sentenceIndex === sentenceIndex,
+        );
+        for (const directQuote of extractDirectQuotes(sentence)) {
+          const approved = spec.quotes.find(
+            (quote) =>
+              quote.status === "verbatim" && quote.text === directQuote,
+          );
+          if (!approved) {
+            errors.push(`arc[${index}] contains unsupported direct quote`);
+          } else if (!mapping?.quoteIds.includes(approved.quoteId)) {
+            errors.push(
+              `arc[${index}] direct quote is not linked in its sentence evidence`,
+            );
+          }
+        }
+      }
+      if (mappedSentenceIndexes.size !== sentenceCount) {
+        errors.push(
+          `arc[${index}] requires sentence-level evidence or reader-bridge classification before publish`,
+        );
       }
     }
-    if (options.forPublish && beat.role !== "bridge" && beat.requiredFactIds.length === 0) {
+    if (
+      options.forPublish &&
+      beat.sentenceEvidence.some(
+        (mapping) => mapping.treatment === "historical_claim",
+      ) &&
+      beat.requiredFactIds.length === 0
+    ) {
       errors.push(`arc[${index}] requires at least one supporting fact before publish`);
     }
   });
 
   for (const quote of spec.quotes) {
-    if (!quote.text.trim() || quote.sourceRefs.length === 0) {
-      errors.push(`${quote.quoteId} requires text and source references`);
+    if (!isSafeTransparencyId(quote.quoteId)) {
+      errors.push(`${quote.quoteId} must use the bounded public identifier format`);
+    }
+    if (
+      !isBoundedTransparencyText(
+        quote.text,
+        1,
+        STORY_TRANSPARENCY_LIMITS.quoteText,
+      ) ||
+      quote.sourceRefs.length === 0
+    ) {
+      errors.push(
+        `${quote.quoteId} text must be non-empty and within the public limit, with source references`,
+      );
+    }
+    if (
+      quote.speaker !== undefined &&
+      !isBoundedTransparencyText(
+        quote.speaker,
+        1,
+        STORY_TRANSPARENCY_LIMITS.quoteSpeaker,
+      )
+    ) {
+      errors.push(`${quote.quoteId} speaker is empty or exceeds the public limit`);
+    }
+    if (
+      quote.sourceRefs.length > STORY_TRANSPARENCY_LIMITS.sourceRefs ||
+      !hasUniqueStorySourceRefs(quote.sourceRefs)
+    ) {
+      errors.push(`${quote.quoteId} source references must be bounded and unique`);
+    }
+    if (!STORY_QUOTE_STATUSES.includes(quote.status)) {
+      errors.push(`${quote.quoteId} status is invalid`);
     }
     for (const ref of quote.sourceRefs) {
+      if (!STORY_SOURCE_SCOPES.includes(ref.scope)) {
+        errors.push(`${quote.quoteId} source scope is invalid`);
+      }
       if (!sourceIds.has(ref.sourceId)) {
         errors.push(`${quote.quoteId} references unknown source ${ref.sourceId}`);
       }
@@ -310,6 +556,17 @@ export function validateStorySpec(
   }
 
   for (const interpretation of spec.interpretations) {
+    if (!interpretation.statement.trim()) {
+      errors.push(`${interpretation.interpretationId} statement is empty`);
+    }
+    if (
+      new Set(interpretation.supportingFactIds).size !==
+      interpretation.supportingFactIds.length
+    ) {
+      errors.push(
+        `${interpretation.interpretationId} supporting facts must be unique`,
+      );
+    }
     for (const factId of interpretation.supportingFactIds) {
       if (!factIds.has(factId)) {
         errors.push(`${interpretation.interpretationId} references unknown fact ${factId}`);
@@ -339,12 +596,7 @@ export function validateStorySpec(
     ) {
       errors.push("a reviewed, spoiler-light content note is required before publish");
     }
-    if (
-      spec.review.reviewedAt &&
-      !/^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?Z)?$/.test(
-        spec.review.reviewedAt,
-      )
-    ) {
+    if (spec.review.reviewedAt && !isStoryReviewDate(spec.review.reviewedAt)) {
       errors.push("reviewedAt must be an ISO date or UTC timestamp");
     }
   } else {
@@ -366,18 +618,12 @@ function buildSources(stage: FigureStageRow): SourceRecord[] {
   }));
 }
 
-function isSafeSourceUrl(value: string): boolean {
-  if (value.length > 2_000 || hasUnsafeControl(value)) return false;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" && !url.username && !url.password;
-  } catch {
-    return false;
-  }
-}
-
 function isSafeLocator(value: string): boolean {
-  return value.trim().length > 0 && value.length <= 500 && !hasUnsafeControl(value);
+  return (
+    value.trim().length > 0 &&
+    value.length <= STORY_TRANSPARENCY_LIMITS.locator &&
+    !hasUnsafeControl(value)
+  );
 }
 
 function hasUnsafeControl(value: string): boolean {
@@ -385,14 +631,15 @@ function hasUnsafeControl(value: string): boolean {
 }
 
 function buildFactAtoms(stage: FigureStageRow, sources: SourceRecord[]): FactAtom[] {
-  const refs = sources.map((source) => ({
-    sourceId: source.sourceId,
-    scope: "broad" as const,
-  }));
+  // Fresh ref objects per fact — editors narrow scope/locator claim by claim,
+  // so facts must not share one mutable sourceRefs array.
   return splitFactSentences(stage.biographicalFacts).map((statement, index) => ({
     factId: `fact-${pad(index + 1)}`,
     statement,
-    sourceRefs: refs,
+    sourceRefs: sources.map((source) => ({
+      sourceId: source.sourceId,
+      scope: "broad" as const,
+    })),
     eventOrder: index + 1,
     confidence: "documented",
     claimKind: "event",
@@ -404,6 +651,17 @@ function splitFactSentences(text: string): string[] {
     .replace(/\s+/g, " ")
     .trim()
     .split(/(?<=[.!?])\s+(?=[A-Z0-9"'\u201c\u2018])/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean);
+}
+
+function splitCanonicalSentences(text: string): string[] {
+  return text
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(
+      /(?:(?<=[.!?])|(?<=[.!?]["'\u201d\u2019]))\s+(?=[A-Z0-9"'\u201c\u2018])/,
+    )
     .map((sentence) => sentence.trim())
     .filter(Boolean);
 }
@@ -450,7 +708,9 @@ function buildDraftQuotes(
     quoteId: `quote-${pad(index + 1)}`,
     text: (match[1] ?? match[2]).trim(),
     status: "unverified",
-    sourceRefs,
+    // Same rule as facts: each quote owns its refs so verifying one quote's
+    // source cannot silently retag another's.
+    sourceRefs: sourceRefs.map((ref) => ({ ...ref })),
   }));
 }
 

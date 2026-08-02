@@ -1,3 +1,9 @@
+import {
+  PERSONALIZED_PREFACE_PROMPT_CONTRACT,
+  type PersonalizedPrefacePromptContract,
+  type PrefacePlanRequest,
+} from "./preface-plan-contract";
+
 type TemplateValue = string | number | readonly string[];
 
 export type PromptRerankCandidate = Readonly<{
@@ -27,6 +33,22 @@ export type PromptHybridPlanSurface = Readonly<{
   allowedTransitionTemplateIds: readonly string[];
   allowedBridgeTemplateIds: readonly string[];
   priorFailureReasons: readonly string[];
+}>;
+
+// Structural rather than inferred from v1 so append-only releases may change
+// prose while preserving the provider contract required by current adapters.
+export type StoryPromptContract = Readonly<{
+  eyebrow: Readonly<{
+    system: string;
+    user: string;
+  }>;
+  hybridPlan: Readonly<{
+    system: string;
+    user: string;
+    responseFormat: "json_object";
+    temperature: number;
+  }>;
+  personalizedPreface?: PersonalizedPrefacePromptContract;
 }>;
 
 export const RERANK_PROMPT_CONTRACT = Object.freeze({
@@ -110,7 +132,13 @@ export const STORY_PROMPT_CONTRACT = Object.freeze({
     responseFormat: "json_object",
     temperature: 0,
   }),
-});
+}) satisfies StoryPromptContract;
+
+export const STORY_PROMPT_CONTRACT_V2 = Object.freeze({
+  eyebrow: STORY_PROMPT_CONTRACT.eyebrow,
+  hybridPlan: STORY_PROMPT_CONTRACT.hybridPlan,
+  personalizedPreface: PERSONALIZED_PREFACE_PROMPT_CONTRACT,
+}) satisfies StoryPromptContract;
 
 export const RERANK_SYSTEM_PROMPT = RERANK_PROMPT_CONTRACT.system;
 export const EYEBROW_SYSTEM_PROMPT = STORY_PROMPT_CONTRACT.eyebrow.system;
@@ -131,8 +159,11 @@ export function buildRerankUserPrompt(
   });
 }
 
-export function buildEyebrowUserPrompt(surface: PromptEyebrowSurface): string {
-  return renderTemplate(STORY_PROMPT_CONTRACT.eyebrow.user, {
+export function buildEyebrowUserPrompt(
+  surface: PromptEyebrowSurface,
+  contract: StoryPromptContract = STORY_PROMPT_CONTRACT,
+): string {
+  return renderTemplate(contract.eyebrow.user, {
     ...surface.resonance,
     throughLine: surface.throughLine,
   });
@@ -140,8 +171,9 @@ export function buildEyebrowUserPrompt(surface: PromptEyebrowSurface): string {
 
 export function buildHybridPlanUserPrompt(
   input: PromptHybridPlanSurface,
+  contract: StoryPromptContract = STORY_PROMPT_CONTRACT,
 ): string {
-  return renderTemplate(STORY_PROMPT_CONTRACT.hybridPlan.user, {
+  return renderTemplate(contract.hybridPlan.user, {
     schemaVersion: input.schemaVersion,
     ...input.resonance,
     episodeShape: input.episodeShape,
@@ -152,6 +184,24 @@ export function buildHybridPlanUserPrompt(
       input.priorFailureReasons.length > 0
         ? input.priorFailureReasons
         : "none",
+  });
+}
+
+export function buildPrefacePlanUserPrompt(
+  input: PrefacePlanRequest,
+  contract: StoryPromptContract,
+): string {
+  if (!contract.personalizedPreface) {
+    throw new Error("Personalized preface prompt is unavailable.");
+  }
+  return renderTemplate(contract.personalizedPreface.user, {
+    schemaVersion: input.schemaVersion,
+    ...input.resonance,
+    episodeShape: input.episodeShape,
+    allowedEyebrowTemplateIds: input.allowedEyebrowTemplateIds,
+    allowedAcknowledgementTemplateIds:
+      input.allowedAcknowledgementTemplateIds,
+    allowedDistanceTemplateIds: input.allowedDistanceTemplateIds,
   });
 }
 

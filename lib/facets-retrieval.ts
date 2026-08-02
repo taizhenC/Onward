@@ -15,6 +15,7 @@ import {
 } from "./match-config";
 import { embedQuery, isEmbeddingStub } from "./embeddings";
 import { loadEmbeddingCache, stageCacheKey } from "./embeddings-cache";
+import { consumeDerivedOutput } from "./derived-output-retention";
 import { extractUserThemes, themeScore } from "./themes";
 import { weightedRrf, type LaneRanking } from "./rrf";
 
@@ -85,7 +86,10 @@ export async function retrieveFacets(
 
   // One query embedding, reused across shape + all facet lanes (can throw EmbeddingError → the
   // caller falls back to keyword in auto mode, or fails in facetsrag mode).
-  const query = await embedQuery(input.feeling);
+  const query = consumeDerivedOutput(
+    await embedQuery(input.feeling),
+    "retrieval_scoring",
+  );
 
   const stageByKey = new Map<string, FigureStageRow>();
   const poolWithKey = pool.map((stage) => {

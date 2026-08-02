@@ -57,13 +57,19 @@ All linked events expire after 30 days. New flows advance through issued, owner-
 | `feedback_submitted` | Feedback response and felt-close rates | Server only for durable `created` feedback | story role and verdict only | Product/Matching / outcome | Flow delete or 30-day TTL |
 | `alternate_requested` | First-match recovery demand | Server on first valid durable claim | none | Product/Matching / recovery | Flow delete or 30-day TTL |
 | `alternate_resolved` | Alternate recovery success | Server on terminal transition | closed terminal outcome | Product/Matching / recovery | Flow delete or 30-day TTL |
-| `story_saved` | Durable save rate | Server only after P0-14 defines/commits save | story role | Product / retention | Flow delete or 30-day TTL |
-| `saved_story_reopened` | Seven-to-thirty-day return value | Server read after durable save | story role, `<7d`/`7-30d` | Product / retention | Flow delete or 30-day TTL |
+| `story_saved` | Durable save rate | Reserved: future transaction-derived producer from committed owner Save State | story role | Product / retention | Flow delete or 30-day TTL |
+| `saved_story_reopened` | Seven-to-thirty-day return value | Reserved: future server read against authoritative Save timestamps | story role, `<7d`/`7-30d` | Product / retention | Flow delete or 30-day TTL |
 | `deletion_requested` | Deletion SLA denominator | Server after a confirmed owner-scoped deletion | request-token-derived, retry-stable correlation ID and scope; unlinkable | Privacy/Platform / trust | 30-day TTL; deliberately unlinked |
 | `deletion_completed` | Deletion SLA completion | Server after confirmed successful cascade | same deletion correlation ID, scope, latency; unlinkable | Privacy/Platform / trust | 30-day TTL; deliberately unlinked |
 | `flow_failed` | Availability and failure alerts | Eligible initial-story preparation boundary; other failure domains remain reserved | domain, closed error/status/latency buckets | Platform / reliability | Flow delete or 30-day TTL |
 
-`story_saved` and `saved_story_reopened` are contract reservations, not authorization to instrument the current email-upgrade UI as a saved story. They remain disabled until P0-14 defines the durable save state. The eventual producer must compute age from authoritative persisted timestamps, emit at most the first qualifying reopen in each bucket, and suppress reopens after 30 days; callers may not choose a bucket.
+`story_saved` and `saved_story_reopened` remain contract reservations, not
+authorization to instrument an email-send response. Migration `0022` now
+records the durable owner transition, but no event producer is active in this
+slice. A separately reviewed producer must be derived from that committed
+transaction, compute reopen age from authoritative persisted timestamps, emit
+at most the first qualifying reopen in each bucket, and suppress reopens after
+30 days; callers may not choose a bucket.
 
 `crisis_intercepted` is likewise a schema reservation, not an active durable producer. The repository's current safety invariant is stricter: an intercepted disclosure returns reviewed resources before flow parsing, auth, rate limiting, providers, and every application write. Enabling even an unlinkable crisis-volume row requires an explicit safety/privacy policy revision and evidence that resource delivery cannot be delayed; this branch does not silently weaken the no-write rule for measurement.
 

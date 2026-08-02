@@ -3,6 +3,7 @@ import type { StoryArtifact } from "./story-artifact-types";
 import { persistenceMode } from "./persistence";
 import {
   isHistoricalConcernFact,
+  validateLegacyStoredStoryTransparencyV1,
   validateStoredStoryTransparency,
 } from "./story-transparency";
 import type { HistoricalConcernReason } from "./story-transparency-types";
@@ -11,6 +12,7 @@ import {
   submitMemoryHistoricalConcern,
 } from "./historical-concern-store-memory";
 import { submitSupabaseHistoricalConcern } from "./historical-concern-store-supabase";
+import { assertRetentionSink } from "./derived-output-retention";
 
 export type SubmitHistoricalConcernInput = {
   userId: string;
@@ -30,9 +32,16 @@ export class HistoricalConcernTargetError extends Error {
 export async function submitHistoricalConcern(
   input: SubmitHistoricalConcernInput,
 ): Promise<void> {
+  assertRetentionSink(
+    "editorial.historical_concern",
+    "shared_editorial_store",
+  );
   const transparency = input.artifact.transparency;
   if (
-    !validateStoredStoryTransparency(transparency) ||
+    !(
+      validateStoredStoryTransparency(transparency) ||
+      validateLegacyStoredStoryTransparencyV1(transparency)
+    ) ||
     transparency.provenance.status !== "editorially_reviewed" ||
     !isHistoricalConcernFact(transparency, input.factId) ||
     !input.artifact.beats.some((beat) => beat.factIds.includes(input.factId))

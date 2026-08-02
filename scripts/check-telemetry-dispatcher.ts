@@ -754,6 +754,7 @@ function checkFirstPartyRuntimeOnly(): void {
     resolve("lib/telemetry.ts"),
     resolve("lib/telemetry-store-supabase.ts"),
   ]);
+  const retentionRegistryPath = resolve("lib/derived-output-retention.ts");
   const privateDatabaseBoundary =
     /\b(?:telemetry_event_daily_rollups|telemetry_rollup_dispatch_control|claim_product_event_outbox_v2|settle_product_event_outbox_rollup_v1|dispatch_product_event_rollups_v1|read_telemetry_event_rollups_v1|telemetry_outbox_health_v1|set_telemetry_rollup_dispatch_enabled_v1|telemetry_rollup_schema_health_v1)\b/i;
   const legacyRawRuntime =
@@ -763,8 +764,25 @@ function checkFirstPartyRuntimeOnly(): void {
 
   for (const path of runtimePaths) {
     const source = readRequired(path);
+    let runtimeAccessSource = source;
+    if (path === retentionRegistryPath) {
+      for (const declaration of [
+        /"public\.telemetry_event_daily_rollups"\s*:\s*\["bounded_operational"\],/,
+        /"public\.telemetry_rollup_dispatch_control"\s*:\s*\["curated_reference"\],/,
+      ]) {
+        const matches = runtimeAccessSource.match(
+          new RegExp(declaration.source, "g"),
+        );
+        assert.equal(
+          matches?.length,
+          1,
+          `${path} may name each private telemetry table exactly once and only in the closed retention registry`,
+        );
+        runtimeAccessSource = runtimeAccessSource.replace(declaration, "");
+      }
+    }
     assert.doesNotMatch(
-      source,
+      runtimeAccessSource,
       privateDatabaseBoundary,
       `${path} must not expose or consume the private database dispatcher/reporting surface`,
     );

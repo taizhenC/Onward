@@ -25,6 +25,8 @@ import { sha256Hex } from "../lib/sha256-edge";
 type Environment = Record<string, string | undefined>;
 
 const DEPLOYMENT_ID = "deploy_check_2026-07-18";
+const PERSONALIZED_PREFACE_RECIPE_ID =
+  "keyword-rerank-personalized-preface-v2-figure-library-50-2026-07-28";
 
 function productionEnvironment(recipeId = PRIMARY_STORY_RECIPE.recipeId): Environment {
   return {
@@ -83,6 +85,8 @@ function main(): void {
     selectedPlan?.llmProvider !== "real" ||
     selectedPlan.rerankModelId !== "gpt-oss-120b" ||
     selectedPlan.proseModelId !== "gpt-oss-120b" ||
+    selectedPlan.rerankPromptVersion !== runtime.recipe.rerankPromptVersion ||
+    selectedPlan.storyPromptVersion !== runtime.recipe.storyPromptVersion ||
     selectedPlan.retrievalMode !== "keyword" ||
     selectedPlan.rerankTopK !== 6 ||
     selectedPlan.embedding !== null ||
@@ -202,6 +206,13 @@ function main(): void {
     },
     "recipe_not_selectable",
   );
+  expectFailure(
+    "unpromoted personalized-preface challenger",
+    (env) => {
+      env.ONWARD_PRODUCTION_RECIPE_ID = PERSONALIZED_PREFACE_RECIPE_ID;
+    },
+    "recipe_not_selectable",
+  );
   const stale = productionEnvironment();
   Object.assign(stale, {
     LLM_PROVIDER: "stub",
@@ -230,6 +241,8 @@ function main(): void {
       active.llmProvider !== "real" ||
       active.rerankModelId !== selectedPlan.rerankModelId ||
       active.proseModelId !== selectedPlan.proseModelId ||
+      active.rerankPromptVersion !== selectedPlan.rerankPromptVersion ||
+      active.storyPromptVersion !== selectedPlan.storyPromptVersion ||
       resolveRetrievalMode() !== selectedPlan.retrievalMode ||
       hybridStoryComposerEnabled() !== false ||
       !isEmbeddingStub()

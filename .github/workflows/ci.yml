@@ -28,6 +28,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Reject high-severity dependency advisories
+        run: npm run audit:high
+      - name: Verify the native image runtime
+        run: npm run check-sharp-runtime
       - name: Protect immutable recipe evidence
         if: github.event_name == 'pull_request'
         shell: bash
@@ -35,18 +39,32 @@ jobs:
           git fetch --no-tags --depth=1 origin "${{ github.event.pull_request.base.sha }}"
           npm run check-recipe-immutability -- "${{ github.event.pull_request.base.sha }}"
           npm run check-prompt-releases -- "${{ github.event.pull_request.base.sha }}"
+          npm run check-story-quality-immutability -- "${{ github.event.pull_request.base.sha }}"
+      - name: Audit story-quality immutability after a main push
+        if: github.event_name == 'push' && github.event.before != '0000000000000000000000000000000000000000'
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin "${{ github.event.before }}"
+          npm run check-story-quality-immutability -- "${{ github.event.before }}"
       - run: npm run lint
       - run: npm run typecheck
+      - run: npm run check-facet-signal
       - run: npm run check-recipe-manifest-v2
       - run: npm run check-recipe-governance
       - run: npm run check-prompt-releases
+      - run: npm run check-opening-copy-policy
+      - run: npm run check-personalized-preface
       - run: node scripts/trusted/recipe-promotion-attestor.mjs self-test
       - run: npm run check-recipe-registry
       - run: npm run check-recipe-deployment
       - run: npm run check-recipe-failure-boundary
       - run: npm run check-figure
       - run: npm run check-story-spec
+      - run: npm run check-story-spec-migration
       - run: npm run check-story-artifact
+      - run: npm run check-derived-output-retention
+      - run: npm run check-story-quality-benchmark
+      - run: npm run check-story-quality-immutability-self-test
       - run: npm run check-source-transparency
       - run: npm run check-resonance-feedback
       - run: npm run check-try-another
@@ -58,11 +76,14 @@ jobs:
       - run: npm run check-alternate-request-telemetry
       - run: npm run check-alternate-resolution-telemetry
       - run: npm run check-entry-telemetry
+      - run: npm run check-intake-experience
       - run: npm run check-auth-telemetry
       - run: npm run check-flow-failure-telemetry
       - run: npm run check-telemetry-dispatcher
       - run: npm run check-story-deletion
       - run: npm run check-account-deletion
+      - run: npm run check-owner-story-save
+      - run: npm run check-story-beat-resilience
       - run: npm run check-reader-visibility-telemetry
       - run: npm run check-story-boundaries
       - run: npm run check-resonance-brief

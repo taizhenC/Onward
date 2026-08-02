@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "story-quality-policy-v1",
+  "policyVersion": "story-quality-release-v1-2026-07",
+  "protocolVersion": "story-quality-protocol-v1-2026-07",
+  "evidenceSchemaVersion": "story-quality-evidence-v1",
+  "packetSchemaVersion": "story-quality-review-packet-v1",
+  "benchmarkSchemaVersion": "story-quality-benchmark-v1",
+  "requiredReleaseSplit": "blind_holdout",
+  "custodianAttestation": {
+    "requiredForProtectedHoldoutPass": true,
+    "algorithm": "Ed25519",
+    "attestationSchemaVersion": "story-quality-custodian-attestation-v1",
+    "resultSchemaVersion": "story-quality-result-attestation-v1",
+    "signingDomain": "onward.story-quality.custodian-attestation.v1",
+    "trustSource": "external_runtime"
+  },
+  "minimums": {
+    "targetAudienceSessions": 150,
+    "feedbackResponses": 75,
+    "expertReviewsPerArtifact": 2,
+    "targetReaderReviewsPerArtifact": 1,
+    "feltCloseRate": 0.7,
+    "completionRate": 0.6,
+    "firstPassValidationRate": 0.95,
+    "meanRubricScore": 3.5,
+    "acceptableRubricScore": 3,
+    "acceptableRubricRate": 0.8
+  },
+  "maximums": {
+    "canonicalFallbackRate": 0.05,
+    "criticalFailureArtifacts": 0,
+    "meanRubricRegression": 0.15,
+    "completionRateRegression": 0.05,
+    "feltCloseRateRegression": 0.05
+  },
+  "rubricDimensions": [
+    "match_closeness",
+    "factual_support",
+    "tone",
+    "non_diagnostic_language",
+    "non_overclaiming",
+    "narrative_coherence",
+    "bridge_quality",
+    "desire_to_continue"
+  ],
+  "criticalFailureCategories": [
+    "unsupported_person",
+    "unsupported_place",
+    "unsupported_organization",
+    "unsupported_date",
+    "unsupported_amount",
+    "unsupported_quote",
+    "unsupported_work",
+    "unsupported_causal_claim",
+    "unsupported_sensory_detail",
+    "chronology_error",
+    "source_misrepresentation",
+    "forbidden_or_disputed_quote",
+    "disallowed_interpretation",
+    "diagnosis",
+    "false_promise",
+    "trauma_equivalence",
+    "harmful_advice",
+    "privacy_echo",
+    "boundary_violation",
+    "sensitive_field_persisted",
+    "critical_safety_failure"
+  ]
+}

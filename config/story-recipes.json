@@ -69,6 +69,31 @@
       "storySpecSchemaVersion": "story-spec-v1-2026-07",
       "boundaryPolicyVersion": "story-boundaries-v1-2026-07",
       "resonanceBriefVersion": "resonance-brief-v1-2026-07"
+    },
+    {
+      "recipeId": "keyword-rerank-personalized-preface-v2-figure-library-50-2026-07-28",
+      "manifestSha256": "5cfa26bb9d652b98ac5ef9d887908535ce33557113ab113312d82f0dee666420",
+      "retrievalMode": "keyword",
+      "matchConfigVersion": "figure-library-50-2026-07-02",
+      "librarySnapshotSha256": "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+      "datasetVersion": "match-104-2026-07-02",
+      "llmProvider": "real",
+      "rerankModelId": "gpt-oss-120b",
+      "proseModelId": "gpt-oss-120b",
+      "embeddingModelId": null,
+      "rerankPromptVersion": "rerank-prompt-v1-2026-07",
+      "storyPromptVersion": "opening-copy-prompt-v2-2026-07",
+      "rerankTemperature": 0,
+      "rerankReasoningEffort": "low",
+      "rerankTopK": 6,
+      "storyTemperature": 0.3,
+      "storyComposerMode": "canonical",
+      "hybridStoryComposerEnabled": false,
+      "composerVersion": "canonical-composer-v1-2026-07",
+      "validatorVersion": "artifact-validator-v2-2026-07",
+      "storySpecSchemaVersion": "story-spec-v1-2026-07",
+      "boundaryPolicyVersion": "story-boundaries-v1-2026-07",
+      "resonanceBriefVersion": "resonance-brief-v1-2026-07"
     }
   ]
 }

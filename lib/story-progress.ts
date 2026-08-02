@@ -44,7 +44,7 @@ export function parseBeatPositionRequest(
 
   if (
     typeof beatIndex !== "number" ||
-    !Number.isInteger(beatIndex) ||
+    !Number.isSafeInteger(beatIndex) ||
     beatIndex < 0
   ) {
     return { error: "beatIndex must be a non-negative integer." };
@@ -52,7 +52,7 @@ export function parseBeatPositionRequest(
 
   if (
     typeof chunkIndex !== "number" ||
-    !Number.isInteger(chunkIndex) ||
+    !Number.isSafeInteger(chunkIndex) ||
     chunkIndex < 0
   ) {
     return { error: "chunkIndex must be a non-negative integer." };
@@ -109,8 +109,8 @@ export function deriveStoryPassageLayout(
 ): StoryPassageLayout | null {
   if (
     beats.length === 0 ||
-    !Number.isInteger(position.beatIndex) ||
-    !Number.isInteger(position.chunkIndex) ||
+    !Number.isSafeInteger(position.beatIndex) ||
+    !Number.isSafeInteger(position.chunkIndex) ||
     position.beatIndex < 0 ||
     position.chunkIndex < 0
   ) {

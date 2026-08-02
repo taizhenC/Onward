@@ -1,0 +1,5 @@
+# Several validators assert on file contents with literal "\n" (see
+# check-try-another.ts and check-source-transparency.ts, which read migrations,
+# routes, and components). A CRLF checkout on Windows makes those assertions
+# fail locally while CI, on Linux, stays green — so pin the working tree to LF.
+* text=auto eol=lf

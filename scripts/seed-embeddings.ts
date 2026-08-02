@@ -11,6 +11,7 @@ import {
   isEmbeddingStub,
 } from "../lib/embeddings";
 import { contentHash } from "../lib/embeddings-cache";
+import { assertRetentionSink } from "../lib/derived-output-retention";
 
 // Seeds per-text embeddings for the FacetsRAG retrieval. For each authored stage it embeds the
 // shape sentences + 4 facet texts (RETRIEVAL_DOCUMENT, L2-normalized) and upserts them into
@@ -52,6 +53,10 @@ type FacetRow = {
 };
 
 async function main(): Promise<void> {
+  assertRetentionSink(
+    "embedding.curated_vector",
+    "curated_reference_store",
+  );
   const env = loadEnvLocal();
   console.log(
     env.found

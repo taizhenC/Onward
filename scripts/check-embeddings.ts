@@ -10,6 +10,7 @@ import {
   isEmbeddingStub,
 } from "../lib/embeddings";
 import { loadEmbeddingCache } from "../lib/embeddings-cache";
+import { consumeDerivedOutput } from "../lib/derived-output-retention";
 
 // Embedding health + cache verification. Two purposes, one command:
 //   1. LIVE PROBE — embed a synthetic sentence and confirm the request body shape is right (dim ==
@@ -69,8 +70,11 @@ async function probeEmbedder(): Promise<Step> {
   const name = "Gemini embedder reachable + outputDimensionality honored";
   const start = performance.now();
   try {
-    const vector = await embedQuery(
-      "A short neutral probe sentence used only to health-check the embedder.",
+    const vector = consumeDerivedOutput(
+      await embedQuery(
+        "A short neutral probe sentence used only to health-check the embedder.",
+      ),
+      "provider_health_check",
     );
     const ms = Math.round(performance.now() - start);
     const expected = embeddingDim();

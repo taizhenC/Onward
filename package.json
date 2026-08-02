@@ -36,6 +36,7 @@
     "check-owner-story-save": "tsx scripts/check-owner-story-save.ts",
     "check-recipe-governance": "tsx scripts/check-recipe-governance.ts",
     "check-recipe-registry": "tsx scripts/check-recipe-registry.ts",
+    "check-recipe-registry-v2": "tsx scripts/check-recipe-registry-v2.ts",
     "check-recipe-deployment": "tsx scripts/check-recipe-deployment.ts",
     "check-recipe-manifest-v2": "tsx scripts/check-recipe-manifest-v2.ts",
     "check-recipe-attestor": "node scripts/trusted/recipe-promotion-attestor.mjs self-test",

@@ -451,6 +451,15 @@ deployment, models, prompts, composer mode, validator, and schema versions.
 Migration `0020` adds an append-only, forced-RLS database registry and an exact
 session trigger, then moves product events, generation attempts, match recovery,
 initial/alternate completion, and rollup recipe checks off duplicated literals.
+Migration `0024` extends that registry with a nullable manifest discriminator
+and an exact validated facet-tagger jsonb identity. Historical v1 rows require
+both fields to remain null; v2 rows require the complete closed-template object,
+FacetsRAG retrieval, and a non-null embedder. The migration-owner-only v2
+registration function is insert-only and replay-safe, and the existing session/
+RPC predicate now accepts either an exact v1 row or an exact v2 row without
+weakening its common-field checks. Application startup and `check-db` use the
+same structural matcher. The protected attestor can render the new registration
+call, but a separate execution-support guard still prevents v2 promotion.
 The database stores no active pointer: compatible promoted rows remain valid and
 the application selector is the single rollback change. Promotion is deliberately
 limited to matching axes within one installed library/code/story compatibility

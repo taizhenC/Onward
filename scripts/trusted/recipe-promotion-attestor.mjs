@@ -928,10 +928,27 @@ function manifestHash(recipe) {
 
 function assertPromotionRegistrationSupported(recipe) {
   const manifest = record(recipe, "registration recipe");
+  const hasSchema = Object.hasOwn(manifest, "manifestSchemaVersion");
+  const hasTagger = Object.hasOwn(manifest, "facetTagger");
+  assert(
+    hasSchema === hasTagger,
+    "registration recipe has a partial manifest-v2 identity",
+  );
+  if (hasSchema) {
+    assert(
+      manifest.manifestSchemaVersion === STORY_RECIPE_MANIFEST_SCHEMA_V2,
+      "registration recipe has an unknown manifest schema",
+    );
+    record(manifest.facetTagger, "registration recipe facetTagger");
+  }
+}
+
+function assertPromotionExecutionSupported(recipe) {
+  const manifest = record(recipe, "promotion execution recipe");
   assert(
     !Object.hasOwn(manifest, "manifestSchemaVersion") &&
       !Object.hasOwn(manifest, "facetTagger"),
-    "story-recipe-manifest-v2 cannot be promoted until exact v2 database identity registration is installed",
+    "story-recipe-manifest-v2 cannot be promoted until execution support is installed",
   );
 }
 
@@ -1902,8 +1919,14 @@ function sqlScalar(value) {
   return `'${value}'`;
 }
 
+function sqlJsonb(value) {
+  const encoded = canonical(value).replaceAll("'", "''");
+  return `'${encoded}'::jsonb`;
+}
+
 function renderRegistrationMigration(recipe, decision) {
   assertPromotionRegistrationSupported(recipe);
+  const isV2 = Object.hasOwn(recipe, "manifestSchemaVersion");
   const values = [
     recipe.recipeId,
     recipe.manifestSha256,
@@ -1928,14 +1951,20 @@ function renderRegistrationMigration(recipe, decision) {
     recipe.storySpecSchemaVersion,
     recipe.boundaryPolicyVersion,
     recipe.resonanceBriefVersion,
-    decision.decisionId,
   ].map((value) => sqlScalar(value));
+  if (isV2) {
+    values.push(
+      sqlScalar(recipe.manifestSchemaVersion),
+      sqlJsonb(recipe.facetTagger),
+    );
+  }
+  values.push(sqlScalar(decision.decisionId));
   values.push(`${sqlScalar(decision.decidedAt)}::timestamptz`);
   return [
     "-- Generated story-recipe promotion registration. Do not add statements.",
     "begin;",
     "",
-    "select public.register_story_recipe_v1(",
+    `select public.register_story_recipe_${isV2 ? "v2" : "v1"}(`,
     ...values.map((value, index) => `  ${value}${index === values.length - 1 ? "" : ","}`),
     ");",
     "",
@@ -2049,6 +2078,7 @@ async function mainAttest(repository, baseSha, headSha) {
   const baselineRecipe = record(recipes.get(baseSelection.primaryRecipeId), "baseline recipe");
   const challengerRecipe = record(recipes.get(promotion.recipeId), "challenger recipe");
   assertPromotionRegistrationSupported(challengerRecipe);
+  assertPromotionExecutionSupported(challengerRecipe);
   assert(manifestHash(baselineRecipe) === baselineRecipe.manifestSha256, "baseline manifest hash mismatch");
   assert(manifestHash(challengerRecipe) === challengerRecipe.manifestSha256, "challenger manifest hash mismatch");
   validateMatchingOnly(baselineRecipe, challengerRecipe);
@@ -2763,14 +2793,21 @@ function selfTest() {
       label,
     );
   }
-  rejects(
-    () => assertPromotionRegistrationSupported(v2Recipe),
-    "v2 promotion registration",
+  assertPromotionRegistrationSupported(v2Recipe);
+  const v2Registration = renderRegistrationMigration(
+    v2Recipe,
+    registrationDecision,
+  );
+  assert(
+    v2Registration.includes("select public.register_story_recipe_v2(") &&
+      v2Registration.includes(
+        `${sqlJsonb(v2Recipe.facetTagger)},`,
+      ),
+    "v2 registration renderer omitted the exact nested identity",
   );
   rejects(
-    () =>
-      renderRegistrationMigration(v2Recipe, registrationDecision),
-    "v2 registration migration",
+    () => assertPromotionExecutionSupported(v2Recipe),
+    "v2 promotion execution",
   );
 
   const dataset = {

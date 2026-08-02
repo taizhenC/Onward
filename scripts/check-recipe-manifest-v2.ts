@@ -502,6 +502,44 @@ function checkDormantV2Execution(parsed: StoryRecipeManifestV2): void {
     false,
     "the v1 database shape appeared to register a v2 identity",
   );
+  const completeV2Row = {
+    ...incompleteV1Row,
+    manifest_schema_version: parsed.manifestSchemaVersion,
+    facet_tagger: structuredClone(parsed.facetTagger),
+  };
+  assert.equal(
+    registrationMatches(completeV2Row, parsed, promotion),
+    true,
+    "the exact manifest-v2 database identity was rejected",
+  );
+  assert.equal(
+    registrationMatches(
+      {
+        ...completeV2Row,
+        facet_tagger: {
+          ...completeV2Row.facet_tagger,
+          queryMode: "raw",
+        },
+      },
+      parsed,
+      promotion,
+    ),
+    false,
+    "a drifted nested facet-tagger identity was accepted",
+  );
+  assert.equal(
+    registrationMatches(
+      {
+        ...completeV2Row,
+        manifest_schema_version: null,
+        facet_tagger: null,
+      },
+      parsed,
+      promotion,
+    ),
+    false,
+    "a manifest-v2 recipe matched null v1 identity columns",
+  );
 }
 
 function expectRegistryInvalid(

@@ -2,6 +2,7 @@ import "server-only";
 import { getSupabase } from "./db";
 import {
   StoryRecipeRuntimeError,
+  canonicalJson,
   getStoryRecipePromotion,
   isStoryRecipeManifestV2,
   type StoryRecipeManifest,
@@ -32,6 +33,8 @@ const REGISTRY_COLUMNS = [
   "story_spec_schema_version",
   "boundary_policy_version",
   "resonance_brief_version",
+  "manifest_schema_version",
+  "facet_tagger",
   "decision_id",
   "promoted_at",
 ] as const;
@@ -89,16 +92,14 @@ export function registrationMatches(
   recipe: StoryRecipeManifest,
   promotion: Readonly<{ decisionId: string; promotedAt: string }>,
 ): value is RegistryRow {
-  // The v1 database contract has no columns for the facet-tagger identity.
-  // Parsing v2 manifests ahead of that migration must not let a partial row
-  // appear to prove the stronger manifest was registered.
-  if (isStoryRecipeManifestV2(recipe) || !isRecord(value)) return false;
+  if (!isRecord(value)) return false;
   if (
     Object.keys(value).sort().join(",") !==
     [...REGISTRY_COLUMNS].sort().join(",")
   ) {
     return false;
   }
+  const v2 = isStoryRecipeManifestV2(recipe);
   const expected: RegistryRow = {
     recipe_id: recipe.recipeId,
     manifest_sha256: recipe.manifestSha256,
@@ -123,6 +124,8 @@ export function registrationMatches(
     story_spec_schema_version: recipe.storySpecSchemaVersion,
     boundary_policy_version: recipe.boundaryPolicyVersion,
     resonance_brief_version: recipe.resonanceBriefVersion,
+    manifest_schema_version: v2 ? recipe.manifestSchemaVersion : null,
+    facet_tagger: v2 ? recipe.facetTagger : null,
     decision_id: promotion.decisionId,
     promoted_at: promotion.promotedAt,
   };
@@ -134,8 +137,19 @@ export function registrationMatches(
     if (typeof expected[column] === "number") {
       return sameNumber(value[column], expected[column]);
     }
+    if (column === "facet_tagger") {
+      return sameJson(value[column], expected[column]);
+    }
     return value[column] === expected[column];
   });
+}
+
+function sameJson(actual: unknown, expected: unknown): boolean {
+  try {
+    return canonicalJson(actual) === canonicalJson(expected);
+  } catch {
+    return false;
+  }
 }
 
 function sameNumber(actual: unknown, expected: unknown): boolean {

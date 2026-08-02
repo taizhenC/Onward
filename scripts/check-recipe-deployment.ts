@@ -126,6 +126,8 @@ function main(): void {
     story_spec_schema_version: runtime.recipe.storySpecSchemaVersion,
     boundary_policy_version: runtime.recipe.boundaryPolicyVersion,
     resonance_brief_version: runtime.recipe.resonanceBriefVersion,
+    manifest_schema_version: null,
+    facet_tagger: null,
     decision_id: promotion.decisionId,
     promoted_at: promotion.promotedAt.replace("Z", "+00:00"),
   };

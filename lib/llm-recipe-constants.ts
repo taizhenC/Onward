@@ -1,5 +1,6 @@
 import promptReleasesDocument from "../config/prompt-releases.json";
 import {
+  FACET_TAGGER_PROMPT_CONTRACT,
   RERANK_PROMPT_CONTRACT,
   STORY_PROMPT_CONTRACT,
   STORY_PROMPT_CONTRACT_V2,
@@ -7,6 +8,27 @@ import {
   type StoryPromptContract,
 } from "./llm-prompts";
 import { sha256Hex } from "./sha256-edge";
+
+const PROMPT_RELEASE_REGISTRY_V1 = "prompt-release-registry-v1";
+const PROMPT_RELEASE_REGISTRY_V2 = "prompt-release-registry-v2";
+const PROMPT_RELEASE_MAX_ENTRIES = 256;
+const PROMPT_VERSION = /^[a-z0-9][a-z0-9._-]{0,127}$/;
+const PROMPT_HASH = /^[0-9a-f]{64}$/;
+
+type PromptReleaseKind = "rerank" | "story" | "facetTagger";
+type PromptRelease = Readonly<{ version: string; sha256: string }>;
+type PromptReleaseRegistry = Readonly<{
+  schemaVersion:
+    | typeof PROMPT_RELEASE_REGISTRY_V1
+    | typeof PROMPT_RELEASE_REGISTRY_V2;
+  rerank: readonly PromptRelease[];
+  story: readonly PromptRelease[];
+  facetTagger: readonly PromptRelease[];
+}>;
+
+const PROMPT_RELEASE_REGISTRY = parsePromptReleaseRegistry(
+  promptReleasesDocument as unknown,
+);
 
 // Provider-neutral identity for every model-controlled recipe surface. Keeping
 // these constants outside the provider implementation lets deployment
@@ -31,6 +53,10 @@ export const STORY_PROMPT_VERSION_V2 =
 const STORY_PROMPT_RELEASE_V1 = releasedStoryPromptContract(
   STORY_PROMPT_VERSION_V1,
   STORY_PROMPT_CONTRACT,
+);
+export const FACET_TAGGER_PROMPT_VERSION = activePromptRelease(
+  "facetTagger",
+  sha256Hex(canonicalPromptContract(FACET_TAGGER_PROMPT_CONTRACT)),
 );
 const STORY_PROMPT_RELEASE_V2 = releasedStoryPromptContract(
   STORY_PROMPT_VERSION_V2,
@@ -63,8 +89,6 @@ export function isSupportedStoryPromptVersion(version: string): boolean {
   return storyPromptContractFor(version) !== null;
 }
 
-type PromptReleaseKind = "rerank" | "story";
-
 function releasedStoryPromptContract(
   version: string,
   contract: StoryPromptContract,
@@ -87,36 +111,91 @@ function activePromptRelease(
   kind: PromptReleaseKind,
   contentSha256: string,
 ): string {
-  const document = promptReleasesDocument as unknown;
-  if (!isRecord(document) || document.schemaVersion !== "prompt-release-registry-v1") {
-    throw new Error("Prompt release registry is invalid.");
+  const releases = PROMPT_RELEASE_REGISTRY[kind];
+  const release = releases.find((value) => value.sha256 === contentSha256);
+  if (!release) {
+    throw new Error("Prompt content has no immutable release identity.");
   }
-  const releases = document[kind];
-  if (!Array.isArray(releases) || releases.length === 0) {
-    throw new Error("Prompt release registry is invalid.");
+  return release.version;
+}
+
+function parsePromptReleaseRegistry(value: unknown): PromptReleaseRegistry {
+  if (!isRecord(value)) invalidRegistry();
+  const schemaVersion = value.schemaVersion;
+  const isV1 = schemaVersion === PROMPT_RELEASE_REGISTRY_V1;
+  const isV2 = schemaVersion === PROMPT_RELEASE_REGISTRY_V2;
+  if (
+    (!isV1 && !isV2) ||
+    !hasExactKeys(
+      value,
+      isV1
+        ? ["schemaVersion", "rerank", "story"]
+        : ["schemaVersion", "rerank", "story", "facetTagger"],
+    )
+  ) {
+    invalidRegistry();
   }
+
   const versions = new Set<string>();
   const hashes = new Set<string>();
-  let active: string | null = null;
-  for (const value of releases) {
-    if (
-      !isRecord(value) ||
-      Object.keys(value).sort().join(",") !== "sha256,version" ||
-      typeof value.version !== "string" ||
-      !/^[a-z0-9][a-z0-9@._-]{0,127}$/.test(value.version) ||
-      typeof value.sha256 !== "string" ||
-      !/^[0-9a-f]{64}$/.test(value.sha256) ||
-      versions.has(value.version) ||
-      hashes.has(value.sha256)
-    ) {
-      throw new Error("Prompt release registry is invalid.");
-    }
-    versions.add(value.version);
-    hashes.add(value.sha256);
-    if (value.sha256 === contentSha256) active = value.version;
+  const rerank = parsePromptReleaseLane(value.rerank, versions, hashes);
+  const story = parsePromptReleaseLane(value.story, versions, hashes);
+  const facetTagger = isV2
+    ? parsePromptReleaseLane(value.facetTagger, versions, hashes)
+    : [];
+  return Object.freeze({
+    schemaVersion,
+    rerank,
+    story,
+    facetTagger,
+  });
+}
+
+function parsePromptReleaseLane(
+  value: unknown,
+  versions: Set<string>,
+  hashes: Set<string>,
+): readonly PromptRelease[] {
+  if (
+    !Array.isArray(value) ||
+    value.length === 0 ||
+    value.length > PROMPT_RELEASE_MAX_ENTRIES
+  ) {
+    invalidRegistry();
   }
-  if (!active) throw new Error("Prompt content has no immutable release identity.");
-  return active;
+  return Object.freeze(value.map((entry) => {
+    if (
+      !isRecord(entry) ||
+      !hasExactKeys(entry, ["version", "sha256"]) ||
+      typeof entry.version !== "string" ||
+      !PROMPT_VERSION.test(entry.version) ||
+      typeof entry.sha256 !== "string" ||
+      !PROMPT_HASH.test(entry.sha256) ||
+      versions.has(entry.version) ||
+      hashes.has(entry.sha256)
+    ) {
+      invalidRegistry();
+    }
+    versions.add(entry.version);
+    hashes.add(entry.sha256);
+    return Object.freeze({
+      version: entry.version,
+      sha256: entry.sha256,
+    });
+  }));
+}
+
+function hasExactKeys(
+  value: Record<string, unknown>,
+  expected: readonly string[],
+): boolean {
+  return (
+    Object.keys(value).sort().join(",") === [...expected].sort().join(",")
+  );
+}
+
+function invalidRegistry(): never {
+  throw new Error("Prompt release registry is invalid.");
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {

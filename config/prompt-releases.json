@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "prompt-release-registry-v1",
+  "schemaVersion": "prompt-release-registry-v2",
   "rerank": [
     {
       "version": "rerank-prompt-v1-2026-07",
@@ -14,6 +14,12 @@
     {
       "version": "opening-copy-prompt-v2-2026-07",
       "sha256": "2c0bcbafdc2093cb39532da7e761d85c4cc091f3657dc1b9bf11534f53bd5c39"
+    }
+  ],
+  "facetTagger": [
+    {
+      "version": "facet-tagger-prompt-v1-2026-07",
+      "sha256": "d20a7de18bd274b5b61ff69d288092b03a677ef8bf3e1cf869fd569e21f1b1cf"
     }
   ]
 }

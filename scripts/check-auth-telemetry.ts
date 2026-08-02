@@ -485,6 +485,7 @@ function checkPrivacyShape(): void {
 function checkStaticIntegration(): void {
   const handler = source("app/api/match/handler.ts");
   const intakeForm = source("components/IntakeForm.tsx");
+  const signInForm = source("components/SignInForm.tsx");
   const workflow = source(".github/workflows/ci.yml");
 
   assert(
@@ -516,6 +517,11 @@ function checkStaticIntegration(): void {
       "response.status === 401 && (await ensureAuthSession())",
     ),
   );
+  assert.match(
+    signInForm,
+    /signInWithOtp\s*\(\s*\{[\s\S]*?options\s*:\s*\{\s*shouldCreateUser\s*:\s*false\s*\}/,
+  );
+  assert(!signInForm.includes("signUp("));
   assert(workflow.includes("npm run check-auth-telemetry"));
 
   for (const relativePath of [

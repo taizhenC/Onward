@@ -11,7 +11,7 @@ import {
 import { _sessionCount } from "../lib/session";
 import type { FigureStageRow } from "../lib/types";
 import {
-  listPublishedStorySpecKeys,
+  inspectPublishedStorySpecs,
   storySpecStageKey,
 } from "../lib/story-spec-repository";
 import {
@@ -107,43 +107,187 @@ async function checkServingParity(): Promise<Step> {
 async function checkPublishedStorySpecs(): Promise<Step> {
   const name = "public stages have valid published StorySpecs";
   try {
-    const keys = await listPublishedStorySpecKeys();
+    const inspection = await inspectPublishedStorySpecs();
+    const keys = new Set(inspection.catalog.keys());
     const served = await listAll();
     const servedKeys = new Set(
       served.map((stage) => storySpecStageKey(stage.figureKey, stage.stageId)),
     );
-    const missing = [...keys].filter((key) => !servedKeys.has(key));
-    const ok = keys.size > 0 && missing.length === 0;
+    const disabled = [...keys].filter((key) => !servedKeys.has(key));
+    const uncovered = [...servedKeys].filter((key) => !keys.has(key));
+    const ok =
+      inspection.rawPublishedRowCount > 0 &&
+      inspection.quarantinedRowCount === 0 &&
+      inspection.rawPublishedRowCount === inspection.catalog.size &&
+      disabled.length === 0 &&
+      uncovered.length === 0;
     return {
       name,
       ok,
       detail: ok
         ? `${keys.size} valid published StorySpec(s) eligible for matching`
-        : keys.size === 0
+        : inspection.rawPublishedRowCount === 0
           ? "no valid published StorySpecs; review and publish the launch subset"
-          : `${missing.length} published StorySpec stage(s) are disabled/missing`,
+          : inspection.quarantinedRowCount > 0
+            ? `${inspection.quarantinedRowCount} published StorySpec row(s) failed the runtime integrity boundary`
+            : inspection.rawPublishedRowCount !== inspection.catalog.size
+              ? "raw published StorySpec rows do not match the valid catalog"
+              : disabled.length > 0
+                ? `${disabled.length} valid StorySpec stage(s) are disabled/missing`
+                : `${uncovered.length} served stage(s) lack a valid published StorySpec`,
     };
   } catch (error) {
     return { name, ok: false, detail: message(error) };
   }
 }
 
-async function checkArtifactSchema(): Promise<Step> {
-  const name = "StoryArtifact schema installed";
+async function checkStorySpecPublicationSchema(): Promise<Step> {
+  const name = "StorySpec publication compare-and-set schema installed";
   try {
-    const artifacts = await tableCount("story_artifacts");
-    const sessions = await getSupabase()
-      .from("sessions")
-      .select("story_artifact_id")
-      .limit(1);
-    if (sessions.error) throw new Error(sessions.error.message);
+    const health = await getSupabase().rpc(
+      "story_spec_publication_schema_health_v1",
+    );
+    if (health.error) throw new Error(health.error.message);
+    const row =
+      Array.isArray(health.data) && health.data.length === 1
+        ? health.data[0]
+        : null;
+    const expectedKeys = [
+      "boundary_granted",
+      "identity_constraint_valid",
+      "legacy_rpc_revoked",
+      "lifecycle_trigger_enabled",
+      "ok",
+      "promotion_cas_valid",
+      "published_stage_uniqueness_valid",
+    ].sort();
+    const healthOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") === expectedKeys.join(",") &&
+      Object.values(row).every((value) => typeof value === "boolean") &&
+      "ok" in row &&
+      row.ok === true;
+    if (!healthOk) {
+      throw new Error("StorySpec publication schema health is unsafe");
+    }
     return {
       name,
       ok: true,
-      detail: `story_artifacts reachable (${artifacts} row(s)); session pointer present`,
+      detail:
+        "strict JSON identity, exact lifecycle enforcement, one published version per stage, snapshot-bound promotion, legacy revocation, and service-only grants are safe",
     };
   } catch (error) {
-    return { name, ok: false, detail: `${message(error)} — apply migration 0005` };
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0023 before publishing`,
+    };
+  }
+}
+
+async function checkArtifactSchema(): Promise<Step> {
+  const name = "StoryArtifact and retention schema installed";
+  try {
+    const artifacts = await tableCount("story_artifacts");
+    const artifactLabels = await getSupabase()
+      .from("story_artifacts")
+      .select("retention_policy_version,retention_class")
+      .limit(1);
+    if (artifactLabels.error) throw new Error(artifactLabels.error.message);
+    const sessions = await getSupabase()
+      .from("sessions")
+      .select(
+        "story_artifact_id,retention_policy_version,story_retention_class,context_retention_class",
+      )
+      .limit(1);
+    if (sessions.error) throw new Error(sessions.error.message);
+    const health = await getSupabase().rpc(
+      "derived_output_retention_schema_health_v1",
+    );
+    if (health.error) throw new Error(health.error.message);
+    const row = Array.isArray(health.data) ? health.data[0] : null;
+    const expectedKeys = [
+      "boundary_granted",
+      "columns_classified",
+      "constraints_valid",
+      "current_defaults",
+      "helper_bodies_valid",
+      "labels_valid",
+      "ok",
+      "trigger_enabled",
+    ].sort();
+    const healthOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") === expectedKeys.join(",") &&
+      Object.values(row).every((value) => typeof value === "boolean") &&
+      "ok" in row &&
+      row.ok === true;
+    if (!healthOk) {
+      throw new Error("derived-output retention schema health is unsafe");
+    }
+    return {
+      name,
+      ok: true,
+      detail: `story_artifacts reachable (${artifacts} row(s)); columns, current defaults, validated constraints, exact trigger helpers, labels, and grants are safe`,
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} — apply migrations 0005 and 0021`,
+    };
+  }
+}
+
+async function checkOwnerStorySaveSchema(): Promise<Step> {
+  const name = "durable account-level Owner Story Save schema installed";
+  try {
+    const health = await getSupabase().rpc(
+      "owner_story_save_schema_health_v1",
+    );
+    if (health.error) throw new Error(health.error.message);
+    const row =
+      Array.isArray(health.data) && health.data.length === 1
+        ? health.data[0]
+        : null;
+    const expectedKeys = [
+      "constraints_valid",
+      "coverage_valid",
+      "grants_valid",
+      "helper_bodies_valid",
+      "ok",
+      "rls_valid",
+      "rows_valid",
+      "table_shape_valid",
+      "triggers_enabled",
+    ].sort();
+    const healthOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") === expectedKeys.join(",") &&
+      Object.values(row).every((value) => typeof value === "boolean") &&
+      "ok" in row &&
+      row.ok === true;
+    if (!healthOk) {
+      throw new Error("owner-story Save schema health is unsafe");
+    }
+    return {
+      name,
+      ok: true,
+      detail:
+        "all 9 closed health flags prove table shape, constraints, Auth trigger, immutable helpers, grants, RLS, owner coverage, and row validity",
+    };
+  } catch (error) {
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} - apply migration 0022 before the Save-aware application`,
+    };
   }
 }
 
@@ -187,7 +331,7 @@ async function checkStoryRecipeRegistry(): Promise<Step> {
     return {
       name,
       ok: false,
-      detail: `${message(error)} - apply migrations 0020 and 0021`,
+      detail: `${message(error)} - apply migrations 0020 and 0024`,
     };
   }
 }
@@ -896,7 +1040,9 @@ async function main(): Promise<void> {
     await checkSeeded(),
     await checkServingParity(),
     await checkPublishedStorySpecs(),
+    await checkStorySpecPublicationSchema(),
     await checkArtifactSchema(),
+    await checkOwnerStorySaveSchema(),
     await checkStoryRecipeRegistry(),
     await checkMatchRecoverySchema(),
     await checkHistoricalConcernSchema(),

@@ -8,7 +8,8 @@ export const CHUNK_CHAR_LIMIT = 240;
 const PARAGRAPH_SEPARATOR = "\n\n";
 
 export function chunkBeatText(beat: BeatBlueprint): string[] {
-  const paragraphs = beat.text
+  const normalizedText = beat.text.replaceAll("\r\n", "\n");
+  const paragraphs = normalizedText
     .split(/\n\n+/)
     .filter((paragraph) => paragraph.length > 0);
 

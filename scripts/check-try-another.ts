@@ -32,7 +32,12 @@ import {
 } from "../lib/alternate-story-types";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { handleIntake } from "../lib/intake";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import { createTelemetryFlowId, recordProductEvent } from "../lib/telemetry";
 import { resolveOwnedTelemetryFlowForSession } from "../lib/telemetry-flow-binding";
 import { registerMemoryTelemetryFlow } from "../lib/telemetry-flow-binding-memory";
@@ -42,11 +47,7 @@ import {
   _listResonanceFeedback,
   getResonanceFeedbackPresentation,
 } from "../lib/resonance-feedback";
-import {
-  createSession,
-  getSession,
-  updateSession,
-} from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { getOwnedStoryArtifact } from "../lib/story-artifacts";
 import {
@@ -60,6 +61,7 @@ import {
 } from "../lib/story-request-context";
 import { storySpecStageKey } from "../lib/story-spec-repository";
 import type { FigureStageRow, MatchRecipe } from "../lib/types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -80,6 +82,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 type RootFixture = Awaited<ReturnType<typeof makeRoot>>;
@@ -617,10 +620,13 @@ async function checkHappyConcurrentFlow(
     failures.push("capability refresh endpoint did not restore the ready alternate");
   }
 
-  await updateSession(alternateSessionId, {
-    nextBeatIndex: artifact?.beats.length ?? 7,
-    nextChunkIndex: 0,
-  });
+  if (artifact) {
+    await completeMemoryStorySessionFixture({
+      sessionId: alternateSessionId,
+      userId: LOCAL_DEV_USER_ID,
+      artifact,
+    });
+  }
   const alternateFeedback = await requestFeedback({
     sessionId: alternateSessionId,
     verdict: "not_close",
@@ -1228,8 +1234,8 @@ async function makeRoot(options: {
     stage,
     matchRecipe: recipe,
     openingCopy: {
-      eyebrow: "A different true story",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: brief,
@@ -1252,10 +1258,7 @@ async function makeRoot(options: {
     artifact,
   });
   if (options.completed !== false) {
-    await updateSession(sessionId, {
-      nextBeatIndex: artifact.beats.length,
-      nextChunkIndex: 0,
-    });
+    await completeMemoryStorySessionFixture({ sessionId, userId, artifact });
   }
   return { sessionId, artifact, stage };
 }

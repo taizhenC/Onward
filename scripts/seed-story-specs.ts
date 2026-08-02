@@ -4,8 +4,6 @@ import { FIGURE_STAGES } from "../lib/figures-data";
 import { getSupabase } from "../lib/db";
 import { buildDraftStorySpec, validateStorySpec } from "../lib/story-spec";
 
-type ExistingSpec = { story_spec_id: string; status: string };
-
 async function main(): Promise<void> {
   const env = loadEnvLocal();
   console.log(
@@ -23,50 +21,57 @@ async function main(): Promise<void> {
   }
 
   const supabase = getSupabase();
-  const existingResult = await supabase
+  const rows = drafts.map((draft) => ({
+    story_spec_id: draft.storySpecId,
+    figure_key: draft.figureKey,
+    stage_id: draft.stageId,
+    version: draft.version,
+    schema_version: draft.schemaVersion,
+    status: draft.status,
+    spec: draft,
+  }));
+
+  // Insert only missing rows. An existing draft may become review/published
+  // immediately after this statement, so conflict updates are intentionally
+  // disabled instead of relying on a stale read of its lifecycle state.
+  const insertResult = await supabase
     .from("story_specs")
-    .select("story_spec_id,status")
-    .in(
-      "story_spec_id",
-      drafts.map((draft) => draft.storySpecId),
-    );
-  if (existingResult.error) {
-    throw new Error(`read story_specs failed: ${existingResult.error.message}`);
+    .upsert(rows, {
+      onConflict: "story_spec_id",
+      ignoreDuplicates: true,
+    });
+  if (insertResult.error) {
+    throw new Error(`insert missing story_specs failed: ${insertResult.error.message}`);
   }
 
-  const existing = new Map(
-    ((existingResult.data ?? []) as ExistingSpec[]).map((row) => [row.story_spec_id, row.status]),
-  );
-  const protectedIds = drafts
-    .filter((draft) => {
-      const status = existing.get(draft.storySpecId);
-      return status !== undefined && status !== "draft";
-    })
-    .map((draft) => draft.storySpecId);
-  const protectedSet = new Set(protectedIds);
-  const rows = drafts
-    .filter((draft) => !protectedSet.has(draft.storySpecId))
-    .map((draft) => ({
-      story_spec_id: draft.storySpecId,
-      figure_key: draft.figureKey,
-      stage_id: draft.stageId,
-      version: draft.version,
-      schema_version: draft.schemaVersion,
-      status: draft.status,
-      spec: draft,
-    }));
-
-  if (rows.length > 0) {
-    const result = await supabase
+  let refreshedDrafts = 0;
+  for (const row of rows) {
+    // The status predicate is the authoring CAS. The update omits row status,
+    // so it can neither demote a reviewed row nor race a terminal transition.
+    const refreshResult = await supabase
       .from("story_specs")
-      .upsert(rows, { onConflict: "story_spec_id" });
-    if (result.error) throw new Error(`seed story_specs failed: ${result.error.message}`);
+      .update({
+        figure_key: row.figure_key,
+        stage_id: row.stage_id,
+        version: row.version,
+        schema_version: row.schema_version,
+        spec: row.spec,
+      })
+      .eq("story_spec_id", row.story_spec_id)
+      .eq("status", "draft")
+      .select("story_spec_id");
+    if (refreshResult.error) {
+      throw new Error(
+        `refresh draft StorySpec ${row.story_spec_id} failed: ${refreshResult.error.message}`,
+      );
+    }
+    refreshedDrafts += refreshResult.data?.length ?? 0;
   }
 
-  console.log(`Seeded/refreshed ${rows.length} draft StorySpec(s).`);
-  if (protectedIds.length > 0) {
-    console.log(`Protected ${protectedIds.length} review/published/retired StorySpec(s).`);
-  }
+  console.log(`Seeded/refreshed ${refreshedDrafts} draft StorySpec(s).`);
+  console.log(
+    `Protected ${rows.length - refreshedDrafts} review/published/retired StorySpec(s).`,
+  );
 }
 
 main().catch((error) => {

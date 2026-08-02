@@ -19,13 +19,18 @@ import { createAlternateStory } from "../lib/alternate-story";
 import { ALTERNATE_STORY_POLICY_VERSION } from "../lib/alternate-story-types";
 import { LOCAL_DEV_USER_ID } from "../lib/auth";
 import { FIGURE_STAGES } from "../lib/figures-data";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import { submitResonanceFeedback } from "../lib/resonance-feedback";
 import {
   createMemoryAlternateSession,
 } from "../lib/session-store-memory";
-import { createSession, getSession, updateSession } from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import type { StoryArtifact } from "../lib/story-artifact-types";
 import { getOwnedMemoryStoryArtifactSync } from "../lib/story-artifact-store-memory";
@@ -51,6 +56,7 @@ import type {
   TelemetryFlowId,
 } from "../lib/telemetry-types";
 import type { FigureStageRow, MatchRecipe, Session } from "../lib/types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -68,6 +74,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 type Fixture = {
@@ -455,9 +462,10 @@ async function makeFixture(
     matchRecipe: recipe,
     artifact,
   });
-  await updateSession(sessionId, {
-    nextBeatIndex: artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact,
   });
   const session = await getSession(sessionId);
   assert(session, "alternate terminal fixture session is unavailable");
@@ -509,8 +517,8 @@ function makeArtifact(stage: FigureStageRow, matchRecipe: MatchRecipe): StoryArt
     stage,
     matchRecipe,
     openingCopy: {
-      eyebrow: "A true story",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: createResonanceBrief(PRIVATE_CANARY),

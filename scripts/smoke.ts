@@ -18,7 +18,10 @@ import {
   validateStoredStoryArtifact,
 } from "../lib/story-artifact";
 import { getStoryPlayback } from "../lib/story-playback";
-import { deriveStoryPassageLayout } from "../lib/story-progress";
+import {
+  deriveStoryPassageLayout,
+  parseBeatPositionRequest,
+} from "../lib/story-progress";
 import { prepareStoryProgressTelemetry } from "../lib/story-progress-telemetry";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import { createResonanceBrief } from "../lib/resonance-brief";
@@ -884,7 +887,7 @@ function runRerankCandidateAssertion(): AssertionResult {
 
 function runEyebrowGuardAssertion(): AssertionResult {
   const name =
-    "opening copy: eyebrow guard yields one clean line or the neutral fallback";
+    "opening copy: eyebrow guard yields one reviewed line or the neutral fallback";
   const cases: Array<{
     label: string;
     raw: string | null;
@@ -894,26 +897,32 @@ function runEyebrowGuardAssertion(): AssertionResult {
     { label: "null", raw: null, displayName: "Octavia Butler", expectNeutral: true },
     { label: "blank", raw: "   ", displayName: "Octavia Butler", expectNeutral: true },
     {
-      label: "clean line",
-      raw: "a weight you carry without setting down",
+      label: "reviewed provider line",
+      raw: "A closed door after a long effort",
       displayName: "Octavia Butler",
       expectNeutral: false,
     },
     {
-      label: "quoted clean line",
-      raw: '"the long wait for a yes"',
+      label: "quoted reviewed line",
+      raw: '"After the door closed"',
       displayName: "Frederick Douglass",
       expectNeutral: false,
     },
     {
+      label: "unreviewed clean line",
+      raw: "a weight carried without setting it down",
+      displayName: "Octavia Butler",
+      expectNeutral: true,
+    },
+    {
       label: "article in figure name is not a leak",
-      raw: "the pressure before the next step",
+      raw: "After the door closed",
       displayName: "The Buddha",
       expectNeutral: false,
     },
     {
       label: "epithet in figure name is not a leak",
-      raw: "a great pressure held quietly",
+      raw: "When effort met a no",
       displayName: "Catherine the Great",
       expectNeutral: false,
     },
@@ -1053,6 +1062,20 @@ async function runStoryPrivacyAssertion(): Promise<AssertionResult> {
       `A preface. ${disclosure}. A coda.`,
       disclosure,
     ) ||
+    !containsDisclosureEcho(
+      "The record described the period as suicidal.",
+      "suicidal!!",
+    ) ||
+    !containsDisclosureEcho(
+      "The note read I am sad before it turned.",
+      "I am sad...",
+    ) ||
+    !containsDisclosureEcho("死にたい", "死にたい") ||
+    !containsDisclosureEcho("自殺", "自殺!!!!!!!!") ||
+    !containsDisclosureEcho(
+      "В записке было: мне страшно.",
+      "мне страшно",
+    ) ||
     containsDisclosureEcho(SAFE_BRIDGE_DISTANCE_LINE, disclosure)
   ) {
     return {
@@ -1157,6 +1180,35 @@ function printOverTriggerMap(): void {
   }
 }
 
+function runProgressInputAssertion(): AssertionResult {
+  const valid = parseBeatPositionRequest({
+    sessionId: "safe-position",
+    beatIndex: 0,
+    chunkIndex: 1,
+  });
+  const unsafeBeat = parseBeatPositionRequest({
+    sessionId: "unsafe-beat-position",
+    beatIndex: Number.MAX_SAFE_INTEGER + 1,
+    chunkIndex: 0,
+  });
+  const unsafeChunk = parseBeatPositionRequest({
+    sessionId: "unsafe-chunk-position",
+    beatIndex: 0,
+    chunkIndex: Number.MAX_SAFE_INTEGER + 1,
+  });
+  const ok =
+    !("error" in valid) &&
+    "error" in unsafeBeat &&
+    "error" in unsafeChunk;
+  return {
+    name: "progress coordinates: unsafe integers are rejected",
+    ok,
+    detail: ok
+      ? "valid=accepted, unsafe beat/chunk=rejected"
+      : `valid=${JSON.stringify(valid)}, unsafeBeat=${JSON.stringify(unsafeBeat)}, unsafeChunk=${JSON.stringify(unsafeChunk)}`,
+  };
+}
+
 async function main(): Promise<void> {
   const assertions: AssertionResult[] = [
     await runMatchAssertion(
@@ -1186,6 +1238,7 @@ async function main(): Promise<void> {
     await runArtifactPersistenceAssertion(),
     await runLegacyPlaybackAssertion(),
     await runAtomicProgressAssertion(),
+    runProgressInputAssertion(),
     await runStoryCreationKillSwitchAssertion(),
     runApprovedRecipeAssertion(),
     await runPublishedEligibilityAssertion(),

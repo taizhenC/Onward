@@ -16,6 +16,10 @@ import {
 import type { StoryArtifact } from "./story-artifact-types";
 import type { OpeningCopy } from "./types";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
+import {
+  classifyDerivedOutput,
+  consumeDerivedOutput,
+} from "./derived-output-retention";
 
 const MAX_HYBRID_ATTEMPTS = 2;
 
@@ -66,7 +70,16 @@ export async function composeStoryArtifact(
       : (options.hybridEnabled ?? hybridStoryComposerEnabled());
   if (!hybridEnabled) return baseline;
 
-  const requester = options.requestPlan ?? requestHybridPlan;
+  const requester: HybridPlanRequester =
+    options.requestPlan ??
+    (async (request) =>
+      consumeDerivedOutput(
+        await requestHybridPlan(
+          request,
+          compositionInput.matchRecipe.storyPromptVersion ?? "",
+        ),
+        "composition_plan_validator",
+      ));
   const failures: HybridPlanFailureReason[] = [];
   let fallbackReason: StoryArtifact["composition"]["fallbackReason"] =
     "provider_output_invalid";
@@ -103,10 +116,17 @@ export async function composeStoryArtifact(
     }
 
     try {
+      const validatedPlan = classifyDerivedOutput(
+        "validated_composition_plan",
+        validation.plan,
+      );
       return composeHybridStoryArtifact({
         ...compositionInput,
         openingCopy: safeOpeningCopy,
-        plan: validation.plan,
+        plan: consumeDerivedOutput(
+          validatedPlan,
+          "story_artifact_builder",
+        ),
         attemptCount: attempt as 1 | 2,
       });
     } catch (error) {

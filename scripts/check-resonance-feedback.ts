@@ -14,16 +14,18 @@ import {
   RESONANCE_FEEDBACK_RETENTION_DAYS,
   RESONANCE_MISS_REASONS,
 } from "../lib/resonance-feedback-types";
-import {
-  createSession,
-  getSession,
-  updateSession,
-} from "../lib/session";
+import { createSession, getSession } from "../lib/session";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import type { MatchRecipe } from "../lib/types";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -41,6 +43,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 async function main(): Promise<void> {
@@ -298,8 +301,8 @@ async function makeSession(userId: string, completed: boolean) {
     stage,
     matchRecipe: recipe,
     openingCopy: {
-      eyebrow: "A story for the difficult middle",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: brief,
@@ -321,9 +324,10 @@ async function makeSession(userId: string, completed: boolean) {
     artifact,
   });
   if (completed) {
-    await updateSession(sessionId, {
-      nextBeatIndex: artifact.beats.length,
-      nextChunkIndex: 0,
+    await completeMemoryStorySessionFixture({
+      sessionId,
+      userId,
+      artifact,
     });
   }
   return { sessionId, artifact };

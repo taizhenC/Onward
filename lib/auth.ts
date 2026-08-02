@@ -26,6 +26,11 @@ export type AuthUserContext = Readonly<{
   authenticationMethods: ReadonlyArray<VerifiedAuthenticationMethod>;
 }>;
 
+export type AuthOwnerLifecycle = Readonly<{
+  userId: string;
+  isAnonymous: boolean;
+}>;
+
 export type AccountAuthContext = Readonly<{
   userId: string;
   isAnonymous: boolean;
@@ -50,15 +55,31 @@ declare global {
 // Authenticated user id, or null when there is no (valid) auth session. Callers map
 // null to 401 (creation paths) or 404 (session-scoped reads, via getOwnedSession).
 export async function getAuthUserId(): Promise<string | null> {
+  return (await getAuthOwnerLifecycle())?.userId ?? null;
+}
+
+// Lightweight verified Auth state for owner lifecycle projections. It performs
+// one server-validated user read without the claims/AMR work reserved for
+// telemetry and destructive account actions.
+export async function getAuthOwnerLifecycle(): Promise<AuthOwnerLifecycle | null> {
   if (persistenceMode() === "memory") {
-    return memoryAuthUserContext()?.userId ?? null;
+    const context = memoryAuthUserContext();
+    return context
+      ? Object.freeze({
+          userId: context.userId,
+          isAnonymous: context.isAnonymous,
+        })
+      : null;
   }
 
   const { createSupabaseServer } = await import("./supabase/server");
   const supabase = await createSupabaseServer();
   const { data, error } = await supabase.auth.getUser();
   if (error || !data.user) return null;
-  return data.user.id;
+  return Object.freeze({
+    userId: data.user.id,
+    isAnonymous: data.user.is_anonymous === true,
+  });
 }
 
 // The richer context is intentionally used only by the initial match boundary.

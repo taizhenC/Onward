@@ -1703,6 +1703,10 @@ function auditRetentionSinkCalls(sources: readonly AuditedSource[]): void {
     "lib/historical-concerns.ts": {
       "editorial.historical_concern->shared_editorial_store": 1,
     },
+    "lib/owner-story-save.ts": {
+      "owner.save_state->owner_response": 1,
+      "owner.save_state->request_memory": 1,
+    },
     "lib/resonance-feedback.ts": {
       "feedback.closed_response->bounded_feedback_store": 1,
     },

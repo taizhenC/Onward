@@ -136,6 +136,10 @@ export const DERIVED_OUTPUT_SURFACES = deepFreeze({
     retentionClass: "owned_story",
     allowedSinks: ["request_memory", "owned_story_store"],
   },
+  "owner.save_state": {
+    retentionClass: "owned_story",
+    allowedSinks: ["request_memory", "owned_story_store", "owner_response"],
+  },
   "provider.opening_copy_response": {
     retentionClass: "request_ephemeral",
     allowedSinks: ["request_memory"],
@@ -326,6 +330,7 @@ export const PERSISTENCE_RETENTION_REGISTRY = deepFreeze({
   "public.telemetry_event_daily_rollups": ["bounded_operational"],
   "public.telemetry_rollup_dispatch_control": ["curated_reference"],
   "public.story_recipe_registry": ["curated_reference"],
+  "public.owner_story_save_states": ["owned_story"],
 } as const satisfies Record<string, readonly RetentionClass[]>);
 
 // Exact inventory for the two durable relations that can contain a Disclosure

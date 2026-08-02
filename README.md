@@ -105,16 +105,17 @@ See `.env.example` for the documented template. Summary:
 
 ### 1. Supabase (dashboard)
 
-1. For a fresh project, apply every file from `supabase/migrations/` in numeric order in the Supabase SQL editor: `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010` → `0011` → `0012` → `0013` → `0014` → `0015` → `0016` → `0017` → `0018` → `0019` → `0020` → `0021`. Before `0003`, enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. Apply each migration exactly once and stop on the first error. **`0003` deletes existing development session rows on purpose.** Migration `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning; `0011` adds the telemetry-flow registry, transactional `create_story_session_v3` binding, typed capture RPC, and leased product-event outbox; `0012` adds transactional match-limiter, recovery, and `create_story_session_v4` artifact producers, including two-day unlinkable limiter-decision replay for ambiguous responses; `0013` makes each artifact-backed Continue/Finish an owner-scoped CAS that atomically captures its persisted-artifact-derived passage ordinal and final completion; `0014` atomically captures the persisted feedback verdict while keeping the closed miss reason in the feedback domain only; `0015` captures alternate demand only when a valid capability becomes a durable claim; `0016` derives alternate match calibration at the server boundary and atomically captures alternate terminal outcomes plus ready-artifact telemetry with their authoritative transitions; `0017` replaces service-role raw-event claims with a private, ID-only Postgres dispatcher that atomically folds each source event into identifier-free UTC-day marginal counts before marking its outbox pointer delivered; `0018` adds the owner-scoped story-deletion RPC and removes direct service-role session deletion; `0019` adds the owner-confirmed account-deletion RPC, FK-binds and indexes rate-limit user keys, routes guest expiry through the same locked cascade, and account-serializes flow ownership plus initial-story RPCs; `0020` adds the append-only promoted-recipe registry, exact immutable session-recipe trigger, and registry-backed telemetry/recovery/rollup checks; `0021` adds immutable current-or-honest-legacy retention labels, current-only insert guards, and a closed service-role schema-health boundary without rewriting StoryArtifact JSON. The dispatcher minute cron remains disabled in `telemetry_rollup_dispatch_control` until an operator completes the rollout gates. Pre-`0009` sessions remain deliberately ineligible for linked telemetry because their original limits cannot be reconstructed safely, but they remain deletable.
+1. For a fresh project, apply every file from `supabase/migrations/` in numeric order in the Supabase SQL editor: `0001` → `0002` → `0003` → `0004` → `0005` → `0006` → `0007` → `0008` → `0009` → `0010` → `0011` → `0012` → `0013` → `0014` → `0015` → `0016` → `0017` → `0018` → `0019` → `0020` → `0021` → `0022`. Before `0003`, enable the **pg_cron** extension and verify `delete from auth.users where false;` runs without a permission error. Apply each migration exactly once and stop on the first error. **`0003` deletes existing development session rows on purpose.** Migration `0009` adds root-only request context plus leased/atomic alternate recovery; `0010` adds typed privacy-safe product/operational telemetry with 30/14-day pruning; `0011` adds the telemetry-flow registry, transactional `create_story_session_v3` binding, typed capture RPC, and leased product-event outbox; `0012` adds transactional match-limiter, recovery, and `create_story_session_v4` artifact producers, including two-day unlinkable limiter-decision replay for ambiguous responses; `0013` makes each artifact-backed Continue/Finish an owner-scoped CAS that atomically captures its persisted-artifact-derived passage ordinal and final completion; `0014` atomically captures the persisted feedback verdict while keeping the closed miss reason in the feedback domain only; `0015` captures alternate demand only when a valid capability becomes a durable claim; `0016` derives alternate match calibration at the server boundary and atomically captures alternate terminal outcomes plus ready-artifact telemetry with their authoritative transitions; `0017` replaces service-role raw-event claims with a private, ID-only Postgres dispatcher that atomically folds each source event into identifier-free UTC-day marginal counts before marking its outbox pointer delivered; `0018` adds the owner-scoped story-deletion RPC and removes direct service-role session deletion; `0019` adds the owner-confirmed account-deletion RPC, FK-binds and indexes rate-limit user keys, routes guest expiry through the same locked cascade, and account-serializes flow ownership plus initial-story RPCs; `0020` adds the append-only promoted-recipe registry, exact immutable session-recipe trigger, and registry-backed telemetry/recovery/rollup checks; `0021` adds immutable current-or-honest-legacy retention labels, current-only insert guards, and a closed service-role schema-health boundary without rewriting StoryArtifact JSON; `0022` atomically records one immutable account-level Save State at the confirmed Auth transition, preserves honest legacy observations, and exposes a closed service-only health boundary. The dispatcher minute cron remains disabled in `telemetry_rollup_dispatch_control` until an operator completes the rollout gates. Pre-`0009` sessions remain deliberately ineligible for linked telemetry because their original limits cannot be reconstructed safely, but they remain deletable.
 
 Run each migration as one whole-file transaction, never statement-by-statement.
 This is mandatory for `0017`: its table lock, delivered-pointer backfill, and
 legacy claim/ACK revocation are one atomic cutover. If the migration runner does
 not transaction-wrap a file, wrap the complete `0017` script in `BEGIN` and
-`COMMIT` for that execution. Apply the same whole-file wrapper to `0021`; its
-`SET LOCAL` lock timeout and ordered table locks must share one transaction.
+`COMMIT` for that execution. Apply the same whole-file wrapper to `0021` and
+`0022`; their `SET LOCAL` timeouts and ordered cutovers must share one
+transaction.
 
-Before applying `0011`-`0021`, validate the release commit locally:
+Before applying `0011`-`0022`, validate the release commit locally:
 
 ```powershell
 npm run typecheck
@@ -133,6 +134,7 @@ npm run check-story-deletion
 npm run check-account-deletion
 npm run check-reader-visibility-telemetry
 npm run check-derived-output-retention
+npm run check-owner-story-save
 npm run build
 ```
 
@@ -195,6 +197,53 @@ policy/class. A pre-`0021` application can continue writing through the existing
 RPCs after the migration because the database supplies the new columns, but it
 will not enforce the provider-output boundary; roll forward to the classified
 build promptly.
+
+Migration `0022` is additive but requires a coordinated production cutover; do
+not apply it schema-first while an older public build is live. That build can
+create a missing user from `/signin` and lacks the permanent-owner creation
+guard, while the revised trigger deliberately ignores direct Auth inserts.
+First deploy the independent returning-owner `/signin` compatibility guard
+with `shouldCreateUser: false`. Then set `STORY_CREATION_ENABLED=false`, verify
+ordinary `/api/match` requests return 503, wait at least the route's 60-second
+maximum duration for in-flight matches to drain, and prove an unknown
+`/signin` email creates no Auth user. If that compatibility deploy is
+not possible, place sign-in, Save, and story creation behind a maintenance
+boundary for the whole cutover.
+
+With those controls active, apply `0022`. It creates a forced-RLS,
+service-read-only owner lifecycle
+row and installs a narrow trigger on `auth.users`. The trigger records
+`anonymous_upgrade` only when Auth confirms the `true` to non-true transition,
+and never treats direct account creation as informed Save evidence or touches
+Sessions, telemetry, or advisory locks. `/signin` is returning-owner-only and
+sets `shouldCreateUser: false`; the match boundary also refuses story creation
+for a permanent owner without readable current-or-legacy Save evidence before
+telemetry, limits, providers, or writes. Existing permanent owners are backfilled as
+`legacy_permanent_observed` with `saved_at = NULL`; do not invent a historical
+confirmation time. The file takes a ten-second bounded Auth lock only after its
+catalog/helper DDL and limits each statement to 30 seconds, then installs the
+trigger before scanning legacy owners in the same transaction.
+
+Run `npm run check-owner-story-save`, then run `npm run check-db`
+and require every `owner_story_save_schema_health_v1` boolean to be true before
+deploying the full guarded reader. In staging, create one guest, request email linking, prove
+no row exists while the email is merely pending, confirm it, and prove the same
+Auth ID has one exact `anonymous_upgrade` row. Also prove `/signin` cannot
+create a missing account, direct permanent creation fails the coverage gate,
+and test a same-device and cross-device read, story deletion preserving the
+owner row, and account deletion cascading it. If managed Auth confirmation
+fails because of the trigger, keep `STORY_CREATION_ENABLED=false` and first
+activate edge maintenance for every Save surface and `/auth/confirm`
+email-change redemption. Prove an already-issued pending link cannot redeem;
+blocking only new link requests is not enough. Then use
+`drop trigger onward_record_owner_story_save on auth.users;` and keep existing
+rows immutable. Keep confirmation maintenance and the returning-only sign-in
+guard active until the trigger and guarded app are restored, all health flags
+are true, and confirmation canaries pass. Never serve a build that allows
+implicit signup, redeemable unguarded Save links, or unguarded permanent story
+creation after `0022`. A permanent owner without a row projects as unavailable;
+any reviewed repair may backfill only an honest legacy observation. Remove
+confirmation maintenance and re-enable story creation only after the canaries.
 
 Prompt version labels are not trusted by themselves: `config/prompt-releases.json`
 is append-only, and each active rerank/story version binds the exact canonical
@@ -399,7 +448,7 @@ the staging dispatcher healthy. Disable it again after the exercise. These are
 real-Postgres release exercises; `npm run check-telemetry-dispatcher` is a
 hermetic structural gate, not concurrency, cron, or dashboard-privacy evidence.
 
-Rollback compatibility is deliberately narrow. Keep migrations `0011`-`0021` installed during the application rollback window; the older application-compatible domain RPCs remain, and a pre-deletion application simply exposes no delete action. After `0020`, however, every build that creates stories must write the expanded registry-backed MatchRecipe; use the story kill switch instead of rolling back to a pre-registry writer. Never restore direct service-role `sessions` DELETE or remove the rate-limit owner FK while old/new instances overlap. A pre-0016 application loses alternate terminal, match-calibration, and ready-artifact telemetry; a pre-0015 application also loses transactional alternate-request events; a pre-0014 application also loses transactional feedback events; a pre-0013 application also loses transactional progress/completion events; a v3 application loses transactional match-producer completeness; and a v2 application stops registering/binding new flows and is incident-only. None restores the pre-`0011` direct-write telemetry paths. Migration `0017` also intentionally revokes service-role execution of the raw-row v1 claim and plain ACK paths, so do not roll back to an outbox worker that requires them. Migration `0021` remains compatible with older RPC writers through database defaults; do not drop its labels or immutability trigger during rollback.
+Rollback compatibility is deliberately narrow. Keep migrations `0011`-`0022` installed during the application rollback window; the older application-compatible domain RPCs remain, and a pre-deletion application simply exposes no delete action. After `0020`, however, every build that creates stories must write the expanded registry-backed MatchRecipe; use the story kill switch instead of rolling back to a pre-registry writer. Never restore direct service-role `sessions` DELETE or remove the rate-limit owner FK while old/new instances overlap. A pre-0016 application loses alternate terminal, match-calibration, and ready-artifact telemetry; a pre-0015 application also loses transactional alternate-request events; a pre-0014 application also loses transactional feedback events; a pre-0013 application also loses transactional progress/completion events; a v3 application loses transactional match-producer completeness; and a v2 application stops registering/binding new flows and is incident-only. None restores the pre-`0011` direct-write telemetry paths. Migration `0017` also intentionally revokes service-role execution of the raw-row v1 claim and plain ACK paths, so do not roll back to an outbox worker that requires them. Migration `0021` remains compatible with older RPC writers through database defaults; do not drop its labels or immutability trigger during rollback. After `0022`, never roll back under public traffic to a build that permits implicit signup or lacks the permanent-owner Save guard. Keep `STORY_CREATION_ENABLED=false`, the returning-only sign-in guard, Save-surface maintenance, and `/auth/confirm` email-change blocking active until the full guarded app and trigger are restored and their health/confirmation canaries pass; already-issued links must remain unredeemable during the gap. Keep the immutable Save rows. If the managed-Auth trigger itself causes confirmation failures, use the documented trigger-only rollback rather than dropping the state table or fabricating timestamps.
 
 Before an application rollback or dispatcher incident, disable aggregation
 through the dedicated control; do not drop the rollup/control tables,
@@ -459,16 +508,16 @@ existing `0011` lifecycle/capture/outbox schema.
 
 - Anonymous by default; no account required to use the product.
 - Stories are owned: another person's story URL is a 404, indistinguishable from a missing one.
-- A temporary guest account and every story in it are deleted about six hours after the latest story creation or saved reading progress in that account (`ANON_USER_TTL_HOURS`); confirming a linked email keeps the same account and its stories beyond the guest window, until you delete them.
+- A temporary guest account and every story in it are deleted about six hours after the latest story creation or saved reading progress in that account (`ANON_USER_TTL_HOURS`). Sending an email link does not change that lifecycle. Confirming it commits one immutable account-level Save State for the same owner, covering existing and future Owner Stories until story/account deletion; older permanent accounts are marked as legacy without a fabricated confirmation time.
 - Owners can hard-delete any saved story or their entire account from the active Onward database without support. Account deletion removes the sign-in, all owned stories/artifacts/feedback/recovery state, owner-linked telemetry flows, and user rate-limit keys; guest expiry uses the same cascade. Deleting an original story also deletes its alternate; deleting only an alternate preserves the original. Daily counts already settled before deletion follow a 30-day expiry schedule without an account, session, or saved-story identifier, with physical removal by daily cleanup. Historical concern reports remain attached to shared historical-library StorySpec and fact identifiers but contain no reporter, account, session, saved-story, artifact, disclosure, or generated-prose identifier; they currently have no automatic expiry or user-controlled deletion. Provider processing and infrastructure backups follow separately reviewed schedules and are not recalled by the in-app transaction.
-- The situation text and private request context become eligible for daily cleanup at their fixed 60-day deadline (`FEELING_RETENTION_DAYS`), saved or not, and are deleted earlier with the guest account, story, or account. The submitted age currently stays with a saved story until story or account deletion; changing that is still a P0-14 retention decision.
+- The situation text and private request context become eligible for daily cleanup at their fixed 60-day deadline (`FEELING_RETENTION_DAYS`), saved or not, and are deleted earlier with the guest account, story, or account. The submitted age and validated generated wording follow the Owner Story lifecycle until story or account deletion; Save never extends the private-context deadline.
 - Crisis input is detected by a deterministic regex before any LLM call and is never persisted.
 - Optional story intensity/topic limits and a closed clarification choice are retained with the disclosure only on the original session so one alternate can reuse them exactly. They are never placed in either StoryArtifact or the alternate session, become cleanup-eligible at the original disclosure deadline, and are NULL'd by the next daily cleanup.
 - Pre-story recovery keeps only an opaque-token hash and keyed input fingerprint; the key is usable for ten minutes and expired rows are removed by the 15-minute cleanup job.
 - Historical concerns retain only shared historical-library StorySpec/stage/fact identifiers, a closed reason/status, aggregate count, and timestamps. They do not retain the reporter, account, session, saved-story, artifact, rationale, disclosure, or generated prose.
 - Resonance feedback is owner-linked for deletion but contains only story/recipe identifiers and a closed verdict/reason. It becomes cleanup-eligible after 90 days and is physically removed by scheduled cleanup; no optional note field exists until separate consent, encryption, reviewer access, and shorter deletion are implemented.
 - Alternate flow rows contain only owner/content identifiers, a token hash, closed state, bounded attempt count, lease, and timestamps. The browser sends no age, disclosure, boundaries, clarification, feedback reason, candidate list, or prose; the alternate session stores none of the original sensitive context.
-- Product telemetry accepts only exact closed events and HMAC-authenticated, purpose-separated opaque IDs; raw session/artifact IDs and flow-derived IDs at unlinkable boundaries are rejected. Outbox-only repeatable-occurrence tokens are never stored. IDs carry a non-secret key ID so current and retained previous keys can verify deletion and retries across rotation. Crisis, rate-limit, and deletion events are unlinkable. Operational attempts contain no flow/user/session/story ID. Product events and identifier-free daily marginal rollups become cleanup-eligible by 30 days; attempts do so by 14 days, and scheduled jobs perform physical deletion. New flows have an issued/owner-claimed/root-bound mapping with root/account cascades and opaque revocation tombstones. Individual-story and account deletion, just-in-time save copy, and a closed code-owned retention registry now exist; durable save-state, real database/backup proof, and external provider/infrastructure review remain. Raw product events stay inside Postgres: when explicitly enabled after release gates, the first-party dispatcher claims IDs only and atomically folds source-first before delivery. The candidate aggregate read remains private pending a separate dashboard privacy review. External raw-event consumers remain prohibited because no deletion-retraction protocol exists. See [`roadmap/telemetry_contract.md`](./roadmap/telemetry_contract.md).
+- Product telemetry accepts only exact closed events and HMAC-authenticated, purpose-separated opaque IDs; raw session/artifact IDs and flow-derived IDs at unlinkable boundaries are rejected. Outbox-only repeatable-occurrence tokens are never stored. IDs carry a non-secret key ID so current and retained previous keys can verify deletion and retries across rotation. Crisis, rate-limit, and deletion events are unlinkable. Operational attempts contain no flow/user/session/story ID. Product events and identifier-free daily marginal rollups become cleanup-eligible by 30 days; attempts do so by 14 days, and scheduled jobs perform physical deletion. New flows have an issued/owner-claimed/root-bound mapping with root/account cascades and opaque revocation tombstones. Individual-story/account deletion, just-in-time Save consent, durable owner Save State, and a closed code-owned retention registry now exist; real managed-database/backup proof and external provider/infrastructure review remain. Save/reopen telemetry is still disabled until a separate transaction-derived producer is reviewed. Raw product events stay inside Postgres: when explicitly enabled after release gates, the first-party dispatcher claims IDs only and atomically folds source-first before delivery. The candidate aggregate read remains private pending a separate dashboard privacy review. External raw-event consumers remain prohibited because no deletion-retraction protocol exists. See [`roadmap/telemetry_contract.md`](./roadmap/telemetry_contract.md).
 - Application code does not intentionally log prompt/response bodies, disclosures, raw IPs, or raw errors; production proxy, APM, and provider logging/retention must be configured and verified separately.
 
 ## Architecture

@@ -53,10 +53,11 @@ export async function handleMatchRequest(
   const {
     auth: {
       getAuthUserContext,
-      getAuthUserId,
+      getAuthOwnerLifecycle,
       hasFreshAnonymousAuthentication,
     },
     intake,
+    ownerStorySave: { canOwnerCreateStory },
     rateLimit: { hashRequestIp },
     telemetryAuthCookie: {
       readStoryFlowAuthChallengeCookie,
@@ -126,23 +127,39 @@ export async function handleMatchRequest(
   // Claims/AMR verification is requested only after a valid same-flow challenge
   // proves that method telemetry could be accepted.
   let authUser: Awaited<ReturnType<typeof getAuthUserContext>> = null;
-  let userId: string | null;
+  let owner: Awaited<ReturnType<typeof getAuthOwnerLifecycle>> = null;
   try {
     if (authProof) {
       authUser = await getAuthUserContext();
-      userId = authUser?.userId ?? null;
+      owner = authUser
+        ? {
+            userId: authUser.userId,
+            isAnonymous: authUser.isAnonymous,
+          }
+        : null;
     } else {
-      userId = await getAuthUserId();
+      owner = await getAuthOwnerLifecycle();
     }
   } catch {
     return unavailableResponse();
   }
-  if (!userId) {
+  if (!owner) {
     return privateSessionRequiredResponse(telemetryFlowId, requestUrl, {
       issueAnonymousStoryFlowAuthChallenge,
       setStoryFlowAuthChallengeCookie,
       telemetryFlowBindingEnabled,
     });
+  }
+  const userId = owner.userId;
+
+  // A newly/directly-created permanent Auth user has no informed Save
+  // evidence. Fail before flow activation, limits, providers, or writes so it
+  // cannot create indefinitely retained stories while the coverage canary is
+  // red. Anonymous owners remain safe under the bounded guest lifecycle.
+  try {
+    if (!(await canOwnerCreateStory(owner))) return unavailableResponse();
+  } catch {
+    return unavailableResponse();
   }
   let preserveAuthChallenge = false;
   const finish = (response: Response): Response =>
@@ -263,6 +280,7 @@ async function loadNonCrisisDependencies() {
   const [
     auth,
     intake,
+    ownerStorySave,
     rateLimit,
     storyRecipe,
     recipeRegistration,
@@ -274,6 +292,7 @@ async function loadNonCrisisDependencies() {
   ] = await Promise.all([
     import("@/lib/auth"),
     import("@/lib/intake"),
+    import("@/lib/owner-story-save"),
     import("@/lib/rate-limit"),
     import("@/lib/story-recipe"),
     import("@/lib/story-recipe-registration"),
@@ -286,6 +305,7 @@ async function loadNonCrisisDependencies() {
   return {
     auth,
     intake,
+    ownerStorySave,
     rateLimit,
     storyRecipe,
     recipeRegistration,

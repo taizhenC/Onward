@@ -1,6 +1,7 @@
 import "./_smoke-bootstrap";
 import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { isDeepStrictEqual } from "node:util";
 import { fileURLToPath } from "node:url";
 import { POST as deleteStoryPost } from "../app/api/story-delete/route";
 import {
@@ -23,6 +24,10 @@ import {
 import {
   listMemoryResonanceFeedback,
 } from "../lib/resonance-feedback-store-memory";
+import {
+  _recordMemoryOwnerStorySaveTransitionForTests,
+  getMemoryOwnerStorySaveState,
+} from "../lib/owner-story-save-store-memory";
 import { createResonanceBrief, RESONANCE_BRIEF_VERSION } from "../lib/resonance-brief";
 import {
   createSession,
@@ -91,6 +96,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
   console.log("PASS owner-scoped root/alternate content cascades and consumed tombstones");
+  console.log("PASS story deletion preserves account-level Owner Story Save State");
   console.log("PASS shared raw telemetry retirement, revocation, and unlinkable SLA events");
   console.log("PASS exact same-origin form, signed CSRF binding, replay, and auth behavior");
   console.log("PASS bounded enrichment, complete pagination, SQL locks, and grants");
@@ -324,10 +330,19 @@ async function checkAlternateOnlyDeletion(failures: string[]): Promise<void> {
 
 async function checkRootFamilyDeletion(failures: string[]): Promise<void> {
   const family = await makeFamily();
+  const saveStateBefore = _recordMemoryOwnerStorySaveTransitionForTests({
+    userId: LOCAL_DEV_USER_ID,
+    evidenceKind: "anonymous_upgrade",
+    occurredAt: Date.parse("2026-07-17T12:00:00.000Z"),
+  });
   const result = await deleteOwnedStory({
     sessionId: family.root.sessionId,
     userId: LOCAL_DEV_USER_ID,
   });
+  const saveStateAfter = getMemoryOwnerStorySaveState(LOCAL_DEV_USER_ID);
+  if (!isDeepStrictEqual(saveStateAfter, saveStateBefore)) {
+    failures.push("story deletion altered account-level Owner Story Save State");
+  }
   if (
     result !== "deleted" ||
     (await getSession(family.root.sessionId)) !== null ||
@@ -496,7 +511,14 @@ function checkStaticContracts(failures: string[]): void {
     failures.push("story deletion migration lacks locks, ownership, telemetry retirement, or safe grants");
   }
   if (
-    !listPage.includes("playback?.outline.displayName ?? \"Saved story\"") ||
+    /(?:delete\s+from|update|insert\s+into)\s+public\.owner_story_save_states/i.test(
+      migration,
+    )
+  ) {
+    failures.push("story deletion SQL mutates account-level Owner Story Save State");
+  }
+  if (
+    !listPage.includes("playback?.outline.displayName ?? \"Story\"") ||
     !listPage.includes("getStoryPlaybackBeforeDeadline") ||
     !listPage.includes("Delete story") ||
     !listPage.includes("Newer stories") ||

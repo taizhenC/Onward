@@ -659,10 +659,10 @@ seven non-overlapping classes:
 - `curated_reference`: historical content, evidence, recipes, and catalog
   vectors that are not reader-derived.
 
-The registry names every allowed sink for 19 current surfaces, including the
-submitted age and closed hybrid-retry feedback, all 21 application-owned
-tables, all 20 `sessions` fields, all 15 `story_artifacts` fields, and all five
-current Cerebras/Gemini exchanges.
+The registry names every allowed sink for 20 current surfaces, including the
+submitted age, closed hybrid-retry feedback, and owner Save State, all 22
+application-owned tables, all 20 `sessions` fields, all 15 `story_artifacts`
+fields, and all five current Cerebras/Gemini exchanges.
 Reader-derived provider values are opaque until a named, AST-enumerated literal
 consumer in its reviewed reducer/validator unwraps them. Curated document
 embeddings remain bare catalog vectors, but their caller and sink are separately
@@ -695,6 +695,7 @@ Those remain separate external launch reviews.
 | `fact_atoms` / `source_records` | Claim-level evidence | Curated, non-user data | Indefinite with corrections |
 | `story_artifacts` | Validated personalized/canonical output plus relational `owned_story`/policy labels | Sensitive derived for personalized zones | Guest TTL; permanent owner lifecycle until story/account deletion |
 | `sessions` | Ownership, match, raw disclosure, progress plus separate story/context labels | Mixed `owned_story` and `recovery_context` | Guest TTL; raw disclosure/context becomes cleanup-eligible at its fixed deadline and is nulled by the next daily job; owner-story fields follow owner deletion |
+| `owner_story_save_states` | Immutable account-level Save evidence, exact current transition time or honest legacy observation, and retention labels | `owned_story` lifecycle control | Absent for temporary guests; retained for the permanent owner lifecycle; removed only by Auth-owner cascade |
 | `story_feedback` | Rating and bounded reason enums; no free-text field | Closed derived feedback | Cleanup-eligible at 90 days and physically removed by scheduled cleanup; owner-deletable sooner |
 | `product_events` | Closed non-semantic events | Safe operational | Cleanup-eligible by 30 days and physically removed by scheduled cleanup |
 | `telemetry_event_daily_rollups` | UTC day, event, one closed marginal dimension, count | Identifier-free aggregate candidate | Cleanup-eligible by 30 days and physically removed by daily cleanup; no caller grant pending dashboard privacy review |
@@ -720,7 +721,7 @@ retention/non-restoration guarantee proving deleted rows cannot return to the
 active service. Provider logs and already-processed model/email requests remain
 outside the application transaction and require their own contractual review.
 
-### Save-state decision still required before launch
+### Durable Save-State boundary
 
 The product meaning is now explicit in the domain language, save UI, privacy
 guide, and code registry:
@@ -729,14 +730,36 @@ guide, and code registry:
 - Saved account: the validated story artifact remains until the user deletes it; raw intake is still deleted on the shorter disclosure schedule.
 - The save UI explicitly explains that personalized story wording may remain because it is the saved item.
 
-The schema now supports immutable retention-class and policy labels, but it
-still lacks a durable `saved_at` transition and a transactionally captured save
-decision. The current account-upgrade flow is not sufficient evidence by
-itself. Implement that state, or formally adopt and test an equivalent durable
-account-lifecycle signal, then prove the cascades and scheduled jobs against
-real Postgres. A future de-personalization policy would require a new explicit
-policy version and migration; it must never silently mutate an immutable
-artifact.
+Migration `0022` now records that decision once per owner. Its narrow
+`auth.users` trigger writes `anonymous_upgrade` only in the confirmed
+anonymous-to-permanent transaction. Returning-owner sign-in explicitly refuses
+account creation, and a directly created permanent account receives no Save
+claim, fails the coverage gate, and cannot create a story at the match boundary.
+Current evidence receives one exact
+`saved_at = observed_at`;
+pre-migration permanent owners receive `legacy_permanent_observed` with
+`saved_at = NULL`, so history is not fabricated. The row is immutable,
+forced-RLS/default-deny, readable only through the server boundary, and removed
+through the Auth FK cascade. Story deletion deliberately leaves it intact
+because Save governs the account, not a copy of one Session.
+
+The server combines one verified Auth observation with that row and projects
+only `temporary`, `saved`, or `unavailable`. Sending an email remains temporary;
+a permanent account with missing or contradictory evidence never falls back to
+a retention promise. The application does not write this state and does not
+activate save/reopen telemetry.
+
+Real managed-Auth confirmation, same/cross-device projection, cascade, and
+trigger-rollback canaries remain public-release gates, as do provider,
+backup/PITR, legal, market, and youth review. A future de-personalization policy
+would require a new explicit policy version and migration; it must never
+silently mutate an immutable artifact.
+
+Production `0022` rollout is a coordinated cutover: deploy the independent
+returning-only sign-in compatibility guard, pause and drain story creation,
+apply and verify the migration, deploy the full Save-evidence guard, repeat
+canaries, and only then re-enable stories. An unguarded pre-`0022` build is not
+a safe public rollback target once the migration is installed.
 
 ## P0-15 — [Refactor] Module boundaries
 

@@ -39,6 +39,11 @@ scripts/drafts/
 # outside this directory under content-addressed evals/history and evals/shadow paths.
 evals/runs/*
 
+# story-quality research workspace
+# Ignore rules prevent accidental commits; they are not an access-control boundary.
+evals/story-quality/private/
+evals/story-quality/runs/
+
 # IDE / OS
 .vscode/
 .idea/

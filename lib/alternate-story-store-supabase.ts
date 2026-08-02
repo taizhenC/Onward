@@ -12,6 +12,7 @@ import type {
   AlternateResolvedTelemetryCapture,
 } from "./alternate-story-telemetry";
 import { telemetryFlowBindingEnabled } from "./telemetry-flow-lifecycle";
+import { assertRetentionSink } from "./derived-output-retention";
 
 export async function issueSupabaseAlternateStoryFlow(input: {
   userId: string;
@@ -172,6 +173,7 @@ export async function completeSupabaseAlternateStoryReady(input: {
   artifact: StoryArtifact;
   telemetry: AlternateReadyTelemetry | null;
 }): Promise<string> {
+  assertRetentionSink("story.artifact", "owned_story_store");
   const telemetryEnabled = telemetryFlowBindingEnabled();
   if (!telemetryEnabled && input.telemetry !== null) {
     throw new Error("disabled alternate telemetry received a capture");

@@ -1,7 +1,14 @@
 import "./_smoke-bootstrap";
+import { consumeDerivedOutput } from "../lib/derived-output-retention";
 import { FIGURE_STAGES } from "../lib/figures-data";
-import { NEUTRAL_EYEBROW, toEyebrowSurface } from "../lib/opening-copy";
-import { writeOpeningCopyReal } from "../lib/llm-real";
+import { writeOpeningCopy } from "../lib/llm";
+import { STORY_PROMPT_VERSION } from "../lib/llm-recipe-constants";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+  toEyebrowProviderSurface,
+  toEyebrowSurface,
+} from "../lib/opening-copy";
 import {
   PRIMARY_PRESSURES,
   RESONANCE_BRIEF_SENSITIVITY,
@@ -76,7 +83,13 @@ function checkClassification(failures: string[]): void {
 
 function checkClosedContract(failures: string[]): void {
   const brief = createResonanceBrief(PRIVATE_DISCLOSURE);
-  const serialized = JSON.stringify(brief);
+  // Elide the keyed HMAC digests before scanning for retained text. "2024" is
+  // four hex characters, so a random digest contains it in ~1.6% of processes
+  // (the key is ephemeral per process) and would trip a false privacy alarm.
+  // Only exactly-64-char hex runs are elided, and validateResonanceBrief below
+  // proves every digest field has that shape — so no retained disclosure can
+  // hide in the elided span.
+  const serialized = JSON.stringify(brief).replace(/[0-9a-f]{64}/gi, "<digest>");
   const forbiddenRawValues = [
     PRIVATE_DISCLOSURE,
     "Priya",
@@ -162,8 +175,10 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
   }
   const brief = createResonanceBrief(PRIVATE_DISCLOSURE);
   const surface = toEyebrowSurface({ resonanceBrief: brief, stage });
-  const surfaceJson = JSON.stringify(surface);
+  const providerSurface = toEyebrowProviderSurface(surface);
+  const surfaceJson = JSON.stringify(providerSurface);
   if (
+    "displayName" in providerSurface ||
     surfaceJson.includes("Priya") ||
     surfaceJson.includes("Boston") ||
     surfaceJson.includes("2024") ||
@@ -175,10 +190,12 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
   const originalFetch = globalThis.fetch;
   const previousKey = process.env.LLM_API_KEY;
   const previousBaseUrl = process.env.LLM_BASE_URL;
+  const previousProvider = process.env.LLM_PROVIDER;
   let modelOutput = "A closed door after a long effort";
   const capturedBodies: string[] = [];
   process.env.LLM_API_KEY = "resonance-contract-key";
   process.env.LLM_BASE_URL = "https://provider.invalid/v1";
+  process.env.LLM_PROVIDER = "real";
   globalThis.fetch = (async (_input: RequestInfo | URL, init?: RequestInit) => {
     capturedBodies.push(typeof init?.body === "string" ? init.body : "");
     return new Response(
@@ -188,15 +205,35 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
   }) as typeof fetch;
 
   try {
-    const safe = await writeOpeningCopyReal({ resonanceBrief: brief, stage });
+    const safe = consumeDerivedOutput(
+      await writeOpeningCopy(
+        { resonanceBrief: brief, stage },
+        STORY_PROMPT_VERSION,
+      ),
+      "provider_health_check",
+    );
     modelOutput = "Priya";
-    const echo = await writeOpeningCopyReal({ resonanceBrief: brief, stage });
+    const echo = consumeDerivedOutput(
+      await writeOpeningCopy(
+        { resonanceBrief: brief, stage },
+        STORY_PROMPT_VERSION,
+      ),
+      "provider_health_check",
+    );
     const providerPayload = capturedBodies.join("\n");
     if (safe.eyebrow !== "A closed door after a long effort") {
       failures.push("safe bounded provider output did not pass the eyebrow guard");
     }
     if (echo.eyebrow !== NEUTRAL_EYEBROW) {
       failures.push("named-detail provider output did not fall back safely");
+    }
+    if (
+      JSON.stringify(safe.prefaceLines) !==
+        JSON.stringify(DEFAULT_PREFACE_LINES) ||
+      JSON.stringify(echo.prefaceLines) !==
+        JSON.stringify(DEFAULT_PREFACE_LINES)
+    ) {
+      failures.push("v1 provider output changed the universal preface fallback");
     }
     if (
       capturedBodies.length !== 2 ||
@@ -212,6 +249,7 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
     globalThis.fetch = originalFetch;
     restoreEnv("LLM_API_KEY", previousKey);
     restoreEnv("LLM_BASE_URL", previousBaseUrl);
+    restoreEnv("LLM_PROVIDER", previousProvider);
   }
 }
 

@@ -1,13 +1,40 @@
 import "server-only";
 import { getSupabase } from "./db";
-import { validateStorySpec } from "./story-spec";
+import {
+  parseStorySpecDocument,
+  validateStorySpec,
+} from "./story-spec";
 import type { StorySpec } from "./story-spec-types";
 
-type StorySpecDbRow = { spec: unknown };
+type StorySpecDbRow = Readonly<{
+  story_spec_id: unknown;
+  figure_key: unknown;
+  stage_id: unknown;
+  version: unknown;
+  schema_version: unknown;
+  status: unknown;
+  spec: unknown;
+}>;
+
+const STORY_SPEC_ROW_KEYS = [
+  "story_spec_id",
+  "figure_key",
+  "stage_id",
+  "version",
+  "schema_version",
+  "status",
+  "spec",
+] as const;
 
 export function storySpecStageKey(figureKey: string, stageId: string): string {
   return `${figureKey}\u0000${stageId}`;
 }
+
+export type PublishedStorySpecInspection = Readonly<{
+  catalog: ReadonlyMap<string, StorySpec>;
+  rawPublishedRowCount: number;
+  quarantinedRowCount: number;
+}>;
 
 export async function listPublishedStorySpecKeys(): Promise<ReadonlySet<string>> {
   const catalog = await listPublishedStorySpecCatalog();
@@ -17,32 +44,52 @@ export async function listPublishedStorySpecKeys(): Promise<ReadonlySet<string>>
 export async function listPublishedStorySpecCatalog(): Promise<
   ReadonlyMap<string, StorySpec>
 > {
+  return (await inspectPublishedStorySpecs()).catalog;
+}
+
+export async function inspectPublishedStorySpecs(): Promise<
+  PublishedStorySpecInspection
+> {
   const result = await getSupabase()
     .from("story_specs")
-    .select("figure_key,stage_id,spec")
+    .select(
+      "story_spec_id,figure_key,stage_id,version,schema_version,status,spec",
+    )
     .eq("status", "published");
   if (result.error) throw new Error(`list published StorySpecs failed: ${result.error.message}`);
+  return inspectPublishedStorySpecRows(result.data ?? []);
+}
+
+export function inspectPublishedStorySpecRows(
+  rows: readonly unknown[],
+): PublishedStorySpecInspection {
   const catalog = new Map<string, StorySpec>();
-  for (const row of result.data ?? []) {
-    try {
-      const spec = row.spec as StorySpec;
-      const validation = validateStorySpec(spec, { forPublish: true });
-      if (
-        validation.valid &&
-        spec.figureKey === row.figure_key &&
-        spec.stageId === row.stage_id
-      ) {
-        catalog.set(
-          storySpecStageKey(row.figure_key, row.stage_id),
-          deepFreeze(structuredClone(spec)),
-        );
-      }
-    } catch {
-      // A malformed published row is quarantined from matching. The readiness
-      // check reports incomplete coverage; runtime never offers invalid content.
+  const duplicateKeys = new Set<string>();
+  let quarantinedRowCount = 0;
+  for (const row of rows) {
+    const spec = parsePublishedStorySpecRow(row);
+    if (!spec) {
+      quarantinedRowCount += 1;
+      continue;
     }
+    const key = storySpecStageKey(spec.figureKey, spec.stageId);
+    if (duplicateKeys.has(key)) {
+      quarantinedRowCount += 1;
+      continue;
+    }
+    if (catalog.has(key)) {
+      catalog.delete(key);
+      duplicateKeys.add(key);
+      quarantinedRowCount += 2;
+      continue;
+    }
+    catalog.set(key, spec);
   }
-  return catalog;
+  return {
+    catalog,
+    rawPublishedRowCount: rows.length,
+    quarantinedRowCount,
+  };
 }
 
 // Runtime reads fail closed. A malformed or incompletely reviewed document is
@@ -53,7 +100,9 @@ export async function getPublishedStorySpec(
 ): Promise<StorySpec | null> {
   const result = await getSupabase()
     .from("story_specs")
-    .select("spec")
+    .select(
+      "story_spec_id,figure_key,stage_id,version,schema_version,status,spec",
+    )
     .eq("figure_key", figureKey)
     .eq("stage_id", stageId)
     .eq("status", "published")
@@ -62,16 +111,52 @@ export async function getPublishedStorySpec(
   if (result.error) throw new Error(`load published StorySpec failed: ${result.error.message}`);
   if (!result.data) return null;
 
-  const spec = (result.data as StorySpecDbRow).spec as StorySpec;
-  let validation;
-  try {
-    validation = validateStorySpec(spec, { forPublish: true });
-  } catch {
-    throw new Error("published StorySpec has an invalid document shape");
+  const spec = parsePublishedStorySpecRow(result.data);
+  if (
+    !spec ||
+    spec.figureKey !== figureKey ||
+    spec.stageId !== stageId
+  ) {
+    throw new Error("published StorySpec failed its integrity boundary");
   }
-  if (!validation.valid) {
-    throw new Error(`published StorySpec failed validation: ${validation.errors.join("; ")}`);
+  return spec;
+}
+
+export function parsePublishedStorySpecRow(value: unknown): StorySpec | null {
+  return parseStorySpecRow(value, "published");
+}
+
+export function parseStorySpecRow(
+  value: unknown,
+  expectedStatus: "review" | "published",
+): StorySpec | null {
+  if (!isRecord(value) || !hasExactKeys(value, STORY_SPEC_ROW_KEYS)) {
+    return null;
   }
+  const row = value as StorySpecDbRow;
+  const spec = parseStorySpecDocument(row.spec);
+  if (
+    !spec ||
+    typeof row.story_spec_id !== "string" ||
+    typeof row.figure_key !== "string" ||
+    typeof row.stage_id !== "string" ||
+    typeof row.version !== "number" ||
+    !Number.isFinite(row.version) ||
+    typeof row.schema_version !== "string" ||
+    row.status !== expectedStatus ||
+    spec.storySpecId !== row.story_spec_id ||
+    spec.figureKey !== row.figure_key ||
+    spec.stageId !== row.stage_id ||
+    spec.version !== row.version ||
+    spec.schemaVersion !== row.schema_version ||
+    spec.status !== row.status
+  ) {
+    return null;
+  }
+  const validation = validateStorySpec(spec, {
+    forPublish: expectedStatus === "published",
+  });
+  if (!validation.valid) return null;
   return deepFreeze(structuredClone(spec));
 }
 
@@ -81,4 +166,20 @@ function deepFreeze<T>(value: T): T {
     Object.freeze(value);
   }
   return value;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasExactKeys(
+  value: Record<string, unknown>,
+  expected: readonly string[],
+): boolean {
+  const actual = Object.keys(value).sort();
+  const required = [...expected].sort();
+  return (
+    actual.length === required.length &&
+    actual.every((key, index) => key === required[index])
+  );
 }

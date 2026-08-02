@@ -10,6 +10,10 @@
     {
       "version": "opening-copy-prompt-v1-2026-07",
       "sha256": "c8f15ad55bdf35f7afd058b670a75448213e9ee79cd7438d1c0e0de9635e38f7"
+    },
+    {
+      "version": "opening-copy-prompt-v2-2026-07",
+      "sha256": "2c0bcbafdc2093cb39532da7e761d85c4cc091f3657dc1b9bf11534f53bd5c39"
     }
   ],
   "facetTagger": [

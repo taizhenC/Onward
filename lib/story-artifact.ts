@@ -19,6 +19,7 @@ import {
 import { CONTENT_FLAGS, type StorySpec } from "./story-spec-types";
 import {
   buildStoryTransparency,
+  validateLegacyStoredStoryTransparencyV1,
   validateStoredStoryTransparency,
   validateStoryTransparency,
 } from "./story-transparency";
@@ -97,6 +98,10 @@ export type StoredStoryArtifactEnvelope = Readonly<{
   artifactId: string;
   schemaVersion: string;
   contentHash: string;
+  // This capability is owned by the storage row, never by artifact JSON.
+  // Migration 0023 marks only v5 rows that existed at the evidence-closure
+  // cutover; current writes must always supply false.
+  legacyV5ReplayEligible?: boolean;
 }>;
 
 // Canonical composition is the guaranteed fallback path. It freezes the full
@@ -264,6 +269,10 @@ export function validateStoryArtifact(
   boundaries?: StoryBoundaries,
 ): StoryArtifactValidation {
   const failures = new Set<ArtifactValidationFailure>();
+  const storySpecValidation = validateStorySpec(storySpec, {
+    forPublish: storySpec.status === "published",
+  });
+  if (!storySpecValidation.valid) failures.add("story_spec_invalid");
 
   if (artifact.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION) failures.add("schema_invalid");
   if (
@@ -605,7 +614,13 @@ export function validateStoredStoryArtifact(
   }
   if (
     transparencyAwareSchema
-      ? !validateStoredStoryTransparency(artifact.transparency) ||
+      ? !(
+          validateStoredStoryTransparency(artifact.transparency) ||
+          (
+            envelope?.legacyV5ReplayEligible === true &&
+            validateLegacyStoredStoryTransparencyV1(artifact.transparency)
+          )
+        ) ||
         artifact.transparency.storySpec.storySpecId !== artifact.storySpecId ||
         artifact.transparency.storySpec.version !== artifact.storySpecVersion ||
         artifact.transparency.storySpec.schemaVersion !== artifact.storySpecSchemaVersion
@@ -819,7 +834,9 @@ function validStoredArtifactEnvelope(
     envelope.artifactId.length > 0 &&
     typeof envelope.schemaVersion === "string" &&
     envelope.schemaVersion.length > 0 &&
-    /^[0-9a-f]{64}$/.test(envelope.contentHash)
+    /^[0-9a-f]{64}$/.test(envelope.contentHash) &&
+    (envelope.legacyV5ReplayEligible === undefined ||
+      typeof envelope.legacyV5ReplayEligible === "boolean")
   );
 }
 

@@ -24,6 +24,7 @@ import {
   validateStoredStoryArtifact,
   validateStoryArtifact,
 } from "../lib/story-artifact";
+import { validateStorySpec } from "../lib/story-spec";
 import { requestHybridPlan } from "../lib/llm";
 import { STORY_PROMPT_VERSION } from "../lib/llm-recipe-constants";
 import {
@@ -31,6 +32,7 @@ import {
   NEUTRAL_EYEBROW,
 } from "../lib/opening-copy";
 import type { MatchRecipe } from "../lib/types";
+import { buildPublishedStorySpecFixture } from "./_story-spec-fixtures";
 
 const PRIVATE_DISCLOSURE =
   "Priya left Boston in 2024, and my private cobalt compass no longer points anywhere after another rejection.";
@@ -55,6 +57,7 @@ async function main(): Promise<void> {
   await checkCanonicalFallbacks(failures);
   await checkOpeningAndBoundaryPreflight(failures);
   await checkProviderProjection(failures);
+  await checkDraftEscapeBoundary(failures);
 
   console.log("Onward hybrid Story Composer validator");
   console.log("======================================");
@@ -68,6 +71,7 @@ async function main(): Promise<void> {
   console.log("PASS provider, output, and validator failures return canonical artifacts");
   console.log("PASS opening, boundary, privacy, and feature-flag preflight");
   console.log("PASS composition provider receives only closed reduced fields");
+  console.log("PASS draft preview cannot relax a published StorySpec");
 }
 
 async function checkFirstPassHybrid(failures: string[]): Promise<void> {
@@ -346,6 +350,49 @@ async function checkProviderProjection(failures: string[]): Promise<void> {
     restoreEnv("LLM_API_KEY", previousKey);
     restoreEnv("LLM_BASE_URL", previousBaseUrl);
     restoreEnv("LLM_PROVIDER", previousProvider);
+  }
+}
+
+async function checkDraftEscapeBoundary(failures: string[]): Promise<void> {
+  const fixture = makeFixture();
+  const invalidPublishedSpec = buildPublishedStorySpecFixture(
+    fixture.input.stage,
+  );
+  invalidPublishedSpec.arc[0].optionalFactIds.push(
+    invalidPublishedSpec.facts[1].factId,
+  );
+  const draftValidation = validateStorySpec(invalidPublishedSpec, {
+    forPublish: false,
+  });
+  const publishValidation = validateStorySpec(invalidPublishedSpec, {
+    forPublish: true,
+  });
+  if (draftValidation.valid !== true || publishValidation.valid !== false) {
+    failures.push(
+      "draft-escape fixture does not isolate a publish-only StorySpec failure",
+    );
+    return;
+  }
+
+  try {
+    await composeStoryArtifact(
+      {
+        ...fixture.input,
+        storySpec: invalidPublishedSpec,
+        allowDraftSpec: true,
+      },
+      { hybridEnabled: false },
+    );
+    failures.push("draft preview accepted an invalid published StorySpec");
+  } catch (error) {
+    if (
+      !(error instanceof StoryCompositionError) ||
+      !error.reasons.includes("story_spec_invalid")
+    ) {
+      failures.push(
+        "draft preview rejected an invalid publication without the closed StorySpec reason",
+      );
+    }
   }
 }
 

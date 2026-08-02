@@ -1,9 +1,12 @@
 import "./_smoke-bootstrap";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import * as React from "react";
+import { renderToStaticMarkup } from "react-dom/server";
 import {
   POST as historicalConcernPost,
 } from "../app/api/historical-concern/route";
+import { StoryAfterword } from "../components/StoryAfterword";
 import { parseHistoricalConcernRequest } from "../lib/historical-concern-request";
 import { LOCAL_DEV_USER_ID } from "../lib/auth";
 import { FIGURE_STAGES } from "../lib/figures-data";
@@ -26,11 +29,15 @@ import {
   DEFAULT_PREFACE_LINES,
   NEUTRAL_EYEBROW,
 } from "../lib/opening-copy";
+import { READER_BRIDGE_SENTENCES } from "../lib/reader-bridge-copy";
 import { createSession } from "../lib/session";
+import { _markMemoryStoryArtifactLegacyV5ReplayEligible } from "../lib/story-artifact-store-memory";
+import { getOwnedStoryArtifact } from "../lib/story-artifacts";
 import { createStoryRequestContext } from "../lib/story-request-context";
 import {
   composeCanonicalStoryArtifact,
   composeHybridStoryArtifact,
+  StoryCompositionError,
   storyArtifactContentHash,
   validateStoredStoryArtifact,
   validateStoryArtifact,
@@ -38,13 +45,24 @@ import {
 } from "../lib/story-artifact";
 import { HYBRID_STORY_ARTIFACT_SCHEMA_VERSION } from "../lib/story-artifact-types";
 import { validateStorySpec } from "../lib/story-spec";
-import type { StorySpec, StoryBeatSpec } from "../lib/story-spec-types";
+import {
+  inspectPublishedStorySpecRows,
+  parsePublishedStorySpecRow,
+  parseStorySpecRow,
+} from "../lib/story-spec-repository";
+import type { StorySpec } from "../lib/story-spec-types";
+import {
+  buildStoryTransparency,
+  validateStoredStoryTransparency,
+} from "../lib/story-transparency";
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import type { MatchRecipe } from "../lib/types";
+import { buildPublishedStorySpecFixture } from "./_story-spec-fixtures";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
+(globalThis as typeof globalThis & { React: typeof React }).React = React;
 
 const PRIVATE_DISCLOSURE =
   "Avery left Montréal in 2025 with a private vermilion astrolabe after the eighth closed door.";
@@ -67,6 +85,8 @@ async function main(): Promise<void> {
   const fixture = makeFixture();
 
   checkPublishedProjection(fixture, failures);
+  checkBridgeEvidenceClassification(fixture, failures);
+  checkQuoteEvidenceClosure(fixture, failures);
   checkRationalePrivacy(failures);
   checkTamperAndLegacyReplay(fixture, failures);
   await checkHistoricalConcernFlow(failures);
@@ -81,8 +101,12 @@ async function main(): Promise<void> {
   }
   console.log("PASS published rationale, StorySpec identity, evidence, sources, and quote traceability");
   console.log(`PASS ${PRIMARY_PRESSURES.length}/${PRIMARY_PRESSURES.length} controlled rationales exclude disclosure data`);
-  console.log("PASS v5 tamper rejection and immutable v1-v4 replay boundary");
-  console.log("PASS owner-scoped bounded reports are private and idempotent");
+  console.log(
+    "PASS strict v5, one-way marked mixed-v5, and immutable v1-v4 replay boundaries",
+  );
+  console.log(
+    "PASS owner-scoped bounded reports, including marked legacy facts, are private and idempotent",
+  );
   console.log("PASS migration, API, and accessible end-of-story surface contracts");
 }
 
@@ -90,7 +114,7 @@ type Fixture = ReturnType<typeof makeFixture>;
 
 function makeFixture(pressure: PrimaryPressure = "rejection") {
   const stage = FIGURE_STAGES[0];
-  const storySpec = publishedStorySpec();
+  const storySpec = buildPublishedStorySpecFixture(stage);
   const resonanceBrief = createResonanceBrief(
     PRIVATE_DISCLOSURE,
     undefined,
@@ -111,6 +135,54 @@ function makeFixture(pressure: PrimaryPressure = "rejection") {
   return { stage, storySpec, resonanceBrief, artifact };
 }
 
+function makeMixedBridgeStorySpec(fixture: Fixture): {
+  mixedSpec: StorySpec;
+  bridgeFact: StorySpec["facts"][number];
+} {
+  const mixedSpec = structuredClone(fixture.storySpec);
+  const mixedBridge = mixedSpec.arc.at(-1);
+  const bridgeFact = mixedSpec.facts.at(-1);
+  if (!mixedBridge || !bridgeFact) {
+    throw new Error("reviewed fixture is missing bridge-classification inputs");
+  }
+  mixedBridge.canonicalText = [
+    bridgeFact.statement,
+    ...READER_BRIDGE_SENTENCES,
+  ].join(" ");
+  mixedBridge.requiredFactIds = [bridgeFact.factId];
+  mixedBridge.optionalFactIds = [];
+  mixedBridge.sentenceEvidence = [
+    {
+      sentenceIndex: 0,
+      treatment: "historical_claim",
+      factIds: [bridgeFact.factId],
+      interpretationIds: [],
+      quoteIds: [],
+    },
+    ...READER_BRIDGE_SENTENCES.map((_, sentenceIndex) => ({
+      sentenceIndex: sentenceIndex + 1,
+      treatment: "reader_bridge" as const,
+      factIds: [],
+      interpretationIds: [],
+      quoteIds: [],
+    })),
+  ];
+  return { mixedSpec, bridgeFact };
+}
+
+function makeLegacyMixedBridgeArtifact(
+  mixedArtifact: ReturnType<typeof composeCanonicalStoryArtifact>,
+): ReturnType<typeof composeCanonicalStoryArtifact> {
+  const legacyArtifact = structuredClone(mixedArtifact);
+  const legacyBridge = legacyArtifact.transparency?.beats.at(-1);
+  if (!legacyBridge) {
+    throw new Error("legacy bridge replay fixture is missing transparency");
+  }
+  legacyBridge.evidenceClass = "reader_bridge";
+  legacyArtifact.contentHash = storyArtifactContentHash(legacyArtifact);
+  return legacyArtifact;
+}
+
 function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
   const { artifact, storySpec, resonanceBrief } = fixture;
   const transparency = artifact.transparency;
@@ -119,6 +191,7 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
     failures.push(`published fixture is invalid: ${specValidation.errors.join("; ")}`);
     return;
   }
+  checkPublishedHydration(storySpec, failures);
   if (
     !transparency ||
     transparency.provenance.status !== "editorially_reviewed" ||
@@ -172,6 +245,21 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
   ) {
     failures.push("passage evidence classes or fact-to-source links are incomplete");
   }
+  if (
+    transparency.beats.some((beat, index) => {
+      const specBeat = storySpec.arc[index];
+      return (
+        !specBeat ||
+        !sameSet(beat.factIds, [
+          ...specBeat.requiredFactIds,
+          ...specBeat.optionalFactIds,
+        ]) ||
+        !sameSet(beat.quoteIds, specBeat.quoteIds)
+      );
+    })
+  ) {
+    failures.push("public passage evidence diverged from the validated StorySpec closure");
+  }
 
   const hybrid = composeHybridStoryArtifact({
     storySpec,
@@ -207,6 +295,364 @@ function checkPublishedProjection(fixture: Fixture, failures: string[]): void {
   credentialSpec.sources[0].url = "https://user:secret@example.test/archive";
   if (validateStorySpec(credentialSpec, { forPublish: true }).valid) {
     failures.push("StorySpec validation accepted credentials in a source URL");
+  }
+
+  const projectionNoise = structuredClone(storySpec);
+  projectionNoise.sources[0].locator = undefined;
+  projectionNoise.sources[0].url = undefined;
+  (
+    projectionNoise.sources[0] as StorySpec["sources"][number] & {
+      privateNote: string;
+    }
+  ).privateNote = "must not enter public provenance";
+  (
+    projectionNoise.facts[0].sourceRefs[0] as StorySpec["facts"][number]["sourceRefs"][number] & {
+      privateNote: string;
+    }
+  ).privateNote = "must not enter public provenance";
+  (
+    projectionNoise.quotes[0].sourceRefs[0] as StorySpec["quotes"][number]["sourceRefs"][number] & {
+      privateNote: string;
+    }
+  ).privateNote = "must not enter public provenance";
+  const noisySpecValidation = validateStorySpec(projectionNoise, {
+    forPublish: true,
+  });
+  const sanitizedProjection = buildStoryTransparency(
+    projectionNoise,
+    resonanceBrief,
+    "partial",
+  );
+  if (
+    !noisySpecValidation.valid ||
+    !validateStoredStoryTransparency(sanitizedProjection) ||
+    Object.hasOwn(sanitizedProjection.sources[0], "locator") ||
+    Object.hasOwn(sanitizedProjection.sources[0], "url") ||
+    JSON.stringify(sanitizedProjection).includes("privateNote")
+  ) {
+    failures.push(
+      "public provenance did not allowlist direct-validator source metadata",
+    );
+  }
+
+  const blockedInterpretation = structuredClone(storySpec);
+  blockedInterpretation.interpretations[0].allowed = false;
+  const blockedValidation = validateStoryArtifact(
+    artifact,
+    blockedInterpretation,
+    resonanceBrief,
+  );
+  if (
+    blockedValidation.valid ||
+    !blockedValidation.failureReasons.includes("story_spec_invalid")
+  ) {
+    failures.push("artifact validation accepted a disallowed mapped interpretation");
+  }
+  try {
+    composeCanonicalStoryArtifact({
+      storySpec: blockedInterpretation,
+      stage: fixture.stage,
+      matchRecipe: recipe,
+      openingCopy: artifact.openingCopy,
+      framing: "partial",
+      resonanceBrief,
+    });
+    failures.push("canonical composition accepted a disallowed mapped interpretation");
+  } catch (error) {
+    if (
+      !(error instanceof StoryCompositionError) ||
+      !error.reasons.includes("story_spec_invalid")
+    ) {
+      failures.push("invalid evidence closure escaped the closed composition error");
+    }
+  }
+}
+
+function checkBridgeEvidenceClassification(
+  fixture: Fixture,
+  failures: string[],
+): void {
+  const { mixedSpec, bridgeFact } = makeMixedBridgeStorySpec(fixture);
+  const mixedValidation = validateStorySpec(mixedSpec, {
+    forPublish: true,
+  });
+  if (!mixedValidation.valid) {
+    failures.push(
+      `mixed historical bridge was rejected: ${mixedValidation.errors.join("; ")}`,
+    );
+    return;
+  }
+  const mixedArtifact = composeCanonicalStoryArtifact({
+    storySpec: mixedSpec,
+    stage: fixture.stage,
+    matchRecipe: recipe,
+    openingCopy: fixture.artifact.openingCopy,
+    framing: "partial",
+    resonanceBrief: fixture.resonanceBrief,
+  });
+  const projectedBridge = mixedArtifact.transparency?.beats.at(-1);
+  if (
+    projectedBridge?.evidenceClass !== "documented_scene" ||
+    !projectedBridge.factIds.includes(bridgeFact.factId)
+  ) {
+    failures.push(
+      "mixed bridge history was projected publicly as unsupported reflection",
+    );
+  }
+  const legacyArtifact = makeLegacyMixedBridgeArtifact(mixedArtifact);
+  const legacyEnvelope = storedEnvelope(legacyArtifact);
+  const eligibleLegacyEnvelope = {
+    ...legacyEnvelope,
+    legacyV5ReplayEligible: true,
+  };
+  const mismatchedEnvelope = {
+    ...eligibleLegacyEnvelope,
+    contentHash: "0".repeat(64),
+  };
+  const strictLegacyValidation = validateStoryArtifact(
+    legacyArtifact,
+    mixedSpec,
+    fixture.resonanceBrief,
+  );
+  if (
+    validateStoredStoryTransparency(legacyArtifact.transparency) ||
+    validateStoredStoryArtifact(legacyArtifact) ||
+    validateStoredStoryArtifact(legacyArtifact, legacyEnvelope) ||
+    !validateStoredStoryArtifact(legacyArtifact, eligibleLegacyEnvelope) ||
+    validateStoredStoryArtifact(legacyArtifact, mismatchedEnvelope) ||
+    strictLegacyValidation.valid ||
+    !strictLegacyValidation.failureReasons.includes("transparency_invalid")
+  ) {
+    failures.push(
+      "pre-closure mixed-bridge replay escaped its immutable envelope-only seam",
+    );
+  }
+
+  const unsupportedSpec = structuredClone(fixture.storySpec);
+  const unsupportedBridge = unsupportedSpec.arc.at(-1);
+  if (!unsupportedBridge) {
+    failures.push("reviewed fixture is missing its bridge");
+    return;
+  }
+  unsupportedBridge.canonicalText =
+    "In 2007, the project won an unsupported award.";
+  unsupportedBridge.sentenceEvidence = [
+    {
+      sentenceIndex: 0,
+      treatment: "reader_bridge",
+      factIds: [],
+      interpretationIds: [],
+      quoteIds: [],
+    },
+  ];
+  const unsupportedValidation = validateStorySpec(unsupportedSpec, {
+    forPublish: true,
+  });
+  if (
+    unsupportedValidation.valid ||
+    !unsupportedValidation.errors.some((error) =>
+      error.includes("reviewed reader copy"),
+    )
+  ) {
+    failures.push("unsupported bridge history escaped reader-copy validation");
+  }
+  try {
+    composeCanonicalStoryArtifact({
+      storySpec: unsupportedSpec,
+      stage: fixture.stage,
+      matchRecipe: recipe,
+      openingCopy: fixture.artifact.openingCopy,
+      framing: "partial",
+      resonanceBrief: fixture.resonanceBrief,
+    });
+    failures.push("canonical composition accepted unsupported bridge history");
+  } catch (error) {
+    if (
+      !(error instanceof StoryCompositionError) ||
+      !error.reasons.includes("story_spec_invalid")
+    ) {
+      failures.push(
+        "unsupported bridge history escaped the closed composition error",
+      );
+    }
+  }
+}
+
+function checkQuoteEvidenceClosure(
+  fixture: Fixture,
+  failures: string[],
+): void {
+  const ghostQuoteSpec = structuredClone(fixture.storySpec);
+  ghostQuoteSpec.arc[0].quoteIds.push("quote-verbatim");
+  const ghostValidation = validateStorySpec(ghostQuoteSpec, {
+    forPublish: true,
+  });
+  if (
+    ghostValidation.valid ||
+    !ghostValidation.errors.some((error) =>
+      error.includes("without sentence evidence"),
+    )
+  ) {
+    failures.push("a passage could claim a quote it never used");
+  }
+  const artifactValidation = validateStoryArtifact(
+    fixture.artifact,
+    ghostQuoteSpec,
+    fixture.resonanceBrief,
+  );
+  if (
+    artifactValidation.valid ||
+    !artifactValidation.failureReasons.includes("story_spec_invalid")
+  ) {
+    failures.push("artifact validation accepted a ghost quote attribution");
+  }
+  try {
+    composeCanonicalStoryArtifact({
+      storySpec: ghostQuoteSpec,
+      stage: fixture.stage,
+      matchRecipe: recipe,
+      openingCopy: fixture.artifact.openingCopy,
+      framing: "partial",
+      resonanceBrief: fixture.resonanceBrief,
+    });
+    failures.push("canonical composition accepted a ghost quote attribution");
+  } catch (error) {
+    if (
+      !(error instanceof StoryCompositionError) ||
+      !error.reasons.includes("story_spec_invalid")
+    ) {
+      failures.push(
+        "ghost quote attribution escaped the closed composition error",
+      );
+    }
+  }
+
+  const wrongSentenceSpec = structuredClone(fixture.storySpec);
+  const quoteBeat = wrongSentenceSpec.arc[2];
+  const factId = quoteBeat.requiredFactIds[0];
+  quoteBeat.canonicalText =
+    'The record preserves the words "We began again." Work resumed.';
+  quoteBeat.sentenceEvidence = [
+    {
+      sentenceIndex: 0,
+      treatment: "historical_claim",
+      factIds: [factId],
+      interpretationIds: [],
+      quoteIds: [],
+    },
+    {
+      sentenceIndex: 1,
+      treatment: "historical_claim",
+      factIds: [factId],
+      interpretationIds: [],
+      quoteIds: ["quote-verbatim"],
+    },
+  ];
+  const wrongSentenceValidation = validateStorySpec(wrongSentenceSpec, {
+    forPublish: true,
+  });
+  if (
+    wrongSentenceValidation.valid ||
+    !wrongSentenceValidation.errors.some((error) =>
+      error.includes("direct quote is not linked in its sentence evidence"),
+    )
+  ) {
+    failures.push("a verbatim quote could be attributed to the wrong sentence");
+  }
+}
+
+function checkPublishedHydration(
+  storySpec: StorySpec,
+  failures: string[],
+): void {
+  const row = {
+    story_spec_id: storySpec.storySpecId,
+    figure_key: storySpec.figureKey,
+    stage_id: storySpec.stageId,
+    version: storySpec.version,
+    schema_version: storySpec.schemaVersion,
+    status: storySpec.status,
+    spec: JSON.parse(JSON.stringify(storySpec)) as unknown,
+  };
+  const hydrated = parsePublishedStorySpecRow(row);
+  if (
+    hydrated === null ||
+    !Object.isFrozen(hydrated) ||
+    !Object.isFrozen(hydrated.arc) ||
+    hydrated === storySpec
+  ) {
+    failures.push("published StorySpec row did not hydrate as an immutable clone");
+  }
+
+  for (const field of [
+    "story_spec_id",
+    "figure_key",
+    "stage_id",
+    "version",
+    "schema_version",
+    "status",
+  ] as const) {
+    const mismatch: Record<string, unknown> = structuredClone(row);
+    if (field === "version") {
+      mismatch[field] = Number(mismatch[field]) + 1;
+    } else {
+      mismatch[field] = `${String(mismatch[field])}-mismatch`;
+    }
+    if (parsePublishedStorySpecRow(mismatch) !== null) {
+      failures.push(`published StorySpec accepted mismatched row ${field}`);
+    }
+  }
+
+  const extraDocumentField = structuredClone(row);
+  extraDocumentField.spec = {
+    ...(extraDocumentField.spec as Record<string, unknown>),
+    unexpected: true,
+  };
+  if (parsePublishedStorySpecRow(extraDocumentField) !== null) {
+    failures.push("published StorySpec accepted an extra document field");
+  }
+
+  const extraRowField = { ...row, unexpected: true };
+  if (parsePublishedStorySpecRow(extraRowField) !== null) {
+    failures.push("published StorySpec accepted an extra row-envelope field");
+  }
+
+  const reviewRow = structuredClone(row);
+  reviewRow.status = "review";
+  (reviewRow.spec as StorySpec).status = "review";
+  if (
+    parseStorySpecRow(reviewRow, "review") === null ||
+    parsePublishedStorySpecRow(reviewRow) !== null
+  ) {
+    failures.push("review-state StorySpec row did not honor the explicit status boundary");
+  }
+
+  const semanticallyInvalid = structuredClone(row);
+  const invalidSpec = semanticallyInvalid.spec as StorySpec;
+  invalidSpec.interpretations[0].allowed = false;
+  if (parsePublishedStorySpecRow(semanticallyInvalid) !== null) {
+    failures.push("published StorySpec hydration accepted invalid evidence closure");
+  }
+
+  const quarantinedInspection = inspectPublishedStorySpecRows([
+    row,
+    extraDocumentField,
+  ]);
+  if (
+    quarantinedInspection.rawPublishedRowCount !== 2 ||
+    quarantinedInspection.quarantinedRowCount !== 1 ||
+    quarantinedInspection.catalog.size !== 1
+  ) {
+    failures.push("published catalog inspection hid a quarantined StorySpec row");
+  }
+
+  const duplicateInspection = inspectPublishedStorySpecRows([row, row]);
+  if (
+    duplicateInspection.rawPublishedRowCount !== 2 ||
+    duplicateInspection.quarantinedRowCount !== 2 ||
+    duplicateInspection.catalog.size !== 0
+  ) {
+    failures.push("published catalog inspection did not quarantine both duplicate rows");
   }
 }
 
@@ -360,6 +806,100 @@ async function checkHistoricalConcernFlow(failures: string[]): Promise<void> {
     failures.push("historical concern storage retained a user/session/story surface");
   }
 
+  const legacyFixture = makeFixture("loss");
+  const { mixedSpec, bridgeFact } =
+    makeMixedBridgeStorySpec(legacyFixture);
+  const mixedArtifact = composeCanonicalStoryArtifact({
+    storySpec: mixedSpec,
+    stage: legacyFixture.stage,
+    matchRecipe: recipe,
+    openingCopy: legacyFixture.artifact.openingCopy,
+    framing: "partial",
+    resonanceBrief: legacyFixture.resonanceBrief,
+  });
+  const legacyMixedArtifact = makeLegacyMixedBridgeArtifact(mixedArtifact);
+  const legacyMixedSessionId = await createSession({
+    userId: LOCAL_DEV_USER_ID,
+    telemetryFlowId: createTelemetryFlowId(),
+    figureKey: legacyMixedArtifact.figureKey,
+    stageId: legacyMixedArtifact.stageId,
+    framing: legacyMixedArtifact.framing,
+    age: 30,
+    feeling: "legacy mixed bridge private input",
+    storyRequestContext: createStoryRequestContext({
+      boundaries: undefined,
+      clarification: undefined,
+    }),
+    matchRecipe: recipe,
+    artifact: legacyMixedArtifact,
+  });
+  let unmarkedReplayRejected = false;
+  try {
+    await getOwnedStoryArtifact(
+      legacyMixedArtifact.artifactId,
+      LOCAL_DEV_USER_ID,
+      legacyMixedSessionId,
+    );
+  } catch (error) {
+    unmarkedReplayRejected =
+      error instanceof Error &&
+      error.message.includes("failed integrity validation");
+  }
+  _markMemoryStoryArtifactLegacyV5ReplayEligible(
+    legacyMixedArtifact.artifactId,
+  );
+  const replayedLegacyMixed = await getOwnedStoryArtifact(
+    legacyMixedArtifact.artifactId,
+    LOCAL_DEV_USER_ID,
+    legacyMixedSessionId,
+  );
+  const replayedLegacyBridge =
+    replayedLegacyMixed?.transparency?.beats.at(-1);
+  const currentBridge = owner.artifact.transparency?.beats.at(-1);
+  const renderedLegacyAfterword = renderToStaticMarkup(
+    React.createElement(StoryAfterword, {
+      sessionId: legacyMixedSessionId,
+      transparency: replayedLegacyMixed?.transparency ?? null,
+    }),
+  );
+  const renderedCurrentAfterword = renderToStaticMarkup(
+    React.createElement(StoryAfterword, {
+      sessionId: ownerSessionId,
+      transparency: owner.artifact.transparency ?? null,
+    }),
+  );
+  const reportsBeforeLegacy = _listHistoricalConcerns().length;
+  const legacyReport = await reportRequest({
+    sessionId: legacyMixedSessionId,
+    factId: bridgeFact.factId,
+    reason: "date_or_sequence",
+  });
+  const reportsAfterLegacy = _listHistoricalConcerns();
+  const legacyQueueItem = reportsAfterLegacy.find(
+    (item) =>
+      item.factId === bridgeFact.factId &&
+      item.reason === "date_or_sequence",
+  );
+  if (
+    !unmarkedReplayRejected ||
+    !replayedLegacyMixed ||
+    replayedLegacyBridge?.evidenceClass !== "reader_bridge" ||
+    !replayedLegacyBridge.factIds.includes(bridgeFact.factId) ||
+    !renderedLegacyAfterword.includes(
+      "Includes historical claims — this earlier saved story uses an older evidence format; evidence links are listed below",
+    ) ||
+    renderedLegacyAfterword.includes("Reflection — not a historical claim") ||
+    !currentBridge ||
+    !renderedCurrentAfterword.includes("Reflection — not a historical claim") ||
+    legacyReport.status !== 202 ||
+    reportsAfterLegacy.length !== reportsBeforeLegacy + 1 ||
+    !legacyQueueItem
+  ) {
+    failures.push(
+      "legacy mixed-bridge persistence, honest labeling, or concern targeting escaped its one-way marker",
+    );
+  }
+
   const beforeInvalid = _listHistoricalConcerns()[0].reportCount;
   const extra = await reportRequest({
     sessionId: ownerSessionId,
@@ -480,6 +1020,7 @@ function checkStaticContracts(failures: string[]): void {
   const migration = read("../supabase/migrations/0007_historical_concern_reports.sql");
   const component = read("../components/StoryAfterword.tsx");
   const player = read("../components/StoryPlayer.tsx");
+  const artifactLoader = read("../lib/story-artifacts.ts");
   const table = /create table historical_concern_reports \([\s\S]*?\n\);/i.exec(migration)?.[0] ?? "";
   const requiredSql = [
     "alter table historical_concern_reports enable row level security",
@@ -527,6 +1068,85 @@ function checkStaticContracts(failures: string[]): void {
   ) {
     failures.push("afterword is not gated at story end before account conversion");
   }
+
+  const ownedArtifactQuery = artifactLoader.indexOf('.from("story_artifacts")');
+  const artifactFilter = artifactLoader.indexOf(
+    '.eq("artifact_id", artifactId)',
+    ownedArtifactQuery,
+  );
+  const ownerFilter = artifactLoader.indexOf(
+    '.eq("user_id", userId)',
+    artifactFilter,
+  );
+  const sessionFilter = artifactLoader.indexOf(
+    '.eq("session_id", sessionId)',
+    ownerFilter,
+  );
+  const strictValidation = artifactLoader.indexOf(
+    "const strictArtifact = validateStoredStoryArtifact",
+    sessionFilter,
+  );
+  const strictReturn = artifactLoader.indexOf(
+    "if (strictArtifact) return strictArtifact",
+    strictValidation,
+  );
+  const markerQuery = artifactLoader.indexOf(
+    '.from("story_artifact_legacy_v5_replay")',
+    strictReturn,
+  );
+  const markerColumn = artifactLoader.indexOf(
+    '.select("artifact_id")',
+    markerQuery,
+  );
+  const markerFilter = artifactLoader.indexOf(
+    '.eq("artifact_id", row.artifact_id)',
+    markerColumn,
+  );
+  const markerError = artifactLoader.indexOf(
+    "if (marker.error)",
+    markerFilter,
+  );
+  const exactMarker = artifactLoader.indexOf(
+    "const exactMarker = isExactLegacyV5ReplayMarker",
+    markerError,
+  );
+  const malformedMarkerFailure = artifactLoader.indexOf(
+    "stored legacy StoryArtifact eligibility is invalid",
+    exactMarker,
+  );
+  const legacyGrant = artifactLoader.indexOf(
+    "legacyV5ReplayEligible: true",
+    malformedMarkerFailure,
+  );
+  const missingMarkerFailure = artifactLoader.indexOf(
+    'if (!artifact) throw new Error("stored StoryArtifact failed integrity validation")',
+    legacyGrant,
+  );
+  if (
+    ownedArtifactQuery < 0 ||
+    artifactFilter < ownedArtifactQuery ||
+    ownerFilter < artifactFilter ||
+    sessionFilter < ownerFilter ||
+    strictValidation < sessionFilter ||
+    strictReturn < strictValidation ||
+    markerQuery < strictReturn ||
+    markerColumn < markerQuery ||
+    markerFilter < markerColumn ||
+    markerError < markerFilter ||
+    exactMarker < markerError ||
+    malformedMarkerFailure < exactMarker ||
+    legacyGrant < malformedMarkerFailure ||
+    missingMarkerFailure < legacyGrant ||
+    !artifactLoader.includes("if (marker.data !== null && !exactMarker)") ||
+    !artifactLoader.includes("Object.keys(marker).length === 1") ||
+    !artifactLoader.includes(
+      "marker.artifact_id === expectedArtifactId",
+    )
+  ) {
+    failures.push(
+      "owned artifact replay does not keep strict validation ahead of an exact fail-closed database marker",
+    );
+  }
 }
 
 async function reportRequest(
@@ -545,175 +1165,13 @@ async function reportRequest(
   );
 }
 
-function publishedStorySpec(): StorySpec {
-  const roles: StoryBeatSpec["role"][] = [
-    "scene",
-    "dark_moment",
-    "response",
-    "struggle",
-    "turning_point",
-    "became",
-    "bridge",
-  ];
-  const texts = [
-    "In 2001, the subject began a documented project.",
-    "The first attempt ended in 2002.",
-    'The record preserves the words "We began again."',
-    "Work continued for three years, which the archive describes as a deliberate return.",
-    "In 2005, a second route opened, though one account disputes its timing.",
-    "The project was published in 2006.",
-    "A life can remain distinct and still offer company.",
-  ];
-  const factIds = ["fact-1", "fact-2", "fact-3", "fact-4", "fact-5", "fact-6"];
-  const arc: StoryBeatSpec[] = roles.map((role, index) => {
-    const isBridge = role === "bridge";
-    const factId = isBridge ? undefined : factIds[index];
-    const quoteIds =
-      role === "response"
-        ? ["quote-verbatim"]
-        : role === "struggle"
-          ? ["quote-paraphrase"]
-          : role === "turning_point"
-            ? ["quote-disputed"]
-            : [];
-    return {
-      role,
-      canonicalText: texts[index],
-      requiredFactIds: factId ? [factId] : [],
-      optionalFactIds: [],
-      entityIds: ["entity-subject"],
-      quoteIds,
-      sentenceEvidence: factId
-        ? [
-            {
-              sentenceIndex: 0,
-              factIds: [factId],
-              interpretationIds:
-                role === "struggle" ? ["interpretation-return"] : [],
-            },
-          ]
-        : [],
-      personalizationZones: isBridge
-        ? ["reader_bridge"]
-        : role === "scene" || role === "became"
-          ? ["none"]
-          : ["emphasis", "transition"],
-    };
-  });
-
-  return {
-    storySpecId: "douglass:1838-1841-nyc-to-nantucket:transparency-test-v2",
-    schemaVersion: "story-spec-v1-2026-07",
-    figureKey: FIGURE_STAGES[0].figureKey,
-    stageId: FIGURE_STAGES[0].stageId,
-    version: 2,
-    status: "published",
-    episode: {
-      ageMin: FIGURE_STAGES[0].ageMin,
-      ageMax: FIGURE_STAGES[0].ageMax,
-      startDate: "2001-01-01",
-      endDate: "2006-12-31",
-      throughLine: "A documented project was restarted after an early failure.",
-    },
-    contentProfile: {
-      intensity: "gentle",
-      flags: [],
-      contentNote: "Includes a professional setback.",
-    },
-    sources: [
-      {
-        sourceId: "source-archive",
-        citation: "Example Archive. Project papers, 2001–2006.",
-        locator: "Collection 4",
-        url: "https://example.org/archive/project-papers",
-      },
-      {
-        sourceId: "source-history",
-        citation: "Historian, A. A History of the Project (2020).",
-        locator: "Chapter 3",
-        url: "https://example.org/history/project",
-      },
-    ],
-    facts: factIds.map((factId, index) => ({
-      factId,
-      statement: texts[index],
-      sourceRefs: [
-        {
-          sourceId: index < 3 ? "source-archive" : "source-history",
-          locator: index < 3 ? `Folder ${index + 1}` : `pp. ${40 + index}`,
-          scope: "exact",
-        },
-      ],
-      eventOrder: index + 1,
-      confidence: index === 4 ? "disputed" : "documented",
-      claimKind: index === 3 ? "context" : "event",
-    })),
-    entities: [
-      {
-        entityId: "entity-subject",
-        kind: "person",
-        value: FIGURE_STAGES[0].displayName,
-        aliases: ["the subject"],
-      },
-    ],
-    quotes: [
-      {
-        quoteId: "quote-verbatim",
-        text: "We began again.",
-        status: "verbatim",
-        speaker: "Project record",
-        sourceRefs: [
-          {
-            sourceId: "source-archive",
-            locator: "Folder 3, leaf 2",
-            scope: "exact",
-          },
-        ],
-      },
-      {
-        quoteId: "quote-paraphrase",
-        text: "The work was a deliberate return.",
-        status: "paraphrase",
-        sourceRefs: [
-          {
-            sourceId: "source-history",
-            locator: "p. 43",
-            scope: "bounded",
-          },
-        ],
-      },
-      {
-        quoteId: "quote-disputed",
-        text: "The second route opened in 2005.",
-        status: "disputed",
-        sourceRefs: [
-          {
-            sourceId: "source-history",
-            locator: "pp. 44–45",
-            scope: "bounded",
-          },
-        ],
-      },
-    ],
-    arc,
-    interpretations: [
-      {
-        interpretationId: "interpretation-return",
-        statement: "The continuation can be read as a deliberate return.",
-        supportingFactIds: ["fact-4"],
-        allowed: true,
-      },
-    ],
-    dramatizationLimits: ["No invented dialogue or interior monologue."],
-    avoidRules: ["Do not add unsupported historical claims."],
-    review: {
-      researcherId: "researcher-test",
-      historicalReviewerId: "historian-test",
-      toneReviewerId: "tone-test",
-      reviewedAt: "2026-07-10T10:00:00.000Z",
-      contentProfileReviewed: true,
-    },
-  };
+function sameSet(left: string[], right: string[]): boolean {
+  const leftSet = [...new Set(left)].sort();
+  const rightSet = [...new Set(right)].sort();
+  return (
+    leftSet.length === rightSet.length &&
+    leftSet.every((value, index) => value === rightSet[index])
+  );
 }
 
 function read(relative: string): string {

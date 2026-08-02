@@ -317,6 +317,7 @@ export const PERSISTENCE_RETENTION_REGISTRY = deepFreeze({
   "public.rate_limits": ["bounded_operational"],
   "public.story_specs": ["curated_reference"],
   "public.story_artifacts": ["owned_story"],
+  "public.story_artifact_legacy_v5_replay": ["owned_story"],
   "public.match_recovery_flows": ["recovery_context"],
   "public.historical_concern_reports": ["shared_editorial"],
   "public.story_feedback": ["bounded_feedback"],

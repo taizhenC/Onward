@@ -36,6 +36,7 @@ import {
   createResonanceBrief,
 } from "../lib/resonance-brief";
 import {
+  parseStorySpecDocument,
   storySpecContainsDisclosure,
   validateStorySpec,
 } from "../lib/story-spec";
@@ -3052,121 +3053,7 @@ function assertExactTransparencyShape(value: unknown): void {
 }
 
 function assertExactStorySpecShape(value: unknown): void {
-  const spec = record(value);
-  exactKeys(spec, [
-    "storySpecId",
-    "schemaVersion",
-    "figureKey",
-    "stageId",
-    "version",
-    "status",
-    "episode",
-    "contentProfile",
-    "facts",
-    "entities",
-    "quotes",
-    "arc",
-    "interpretations",
-    "dramatizationLimits",
-    "avoidRules",
-    "sources",
-    "review",
-  ]);
-  exactOptionalKeys(
-    record(spec.episode),
-    ["ageMin", "ageMax", "throughLine"],
-    ["startDate", "endDate"],
-  );
-  exactKeys(record(spec.contentProfile), [
-    "intensity",
-    "flags",
-    "contentNote",
-  ]);
-  for (const factValue of array(spec.facts)) {
-    const fact = record(factValue);
-    exactOptionalKeys(
-      fact,
-      [
-        "factId",
-        "statement",
-        "sourceRefs",
-        "eventOrder",
-        "confidence",
-        "claimKind",
-      ],
-      [
-        "subjectAgeMin",
-        "subjectAgeMax",
-        "dateStart",
-        "dateEnd",
-        "allowedParaphrases",
-      ],
-    );
-    array(fact.sourceRefs).forEach(assertExactSourceRefShape);
-  }
-  for (const entityValue of array(spec.entities)) {
-    exactKeys(record(entityValue), [
-      "entityId",
-      "kind",
-      "value",
-      "aliases",
-    ]);
-  }
-  for (const quoteValue of array(spec.quotes)) {
-    const quote = record(quoteValue);
-    exactOptionalKeys(
-      quote,
-      ["quoteId", "text", "status", "sourceRefs"],
-      ["speaker"],
-    );
-    array(quote.sourceRefs).forEach(assertExactSourceRefShape);
-  }
-  for (const beatValue of array(spec.arc)) {
-    const beat = record(beatValue);
-    exactOptionalKeys(
-      beat,
-      [
-        "role",
-        "canonicalText",
-        "requiredFactIds",
-        "optionalFactIds",
-        "entityIds",
-        "quoteIds",
-        "sentenceEvidence",
-        "personalizationZones",
-      ],
-      ["sourceNote"],
-    );
-    for (const mappingValue of array(beat.sentenceEvidence)) {
-      exactKeys(record(mappingValue), [
-        "sentenceIndex",
-        "factIds",
-        "interpretationIds",
-      ]);
-    }
-  }
-  for (const interpretationValue of array(spec.interpretations)) {
-    exactKeys(record(interpretationValue), [
-      "interpretationId",
-      "statement",
-      "supportingFactIds",
-      "allowed",
-    ]);
-  }
-  for (const sourceValue of array(spec.sources)) {
-    exactOptionalKeys(
-      record(sourceValue),
-      ["sourceId", "citation"],
-      ["locator", "url"],
-    );
-  }
-  exactKeys(record(spec.review), [
-    "researcherId",
-    "historicalReviewerId",
-    "toneReviewerId",
-    "reviewedAt",
-    "contentProfileReviewed",
-  ]);
+  assert(parseStorySpecDocument(value) !== null);
 }
 
 function assertExactSourceRefShape(value: unknown): void {

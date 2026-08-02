@@ -1,6 +1,9 @@
 import "server-only";
 import type { StoredStoryArtifactEnvelope } from "./story-artifact";
-import type { StoryArtifact } from "./story-artifact-types";
+import {
+  STORY_ARTIFACT_SCHEMA_VERSION,
+  type StoryArtifact,
+} from "./story-artifact-types";
 import {
   LEGACY_DERIVED_OUTPUT_RETENTION_POLICY_VERSION,
   assertRetentionSink,
@@ -52,6 +55,7 @@ export function putMemoryStoryArtifact(
       artifactId: artifact.artifactId,
       schemaVersion: artifact.schemaVersion,
       contentHash: artifact.contentHash,
+      legacyV5ReplayEligible: false,
     }),
     retention: CURRENT_ARTIFACT_RETENTION,
   });
@@ -99,4 +103,27 @@ export function getOwnedMemoryStoryArtifactSync(
 
 export function memoryStoryArtifactCount(): number {
   return artifacts.size;
+}
+
+// Test-only mirror of migration 0023's one-way cutover marker. Production
+// eligibility comes only from public.story_artifact_legacy_v5_replay.
+export function _markMemoryStoryArtifactLegacyV5ReplayEligible(
+  artifactId: string,
+): void {
+  const owned = artifacts.get(artifactId);
+  if (
+    !owned ||
+    !owned.envelope ||
+    owned.artifact.schemaVersion !== STORY_ARTIFACT_SCHEMA_VERSION
+  ) {
+    throw new Error("legacy v5 replay marker target is unavailable");
+  }
+  if (owned.envelope.legacyV5ReplayEligible === true) return;
+  artifacts.set(artifactId, {
+    ...owned,
+    envelope: Object.freeze({
+      ...owned.envelope,
+      legacyV5ReplayEligible: true,
+    }),
+  });
 }

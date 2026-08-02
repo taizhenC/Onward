@@ -11,6 +11,8 @@
     "smoke": "tsx scripts/smoke.ts",
     "check-figure": "tsx scripts/check-figure.ts",
     "check-story-spec": "tsx scripts/check-story-spec.ts",
+    "check-story-spec-migration": "tsx scripts/check-story-spec-migration.ts",
+    "check-story-spec-cutover": "tsx scripts/check-story-spec-cutover.ts",
     "check-story-artifact": "tsx scripts/check-story-artifact.ts",
     "check-derived-output-retention": "tsx scripts/check-derived-output-retention.ts",
     "check-story-quality-benchmark": "tsx scripts/check-story-quality-benchmark.ts",
@@ -72,6 +74,7 @@
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.4",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",

@@ -3,6 +3,18 @@ import { isDeepStrictEqual } from "node:util";
 import { containsResonanceEcho, type PrimaryPressure, type ResonanceBrief } from "./resonance-brief";
 import type { StorySpec, SourceRef } from "./story-spec-types";
 import {
+  isBoundedTransparencyText,
+  isSafeTransparencyId,
+  isSafeTransparencySourceUrl,
+  isStoryReviewDate,
+  STORY_CLAIM_KINDS,
+  STORY_FACT_CONFIDENCES,
+  STORY_QUOTE_STATUSES,
+  STORY_SOURCE_SCOPES,
+  STORY_TRANSPARENCY_LIMITS,
+  storySourceRefKey,
+} from "./story-transparency-policy";
+import {
   MATCH_RATIONALE_POLICY_VERSION,
   STORY_EVIDENCE_CLASSES,
   STORY_TRANSPARENCY_SCHEMA_VERSION,
@@ -40,18 +52,6 @@ const GAP_COPY: Record<Framing, string> = {
     "This is an adjacent parallel, not an equivalence: the circumstances, stakes, choices, and outcome are different.",
 };
 
-const FACT_CONFIDENCES = ["documented", "probable", "disputed"] as const;
-const CLAIM_KINDS = ["event", "causal", "sensory", "context"] as const;
-const QUOTE_STATUSES = [
-  "verbatim",
-  "paraphrase",
-  "disputed",
-  "forbidden",
-  "unverified",
-] as const;
-const SOURCE_SCOPES = ["exact", "bounded", "broad"] as const;
-const SAFE_ID = /^[A-Za-z0-9][A-Za-z0-9:._-]{0,127}$/;
-
 export function buildStoryTransparency(
   storySpec: StorySpec,
   resonanceBrief: ResonanceBrief,
@@ -88,7 +88,12 @@ export function buildStoryTransparency(
           reviewedAt: storySpec.review.reviewedAt,
         }
       : { status: "review_draft" },
-    sources: storySpec.sources.map((source) => ({ ...source })),
+    sources: storySpec.sources.map((source) => ({
+      sourceId: source.sourceId,
+      citation: source.citation,
+      ...(source.locator !== undefined ? { locator: source.locator } : {}),
+      ...(source.url !== undefined ? { url: source.url } : {}),
+    })),
     facts: storySpec.facts
       .filter((fact) => factSet.has(fact.factId))
       .map((fact) => ({
@@ -96,7 +101,7 @@ export function buildStoryTransparency(
         statement: fact.statement,
         confidence: fact.confidence,
         claimKind: fact.claimKind,
-        sourceRefs: structuredClone(fact.sourceRefs),
+        sourceRefs: projectSourceRefs(fact.sourceRefs),
       })),
     quotes: storySpec.quotes
       .filter((quote) => quoteSet.has(quote.quoteId))
@@ -105,7 +110,7 @@ export function buildStoryTransparency(
         text: quote.text,
         status: quote.status,
         ...(quote.speaker ? { speaker: quote.speaker } : {}),
-        sourceRefs: structuredClone(quote.sourceRefs),
+        sourceRefs: projectSourceRefs(quote.sourceRefs),
       })),
     beats: storySpec.arc.map((beat) => ({
       role: beat.role,
@@ -140,6 +145,25 @@ export function validateStoryTransparency(
 export function validateStoredStoryTransparency(
   value: unknown,
 ): value is StoryTransparency {
+  return validateStoredStoryTransparencyWithPolicy(value, false);
+}
+
+// Replay-only compatibility for immutable pre-closure v5 artifacts. The old
+// projector labeled every bridge `reader_bridge`, including a bridge that also
+// carried historical fact/quote IDs. New composition must never use this seam.
+export function validateLegacyStoredStoryTransparencyV1(
+  value: unknown,
+): value is StoryTransparency {
+  return (
+    validateStoredStoryTransparency(value) ||
+    validateStoredStoryTransparencyWithPolicy(value, true)
+  );
+}
+
+function validateStoredStoryTransparencyWithPolicy(
+  value: unknown,
+  allowLegacyMixedBridge: boolean,
+): value is StoryTransparency {
   if (!isRecord(value) || !hasExactKeys(value, [
     "beats",
     "facts",
@@ -154,8 +178,8 @@ export function validateStoredStoryTransparency(
   if (
     !isRecord(value.storySpec) ||
     !hasExactKeys(value.storySpec, ["schemaVersion", "storySpecId", "version"]) ||
-    !isSafeId(value.storySpec.storySpecId) ||
-    !isBoundedText(value.storySpec.schemaVersion, 1, 128) ||
+    !isSafeTransparencyId(value.storySpec.storySpecId) ||
+    !isBoundedTransparencyText(value.storySpec.schemaVersion, 1, 128) ||
     !Number.isInteger(value.storySpec.version) ||
     (value.storySpec.version as number) < 1
   ) return false;
@@ -179,14 +203,18 @@ export function validateStoredStoryTransparency(
   if (
     reviewed
       ? !hasExactKeys(value.provenance, ["reviewedAt", "status"]) ||
-        !isReviewDate(value.provenance.reviewedAt)
+        !isStoryReviewDate(value.provenance.reviewedAt)
       : !hasExactKeys(value.provenance, ["status"])
   ) return false;
 
   if (
-    !Array.isArray(value.sources) || value.sources.length === 0 || value.sources.length > 100 ||
-    !Array.isArray(value.facts) || value.facts.length > 500 ||
-    !Array.isArray(value.quotes) || value.quotes.length > 100 ||
+    !Array.isArray(value.sources) ||
+    value.sources.length === 0 ||
+    value.sources.length > STORY_TRANSPARENCY_LIMITS.sources ||
+    !Array.isArray(value.facts) ||
+    value.facts.length > STORY_TRANSPARENCY_LIMITS.facts ||
+    !Array.isArray(value.quotes) ||
+    value.quotes.length > STORY_TRANSPARENCY_LIMITS.quotes ||
     !Array.isArray(value.beats) || value.beats.length !== EXPECTED_ROLES.length
   ) return false;
 
@@ -202,10 +230,20 @@ export function validateStoredStoryTransparency(
         : ["citation", "locator", "sourceId", "url"];
     if (
       !hasExactKeys(source, allowedKeys) ||
-      !isSafeId(source.sourceId) ||
-      !isBoundedText(source.citation, 1, 2_000) ||
-      (source.locator !== undefined && !isBoundedText(source.locator, 1, 500)) ||
-      (source.url !== undefined && !isSafeSourceUrl(source.url)) ||
+      !isSafeTransparencyId(source.sourceId) ||
+      !isBoundedTransparencyText(
+        source.citation,
+        1,
+        STORY_TRANSPARENCY_LIMITS.citation,
+      ) ||
+      (source.locator !== undefined &&
+        !isBoundedTransparencyText(
+          source.locator,
+          1,
+          STORY_TRANSPARENCY_LIMITS.locator,
+        )) ||
+      (source.url !== undefined &&
+        !isSafeTransparencySourceUrl(source.url)) ||
       sourceIds.has(source.sourceId)
     ) return false;
     sourceIds.add(source.sourceId);
@@ -217,10 +255,18 @@ export function validateStoredStoryTransparency(
     if (
       !isRecord(fact) ||
       !hasExactKeys(fact, ["claimKind", "confidence", "factId", "sourceRefs", "statement"]) ||
-      !isSafeId(fact.factId) ||
-      !isBoundedText(fact.statement, 1, 4_000) ||
-      !FACT_CONFIDENCES.includes(fact.confidence as (typeof FACT_CONFIDENCES)[number]) ||
-      !CLAIM_KINDS.includes(fact.claimKind as (typeof CLAIM_KINDS)[number]) ||
+      !isSafeTransparencyId(fact.factId) ||
+      !isBoundedTransparencyText(
+        fact.statement,
+        1,
+        STORY_TRANSPARENCY_LIMITS.factStatement,
+      ) ||
+      !STORY_FACT_CONFIDENCES.includes(
+        fact.confidence as (typeof STORY_FACT_CONFIDENCES)[number],
+      ) ||
+      !STORY_CLAIM_KINDS.includes(
+        fact.claimKind as (typeof STORY_CLAIM_KINDS)[number],
+      ) ||
       !validateSourceRefs(fact.sourceRefs, sourceIds, reviewed) ||
       factIds.has(fact.factId)
     ) return false;
@@ -236,10 +282,21 @@ export function validateStoredStoryTransparency(
       : ["quoteId", "sourceRefs", "speaker", "status", "text"];
     if (
       !hasExactKeys(quote, allowedKeys) ||
-      !isSafeId(quote.quoteId) ||
-      !isBoundedText(quote.text, 1, 4_000) ||
-      (quote.speaker !== undefined && !isBoundedText(quote.speaker, 1, 500)) ||
-      !QUOTE_STATUSES.includes(quote.status as (typeof QUOTE_STATUSES)[number]) ||
+      !isSafeTransparencyId(quote.quoteId) ||
+      !isBoundedTransparencyText(
+        quote.text,
+        1,
+        STORY_TRANSPARENCY_LIMITS.quoteText,
+      ) ||
+      (quote.speaker !== undefined &&
+        !isBoundedTransparencyText(
+          quote.speaker,
+          1,
+          STORY_TRANSPARENCY_LIMITS.quoteSpeaker,
+        )) ||
+      !STORY_QUOTE_STATUSES.includes(
+        quote.status as (typeof STORY_QUOTE_STATUSES)[number],
+      ) ||
       (reviewed && (quote.status === "forbidden" || quote.status === "unverified")) ||
       !validateSourceRefs(quote.sourceRefs, sourceIds, reviewed) ||
       quoteIds.has(quote.quoteId)
@@ -266,10 +323,24 @@ export function validateStoredStoryTransparency(
       !isUniqueIdArray(beat.factIds, factIds) ||
       !isUniqueIdArray(beat.quoteIds, quoteIds) ||
       typeof beat.hasPersonalizedTransition !== "boolean" ||
-      (beat.role === "bridge" && beat.hasPersonalizedTransition) ||
-      (beat.role === "bridge" && beat.evidenceClass !== "reader_bridge") ||
-      (beat.role !== "bridge" && beat.evidenceClass === "reader_bridge") ||
-      (reviewed && beat.role !== "bridge" &&
+      (beat.role === "bridge" && beat.hasPersonalizedTransition)
+    ) return false;
+    const strictEvidenceRole =
+      (beat.role === "bridge" ||
+        beat.evidenceClass !== "reader_bridge") &&
+      (beat.evidenceClass !== "reader_bridge" ||
+        (beat.role === "bridge" &&
+          beat.factIds.length === 0 &&
+          beat.quoteIds.length === 0));
+    const legacyEvidenceRole =
+      beat.role === "bridge"
+        ? beat.evidenceClass === "reader_bridge"
+        : beat.evidenceClass !== "reader_bridge";
+    if (
+      (!strictEvidenceRole &&
+        !(allowLegacyMixedBridge && legacyEvidenceRole)) ||
+      (reviewed &&
+        beat.evidenceClass !== "reader_bridge" &&
         (beat.evidenceClass === "review_pending" || beat.factIds.length === 0)) ||
       (reviewed &&
         (beat.evidenceClass as string).startsWith("documented") &&
@@ -300,7 +371,14 @@ function evidenceClassForBeat(
   reviewed: boolean,
   factsById: ReadonlyMap<string, StorySpec["facts"][number]>,
 ): StoryEvidenceClass {
-  if (beat.role === "bridge") return "reader_bridge";
+  if (
+    beat.role === "bridge" &&
+    !beat.sentenceEvidence.some(
+      (mapping) => mapping.treatment === "historical_claim",
+    )
+  ) {
+    return "reader_bridge";
+  }
   if (!reviewed) return "review_pending";
   const hasInterpretation = beat.sentenceEvidence.some(
     (mapping) => mapping.interpretationIds.length > 0,
@@ -324,7 +402,13 @@ function validateSourceRefs(
   sourceIds: ReadonlySet<string>,
   reviewed: boolean,
 ): value is SourceRef[] {
-  if (!Array.isArray(value) || value.length === 0 || value.length > 100) return false;
+  if (
+    !Array.isArray(value) ||
+    value.length === 0 ||
+    value.length > STORY_TRANSPARENCY_LIMITS.sourceRefs
+  ) {
+    return false;
+  }
   const seen = new Set<string>();
   for (const ref of value) {
     if (!isRecord(ref)) return false;
@@ -333,17 +417,38 @@ function validateSourceRefs(
       : ["locator", "scope", "sourceId"];
     if (
       !hasExactKeys(ref, allowedKeys) ||
-      !isSafeId(ref.sourceId) ||
+      !isSafeTransparencyId(ref.sourceId) ||
       !sourceIds.has(ref.sourceId) ||
-      !SOURCE_SCOPES.includes(ref.scope as (typeof SOURCE_SCOPES)[number]) ||
-      (ref.locator !== undefined && !isBoundedText(ref.locator, 1, 500)) ||
-      (reviewed && (ref.scope === "broad" || !isBoundedText(ref.locator, 1, 500)))
+      !STORY_SOURCE_SCOPES.includes(
+        ref.scope as (typeof STORY_SOURCE_SCOPES)[number],
+      ) ||
+      (ref.locator !== undefined &&
+        !isBoundedTransparencyText(
+          ref.locator,
+          1,
+          STORY_TRANSPARENCY_LIMITS.locator,
+        )) ||
+      (reviewed &&
+        (ref.scope === "broad" ||
+          !isBoundedTransparencyText(
+            ref.locator,
+            1,
+            STORY_TRANSPARENCY_LIMITS.locator,
+          )))
     ) return false;
-    const key = `${ref.sourceId}:${ref.scope}:${ref.locator ?? ""}`;
+    const key = storySourceRefKey(ref as SourceRef);
     if (seen.has(key)) return false;
     seen.add(key);
   }
   return true;
+}
+
+function projectSourceRefs(refs: readonly SourceRef[]): SourceRef[] {
+  return refs.map((ref) => ({
+    sourceId: ref.sourceId,
+    scope: ref.scope,
+    ...(ref.locator !== undefined ? { locator: ref.locator } : {}),
+  }));
 }
 
 function isUniqueIdArray(
@@ -355,44 +460,12 @@ function isUniqueIdArray(
     new Set(value).size === value.length;
 }
 
-function isSafeSourceUrl(value: unknown): value is string {
-  if (
-    typeof value !== "string" ||
-    value.length > 2_000 ||
-    /[\u0000-\u001f\u007f]/.test(value)
-  ) return false;
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" && !url.username && !url.password;
-  } catch {
-    return false;
-  }
-}
-
-function isSafeId(value: unknown): value is string {
-  return typeof value === "string" && SAFE_ID.test(value);
-}
-
-function isBoundedText(
-  value: unknown,
-  min: number,
-  max: number,
-): value is string {
-  return typeof value === "string" && value.trim().length >= min && value.length <= max;
-}
-
 function hasExactKeys(value: Record<string, unknown>, expected: string[]): boolean {
   return Object.keys(value).sort().join(",") === [...expected].sort().join(",");
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === "object" && !Array.isArray(value);
-}
-
-function isReviewDate(value: unknown): value is string {
-  return typeof value === "string" &&
-    /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}(?::\d{2}(?:\.\d{1,3})?)?Z)?$/.test(value) &&
-    !Number.isNaN(Date.parse(value));
 }
 
 function unique(values: string[]): string[] {

@@ -55,6 +55,7 @@ jobs:
       - run: npm run check-recipe-failure-boundary
       - run: npm run check-figure
       - run: npm run check-story-spec
+      - run: npm run check-story-spec-migration
       - run: npm run check-story-artifact
       - run: npm run check-derived-output-retention
       - run: npm run check-story-quality-benchmark

@@ -1,7 +1,8 @@
 import "./_smoke-bootstrap";
+import { consumeDerivedOutput } from "../lib/derived-output-retention";
 import { FIGURE_STAGES } from "../lib/figures-data";
+import { writeOpeningCopy } from "../lib/llm";
 import { NEUTRAL_EYEBROW, toEyebrowSurface } from "../lib/opening-copy";
-import { writeOpeningCopyReal } from "../lib/llm-real";
 import {
   PRIMARY_PRESSURES,
   RESONANCE_BRIEF_SENSITIVITY,
@@ -181,10 +182,12 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
   const originalFetch = globalThis.fetch;
   const previousKey = process.env.LLM_API_KEY;
   const previousBaseUrl = process.env.LLM_BASE_URL;
+  const previousProvider = process.env.LLM_PROVIDER;
   let modelOutput = "A closed door after a long effort";
   const capturedBodies: string[] = [];
   process.env.LLM_API_KEY = "resonance-contract-key";
   process.env.LLM_BASE_URL = "https://provider.invalid/v1";
+  process.env.LLM_PROVIDER = "real";
   globalThis.fetch = (async (_input: RequestInfo | URL, init?: RequestInit) => {
     capturedBodies.push(typeof init?.body === "string" ? init.body : "");
     return new Response(
@@ -194,9 +197,15 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
   }) as typeof fetch;
 
   try {
-    const safe = await writeOpeningCopyReal({ resonanceBrief: brief, stage });
+    const safe = consumeDerivedOutput(
+      await writeOpeningCopy({ resonanceBrief: brief, stage }),
+      "provider_health_check",
+    );
     modelOutput = "Priya";
-    const echo = await writeOpeningCopyReal({ resonanceBrief: brief, stage });
+    const echo = consumeDerivedOutput(
+      await writeOpeningCopy({ resonanceBrief: brief, stage }),
+      "provider_health_check",
+    );
     const providerPayload = capturedBodies.join("\n");
     if (safe.eyebrow !== "A closed door after a long effort") {
       failures.push("safe bounded provider output did not pass the eyebrow guard");
@@ -218,6 +227,7 @@ async function checkProviderBoundary(failures: string[]): Promise<void> {
     globalThis.fetch = originalFetch;
     restoreEnv("LLM_API_KEY", previousKey);
     restoreEnv("LLM_BASE_URL", previousBaseUrl);
+    restoreEnv("LLM_PROVIDER", previousProvider);
   }
 }
 

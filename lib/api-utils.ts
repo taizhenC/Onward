@@ -2,10 +2,14 @@ import "server-only";
 
 export const textStreamHeaders = {
   "content-type": "text/plain; charset=utf-8",
+  "cache-control": "no-store",
 };
 
 export function jsonError(message: string, status: number): Response {
-  return Response.json({ error: message }, { status });
+  return Response.json(
+    { error: message },
+    { status, headers: { "cache-control": "no-store" } },
+  );
 }
 
 export function streamText(

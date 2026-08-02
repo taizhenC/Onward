@@ -12,6 +12,7 @@
     "check-figure": "tsx scripts/check-figure.ts",
     "check-story-spec": "tsx scripts/check-story-spec.ts",
     "check-story-artifact": "tsx scripts/check-story-artifact.ts",
+    "check-derived-output-retention": "tsx scripts/check-derived-output-retention.ts",
     "check-story-quality-benchmark": "tsx scripts/check-story-quality-benchmark.ts",
     "check-story-quality-immutability": "tsx scripts/check-story-quality-immutability.ts",
     "check-story-quality-immutability-self-test": "tsx scripts/check-story-quality-immutability.ts --self-test",

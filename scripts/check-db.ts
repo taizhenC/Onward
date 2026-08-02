@@ -128,21 +128,58 @@ async function checkPublishedStorySpecs(): Promise<Step> {
 }
 
 async function checkArtifactSchema(): Promise<Step> {
-  const name = "StoryArtifact schema installed";
+  const name = "StoryArtifact and retention schema installed";
   try {
     const artifacts = await tableCount("story_artifacts");
+    const artifactLabels = await getSupabase()
+      .from("story_artifacts")
+      .select("retention_policy_version,retention_class")
+      .limit(1);
+    if (artifactLabels.error) throw new Error(artifactLabels.error.message);
     const sessions = await getSupabase()
       .from("sessions")
-      .select("story_artifact_id")
+      .select(
+        "story_artifact_id,retention_policy_version,story_retention_class,context_retention_class",
+      )
       .limit(1);
     if (sessions.error) throw new Error(sessions.error.message);
+    const health = await getSupabase().rpc(
+      "derived_output_retention_schema_health_v1",
+    );
+    if (health.error) throw new Error(health.error.message);
+    const row = Array.isArray(health.data) ? health.data[0] : null;
+    const expectedKeys = [
+      "boundary_granted",
+      "columns_classified",
+      "constraints_valid",
+      "current_defaults",
+      "helper_bodies_valid",
+      "labels_valid",
+      "ok",
+      "trigger_enabled",
+    ].sort();
+    const healthOk =
+      row !== null &&
+      typeof row === "object" &&
+      !Array.isArray(row) &&
+      Object.keys(row).sort().join(",") === expectedKeys.join(",") &&
+      Object.values(row).every((value) => typeof value === "boolean") &&
+      "ok" in row &&
+      row.ok === true;
+    if (!healthOk) {
+      throw new Error("derived-output retention schema health is unsafe");
+    }
     return {
       name,
       ok: true,
-      detail: `story_artifacts reachable (${artifacts} row(s)); session pointer present`,
+      detail: `story_artifacts reachable (${artifacts} row(s)); columns, current defaults, validated constraints, exact trigger helpers, labels, and grants are safe`,
     };
   } catch (error) {
-    return { name, ok: false, detail: `${message(error)} — apply migration 0005` };
+    return {
+      name,
+      ok: false,
+      detail: `${message(error)} — apply migrations 0005 and 0021`,
+    };
   }
 }
 

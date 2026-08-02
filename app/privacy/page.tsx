@@ -19,7 +19,7 @@ export default function PrivacyPage() {
             Onward home
           </Link>
           <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-            Last updated July 17, 2026
+            Last updated July 26, 2026
           </p>
           <h1 className="text-4xl leading-tight">Privacy, in plain language</h1>
           <p className="max-w-[38rem] text-xl leading-relaxed text-[var(--color-ink-soft)]">
@@ -73,6 +73,10 @@ export default function PrivacyPage() {
           <DataItem
             title="Story, reading place, and generated copy"
             body="These let the story remain stable and reopen where you stopped. For a guest, the account-wide cleanup clock runs from the latest story creation or saved reading progress in that account; when it expires, the guest account and every story in it are deleted. After an email is confirmed, stories stay until you delete the story or account."
+          />
+          <DataItem
+            title="Short-lived working material"
+            body="Reduced emotional shapes, raw AI responses, matching query vectors, and rejected composition plans are used only while preparing a request. Onward does not save them as stories, feedback, events, or editorial records. Only validated generated wording enters the saved story."
           />
           <DataItem
             title="Email and password"

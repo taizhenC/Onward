@@ -1,4 +1,5 @@
 import "./_smoke-bootstrap";
+import { consumeDerivedOutput } from "../lib/derived-output-retention";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { buildDraftStorySpec } from "../lib/story-spec";
 import {
@@ -23,7 +24,7 @@ import {
   validateStoredStoryArtifact,
   validateStoryArtifact,
 } from "../lib/story-artifact";
-import { requestHybridPlanReal } from "../lib/llm-real";
+import { requestHybridPlan } from "../lib/llm";
 import type { MatchRecipe } from "../lib/types";
 
 const PRIVATE_DISCLOSURE =
@@ -300,9 +301,11 @@ async function checkProviderProjection(failures: string[]): Promise<void> {
   const originalFetch = globalThis.fetch;
   const previousKey = process.env.LLM_API_KEY;
   const previousBaseUrl = process.env.LLM_BASE_URL;
+  const previousProvider = process.env.LLM_PROVIDER;
   let capturedBody = "";
   process.env.LLM_API_KEY = "hybrid-contract-key";
   process.env.LLM_BASE_URL = "https://provider.invalid/v1";
+  process.env.LLM_PROVIDER = "real";
   globalThis.fetch = (async (_input: RequestInfo | URL, init?: RequestInit) => {
     capturedBody = typeof init?.body === "string" ? init.body : "";
     return new Response(
@@ -313,7 +316,10 @@ async function checkProviderProjection(failures: string[]): Promise<void> {
     );
   }) as typeof fetch;
   try {
-    const response = await requestHybridPlanReal(request);
+    const response = consumeDerivedOutput(
+      await requestHybridPlan(request),
+      "provider_health_check",
+    );
     if (JSON.stringify(response) !== JSON.stringify(plan)) {
       failures.push("real composition provider did not return its structured plan");
     }
@@ -333,6 +339,7 @@ async function checkProviderProjection(failures: string[]): Promise<void> {
     globalThis.fetch = originalFetch;
     restoreEnv("LLM_API_KEY", previousKey);
     restoreEnv("LLM_BASE_URL", previousBaseUrl);
+    restoreEnv("LLM_PROVIDER", previousProvider);
   }
 }
 

@@ -36,6 +36,7 @@ import {
 } from "./story-artifact-types";
 import { persistenceMode } from "./persistence";
 import { assertProductionStoryRecipeRuntime } from "./story-recipe";
+import { consumeDerivedOutput } from "./derived-output-retention";
 
 export type StoryCatalogResult =
   | { status: "ready"; catalog: ReadonlyMap<string, StorySpec> }
@@ -109,7 +110,10 @@ export async function prepareStory(input: {
     input.clarification,
   );
   const matchRecipe = activeMatchRecipe(input.match, input.mode);
-  const generatedOpeningCopy = await writeOpeningCopy({ resonanceBrief, stage });
+  const generatedOpeningCopy = consumeDerivedOutput(
+    await writeOpeningCopy({ resonanceBrief, stage }),
+    "story_validator",
+  );
   const artifact = await composeStoryArtifact({
     storySpec,
     stage,

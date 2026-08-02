@@ -12,6 +12,10 @@ import {
   geminiModelId,
 } from "./embeddings-real";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
+import {
+  classifyDerivedOutput,
+  type DerivedOutput,
+} from "./derived-output-retention";
 
 // The single embeddings boundary — mirrors lib/llm.ts. Everything outside lib/ imports from here,
 // never from embeddings-stub / embeddings-real directly (CLAUDE.md: the provider is invisible
@@ -57,8 +61,12 @@ export function embedDocuments(texts: string[]): Promise<number[][]> {
 }
 
 // The user feeling (later: facet-query projections) embedded at MATCH time → RETRIEVAL_QUERY.
-export function embedQuery(text: string): Promise<number[]> {
-  return resolveProvider() === "gemini"
-    ? embedQueryReal(text)
-    : embedQueryStub(text);
+export async function embedQuery(
+  text: string,
+): Promise<DerivedOutput<"retrieval_query_embedding">> {
+  const vector =
+    resolveProvider() === "gemini"
+      ? await embedQueryReal(text)
+      : await embedQueryStub(text);
+  return classifyDerivedOutput("retrieval_query_embedding", vector);
 }

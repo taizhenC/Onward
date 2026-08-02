@@ -2,11 +2,8 @@ import "server-only";
 import type { BeatBlueprint, OpeningCopy, Pick, PickInput } from "./types";
 import { pickByKeywordHybrid } from "./keyword-match";
 import { PARTIAL_FRAMING_THRESHOLD } from "./match-config";
-import {
-  curatedEyebrow,
-  DEFAULT_PREFACE_LINES,
-  type OpeningCopyInput,
-} from "./opening-copy";
+import type { OpeningCopyInput } from "./opening-copy";
+import type { OpeningCopyPolicy } from "./opening-copy-policy";
 import { sanitizeLegacyDisclosurePlaceholder } from "./story-privacy";
 import {
   HYBRID_PLAN_SCHEMA_VERSION,
@@ -69,17 +66,13 @@ export async function tagAndExpandStub(
   return null;
 }
 
-// Stub opening copy: the hand-authored per-stage eyebrow (curatedEyebrow falls back to
-// the neutral line for any uncurated stage) plus the universal hand-authored preface. The
-// real generator in lib/llm-real.ts tailors the eyebrow from a bounded brief when
-// LLM_PROVIDER=real; preface personalization is deferred in both modes.
+// Stub opening copy delegates to the selected policy so historical prompt
+// releases stay deterministic without provider-specific branching here.
 export async function writeOpeningCopyStub(
   input: OpeningCopyInput,
+  policy: OpeningCopyPolicy,
 ): Promise<OpeningCopy> {
-  return {
-    eyebrow: curatedEyebrow(input.stage.figureKey, input.stage.stageId),
-    prefaceLines: DEFAULT_PREFACE_LINES,
-  };
+  return policy.fromStub(input);
 }
 
 export async function requestHybridPlanStub(

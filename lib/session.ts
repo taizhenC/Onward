@@ -6,7 +6,6 @@ import type {
   DeleteOwnedSessionResult,
   ListSessionsByUserOptions,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { memorySessionStore } from "./session-store-memory";
@@ -109,13 +108,6 @@ export function deleteOwnedSession(
   userId: string,
 ): Promise<DeleteOwnedSessionResult> {
   return resolveStore().deleteOwnedSession(sessionId, userId);
-}
-
-export function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  return resolveStore().updateSession(sessionId, patch);
 }
 
 export function acknowledgeOwnedSessionPosition(

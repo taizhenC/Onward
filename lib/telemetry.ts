@@ -54,6 +54,7 @@ import type {
   TelemetryOutboxAckResult,
   TelemetryOutboxNackResult,
 } from "./telemetry-types";
+import { assertRetentionSink } from "./derived-output-retention";
 
 // Builds the exact, HMAC-authenticated capture passed into a domain RPC that
 // commits telemetry in the same database transaction as its authoritative
@@ -64,6 +65,7 @@ export function prepareProductEventCapture<Event extends ProductEvent>(input: {
   flowId: TelemetryFlowId | null;
   occurrenceId?: TelemetryOccurrenceId;
 }): Readonly<ProductEventCapture<Event>> {
+  assertRetentionSink("telemetry.product_event", "request_memory");
   const event = parseProductEvent(input.event) as Readonly<Event>;
   const record = createProductEventRecord({
     event,
@@ -81,6 +83,10 @@ export async function recordProductEvent(input: {
   flowId: TelemetryFlowId | null;
   occurrenceId?: TelemetryOccurrenceId;
 }): Promise<TelemetryWriteResult> {
+  assertRetentionSink(
+    "telemetry.product_event",
+    "bounded_operational_store",
+  );
   const event = parseProductEvent(input.event);
   if (input.flowId !== null) {
     const registration = await registerTelemetryFlow(input.flowId);
@@ -103,6 +109,10 @@ export function recordPreparedMemoryProductEventsAtomically(
   captures: ReadonlyArray<Readonly<ProductEventCapture>>,
   now = Date.now(),
 ): TelemetryWriteResult {
+  assertRetentionSink(
+    "telemetry.product_event",
+    "bounded_operational_store",
+  );
   if (persistenceMode() !== "memory") {
     throw new Error("prepared memory event transaction requires memory mode");
   }
@@ -171,6 +181,10 @@ export async function recordGenerationAttempt(input: {
   attempt: GenerationAttempt;
   attemptId: GenerationAttemptId;
 }): Promise<TelemetryWriteResult> {
+  assertRetentionSink(
+    "telemetry.generation_attempt",
+    "bounded_operational_store",
+  );
   const record = createGenerationAttemptRecord({
     attempt: input.attempt,
     attemptId: input.attemptId,

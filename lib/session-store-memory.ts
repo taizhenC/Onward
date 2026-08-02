@@ -9,7 +9,6 @@ import type {
   ListSessionsByUserOptions,
   OpeningCopy,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
@@ -45,6 +44,7 @@ import {
 } from "./telemetry-producers";
 import { deriveStoryPassageLayout } from "./story-progress";
 import type { ProductEventCapture, StoryRole } from "./telemetry-types";
+import { assertRetentionSink } from "./derived-output-retention";
 
 // In-process session store (PERSISTENCE=memory, the default). State lives on globalThis so
 // it survives Next dev hot-reload; a full process restart still clears it — which is exactly
@@ -82,6 +82,7 @@ function allocateSessionId(): string {
 }
 
 async function createSession(input: CreateSessionInput): Promise<string> {
+  assertNewSessionRetentionContract();
   pruneExpiredSessions();
   const existingBinding = input.telemetryFlowId
     ? getMemoryTelemetryFlowBindingByFlow(input.telemetryFlowId)
@@ -203,6 +204,7 @@ export function createMemoryAlternateSession(input: {
   sourceArtifactId: string;
   artifact: StoryArtifact;
 }): string {
+  assertOwnedStoryRetentionContract();
   pruneExpiredSessions();
   const source = sessions.get(input.sourceSessionId);
   if (!source || source.userId !== input.userId) {
@@ -327,6 +329,19 @@ function expireSensitiveContext(session: Session, now = Date.now()): void {
   }
 }
 
+function assertNewSessionRetentionContract(): void {
+  assertRetentionSink("input.raw_disclosure", "root_session");
+  assertRetentionSink("input.story_request_context", "root_session");
+  assertOwnedStoryRetentionContract();
+}
+
+function assertOwnedStoryRetentionContract(): void {
+  assertRetentionSink("input.age", "owned_story_store");
+  assertRetentionSink("match.selection", "owned_story_store");
+  assertRetentionSink("story.opening_copy", "owned_story_store");
+  assertRetentionSink("story.artifact", "owned_story_store");
+}
+
 // Backfill opening copy for sessions created before a field existed (first eyebrow, then
 // prefaceLines). Returns the SAME reference when nothing is missing, so getSession can
 // cheaply tell whether a migration write is needed.
@@ -356,30 +371,6 @@ function migrateOpeningCopy(openingCopy: unknown): OpeningCopy {
       ? candidate.prefaceLines
       : DEFAULT_PREFACE_LINES,
   };
-}
-
-async function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  const existing = sessions.get(sessionId);
-  if (!existing) return null;
-  if (isExpired(existing)) {
-    deleteMemorySessionCascade(sessionId);
-    return null;
-  }
-  const next: Session = {
-    ...existing,
-    ...(patch.nextBeatIndex !== undefined
-      ? { nextBeatIndex: patch.nextBeatIndex }
-      : {}),
-    ...(patch.nextChunkIndex !== undefined
-      ? { nextChunkIndex: patch.nextChunkIndex }
-      : {}),
-    updatedAt: Date.now(),
-  };
-  sessions.set(sessionId, next);
-  return next;
 }
 
 async function acknowledgePosition(
@@ -570,7 +561,6 @@ async function sessionCount(): Promise<number> {
 export const memorySessionStore: SessionStore = {
   createSession,
   getSession,
-  updateSession,
   acknowledgePosition,
   listSessionsByUser,
   deleteOwnedSession,

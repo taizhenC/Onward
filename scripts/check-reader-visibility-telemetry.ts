@@ -7,13 +7,17 @@ import { POST as capturePassagePresented } from "../app/api/telemetry/passage-pr
 import { POST as captureSourceOpened } from "../app/api/telemetry/source-opened/route";
 import { LOCAL_DEV_USER_ID } from "../lib/auth";
 import { FIGURE_STAGES } from "../lib/figures-data";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import { createResonanceBrief } from "../lib/resonance-brief";
 import {
   acknowledgeOwnedSessionPosition,
   createSession,
   getSession,
-  updateSession,
 } from "../lib/session";
 import { createMemoryAlternateSession } from "../lib/session-store-memory";
 import { composeCanonicalStoryArtifact } from "../lib/story-artifact";
@@ -50,6 +54,7 @@ import type {
 } from "../lib/telemetry-types";
 import type { FigureStageRow, MatchRecipe, Session } from "../lib/types";
 import { ALTERNATE_STORY_POLICY_VERSION } from "../lib/alternate-story-types";
+import { completeMemoryStorySessionFixture } from "./_story-session-fixture";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -69,6 +74,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 type Fixture = Readonly<{
@@ -190,9 +196,10 @@ async function checkSourceOpen(
     { sessionId: fixture.sessionId },
   );
   assert.equal(incomplete.status, 409);
-  await updateSession(fixture.sessionId, {
-    nextBeatIndex: fixture.artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId: fixture.sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact: fixture.artifact,
   });
   const before = countEvents(requireFlow(fixture), "source_opened", role);
   const body = { sessionId: fixture.sessionId };
@@ -366,9 +373,10 @@ async function checkOwnershipAndExactRequests(): Promise<void> {
 async function makeAlternateFixture(): Promise<Fixture> {
   const rootStage = FIGURE_STAGES[3] ?? FIGURE_STAGES[0];
   const root = await makeFixture(rootStage, recipe);
-  await updateSession(root.sessionId, {
-    nextBeatIndex: root.artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId: root.sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact: root.artifact,
   });
   const alternateStage = FIGURE_STAGES.find(
     (stage) =>
@@ -412,9 +420,10 @@ async function checkNullAndDisabledFlows(): Promise<void> {
     )).status,
     204,
   );
-  await updateSession(noFlow.sessionId, {
-    nextBeatIndex: noFlow.artifact.beats.length,
-    nextChunkIndex: 0,
+  await completeMemoryStorySessionFixture({
+    sessionId: noFlow.sessionId,
+    userId: LOCAL_DEV_USER_ID,
+    artifact: noFlow.artifact,
   });
   assert.equal(
     (await post(captureSourceOpened, "/api/telemetry/source-opened", {
@@ -549,8 +558,8 @@ function makeArtifact(
     stage,
     matchRecipe,
     openingCopy: {
-      eyebrow: "A true story",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: createResonanceBrief(PRIVATE_CANARY),
@@ -610,7 +619,10 @@ function checkStaticIntegration(): void {
   assert(player.includes("consumeFirstContentLatencyBucket(sessionId)"));
   assert(preface.includes("onAnimationComplete={onVisible}"));
   assert(player.includes("onAnimationComplete={() => setVisiblePassageKey(passageKey)}"));
-  assert(beat.indexOf("const startedAt = monotonicEpochMs()") < beat.indexOf("await acknowledgeBeat({"));
+  assert(
+    beat.indexOf("const startedAt = monotonicEpochMs()") <
+      beat.indexOf("await acknowledgeStoryPassage({"),
+  );
   assert(beat.includes("elapsedLatencyBucket(presentationStartedAt)"));
   assert(beat.includes("!presentationVisible"));
   assert(afterword.includes("event.currentTarget.open"));

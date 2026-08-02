@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 
 const root = process.cwd();
-const migrationName = "0021_story_recipe_manifest_v2.sql";
+const migrationName = "0024_story_recipe_manifest_v2.sql";
 const migration = readFileSync(
   resolve(root, "supabase/migrations", migrationName),
   "utf8",

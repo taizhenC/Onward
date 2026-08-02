@@ -9,7 +9,6 @@ import type {
   MatchRecipe,
   OpeningCopy,
   Session,
-  SessionPatch,
   SessionStore,
 } from "./types";
 import { DEFAULT_PREFACE_LINES, NEUTRAL_EYEBROW } from "./opening-copy";
@@ -21,6 +20,10 @@ import { prepareProductEventCapture } from "./telemetry";
 import {
   artifactCreatedEvent,
 } from "./telemetry-producers";
+import {
+  assertRetentionSink,
+  parsePersistedRetentionLabel,
+} from "./derived-output-retention";
 
 // Durable session store (PERSISTENCE=supabase). Survives restarts and works across
 // serverless instances. getSupabase() is called inside the methods, never at import, so this
@@ -47,9 +50,13 @@ type SessionRow = {
   next_chunk_index: number;
   created_at: string;
   updated_at: string;
+  retention_policy_version: unknown;
+  story_retention_class: unknown;
+  context_retention_class: unknown;
 };
 
 async function createSession(input: CreateSessionInput): Promise<string> {
+  assertNewSessionRetentionContract();
   const artifactCapture = input.telemetryFlowId
     ? prepareProductEventCapture({
         event: artifactCreatedEvent(input.artifact, "initial"),
@@ -125,28 +132,6 @@ async function getSession(sessionId: string): Promise<Session | null> {
     .eq("session_id", sessionId)
     .maybeSingle();
   if (error) throw new Error(`getSession select failed: ${error.message}`);
-  return data ? rowToSession(data as SessionRow) : null;
-}
-
-async function updateSession(
-  sessionId: string,
-  patch: SessionPatch,
-): Promise<Session | null> {
-  const update: Record<string, number | string> = {};
-  if (patch.nextBeatIndex !== undefined) update.next_beat_index = patch.nextBeatIndex;
-  if (patch.nextChunkIndex !== undefined) update.next_chunk_index = patch.nextChunkIndex;
-  if (Object.keys(update).length === 0) return getSession(sessionId);
-
-  // Last-activity signal for the anonymous-guest retention job (migration 0003).
-  update.updated_at = new Date().toISOString();
-
-  const { data, error } = await getSupabase()
-    .from(TABLE)
-    .update(update)
-    .eq("session_id", sessionId)
-    .select("*")
-    .maybeSingle();
-  if (error) throw new Error(`updateSession failed: ${error.message}`);
   return data ? rowToSession(data as SessionRow) : null;
 }
 
@@ -294,6 +279,20 @@ async function sessionCount(): Promise<number> {
 }
 
 function rowToSession(row: SessionRow): Session {
+  parsePersistedRetentionLabel(
+    {
+      policyVersion: row.retention_policy_version,
+      retentionClass: row.story_retention_class,
+    },
+    "owned_story",
+  );
+  parsePersistedRetentionLabel(
+    {
+      policyVersion: row.retention_policy_version,
+      retentionClass: row.context_retention_class,
+    },
+    "recovery_context",
+  );
   const storyRequestContext =
     row.story_request_context === null
       ? null
@@ -321,6 +320,15 @@ function rowToSession(row: SessionRow): Session {
     createdAt: parseTimestamp(row.created_at),
     updatedAt: parseTimestamp(row.updated_at),
   };
+}
+
+function assertNewSessionRetentionContract(): void {
+  assertRetentionSink("input.raw_disclosure", "root_session");
+  assertRetentionSink("input.story_request_context", "root_session");
+  assertRetentionSink("input.age", "owned_story_store");
+  assertRetentionSink("match.selection", "owned_story_store");
+  assertRetentionSink("story.opening_copy", "owned_story_store");
+  assertRetentionSink("story.artifact", "owned_story_store");
 }
 
 function parseTimestamp(value: string): number {
@@ -354,7 +362,6 @@ function isSessionId(value: unknown): value is string {
 export const supabaseSessionStore: SessionStore = {
   createSession,
   getSession,
-  updateSession,
   acknowledgePosition,
   listSessionsByUser,
   deleteOwnedSession,

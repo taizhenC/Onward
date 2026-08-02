@@ -3,11 +3,11 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import {
   RERANK_PROMPT_CONTRACT,
-  STORY_PROMPT_CONTRACT,
   canonicalPromptContract,
 } from "../lib/llm-prompts";
 import {
   RERANK_PROMPT_VERSION,
+  SUPPORTED_STORY_PROMPT_RELEASES,
   STORY_PROMPT_VERSION,
 } from "../lib/llm-recipe-constants";
 import { sha256Hex } from "../lib/sha256-edge";
@@ -28,17 +28,32 @@ function main(): void {
     JSON.parse(readFileSync(REGISTRY_PATH, "utf8")) as unknown,
     "current prompt release registry",
   );
-  const actual = {
-    rerank: verifiedSha256(canonicalPromptContract(RERANK_PROMPT_CONTRACT)),
-    story: verifiedSha256(canonicalPromptContract(STORY_PROMPT_CONTRACT)),
-  } as const;
-  assertActiveRelease(registry.rerank, RERANK_PROMPT_VERSION, actual.rerank);
-  assertActiveRelease(registry.story, STORY_PROMPT_VERSION, actual.story);
+  const rerankSha256 = verifiedSha256(
+    canonicalPromptContract(RERANK_PROMPT_CONTRACT),
+  );
+  assertActiveRelease(
+    registry.rerank,
+    RERANK_PROMPT_VERSION,
+    rerankSha256,
+  );
+  for (const release of SUPPORTED_STORY_PROMPT_RELEASES) {
+    assertActiveRelease(
+      registry.story,
+      release.version,
+      verifiedSha256(canonicalPromptContract(release.contract)),
+    );
+  }
+  assert(
+    SUPPORTED_STORY_PROMPT_RELEASES.some(
+      (release) => release.version === STORY_PROMPT_VERSION,
+    ),
+    "default story prompt is not an executable release",
+  );
 
   const base = process.argv[2]?.trim();
   if (base) assertAppendOnlyFromBase(base, registry);
   console.log(
-    `Prompt release check passed (rerank=${RERANK_PROMPT_VERSION}; story=${STORY_PROMPT_VERSION}).`,
+    `Prompt release check passed (rerank=${RERANK_PROMPT_VERSION}; story=${STORY_PROMPT_VERSION}; executableStoryReleases=${SUPPORTED_STORY_PROMPT_RELEASES.length}).`,
   );
 }
 

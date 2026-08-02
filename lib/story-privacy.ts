@@ -22,17 +22,26 @@ export function sanitizeLegacyDisclosurePlaceholder(text: string): string {
 }
 
 // Runtime defense for future generated artifacts. Exact normalized reflection is
-// always rejected. For longer disclosures, a contiguous eight-word copy is also
-// considered an unsafe echo; approved generic phrases are far shorter than this.
-// Both sides are space-padded so matches align on whole words — "ice person"
-// must not flag a story containing "nice person".
+// rejected for every multi-word disclosure and for meaningful single tokens
+// (three or more ASCII characters, or two or more non-ASCII code points),
+// including short safety-sensitive inputs such as "abused" or "suicidal".
+// For longer disclosures, a contiguous eight-word copy is also unsafe. Both
+// sides are space-padded so matches align on whole words — "ice person" must
+// not flag a story containing "nice person".
 export function containsDisclosureEcho(storyText: string, disclosure: string): boolean {
   const story = ` ${normalize(storyText)} `;
   const source = normalize(disclosure);
-  if (source.length < 10) return false;
-  if (story.includes(` ${source} `)) return true;
-
   const words = source.split(" ").filter(Boolean);
+  if (words.length === 0) return false;
+  const singleToken = words[0];
+  const exactMatchIsSensitive =
+    words.length > 1 ||
+    singleToken.length >= 3 ||
+    (/[^\x00-\x7f]/u.test(singleToken) &&
+      [...singleToken].length >= 2);
+  if (exactMatchIsSensitive && story.includes(` ${source} `)) {
+    return true;
+  }
   if (words.length < 8) return false;
   for (let index = 0; index <= words.length - 8; index += 1) {
     if (story.includes(` ${words.slice(index, index + 8).join(" ")} `)) return true;
@@ -44,7 +53,7 @@ function normalize(value: string): string {
   return value
     .toLowerCase()
     .normalize("NFKC")
-    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/[^\p{L}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 }

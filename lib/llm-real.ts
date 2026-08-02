@@ -8,14 +8,12 @@ import type {
   RerankFailureReason,
 } from "./types";
 import {
-  DEFAULT_PREFACE_LINES,
-  NEUTRAL_EYEBROW,
-  sanitizeEyebrow,
   toEyebrowSurface,
-  type EyebrowPromptSurface,
+  toEyebrowProviderSurface,
+  type EyebrowProviderSurface,
   type OpeningCopyInput,
 } from "./opening-copy";
-import { containsResonanceEcho } from "./resonance-brief";
+import type { OpeningCopyPolicy } from "./opening-copy-policy";
 import {
   HybridPlanProviderError,
   type HybridPlanRequest,
@@ -23,7 +21,6 @@ import {
 import {
   DEFAULT_PROSE_MODEL_ID,
   DEFAULT_PROSE_TIMEOUT_MS,
-  DEFAULT_LLM_BASE_URL,
   DEFAULT_RERANK_MODEL_ID,
   DEFAULT_RERANK_REASONING_EFFORT,
   DEFAULT_RERANK_TEMPERATURE,
@@ -32,15 +29,18 @@ import {
 } from "./llm-recipe-constants";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 import {
-  EYEBROW_SYSTEM_PROMPT,
-  HYBRID_PLAN_SYSTEM_PROMPT,
   RERANK_PROMPT_CONTRACT,
   RERANK_SYSTEM_PROMPT,
-  STORY_PROMPT_CONTRACT,
-  buildEyebrowUserPrompt,
   buildHybridPlanUserPrompt,
   buildRerankUserPrompt,
+  type StoryPromptContract,
 } from "./llm-prompts";
+import {
+  buildCerebrasHybridPlanRequestBody,
+  buildCerebrasOpeningCopyRequestBody,
+  buildCerebrasRerankRequestBody,
+  fetchExternalProvider,
+} from "./provider-exchange";
 
 // Real reranker: GPT-OSS 120B via Cerebras' OpenAI-compatible REST endpoint.
 //
@@ -54,14 +54,6 @@ import {
 // and the pinned infrastructure posture remain deployment configuration.
 // `npm run health` validates model / reasoning_effort / JSON mode at runtime.
 
-function baseUrl(): string {
-  const configured =
-    process.env.LLM_BASE_URL?.trim() ??
-    process.env.CEREBRAS_BASE_URL?.trim() ??
-    process.env.GROQ_BASE_URL?.trim();
-  if (!configured) return DEFAULT_LLM_BASE_URL;
-  return configured.replace(/\/+$/, "") || DEFAULT_LLM_BASE_URL;
-}
 function apiKey(): string | undefined {
   return [
     process.env.LLM_API_KEY,
@@ -185,32 +177,34 @@ export async function pickFigureReal(input: PickInput): Promise<Pick> {
     input.candidates.map(toRerankCandidate),
   );
 
-  const body: Record<string, unknown> = {
+  const effort = reasoningEffort();
+  const body = buildCerebrasRerankRequestBody({
     model: model(),
     temperature: temperature(),
-    response_format: { type: RERANK_PROMPT_CONTRACT.responseFormat },
-    messages: [
-      { role: "system", content: RERANK_SYSTEM_PROMPT },
-      { role: "user", content: userPrompt },
-    ],
-  };
-  const effort = reasoningEffort();
-  if (effort) body.reasoning_effort = effort;
+    systemPrompt: RERANK_SYSTEM_PROMPT,
+    userPrompt,
+    responseFormat: RERANK_PROMPT_CONTRACT.responseFormat,
+    ...(effort ? { reasoningEffort: effort } : {}),
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs());
 
   let response: Response;
   try {
-    response = await fetch(`${baseUrl()}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${key}`,
+    response = await fetchExternalProvider(
+      "cerebras.rerank",
+      "/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${key}`,
+        },
+        body,
+        signal: controller.signal,
       },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    );
   } catch {
     // Discard the raw error (it can carry the prompt/feeling) — never log it.
     if (controller.signal.aborted) {
@@ -274,60 +268,59 @@ function coerceConfidence(value: unknown): Confidence {
 }
 
 // ── Opening copy (eyebrow) ───────────────────────────────────────────────────────────
-// Prose generation, not rerank: routed to the Llama prose model. Unlike pickFigureReal,
-// this NEVER throws — any failure (no key, timeout, HTTP error, bad output) degrades to the
-// neutral fallback via sanitizeEyebrow, because copy must never block the story.
+// Prose generation, not rerank. Unlike pickFigureReal, provider and parsing failures
+// never block the story: the selected opening-copy policy owns validation and fallback.
 
 export async function writeOpeningCopyReal(
   input: OpeningCopyInput,
+  policy: OpeningCopyPolicy,
 ): Promise<OpeningCopy> {
   const surface = toEyebrowSurface(input);
-  const raw = await generateEyebrowLine(surface);
-  // sanitizeEyebrow turns null / blank / preamble / too-long / name-leak into the neutral
-  // fallback, so this always returns a usable line.
-  const eyebrow = sanitizeEyebrow(raw, surface.displayName);
-  return {
-    eyebrow: containsResonanceEcho(eyebrow, input.resonanceBrief)
-      ? NEUTRAL_EYEBROW
-      : eyebrow,
-    // Preface per-brief personalization is deferred. Until it lands, real mode serves the
-    // same hand-authored universal lines as the stub (which will become the failure fallback
-    // for the eventual generated preface, mirroring the eyebrow's neutral fallback).
-    prefaceLines: DEFAULT_PREFACE_LINES,
-  };
+  const raw = await generateOpeningCandidate(
+    toEyebrowProviderSurface(surface),
+    policy,
+  );
+  return policy.fromRealCandidate(raw, input);
 }
 
-// Returns the raw model line, or null on any failure. Never throws, and never logs the
-// prompt, derived brief, or raw error (privacy floor).
-async function generateEyebrowLine(
-  surface: EyebrowPromptSurface,
-): Promise<string | null> {
+// Returns the raw v1 line or parsed v2 plan, and null on any failure. It never
+// logs the prompt, bounded brief, provider body, response, or raw error.
+async function generateOpeningCandidate(
+  surface: EyebrowProviderSurface,
+  policy: OpeningCopyPolicy,
+): Promise<unknown> {
   const key = apiKey();
   if (!key) return null;
+  const prompts = policy.providerPrompts(surface);
 
-  const body = {
+  const body = buildCerebrasOpeningCopyRequestBody({
     model: proseModel(),
     temperature: proseTemperature(),
-    messages: [
-      { role: "system", content: EYEBROW_SYSTEM_PROMPT },
-      { role: "user", content: buildEyebrowUserPrompt(surface) },
-    ],
-  };
+    systemPrompt: prompts.systemPrompt,
+    userPrompt: prompts.userPrompt,
+    ...(prompts.responseMode === "json_object"
+      ? { responseFormat: prompts.responseMode }
+      : {}),
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), proseTimeoutMs());
 
   let response: Response;
   try {
-    response = await fetch(`${baseUrl()}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${key}`,
+    response = await fetchExternalProvider(
+      "cerebras.opening_copy",
+      "/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${key}`,
+        },
+        body,
+        signal: controller.signal,
       },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    );
   } catch {
     return null;
   } finally {
@@ -340,7 +333,10 @@ async function generateEyebrowLine(
     const envelope = (await response.json()) as {
       choices?: Array<{ message?: { content?: string } }>;
     };
-    return envelope.choices?.[0]?.message?.content ?? null;
+    const content = envelope.choices?.[0]?.message?.content;
+    if (typeof content !== "string") return null;
+    if (prompts.responseMode === "line") return content;
+    return JSON.parse(content);
   } catch {
     return null;
   }
@@ -352,6 +348,7 @@ async function generateEyebrowLine(
 
 export async function requestHybridPlanReal(
   input: HybridPlanRequest,
+  contract: StoryPromptContract,
 ): Promise<unknown> {
   const key = apiKey();
   if (!key) {
@@ -360,34 +357,31 @@ export async function requestHybridPlanReal(
       "hybrid plan provider key is not configured",
     );
   }
-  const body = {
+  const body = buildCerebrasHybridPlanRequestBody({
     model: proseModel(),
-    temperature: STORY_PROMPT_CONTRACT.hybridPlan.temperature,
-    response_format: {
-      type: STORY_PROMPT_CONTRACT.hybridPlan.responseFormat,
-    },
-    messages: [
-      { role: "system", content: HYBRID_PLAN_SYSTEM_PROMPT },
-      {
-        role: "user",
-        content: buildHybridPlanUserPrompt(input),
-      },
-    ],
-  };
+    temperature: contract.hybridPlan.temperature,
+    systemPrompt: contract.hybridPlan.system,
+    userPrompt: buildHybridPlanUserPrompt(input, contract),
+    responseFormat: contract.hybridPlan.responseFormat,
+  });
 
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), proseTimeoutMs());
   let response: Response;
   try {
-    response = await fetch(`${baseUrl()}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${key}`,
+    response = await fetchExternalProvider(
+      "cerebras.hybrid_plan",
+      "/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${key}`,
+        },
+        body,
+        signal: controller.signal,
       },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    );
   } catch {
     if (controller.signal.aborted) {
       throw new HybridPlanProviderError(

@@ -1,6 +1,5 @@
 import "server-only";
 import {
-  DEFAULT_EMBEDDING_BASE_URL,
   DEFAULT_EMBEDDING_DIM,
   DEFAULT_EMBEDDING_MAX_RETRIES,
   DEFAULT_EMBEDDING_MODEL,
@@ -8,6 +7,13 @@ import {
   DEFAULT_EMBEDDING_TIMEOUT_MS,
 } from "./embedding-recipe-constants";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
+import type { ExternalProviderExchangeId } from "./derived-output-retention";
+import {
+  buildGeminiDocumentEmbeddingRequestBody,
+  buildGeminiQueryEmbeddingRequestBody,
+  fetchExternalProvider,
+  type ExternalProviderRequestBody,
+} from "./provider-exchange";
 
 // Real embedder: Gemini gemini-embedding-001 via the Generative Language REST API, called with
 // plain `fetch` (no SDK), mirroring lib/llm-real.ts. Asymmetric encoding is REQUIRED:
@@ -48,12 +54,6 @@ export class EmbeddingError extends Error {
   }
 }
 
-function baseUrl(): string {
-  const configured =
-    process.env.EMBEDDING_BASE_URL?.trim() ?? process.env.GEMINI_BASE_URL?.trim();
-  if (!configured) return DEFAULT_EMBEDDING_BASE_URL;
-  return configured.replace(/\/+$/, "") || DEFAULT_EMBEDDING_BASE_URL;
-}
 function apiKey(): string | undefined {
   return [process.env.GEMINI_API_KEY, process.env.EMBEDDING_API_KEY]
     .map((key) => key?.trim())
@@ -106,12 +106,15 @@ function retryBaseMs(): number {
 
 // One query embedding (match time). RETRIEVAL_QUERY.
 export async function embedQueryReal(text: string): Promise<number[]> {
-  const json = (await postJson(`models/${modelName()}:embedContent`, {
-    model: `models/${modelName()}`,
-    content: { parts: [{ text }] },
-    taskType: "RETRIEVAL_QUERY",
-    outputDimensionality: geminiDim(),
-  })) as { embedding?: { values?: number[] } };
+  const json = (await postJson(
+    "gemini.query_embedding",
+    `models/${modelName()}:embedContent`,
+    buildGeminiQueryEmbeddingRequestBody({
+      model: modelName(),
+      text,
+      outputDimensionality: geminiDim(),
+    }),
+  )) as { embedding?: { values?: number[] } };
 
   return normalizeOrThrow(json.embedding?.values);
 }
@@ -124,14 +127,15 @@ export async function embedDocumentsReal(texts: string[]): Promise<number[][]> {
   const out: number[][] = [];
   for (let start = 0; start < texts.length; start += BATCH_LIMIT) {
     const chunk = texts.slice(start, start + BATCH_LIMIT);
-    const json = (await postJson(`models/${modelName()}:batchEmbedContents`, {
-      requests: chunk.map((text) => ({
-        model: `models/${modelName()}`,
-        content: { parts: [{ text }] },
-        taskType: "RETRIEVAL_DOCUMENT",
+    const json = (await postJson(
+      "gemini.document_embedding",
+      `models/${modelName()}:batchEmbedContents`,
+      buildGeminiDocumentEmbeddingRequestBody({
+        model: modelName(),
+        texts: chunk,
         outputDimensionality: geminiDim(),
-      })),
-    })) as { embeddings?: Array<{ values?: number[] }> };
+      }),
+    )) as { embeddings?: Array<{ values?: number[] }> };
 
     const embeddings = json.embeddings ?? [];
     if (embeddings.length !== chunk.length) {
@@ -145,13 +149,17 @@ export async function embedDocumentsReal(texts: string[]): Promise<number[][]> {
   return out;
 }
 
-async function postJson(path: string, body: unknown): Promise<unknown> {
+async function postJson(
+  exchangeId: ExternalProviderExchangeId,
+  path: string,
+  body: ExternalProviderRequestBody,
+): Promise<unknown> {
   const key = apiKey();
   if (!key) throw new EmbeddingError("no_key", "GEMINI_API_KEY is not set.");
 
   for (let attempt = 0; ; attempt += 1) {
     try {
-      return await postJsonOnce(path, body, key);
+      return await postJsonOnce(exchangeId, path, body, key);
     } catch (error) {
       if (!isTransientEmbeddingError(error) || attempt >= maxRetries()) {
         throw error;
@@ -172,8 +180,9 @@ class EmbeddingHttpError extends EmbeddingError {
 }
 
 async function postJsonOnce(
+  exchangeId: ExternalProviderExchangeId,
   path: string,
-  body: unknown,
+  body: ExternalProviderRequestBody,
   key: string,
 ): Promise<unknown> {
   const controller = new AbortController();
@@ -181,12 +190,16 @@ async function postJsonOnce(
 
   let response: Response;
   try {
-    response = await fetch(`${baseUrl()}/${path}`, {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-goog-api-key": key },
-      body: JSON.stringify(body),
-      signal: controller.signal,
-    });
+    response = await fetchExternalProvider(
+      exchangeId,
+      `/${path}`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-goog-api-key": key },
+        body,
+        signal: controller.signal,
+      },
+    );
   } catch {
     // Discard the raw error — it can carry the request body (document/query text).
     if (controller.signal.aborted) {

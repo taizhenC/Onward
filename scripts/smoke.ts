@@ -887,7 +887,7 @@ function runRerankCandidateAssertion(): AssertionResult {
 
 function runEyebrowGuardAssertion(): AssertionResult {
   const name =
-    "opening copy: eyebrow guard yields one clean line or the neutral fallback";
+    "opening copy: eyebrow guard yields one reviewed line or the neutral fallback";
   const cases: Array<{
     label: string;
     raw: string | null;
@@ -897,26 +897,32 @@ function runEyebrowGuardAssertion(): AssertionResult {
     { label: "null", raw: null, displayName: "Octavia Butler", expectNeutral: true },
     { label: "blank", raw: "   ", displayName: "Octavia Butler", expectNeutral: true },
     {
-      label: "clean line",
-      raw: "a weight you carry without setting down",
+      label: "reviewed provider line",
+      raw: "A closed door after a long effort",
       displayName: "Octavia Butler",
       expectNeutral: false,
     },
     {
-      label: "quoted clean line",
-      raw: '"the long wait for a yes"',
+      label: "quoted reviewed line",
+      raw: '"After the door closed"',
       displayName: "Frederick Douglass",
       expectNeutral: false,
     },
     {
+      label: "unreviewed clean line",
+      raw: "a weight carried without setting it down",
+      displayName: "Octavia Butler",
+      expectNeutral: true,
+    },
+    {
       label: "article in figure name is not a leak",
-      raw: "the pressure before the next step",
+      raw: "After the door closed",
       displayName: "The Buddha",
       expectNeutral: false,
     },
     {
       label: "epithet in figure name is not a leak",
-      raw: "a great pressure held quietly",
+      raw: "When effort met a no",
       displayName: "Catherine the Great",
       expectNeutral: false,
     },
@@ -1055,6 +1061,20 @@ async function runStoryPrivacyAssertion(): Promise<AssertionResult> {
     !containsDisclosureEcho(
       `A preface. ${disclosure}. A coda.`,
       disclosure,
+    ) ||
+    !containsDisclosureEcho(
+      "The record described the period as suicidal.",
+      "suicidal!!",
+    ) ||
+    !containsDisclosureEcho(
+      "The note read I am sad before it turned.",
+      "I am sad...",
+    ) ||
+    !containsDisclosureEcho("死にたい", "死にたい") ||
+    !containsDisclosureEcho("自殺", "自殺!!!!!!!!") ||
+    !containsDisclosureEcho(
+      "В записке было: мне страшно.",
+      "мне страшно",
     ) ||
     containsDisclosureEcho(SAFE_BRIDGE_DISTANCE_LINE, disclosure)
   ) {

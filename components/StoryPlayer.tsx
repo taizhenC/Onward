@@ -11,6 +11,7 @@ import type {
 } from "@/lib/types";
 import type { StoryTransparency } from "@/lib/story-transparency-types";
 import type { ResonanceFeedbackPresentation } from "@/lib/resonance-feedback-types";
+import type { OwnerStorySavePresentation } from "@/lib/owner-story-save-types";
 import { PrefaceCard } from "./PrefaceCard";
 import { SaveStoriesCard } from "./SaveStoriesCard";
 import { StoryAfterword } from "./StoryAfterword";
@@ -33,6 +34,8 @@ type Props = {
   completedBridgeText: string | null;
   feedbackAvailable: boolean;
   initialFeedback: ResonanceFeedbackPresentation;
+  ownerIsAnonymous: boolean;
+  savePresentation: OwnerStorySavePresentation;
 };
 
 type Phase = "preface" | "playing" | "ended";
@@ -49,6 +52,8 @@ export function StoryPlayer({
   completedBridgeText,
   feedbackAvailable,
   initialFeedback,
+  ownerIsAnonymous,
+  savePresentation,
 }: Props) {
   const totalBeats = outline.beats.length;
   const [phase, setPhase] = useState<Phase>(() => {
@@ -224,7 +229,10 @@ export function StoryPlayer({
               initialFeedback={initialFeedback}
             />
           ) : null}
-          <SaveStoriesCard />
+          <SaveStoriesCard
+            isAnonymous={ownerIsAnonymous}
+            savePresentation={savePresentation}
+          />
         </section>
       ) : null}
     </div>

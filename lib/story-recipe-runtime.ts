@@ -5,7 +5,7 @@ import {
   DEFAULT_PROSE_TIMEOUT_MS,
   DEFAULT_RERANK_TIMEOUT_MS,
   RERANK_PROMPT_VERSION,
-  STORY_PROMPT_VERSION,
+  isSupportedStoryPromptVersion,
 } from "./llm-recipe-constants";
 import {
   DEFAULT_EMBEDDING_BASE_URL,
@@ -96,6 +96,8 @@ export type StoryRecipeExecutionPlan = Readonly<{
   llmProvider: StoryRecipeManifest["llmProvider"];
   rerankModelId: string;
   proseModelId: string;
+  rerankPromptVersion: string;
+  storyPromptVersion: string;
   rerankTemperature: number;
   rerankReasoningEffort: string;
   storyTemperature: number;
@@ -211,6 +213,8 @@ export function storyRecipeExecutionPlan(
     llmProvider: recipe.llmProvider,
     rerankModelId: recipe.rerankModelId,
     proseModelId: recipe.proseModelId,
+    rerankPromptVersion: recipe.rerankPromptVersion,
+    storyPromptVersion: recipe.storyPromptVersion,
     rerankTemperature: recipe.rerankTemperature,
     rerankReasoningEffort: recipe.rerankReasoningEffort,
     storyTemperature: recipe.storyTemperature,
@@ -674,7 +678,7 @@ export function assertStoryRecipeCodeIdentity(
     recipe.matchConfigVersion !== MATCH_CONFIG_IMPLEMENTATION_VERSION ||
     recipe.librarySnapshotSha256 !== LIBRARY_SNAPSHOT_SHA256 ||
     recipe.rerankPromptVersion !== RERANK_PROMPT_VERSION ||
-    recipe.storyPromptVersion !== STORY_PROMPT_VERSION ||
+    !isSupportedStoryPromptVersion(recipe.storyPromptVersion) ||
     recipe.composerVersion !== STORY_COMPOSER_VERSION ||
     recipe.validatorVersion !== STORY_ARTIFACT_VALIDATOR_VERSION ||
     recipe.storySpecSchemaVersion !== STORY_SPEC_SCHEMA_VERSION ||

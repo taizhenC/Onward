@@ -27,6 +27,7 @@ import {
   storyRecipeExecutionPlan,
 } from "./story-recipe";
 import type { StoryRecipeManifest } from "./story-recipe";
+import { consumeDerivedOutput } from "./derived-output-retention";
 
 export type MatchInput = {
   age: number;
@@ -171,11 +172,14 @@ async function matchWithExecution(
   }
 
   try {
-    const pick = await pickFigure({
-      age: effectiveInput.age,
-      feeling: effectiveInput.feeling,
-      candidates: rerankPool,
-    });
+    const pick = consumeDerivedOutput(
+      await pickFigure({
+        age: effectiveInput.age,
+        feeling: effectiveInput.feeling,
+        candidates: rerankPool,
+      }),
+      "match_reducer",
+    );
 
     // #5: don't trust syntactically valid output. A pick naming a figure that isn't
     // in the pool (hallucinated / filtered out) is a failure, not a match.

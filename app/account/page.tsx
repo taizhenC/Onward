@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { SetPasswordForm } from "@/components/SetPasswordForm";
 import { SignOutButton } from "@/components/SignOutButton";
 import { getAccountAuthContext } from "@/lib/auth";
+import { getOwnerStorySavePresentation } from "@/lib/owner-story-save";
+import type { OwnerStorySavePresentation } from "@/lib/owner-story-save-types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -16,6 +18,10 @@ export const metadata: Metadata = {
 export default async function AccountPage() {
   const context = await getAccountAuthContext();
   if (!context) redirect("/signin");
+  const saveState = await getOwnerStorySavePresentation({
+    userId: context.userId,
+    isAnonymous: context.isAnonymous,
+  });
 
   return (
     <main className="mx-auto max-w-[36rem] px-6 py-24">
@@ -38,33 +44,13 @@ export default async function AccountPage() {
               href="/stories"
               className="font-ui inline-flex min-h-11 items-center text-sm underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
             >
-              Your stories
+              {context.isAnonymous ? "Temporary stories" : "Your stories"}
             </Link>
-            <SignOutButton />
+            {!context.isAnonymous ? <SignOutButton /> : null}
           </div>
         </header>
 
-        <section className="space-y-3" aria-labelledby="account-retention">
-          <h2 id="account-retention" className="text-xl">
-            {context.isAnonymous ? "Temporary guest account" : "What stays"}
-          </h2>
-          {context.isAnonymous ? (
-            <p className="leading-relaxed text-[var(--color-ink-soft)]">
-              This temporary guest account and every story in it are deleted
-              about six hours after the latest story creation or saved reading
-              progress in that account.
-            </p>
-          ) : (
-            <p className="leading-relaxed text-[var(--color-ink-soft)]">
-              Your stories stay with this account until you delete them. The
-              situation you wrote and its private matching context are removed
-              by daily cleanup after their fixed 60-day deadline, or earlier if
-              you delete the story or account. The age you entered and each
-              saved generated story stay with that story until you delete the
-              story or this account.
-            </p>
-          )}
-        </section>
+        <AccountRetention saveState={saveState} />
 
         {!context.isAnonymous ? <SetPasswordForm /> : null}
 
@@ -88,5 +74,57 @@ export default async function AccountPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+function AccountRetention({
+  saveState,
+}: {
+  saveState: OwnerStorySavePresentation;
+}) {
+  if (saveState.status === "temporary") {
+    return (
+      <section className="space-y-3" aria-labelledby="account-retention">
+        <h2 id="account-retention" className="text-xl">
+          Temporary guest account
+        </h2>
+        <p className="leading-relaxed text-[var(--color-ink-soft)]">
+          This temporary guest account and every story in it are deleted about
+          six hours after the latest story creation or saved reading progress
+          in that account. Sending a confirmation email does not change this;
+          the account becomes permanent only after the link is confirmed.
+        </p>
+      </section>
+    );
+  }
+
+  if (saveState.status === "saved") {
+    return (
+      <section className="space-y-3" aria-labelledby="account-retention">
+        <h2 id="account-retention" className="text-xl">
+          What stays
+        </h2>
+        <p className="leading-relaxed text-[var(--color-ink-soft)]">
+          This permanent account keeps every current and future story until you
+          delete the story or account. Each story keeps its generated wording
+          and the age used to find it. The situation you wrote and its private
+          matching context are still removed by daily cleanup after their fixed
+          60-day deadline, or earlier if you delete the story or account.
+        </p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="space-y-3" aria-labelledby="account-retention">
+      <h2 id="account-retention" className="text-xl">
+        Save status unavailable
+      </h2>
+      <p role="status" className="leading-relaxed text-[var(--color-ink-soft)]">
+        Onward cannot verify this account&apos;s durable save record right now,
+        so this page does not promise permanent story storage. Refresh or return
+        later before relying on this account as a permanent library.
+      </p>
+    </section>
   );
 }

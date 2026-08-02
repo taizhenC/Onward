@@ -32,7 +32,12 @@ import {
 } from "../lib/alternate-story-types";
 import { FIGURE_STAGES } from "../lib/figures-data";
 import { handleIntake } from "../lib/intake";
+import { STORY_PROMPT_VERSION_V1 } from "../lib/llm-recipe-constants";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
+import {
+  DEFAULT_PREFACE_LINES,
+  NEUTRAL_EYEBROW,
+} from "../lib/opening-copy";
 import { createTelemetryFlowId, recordProductEvent } from "../lib/telemetry";
 import { resolveOwnedTelemetryFlowForSession } from "../lib/telemetry-flow-binding";
 import { registerMemoryTelemetryFlow } from "../lib/telemetry-flow-binding-memory";
@@ -77,6 +82,7 @@ const recipe: MatchRecipe = {
   proseModelId: "stub",
   embeddingModelId: "stub",
   retrievalMode: "keyword",
+  storyPromptVersion: STORY_PROMPT_VERSION_V1,
 };
 
 type RootFixture = Awaited<ReturnType<typeof makeRoot>>;
@@ -1228,8 +1234,8 @@ async function makeRoot(options: {
     stage,
     matchRecipe: recipe,
     openingCopy: {
-      eyebrow: "A different true story",
-      prefaceLines: ["This story is true.", "Your life is not theirs."],
+      eyebrow: NEUTRAL_EYEBROW,
+      prefaceLines: DEFAULT_PREFACE_LINES,
     },
     framing: "partial",
     resonanceBrief: brief,

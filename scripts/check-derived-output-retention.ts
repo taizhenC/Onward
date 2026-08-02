@@ -139,6 +139,13 @@ function checkClosedRegistry(): void {
         ],
         responseSurface: "provider.opening_copy_response",
       },
+      "cerebras.facet_tagger": {
+        requestSurfaces: [
+          "input.raw_disclosure",
+          "content.curated_reference",
+        ],
+        responseSurface: "provider.facet_tagger_response",
+      },
       "cerebras.hybrid_plan": {
         requestSurfaces: [
           "analysis.resonance_brief",
@@ -1084,6 +1091,7 @@ function checkStaticProviderCoverage(): void {
   > = {
     "cerebras.rerank": "llm-real.ts",
     "cerebras.opening_copy": "llm-real.ts",
+    "cerebras.facet_tagger": "llm-real.ts",
     "cerebras.hybrid_plan": "llm-real.ts",
     "gemini.query_embedding": "embeddings-real.ts",
     "gemini.document_embedding": "embeddings-real.ts",
@@ -1581,8 +1589,8 @@ function auditProviderCallSites(
       { path: "lib/llm-real.ts", source: llm.source },
       "fetchExternalProvider",
     ),
-    4,
-    "llm-real may only import and directly call its three fixed exchanges",
+    5,
+    "llm-real may only import and directly call its four fixed exchanges",
   );
   assert.equal(
     identifierReferenceCount(
@@ -1650,6 +1658,7 @@ function auditProviderCallSites(
     pickFigureReal: "cerebras.rerank",
     generateOpeningCandidate: "cerebras.opening_copy",
     requestHybridPlanReal: "cerebras.hybrid_plan",
+    tagAndExpandReal: "cerebras.facet_tagger",
   } as const;
   const llmObserved: Record<
     string,

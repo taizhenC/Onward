@@ -132,6 +132,12 @@ export const DERIVED_OUTPUT_SURFACES = deepFreeze({
     retentionClass: "request_ephemeral",
     allowedSinks: ["request_memory"],
   },
+  // The facet-tagger reply is a FacetSignal derived from the raw disclosure, so
+  // it stays request-ephemeral and may never reach a store or an owner response.
+  "provider.facet_tagger_response": {
+    retentionClass: "request_ephemeral",
+    allowedSinks: ["request_memory"],
+  },
   "match.selection": {
     retentionClass: "owned_story",
     allowedSinks: ["request_memory", "owned_story_store"],
@@ -268,6 +274,17 @@ export const EXTERNAL_PROVIDER_EXCHANGES = deepFreeze({
       "content.curated_reference",
     ],
     responseSurface: "provider.opening_copy_response",
+    endpointPathSuffix: "/chat/completions",
+  },
+  // Dormant in production: lib/llm.ts forces the stub when NODE_ENV=production,
+  // so this exchange is declared but not exercised on a served deployment.
+  "cerebras.facet_tagger": {
+    provider: "cerebras",
+    requestSurfaces: [
+      "input.raw_disclosure",
+      "content.curated_reference",
+    ],
+    responseSurface: "provider.facet_tagger_response",
     endpointPathSuffix: "/chat/completions",
   },
   "cerebras.hybrid_plan": {

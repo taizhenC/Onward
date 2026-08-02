@@ -20,6 +20,8 @@
 /scripts/trusted/ @taizhenC
 /scripts/recipe-evidence.ts @taizhenC
 /scripts/check-prompt-releases.ts @taizhenC
+/scripts/check-facet-signal.ts @taizhenC
+/scripts/check-facet-tagger-provider.ts @taizhenC
 /scripts/story-quality-evidence.ts @taizhenC
 /scripts/eval-story-quality.ts @taizhenC
 /scripts/check-story-quality-benchmark.ts @taizhenC
@@ -34,6 +36,8 @@
 /lib/sha256-edge.ts @taizhenC
 /lib/llm.ts @taizhenC
 /lib/llm-real.ts @taizhenC
+/lib/llm-stub.ts @taizhenC
+/lib/facet-signal.ts @taizhenC
 /lib/embeddings.ts @taizhenC
 /lib/embeddings-real.ts @taizhenC
 /lib/facets-retrieval.ts @taizhenC

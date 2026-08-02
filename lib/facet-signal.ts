@@ -23,6 +23,10 @@ const VALIDATED_FACET_SIGNALS = new WeakSet<object>();
 
 export type ValidatedFacetSignal = Readonly<{
   confidence: number;
+  /**
+   * Informational classification metadata only. Retrieval authority comes from
+   * the validated per-lane importance, anchors, and closed-template queries.
+   */
   dominantMode: FacetType | "unclear";
   facetImportance: Readonly<Record<FacetType, number>>;
   anchors: Readonly<Record<FacetType, readonly string[]>>;
@@ -34,6 +38,10 @@ export type FacetProjectionTemplate = Readonly<{
   templateId: string;
   text: string;
 }>;
+
+export type FacetProjectionTemplateIdCatalog = Readonly<
+  Record<FacetType, readonly string[]>
+>;
 
 /**
  * The tagger selects from these exact server-owned sentences; it does not
@@ -190,6 +198,14 @@ export const FACET_PROJECTION_TEMPLATE_CATALOG: Readonly<
     },
   ],
 });
+
+/**
+ * The only projection-catalog surface permitted in an LLM request. Keeping
+ * this derived catalog separate makes it difficult for provider code to leak
+ * or delegate authorship of the server-owned retrieval sentences above.
+ */
+export const FACET_PROJECTION_TEMPLATE_ID_CATALOG: FacetProjectionTemplateIdCatalog =
+  deepFreeze(buildFacetProjectionTemplateIdCatalog());
 
 const TOP_LEVEL_KEYS =
   "anchors,confidence,dominantMode,facetImportance,facetQueries";
@@ -507,6 +523,19 @@ function isExactRecord(
     Object.keys(value as Record<string, unknown>).sort().join(",") ===
       sortedKeys
   );
+}
+
+function buildFacetProjectionTemplateIdCatalog(): Record<
+  FacetType,
+  readonly string[]
+> {
+  const result = {} as Record<FacetType, readonly string[]>;
+  for (const facetType of FACET_TYPES) {
+    result[facetType] = FACET_PROJECTION_TEMPLATE_CATALOG[facetType].map(
+      ({ templateId }) => templateId,
+    );
+  }
+  return result;
 }
 
 function deepFreeze<T>(value: T): T {

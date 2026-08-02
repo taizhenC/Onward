@@ -1,12 +1,17 @@
 import "server-only";
 import type { PickInput } from "./types";
 import type { OpeningCopyInput } from "./opening-copy";
-import { pickFigureStub, writeOpeningCopyStub } from "./llm-stub";
+import {
+  pickFigureStub,
+  tagAndExpandStub,
+  writeOpeningCopyStub,
+} from "./llm-stub";
 import { requestHybridPlanStub } from "./llm-stub";
 import {
   pickFigureReal,
   proseModelId,
   rerankModelId,
+  tagAndExpandReal,
   writeOpeningCopyReal,
   requestHybridPlanReal,
 } from "./llm-real";
@@ -43,6 +48,12 @@ export type { StreamBeatInput } from "./llm-stub";
 export { RerankError, toRerankCandidate } from "./llm-real";
 export type { RerankCandidate } from "./llm-real";
 export {
+  DEFAULT_FACET_TAGGER_MODEL_ID,
+  DEFAULT_FACET_TAGGER_INPUT_MAX_BYTES,
+  DEFAULT_FACET_TAGGER_REASONING_EFFORT,
+  DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES,
+  DEFAULT_FACET_TAGGER_TEMPERATURE,
+  DEFAULT_FACET_TAGGER_TIMEOUT_MS,
   DEFAULT_PROSE_MODEL_ID,
   DEFAULT_RERANK_MODEL_ID,
   DEFAULT_RERANK_REASONING_EFFORT,
@@ -75,6 +86,24 @@ export async function pickFigure(
       ? await pickFigureReal(input)
       : await pickFigureStub(input);
   return classifyDerivedOutput("rerank_response", pick);
+}
+
+export type TagAndExpandInput = Readonly<{ feeling: string }>;
+
+/**
+ * Provider-neutral facet classification boundary. No production matching or
+ * retrieval path calls this yet; the architecture checker keeps it dormant
+ * until a separately reviewed shadow-execution slice.
+ */
+export function tagAndExpand(
+  input: TagAndExpandInput,
+): ReturnType<typeof tagAndExpandReal> {
+  if (process.env.NODE_ENV === "production") {
+    return tagAndExpandStub(input);
+  }
+  return resolveProvider() === "real"
+    ? tagAndExpandReal(input)
+    : tagAndExpandStub(input);
 }
 
 // Opening-copy generation is best-effort after a supported recipe identity is

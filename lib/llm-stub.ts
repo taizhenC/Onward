@@ -57,6 +57,15 @@ export async function pickFigureStub(input: PickInput): Promise<Pick> {
   };
 }
 
+// The stub preserves the same provider-neutral contract while making no
+// classification attempt. Raw feeling is never copied, logged, or persisted.
+export async function tagAndExpandStub(
+  input: Readonly<{ feeling: string }>,
+): Promise<null> {
+  void input;
+  return null;
+}
+
 // Stub opening copy delegates to the selected policy so historical prompt
 // releases stay deterministic without provider-specific branching here.
 export async function writeOpeningCopyStub(

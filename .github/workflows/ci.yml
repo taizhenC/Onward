@@ -50,6 +50,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run check-facet-signal
       - run: npm run check-recipe-manifest-v2
+      - run: npm run check-facet-tagger-provider
       - run: npm run check-recipe-governance
       - run: npm run check-prompt-releases
       - run: npm run check-opening-copy-policy

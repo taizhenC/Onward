@@ -15,12 +15,23 @@ import {
 } from "./opening-copy";
 import type { OpeningCopyPolicy } from "./opening-copy-policy";
 import {
+  FACET_PROJECTION_TEMPLATE_ID_CATALOG,
+  parseFacetSignalJson,
+  type ValidatedFacetSignal,
+} from "./facet-signal";
+import {
   HybridPlanProviderError,
   type HybridPlanRequest,
 } from "./hybrid-composition";
 import {
   DEFAULT_PROSE_MODEL_ID,
   DEFAULT_PROSE_TIMEOUT_MS,
+  DEFAULT_FACET_TAGGER_INPUT_MAX_BYTES,
+  DEFAULT_FACET_TAGGER_MODEL_ID,
+  DEFAULT_FACET_TAGGER_REASONING_EFFORT,
+  DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES,
+  DEFAULT_FACET_TAGGER_TEMPERATURE,
+  DEFAULT_FACET_TAGGER_TIMEOUT_MS,
   DEFAULT_RERANK_MODEL_ID,
   DEFAULT_RERANK_REASONING_EFFORT,
   DEFAULT_RERANK_TEMPERATURE,
@@ -29,13 +40,16 @@ import {
 } from "./llm-recipe-constants";
 import { productionStoryRecipeExecutionPlan } from "./story-recipe";
 import {
+  FACET_TAGGER_PROMPT_CONTRACT,
   RERANK_PROMPT_CONTRACT,
   RERANK_SYSTEM_PROMPT,
+  buildFacetTaggerUserPrompt,
   buildHybridPlanUserPrompt,
   buildRerankUserPrompt,
   type StoryPromptContract,
 } from "./llm-prompts";
 import {
+  buildCerebrasFacetTaggerRequestBody,
   buildCerebrasHybridPlanRequestBody,
   buildCerebrasOpeningCopyRequestBody,
   buildCerebrasRerankRequestBody,
@@ -265,6 +279,167 @@ function coerceConfidence(value: unknown): Confidence {
   return value === "high" || value === "medium" || value === "low"
     ? value
     : "low";
+}
+
+// Best-effort, one-shot classification for shadow/eval callers. Every failure
+// returns null without logging or retrying; production matching has no caller.
+export async function tagAndExpandReal(
+  input: Readonly<{ feeling: string }>,
+): Promise<ValidatedFacetSignal | null> {
+  if (
+    typeof input.feeling !== "string" ||
+    input.feeling.length === 0 ||
+    Buffer.byteLength(input.feeling, "utf8") >
+      DEFAULT_FACET_TAGGER_INPUT_MAX_BYTES
+  ) {
+    return null;
+  }
+  const key = apiKey();
+  if (!key) return null;
+
+  const body = buildCerebrasFacetTaggerRequestBody({
+    model: DEFAULT_FACET_TAGGER_MODEL_ID,
+    temperature: DEFAULT_FACET_TAGGER_TEMPERATURE,
+    reasoningEffort: DEFAULT_FACET_TAGGER_REASONING_EFFORT,
+    responseFormat: FACET_TAGGER_PROMPT_CONTRACT.responseFormat,
+    systemPrompt: FACET_TAGGER_PROMPT_CONTRACT.system,
+    userPrompt: buildFacetTaggerUserPrompt({
+      feeling: input.feeling,
+      projectionTemplateCatalog: FACET_PROJECTION_TEMPLATE_ID_CATALOG,
+    }),
+  });
+
+  const controller = new AbortController();
+  const timer = setTimeout(
+    () => controller.abort(),
+    DEFAULT_FACET_TAGGER_TIMEOUT_MS,
+  );
+  try {
+    const response = await fetchExternalProvider(
+      "cerebras.facet_tagger",
+      "/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${key}`,
+        },
+        body,
+        signal: controller.signal,
+      },
+    );
+    if (!response.ok) {
+      cancelFacetTaggerResponse(response, controller);
+      return null;
+    }
+
+    const envelopeText = await readBoundedFacetTaggerEnvelope(
+      response,
+      controller,
+    );
+    if (envelopeText === null) return null;
+
+    const envelope = JSON.parse(envelopeText) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
+    const content = envelope.choices?.[0]?.message?.content;
+    return typeof content === "string"
+      ? parseFacetSignalJson(content, input.feeling)
+      : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function readBoundedFacetTaggerEnvelope(
+  response: Response,
+  controller: AbortController,
+): Promise<string | null> {
+  const declaredLength = response.headers.get("content-length");
+  if (
+    declaredLength !== null &&
+    (!/^\d+$/u.test(declaredLength) ||
+      Number(declaredLength) > DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES)
+  ) {
+    cancelFacetTaggerResponse(response, controller);
+    return null;
+  }
+  if (!response.body) return null;
+
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let totalBytes = 0;
+  try {
+    while (true) {
+      const chunk = await readFacetTaggerChunk(reader, controller.signal);
+      if (chunk === null) {
+        void reader.cancel().catch(() => undefined);
+        return null;
+      }
+      const { done, value } = chunk;
+      if (done) break;
+      if (value.byteLength === 0) continue;
+      if (
+        value.byteLength >
+        DEFAULT_FACET_TAGGER_RESPONSE_MAX_BYTES - totalBytes
+      ) {
+        controller.abort();
+        void reader.cancel().catch(() => undefined);
+        return null;
+      }
+      totalBytes += value.byteLength;
+      chunks.push(value);
+    }
+
+    const envelope = new Uint8Array(totalBytes);
+    let offset = 0;
+    for (const chunk of chunks) {
+      envelope.set(chunk, offset);
+      offset += chunk.byteLength;
+    }
+    return new TextDecoder("utf-8", { fatal: true }).decode(envelope);
+  } catch {
+    return null;
+  } finally {
+    try {
+      reader.releaseLock();
+    } catch {
+      // An abort may win while a hostile body still has a pending read. The
+      // controller and reader have already been canceled; never wait on it.
+    }
+  }
+}
+
+async function readFacetTaggerChunk(
+  reader: ReadableStreamDefaultReader<Uint8Array>,
+  signal: AbortSignal,
+): Promise<ReadableStreamReadResult<Uint8Array> | null> {
+  if (signal.aborted) return null;
+
+  let removeAbortListener: () => void = () => undefined;
+  const aborted = new Promise<null>((resolve) => {
+    const onAbort = () => resolve(null);
+    signal.addEventListener("abort", onAbort, { once: true });
+    removeAbortListener = () => signal.removeEventListener("abort", onAbort);
+  });
+  try {
+    return await Promise.race([
+      reader.read().catch(() => null),
+      aborted,
+    ]);
+  } finally {
+    removeAbortListener();
+  }
+}
+
+function cancelFacetTaggerResponse(
+  response: Response,
+  controller: AbortController,
+): void {
+  controller.abort();
+  if (response.body) void response.body.cancel().catch(() => undefined);
 }
 
 // ── Opening copy (eyebrow) ───────────────────────────────────────────────────────────

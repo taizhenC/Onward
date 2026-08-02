@@ -69,6 +69,24 @@ export function buildCerebrasOpeningCopyRequestBody(
   });
 }
 
+export function buildCerebrasFacetTaggerRequestBody(
+  input: CerebrasRequestInput &
+    Readonly<{
+      reasoningEffort?: string;
+      responseFormat: "json_object";
+    }>,
+): ExternalProviderRequestBody {
+  return storeProviderRequestBody("cerebras.facet_tagger", {
+    model: input.model,
+    temperature: input.temperature,
+    response_format: { type: input.responseFormat },
+    messages: chatMessages(input),
+    ...(input.reasoningEffort
+      ? { reasoning_effort: input.reasoningEffort }
+      : {}),
+  });
+}
+
 export function buildCerebrasHybridPlanRequestBody(
   input: CerebrasRequestInput &
     Readonly<{ responseFormat: "json_object" }>,
@@ -288,6 +306,11 @@ function validProviderBody(
       return validChatBody(value, {
         responseFormat: "optional",
         optionalReasoningEffort: false,
+      });
+    case "cerebras.facet_tagger":
+      return validChatBody(value, {
+        responseFormat: "required",
+        optionalReasoningEffort: true,
       });
     case "cerebras.hybrid_plan":
       return validChatBody(value, {

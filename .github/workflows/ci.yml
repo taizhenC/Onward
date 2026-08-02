@@ -28,6 +28,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Reject high-severity dependency advisories
+        run: npm run audit:high
+      - name: Verify the native image runtime
+        run: npm run check-sharp-runtime
       - name: Protect immutable recipe evidence
         if: github.event_name == 'pull_request'
         shell: bash

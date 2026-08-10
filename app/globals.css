@@ -4,7 +4,8 @@
   --color-bg: #faf7f2;
   --color-ink: #1f1b16;
   --color-ink-soft: #5a544c;
-  --color-ink-faint: #a89f92;
+  /* 4.71:1 against --color-bg: quiet normal-sized text remains WCAG AA. */
+  --color-ink-faint: #756e64;
   /* 5.09:1 against --color-bg, so accent-colored 14px status/action text
      remains WCAG AA while preserving the warm visual language. */
   --color-accent: #8f5f36;
@@ -98,38 +99,6 @@ label,
   }
 }
 
-/* Hero quote rotator: each line fades in, holds, fades out, then waits. */
-@keyframes ow-hero-cycle {
-  0% {
-    opacity: 0;
-    visibility: hidden;
-  }
-  2% {
-    opacity: 1;
-    visibility: visible;
-  }
-  18% {
-    opacity: 1;
-    visibility: visible;
-  }
-  20% {
-    opacity: 0;
-    visibility: hidden;
-  }
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-/* Each rotator line stays out of the accessibility tree until its turn —
-   opacity alone leaves all five overlapping lines exposed to screen readers.
-   The running animation flips it to visible during the line's window; this base
-   rule covers the staggered start delay (and the reduced-motion fallback). */
-.ow-hero-quote {
-  visibility: hidden;
-}
-
 /* Respect "reduce motion": stop continuous animations, drop the movement from
    one-shots (they snap to their end state so fade-ins stay visible), and turn
    off smooth scrolling. Catch-all rather than a class list because several
@@ -148,16 +117,5 @@ label,
                                        until the delay expires */
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-  }
-
-  /* The rotator reveals one quote at a time via its cycle; with motion off that
-     would leave every line hidden, so show the first and drop the rest. */
-  .ow-hero-quote {
-    animation: none !important;
-    opacity: 0 !important;
-  }
-  .ow-hero-quote:first-of-type {
-    opacity: 1 !important;
-    visibility: visible !important;
   }
 }

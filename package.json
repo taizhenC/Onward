@@ -28,6 +28,7 @@
     "check-alternate-resolution-telemetry": "tsx scripts/check-alternate-resolution-telemetry.ts",
     "check-entry-telemetry": "tsx scripts/check-entry-telemetry.ts",
     "check-intake-experience": "tsx scripts/check-intake-experience.ts",
+    "check-core-accessibility": "tsx scripts/check-core-accessibility.ts",
     "check-auth-telemetry": "tsx scripts/check-auth-telemetry.ts",
     "check-flow-failure-telemetry": "tsx scripts/check-flow-failure-telemetry.ts",
     "check-telemetry-dispatcher": "tsx scripts/check-telemetry-dispatcher.ts",

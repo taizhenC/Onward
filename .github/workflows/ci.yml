@@ -79,6 +79,7 @@ jobs:
       - run: npm run check-alternate-resolution-telemetry
       - run: npm run check-entry-telemetry
       - run: npm run check-intake-experience
+      - run: npm run check-core-accessibility
       - run: npm run check-auth-telemetry
       - run: npm run check-flow-failure-telemetry
       - run: npm run check-telemetry-dispatcher

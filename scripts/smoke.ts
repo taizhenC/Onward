@@ -368,7 +368,7 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
       figureKey: session.figureKey,
       stageId: session.stageId,
       framing: session.framing,
-      age: session.age ?? 13,
+      age: session.age ?? 18,
       feeling: session.feeling ?? "",
       storyRequestContext:
         session.storyRequestContext ?? {
@@ -412,7 +412,7 @@ async function runArtifactPersistenceAssertion(): Promise<AssertionResult> {
       figureKey: session.figureKey,
       stageId: session.stageId,
       framing: session.framing,
-      age: session.age ?? 13,
+      age: session.age ?? 18,
       feeling: session.feeling ?? "",
       storyRequestContext:
         session.storyRequestContext ?? {

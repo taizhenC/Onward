@@ -19,7 +19,7 @@ export default function PrivacyPage() {
             Onward home
           </Link>
           <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-            Last updated July 27, 2026
+            Last updated August 10, 2026
           </p>
           <h1 className="text-4xl leading-tight">Privacy, in plain language</h1>
           <p className="max-w-[38rem] text-xl leading-relaxed text-[var(--color-ink-soft)]">
@@ -198,16 +198,16 @@ export default function PrivacyPage() {
 
         <section className="space-y-4" aria-labelledby="privacy-preview">
           <h2 id="privacy-preview" className="text-2xl">
-            Preview and launch limits
+            Controlled beta limits
           </h2>
           <p className="leading-relaxed text-[var(--color-ink-soft)]">
             This is a product-behavior guide for the current preview, not a
-            completed market-specific legal notice. Before public release,
-            Onward still needs a named privacy contact and controller, a
-            provider and backup-retention review, jurisdiction-specific rights
-            language, and a youth/privacy review. The current intake accepts
-            ages 13–100; that technical range is not evidence of legal approval
-            for a launch to minors.
+            completed market-specific legal notice. The controlled beta accepts
+            adults ages 18–100 only. People under 18 cannot start a story while
+            youth safety, privacy, and consent requirements remain under review.
+            Before public launch, Onward still needs a named privacy contact and
+            controller, a formal provider and backup-retention privacy review,
+            and jurisdiction-specific rights language.
           </p>
         </section>
 

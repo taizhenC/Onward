@@ -27,6 +27,8 @@ import {
   prepareStory,
 } from "./story-generation";
 import {
+  INTAKE_MAX_AGE,
+  INTAKE_MIN_AGE,
   isValidIntakeAge,
   isValidIntakeFeeling,
   normalizeIntakeFeeling,
@@ -431,7 +433,9 @@ function validateCoreIntake(input: unknown): CoreIntakeInput | IntakeValidationE
     typeof age !== "number" ||
     !isValidIntakeAge(age)
   ) {
-    return { error: "Age must be a whole number between 13 and 100." };
+    return {
+      error: `Age must be a whole number between ${INTAKE_MIN_AGE} and ${INTAKE_MAX_AGE}.`,
+    };
   }
 
   const normalizedFeeling =

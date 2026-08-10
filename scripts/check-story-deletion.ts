@@ -571,7 +571,7 @@ async function makeFamily(userId = LOCAL_DEV_USER_ID) {
     figureKey: rootStage.figureKey,
     stageId: rootStage.stageId,
     framing: "partial",
-    age: Math.max(13, rootStage.ageMin),
+    age: Math.max(18, rootStage.ageMin),
     feeling: "A private root test disclosure.",
     storyRequestContext: createStoryRequestContext({
       boundaries: undefined,

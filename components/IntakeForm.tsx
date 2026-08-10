@@ -607,8 +607,9 @@ export function IntakeForm({
           id="intake-age-help"
           className="max-w-md text-sm leading-relaxed text-[var(--color-ink-soft)]"
         >
-          Your age helps us look for a documented episode from a similar life
-          stage.
+          The current beta is for adults ages {INTAKE_MIN_AGE} to{" "}
+          {INTAKE_MAX_AGE}. Your age helps us look for a documented episode
+          from a similar life stage.
         </p>
         {ageError ? (
           <p

@@ -4,7 +4,9 @@ import { resolve } from "node:path";
 import ts from "typescript";
 
 import {
+  INTAKE_MAX_AGE,
   INTAKE_MAX_FEELING_LENGTH,
+  INTAKE_MIN_AGE,
   INTAKE_MIN_FEELING_LENGTH,
   isValidIntakeFeeling,
 } from "../lib/intake-constraints";
@@ -140,15 +142,25 @@ function checkValidationContract(): void {
   const valid = validate({ age: "28", feeling: VALID_FEELING });
   assert.deepEqual(valid, { age: null, feeling: null });
   assert.equal(firstInvalid(valid), null);
+  assert.equal(
+    INTAKE_MIN_AGE,
+    18,
+    "the controlled beta must remain adult-only until youth review is complete",
+  );
+  assert.deepEqual(
+    validate({ age: String(INTAKE_MIN_AGE), feeling: VALID_FEELING }),
+    { age: null, feeling: null },
+    "the minimum eligible adult age must remain valid",
+  );
 
   const empty = validate({ age: "", feeling: "   " });
   assert.match(requiredError(empty.age), /\bage\b/i);
   assert.match(requiredError(empty.feeling), /\b(?:write|happening)\b/i);
   assert.equal(firstInvalid(empty), "age");
 
-  for (const age of ["12", "101"]) {
+  for (const age of [String(INTAKE_MIN_AGE - 1), String(INTAKE_MAX_AGE + 1)]) {
     const result = validate({ age, feeling: VALID_FEELING });
-    assert.match(requiredError(result.age), /13|100|range|between/i);
+    assert.match(requiredError(result.age), /18|100|range|between/i);
     assert.equal(result.feeling, null);
     assert.equal(firstInvalid(result), "age");
   }

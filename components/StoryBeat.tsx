@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useReducedMotion } from "motion/react";
 
 import {
   acknowledgeStoryPassage,
@@ -19,10 +20,8 @@ import {
 import type { StoryAdvance } from "@/lib/types";
 
 // Client-owned reveal pacing (the server no longer delays — see lib/llm-stub.ts).
-// Mirrors the landing-page StoryDemo's word-by-word feel. The reveal is a plain
-// JS timer (content pacing), so it always plays — reduced-motion is honored for
-// the decorative caret blink via the global prefers-reduced-motion CSS rule, the
-// same way the demo handles it.
+// Readers who request reduced motion receive each buffered passage immediately;
+// everyone else can reveal it at once with the explicit control below.
 const STREAM_SPEED_MS = 40;
 const LOADING_DELAY_MS = 350;
 const DELIVERY_TIMEOUT_MS = 15_000;
@@ -59,6 +58,7 @@ export function StoryBeat({
   onComplete,
   onEnd,
 }: Props) {
+  const shouldReduceMotion = useReducedMotion() === true;
   const [fullText, setFullText] = useState("");
   const [revealedCount, setRevealedCount] = useState(0);
   const [skipped, setSkipped] = useState(false);
@@ -99,14 +99,16 @@ export function StoryBeat({
     totalRef.current = totalTokens;
   }, [totalTokens]);
 
-  const revealedText = tokens.slice(0, revealedCount).join("");
+  const visibleTokenCount = shouldReduceMotion ? totalTokens : revealedCount;
+  const revealedText = tokens.slice(0, visibleTokenCount).join("");
   // The not-yet-revealed tail, rendered invisible so the passage reserves its full
   // height from the start — the Continue button below stays put instead of sliding
   // down as words appear (and screen readers get the whole passage immediately).
-  const hiddenText = tokens.slice(revealedCount).join("");
-  const revealComplete = streamDone && revealedCount >= totalTokens;
-  const hasMoreToReveal = !streamDone || revealedCount < totalTokens;
-  const canSkip = !skipped && hasMoreToReveal && totalTokens > 0;
+  const hiddenText = tokens.slice(visibleTokenCount).join("");
+  const revealComplete = streamDone && visibleTokenCount >= totalTokens;
+  const hasMoreToReveal = !streamDone || visibleTokenCount < totalTokens;
+  const canSkip =
+    !shouldReduceMotion && !skipped && hasMoreToReveal && totalTokens > 0;
   const showCaret = hasMoreToReveal && totalTokens > 0;
 
   // Network: deliver the current chunk without changing durable progress. The
@@ -300,14 +302,20 @@ export function StoryBeat({
   // count. It pauses when caught up (no-op until more text lands) and stops once
   // the reveal is complete. Skipping bypasses it via the sync effect below.
   useEffect(() => {
-    if (skipped || revealComplete) return;
+    if (shouldReduceMotion || skipped || revealComplete) return;
     const id = setInterval(() => {
       setRevealedCount((current) =>
         current < totalRef.current ? current + 1 : current,
       );
     }, STREAM_SPEED_MS);
     return () => clearInterval(id);
-  }, [skipped, revealComplete]);
+  }, [shouldReduceMotion, skipped, revealComplete]);
+
+  // Keep already buffered words visible if the OS preference changes while a
+  // passage is open; turning motion back on must never make text disappear.
+  useEffect(() => {
+    if (shouldReduceMotion) setRevealedCount(totalTokens);
+  }, [shouldReduceMotion, totalTokens]);
 
   // Skip: pin the reveal to the full buffer, and keep it pinned as any remaining
   // text arrives.
@@ -317,7 +325,7 @@ export function StoryBeat({
     }
   }, [skipped, totalTokens]);
 
-  // Stable across reveal ticks so the global-listener effect below doesn't
+  // Stable across reveal ticks so the global click effect below doesn't
   // re-attach every 40ms (canSkip and totalTokens only change on new chunks
   // or when the reveal finishes).
   const handleSkip = useCallback(() => {
@@ -326,7 +334,8 @@ export function StoryBeat({
     setRevealedCount(totalTokens);
   }, [canSkip, totalTokens]);
 
-  // Global click & space-to-skip handling during animation
+  // A non-interactive page click may still reveal the buffered passage. Keyboard
+  // readers use the explicit button; Space remains available for page scrolling.
   useEffect(() => {
     if (!canSkip) return;
 
@@ -344,32 +353,10 @@ export function StoryBeat({
       handleSkip();
     }
 
-    function handleGlobalKeyDown(event: KeyboardEvent) {
-      if (event.key === " ") {
-        const target = event.target as HTMLElement;
-        // Do not skip if user is typing in an input, textarea, or contenteditable
-        // element, or activating a focused button/link (preventDefault would
-        // swallow space-activation, e.g. the failure Refresh button).
-        if (
-          target.closest("button") ||
-          target.closest("a") ||
-          target.tagName === "INPUT" ||
-          target.tagName === "TEXTAREA" ||
-          target.isContentEditable
-        ) {
-          return;
-        }
-        event.preventDefault(); // prevent scrolling the page
-        handleSkip();
-      }
-    }
-
     document.addEventListener("click", handleGlobalClick);
-    window.addEventListener("keydown", handleGlobalKeyDown);
 
     return () => {
       document.removeEventListener("click", handleGlobalClick);
-      window.removeEventListener("keydown", handleGlobalKeyDown);
     };
   }, [canSkip, handleSkip]);
 
@@ -487,8 +474,8 @@ export function StoryBeat({
       ) : null}
 
       {/* Progress changes only after the complete passage is visible and the
-          reader deliberately acknowledges it. Clicking anywhere or pressing space
-          skips the animation, which is what makes this button appear. */}
+          reader deliberately acknowledges it. The explicit reveal action or a
+          non-interactive page click makes this button appear. */}
       {!failure && revealComplete && nextStep !== null ? (
         <button
           type="button"

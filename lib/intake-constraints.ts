@@ -1,4 +1,6 @@
-export const INTAKE_MIN_AGE = 13;
+// The controlled public beta is adult-only until youth safety, privacy, and
+// consent requirements have completed independent review.
+export const INTAKE_MIN_AGE = 18;
 export const INTAKE_MAX_AGE = 100;
 export const INTAKE_MIN_FEELING_LENGTH = 10;
 export const INTAKE_MAX_FEELING_LENGTH = 1000;

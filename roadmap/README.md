@@ -4,22 +4,32 @@
 **Perspective:** Senior Product Management and Lead Technical Architecture  
 **Scope:** Repository-based assessment and roadmap for the next viable public release
 
+> **Current execution scope (August 10, 2026):** the
+> [controlled public beta release contract](./controlled_public_beta.md) is
+> authoritative. The 43-item roadmap remains a long-term product reference; it
+> is not a commitment to finish every item before the beta.
+
 ## Purpose
 
 This roadmap treats Onward as the barebones MVP described in the brief: a product built to prove one loop—user disclosure → matched historical story → a moment of recognition. The repository already contains meaningful deployment, privacy, content, and matching foundations, but the public-release product has not yet proved the outcome that matters: that a real user reliably receives a true, personally resonant story in a calm, trustworthy reading experience.
 
 The roadmap therefore prioritizes end-to-end story quality and presentation over breadth, social mechanics, or premature platform expansion.
 
-The prioritized backlog contains **43 items: 17 P0, 18 P1, and 8 P2**. The expanded utility layer adds multiple perspectives, short/full editions, private continuity, carry-forward artifacts, factual afterwords, and safer conversation sharing—without turning the product into chat or a wellness tracker.
+The long-term backlog contains **43 items: 17 P0, 18 P1, and 8 P2**. The beta
+contract intentionally narrows that plan to the core story loop, safety, trust,
+accessibility, and production operations.
 
 ## Documents
 
-1. [Executive summary](./executive_summary.md) — product thesis, current capabilities, unique value proposition, mission, direction, target audience, and strategic diagnosis.
-2. [Feature roadmap](./feature_roadmap.md) — the complete P0/P1/P2 backlog. Every proposed item has exactly one priority and one required type tag.
-3. [Technical architecture](./technical_architecture.md) — current-state review, target story-composition pipeline, data model, service boundaries, privacy model, and refactor rationale.
-4. [Release and measurement plan](./release_and_measurement.md) — delivery sequence, quality gates, metrics, rollout, ownership, dependencies, and risks.
-5. [Implementation status](./implementation_status.md) — live evidence ledger for all 43 items; an item is complete only when every acceptance criterion is directly verified.
-6. [Story-quality benchmark protocol](./story_quality_benchmark.md) — consented blind-holdout design, independent review contract, privacy boundary, release thresholds, and custodian attestation requirements.
+1. [Controlled public beta release contract](./controlled_public_beta.md) — the
+   current finish line, required external gates, explicit deferrals, and stop
+   rule.
+2. [Executive summary](./executive_summary.md) — product thesis, current capabilities, unique value proposition, mission, direction, target audience, and strategic diagnosis.
+3. [Feature roadmap](./feature_roadmap.md) — the complete long-term P0/P1/P2 backlog. Every proposed item has exactly one priority and one required type tag.
+4. [Technical architecture](./technical_architecture.md) — current-state review, target story-composition pipeline, data model, service boundaries, privacy model, and refactor rationale.
+5. [Release and measurement plan](./release_and_measurement.md) — broad-release sequence, quality gates, metrics, rollout, ownership, dependencies, and risks.
+6. [Implementation status](./implementation_status.md) — evidence ledger for all 43 long-term items; it is no longer the current execution scope.
+7. [Story-quality benchmark protocol](./story_quality_benchmark.md) — consented blind-holdout design, independent review contract, privacy boundary, broad-release thresholds, and custodian attestation requirements.
 
 ## Priority and tag contract
 

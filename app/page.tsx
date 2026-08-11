@@ -4,16 +4,10 @@ import { Reveal } from "@/components/Reveal";
 import { StoryDemo } from "@/components/StoryDemo";
 import { CRISIS_RESOURCES } from "@/lib/safety";
 
-// Landing page (ported from the Onward.dc.html design). The rotating hero lines
-// below are sample marketing copy carried over from the design — illustrations,
-// not real submissions.
-const HERO_QUOTES = [
-  "I failed the one exam I had built everything around.",
-  "I moved across the country, and now I'm completely alone.",
-  "I'm past forty and I still don't know what I'm for.",
-  "I gave up the thing I loved because I got scared.",
-  "Everyone else has moved on. I feel stuck.",
-];
+// Sample marketing copy carried over from the design — an illustration, not a
+// real submission. It stays static so readers are never given an unpausable
+// content rotation.
+const HERO_QUOTE = "I failed the one exam I had built everything around.";
 
 // Single source of truth for the headline: the h1's aria-label and the animated
 // word spans are derived from the same string so they can't drift.
@@ -24,11 +18,6 @@ const HEADLINE_WORDS = HEADLINE.split(" ");
 const settle = (delayS: number, durationS = 0.6) => ({
   animation: `ow-fade ${durationS}s ease ${delayS}s both`,
 });
-
-// Quote rotator phase shift: without it the first quote fades in at t=0–0.38s,
-// fully visible at the bottom while the headline above is still settling. Phase
-// only — period, cadence, and the reduced-motion fallback are unchanged.
-const HERO_QUOTE_START = 1.85;
 
 const STEPS = [
   {
@@ -95,6 +84,7 @@ export default function Home() {
         </div>
       </div>
 
+      <main>
       {/* Hero */}
       <header className="mx-auto max-w-[1080px] px-8 pb-[104px] pt-24 text-center">
         <div style={settle(0)}>
@@ -148,24 +138,14 @@ export default function Home() {
           </a>
         </div>
 
-        {/* Rotating first-person lines */}
+        {/* Static first-person illustration */}
         <div className="mt-[60px]" style={settle(1.65)}>
-          <p className="mb-[18px] font-ui text-[11px] font-medium uppercase tracking-[0.18em] text-[#8a8378]">
+          <p className="mb-[18px] font-ui text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-ink-faint)]">
             What people carry here
           </p>
-          <div className="relative mx-auto h-[3.6em] max-w-[33rem]">
-            {HERO_QUOTES.map((quote, i) => (
-              <p
-                key={quote}
-                className="ow-hero-quote absolute inset-0 m-0 flex items-center justify-center text-center text-[clamp(1.3rem,3.1vw,1.75rem)] italic leading-[1.42] text-[var(--color-ink)] text-pretty opacity-0"
-                style={{
-                  animation: `ow-hero-cycle 19s ease-in-out ${HERO_QUOTE_START + i * 3.8}s infinite`,
-                }}
-              >
-                “{quote}”
-              </p>
-            ))}
-          </div>
+          <p className="mx-auto max-w-[33rem] text-center text-[clamp(1.3rem,3.1vw,1.75rem)] italic leading-[1.42] text-[var(--color-ink)] text-pretty">
+            “{HERO_QUOTE}”
+          </p>
         </div>
       </header>
 
@@ -176,9 +156,9 @@ export default function Home() {
       >
         <div className="mx-auto max-w-[1080px] px-8 py-[84px]">
           <Reveal>
-            <p className="mb-[54px] text-center font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
+            <h2 className="mb-[54px] text-center font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
               How it works
-            </p>
+            </h2>
           </Reveal>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-12">
             {STEPS.map((step) => (
@@ -206,9 +186,9 @@ export default function Home() {
       {/* Live demo */}
       <section id="story" className="mx-auto max-w-[1080px] px-8 pb-24 pt-24 text-center">
         <Reveal>
-          <p className="mb-[14px] font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
+          <h2 className="mb-[14px] font-ui text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--color-ink-soft)]">
             What a story looks like
-          </p>
+          </h2>
           <p className="mx-auto mb-9 max-w-[30rem] text-[18px] leading-[1.65] text-[var(--color-ink-soft)] text-pretty">
             An excerpt, exactly as you would meet it — the words arriving one page
             at a time. The name is kept until the end.
@@ -225,9 +205,9 @@ export default function Home() {
           <Diamond />
         </Reveal>
         <Reveal delay={0.1}>
-          <p className="mx-auto max-w-[24rem] text-[clamp(2rem,4.8vw,2.7rem)] font-semibold leading-[1.24] tracking-[-0.015em] text-balance">
+          <h2 className="mx-auto max-w-[24rem] text-[clamp(2rem,4.8vw,2.7rem)] font-semibold leading-[1.24] tracking-[-0.015em] text-balance">
             {"You don't have to know who you are yet."}
-          </p>
+          </h2>
         </Reveal>
         <Reveal delay={0.2}>
           <p className="mx-auto mt-4 max-w-[28rem] text-[21px] italic leading-[1.5] text-[var(--color-ink-soft)]">
@@ -240,11 +220,12 @@ export default function Home() {
           </div>
         </Reveal>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="border-t border-[var(--color-ink)]/[0.14]">
         <div className="mx-auto max-w-[1080px] px-8 pb-[60px] pt-[30px]">
-          <p className="mb-[22px] max-w-[40rem] font-ui text-[12.5px] leading-[1.7] text-[#8a8378]">
+          <p className="mb-[22px] max-w-[40rem] font-ui text-[12.5px] leading-[1.7] text-[var(--color-ink-faint)]">
             In crisis right now? Please reach for people who can help —{" "}
             {CRISIS_RESOURCES.map((resource, index) => (
               <span key={resource.id}>
@@ -264,7 +245,7 @@ export default function Home() {
             <span className="text-[17px] font-semibold text-[var(--color-ink)]">
               Onward
             </span>
-            <div className="flex items-center gap-5 font-ui text-[11px] tracking-[0.06em] text-[#8a8378]">
+            <div className="flex items-center gap-5 font-ui text-[11px] tracking-[0.06em] text-[var(--color-ink-faint)]">
               <Link
                 href="/privacy"
                 className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"

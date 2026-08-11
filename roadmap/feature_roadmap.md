@@ -1,5 +1,9 @@
 # Feature Roadmap
 
+> **Long-term reference:** This document is not the current finish contract.
+> Use the [controlled public beta release contract](./controlled_public_beta.md)
+> for launch-critical work and explicit deferrals.
+
 ## Roadmap principles
 
 1. **Prove the emotional outcome, not only model accuracy.** Figure-selection accuracy is an input metric. The product outcome is a true story that feels close enough to finish and helpful enough to remember.

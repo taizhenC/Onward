@@ -1,5 +1,11 @@
 # Release and Measurement Plan
 
+> **Broad-release reference:** The smaller invite-only beta entry bar and current
+> stop rule live in the
+> [controlled public beta release contract](./controlled_public_beta.md). The
+> 150-session/75-response benchmark below remains required before broad
+> self-serve release, not before the controlled beta.
+
 ## Release objective
 
 Move Onward from a concept MVP to a controlled public release that proves this outcome:

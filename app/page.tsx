@@ -67,8 +67,22 @@ export default function Home() {
       <div className="border-t-[3px] border-[var(--color-ink)]" />
       <div className="mx-auto w-full max-w-[1080px] px-8">
         <div className="flex items-center justify-between border-b border-[var(--color-ink)]/[0.16] py-[17px]">
-          <span className="text-[22px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]">
-            Onward
+          <span
+            className="inline-flex items-center gap-[7px] whitespace-nowrap text-[22px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]"
+            data-onward-brand-lockup
+          >
+            <span>Onward</span>
+            <svg
+              aria-hidden="true"
+              className="relative -top-px h-4 w-[13px] shrink-0 text-[var(--color-accent)]"
+              focusable="false"
+              viewBox="0 0 16 20"
+            >
+              <path
+                d="M8 1c.55 5.2 2.15 7.4 7 9-4.85 1.6-6.45 3.8-7 9-.55-5.2-2.15-7.4-7-9 4.85-1.6 6.45-3.8 7-9Z"
+                fill="currentColor"
+              />
+            </svg>
           </span>
           <div className="flex items-center gap-[22px]">
             <span className="hidden font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-accent)] sm:block">

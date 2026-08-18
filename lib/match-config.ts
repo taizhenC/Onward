@@ -1,4 +1,5 @@
 import type { Confidence, FacetType, Framing, RetrievalMode } from "./types";
+import { FACET_TYPES } from "./types";
 import {
   MATCH_CONFIG_IMPLEMENTATION_VERSION,
 } from "./match-recipe-constants";
@@ -102,6 +103,75 @@ export const WEIGHT_BOUNDS: Record<VectorLane, { min: number; max: number }> = {
   trigger_event: { min: 0.03, max: 0.2 },
   agency_state: { min: 0.02, max: 0.15 },
 };
+
+// λ for the bounded-dynamic weighting: the maximum tilt facetImportance may apply to a lane's
+// base weight. The installed tagger identity keeps weightingMode="static"
+// (lib/facet-tagger-recipe-constants.ts), so nothing calls blendLaneWeights at runtime yet —
+// the helpers land invariant-tested (scripts/check-facet-weighting.ts) so flipping the mode is
+// a reviewed identity change rather than a refactor, the same pre-staging as WEIGHT_BOUNDS.
+export const FACET_DYNAMIC_LAMBDA_MAX = 0.15;
+
+// BASE_WEIGHTS tilted by validated per-facet importance, then projected back into WEIGHT_BOUNDS
+// with sum exactly 1. The tilt is additive around the mean importance and applies to the four
+// facet lanes only — the shape lane carries no importance signal and enters normalization at its
+// base weight. Gates (confidence, ≥2 important lanes, verbatim anchors) are the parser's job:
+// callers pass importance only from a ValidatedFacetSignal; on a null signal, use BASE_WEIGHTS.
+export function blendLaneWeights(
+  facetImportance: Readonly<Record<FacetType, number>>,
+  lambda = FACET_DYNAMIC_LAMBDA_MAX,
+): Record<VectorLane, number> {
+  const mean =
+    FACET_TYPES.reduce((sum, facet) => sum + facetImportance[facet], 0) /
+    FACET_TYPES.length;
+  const raw = { ...BASE_WEIGHTS };
+  for (const facet of FACET_TYPES) {
+    raw[facet] = BASE_WEIGHTS[facet] + lambda * (facetImportance[facet] - mean);
+  }
+  return boundedNormalizeWeights(raw, WEIGHT_BOUNDS);
+}
+
+// Bounded normalization by iterative projection. Naive clamp-then-divide re-violates bounds
+// after the divide; instead: clamp each lane, then redistribute the deviation from sum=1
+// proportionally to each lane's remaining room in the needed direction — a step can never
+// overshoot a bound because a lane's share of the deficit never exceeds its room. Deterministic
+// (no randomness, fixed iteration order); converges in one step whenever no re-clamp occurs and
+// is capped defensively at 32 iterations. If the bounds themselves are infeasible (sum of mins
+// above 1 or sum of maxes below 1), the clamped best effort is returned — WEIGHT_BOUNDS as
+// shipped is feasible (mins sum 0.55, maxes sum 1.50).
+export function boundedNormalizeWeights(
+  raw: Readonly<Record<VectorLane, number>>,
+  bounds: Readonly<Record<VectorLane, { min: number; max: number }>> = WEIGHT_BOUNDS,
+): Record<VectorLane, number> {
+  const lanes = Object.keys(BASE_WEIGHTS) as VectorLane[];
+  const weights = {} as Record<VectorLane, number>;
+  for (const lane of lanes) {
+    weights[lane] = Math.min(
+      bounds[lane].max,
+      Math.max(bounds[lane].min, raw[lane]),
+    );
+  }
+
+  for (let iteration = 0; iteration < 32; iteration += 1) {
+    const sum = lanes.reduce((total, lane) => total + weights[lane], 0);
+    const deficit = 1 - sum;
+    if (Math.abs(deficit) < 1e-12) break;
+    const room = lanes.map((lane) =>
+      deficit > 0
+        ? bounds[lane].max - weights[lane]
+        : weights[lane] - bounds[lane].min,
+    );
+    const totalRoom = room.reduce((total, value) => total + value, 0);
+    if (totalRoom <= 0) break;
+    // Never distribute more than the available room: an infeasible deficit walks every lane
+    // exactly onto its bound instead of past it.
+    const applied =
+      Math.sign(deficit) * Math.min(Math.abs(deficit), totalRoom);
+    lanes.forEach((lane, index) => {
+      weights[lane] += applied * (room[index] / totalRoom);
+    });
+  }
+  return weights;
+}
 
 // Reciprocal-rank-fusion constant (Stage B). Standard k=60.
 export const RRF_K = 60;

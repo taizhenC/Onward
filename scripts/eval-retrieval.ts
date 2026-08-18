@@ -51,6 +51,13 @@ function keysIncludeFigure(keys: string[] | undefined, figureKey: string): boole
   return (keys ?? []).some((key) => key.split("/")[0] === figureKey);
 }
 
+// 1-based rank of the gold figure within the ordered Stage B list; 0 when absent.
+// Stage B keys arrive best-first from lib/facets-retrieval.ts.
+function goldStageBRank(keys: string[] | undefined, figureKey: string): number {
+  const index = (keys ?? []).findIndex((key) => key.split("/")[0] === figureKey);
+  return index === -1 ? 0 : index + 1;
+}
+
 function pct(num: number, den: number): string {
   return den === 0 ? "n/a" : `${((num / den) * 100).toFixed(1)}%`;
 }
@@ -85,6 +92,11 @@ async function main(): Promise<void> {
   let survivedB = 0;
   const missedA: string[] = [];
   const missedBOnly: string[] = [];
+  // Gold's 1-based rank within the ordered Stage B list, per surviving case. The 2026-07-02
+  // challenger run showed the reranker picks Stage-B #1 in ~94% of trials, so survival alone is
+  // the wrong health metric: end-to-end accuracy tracks gold@1, not gold-survived. Rank metrics
+  // are the cheap predictor of what the full rerank eval will say.
+  const goldRanks: number[] = [];
 
   for (const gold of cases) {
     let result;
@@ -106,10 +118,28 @@ async function main(): Promise<void> {
     if (inB) survivedB += 1;
     if (!inA) missedA.push(`${gold.expect} (age ${gold.age})`);
     else if (!inB) missedBOnly.push(`${gold.expect} (age ${gold.age})`);
+    goldRanks.push(goldStageBRank(result.stageBKeys, gold.expect));
   }
+
+  const goldAt1 = goldRanks.filter((rank) => rank === 1).length;
+  const survivorRanks = goldRanks.filter((rank) => rank > 0);
+  const meanRank =
+    survivorRanks.length === 0
+      ? null
+      : survivorRanks.reduce((sum, rank) => sum + rank, 0) / survivorRanks.length;
+  // Absent-from-Stage-B contributes 0, the standard reciprocal-rank convention.
+  const mrr =
+    goldRanks.reduce((sum, rank) => sum + (rank > 0 ? 1 / rank : 0), 0) /
+    Math.max(1, goldRanks.length);
 
   console.log(`Stage A survival (deduped pool): ${survivedA}/${cases.length}  ${pct(survivedA, cases.length)}`);
   console.log(`Stage B survival (top-K to rerank): ${survivedB}/${cases.length}  ${pct(survivedB, cases.length)}`);
+  console.log("");
+  console.log(`Stage B gold@1 (gold is the reranker's default pick): ${goldAt1}/${cases.length}  ${pct(goldAt1, cases.length)}`);
+  console.log(
+    `Stage B gold mean rank (survivors): ${meanRank === null ? "n/a" : meanRank.toFixed(2)}`,
+  );
+  console.log(`Stage B gold MRR: ${mrr.toFixed(3)}`);
   if (missedA.length > 0) {
     console.log("");
     console.log("Dropped at Stage A (unrecoverable — fix lanes/quotas):");

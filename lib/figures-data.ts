@@ -2466,7 +2466,11 @@ const chandler: FigureStageRow = {
   ageMin: 44,
   ageMax: 52,
   themes: ["late_start", "public_failure", "self_invention"],
-  antiThemes: [],
+  // Eval-surfaced confusion (2026-07-02 challenger run): users trapped in a life IMPOSED by
+  // others ("stuck in the wrong life", "everyone expected") retrieved Chandler at Stage-B #1
+  // over Glessner Lee. His episode is the opposite trap — a chosen career wrecked by his own
+  // hand — so a social_constraint signal in the user's words votes against him, never excludes.
+  antiThemes: ["social_constraint"],
   shapeSentences: [
     "He wrecked a good executive career through his own drinking and got fired at forty-four, in the worst economy of his life, when starting over was supposed to be impossible.",
     "Broke and middle-aged, he taught himself an entirely new craft from scratch, studying cheap magazines like a schoolboy because it was the only door left.",
@@ -7107,7 +7111,12 @@ const muir: FigureStageRow = {
   ageMin: 28,
   ageMax: 30,
   themes: ["illness", "solitude", "self_invention"],
-  antiThemes: [],
+  // Eval-surfaced confusion (2026-07-02 challenger run): a years-of-unrewarded-work user
+  // ("poured years into my work with nothing to show") was matched to Muir. His episode has no
+  // futile-labor core — he was SUCCEEDING on a path he discovered he didn't want — so
+  // worthlessness/creative_dismissal signals vote against him in the theme lane (penalty only,
+  // never exclusion).
+  antiThemes: ["worthlessness", "creative_dismissal"],
   shapeSentences: [
     "A tool slipped at his workbench and pierced his eye, and within hours he was blind in both — a man built on his hands and his sight, sitting in a darkened room not knowing if either would come back.",
     "For six weeks in the dark he took inventory of his one life, and found that the successful path he'd been walking was not the one he wanted back.",

@@ -123,15 +123,37 @@ export const LANE_QUOTAS: Record<RetrievalLane, number> = {
 // max_s sim(q,s) + α·second_max_s sim(q,s). Averaging would blur the distinct anchors.
 export const MAX_NOT_MEAN_ALPHA = 0.15;
 
-// Theme lane (deterministic): clamp(wJaccard(user,themes) − λ·wJaccard(user,antiThemes), lo, hi).
+// Theme lane (deterministic): wJaccard(user,themes) − λ·wJaccard(user,antiThemes). The score is
+// consumed as RANK ORDER by RRF, and lib/facets-retrieval.ts keeps only strictly-positive scores
+// in the lane ranking — so clamping would be dead arithmetic. (The original design's THEME_CLAMP
+// constant was exactly that: exported, never applied. Removed rather than left contradicting the
+// implementation.)
 export const THEME_LAMBDA = 1.0;
-export const THEME_CLAMP = { min: -0.25, max: 0.35 } as const;
 
 // Soft age adjustment applied AFTER Stage B RRF, MULTIPLICATIVELY (additive would swamp the tiny
-// 1/(k+rank) RRF scores): adjusted = rrf · (1 − min(AGE_CAP, ageDistance·AGE_SLOPE)). At the ±10y
-// hard-gate edge the penalty reaches the cap. Age nudges ranking; it never dominates meaning.
+// 1/(k+rank) RRF scores): adjusted = rrf · (1 − min(AGE_CAP, ageDistance·AGE_SLOPE)). Age nudges
+// ranking; it never dominates meaning — age JUDGMENT belongs to the reranker, which sees each
+// candidate's age range. Slope halved 0.02 → 0.01 on 2026-08-17 retrieval-eval evidence: at 0.02
+// the penalty at the gate edge (−20%) was strong enough to demote a gold stage below a nearer-age
+// twin (angelou at distance 8 ate −16% and sat at Stage-B rank 4 behind lindgren; at 0.01 she is
+// rank 1, Stage-B gold@1 93→94/101, MRR 0.947→0.951, survival still 101/101). Inside the ±10y
+// hard gate the effective maximum penalty is now −10%; AGE_CAP stays as a backstop in case the
+// gate ever widens.
 export const AGE_CAP = 0.2;
-export const AGE_SLOPE = 0.02;
+export const AGE_SLOPE = 0.01;
+
+// Near-tie framing demotion (facetsrag path). When Stage B's top-2 adjusted scores are within
+// this RELATIVE margin ((s1−s2)/s1), retrieval could not separate its leaders and the rerank
+// pick — however confident — is framed "partial" instead of "definitive". Calibrated on the
+// 2026-08-17 live retrieval run over the 101 non-miss gold cases (margins in the introducing
+// commit): 0.035 covers both lee definitive-wrongs from the July challenger run (margins 0.0335
+// and 0.0147) plus five of the six other twin-topped cases, while demoting ~14/93 gold-at-1
+// cases from definitive to partial — those keep their match, only the framing hedges. The one
+// uncovered July definitive-wrong (butler-28 → bronte_c, margin 0.0565) is a gold-label
+// ambiguity, not a near-tie failure. Framing-only: the pick, confidence, and ordering are
+// untouched (recovery-asymmetry — this is a rerank-side honesty correction, not a retrieval
+// gate). Eval-tunable; recalibrate whenever lane scoring changes.
+export const STAGE_B_NEAR_TIE_MARGIN = 0.035;
 
 // Stage B output size: the top-K stages handed to the reranker. Tightened 12 → 8 at the
 // 50-figure library (2026-07-02 eval): with 12 candidates the rerank regressed on previously

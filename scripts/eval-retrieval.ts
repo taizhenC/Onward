@@ -22,16 +22,36 @@ import { matchConfigVersion } from "../lib/match-config";
 process.env.LLM_PROVIDER = "stub";
 process.env.RETRIEVAL_MODE = "facetsrag";
 
-const GOLD_PATH = resolve(process.cwd(), "evals/match.json");
+// Same dataset override eval-match honors, so the retrieval loop can tune against successor
+// datasets (e.g. the semantic-slice sets) without touching the frozen default.
+function goldPath(): string {
+  return resolve(
+    process.cwd(),
+    process.env.EVAL_DATASET_PATH?.trim() || "evals/match.json",
+  );
+}
 
-type GoldCase = { age: number; feeling: string; expect: string };
+type GoldCase = {
+  age: number;
+  feeling: string;
+  expect: string;
+  semantic?: boolean;
+  accept?: string[];
+};
 
 function loadGold(): GoldCase[] {
-  const raw = JSON.parse(readFileSync(GOLD_PATH, "utf8")) as {
-    cases?: Array<{ age?: unknown; feeling?: unknown; expect?: unknown }>;
+  const path = goldPath();
+  const raw = JSON.parse(readFileSync(path, "utf8")) as {
+    cases?: Array<{
+      age?: unknown;
+      feeling?: unknown;
+      expect?: unknown;
+      semantic?: unknown;
+      accept?: unknown;
+    }>;
   };
   if (!Array.isArray(raw.cases)) {
-    console.error("evals/match.json must have a cases[] array.");
+    console.error(`${path} must have a cases[] array.`);
     process.exit(1);
   }
   const cases: GoldCase[] = [];
@@ -41,14 +61,43 @@ function loadGold(): GoldCase[] {
       typeof entry.feeling === "string" &&
       typeof entry.expect === "string"
     ) {
-      cases.push({ age: entry.age, feeling: entry.feeling, expect: entry.expect });
+      cases.push({
+        age: entry.age,
+        feeling: entry.feeling,
+        expect: entry.expect,
+        semantic: entry.semantic === true || undefined,
+        accept:
+          Array.isArray(entry.accept) &&
+          entry.accept.every((key): key is string => typeof key === "string")
+            ? entry.accept
+            : undefined,
+      });
     }
   }
   return cases;
 }
 
-function keysIncludeFigure(keys: string[] | undefined, figureKey: string): boolean {
-  return (keys ?? []).some((key) => key.split("/")[0] === figureKey);
+// Acceptable answers for a case: expect plus any multi-gold accept[] keys (twin stages the
+// input genuinely underdetermines — mirrors eval-match's scoring).
+function acceptableKeys(gold: GoldCase): Set<string> {
+  return new Set([gold.expect, ...(gold.accept ?? [])]);
+}
+
+function keysIncludeFigure(
+  keys: string[] | undefined,
+  acceptable: ReadonlySet<string>,
+): boolean {
+  return (keys ?? []).some((key) => acceptable.has(key.split("/")[0]));
+}
+
+// 1-based rank of the best acceptable answer within the ordered Stage B list; 0 when absent.
+// Stage B keys arrive best-first from lib/facets-retrieval.ts.
+function goldStageBRank(
+  keys: string[] | undefined,
+  acceptable: ReadonlySet<string>,
+): number {
+  const index = (keys ?? []).findIndex((key) => acceptable.has(key.split("/")[0]));
+  return index === -1 ? 0 : index + 1;
 }
 
 function pct(num: number, den: number): string {
@@ -79,12 +128,23 @@ async function main(): Promise<void> {
   const cases = loadGold().filter((c) => c.expect !== "miss");
   console.log(`model=${embeddingModelId()} matchConfigVersion=${matchConfigVersion}`);
   console.log(`cases (non-miss)=${cases.length} mode=facetsrag rerank=stub`);
+  console.log(`dataset=${goldPath()}`);
   console.log("");
 
   let survivedA = 0;
   let survivedB = 0;
   const missedA: string[] = [];
   const missedBOnly: string[] = [];
+  // Gold's 1-based rank within the ordered Stage B list, per surviving case. The 2026-07-02
+  // challenger run showed the reranker picks Stage-B #1 in ~94% of trials, so survival alone is
+  // the wrong health metric: end-to-end accuracy tracks gold@1, not gold-survived. Rank metrics
+  // are the cheap predictor of what the full rerank eval will say.
+  const goldRanks: number[] = [];
+  const semanticFlags: boolean[] = [];
+  // Cases where gold survived Stage B but is NOT the default pick: the rerank has to actively
+  // rescue these, which the July evidence shows it does under half the time. Figure keys and ages
+  // only — never feelings.
+  const notAt1: string[] = [];
 
   for (const gold of cases) {
     let result;
@@ -100,16 +160,60 @@ async function main(): Promise<void> {
       process.exit(1);
     }
 
-    const inA = keysIncludeFigure(result.stageAKeys, gold.expect);
-    const inB = keysIncludeFigure(result.stageBKeys, gold.expect);
+    const acceptable = acceptableKeys(gold);
+    const inA = keysIncludeFigure(result.stageAKeys, acceptable);
+    const inB = keysIncludeFigure(result.stageBKeys, acceptable);
     if (inA) survivedA += 1;
     if (inB) survivedB += 1;
     if (!inA) missedA.push(`${gold.expect} (age ${gold.age})`);
     else if (!inB) missedBOnly.push(`${gold.expect} (age ${gold.age})`);
+    const rank = goldStageBRank(result.stageBKeys, acceptable);
+    goldRanks.push(rank);
+    semanticFlags.push(gold.semantic === true);
+    if (rank > 1) {
+      const top1 = (result.stageBKeys ?? [])[0]?.split("/")[0] ?? "(none)";
+      notAt1.push(
+        `${gold.expect}${gold.semantic ? " [semantic]" : ""} (age ${gold.age}) at rank ${rank}; Stage-B #1 is ${top1}`,
+      );
+    }
   }
+
+  const goldAt1 = goldRanks.filter((rank) => rank === 1).length;
+  const survivorRanks = goldRanks.filter((rank) => rank > 0);
+  const meanRank =
+    survivorRanks.length === 0
+      ? null
+      : survivorRanks.reduce((sum, rank) => sum + rank, 0) / survivorRanks.length;
+  // Absent-from-Stage-B contributes 0, the standard reciprocal-rank convention.
+  const mrr =
+    goldRanks.reduce((sum, rank) => sum + (rank > 0 ? 1 / rank : 0), 0) /
+    Math.max(1, goldRanks.length);
 
   console.log(`Stage A survival (deduped pool): ${survivedA}/${cases.length}  ${pct(survivedA, cases.length)}`);
   console.log(`Stage B survival (top-K to rerank): ${survivedB}/${cases.length}  ${pct(survivedB, cases.length)}`);
+  console.log("");
+  console.log(`Stage B gold@1 (gold is the reranker's default pick): ${goldAt1}/${cases.length}  ${pct(goldAt1, cases.length)}`);
+  console.log(
+    `Stage B gold mean rank (survivors): ${meanRank === null ? "n/a" : meanRank.toFixed(2)}`,
+  );
+  console.log(`Stage B gold MRR: ${mrr.toFixed(3)}`);
+  // Slice split: the semantic slice (zero keyword-map overlap, enforced by eval-match's loader)
+  // is the surface where vector retrieval must prove itself — the keyword path is blind there.
+  const semanticRanks = goldRanks.filter((_, index) => semanticFlags[index]);
+  if (semanticRanks.length > 0) {
+    const literalRanks = goldRanks.filter((_, index) => !semanticFlags[index]);
+    const sliceLine = (label: string, ranks: number[]): string => {
+      const at1 = ranks.filter((rank) => rank === 1).length;
+      return `  ${label}: gold@1 ${at1}/${ranks.length}  ${pct(at1, ranks.length)} (absent from Stage B: ${ranks.filter((rank) => rank === 0).length})`;
+    };
+    console.log(sliceLine("semantic slice", semanticRanks));
+    console.log(sliceLine("literal slice ", literalRanks));
+  }
+  if (notAt1.length > 0) {
+    console.log("");
+    console.log("Gold survived Stage B but is not the default pick (rerank must rescue):");
+    for (const line of notAt1) console.log(`  - ${line}`);
+  }
   if (missedA.length > 0) {
     console.log("");
     console.log("Dropped at Stage A (unrecoverable — fix lanes/quotas):");

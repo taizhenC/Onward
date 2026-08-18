@@ -42,6 +42,12 @@ export type RetrievalResult = {
   stageAKeys: string[];
   stageBKeys: string[];
   themeLaneActive: boolean;
+  // Relative margin between the top two age-adjusted RRF scores, in [0,1]; null when Stage B has
+  // fewer than two candidates. A thin margin means retrieval could not meaningfully separate its
+  // leaders — with a twin-dense library that is exactly where a confident rerank pick is least
+  // trustworthy, so lib/matching.ts demotes framing to "partial" under STAGE_B_NEAR_TIE_MARGIN.
+  // Safe operational scalar: derived from scores only, carries no user text.
+  stageBTopMargin: number | null;
 };
 
 export type RetrievalUnavailableReason = "embedder_stub" | "cache_empty";
@@ -121,13 +127,24 @@ export async function retrieveFacets(
   }
 
   const userThemes = extractUserThemes(input.feeling);
-  const themeLaneActive = userThemes.size > 0;
-  const themeScored: Scored[] = themeLaneActive
-    ? poolWithKey.map((item) => ({
-        key: item.key,
-        score: themeScore(userThemes, item.stage),
-      }))
-    : [];
+  // Only stages with a strictly positive theme score enter the lane ranking. A zero (or negative)
+  // score means no real overlap or an antiTheme penalty ate it: ranking those stages anyway — in
+  // alphabetical order behind the positives — hands them Stage-A theme-quota slots and RRF
+  // contributions of the same magnitude as genuine top-rank gaps in other lanes (all 1/(k+r)
+  // deltas). This is lane-absence, not pool exclusion: the stage still competes in the five
+  // vector lanes, so antiThemes still never hard-exclude (recovery-asymmetry holds).
+  const themeScored: Scored[] = (
+    userThemes.size > 0
+      ? poolWithKey.map((item) => ({
+          key: item.key,
+          score: themeScore(userThemes, item.stage),
+        }))
+      : []
+  ).filter((entry) => entry.score > 0);
+  // Active only when the lane has actual signal: user themes matched AND at least one candidate
+  // scored positive. An active-but-empty lane would still pull THEME_WEIGHT out of the
+  // renormalization, diluting the vector lanes in exchange for nothing.
+  const themeLaneActive = themeScored.length > 0;
 
   // ── Assemble lanes (theme lane present only when active) ───────────────────
   const lanes: Lane[] = [
@@ -176,7 +193,12 @@ export async function retrieveFacets(
     .map((key) => stageByKey.get(key))
     .filter((stage): stage is FigureStageRow => stage !== undefined);
 
-  return { pool: resultPool, stageAKeys, stageBKeys, themeLaneActive };
+  const stageBTopMargin =
+    adjusted.length >= 2 && adjusted[0].score > 0
+      ? (adjusted[0].score - adjusted[1].score) / adjusted[0].score
+      : null;
+
+  return { pool: resultPool, stageAKeys, stageBKeys, themeLaneActive, stageBTopMargin };
 }
 
 // max_s sim + α·second_max_s sim — keeps the single strongest shape-sentence match dominant while

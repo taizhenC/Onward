@@ -14,7 +14,12 @@ import {
   requireApprovedProductionRecipe,
   RERANK_TOP_K,
 } from "./match-config";
-import { pickFigure, RERANK_PROMPT_VERSION, RerankError } from "./llm";
+import {
+  pickFigure,
+  RERANK_PROMPT_VERSION,
+  RerankError,
+  tagAndExpand,
+} from "./llm";
 import { pickByKeywordHybrid, scoreAllByKeywordHybrid } from "./keyword-match";
 import { EmbeddingError } from "./embeddings";
 import { retrieveFacets, RetrievalUnavailableError } from "./facets-retrieval";
@@ -24,6 +29,7 @@ import {
 } from "./match-recovery";
 import {
   assertProductionStoryRecipeRuntime,
+  productionStoryRecipeExecutionPlan,
   storyRecipeExecutionPlan,
 } from "./story-recipe";
 import type { StoryRecipeManifest } from "./story-recipe";
@@ -57,6 +63,10 @@ type RetrievalDebug = {
   retrievalPoolSize?: number;
   stageAKeys?: string[];
   stageBKeys?: string[];
+  // How many facet lanes queried with a validated template projection (facetsrag path with the
+  // tagger enabled; 0 = raw-feeling lanes throughout). Reduced operational count — the signal
+  // itself never leaves retrieval.
+  taggerProjectedLanes?: number;
 };
 
 type DebugScalars = RetrievalDebug & {
@@ -164,6 +174,7 @@ async function matchWithExecution(
     retrievalPoolSize: selection.retrievalPoolSize,
     stageAKeys: selection.stageAKeys,
     stageBKeys: selection.stageBKeys,
+    taggerProjectedLanes: selection.taggerProjectedLanes,
   };
   const start = performance.now();
 
@@ -283,6 +294,18 @@ export function resolveRetrievalMode(
 
 type RetrievalSelection = RetrievalDebug & { rerankPool: FigureStageRow[] };
 
+// Facet-tagger enablement for the FacetsRAG path — local/eval switch only, default OFF (raw
+// facet lanes, byte-identical prior behavior). "on" classifies the feeling through the
+// lib/llm.ts tagAndExpand boundary and hands the validated signal to retrieval, per the
+// installed queryMode=validated_projection identity. Served production is triple-guarded: this
+// resolver refuses under a production execution plan, the llm boundary hard-returns the stub in
+// production, and no promoted recipe carries a facet-tagger axis — behavior there comes from
+// the immutable manifest alone.
+function facetTaggerEnabled(): boolean {
+  if (productionStoryRecipeExecutionPlan()) return false;
+  return process.env.FACETSRAG_TAGGER?.trim().toLowerCase() === "on";
+}
+
 // Picks the rerank pool per the configured mode:
 //   keyword   → the keyword-hybrid prefilter (no embeddings touched).
 //   facetsrag → FacetsRAG; throws if unavailable, so a forced "FacetsRAG run" can never silently be
@@ -302,13 +325,25 @@ async function selectMatchPool(
   }
 
   try {
-    const retrieval = await retrieveFacets(input, pool, topK.facetsTopK);
+    // The signal's lifetime ends inside retrieval (anti-echo: no tagger output may reach
+    // pickFigure). Absorption is the contract: a failed/low-confidence classification returns
+    // null and every lane falls back to the raw feeling — no retry, p95 stays bounded.
+    const signal = facetTaggerEnabled()
+      ? await tagAndExpand({ feeling: input.feeling })
+      : null;
+    const retrieval = await retrieveFacets(
+      input,
+      pool,
+      topK.facetsTopK,
+      signal,
+    );
     return {
       rerankPool: retrieval.pool,
       retrievalMode: "facetsrag",
       retrievalPoolSize: retrieval.stageAKeys.length,
       stageAKeys: retrieval.stageAKeys,
       stageBKeys: retrieval.stageBKeys,
+      taggerProjectedLanes: retrieval.projectedLaneCount,
     };
   } catch (error) {
     const reason = retrievalErrorReason(error);

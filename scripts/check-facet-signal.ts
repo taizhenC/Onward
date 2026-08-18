@@ -599,20 +599,31 @@ function checkDormantBoundary(): void {
       }
     }
   }
-  const allowedProviderImporter = join(
-    process.cwd(),
-    "lib",
-    "llm-real.ts",
-  );
+  // Reviewed facet-contract importers (2026-08-17 wiring slice): the real-provider adapter
+  // (prompt/IDs surface), FacetsRAG retrieval (branded query-text exit), and the closed-template
+  // query-vector cache (catalog membership guard). Anything else importing the contract is drift.
+  const allowedContractImporters = [
+    join(process.cwd(), "lib", "facet-query-embeddings.ts"),
+    join(process.cwd(), "lib", "facets-retrieval.ts"),
+    join(process.cwd(), "lib", "llm-real.ts"),
+  ].sort();
   check(
-    importers.length === 1 && importers[0] === allowedProviderImporter,
+    importers.length === allowedContractImporters.length &&
+      [...importers]
+        .sort()
+        .every((path, index) => path === allowedContractImporters[index]),
     "facet contract escaped the designated real-provider adapter",
   );
+  // The tagger call itself has exactly one reviewed runtime consumer: the env-gated (default
+  // off), production-refusing FacetsRAG slice in lib/matching.ts. Served production stays
+  // dormant via the llm facade's NODE_ENV hard-off, proven by check-facet-tagger-provider.
+  const allowedRuntimeConsumer = join(process.cwd(), "lib", "matching.ts");
   const runtimeConsumers = sourceFiles(join(process.cwd(), "lib"))
     .filter((path) => !path.endsWith(join("lib", "llm.ts")))
     .filter((path) => /\btagAndExpand\s*\(/u.test(readFileSync(path, "utf8")));
   check(
-    runtimeConsumers.length === 0,
+    runtimeConsumers.length === 1 &&
+      runtimeConsumers[0] === allowedRuntimeConsumer,
     "dormant facet provider is called by production library code",
   );
 }

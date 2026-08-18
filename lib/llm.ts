@@ -91,9 +91,11 @@ export async function pickFigure(
 export type TagAndExpandInput = Readonly<{ feeling: string }>;
 
 /**
- * Provider-neutral facet classification boundary. No production matching or
- * retrieval path calls this yet; the architecture checker keeps it dormant
- * until a separately reviewed shadow-execution slice.
+ * Provider-neutral facet classification boundary. Consumed by exactly one
+ * reviewed call site — the env-gated FacetsRAG retrieval slice in
+ * lib/matching.ts (default off) — and the architecture checker pins that
+ * allowlist. Served production stays dormant: NODE_ENV=production forces the
+ * stub (null) here regardless of the consumer's gate.
  */
 export function tagAndExpand(
   input: TagAndExpandInput,

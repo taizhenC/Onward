@@ -15,7 +15,12 @@ export const STORY_RECIPE_MANIFEST_SCHEMA_V2 =
 export const EVAL_EVIDENCE_SCHEMA_VERSION = "match-eval-evidence-v1";
 export const SHADOW_EVIDENCE_SCHEMA_VERSION = "recipe-shadow-evidence-v1";
 export const RECIPE_DECISION_SCHEMA_VERSION = "recipe-decision-v1";
-export const EVAL_HARNESS_VERSION = "match-eval-harness-v2-2026-07";
+// v3 (2026-08): multi-gold accept[] scoring, load-time enforcement of the semantic-slice
+// zero-keyword claim, and slice-split reporting in scripts/eval-match.ts. Evidence imported
+// from the July pre-registry runs was produced by v2 and stays pinned to it —
+// check-recipe-governance accepts the legacy version only on legacyImported records.
+export const EVAL_HARNESS_VERSION = "match-eval-harness-v3-2026-08";
+export const LEGACY_EVAL_HARNESS_VERSION = "match-eval-harness-v2-2026-07";
 // Promotion policy is code-owned and immutable for a given release. Evidence may
 // record these values for auditability, but it cannot choose weaker thresholds.
 // Changing any floor is a policy release, not an eval-run option.
@@ -182,7 +187,7 @@ export type EvidenceMetrics = {
 
 export type EvalEvidence = {
   schemaVersion: typeof EVAL_EVIDENCE_SCHEMA_VERSION;
-  harnessVersion: typeof EVAL_HARNESS_VERSION;
+  harnessVersion: typeof EVAL_HARNESS_VERSION | typeof LEGACY_EVAL_HARNESS_VERSION;
   evidenceId: string;
   recipeId: string;
   recipeManifestSha256: string;

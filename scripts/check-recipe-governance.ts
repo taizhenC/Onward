@@ -8,6 +8,7 @@ import { spawnSync } from "node:child_process";
 import {
   EVAL_EVIDENCE_SCHEMA_VERSION,
   EVAL_HARNESS_VERSION,
+  LEGACY_EVAL_HARNESS_VERSION,
   EVAL_HISTORY_DIR,
   EVAL_SHADOW_DIR,
   PRODUCTION_RECIPE_DOC_PATH,
@@ -587,7 +588,13 @@ function parseEvidence(value: unknown, path: string): EvalEvidence {
     path,
   );
   literal(root.schemaVersion, EVAL_EVIDENCE_SCHEMA_VERSION, `${path}.schemaVersion`);
-  literal(root.harnessVersion, EVAL_HARNESS_VERSION, `${path}.harnessVersion`);
+  // Harness releases: fresh evidence must carry the installed harness version; records imported
+  // from the July pre-registry runs stay pinned to the v2 harness that actually produced them
+  // (their content hashes were minted over that value).
+  const expectedHarnessVersion = legacyImported
+    ? LEGACY_EVAL_HARNESS_VERSION
+    : EVAL_HARNESS_VERSION;
+  literal(root.harnessVersion, expectedHarnessVersion, `${path}.harnessVersion`);
   const evidenceId = string(root.evidenceId, `${path}.evidenceId`);
   assert(EVIDENCE_ID.test(evidenceId), `${path}.evidenceId is invalid`);
   const run = record(root.run, `${path}.run`);
@@ -638,7 +645,9 @@ function parseEvidence(value: unknown, path: string): EvalEvidence {
     : parseEvidenceCatalog(root.catalog, `${path}.catalog`);
   const evidence: EvalEvidence = {
     schemaVersion: EVAL_EVIDENCE_SCHEMA_VERSION,
-    harnessVersion: EVAL_HARNESS_VERSION,
+    // Reconstructed from the validated stored value so the content-hash recomputation at the
+    // call site keeps matching legacy (v2-minted) evidence ids after a harness release.
+    harnessVersion: expectedHarnessVersion,
     evidenceId,
     recipeId: registryVersionId(root.recipeId, `${path}.recipeId`),
     recipeManifestSha256: sha(

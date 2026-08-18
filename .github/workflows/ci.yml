@@ -49,6 +49,7 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run check-facet-signal
+      - run: npm run check-facet-weighting
       - run: npm run check-recipe-manifest-v2
       - run: npm run check-facet-tagger-provider
       - run: npm run check-recipe-governance

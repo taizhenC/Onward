@@ -299,7 +299,10 @@ export const EXTERNAL_PROVIDER_EXCHANGES = deepFreeze({
   },
   "gemini.query_embedding": {
     provider: "gemini",
-    requestSurfaces: ["input.raw_disclosure"],
+    // Query-side embedding carries either the raw disclosure (shape lane / facet fallback) or a
+    // server-owned closed-template sentence (lib/facet-query-embeddings.ts) — curated content is
+    // strictly less sensitive than the declared disclosure surface and shares the same exchange.
+    requestSurfaces: ["input.raw_disclosure", "content.curated_reference"],
     responseSurface: "embedding.query_vector",
     endpointPathSuffix: ":embedContent",
   },

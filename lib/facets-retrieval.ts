@@ -9,6 +9,7 @@ import {
   FACETSRAG_TOP_K,
   LANE_QUOTAS,
   MAX_NOT_MEAN_ALPHA,
+  PROJECTION_BLEND_ALPHA,
   RRF_K,
   THEME_WEIGHT,
   type RetrievalLane,
@@ -16,13 +17,22 @@ import {
 import { embedQuery, isEmbeddingStub } from "./embeddings";
 import { loadEmbeddingCache, stageCacheKey } from "./embeddings-cache";
 import { consumeDerivedOutput } from "./derived-output-retention";
+import {
+  resolveFacetQueryText,
+  type ValidatedFacetSignal,
+} from "./facet-signal";
+import { templateQueryVector } from "./facet-query-embeddings";
 import { extractUserThemes, themeScore } from "./themes";
 import { weightedRrf, type LaneRanking } from "./rrf";
 
-// FacetsRAG retrieval (skeleton). Six lanes over the age-gated pool: shape + 4 facets (vector
-// cosine) + theme (deterministic). The query is embedded ONCE (raw user feeling) and reused across
-// all five vector lanes — the per-facet projection that would warrant separate query vectors is the
-// deferred tagger fast-follow.
+// FacetsRAG retrieval. Six lanes over the age-gated pool: shape + 4 facets (vector cosine) +
+// theme (deterministic). The shape lane always queries with the raw user feeling (embedded once
+// per match). When the caller supplies a ValidatedFacetSignal (queryMode=validated_projection —
+// the installed tagger identity), each facet lane with a surviving projection scores as a BLEND
+// of the raw-feeling cosine and the closed-template cosine (PROJECTION_BLEND_ALPHA); lanes
+// without a projection — null signal, nulled facet, or failed template embed — score raw-only.
+// Weights stay static BASE_WEIGHTS (weightingMode=static; the bounded-dynamic helpers in
+// match-config are pre-staged but deliberately uncalled).
 //
 //   Stage A — each lane contributes its top-N (LANE_QUOTAS) to a deduped pool, UNCONDITIONALLY
 //             (recovery-asymmetry: a retrieval miss is unrecoverable, so no lane is gated off).
@@ -30,7 +40,8 @@ import { weightedRrf, type LaneRanking } from "./rrf";
 //             the top-K handed to the reranker.
 //
 // Anti-echo: only vectors + theme tags drive retrieval here; the reranker still sees only
-// biographicalFacts (lib/llm-real.ts). Nothing from this module reaches pickFigure.
+// biographicalFacts (lib/llm-real.ts). Nothing from this module — including the FacetSignal —
+// reaches pickFigure.
 
 export type RetrievalInput = { age: number; feeling: string };
 
@@ -42,6 +53,9 @@ export type RetrievalResult = {
   stageAKeys: string[];
   stageBKeys: string[];
   themeLaneActive: boolean;
+  // How many of the four facet lanes queried with a validated template projection this match
+  // (0 when no signal was supplied). Safe operational count for eval dumps.
+  projectedLaneCount: number;
   // Relative margin between the top two age-adjusted RRF scores, in [0,1]; null when Stage B has
   // fewer than two candidates. A thin margin means retrieval could not meaningfully separate its
   // leaders — with a twin-dense library that is exactly where a confident rerank pick is least
@@ -69,6 +83,7 @@ export async function retrieveFacets(
   input: RetrievalInput,
   pool: FigureStageRow[],
   topK = FACETSRAG_TOP_K,
+  signal: ValidatedFacetSignal | null = null,
 ): Promise<RetrievalResult> {
   if (!Number.isInteger(topK) || topK < 1) {
     throw new Error("FacetsRAG top-K must be a positive integer.");
@@ -90,12 +105,35 @@ export async function retrieveFacets(
     );
   }
 
-  // One query embedding, reused across shape + all facet lanes (can throw EmbeddingError → the
-  // caller falls back to keyword in auto mode, or fails in facetsrag mode).
+  // The raw-feeling query embedding — the shape lane's query and every facet lane's fallback
+  // (can throw EmbeddingError → the caller falls back to keyword in auto mode, or fails in
+  // facetsrag mode).
   const query = consumeDerivedOutput(
     await embedQuery(input.feeling),
     "retrieval_scoring",
   );
+
+  // Per-facet template vectors for lanes with a surviving projection. resolveFacetQueryText is
+  // the branded exit of the validated signal: it returns the closed-template sentence for a
+  // facet whose projection survived and the raw feeling otherwise, and refuses forged signals.
+  // Template vectors come from the memoized query-side catalog cache; a failed template embed
+  // degrades that lane to raw-only. The template BLENDS with the raw feeling at scoring time
+  // (PROJECTION_BLEND_ALPHA) rather than replacing it — replacement measurably regresses
+  // retrieval because the catalog sentences are deliberately generic: a replaced lane ranks
+  // every same-bucket stage alike and the gold loses its user-specific margin.
+  const facetTemplateVectors = {} as Record<FacetType, number[] | null>;
+  let projectedLaneCount = 0;
+  for (const facetType of FACET_TYPES) {
+    facetTemplateVectors[facetType] = null;
+    const queryText = resolveFacetQueryText(input.feeling, signal, facetType);
+    if (queryText !== input.feeling) {
+      const vector = await templateQueryVector(queryText);
+      if (vector) {
+        facetTemplateVectors[facetType] = vector;
+        projectedLaneCount += 1;
+      }
+    }
+  }
 
   const stageByKey = new Map<string, FigureStageRow>();
   const poolWithKey = pool.map((stage) => {
@@ -119,10 +157,18 @@ export async function retrieveFacets(
     agency_state: [],
   };
   for (const facetType of FACET_TYPES) {
+    const template = facetTemplateVectors[facetType];
     for (const item of poolWithKey) {
       const vector = item.vectors?.facets[facetType];
       if (!vector) continue;
-      facetScored[facetType].push({ key: item.key, score: dot(query, vector) });
+      const rawScore = dot(query, vector);
+      facetScored[facetType].push({
+        key: item.key,
+        score: template
+          ? (1 - PROJECTION_BLEND_ALPHA) * rawScore +
+            PROJECTION_BLEND_ALPHA * dot(template, vector)
+          : rawScore,
+      });
     }
   }
 
@@ -198,7 +244,14 @@ export async function retrieveFacets(
       ? (adjusted[0].score - adjusted[1].score) / adjusted[0].score
       : null;
 
-  return { pool: resultPool, stageAKeys, stageBKeys, themeLaneActive, stageBTopMargin };
+  return {
+    pool: resultPool,
+    stageAKeys,
+    stageBKeys,
+    themeLaneActive,
+    projectedLaneCount,
+    stageBTopMargin,
+  };
 }
 
 // max_s sim + α·second_max_s sim — keeps the single strongest shape-sentence match dominant while

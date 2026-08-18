@@ -883,6 +883,15 @@ async function main(): Promise<void> {
       "Eval evidence requires an explicit keyword or facetsrag retrieval mode; auto is not auditable.",
     );
   }
+  // The facet-tagger env gate changes facetsrag behavior, but no registered recipe carries a
+  // facet-tagger axis yet — a tagger-on run would write evidence mislabeled under a v1 recipe
+  // id, the exact mixed-recipe condition the registry exists to prevent. Tagger experiments use
+  // the scratch retrieval instruments until a manifest-v2 recipe registers.
+  if (process.env.FACETSRAG_TAGGER?.trim()) {
+    fail(
+      "FACETSRAG_TAGGER must be unset for an eval evidence run: no registered recipe describes tagger-on behavior.",
+    );
+  }
   const registry = loadRecipeRegistry();
   const recipe = recipeForEval(registry, retrievalMode);
   assertStoryRecipeCodeIdentity(recipe);

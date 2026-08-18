@@ -42,6 +42,12 @@ export type RetrievalResult = {
   stageAKeys: string[];
   stageBKeys: string[];
   themeLaneActive: boolean;
+  // Relative margin between the top two age-adjusted RRF scores, in [0,1]; null when Stage B has
+  // fewer than two candidates. A thin margin means retrieval could not meaningfully separate its
+  // leaders — with a twin-dense library that is exactly where a confident rerank pick is least
+  // trustworthy, so lib/matching.ts demotes framing to "partial" under STAGE_B_NEAR_TIE_MARGIN.
+  // Safe operational scalar: derived from scores only, carries no user text.
+  stageBTopMargin: number | null;
 };
 
 export type RetrievalUnavailableReason = "embedder_stub" | "cache_empty";
@@ -187,7 +193,12 @@ export async function retrieveFacets(
     .map((key) => stageByKey.get(key))
     .filter((stage): stage is FigureStageRow => stage !== undefined);
 
-  return { pool: resultPool, stageAKeys, stageBKeys, themeLaneActive };
+  const stageBTopMargin =
+    adjusted.length >= 2 && adjusted[0].score > 0
+      ? (adjusted[0].score - adjusted[1].score) / adjusted[0].score
+      : null;
+
+  return { pool: resultPool, stageAKeys, stageBKeys, themeLaneActive, stageBTopMargin };
 }
 
 // max_s sim + α·second_max_s sim — keeps the single strongest shape-sentence match dominant while

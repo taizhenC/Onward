@@ -97,6 +97,10 @@ async function main(): Promise<void> {
   // the wrong health metric: end-to-end accuracy tracks gold@1, not gold-survived. Rank metrics
   // are the cheap predictor of what the full rerank eval will say.
   const goldRanks: number[] = [];
+  // Cases where gold survived Stage B but is NOT the default pick: the rerank has to actively
+  // rescue these, which the July evidence shows it does under half the time. Figure keys and ages
+  // only — never feelings.
+  const notAt1: string[] = [];
 
   for (const gold of cases) {
     let result;
@@ -118,7 +122,14 @@ async function main(): Promise<void> {
     if (inB) survivedB += 1;
     if (!inA) missedA.push(`${gold.expect} (age ${gold.age})`);
     else if (!inB) missedBOnly.push(`${gold.expect} (age ${gold.age})`);
-    goldRanks.push(goldStageBRank(result.stageBKeys, gold.expect));
+    const rank = goldStageBRank(result.stageBKeys, gold.expect);
+    goldRanks.push(rank);
+    if (rank > 1) {
+      const top1 = (result.stageBKeys ?? [])[0]?.split("/")[0] ?? "(none)";
+      notAt1.push(
+        `${gold.expect} (age ${gold.age}) at rank ${rank}; Stage-B #1 is ${top1}`,
+      );
+    }
   }
 
   const goldAt1 = goldRanks.filter((rank) => rank === 1).length;
@@ -140,6 +151,11 @@ async function main(): Promise<void> {
     `Stage B gold mean rank (survivors): ${meanRank === null ? "n/a" : meanRank.toFixed(2)}`,
   );
   console.log(`Stage B gold MRR: ${mrr.toFixed(3)}`);
+  if (notAt1.length > 0) {
+    console.log("");
+    console.log("Gold survived Stage B but is not the default pick (rerank must rescue):");
+    for (const line of notAt1) console.log(`  - ${line}`);
+  }
   if (missedA.length > 0) {
     console.log("");
     console.log("Dropped at Stage A (unrecoverable — fix lanes/quotas):");

@@ -128,10 +128,16 @@ export const THEME_LAMBDA = 1.0;
 export const THEME_CLAMP = { min: -0.25, max: 0.35 } as const;
 
 // Soft age adjustment applied AFTER Stage B RRF, MULTIPLICATIVELY (additive would swamp the tiny
-// 1/(k+rank) RRF scores): adjusted = rrf · (1 − min(AGE_CAP, ageDistance·AGE_SLOPE)). At the ±10y
-// hard-gate edge the penalty reaches the cap. Age nudges ranking; it never dominates meaning.
+// 1/(k+rank) RRF scores): adjusted = rrf · (1 − min(AGE_CAP, ageDistance·AGE_SLOPE)). Age nudges
+// ranking; it never dominates meaning — age JUDGMENT belongs to the reranker, which sees each
+// candidate's age range. Slope halved 0.02 → 0.01 on 2026-08-17 retrieval-eval evidence: at 0.02
+// the penalty at the gate edge (−20%) was strong enough to demote a gold stage below a nearer-age
+// twin (angelou at distance 8 ate −16% and sat at Stage-B rank 4 behind lindgren; at 0.01 she is
+// rank 1, Stage-B gold@1 93→94/101, MRR 0.947→0.951, survival still 101/101). Inside the ±10y
+// hard gate the effective maximum penalty is now −10%; AGE_CAP stays as a backstop in case the
+// gate ever widens.
 export const AGE_CAP = 0.2;
-export const AGE_SLOPE = 0.02;
+export const AGE_SLOPE = 0.01;
 
 // Stage B output size: the top-K stages handed to the reranker. Tightened 12 → 8 at the
 // 50-figure library (2026-07-02 eval): with 12 candidates the rerank regressed on previously

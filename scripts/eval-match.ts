@@ -17,6 +17,7 @@ import {
   selectRerankPool,
   type MatchDebug,
 } from "../lib/matching";
+import { getMatchedThemeWeights } from "../lib/keyword-match";
 import {
   FACETSRAG_TOP_K,
   matchConfigVersion,
@@ -74,9 +75,16 @@ type GoldCase = {
   hard?: boolean;
   plausibleWrong?: string;
   confusionGroup?: string;
-  // Paraphrase/metaphor case with low literal keyword overlap — keyword is EXPECTED to miss it;
-  // only FacetsRAG should retrieve it. Exempt from the keyword top-K prefilter survival assertion.
+  // Paraphrase/metaphor case with ZERO keyword-map overlap (validated at load time against the
+  // live keyword parser) — the keyword path is EXPECTED to be blind to it; only semantic
+  // retrieval should route it. Exempt from the keyword top-K prefilter survival assertion.
   semantic?: boolean;
+  // Additional figure keys that also count as CORRECT for this case. For inputs a twin-dense
+  // library genuinely underdetermines (e.g. a generic rejected-writer feeling with both butler
+  // and bronte_c published), a single gold label miscounts a defensible pick as definitive-wrong
+  // — the exact metric the trust gate holds at zero. Never includes plausibleWrong: a hard case's
+  // planted confusion twin is by definition NOT an acceptable answer.
+  accept?: string[];
 };
 
 type Trial = {
@@ -179,6 +187,55 @@ function loadGold(validKeys: Set<string>): GoldCase[] {
       errors.push(`${where} has plausibleWrong/confusionGroup but is not hard:true`);
     }
 
+    // Multi-gold: accept[] lists other figureKeys that also count as correct. Guard the
+    // invariants that keep it honest — unknown keys, expect duplicates, miss cases, and
+    // (critically) a hard case's plausibleWrong are all rejected.
+    let accept: string[] | undefined;
+    if (entry.accept !== undefined) {
+      if (
+        !Array.isArray(entry.accept) ||
+        entry.accept.length === 0 ||
+        entry.accept.some((key) => typeof key !== "string")
+      ) {
+        errors.push(`${where}.accept must be a non-empty string array`);
+      } else {
+        const keys = entry.accept as string[];
+        if (expect === "miss") {
+          errors.push(`${where} is a miss case and cannot carry accept[]`);
+        }
+        if (new Set(keys).size !== keys.length) {
+          errors.push(`${where}.accept has duplicates`);
+        }
+        for (const key of keys) {
+          if (!validKeys.has(key)) {
+            errors.push(`${where}.accept "${key}" is not a known figureKey (typo?)`);
+          }
+          if (key === expect) {
+            errors.push(`${where}.accept must not repeat expect`);
+          }
+          if (plausibleWrong && key === plausibleWrong) {
+            errors.push(
+              `${where}.accept must not contain plausibleWrong — a planted confusion twin is not an acceptable answer`,
+            );
+          }
+        }
+        accept = keys;
+      }
+    }
+
+    // Semantic honesty gate: "semantic" is a CLAIM that the keyword path has nothing to grab.
+    // Verify it against the live keyword parser (word-boundary matching, same code path the
+    // keyword scorer and the FacetsRAG theme lane use) so the slice cannot silently drift into
+    // keyword-reachable phrasing as the map grows.
+    if (semantic && typeof feeling === "string") {
+      const matched = getMatchedThemeWeights(feeling);
+      if (matched.size > 0) {
+        errors.push(
+          `${where} is semantic:true but the keyword map matches it (themes: ${[...matched.keys()].sort().join(", ")})`,
+        );
+      }
+    }
+
     // Build the case best-effort; if it had errors we exit before running anyway.
     if (typeof age === "number" && typeof feeling === "string" && typeof expect === "string") {
       cases.push({
@@ -190,6 +247,7 @@ function loadGold(validKeys: Set<string>): GoldCase[] {
         plausibleWrong,
         confusionGroup,
         semantic: semantic || undefined,
+        accept,
       });
     }
   });
@@ -258,7 +316,10 @@ async function assertExpectedSurvivesPrefilter(
       pool,
     );
 
-    const survived = selected.some((stage) => stage.figureKey === gold.expect);
+    // Multi-gold aware: any acceptable answer surviving the prefilter lets the reranker still
+    // reach a correct pick, which is all this gate protects.
+    const acceptable = new Set([gold.expect, ...(gold.accept ?? [])]);
+    const survived = selected.some((stage) => acceptable.has(stage.figureKey));
     if (!survived) {
       errors.push(
         `cases[${index}] expected ${gold.expect}, but RERANK_TOP_K=${RERANK_TOP_K} selected ${selected.length}/${pool.length} candidates without it`,
@@ -319,6 +380,15 @@ type Metrics = {
   missDetectionCounts: { detected: number; total: number };
   hardConfusion: number | null;
   hardConfusionCounts: { confused: number; total: number };
+  // Overall top-1 split by the semantic flag — the honest keyword-vs-vector comparison surface.
+  // The literal slice's phrasing co-evolved with STUB_KEYWORD_MAP (gold inputs literally contain
+  // map phrases), so the keyword baseline partially "knows" those answers; only the semantic
+  // slice measures generalization to phrasing no map route anticipates. Console/dump only —
+  // deliberately NOT in the immutable evidence schema.
+  semanticTop1: number | null;
+  semanticTop1Counts: { correct: number; total: number };
+  literalTop1: number | null;
+  literalTop1Counts: { correct: number; total: number };
   // FacetsRAG retrieval survival (null/zero-total when the run took the keyword path, which
   // populates no stage keys). Eval-owned: computed here from stageAKeys/stageBKeys.
   goldSurvivalStageA: number | null;
@@ -363,7 +433,8 @@ type TrustGate = {
 function isCorrect(gold: GoldCase, result: MatchDebug): boolean {
   return gold.expect === "miss"
     ? result.framing === "partial"
-    : result.figureKey === gold.expect;
+    : result.figureKey === gold.expect ||
+        (gold.accept ?? []).includes(result.figureKey);
 }
 
 // Did the gold figure survive a retrieval stage? Stage keys are `figureKey/stageId`.
@@ -490,6 +561,11 @@ function computeMetrics(trials: Trial[], k: number): Metrics {
   const hardConfusion = ratio(hardConfused, hard.length);
   const missDetection = ratio(missDetected, miss.length);
 
+  const semanticTrials = nonMiss.filter((t) => t.gold.semantic);
+  const literalTrials = nonMiss.filter((t) => !t.gold.semantic);
+  const semanticCorrect = semanticTrials.filter((t) => isCorrect(t.gold, t.result)).length;
+  const literalCorrect = literalTrials.filter((t) => isCorrect(t.gold, t.result)).length;
+
   return {
     rerankTop1,
     rerankTop1Counts: { correct: rerankCorrect, total: rerankNonMiss.length },
@@ -499,6 +575,10 @@ function computeMetrics(trials: Trial[], k: number): Metrics {
     missDetectionCounts: { detected: missDetected, total: miss.length },
     hardConfusion,
     hardConfusionCounts: { confused: hardConfused, total: hard.length },
+    semanticTop1: ratio(semanticCorrect, semanticTrials.length),
+    semanticTop1Counts: { correct: semanticCorrect, total: semanticTrials.length },
+    literalTop1: ratio(literalCorrect, literalTrials.length),
+    literalTop1Counts: { correct: literalCorrect, total: literalTrials.length },
     goldSurvivalStageA: ratio(survivedA, facetsTrials.length),
     goldSurvivalStageB: ratio(survivedB, facetsTrials.length),
     goldSurvivalCounts: { survivedA, survivedB, total: facetsTrials.length },
@@ -584,6 +664,14 @@ function printReport(metrics: Metrics): void {
   console.log(
     `  overall top-1 (incl. fallback): ${pct(m.overallTop1)}  (${m.overallTop1Counts.correct}/${m.overallTop1Counts.total})`,
   );
+  if (m.semanticTop1Counts.total > 0) {
+    console.log(
+      `  semantic slice (zero keyword-map overlap): ${pct(m.semanticTop1)}  (${m.semanticTop1Counts.correct}/${m.semanticTop1Counts.total})`,
+    );
+    console.log(
+      `  literal slice (map-reachable phrasing)   : ${pct(m.literalTop1)}  (${m.literalTop1Counts.correct}/${m.literalTop1Counts.total})`,
+    );
+  }
   console.log("");
   console.log(
     `Miss detection (expect=miss -> partial): ${pct(m.missDetection)}  (${m.missDetectionCounts.detected}/${m.missDetectionCounts.total})`,

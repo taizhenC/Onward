@@ -5,6 +5,11 @@
       "version": "match-104-2026-07-02",
       "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
       "visibility": "synthetic"
+    },
+    {
+      "version": "match-124-2026-08-17",
+      "sha256": "f8dbc9554276e2c617e02cbde16ec4571e4397d8491e6457248741f28c58630c",
+      "visibility": "synthetic"
     }
   ],
   "selection": {

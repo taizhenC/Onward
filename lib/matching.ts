@@ -65,6 +65,9 @@ type DebugScalars = RetrievalDebug & {
   ageCandidateCount: number;
   promptChars: number;
   ageFallback: boolean;
+  // Effective prompt presentation order for this trial, so run dumps self-describe: an
+  // "alphabetical" experiment run can never be mistaken for a baseline in later analysis.
+  candidateOrder: RerankCandidateOrder;
 };
 
 // Server-only, eval-only enrichment of MatchResult. resonance/gap are deliberately
@@ -185,15 +188,14 @@ async function matchWithExecution(
   );
   // Ordering applies to the PROMPT presentation only; stageAKeys/stageBKeys keep retrieval
   // order — they are retrieval diagnostics and the eval's rank metrics depend on it.
-  const rerankPool = orderRerankPool(
-    selection.rerankPool,
-    resolveRerankCandidateOrder(),
-  );
+  const candidateOrder = resolveRerankCandidateOrder();
+  const rerankPool = orderRerankPool(selection.rerankPool, candidateOrder);
   const debugScalars: DebugScalars = {
     candidateCount: rerankPool.length,
     ageCandidateCount: pool.length,
     promptChars: sumBiographicalFactChars(rerankPool),
     ageFallback: fallbackToAll,
+    candidateOrder,
     retrievalMode: selection.retrievalMode,
     retrievalFallbackReason: selection.retrievalFallbackReason,
     retrievalPoolSize: selection.retrievalPoolSize,

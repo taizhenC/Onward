@@ -13,6 +13,7 @@ import {
   framingFromConfidence,
   requireApprovedProductionRecipe,
   RERANK_TOP_K,
+  STAGE_B_NEAR_TIE_MARGIN,
 } from "./match-config";
 import { pickFigure, RERANK_PROMPT_VERSION, RerankError } from "./llm";
 import { pickByKeywordHybrid, scoreAllByKeywordHybrid } from "./keyword-match";
@@ -57,6 +58,9 @@ type RetrievalDebug = {
   retrievalPoolSize?: number;
   stageAKeys?: string[];
   stageBKeys?: string[];
+  // Relative margin between Stage B's top two adjusted scores (facetsrag path only). Drives the
+  // near-tie framing demotion and lands in eval dumps for calibration.
+  stageBTopMargin?: number | null;
 };
 
 type DebugScalars = RetrievalDebug & {
@@ -164,6 +168,7 @@ async function matchWithExecution(
     retrievalPoolSize: selection.retrievalPoolSize,
     stageAKeys: selection.stageAKeys,
     stageBKeys: selection.stageBKeys,
+    stageBTopMargin: selection.stageBTopMargin,
   };
   const start = performance.now();
 
@@ -196,11 +201,24 @@ async function matchWithExecution(
       );
     }
 
+    // Near-tie demotion (facetsrag path only — the margin is undefined on keyword): when Stage
+    // B's top two adjusted scores sit within STAGE_B_NEAR_TIE_MARGIN, retrieval itself could not
+    // separate its leaders. With a twin-dense library that is precisely where a confident rerank
+    // pick is least trustworthy — every 2026-07-02 definitive-wrong was a high-confidence choice
+    // out of a near-tied twin pool. The pick stands; only the framing is capped at "partial"
+    // (honest "fragment that rhymes" copy). Framing is never upgraded by this rule.
+    const nearTie =
+      typeof selection.stageBTopMargin === "number" &&
+      selection.stageBTopMargin < STAGE_B_NEAR_TIE_MARGIN;
+
     return {
       figureKey: pick.figureKey,
       stageId: pick.stageId,
       // An age-gate fallback-to-all pool is honest-but-thin → always "partial".
-      framing: fallbackToAll ? "partial" : framingFromConfidence(pick.confidence),
+      framing:
+        fallbackToAll || nearTie
+          ? "partial"
+          : framingFromConfidence(pick.confidence),
       confidence: pick.confidence,
       chosenBy: "rerank",
       ...debugScalars,
@@ -309,6 +327,7 @@ async function selectMatchPool(
       retrievalPoolSize: retrieval.stageAKeys.length,
       stageAKeys: retrieval.stageAKeys,
       stageBKeys: retrieval.stageBKeys,
+      stageBTopMargin: retrieval.stageBTopMargin,
     };
   } catch (error) {
     const reason = retrievalErrorReason(error);

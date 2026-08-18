@@ -133,6 +133,19 @@ export const THEME_CLAMP = { min: -0.25, max: 0.35 } as const;
 export const AGE_CAP = 0.2;
 export const AGE_SLOPE = 0.02;
 
+// Near-tie framing demotion (facetsrag path). When Stage B's top-2 adjusted scores are within
+// this RELATIVE margin ((s1−s2)/s1), retrieval could not separate its leaders and the rerank
+// pick — however confident — is framed "partial" instead of "definitive". Calibrated on the
+// 2026-08-17 live retrieval run over the 101 non-miss gold cases (margins in the introducing
+// commit): 0.035 covers both lee definitive-wrongs from the July challenger run (margins 0.0335
+// and 0.0147) plus five of the six other twin-topped cases, while demoting ~14/93 gold-at-1
+// cases from definitive to partial — those keep their match, only the framing hedges. The one
+// uncovered July definitive-wrong (butler-28 → bronte_c, margin 0.0565) is a gold-label
+// ambiguity, not a near-tie failure. Framing-only: the pick, confidence, and ordering are
+// untouched (recovery-asymmetry — this is a rerank-side honesty correction, not a retrieval
+// gate). Eval-tunable; recalibrate whenever lane scoring changes.
+export const STAGE_B_NEAR_TIE_MARGIN = 0.035;
+
 // Stage B output size: the top-K stages handed to the reranker. Tightened 12 → 8 at the
 // 50-figure library (2026-07-02 eval): with 12 candidates the rerank regressed on previously
 // green cases (lee definitive-wrongs, butler smoke leak); at 8 the choice set matches the

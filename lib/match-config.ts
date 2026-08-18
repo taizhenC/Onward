@@ -123,9 +123,12 @@ export const LANE_QUOTAS: Record<RetrievalLane, number> = {
 // max_s sim(q,s) + α·second_max_s sim(q,s). Averaging would blur the distinct anchors.
 export const MAX_NOT_MEAN_ALPHA = 0.15;
 
-// Theme lane (deterministic): clamp(wJaccard(user,themes) − λ·wJaccard(user,antiThemes), lo, hi).
+// Theme lane (deterministic): wJaccard(user,themes) − λ·wJaccard(user,antiThemes). The score is
+// consumed as RANK ORDER by RRF, and lib/facets-retrieval.ts keeps only strictly-positive scores
+// in the lane ranking — so clamping would be dead arithmetic. (The original design's THEME_CLAMP
+// constant was exactly that: exported, never applied. Removed rather than left contradicting the
+// implementation.)
 export const THEME_LAMBDA = 1.0;
-export const THEME_CLAMP = { min: -0.25, max: 0.35 } as const;
 
 // Soft age adjustment applied AFTER Stage B RRF, MULTIPLICATIVELY (additive would swamp the tiny
 // 1/(k+rank) RRF scores): adjusted = rrf · (1 − min(AGE_CAP, ageDistance·AGE_SLOPE)). At the ±10y

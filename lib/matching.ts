@@ -24,6 +24,7 @@ import {
 } from "./match-recovery";
 import {
   assertProductionStoryRecipeRuntime,
+  productionStoryRecipeExecutionPlan,
   storyRecipeExecutionPlan,
 } from "./story-recipe";
 import type { StoryRecipeManifest } from "./story-recipe";
@@ -137,6 +138,35 @@ async function matchWithRecipe(
   });
 }
 
+// How rerank candidates are ORDERED inside the prompt. "retrieval" (the historical behavior)
+// presents them best-first by retrieval score — which leaks stage-1 ranking into stage-2, the
+// same channel the anti-echo rule closes for tagger output: the 2026-07-02 challenger run shows
+// the reranker choosing pool position #1 in 98/104 trials, so retrieval order acts as a strong
+// prior on the judge. "alphabetical" neutralizes that leak (stable, content-independent order)
+// so eval runs can measure how much of each path's accuracy is genuine fact-reading vs
+// order-echo. Local/eval switch only: a served production process takes behavior exclusively
+// from its immutable recipe, which has no candidate-order axis, so it always presents
+// retrieval order regardless of stray environment values.
+export type RerankCandidateOrder = "retrieval" | "alphabetical";
+
+export function resolveRerankCandidateOrder(): RerankCandidateOrder {
+  if (productionStoryRecipeExecutionPlan()) return "retrieval";
+  return process.env.RERANK_CANDIDATE_ORDER?.trim().toLowerCase() === "alphabetical"
+    ? "alphabetical"
+    : "retrieval";
+}
+
+function orderRerankPool(
+  pool: FigureStageRow[],
+  order: RerankCandidateOrder,
+): FigureStageRow[] {
+  if (order !== "alphabetical") return pool;
+  return [...pool].sort(
+    (a, b) =>
+      a.figureKey.localeCompare(b.figureKey) || a.stageId.localeCompare(b.stageId),
+  );
+}
+
 async function matchWithExecution(
   input: MatchInput,
   mode: RetrievalMode,
@@ -153,7 +183,12 @@ async function matchWithExecution(
     mode,
     topK,
   );
-  const rerankPool = selection.rerankPool;
+  // Ordering applies to the PROMPT presentation only; stageAKeys/stageBKeys keep retrieval
+  // order — they are retrieval diagnostics and the eval's rank metrics depend on it.
+  const rerankPool = orderRerankPool(
+    selection.rerankPool,
+    resolveRerankCandidateOrder(),
+  );
   const debugScalars: DebugScalars = {
     candidateCount: rerankPool.length,
     ageCandidateCount: pool.length,

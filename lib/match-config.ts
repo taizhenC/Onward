@@ -104,6 +104,16 @@ export const WEIGHT_BOUNDS: Record<VectorLane, { min: number; max: number }> = {
   agency_state: { min: 0.02, max: 0.15 },
 };
 
+// Blend factor for projected facet lanes: laneScore = (1−α)·cos(rawFeeling, doc) +
+// α·cos(template, doc). α=1 — replacing the lane query outright, as the original design
+// sketched — measurably REGRESSES retrieval (2026-08-17 paired sweep, 119 cases: gold@1 95.0%
+// → 77.3%): the closed-template sentences are deliberately generic, so a replaced lane ranks
+// every same-bucket stage alike and the gold loses its user-specific margin. Blending keeps the
+// raw feeling as the anchor and lets the template pull the lane toward its facet subspace.
+// α=0 disables projection influence entirely. Value chosen by the paired sweep in the
+// introducing commit; eval-tunable.
+export const PROJECTION_BLEND_ALPHA = 0.35;
+
 // λ for the bounded-dynamic weighting: the maximum tilt facetImportance may apply to a lane's
 // base weight. The installed tagger identity keeps weightingMode="static"
 // (lib/facet-tagger-recipe-constants.ts), so nothing calls blendLaneWeights at runtime yet —

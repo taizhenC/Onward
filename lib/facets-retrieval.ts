@@ -9,6 +9,7 @@ import {
   FACETSRAG_TOP_K,
   LANE_QUOTAS,
   MAX_NOT_MEAN_ALPHA,
+  PROJECTION_BLEND_ALPHA,
   RRF_K,
   THEME_WEIGHT,
   type RetrievalLane,
@@ -26,12 +27,12 @@ import { weightedRrf, type LaneRanking } from "./rrf";
 
 // FacetsRAG retrieval. Six lanes over the age-gated pool: shape + 4 facets (vector cosine) +
 // theme (deterministic). The shape lane always queries with the raw user feeling (embedded once
-// per match). Each facet lane queries with its validated closed-template projection when the
-// caller supplies a ValidatedFacetSignal carrying one (queryMode=validated_projection — the
-// installed tagger identity), and falls back to the raw-feeling vector for that lane when the
-// signal is null, the facet's projection is null, or the template embed fails. Weights stay
-// static BASE_WEIGHTS (weightingMode=static; the bounded-dynamic helpers in match-config are
-// pre-staged but deliberately uncalled).
+// per match). When the caller supplies a ValidatedFacetSignal (queryMode=validated_projection —
+// the installed tagger identity), each facet lane with a surviving projection scores as a BLEND
+// of the raw-feeling cosine and the closed-template cosine (PROJECTION_BLEND_ALPHA); lanes
+// without a projection — null signal, nulled facet, or failed template embed — score raw-only.
+// Weights stay static BASE_WEIGHTS (weightingMode=static; the bounded-dynamic helpers in
+// match-config are pre-staged but deliberately uncalled).
 //
 //   Stage A — each lane contributes its top-N (LANE_QUOTAS) to a deduped pool, UNCONDITIONALLY
 //             (recovery-asymmetry: a retrieval miss is unrecoverable, so no lane is gated off).
@@ -106,23 +107,26 @@ export async function retrieveFacets(
     "retrieval_scoring",
   );
 
-  // Per-facet lane queries. resolveFacetQueryText is the branded exit of the validated signal:
-  // it returns the closed-template sentence for a facet with a surviving projection and the raw
-  // feeling otherwise, and refuses forged signals. Template vectors come from the memoized
-  // query-side catalog cache; a failed template embed degrades that lane to the raw vector.
-  const facetQueryVectors = {} as Record<FacetType, number[]>;
+  // Per-facet template vectors for lanes with a surviving projection. resolveFacetQueryText is
+  // the branded exit of the validated signal: it returns the closed-template sentence for a
+  // facet whose projection survived and the raw feeling otherwise, and refuses forged signals.
+  // Template vectors come from the memoized query-side catalog cache; a failed template embed
+  // degrades that lane to raw-only. The template BLENDS with the raw feeling at scoring time
+  // (PROJECTION_BLEND_ALPHA) rather than replacing it — replacement measurably regresses
+  // retrieval because the catalog sentences are deliberately generic: a replaced lane ranks
+  // every same-bucket stage alike and the gold loses its user-specific margin.
+  const facetTemplateVectors = {} as Record<FacetType, number[] | null>;
   let projectedLaneCount = 0;
   for (const facetType of FACET_TYPES) {
+    facetTemplateVectors[facetType] = null;
     const queryText = resolveFacetQueryText(input.feeling, signal, facetType);
     if (queryText !== input.feeling) {
       const vector = await templateQueryVector(queryText);
       if (vector) {
-        facetQueryVectors[facetType] = vector;
+        facetTemplateVectors[facetType] = vector;
         projectedLaneCount += 1;
-        continue;
       }
     }
-    facetQueryVectors[facetType] = query;
   }
 
   const stageByKey = new Map<string, FigureStageRow>();
@@ -147,13 +151,17 @@ export async function retrieveFacets(
     agency_state: [],
   };
   for (const facetType of FACET_TYPES) {
-    const laneQuery = facetQueryVectors[facetType];
+    const template = facetTemplateVectors[facetType];
     for (const item of poolWithKey) {
       const vector = item.vectors?.facets[facetType];
       if (!vector) continue;
+      const rawScore = dot(query, vector);
       facetScored[facetType].push({
         key: item.key,
-        score: dot(laneQuery, vector),
+        score: template
+          ? (1 - PROJECTION_BLEND_ALPHA) * rawScore +
+            PROJECTION_BLEND_ALPHA * dot(template, vector)
+          : rawScore,
       });
     }
   }

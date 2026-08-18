@@ -433,14 +433,19 @@ function checkStaticAuthorityBoundary(): void {
     "provider-specific LLM imports, re-exports, or dynamic loads escaped the facade",
   );
 
+  // The reviewed consumer allowlist (2026-08-17 wiring slice): the env-gated FacetsRAG
+  // retrieval call in lib/matching.ts is the ONLY permitted tagger consumer outside the facade.
+  // Served-production dormancy is still proven dynamically above (checkProductionHardOff), and
+  // matching's own gate additionally refuses under a production execution plan.
+  const matchingModule = join(process.cwd(), "lib", "matching.ts");
   const taggerConsumers = audits
     .filter(({ path }) => path !== llmFacade)
     .filter(({ exactSymbols }) => exactSymbols.has("tagAndExpand"))
     .map(({ path }) => path);
   assert.deepEqual(
     taggerConsumers,
-    [],
-    "production code imported, aliased, referenced, or invoked the dormant tagger",
+    [matchingModule],
+    "the tagger may be imported, aliased, referenced, or invoked ONLY by the reviewed FacetsRAG slice in lib/matching.ts",
   );
 
   const dominantModeConsumers = audits

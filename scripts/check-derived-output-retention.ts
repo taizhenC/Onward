@@ -155,7 +155,10 @@ function checkClosedRegistry(): void {
         responseSurface: "provider.hybrid_plan_response",
       },
       "gemini.query_embedding": {
-        requestSurfaces: ["input.raw_disclosure"],
+        // Raw disclosure (shape lane / facet fallback) or a server-owned closed-template
+        // sentence (lib/facet-query-embeddings.ts) — curated content on the query exchange is
+        // strictly less sensitive than the declared disclosure surface.
+        requestSurfaces: ["input.raw_disclosure", "content.curated_reference"],
         responseSurface: "embedding.query_vector",
       },
       "gemini.document_embedding": {
@@ -1150,7 +1153,12 @@ function checkStaticProviderCoverage(): void {
     story_validator: ["lib/story-generation.ts"],
     composition_plan_validator: ["lib/story-composer.ts"],
     story_artifact_builder: ["lib/story-composer.ts"],
-    retrieval_scoring: ["lib/facets-retrieval.ts"],
+    retrieval_scoring: [
+      "lib/facets-retrieval.ts",
+      // Closed-template query vectors: consumes the query-embedding token for server-owned
+      // catalog sentences only (membership enforced in the module).
+      "lib/facet-query-embeddings.ts",
+    ],
     provider_health_check: [
       "scripts/check-provider.ts",
       "scripts/check-embeddings.ts",
@@ -1399,6 +1407,7 @@ function auditOpaqueBoundaryCalls(sources: readonly AuditedSource[]): void {
       Readonly<Partial<Record<DerivedOutputConsumer, number>>>
     >
   > = {
+    "lib/facet-query-embeddings.ts": { retrieval_scoring: 1 },
     "lib/facets-retrieval.ts": { retrieval_scoring: 1 },
     "lib/matching.ts": { match_reducer: 1 },
     "lib/story-composer.ts": {
@@ -1425,6 +1434,9 @@ function auditOpaqueBoundaryCalls(sources: readonly AuditedSource[]): void {
     "lib/story-composer.ts": { validated_composition_plan: 1 },
   };
   const consumeOwnerExpected: Readonly<Record<string, readonly string[]>> = {
+    "lib/facet-query-embeddings.ts": [
+      "retrieval_scoring@templateQueryVector",
+    ],
     "lib/facets-retrieval.ts": ["retrieval_scoring@retrieveFacets"],
     "lib/matching.ts": ["match_reducer@matchWithExecution"],
     "lib/story-composer.ts": [
@@ -1863,10 +1875,14 @@ function auditCuratedEmbeddingBoundary(
       `${file.path} references the curated-document embedder outside its reviewed seeder`,
     );
     const queryReferences = identifierReferenceCount(file, "embedQuery");
+    // Reviewed query-embedder call sites: the boundary itself, FacetsRAG retrieval (raw-feeling
+    // query), the closed-template query cache (catalog sentences only, membership-enforced),
+    // and the synthetic health probe.
     const expectedQuery =
       file.path === "lib/embeddings.ts"
         ? 1
         : file.path === "lib/facets-retrieval.ts" ||
+            file.path === "lib/facet-query-embeddings.ts" ||
             file.path === "scripts/check-embeddings.ts"
           ? 2
           : 0;

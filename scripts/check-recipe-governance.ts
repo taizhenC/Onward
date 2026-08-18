@@ -1815,7 +1815,7 @@ function runManifestV2SelfChecks(state: GovernanceState): void {
       timeoutMs: 3000,
       signalSchemaVersion: "facet-signal-v1-2026-07",
       projectionSchemaVersion:
-        "facet-query-template-catalog-v1-2026-07",
+        "facet-query-template-catalog-v2-2026-08",
       queryMode: "validated_projection",
       weightingMode: "static",
       expansionEnabled: false,
@@ -2143,7 +2143,7 @@ try {
   main();
 } catch (error) {
   console.error(
-    `Recipe governance: FAIL — ${error instanceof Error ? error.message : "unknown error"}`,
+    `Recipe governance: FAIL 鈥?${error instanceof Error ? error.message : "unknown error"}`,
   );
   process.exit(1);
 }

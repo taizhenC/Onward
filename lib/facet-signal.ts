@@ -95,6 +95,12 @@ export const FACET_PROJECTION_TEMPLATE_CATALOG: Readonly<
       templateId: "failure_doubt",
       text: "Someone feared another failure would confirm their doubt.",
     },
+    // v2 addition (2026-08): the imposed-life core. The lee-cluster confusions (trapped in a
+    // role others chose vs a self-wrecked or thrust-upon path) had no template to land on.
+    {
+      templateId: "imposed_life",
+      text: "Someone felt they were living a life chosen by others rather than their own.",
+    },
   ],
   decision_shape: [
     {
@@ -162,6 +168,13 @@ export const FACET_PROJECTION_TEMPLATE_CATALOG: Readonly<
     {
       templateId: "direction_disrupted",
       text: "A sudden change disrupted the direction they had trusted.",
+    },
+    // v2 addition (2026-08): the liberation trigger. Every v1 trigger was a negative event;
+    // episodes that begin when a long constraint finally lifts (an inheritance, a recovery, a
+    // door opening) had no template and always fell back to the raw feeling.
+    {
+      templateId: "constraint_lifted",
+      text: "A long-standing constraint finally ended, leaving an unfamiliar freedom to choose.",
     },
   ],
   agency_state: [

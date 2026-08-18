@@ -140,7 +140,7 @@ async function checkValidRequestAndSignal(): Promise<void> {
       promptVersion: "facet-tagger-prompt-v1-2026-07",
       signalSchemaVersion: "facet-signal-v1-2026-07",
       projectionSchemaVersion:
-        "facet-query-template-catalog-v1-2026-07",
+        "facet-query-template-catalog-v2-2026-08",
       inputMaxBytes: 4096,
       responseMaxBytes: 65_536,
     },

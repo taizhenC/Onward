@@ -424,7 +424,7 @@ function validTaggerFixture(): TaggerIdentity {
     reasoningEffort: "low",
     timeoutMs: 3000,
     signalSchemaVersion: "facet-signal-v1-2026-07",
-    projectionSchemaVersion: "facet-query-template-catalog-v1-2026-07",
+    projectionSchemaVersion: "facet-query-template-catalog-v2-2026-08",
     queryMode: "validated_projection",
     weightingMode: "static",
     expansionEnabled: false,

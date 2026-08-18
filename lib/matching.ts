@@ -13,6 +13,7 @@ import {
   framingFromConfidence,
   requireApprovedProductionRecipe,
   RERANK_TOP_K,
+  STAGE_B_NEAR_TIE_MARGIN,
 } from "./match-config";
 import {
   pickFigure,
@@ -67,6 +68,9 @@ type RetrievalDebug = {
   // tagger enabled; 0 = raw-feeling lanes throughout). Reduced operational count — the signal
   // itself never leaves retrieval.
   taggerProjectedLanes?: number;
+  // Relative margin between Stage B's top two adjusted scores (facetsrag path only). Drives the
+  // near-tie framing demotion and lands in eval dumps for calibration.
+  stageBTopMargin?: number | null;
 };
 
 type DebugScalars = RetrievalDebug & {
@@ -74,6 +78,9 @@ type DebugScalars = RetrievalDebug & {
   ageCandidateCount: number;
   promptChars: number;
   ageFallback: boolean;
+  // Effective prompt presentation order for this trial, so run dumps self-describe: an
+  // "alphabetical" experiment run can never be mistaken for a baseline in later analysis.
+  candidateOrder: RerankCandidateOrder;
 };
 
 // Server-only, eval-only enrichment of MatchResult. resonance/gap are deliberately
@@ -147,6 +154,35 @@ async function matchWithRecipe(
   });
 }
 
+// How rerank candidates are ORDERED inside the prompt. "retrieval" (the historical behavior)
+// presents them best-first by retrieval score — which leaks stage-1 ranking into stage-2, the
+// same channel the anti-echo rule closes for tagger output: the 2026-07-02 challenger run shows
+// the reranker choosing pool position #1 in 98/104 trials, so retrieval order acts as a strong
+// prior on the judge. "alphabetical" neutralizes that leak (stable, content-independent order)
+// so eval runs can measure how much of each path's accuracy is genuine fact-reading vs
+// order-echo. Local/eval switch only: a served production process takes behavior exclusively
+// from its immutable recipe, which has no candidate-order axis, so it always presents
+// retrieval order regardless of stray environment values.
+export type RerankCandidateOrder = "retrieval" | "alphabetical";
+
+export function resolveRerankCandidateOrder(): RerankCandidateOrder {
+  if (productionStoryRecipeExecutionPlan()) return "retrieval";
+  return process.env.RERANK_CANDIDATE_ORDER?.trim().toLowerCase() === "alphabetical"
+    ? "alphabetical"
+    : "retrieval";
+}
+
+function orderRerankPool(
+  pool: FigureStageRow[],
+  order: RerankCandidateOrder,
+): FigureStageRow[] {
+  if (order !== "alphabetical") return pool;
+  return [...pool].sort(
+    (a, b) =>
+      a.figureKey.localeCompare(b.figureKey) || a.stageId.localeCompare(b.stageId),
+  );
+}
+
 async function matchWithExecution(
   input: MatchInput,
   mode: RetrievalMode,
@@ -163,18 +199,23 @@ async function matchWithExecution(
     mode,
     topK,
   );
-  const rerankPool = selection.rerankPool;
+  // Ordering applies to the PROMPT presentation only; stageAKeys/stageBKeys keep retrieval
+  // order — they are retrieval diagnostics and the eval's rank metrics depend on it.
+  const candidateOrder = resolveRerankCandidateOrder();
+  const rerankPool = orderRerankPool(selection.rerankPool, candidateOrder);
   const debugScalars: DebugScalars = {
     candidateCount: rerankPool.length,
     ageCandidateCount: pool.length,
     promptChars: sumBiographicalFactChars(rerankPool),
     ageFallback: fallbackToAll,
+    candidateOrder,
     retrievalMode: selection.retrievalMode,
     retrievalFallbackReason: selection.retrievalFallbackReason,
     retrievalPoolSize: selection.retrievalPoolSize,
     stageAKeys: selection.stageAKeys,
     stageBKeys: selection.stageBKeys,
     taggerProjectedLanes: selection.taggerProjectedLanes,
+    stageBTopMargin: selection.stageBTopMargin,
   };
   const start = performance.now();
 
@@ -207,11 +248,24 @@ async function matchWithExecution(
       );
     }
 
+    // Near-tie demotion (facetsrag path only — the margin is undefined on keyword): when Stage
+    // B's top two adjusted scores sit within STAGE_B_NEAR_TIE_MARGIN, retrieval itself could not
+    // separate its leaders. With a twin-dense library that is precisely where a confident rerank
+    // pick is least trustworthy — every 2026-07-02 definitive-wrong was a high-confidence choice
+    // out of a near-tied twin pool. The pick stands; only the framing is capped at "partial"
+    // (honest "fragment that rhymes" copy). Framing is never upgraded by this rule.
+    const nearTie =
+      typeof selection.stageBTopMargin === "number" &&
+      selection.stageBTopMargin < STAGE_B_NEAR_TIE_MARGIN;
+
     return {
       figureKey: pick.figureKey,
       stageId: pick.stageId,
       // An age-gate fallback-to-all pool is honest-but-thin → always "partial".
-      framing: fallbackToAll ? "partial" : framingFromConfidence(pick.confidence),
+      framing:
+        fallbackToAll || nearTie
+          ? "partial"
+          : framingFromConfidence(pick.confidence),
       confidence: pick.confidence,
       chosenBy: "rerank",
       ...debugScalars,
@@ -344,6 +398,7 @@ async function selectMatchPool(
       stageAKeys: retrieval.stageAKeys,
       stageBKeys: retrieval.stageBKeys,
       taggerProjectedLanes: retrieval.projectedLaneCount,
+      stageBTopMargin: retrieval.stageBTopMargin,
     };
   } catch (error) {
     const reason = retrievalErrorReason(error);

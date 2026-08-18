@@ -38,9 +38,10 @@ const HISTORICAL_V1_HASHES = Object.freeze({
 });
 
 // Content-addressed from the exact fixture below. This is intentionally a
-// literal, not a value computed by the assertion under test.
+// literal, not a value computed by the assertion under test. Recomputed for the
+// facet-query-template-catalog-v2-2026-08 projection schema release.
 const GOLDEN_V2_MANIFEST_SHA256 =
-  "6b2563507955e70a0794b1bf30e001f60b9154bd5cb3b80b1eb38cc55193d566";
+  "0161f1723f61cea6a11c8a01f7cd98d6dec5c9258089c61fe6b47152288de2de";
 
 type MutableJsonObject = Record<string, unknown>;
 
@@ -191,7 +192,7 @@ function validV2Fixture(): MutableJsonObject {
       reasoningEffort: "low",
       timeoutMs: 3000,
       signalSchemaVersion: "facet-signal-v1-2026-07",
-      projectionSchemaVersion: "facet-query-template-catalog-v1-2026-07",
+      projectionSchemaVersion: "facet-query-template-catalog-v2-2026-08",
       queryMode: "validated_projection",
       weightingMode: "static",
       expansionEnabled: false,
@@ -219,7 +220,7 @@ function checkValidV2(
     reasoningEffort: "low",
     timeoutMs: 3000,
     signalSchemaVersion: "facet-signal-v1-2026-07",
-    projectionSchemaVersion: "facet-query-template-catalog-v1-2026-07",
+    projectionSchemaVersion: "facet-query-template-catalog-v2-2026-08",
     queryMode: "validated_projection",
     weightingMode: "static",
     expansionEnabled: false,
@@ -456,7 +457,7 @@ function checkDormantFacetTaggerPlan(parsed: StoryRecipeManifestV2): void {
     timeoutMs: 3000,
     signalSchemaVersion: "facet-signal-v1-2026-07",
     projectionSchemaVersion:
-      "facet-query-template-catalog-v1-2026-07",
+      "facet-query-template-catalog-v2-2026-08",
     queryMode: "validated_projection",
     weightingMode: "static",
     expansionEnabled: false,

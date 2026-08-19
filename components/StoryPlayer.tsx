@@ -266,15 +266,17 @@ function PassageOrientation({
         : "Read this short passage at your own pace. Continue opens the next one.";
 
   return (
-    <header className="space-y-2 border-b border-[var(--color-ink-soft)]/20 pb-5">
-      <p className="font-ui text-xs uppercase tracking-widest text-[var(--color-ink-soft)]">
-        Chapter
-      </p>
+    <header className="border-b border-[var(--color-rule)] pb-3">
+      {/* A running head, the way a book carries the chapter name in the margin:
+          the reader can glance up and know where they are, and otherwise it stays
+          out of the way. Set in the body serif's real small caps rather than
+          letterspaced sans capitals — a spaced sans capital is the software
+          device, a small cap is the book one. */}
       <h2
         id="story-passage-heading"
         ref={headingRef}
         tabIndex={-1}
-        className="text-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+        className="text-[15px] tracking-[0.14em] text-[var(--color-ink-faint)] [font-variant-caps:small-caps] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
       >
         {CHAPTER_LABELS[role]}
       </h2>

@@ -601,7 +601,7 @@ export function IntakeForm({
           aria-describedby={
             ageError ? "intake-age-help intake-age-error" : "intake-age-help"
           }
-          className="min-h-11 w-32 border-b border-[var(--color-ink-soft)] bg-transparent px-1 py-2 focus-visible:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          className="font-body min-h-11 w-24 border-b-2 border-[var(--color-rule-strong)] bg-transparent px-1 py-2 text-[19px] focus-visible:border-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         />
         <p
           id="intake-age-help"
@@ -944,7 +944,7 @@ export function IntakeForm({
             disabled={
               submitting || (clarificationNeeded && clarification === null)
             }
-            className="min-h-11 border border-[var(--color-accent-deep)] px-6 py-3 font-ui text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
+            className="inline-flex min-h-11 items-center border border-[var(--color-accent-deep)] bg-[var(--color-accent-deep)] px-8 py-[11px] text-[15px] tracking-[0.14em] text-[var(--color-bg)] [font-variant-caps:small-caps] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
           >
             {submissionCopy
               ? submissionCopy.buttonLabel

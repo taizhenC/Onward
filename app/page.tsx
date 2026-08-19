@@ -112,7 +112,7 @@ export default function Home() {
         </p>
         <h1
           aria-label={HEADLINE}
-          className="mx-auto max-w-[13ch] text-[clamp(2.7rem,6.6vw,4.3rem)] font-semibold leading-[1.04] tracking-[-0.02em] text-balance"
+          className="mx-auto max-w-[13ch] text-[clamp(2.4rem,5.8vw,3.8rem)] font-normal leading-[1.08] tracking-[-0.012em] text-balance"
         >
           {/* One aria-hidden wrapper (not per-word) so browse-mode screen readers
               can't walk the word fragments; the aria-label above carries the
@@ -219,7 +219,7 @@ export default function Home() {
           <Diamond />
         </Reveal>
         <Reveal delay={0.1}>
-          <h2 className="mx-auto max-w-[24rem] text-[clamp(2rem,4.8vw,2.7rem)] font-semibold leading-[1.24] tracking-[-0.015em] text-balance">
+          <h2 className="mx-auto max-w-[24rem] text-[clamp(1.9rem,4.4vw,2.5rem)] font-normal leading-[1.26] tracking-[-0.01em] text-balance">
             {"You don't have to know who you are yet."}
           </h2>
         </Reveal>

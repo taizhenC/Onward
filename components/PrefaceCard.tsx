@@ -69,7 +69,7 @@ export function PrefaceCard({
           onVisible();
           onBegin();
         }}
-        className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] transition-colors"
+        className="inline-flex min-h-11 items-center border border-[var(--color-rule-strong)] px-7 py-[10px] text-[15px] tracking-[0.14em] text-[var(--color-accent-deep)] [font-variant-caps:small-caps] transition-colors hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]"
       >
         Begin
       </button>

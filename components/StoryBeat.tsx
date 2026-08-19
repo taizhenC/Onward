@@ -479,7 +479,7 @@ export function StoryBeat({
           type="button"
           onClick={handleAdvance}
           disabled={advancing}
-          className={`min-h-11 font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors ${
+          className={`inline-flex min-h-11 items-center border border-[var(--color-rule-strong)] px-7 py-[10px] text-[15px] tracking-[0.14em] text-[var(--color-accent-deep)] [font-variant-caps:small-caps] transition-colors ${
             advancing
               ? "pointer-events-none opacity-40"
               : "hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]"
@@ -524,7 +524,7 @@ function BeatFailure({
 }) {
   const { kind, phase } = failure;
   const actionClass =
-    "inline-flex min-h-11 items-center font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]";
+    "inline-flex min-h-11 items-center border border-[var(--color-rule-strong)] px-7 py-[10px] text-[15px] tracking-[0.14em] text-[var(--color-accent-deep)] [font-variant-caps:small-caps] transition-colors hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]";
 
   const recovery = beatFailureRecovery(kind);
   if (recovery === "restart") {

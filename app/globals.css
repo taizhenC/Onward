@@ -13,9 +13,11 @@
 }
 
 :root {
-  /* Build-stable local stacks. Webfonts may be bundled as local WOFF assets in a
-     later design-system pass, but production compilation must never fetch them. */
-  --font-body-stack: Georgia, "Times New Roman", serif;
+  /* Source Serif 4 is loaded from committed WOFF2 by app/fonts.ts, which exposes
+     it as --font-source-serif. Production compilation still fetches nothing: the
+     files live in app/fonts/ and next/font/local reads them off disk. The Georgia
+     stack stays behind it as the swap fallback. */
+  --font-body-stack: var(--font-source-serif), Georgia, "Times New Roman", serif;
   --font-ui-stack: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 

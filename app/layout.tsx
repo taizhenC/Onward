@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { MotionProvider } from "@/components/MotionProvider";
+import { sourceSerif } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={sourceSerif.variable}>
       <body>
         <MotionProvider>{children}</MotionProvider>
       </body>

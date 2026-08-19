@@ -109,7 +109,6 @@ export function StoryBeat({
   const hasMoreToReveal = !streamDone || visibleTokenCount < totalTokens;
   const canSkip =
     !shouldReduceMotion && !skipped && hasMoreToReveal && totalTokens > 0;
-  const showCaret = hasMoreToReveal && totalTokens > 0;
 
   // Network: deliver the current chunk without changing durable progress. The
   // reader's explicit Continue/Finish action below owns acknowledgement.
@@ -429,15 +428,14 @@ export function StoryBeat({
       ) : null}
 
       <div aria-busy={deliveryPending}>
-        <p className="whitespace-pre-wrap">
+        {/* The passage is the product; it should be the largest thing on the
+            screen, not the same size as the interface around it. At 20px inside
+            the 36rem column the line settles near 65 characters, which is the
+            range long-form reading research keeps landing on and which the
+            previous 18px setting overshot. text-pretty keeps a lone word off the
+            last line of a two-sentence passage, where an orphan is very visible. */}
+        <p className="whitespace-pre-wrap text-[20px] leading-[1.75] text-pretty">
           {revealedText}
-          {showCaret ? (
-            <span
-              aria-hidden
-              className="ml-[3px] inline-block h-[1.05em] w-[2px] bg-[var(--color-accent)] align-[-2px]"
-              style={{ animation: "ow-blink 1s step-end infinite" }}
-            />
-          ) : null}
           {hiddenText ? <span className="opacity-0">{hiddenText}</span> : null}
         </p>
       </div>

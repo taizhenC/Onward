@@ -128,18 +128,6 @@ label,
   animation: ow-fade 0.6s ease both;
 }
 
-/* Streaming caret. */
-@keyframes ow-blink {
-  0%,
-  48% {
-    opacity: 1;
-  }
-  49%,
-  100% {
-    opacity: 0;
-  }
-}
-
 /* Respect "reduce motion": stop continuous animations, drop the movement from
    one-shots (they snap to their end state so fade-ins stay visible), and turn
    off smooth scrolling. Catch-all rather than a class list because several

@@ -198,8 +198,15 @@ components/
 
 ## Visual conventions
 
-- Background `#FAF7F2`, text `#1F1B16`, accent `#9C6B3F`.
-- Body: Source Serif 4. UI: Inter. Max content width 36rem. Line-height 1.7.
+**Updated 2026-08-19** — the hexes below are the shipped tokens, not the original design intent. The old `#FAF7F2 / #1F1B16 / #9C6B3F` set is historical: `#9C6B3F` measures 4.28:1 on the paper and cannot be restored as a text color, and the rest were retuned in the warmth pass.
+
+- **Paper** `--color-bg #fbf8f0`, `--color-paper-deep #f2ecdd`. **Ink** `--color-ink #231a12`, `--color-ink-soft #615146`, `--color-ink-faint #746053`. **Accent** `--color-accent #8f5f33`, `--color-accent-deep #553019` (the filled-button surface). **Rules** `--color-rule #e6d7c5`, `--color-rule-strong #cab198`.
+- Paper and ink are **counter-rotated in hue** — paper near 89°, ink near 55–63° in OKLCH, about 27° apart. The prior palette spanned 7.4° and read as a warm-tinted greyscale. Keep new tones inside their family's hue range; a neutral grey anywhere in this palette reads as a mistake.
+- **Rules are never ink at an alpha.** Ink over paper at 10–40% composites down to 8–10% of available chroma and drags the hue back toward the paper's. Use the rule tokens.
+- Tokens must stay **6-digit hex inside the `@theme` block** — `check-core-accessibility` and `check-account-deletion` parse them with a regex, and both gate `--color-ink-faint` and `--color-accent` at ≥4.5:1 against `--color-bg`. Design in OKLCH, ship hex. Verify new text tones against **both** paper tones: the gate only checks `--color-bg`, which is how a 4.21:1 failure on `--color-paper-deep` survived undetected.
+- Body: **Source Serif 4**, self-hosted from `app/fonts/` via `next/font/local` (see `app/fonts/README.md`). UI: system sans via `--font-ui-stack`; Inter is not installed. Max content width 36rem. Line-height 1.7.
+- The roman keeps **`smcp` and `onum`**. Prefer real small caps (`[font-variant-caps:small-caps]`) over letterspaced sans capitals for running heads and controls — a spaced sans capital is the software device, a small cap is the book one. `.oldstyle-nums` switches on text figures.
+- **Never fetch a font at build time.** `next/font/google` downloads during compilation and is out; ESLint also fails the build on a `fonts.googleapis.com` link.
 - No shadows, no gradients, no emojis, no avatars, no chat affordances. It should feel like a small printed book.
 - Beats fade in. Decision options are softly bordered cards; unchosen ones fade out after pick.
 

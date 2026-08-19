@@ -675,7 +675,7 @@ export function IntakeForm({
             "intake-feeling-privacy",
             ...(feelingError ? ["intake-feeling-error"] : []),
           ].join(" ")}
-          className="block min-h-44 w-full resize-y border border-[var(--color-ink-soft)] bg-transparent p-4 focus-visible:border-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+          className="font-body block min-h-44 w-full resize-y border border-[var(--color-rule-strong)] bg-[var(--color-paper-deep)] p-6 text-[19px] leading-[1.7] focus-visible:border-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         />
         <p
           id="intake-feeling-count"

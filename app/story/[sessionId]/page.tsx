@@ -69,7 +69,7 @@ export default async function StoryPage({
           point in the read (matches the /signin and / mastheads). */}
       <div className="border-t-[3px] border-[var(--color-ink)]" />
       <div className="mx-auto w-full max-w-[1080px] px-8">
-        <div className="flex items-center justify-between border-b border-[var(--color-ink)]/12 py-[17px]">
+        <div className="flex items-center justify-between border-b border-[var(--color-rule)] py-[17px]">
           <Link
             href="/"
             className="inline-flex min-h-11 items-center text-[21px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]"
@@ -78,7 +78,7 @@ export default async function StoryPage({
           </Link>
           <Link
             href="/stories"
-            className="inline-flex min-h-11 items-center border-b border-[var(--color-ink)]/30 font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="inline-flex min-h-11 items-center border-b border-[var(--color-rule-strong)] font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             {owner.isAnonymous ? "Temporary stories" : "Your stories"}
           </Link>

@@ -22,7 +22,7 @@ function Ornament({ pulse = false }: { pulse?: boolean }) {
   const line = pulse ? "w-9" : "w-8";
   return (
     <div className="mb-6 flex items-center justify-center gap-3" aria-hidden>
-      <span className={`block h-px ${line} bg-[var(--color-ink)]/30`} />
+      <span className={`block h-px ${line} bg-[var(--color-rule-strong)]`} />
       <span
         className={`leading-none text-[var(--color-accent)] ${
           pulse ? "diamond-pulse text-[10px]" : "text-[9px]"
@@ -30,7 +30,7 @@ function Ornament({ pulse = false }: { pulse?: boolean }) {
       >
         ◆
       </span>
-      <span className={`block h-px ${line} bg-[var(--color-ink)]/30`} />
+      <span className={`block h-px ${line} bg-[var(--color-rule-strong)]`} />
     </div>
   );
 }
@@ -47,7 +47,7 @@ const headingClasses =
   "text-[clamp(2.1rem,5vw,2.8rem)] font-semibold leading-[1.08] tracking-[-0.018em]";
 
 const inputClasses =
-  "block w-full border-b border-[var(--color-ink)]/40 bg-transparent px-[2px] py-2 font-body text-[20px] text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink)]";
+  "block w-full border-b border-[var(--color-rule-strong)] bg-transparent px-[2px] py-2 font-body text-[20px] text-[var(--color-ink)] outline-none transition-colors placeholder:text-[var(--color-ink-faint)] focus:border-[var(--color-ink)]";
 
 const labelClasses =
   "mb-[10px] block font-ui text-[11px] font-medium uppercase tracking-[0.18em] text-[var(--color-ink-soft)]";
@@ -237,7 +237,7 @@ export function SignInForm({ linkError }: Props) {
             className={`border px-8 py-[14px] font-ui text-xs font-medium uppercase tracking-[0.16em] transition-colors ${
               canSubmit
                 ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-bg)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)]"
-                : "cursor-not-allowed border-[var(--color-ink)]/30 bg-transparent text-[var(--color-ink)] opacity-40"
+                : "cursor-not-allowed border-[var(--color-rule-strong)] bg-transparent text-[var(--color-ink)] opacity-40"
             }`}
           >
             {sending
@@ -273,7 +273,7 @@ export function SignInForm({ linkError }: Props) {
         )}
       </div>
 
-      <div className="mt-10 border-t border-[var(--color-ink)]/12 pt-[22px]">
+      <div className="mt-10 border-t border-[var(--color-rule)] pt-[22px]">
         <Link
           href="/begin"
           className="font-ui text-[13px] tracking-[0.02em] text-[var(--color-ink-soft)] transition-colors hover:text-[var(--color-ink)]"

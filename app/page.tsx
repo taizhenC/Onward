@@ -40,9 +40,9 @@ const STEPS = [
 function Diamond() {
   return (
     <div className="mb-6 flex items-center justify-center gap-3" aria-hidden>
-      <span className="block h-px w-[34px] bg-[var(--color-ink)]/[0.32]" />
+      <span className="block h-px w-[34px] bg-[var(--color-rule-strong)]" />
       <span className="text-[9px] leading-none text-[var(--color-accent)]">◆</span>
-      <span className="block h-px w-[34px] bg-[var(--color-ink)]/[0.32]" />
+      <span className="block h-px w-[34px] bg-[var(--color-rule-strong)]" />
     </div>
   );
 }
@@ -66,7 +66,7 @@ export default function Home() {
       {/* Masthead */}
       <div className="border-t-[3px] border-[var(--color-ink)]" />
       <div className="mx-auto w-full max-w-[1080px] px-8">
-        <div className="flex items-center justify-between border-b border-[var(--color-ink)]/[0.16] py-[17px]">
+        <div className="flex items-center justify-between border-b border-[var(--color-rule)] py-[17px]">
           <span
             className="inline-flex items-center gap-[7px] whitespace-nowrap text-[22px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]"
             data-onward-brand-lockup
@@ -90,7 +90,7 @@ export default function Home() {
             </span>
             <Link
               href="/signin"
-              className="border-b border-[var(--color-ink)]/30 pb-[2px] font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              className="border-b border-[var(--color-rule-strong)] pb-[2px] font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
             >
               Sign in
             </Link>
@@ -146,7 +146,7 @@ export default function Home() {
           <StoryStartButton label="Read a story" />
           <a
             href="#how"
-            className="border-b border-[var(--color-ink)]/40 pb-[3px] font-ui text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+            className="border-b border-[var(--color-rule-strong)] pb-[3px] font-ui text-xs font-medium uppercase tracking-[0.14em] text-[var(--color-ink)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
           >
             How it works
           </a>
@@ -166,7 +166,7 @@ export default function Home() {
       {/* How it works */}
       <section
         id="how"
-        className="border-y border-[var(--color-ink)]/10 bg-[var(--color-paper-deep)]"
+        className="border-y border-[var(--color-rule)] bg-[var(--color-paper-deep)]"
       >
         <div className="mx-auto max-w-[1080px] px-8 py-[84px]">
           <Reveal>
@@ -237,7 +237,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[var(--color-ink)]/[0.14]">
+      <footer className="border-t border-[var(--color-rule)]">
         <div className="mx-auto max-w-[1080px] px-8 pb-[60px] pt-[30px]">
           <p className="mb-[22px] max-w-[40rem] font-ui text-[12.5px] leading-[1.7] text-[var(--color-ink-faint)]">
             In crisis right now? Please reach for people who can help —{" "}
@@ -255,7 +255,7 @@ export default function Home() {
               </span>
             ))}
           </p>
-          <div className="flex flex-wrap items-baseline justify-between gap-4 border-t border-[var(--color-ink)]/10 pt-[18px]">
+          <div className="flex flex-wrap items-baseline justify-between gap-4 border-t border-[var(--color-rule)] pt-[18px]">
             <span className="text-[17px] font-semibold text-[var(--color-ink)]">
               Onward
             </span>

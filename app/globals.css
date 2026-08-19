@@ -20,6 +20,15 @@
      accent-colored 14px status/action text remains WCAG AA on both surfaces. */
   --color-accent: #8f5f33;
   --color-paper-deep: #f2ecdd;
+  /* Rules drawn as their own warm tones rather than as ink at an alpha. Ink over
+     paper at 10-40% lands on 8-10% of the chroma sRGB offers at that lightness
+     and drags the hue back toward the paper's, so every hairline in the app has
+     been a neutral grey pretending to be warm. These hold the same lightness the
+     alpha versions produced -- 88.6% and 77.5% -- while sitting in the ink hue
+     family, so a rule reads as drawn in the same ink as the text.
+     Decorative only: never used behind or as text. */
+  --color-rule: #e6d7c5;
+  --color-rule-strong: #cab198;
 }
 
 :root {

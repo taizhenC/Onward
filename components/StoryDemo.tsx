@@ -83,8 +83,10 @@ function wordCount(page: DemoPage): number {
   );
 }
 
+// Matches the reader's page-turn treatment (StoryBeat, PrefaceCard) so the demo
+// on the landing page rehearses the real control rather than a lookalike.
 const outlineButton =
-  "font-ui text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] border border-[var(--color-accent-deep)] px-[26px] py-[13px] transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]";
+  "inline-flex min-h-11 items-center border border-[var(--color-rule-strong)] px-7 py-[10px] text-[15px] tracking-[0.14em] text-[var(--color-accent-deep)] [font-variant-caps:small-caps] transition-colors hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]";
 
 export function StoryDemo() {
   const [view, setView] = useState<"intro" | "preface" | "reading">("intro");
@@ -188,7 +190,7 @@ export function StoryDemo() {
   const showCaret = isProse && streaming;
 
   return (
-    <div className="mx-auto flex min-h-[460px] max-w-[640px] flex-col border border-[var(--color-rule)] bg-[var(--color-bg)] px-10 py-[42px] text-left shadow-[0_1px_0_rgba(31,27,22,0.04)]">
+    <div className="mx-auto flex min-h-[460px] max-w-[640px] flex-col border border-[var(--color-rule)] bg-[var(--color-bg)] px-10 py-[42px] text-left">
       {view === "intro" ? (
         <div className="ow-fade flex flex-1 flex-col justify-center">
           <p className="mb-[22px] font-ui text-[11px] font-medium uppercase tracking-[0.16em] text-[var(--color-ink-soft)]">

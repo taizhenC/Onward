@@ -29,6 +29,11 @@
      Decorative only: never used behind or as text. */
   --color-rule: #e6d7c5;
   --color-rule-strong: #cab198;
+  /* The filled surface of a button. A near-black rectangle was the coldest thing
+     on every screen -- the one element that still read as software. This is the
+     accent taken down to 35% lightness: unmistakably the same brown, and 10.85:1
+     against --color-bg, so reversed-out button text stays well past AAA. */
+  --color-accent-deep: #553019;
 }
 
 :root {

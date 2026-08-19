@@ -236,7 +236,7 @@ export function SignInForm({ linkError }: Props) {
             disabled={!canSubmit}
             className={`border px-8 py-[14px] font-ui text-xs font-medium uppercase tracking-[0.16em] transition-colors ${
               canSubmit
-                ? "border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-bg)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)]"
+                ? "border-[var(--color-accent-deep)] bg-[var(--color-accent-deep)] text-[var(--color-bg)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)]"
                 : "cursor-not-allowed border-[var(--color-rule-strong)] bg-transparent text-[var(--color-ink)] opacity-40"
             }`}
           >

@@ -214,7 +214,7 @@ export default function PrivacyPage() {
         <div className="flex flex-wrap items-center gap-5 border-t border-[var(--color-ink-soft)]/30 pt-8">
           <Link
             href="/begin"
-            className="font-ui inline-flex min-h-11 items-center border border-[var(--color-ink)] px-5 py-3 text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            className="font-ui inline-flex min-h-11 items-center border border-[var(--color-accent-deep)] px-5 py-3 text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
           >
             Begin a story
           </Link>

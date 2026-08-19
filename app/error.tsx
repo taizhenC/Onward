@@ -19,7 +19,7 @@ export default function ErrorPage({
       <button
         type="button"
         onClick={reset}
-        className="font-ui text-sm uppercase tracking-wider border border-[var(--color-ink)] px-4 py-2 inline-block hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] transition-colors"
+        className="font-ui text-sm uppercase tracking-wider border border-[var(--color-accent-deep)] px-4 py-2 inline-block hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] transition-colors"
       >
         Try again
       </button>

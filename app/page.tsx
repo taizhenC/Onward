@@ -48,7 +48,7 @@ function Diamond() {
 }
 
 const filledButton =
-  "inline-block font-ui text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-bg)] bg-[var(--color-ink)] border border-[var(--color-ink)] px-[30px] py-[14px] transition-colors hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)]";
+  "inline-block font-ui text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-bg)] bg-[var(--color-accent-deep)] border border-[var(--color-accent-deep)] px-[30px] py-[14px] transition-colors hover:bg-[var(--color-accent)] hover:border-[var(--color-accent)]";
 
 function StoryStartButton({ label }: { label: string }) {
   return (

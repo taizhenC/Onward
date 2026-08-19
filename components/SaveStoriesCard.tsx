@@ -188,7 +188,7 @@ export function SaveStoriesCard({
             <button
               type="submit"
               disabled={!canRequestConfirmation}
-              className="font-ui min-h-11 border border-[var(--color-ink)] px-5 py-2 text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
+              className="font-ui min-h-11 border border-[var(--color-accent-deep)] px-5 py-2 text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-30"
             >
               {requestMode === "sending"
                 ? "Sending…"
@@ -288,7 +288,7 @@ function UnavailableState({
             type="button"
             onClick={onRetry}
             disabled={refreshing}
-            className="font-ui min-h-11 border border-[var(--color-ink)] px-5 py-2 text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-wait disabled:opacity-50"
+            className="font-ui min-h-11 border border-[var(--color-accent-deep)] px-5 py-2 text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-wait disabled:opacity-50"
           >
             {refreshing ? "Checking…" : "Check again"}
           </button>

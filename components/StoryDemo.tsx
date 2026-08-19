@@ -84,7 +84,7 @@ function wordCount(page: DemoPage): number {
 }
 
 const outlineButton =
-  "font-ui text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] border border-[var(--color-ink)] px-[26px] py-[13px] transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]";
+  "font-ui text-xs font-medium uppercase tracking-[0.16em] text-[var(--color-ink)] border border-[var(--color-accent-deep)] px-[26px] py-[13px] transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]";
 
 export function StoryDemo() {
   const [view, setView] = useState<"intro" | "preface" | "reading">("intro");

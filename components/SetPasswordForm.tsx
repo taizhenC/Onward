@@ -110,7 +110,7 @@ export function SetPasswordForm() {
         <button
           type="submit"
           disabled={!valid || mode === "saving"}
-          className="font-ui min-h-11 text-sm uppercase tracking-wider border border-[var(--color-ink)] px-5 py-2 hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="font-ui min-h-11 text-sm uppercase tracking-wider border border-[var(--color-accent-deep)] px-5 py-2 hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           {mode === "saving" ? "Saving…" : "Save password"}
         </button>

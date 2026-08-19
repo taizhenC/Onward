@@ -379,7 +379,7 @@ export function ResonanceFeedbackCard({
           <button
             type="button"
             onClick={() => void submit({ sessionId, verdict: "felt_close" })}
-            className="min-h-11 border border-[var(--color-ink)] px-4 py-3 font-ui text-sm transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
+            className="min-h-11 border border-[var(--color-accent-deep)] px-4 py-3 font-ui text-sm transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
           >
             Yes, it felt close
           </button>
@@ -442,7 +442,7 @@ export function ResonanceFeedbackCard({
                   });
                 }
               }}
-              className="min-h-11 border border-[var(--color-ink)] px-5 py-2 font-ui text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-40"
+              className="min-h-11 border border-[var(--color-accent-deep)] px-5 py-2 font-ui text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-40"
             >
               Send feedback
             </button>
@@ -863,7 +863,7 @@ function isReadyResponse(
 }
 
 const primaryButtonClass =
-  "min-h-11 border border-[var(--color-ink)] px-5 py-2 font-ui text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-wait disabled:opacity-50";
+  "min-h-11 border border-[var(--color-accent-deep)] px-5 py-2 font-ui text-sm uppercase tracking-wider transition-colors hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-wait disabled:opacity-50";
 const secondaryButtonClass =
   "min-h-11 border border-[var(--color-ink-soft)] px-5 py-2 font-ui text-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)] disabled:cursor-wait disabled:opacity-50";
 const textLinkClass =

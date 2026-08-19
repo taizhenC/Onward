@@ -28,7 +28,12 @@ body {
   font-family: var(--font-body-stack);
   line-height: 1.7;
   font-size: 18px;
-  -webkit-font-smoothing: antialiased;
+  /* Source Serif 4 carries an optical-size axis (8-60). This is the browser
+     default, but state it: it is the reason this face was chosen, and a stray
+     reset turning it off would quietly return the hero to a blown-up text cut.
+     No `-webkit-font-smoothing: antialiased` here on purpose — it thins serif
+     stems on macOS, which fights a face whose display cut is already fine. */
+  font-optical-sizing: auto;
 }
 
 html {
@@ -47,6 +52,16 @@ label,
    (preflight + the rule above default them to the UI stack). */
 .font-body {
   font-family: var(--font-body-stack);
+}
+
+/* Text figures — the numerals that sit on the baseline with ascenders and
+   descenders, the way a book sets them, instead of the uniform lining figures a
+   spreadsheet wants. Used on the "how it works" step numerals and the demo's
+   reading time. The class was already in the markup but had never been defined:
+   Georgia has no `onum` feature, so there was nothing to switch on. The vendored
+   roman keeps it. */
+.oldstyle-nums {
+  font-variant-numeric: oldstyle-nums;
 }
 
 ::selection {

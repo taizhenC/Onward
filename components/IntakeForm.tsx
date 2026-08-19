@@ -677,12 +677,19 @@ export function IntakeForm({
           ].join(" ")}
           className="font-body block min-h-44 w-full resize-y border border-[var(--color-rule-strong)] bg-[var(--color-paper-deep)] p-6 text-[19px] leading-[1.7] focus-visible:border-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]"
         />
+        {/* Held back until there is something to count. An empty box that already
+            says 0/1000 reads as a quota to fill, which is the opposite of what
+            'a few sentences are enough' is trying to say. The node and its id
+            stay put either way, so aria-describedby still resolves and a screen
+            reader still hears the limit. */}
         <p
           id="intake-feeling-count"
           className={`text-right font-ui text-xs ${
-            feelingLength > INTAKE_MAX_FEELING_LENGTH
-              ? "text-[var(--color-accent)]"
-              : "text-[var(--color-ink-soft)]"
+            feelingLength === 0
+              ? "sr-only"
+              : feelingLength > INTAKE_MAX_FEELING_LENGTH
+                ? "text-[var(--color-accent)]"
+                : "text-[var(--color-ink-faint)]"
           }`}
         >
           {feelingLength}/{INTAKE_MAX_FEELING_LENGTH}

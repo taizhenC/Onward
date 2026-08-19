@@ -278,10 +278,11 @@ function PassageOrientation({
       >
         {CHAPTER_LABELS[role]}
       </h2>
-      <p
-        id="story-passage-cue"
-        className="font-ui text-sm leading-relaxed text-[var(--color-ink-soft)]"
-      >
+      {/* Orientation, not decoration. The section is aria-describedby this node,
+          so a screen-reader user still hears how long the passage is and what
+          Continue will do — but a sighted reader no longer meets a line of
+          interface copy above two sentences of story. */}
+      <p id="story-passage-cue" className="sr-only">
         {cue}
       </p>
     </header>

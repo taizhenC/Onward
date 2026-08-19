@@ -484,7 +484,7 @@ export function StoryBeat({
           className={`min-h-11 font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors ${
             advancing
               ? "pointer-events-none opacity-40"
-              : "hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]"
+              : "hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]"
           }`}
         >
           {advancing
@@ -526,7 +526,7 @@ function BeatFailure({
 }) {
   const { kind, phase } = failure;
   const actionClass =
-    "inline-flex min-h-11 items-center font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors hover:border-[var(--color-ink)] hover:bg-[var(--color-ink)] hover:text-[var(--color-bg)]";
+    "inline-flex min-h-11 items-center font-ui text-sm uppercase tracking-wider border border-[var(--color-ink-soft)] px-5 py-2 transition-colors hover:border-[var(--color-accent-deep)] hover:bg-[var(--color-accent-deep)] hover:text-[var(--color-bg)]";
 
   const recovery = beatFailureRecovery(kind);
   if (recovery === "restart") {

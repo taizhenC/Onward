@@ -20,7 +20,7 @@ export default async function SignInPage({
       {/* Masthead — full-bleed rule, then a wider column than the body below. */}
       <div className="border-t-[3px] border-[var(--color-ink)]" />
       <div className="mx-auto w-full max-w-[1080px] px-8">
-        <div className="flex items-center justify-between border-b border-[var(--color-ink)]/12 py-[17px]">
+        <div className="flex items-center justify-between border-b border-[var(--color-rule)] py-[17px]">
           <Link
             href="/"
             className="text-[21px] font-semibold tracking-[-0.01em] text-[var(--color-ink)]"
@@ -40,7 +40,7 @@ export default async function SignInPage({
       {/* Crisis resources stay visible without any detection, per the privacy
           promise — copy lives in lib/safety.ts so it never drifts from /. */}
       <footer className="mx-auto w-full max-w-[34rem] px-7 pb-14">
-        <p className="border-t border-[var(--color-ink)]/10 pt-[22px] font-ui text-[12px] leading-[1.7] text-[var(--color-ink-faint)]">
+        <p className="border-t border-[var(--color-rule)] pt-[22px] font-ui text-[12px] leading-[1.7] text-[var(--color-ink-faint)]">
           In crisis right now? Please reach for people who can help —{" "}
           {CRISIS_RESOURCES.map((resource, index) => (
             <span key={resource.id}>

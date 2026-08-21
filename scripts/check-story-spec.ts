@@ -1192,6 +1192,7 @@ function checkPublicationBoundary(failures: string[]): void {
         )
       : "";
   const storageGraphRequirements = [
+    "authenticator_member.member <> authority_owner",
     "storage_role.rolname = 'supabase_storage_admin' and storage_role.oid = authenticator_member.member",
     "storage_membership.roleid in ( 'service_role'::regrole, authenticator_role.oid )",
     "and not exists ( select 1 from pg_catalog.pg_auth_members storage_membership where storage_membership.roleid = authenticator_role.oid and storage_membership.member = storage_role.oid )",
@@ -2747,33 +2748,40 @@ function checkPublicationBoundary(failures: string[]): void {
           healthStorageGraphEnd,
         )
       : "";
+  const canonicalHealthStorageGraph = healthStorageGraph.replace(
+    "authenticator_member.member <> publication_manifest.authority_owner",
+    "authenticator_member.member <> authority_owner",
+  );
   if (
     !healthStorageGraph ||
-    healthStorageGraph !== preflightStorageGraph ||
+    !healthStorageGraph.includes(
+      "authenticator_member.member <> publication_manifest.authority_owner",
+    ) ||
+    canonicalHealthStorageGraph !== preflightStorageGraph ||
     storageGraphRequirements.some(
-      (required) => !healthStorageGraph.includes(required),
+      (required) => !canonicalHealthStorageGraph.includes(required),
     ) ||
     countOccurrences(
-      healthStorageGraph,
+      canonicalHealthStorageGraph,
       "storage_membership.roleid = 'service_role'::regrole",
     ) !== 2 ||
     countOccurrences(
-      healthStorageGraph,
+      canonicalHealthStorageGraph,
       "storage_membership.roleid = authenticator_role.oid",
     ) !== 2 ||
     countOccurrences(
-      healthStorageGraph,
+      canonicalHealthStorageGraph,
       "not storage_membership.admin_option",
     ) !== 2 ||
     countOccurrences(
-      healthStorageGraph,
+      canonicalHealthStorageGraph,
       "pg_catalog.to_jsonb(storage_membership) ->> 'inherit_option'",
     ) !== 2 ||
     countOccurrences(
-      healthStorageGraph,
+      canonicalHealthStorageGraph,
       "pg_catalog.to_jsonb(storage_membership) ->> 'set_option'",
     ) !== 2 ||
-    countOccurrences(healthStorageGraph, "storage_role.rolinherit") !== 2
+    countOccurrences(canonicalHealthStorageGraph, "storage_role.rolinherit") !== 2
   ) {
     failures.push(
       "publication health must mirror the exact mutually-exclusive direct-or-indirect storage-admin graph and options",

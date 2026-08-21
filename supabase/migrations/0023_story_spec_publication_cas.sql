@@ -214,7 +214,6 @@ begin
         select 1
         from pg_catalog.pg_auth_members authenticator_member
         where authenticator_member.roleid = authenticator_role.oid
-          and authenticator_member.member <> authority_owner
           and not exists (
             select 1
             from pg_catalog.pg_roles storage_role
@@ -2310,8 +2309,6 @@ as $fn$
           select 1
           from pg_catalog.pg_auth_members authenticator_member
           where authenticator_member.roleid = authenticator_role.oid
-            and authenticator_member.member <>
-              publication_manifest.authority_owner
             and not exists (
               select 1
               from pg_catalog.pg_roles storage_role

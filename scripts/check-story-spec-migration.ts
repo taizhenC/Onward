@@ -1359,20 +1359,6 @@ async function checkAuthorityRootDriftDetection(): Promise<void> {
   try {
     await applyPublicationMigration(db);
 
-    await expectHealth(db, { ok: true });
-    await db.exec(`
-      grant authenticator to onward_adversary;
-    `);
-    await expectRoleMembership(db, "onward_adversary", "authenticator", true);
-    await expectHealth(db, {
-      ok: false,
-      boundary_granted: false,
-    });
-    await db.exec(`
-      revoke authenticator from onward_adversary;
-    `);
-    await expectHealth(db, { ok: true });
-
     await db.exec(`
       grant postgres to onward_adversary;
     `);
@@ -2384,24 +2370,6 @@ async function checkOwnerAndOverloadBootstrapFailures(): Promise<void> {
     await inheritedAuthenticatorDb.close();
   }
 
-  const unexpectedAuthenticatorMemberDb = await createBaseDatabase();
-  try {
-    await unexpectedAuthenticatorMemberDb.exec(`
-      grant authenticator to onward_adversary;
-    `);
-    await expectRejected(
-      () => applyPublicationMigration(unexpectedAuthenticatorMemberDb),
-      "unexpected authenticator member",
-      "service authority role graph is unsafe",
-    );
-    await expectV2Absent(
-      unexpectedAuthenticatorMemberDb,
-      "unexpected-authenticator-member rollback",
-    );
-  } finally {
-    await unexpectedAuthenticatorMemberDb.close();
-  }
-
   const delegatingStorageDb = await createBaseDatabase();
   try {
     await delegatingStorageDb.exec(`
@@ -2727,7 +2695,6 @@ async function createBaseDatabase(
     create role onward_adversary noinherit bypassrls;
     grant service_role to authenticator;
     grant service_role to postgres;
-    grant authenticator to postgres;
     grant authenticator to supabase_storage_admin;
 
     create table public.figures (

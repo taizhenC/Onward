@@ -277,6 +277,44 @@ function main(): void {
     }
   }
 
+  const playbackSource = readFileSync(
+    fileURLToPath(new URL("../lib/story-playback.ts", import.meta.url)),
+    "utf8",
+  ).replace(/\s+/g, " ");
+  const databaseFigureSource = readFileSync(
+    fileURLToPath(new URL("../lib/figures-source-db.ts", import.meta.url)),
+    "utf8",
+  ).replace(/\s+/g, " ");
+  const legacyLoaderStart = databaseFigureSource.indexOf(
+    "export async function loadOwnedLegacyDbStage",
+  );
+  const legacyLoaderEnd = databaseFigureSource.indexOf(
+    "export function resetDbFigureCache",
+    legacyLoaderStart,
+  );
+  const legacyLoader =
+    legacyLoaderStart >= 0 && legacyLoaderEnd > legacyLoaderStart
+      ? databaseFigureSource.slice(legacyLoaderStart, legacyLoaderEnd)
+      : "";
+  if (
+    !playbackSource.includes("getOwnedLegacyPlaybackStage({") ||
+    !playbackSource.includes("sessionId: session.sessionId") ||
+    !playbackSource.includes("userId: session.userId") ||
+    !legacyLoader.includes('.eq("session_id", input.sessionId)') ||
+    !legacyLoader.includes('.eq("user_id", input.userId)') ||
+    !legacyLoader.includes('.is("story_artifact_id", null)') ||
+    !legacyLoader.includes("ownedSession.figure_key !== input.figureKey") ||
+    !legacyLoader.includes("ownedSession.stage_id !== input.stageId") ||
+    legacyLoader.includes('.eq("status", "published")') ||
+    !databaseFigureSource.includes(
+      '.from("figure_stages").select("*").eq("status", "published")',
+    )
+  ) {
+    failures.push(
+      "legacy playback must owner-bind one pre-artifact session without reopening draft stages to matching",
+    );
+  }
+
   console.log("Onward StoryArtifact validator");
   console.log("==============================");
   if (failures.length > 0) {
@@ -289,6 +327,7 @@ function main(): void {
   console.log(`PASS ${FIGURE_STAGES.length}/${FIGURE_STAGES.length} tamper attempts rejected`);
   console.log("PASS generated opening privacy and tone rejections use closed reason enums");
   console.log("PASS static migration shape includes RPC-only immutable/bound persistence");
+  console.log("PASS owned legacy playback remains readable outside the public draft catalog");
 }
 
 function storedEnvelope(

@@ -2,7 +2,11 @@ import "server-only";
 import type { ClientBeat, ClientFigureOutline, FigureStageRow } from "./types";
 import { AGE_TOLERANCE_YEARS } from "./match-config";
 import { loadConstStages } from "./figures-source-const";
-import { loadDbStages, resetDbFigureCache } from "./figures-source-db";
+import {
+  loadDbStages,
+  loadOwnedLegacyDbStage,
+  resetDbFigureCache,
+} from "./figures-source-db";
 import { persistenceMode } from "./persistence";
 
 if (typeof window !== "undefined") {
@@ -42,6 +46,26 @@ export async function getByKey(
   const stages = await loadStages();
   return (
     stages.find((s) => s.figureKey === figureKey && s.stageId === stageId) ?? null
+  );
+}
+
+export async function getOwnedLegacyPlaybackStage(
+  input: Readonly<{
+    sessionId: string;
+    userId: string;
+    figureKey: string;
+    stageId: string;
+  }>,
+): Promise<FigureStageRow | null> {
+  if (persistenceMode() === "supabase") {
+    return loadOwnedLegacyDbStage(input);
+  }
+  const stages = await loadConstStages();
+  return (
+    stages.find(
+      (stage) =>
+        stage.figureKey === input.figureKey && stage.stageId === input.stageId,
+    ) ?? null
   );
 }
 

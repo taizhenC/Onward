@@ -39,6 +39,12 @@ type FigureStageDbRow = {
   status: string;
 };
 
+type LegacySessionProjection = {
+  figure_key: string;
+  stage_id: string;
+  story_artifact_id: string | null;
+};
+
 export async function loadDbStages(): Promise<FigureStageRow[]> {
   if (globalThis.__onwardFigureCache) return globalThis.__onwardFigureCache;
   if (globalThis.__onwardFigureCachePromise) {
@@ -81,6 +87,67 @@ export async function loadDbStages(): Promise<FigureStageRow[]> {
   globalThis.__onwardFigureCachePromise = pendingLoad;
 
   return globalThis.__onwardFigureCachePromise;
+}
+
+// Pre-0005 sessions have no immutable StoryArtifact and must replay their
+// original Curated Reference. This lookup is deliberately separate from the
+// published matching cache: it first re-proves the exact owner/session/null-
+// artifact identity, then reads only that session's stage regardless of its
+// current editorial publication status. Draft stages never enter loadDbStages.
+export async function loadOwnedLegacyDbStage(
+  input: Readonly<{
+    sessionId: string;
+    userId: string;
+    figureKey: string;
+    stageId: string;
+  }>,
+): Promise<FigureStageRow | null> {
+  const supabase = getSupabase();
+  const ownedSessionResult = await supabase
+    .from("sessions")
+    .select("figure_key,stage_id,story_artifact_id")
+    .eq("session_id", input.sessionId)
+    .eq("user_id", input.userId)
+    .is("story_artifact_id", null)
+    .maybeSingle();
+  if (ownedSessionResult.error) {
+    throw new Error(
+      `loadOwnedLegacyDbStage (session) failed: ${ownedSessionResult.error.message}`,
+    );
+  }
+  const ownedSession =
+    ownedSessionResult.data as LegacySessionProjection | null;
+  if (
+    !ownedSession ||
+    ownedSession.story_artifact_id !== null ||
+    ownedSession.figure_key !== input.figureKey ||
+    ownedSession.stage_id !== input.stageId
+  ) {
+    return null;
+  }
+
+  const [stageResult, figureResult] = await Promise.all([
+    supabase
+      .from("figure_stages")
+      .select("*")
+      .eq("figure_key", input.figureKey)
+      .eq("stage_id", input.stageId)
+      .maybeSingle(),
+    supabase.from("figures").select("*").eq("key", input.figureKey).maybeSingle(),
+  ]);
+  if (stageResult.error) {
+    throw new Error(
+      `loadOwnedLegacyDbStage (figure_stages) failed: ${stageResult.error.message}`,
+    );
+  }
+  if (figureResult.error) {
+    throw new Error(
+      `loadOwnedLegacyDbStage (figures) failed: ${figureResult.error.message}`,
+    );
+  }
+  const stage = stageResult.data as FigureStageDbRow | null;
+  if (!stage) return null;
+  return rowToStage(stage, figureResult.data as FigureDbRow | undefined);
 }
 
 export function resetDbFigureCache(): void {

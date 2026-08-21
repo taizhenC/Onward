@@ -1,6 +1,6 @@
 import "server-only";
 import { chunkBeatText } from "./chunks";
-import { getByKey, toClientOutline } from "./figures";
+import { getOwnedLegacyPlaybackStage, toClientOutline } from "./figures";
 import { toClientArtifactOutline } from "./story-artifact";
 import { getOwnedStoryArtifact } from "./story-artifacts";
 import { sanitizeLegacyDisclosurePlaceholder } from "./story-privacy";
@@ -62,7 +62,12 @@ export async function getStoryPlayback(session: Session): Promise<StoryPlayback 
   // Compatibility for pre-0005 sessions only. New session creation requires an
   // artifact; permanent saved legacy sessions still require an explicit backfill
   // before this compatibility path can be removed.
-  const stage = await getByKey(session.figureKey, session.stageId);
+  const stage = await getOwnedLegacyPlaybackStage({
+    sessionId: session.sessionId,
+    userId: session.userId,
+    figureKey: session.figureKey,
+    stageId: session.stageId,
+  });
   if (!stage) return null;
   return {
     outline: toClientOutline(stage),

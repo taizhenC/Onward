@@ -230,10 +230,13 @@ function assertExistingLibraryReleasesUnchanged(base: string): void {
     return;
   }
   const previous = parseLibraryReleases(baseText, "base");
-  const current = parseLibraryReleases(
-    readFileSync(LIBRARY_RELEASES_PATH, "utf8"),
-    "current",
-  );
+  let currentText: string;
+  try {
+    currentText = readFileSync(LIBRARY_RELEASES_PATH, "utf8");
+  } catch {
+    fail("the figure-library release registry was removed");
+  }
+  const current = parseLibraryReleases(currentText, "current");
   if (current.length < previous.length) {
     fail("existing figure-library releases were removed");
   }

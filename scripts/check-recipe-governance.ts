@@ -1816,6 +1816,17 @@ function parseLibraryRelease(
   return release;
 }
 
+// The first library release is the snapshot the bootstrap recipe pinned. Its
+// legacy evidence predates the pin (it was computed before the 2026-07-10
+// bridge-beat privacy edit), so it is accepted exactly as the recipe registry
+// recorded it and only as this one explicit entry; every later release must
+// bind fresh evidence to the exact commit it was computed at.
+const HISTORICAL_BOOTSTRAP_LIBRARY = {
+  sha256: "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+  evidenceId:
+    "ev_7a7d9bfa19852146f38ee523c1c0caa916601720cdc9e446bbf32984e38053ad",
+} as const;
+
 function validateLibraryReleases(
   releases: LibraryRelease[],
   state: GovernanceState,
@@ -1823,13 +1834,17 @@ function validateLibraryReleases(
   const promotedRecipeIds = new Set(
     state.registry.promotions.map((promotion) => promotion.recipeId),
   );
+  const bootstrap = releases[0]!;
+  assert(
+    bootstrap.sha256 === HISTORICAL_BOOTSTRAP_LIBRARY.sha256 &&
+      bootstrap.evidenceIds.length === 1 &&
+      bootstrap.evidenceIds[0] === HISTORICAL_BOOTSTRAP_LIBRARY.evidenceId,
+    "the first figure-library release must be the immutable bootstrap snapshot",
+  );
   const seen = new Set<string>();
   releases.forEach((release, index) => {
     assert(!seen.has(release.sha256), `duplicate figure-library release ${release.sha256}`);
     seen.add(release.sha256);
-    // The first entry is the snapshot the bootstrap recipe pinned; its legacy
-    // evidence predates the pin and is accepted exactly as the registry did.
-    const bootstrap = index === 0;
     for (const evidenceId of release.evidenceIds) {
       const evidence = requiredMap(state.evidence, evidenceId);
       assert(
@@ -1844,7 +1859,7 @@ function validateLibraryReleases(
         evidence.metrics.trustGate.passed,
         `${evidenceId} did not pass the rerank trust gate; figure-library release ${release.sha256} cannot ship`,
       );
-      if (bootstrap) continue;
+      if (index === 0) continue;
       assert(
         !evidence.legacyImported,
         `${evidenceId} is legacy evidence; a new figure-library release needs fresh evidence`,
@@ -1854,17 +1869,28 @@ function validateLibraryReleases(
         commit !== null && FULL_GIT_COMMIT.test(commit),
         `${evidenceId} needs a full git commit so its library can be verified`,
       );
+      const tree = committedTree(commit, evidenceId);
       assert(
-        libraryHashAtCommit(commit) === release.sha256,
+        evidence.provenance.inputTreeSha256 === tree.inputTreeSha256,
+        `${evidenceId} does not bind to the input tree of ${commit}`,
+      );
+      assert(
+        tree.librarySha256 === release.sha256,
         `${evidenceId} was computed at ${commit}, whose figure library is not release ${release.sha256}`,
       );
     }
   });
 }
 
-// Hashes lib/figures-data.ts as committed at the given commit, fetching that
-// single commit first when a shallow CI checkout does not carry it.
-function libraryHashAtCommit(commit: string): string {
+// Recomputes, from git, the two facts a release binds evidence to: the sha256
+// of lib/figures-data.ts as committed, and the input-tree hash the eval
+// harness stamps (sha256 of `git ls-tree -r --full-tree <commit>`, see
+// gitInputTreeSha256 in scripts/recipe-evidence.ts). Fetches the single commit
+// first when a shallow CI checkout does not carry it.
+function committedTree(
+  commit: string,
+  evidenceId: string,
+): { librarySha256: string; inputTreeSha256: string } {
   const run = (args: string[]) =>
     spawnSync("git", args, {
       cwd: process.cwd(),
@@ -1875,11 +1901,17 @@ function libraryHashAtCommit(commit: string): string {
     run(["fetch", "--no-tags", "--depth=1", "origin", commit]);
   }
   const shown = run(["show", `${commit}:lib/figures-data.ts`]);
+  const listed = run(["ls-tree", "-r", "--full-tree", commit]);
   assert(
-    shown.status === 0,
-    `evidence commit ${commit} is unavailable; fetch it before running the governance check`,
+    shown.status === 0 && listed.status === 0,
+    `${evidenceId} cites commit ${commit}, which is unavailable; fetch it before running the governance check`,
   );
-  return createHash("sha256").update(shown.stdout).digest("hex");
+  return {
+    librarySha256: createHash("sha256").update(shown.stdout).digest("hex"),
+    inputTreeSha256: createHash("sha256")
+      .update(listed.stdout.toString("utf8"))
+      .digest("hex"),
+  };
 }
 
 function validateGeneratedDoc(registry: StoryRecipeRegistry): void {

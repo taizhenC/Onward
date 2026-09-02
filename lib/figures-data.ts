@@ -55,14 +55,14 @@ const douglass: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "Anonymized rewrite. Documented: the borrowed identity papers, staying indoors in a stranger's house on arrival, and — in his own account — that he never knew his own birth date and that his mother died when he was about seven. The count of four days is compression: he reached the city the day after the escape and waited there about a week. Withheld for anonymity: the familiar published wording about not knowing his age; the fact is kept, the phrasing is plainer.",
-      text: `There was a young man. He had just escaped from a place where he had not been allowed to choose anything for himself.
+        "Anonymized rewrite. Documented: he got out of the place that held him, reached a city he had never seen the next morning, stayed in a stranger's house, knew no one and had no work waiting, and lost his mother when he was about seven. The count of four days is compression: he reached the city the day after he left and waited there about a week. Withheld for anonymity: how he got out and what he carried to do it, the widely retold borrowed-identity detail, and the familiar published line about not knowing his own age. The dispossession is carried by plainer documented facts.",
+      text: `There was a young man. Four days ago he had gotten out of a place where nothing in his life had been his to decide.
 
-He had not picked his name. He had not picked the work he did. He had not picked where he slept. The papers in his shirt pocket said he was someone else. A free man had lent him that name for a few days, so he could travel without being stopped.
+He had not picked his name. He had not picked the work he did. He had not picked where he slept. None of it had ever been up to him.
 
 Now he was in a city he had never seen, in a room that did not belong to him. He was four days from the only world he had ever known.
 
-He was not sure how old he was. Nobody had kept count for him. His mother had died when he was small.`,
+He did not know a single person here. He had no work waiting for him. His mother had died when he was small.`,
     },
     // Beat 1 — Dark moment
     {
@@ -89,16 +89,16 @@ The light moved across the floor. He didn't move with it.`,
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "Documented: she made the journey and joined him, the marriage in the front room of the house where he was staying, the boat north to a town neither of them knew, the new last name he took there, his training in a trade, the tradesmen who refused to work beside him, and the odd jobs he took instead. Withheld for anonymity: that the surname was chosen for him by the man who received them, a detail many readers recognize; the beat keeps the name change itself.",
+        "Documented: she made the journey and joined him, they married, they went on to a town neither of them knew, the last name he used there was given to him rather than chosen by him, his training in a trade, being shut out of that trade, and the day labor he took instead. Withheld for anonymity: how soon after her arrival the wedding was and whose house it was in, the boat, the trade itself, and any reason for the new name. The name change stays in the beat as something done to him, not as a way to cover his tracks.",
       text: `She came.
 
-She had made the trip too. No one had stopped her. They got married that week, in the front room of the house where he was staying.
+She had made the trip too. No one had stopped her. They were married soon after.
 
-A few days later they got on a boat and moved to a town neither of them had ever seen. In that town he ended up with a different last name. He needed one that wasn't tied to where he came from.
+Then they left the city and went to a town neither of them had ever seen. The name he used there was not the one he was born with, and he had not chosen it either.
 
-He had been trained in a trade. When he looked for that work, the men who already did it said they would walk off the job if he was hired. So he took whatever else there was. Sawing wood. Loading boats.
+He had been trained in a trade. In the new town they would not let him work it. So he took whatever else there was. Sawing wood. Shoveling coal. Loading boats.
 
-He had a wife and a name and a town he didn't know.
+He had a wife. He had a town he did not know.
 
 He had nothing else.`,
     },
@@ -107,52 +107,58 @@ He had nothing else.`,
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "Documented: the three-year stretch of small jobs, reading the abolitionist press, speaking at the small Black church, and two children born free. Conservatively framed; the church and newspaper names are stripped.",
+        "Documented: the three-year stretch of small jobs, reading the reform press, speaking at the small church where he was a lay preacher, and two children born in those years who were born free. Withheld for anonymity: the name of the paper and of the church, and the phrase born free, which is kept as the plain fact that his children did not start where he started.",
       text: `Three years went by like that.
 
-He worked the small jobs. He saved what he could. He read every newspaper he could get his hands on. He went to a small church where men like him met. Sometimes he stood up at the back of the room and said a few sentences about what had happened to him in the old place.
+He worked the small jobs. He saved what he could. He read every paper he could get his hands on. He went to a small church where men like him met. Sometimes he stood up at the back of the room and said a few sentences about what had happened to him in the old place.
 
-The people in the church knew exactly what he was talking about. They had lived it too.
+The people in that room knew exactly what he was talking about. They had lived it too.
 
-The wider town had no idea. They had never asked.
+The rest of the town had no idea. They had never asked.
 
-He had two children in those years. Both born free. Free from their first day, the way he had not been.`,
+He had two children in those years. Neither of them was born into what he had been born into.`,
     },
     // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "Documented: the summer 1841 antislavery convention, the man from the church who urged him to speak, his first address to a mostly white room, the well-known man who rose right after him and put a question to the room, the room's answer, and the paid post offered that same evening. The fifteen minutes is repeated in retellings but no primary source I could reach gives a length, so the beat hedges. The beat carries no quotation. Withheld for anonymity: the substance of the question and of the room's answer, and the best-known piece of what he told them about his childhood; the beat keeps the event and drops the recognizable wording.",
-      text: `One summer he traveled a long way from home to a big meeting. There were a few hundred people there, most of them white. They had come to talk about the thing he had run from.
+        "Documented: the summer meeting far from home, the man from the small church who urged him to stand up, that he had nothing prepared, his first telling of his own life to a room of strangers who had not lived it, and the paid post offered that same evening. The beat carries no quotation. Withheld for anonymity: what the meeting was called and what it was for, the make-up of the room, the length of the speech, the well-known man who rose after him, the question he put to the crowd and the crowd's answer, the name of the man who had held him, and the travel the paid work involved.",
+      text: `One summer he traveled a long way from home to a big meeting. The room was full of strangers. Almost none of them had lived what he had lived.
 
-A man who had heard him at the small church asked him to stand up and tell his story. He had never spoken to a room of white strangers before. Not from his own mouth. Not about his own life.
+A man who had heard him at the small church asked him to stand up and say what had happened to him.
 
-He stood up anyway. He said the name of the man who had owned him. He said what had been done to him. He said what those years had taken from him. He spoke for maybe fifteen minutes. Then he sat down.
+He had never done that in front of a room like this one. Not from his own mouth. Not about his own life.
 
-A well-known man in the room got up right after him. He put a question to the crowd about what they had just heard. The room shouted the answer back at him.
+He had kept most of it to himself for three years. Now he was going to hand it to people who did not know him.
 
-Before the night was over, they offered him a paid job. Travel, and speak. He took it.`,
+He stood up anyway. He had nothing written down. He told them where he had come from. He told them what had been done to him there. He told them what those years had taken from him.
+
+Then he sat down.
+
+Before the night was over, he was offered work. Not one night of it. Steady work, and they would pay him for his time.
+
+He said yes.`,
     },
     // Beat 5 — What he became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "Documented: the paid lecturing circuit through the rest of that year, halls that would not let him in, meetings held outdoors when no hall would take them, his earlier speaking at the small Black church, and the long span of speaking that followed. What came after this episode — the book, the years abroad, the purchase of his legal freedom — is deliberately left out: it belongs to his legacy rather than to this episode, and naming it here would give the reveal away. Withheld for anonymity: the length of the public speaking life that followed, since a fifty-year speaking career attached to this escape names him. Still anonymous; he is never named in this beat.",
-      text: `He spent the rest of that year on the road, speaking wherever they sent him. Some halls would not let him in at all. Sometimes no hall would take them, and he spoke outside.
+        "Documented: he took the paid work and kept at it through the rest of that year and for years after, some places would not let him in, some meetings had to be held outside, and before this he had spoken only at the small church. Withheld for anonymity: that the work was travel from town to town, the halls and the circuit, the length of the speaking life that followed, and everything that came after this episode. Still anonymous; he is never named in this beat.",
+      text: `He said yes, and then he had to do it.
 
-He kept speaking.
+He spent the rest of that year saying it out loud to people who did not know him. Some places would not let him in the door. Some nights there was no room to be had at all, and the meeting happened outside.
 
-For three years he had told his story only in that small church, to people who already knew it. Now he told it to strangers, town after town, in places that had never asked.
+He kept going.
 
-It was the same story he had been carrying since he was a boy. Now strangers sat still and listened to it.
+For three years he had told it only in that small church, to people who already knew it. Now he told it to people who had never asked. Faces he had never seen. Rooms that did not always want him there.
 
-He kept telling it.
+It was the same story he had carried since he was a boy. Now strangers sat still and listened to it.
 
-He was still saying it out loud, year after year, to rooms that did not always want him.
+He kept telling it. Not for a season. Year after year.
 
-He started in a chair in a borrowed room, with nothing but the papers in his shirt. He didn't have a name of his own yet.`,
+He had started with none of this. A room that was not his. A name that was not his. Four days between him and everything he had ever known.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -518,14 +524,18 @@ You don't have to be early. You just have to begin.`,
 //    special" / "you made this day a special day"), so the beats render him in indirect speech
 //    and never quote him; the eleven-block walk and the six-minute testimony come from King and
 //    are not repeated as numbers in any beat.
-//  Avoid saying: don't name the show / puppets-on-TV / cardigan before the bridge (kills the
-//    reveal); a blind reader named him twice, so beats 0-5 now also withhold the character
-//    voices (the boyhood puppets survive only as "people he made up"), the piano (music, no
-//    instrument), the taunt about his weight, any audience of children he would never meet
-//    (that is the medium in all but the word), and every echo of his signature sentence or his
-//    trademark slowness; don't put the grandfather's words in quotation marks in a beat; don't
-//    make the childhood a tidy origin myth; the loneliness is this episode, not his whole life
-//    (he had friends and love later).
+//  Avoid saying: don't name the show / puppets-on-TV / cardigan / the children he spoke to,
+//    before the bridge (naming any of them kills the reveal). Blind readers have now named him
+//    three times, so beats 0-5 also withhold the character voices (the boyhood puppets survive only
+//    as "people he made up"), music and the piano entirely, that he was a heavy child, the
+//    taunt about his weight, the mill-town texture of the walk home, and who his life's work
+//    was for (those people are described only by what they were living through). Every echo of
+//    his signature sentence is out: the grandfather's gift is given only in the negative (he
+//    never told the boy to toughen up), and no beat says anyone was glad you came or that he
+//    was enough as he was. Also out: his trademark slowness, and telling anyone they matter.
+//    Don't put the grandfather's words in quotation marks in a beat; don't make the childhood a
+//    tidy origin myth; the loneliness is this episode, not his whole life (he had friends and
+//    love later).
 const rogers: FigureStageRow = {
   figureKey: "rogers",
   displayName: "Fred Rogers",
@@ -565,100 +575,102 @@ const rogers: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "Anonymized. Frequent illness and asthma, only child, shy and overweight, long hours alone inventing characters and stories, and music as the outlet for what he could not say — all documented. Withheld for anonymity: that the invented characters were hand puppets given separate voices, and that the instrument was the piano. Both belong to his public image and named him for a blind reader; the beat keeps only the documented substance. The room as his one private world is editorial texture.",
+        "Anonymized. Frequent illness that kept him indoors, only child, shy, and long hours alone inventing characters and stories are all documented. Withheld for anonymity: that the invented characters were hand puppets given separate voices, that music was his outlet, and that he was a heavy child — a blind reader named him from that combination of details. The room as his one private world is editorial texture.",
       text: `There was a boy. He was about nine.
 
-He was sick a lot. His chest would close up and he would have to stay inside while the other kids were out playing. He was heavy, and shy, and he was an only child. The house was usually quiet.
+He got sick a lot. Bad enough that he had to stay inside while the other kids were out playing. He was shy, and he was an only child. The house was usually quiet.
 
-He spent most of his time alone in his room. He had built a little world up there. People he made up. Long stories that nobody else ever heard.
+He spent most of his time alone in his room. He had built a little world up there. People he made up. Long stories that nobody else ever heard. He could keep it going all afternoon.
 
-When he felt something he had no words for, he made music instead. He found the sound that matched it.
+It wasn't that he didn't want friends. He just didn't seem to have any.
 
-It wasn't that he didn't want friends. He just didn't seem to have any. The room was the one place that was all his.`,
+The room was the one place that was all his. He was fine in there. It was everywhere else that was hard.`,
     },
     // Beat 1 — Dark moment
     {
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The long walk home and the boys shouting that they were going to get him are his own account. Being told by adults to act as though it did not bother him, and his private conclusion that the fault was his, are documented. Nothing here is quoted directly, and the physical detail of his face burning has been removed as undocumented. Withheld for anonymity: the taunt about his weight, the single most retold version of this story; that he was a heavy child still stands in the first beat.",
+        "The walk home and the boys shouting that they were going to get him are his own account, as is being told by grown-ups to act as though it did not bother him and his private conclusion that the fault was his. Nothing is quoted directly. Withheld for anonymity: the taunt itself, which is the most retold version of this story, and the mill-town texture of the walk, which dates and places him.",
       text: `School was the hard part.
 
-There was a group of boys who had decided he was theirs to chase. When the last bell rang, he would come outside and they would be waiting for him.
+There was a group of boys who had decided he was theirs to chase. When the last bell rang, he would come outside and they would already be waiting.
 
-He had a long way to walk. Block after block, through a town built around hard, loud work. The boys followed him most of the way, shouting his name. Telling him they were going to get him. Telling him what was wrong with him.
+He had a long way to walk home. They followed him most of it. Shouting. Telling him they were going to get him. Telling him everything that was wrong with him.
 
-He didn't fight back. He didn't know how. He just kept walking and listened to them behind him.
+He didn't fight back. He didn't know how. He kept walking and listened to them behind him.
 
-He asked some grown-ups about it once. What he should do. They told him to act like it didn't bother him. So that is what he did. He acted like it was fine.
+He asked some grown-ups about it once. He wanted to know what he was supposed to do. They told him to act like it didn't bother him. So that is what he did. He walked home every day and acted like it was fine.
 
-It was not fine. By then he had decided the problem was him.`,
+It was not fine. Somewhere in there he had decided that the problem was him. Not them. Him.`,
     },
     // Beat 2 — Response
     {
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "His grandfather as the one steady counter-voice is documented, along with the substance of what he gave the boy: he was glad of his company, and he never asked him to be anything other than what he was. Rendered in plain paraphrase and deliberately kept clear of the wording Rogers later made famous — quoting the old man would put unverified words in his mouth, and echoing that wording hands the reader the reveal.",
+        "His grandfather as the one steady counter-voice is documented, and so is the substance of it: the old man wanted the boy's company and never asked him to be anything other than what he was. Withheld for anonymity: every positive form of that sentiment. A blind reader recognized being glad you came and being enough as you are as the seed of the line he later became known for, so here the old man's gift is given only in the negative — he never told the boy to toughen up. Nothing of his is quoted, and no invitation or other recurring gesture is attributed to him.",
       text: `There was one person who made it different.
 
-His grandfather. An old man who lived nearby, who actually seemed glad whenever the boy turned up.
+His grandfather. An old man who lived nearby, and who wanted the boy around.
 
-When they were together, the old man said things nobody else said. He said he was glad the boy had come. Not out of politeness. He meant it, and he said it out loud, more than once. He never asked the boy to be tougher or bigger or quieter first. Whatever the boy already was seemed to be enough for him.
+That was the whole of it, and it was a lot. The boy went over there often. When he was there, the old man talked to him like he was worth talking to. He never told him to toughen up. He never told him to stop being the way he was.
 
-The boy didn't have many people. But he had that. He held onto it.
+Nobody else did that. Other people meant well and still wanted him a little different.
 
-Then he went back up to his room and his small made-up world. He carried the old man's words up the stairs with him.`,
+The boy did not have many people. He had that one. He held on hard.
+
+Then he went home, up the stairs, back to his room. He took it with him.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "Documented: his lifelong shyness, his unusual sensitivity, and his use of music to express what he could not say. Withheld for anonymity: the instrument, which is part of his public image. Interpretive: that he long read the sensitivity as a weakness to hide, and the realization that knowing loneliness from the inside was useful. That is the editorial through-line, not a claim he made in these words.",
+        "Documented: his lifelong shyness, his unusual sensitivity, and the long stretches alone. Withheld for anonymity: music, which a blind reader named as one of the tells — the making-things-up survives without it. Interpretive: that he long read the sensitivity as a weakness to hide, and that knowing loneliness from the inside turned out to be useful. That is the editorial through-line, not a claim he made in these words.",
       text: `He grew up slowly, and a lot of it was lonely.
 
-He stayed shy. He stayed the kind of person who felt things hard. Something small could wreck him while everyone else shrugged. For a long time he thought that was a weakness. Something to keep hidden.
+He stayed shy. He stayed the kind of person who felt things hard. Something small could sit on him all week while everyone else shrugged it off. For a long time he was sure that was the flaw. The thing to keep hidden.
 
-He kept making his little worlds. He kept playing music. When a feeling came that he had no words for, he still played it instead of saying it.
+He still made things up. He still spent hours by himself, the way he always had.
 
-Slowly he started to notice something. All those hours alone, feeling too much, had taught him something most people never learn. He knew from the inside what it was like to be small, and scared, and sure that nobody liked you.
+And slowly he started to notice something. All those years of feeling too much had taught him something most people never learn. He knew from the inside what it is like to be small, and scared, and certain that nobody likes you. He knew what a person needs in that state, because he had needed it.
 
-He didn't know yet that this would matter. He just knew it was true.`,
+He didn't know yet what it was for. He just knew it was true.`,
     },
     // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "Documented: as a young man he found the way grown-ups spoke to children loud and demeaning, and deliberately did the opposite — honest, naming real feelings, telling children they were worth something as they were. His shyness persisted all his life. Withheld for anonymity: the medium and its scale, including an audience of children he would never meet, which is that medium in all but the word; also his trademark slowness and the sentence he became known for. What the old man gave him is kept in the same plain terms the third beat uses.",
+        "Documented: as a young man he judged the way grown-ups spoke to the people he went on to work with — loud, demeaning, never about anything that actually frightened them — and deliberately did the opposite. His shyness persisted all his life. Interpretive: the line this beat draws between that way of talking and the grown-ups who told him as a boy to act as though the bullying did not bother him — the advice is documented, the connection is editorial. Withheld for anonymity: who those people were, the medium, its scale, his trademark slowness, and the sentence he became known for. A blind reader named him from the audience alone, so they are described here by what they were living through rather than by who they were.",
       text: `Years later, as a young man, he found his work.
 
-It was work with children. Children who were scared of things nobody would talk to them about.
+The work put him beside people who were frightened of things nobody would talk to them about. People who got talked at, loudly, and were never told the truth about anything that mattered.
 
-He already knew how most grown-ups talked to children. Too much noise. Too much pretending. Talking at children instead of to them, and never about anything that actually frightened them.
+He knew that way of talking. He had been on the receiving end of it as a boy. Act like it doesn't bother you. Don't say the hard thing out loud.
 
 He decided to do the opposite. He was still shy. He did it anyway.
 
-He would tell children the truth. He would say the hard words out loud and stay there with them. Being scared. Being angry. Being lonely. Feeling like nobody likes you and having no way to say so.
+He would say the hard things out loud and stay in the room afterward. Being scared. Being angry. Being lonely. Feeling like nobody likes you and having no way to say so.
 
-And he would give them what the old man had given him. Not praise. Not advice. Just the feeling that someone was glad they were there. That was all it was. It was enough.`,
+And he would do for them what the old man had done for him. He would take them seriously. He would stay.`,
     },
     // Beat 5 — What he became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "Decades of the work, the trust of more than one generation, and the accounts of people who described feeling wholly seen and safe in his presence are all documented, as is the substance of what he told children about fear, sadness and worth. Withheld for anonymity: the wording of the message he became known for, which a blind reader recognized on sight. Still anonymous: the name, the medium and the scale of his fame are held back, so the reach of the work is described only after the reveal.",
+        "Decades of the same work, the trust it earned, and the accounts of people who described feeling wholly seen and safe in his presence are documented, as are his lifelong shyness and sensitivity. Withheld for anonymity: the wording of the message he became known for, who the work was for, and its scale — a blind reader recognized all three. The reach of it is left for the bridge, which is where he is named.",
       text: `He did that for the rest of his life.
 
-Day after day, year after year, he did the same quiet work. He named the things children were afraid of, instead of talking around them. He did not tell them they were fine when they were not. He wanted them to know they mattered.
+Day after day, year after year, the same quiet work. He said the frightening things out loud instead of talking around them. He never told anyone a thing was small when it wasn't.
 
-Children trusted him. So did their parents, who could tell he was not pretending. People who spent time with him said that being near him felt like being completely seen, and completely safe.
+He stayed shy his whole life. He stayed the kind of person who felt everything. He had just stopped treating that as a defect.
 
-The heavy, lonely boy who was sure he had no friends grew up and spent his working life beside children. Children who felt exactly the way he had felt. He gave them what he had needed and not gotten.
+People trusted him. They could tell he was not performing. The ones who spent real time with him said the same thing afterward. That he had looked at them and actually seen them. And that nothing bad happened when he did.
 
-He never stopped being soft. It turned out the softness was the whole point.`,
+The lonely boy who was sure he had no friends spent his working life beside people who felt the way he had felt. He gave them what he had needed and never got.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -1212,14 +1224,18 @@ You don't have to have your voice yet. He didn't either, for years.`,
 //  Interpretive: framing "believe her mother over the doctor" as the act of defiance; the secret
 //    brace-off practice and the "if I can walk I can run" turn are grounded, lightly dramatized.
 //  Avoid saying: don't name the Olympics / Rome / three golds / "fastest woman" / the first
-//    integrated homecoming / her name before the bridge. The brace-to-runner arc is famous enough
-//    that the landmark shapes give her away even unnamed, so beats 0-5 also stay off "the biggest
-//    stage in her sport", the world watching, winning again and again, and "the first time her
-//    town celebrated together". Withheld for anonymity (2026-09-01): beats 0-5 no longer say she
-//    ran, raced or was fast - the sport itself is named only in biographicalFacts and the bridge,
-//    because a girl who leaves a leg brace behind and becomes a famous runner is her and nobody
-//    else. Keep segregation real but softened (no slurs, no era-coded institution names).
-//    Don't reduce her to an inspirational object - the agency is hers.
+//    integrated homecoming / her name before the bridge. The brace-to-champion arc is famous
+//    enough that the landmark shapes give her away even unnamed, so beats 0-5 stay off "the
+//    biggest stage in her sport", the world watching, and winning again and again. Withheld for
+//    anonymity (2026-09-01): beats 0-5 no longer say she ran, raced or was fast. Withheld again
+//    (2026-09-02), after a blind reader still named her from beats 0-5: the athletic becoming is
+//    gone altogether (no getting good at it, no school team, no winning, no being carried away
+//    from home by it), and so are the brace's metal-and-leather form, her mother's famous
+//    two-word answer, the reason the hospital near home turned the family away, the room of
+//    astonished people at the first walk without the brace, and the split celebration she made
+//    them integrate. All of it stays true in biographicalFacts and in the bridge; beats 0-5 carry
+//    only the cost of the segregation (help that was hours away), never its name, its region or
+//    its era. Don't reduce her to an inspirational object - the agency is hers.
 const rudolph: FigureStageRow = {
   figureKey: "rudolph",
   displayName: "Wilma Rudolph",
@@ -1258,16 +1274,16 @@ const rudolph: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "Anonymized. The large poor family (father a railway porter, mother a maid), the childhood polio that left a braced leg, the doctor's never-walk verdict and her mother's opposite one are all documented. Both are given as indirect speech, not quotation. The two-futures framing is editorial. Withheld for anonymity: the sport she later took up - the beat says only that she could not play the way the other children played.",
+        "Anonymized. The crowded, poor household, the childhood illness that left one leg weak and braced, the doctor's verdict and her mother's opposite one are all documented. Both verdicts are loose paraphrase here, never quotation. The two-futures framing is editorial. Withheld for anonymity: the brace's metal-and-leather form, her mother's famous two-word answer, how many children were really in the house, and the sport she later took up.",
       text: `There was a girl. She was about eight.
 
-She had been sick almost since the day she was born. One of the sicknesses left a leg weak and turned the wrong way. So she wore a heavy brace of metal and leather to hold it up. She couldn't play the way the other kids played. Most days she could barely keep up walking.
+She had been sick almost since the day she was born. One of the sicknesses left a leg weak and turned the wrong way. She wore a brace on it to hold it up. She couldn't play the way the other kids played. Most days she could barely keep up walking.
 
-She came from a big family. A lot of brothers and sisters, and never quite enough of anything to go around.
+There were a lot of children in her house, and never quite enough of anything to go around.
 
-When she was small, a doctor had looked at her leg and told her family what he believed. This girl will never walk on her own.
+When she was small, a doctor had looked at that leg and told her family not to hope for much. He did not think it would ever carry her.
 
-Her mother heard the same words and said the opposite. You will.
+Her mother heard the same words and did not accept them. She told the girl a different future.
 
 Two grown-ups. Two futures. The girl had to pick one to believe.`,
     },
@@ -1276,18 +1292,18 @@ Two grown-ups. Two futures. The girl had to pick one to believe.`,
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The weekly fifty-mile bus trips to the only nearby college hospital that would treat Black patients, and the family massaging her leg four times a day, are documented. Being left out and teased over the brace comes from her own account of these years; the clanking is light texture. Segregation kept real but softened per the no-era-markers rule. No interior state is asserted; the sources do not record what she thought on those nights.",
+        "Documented: the weekly trips of some fifty miles for treatment, and her brothers and sisters working the leg by hand four times a day. Being left out and teased over the brace comes from her own account of these years; the clanking is light texture. Withheld for anonymity: that the hospital close to home turned her family away because they were Black, and the distance and the place - the segregation is kept whole in biographicalFacts and the beat carries only its cost. No interior state is asserted; the sources do not record what she thought on those nights.",
       text: `Being the girl in the brace was its own kind of lonely.
 
-She sat and watched while the other children ran. She clanked when she moved. Kids can be unkind about a thing like that, and they were.
+She sat and watched while the other children played. She clanked when she moved. Kids can be unkind about a thing like that, and they were.
 
-Once a week her mother took her on a long bus ride to the only place that would treat a child like her. The hospital nearby would not take her family. Hours there. Hours back.
+The only place that could help her leg was hours away. Once a week her mother took her there. A long ride there, a long ride back, and then the same week again.
 
 Then home, where her brothers and sisters took turns working the leg with their hands. Four times a day. Every day.
 
 It would have been so easy to stop. To decide the doctor was right. To let the leg be what it was and make her whole life small enough to fit around it.
 
-Nobody could promise her it was working.
+Nobody could promise her any of it was working.
 
 She kept letting them try. She kept trying.`,
     },
@@ -1330,34 +1346,34 @@ If she could teach this leg to walk, maybe she could teach it to do more than th
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "Documented: she took the brace off in public for the first time at about nine and a half, still used a brace and an orthopedic shoe for a while, and by about twelve needed neither, the brace going back to the hospital that had supplied it. Then she took up sports - basketball first, then the sport she became known for; the beat says only that she started playing. Withheld for anonymity: the sport itself. The room of people is left unnamed and no specific setting is asserted; the single-morning time anchor and the walking-wasn't-enough framing are editorial.",
+        "Documented: she took the brace off in public for the first time at about nine and a half, still needed a brace on some days and an orthopedic shoe for a while, and by about twelve needed neither, the brace going back to the place that had supplied it. Withheld for anonymity: the setting and the astonished onlookers of that first walk, and the sport she took up right afterward - the beat says only that she walked where people could see her, and that she wanted to know what else the leg could do. The single-morning anchor and the walking-wasn't-enough framing are editorial.",
       text: `Then came the day.
 
-She was about nine. She had worn that brace, in one form or another, for most of her life. One morning she left it off and walked into a room full of people who had only ever seen her in it. She walked in on her own two legs.
+She was about nine. She had worn that brace, in one form or another, for most of her life. One morning she left it off. She walked without it, out where other people could see, on her own two legs.
 
 It wasn't finished after that. For a while she still needed the brace some days, and a special shoe on the weak foot. But by about twelve she didn't need any of it. The brace went back to the place that had given it to her.
 
 The thing the doctor said would never happen had happened. She could walk.
 
-But here is the part that tells you who she was. Walking wasn't enough. The moment her body would carry her, she didn't just want to keep up with the other kids. She wanted to beat them.
-
-So she started playing sports. The girl who was never supposed to walk wanted to win.`,
+But here is the part that tells you who she was. Walking wasn't enough. The moment her body would carry her, she was done sitting on the side of things. She wanted to find out what else this leg could do.`,
     },
     // Beat 5 — What she became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "Her rise to the top of her sport and her insistence that the celebration at home be integrated are documented, as is her first international competition as a teenager. The school-team line is her documented eighth-grade basketball. Withheld for anonymity: her name, the sport itself, the Games, the medal count, the fastest-woman title and the town's first-integrated-event claim. The beat says only that she got good at a sport, played on a school team, and won a long way from home; the scale of what she won waits for the bridge.",
-      text: `She turned out to be good at it. First on a school team. Then better than good.
+        "Documented: the strength that came back over years of daily work, that by her teens she could keep up with other children her age, and that she later worked as a teacher and spent her working life around young people. Withheld for anonymity: her name, the sport, the competitions, the medals and the title, and the celebration at home that she refused to attend unless everyone could come - all of that waits for the bridge or stays in biographicalFacts, because the brace-to-champion arc names her instantly. Editorial, drawn from the documented pattern rather than a recorded scene: that she kept working the leg after she could walk on it, and that she carried the refusal into the rest of her life.",
+      text: `She found out.
 
-She was still a teenager when the winning started. A few years after the brace came off, the girl who had spent her childhood in it was winning a long way from home.
+It came the way the walking had come. Slowly, with work, and no single day you could point to. She kept working at that leg long after she could walk on it.
+
+By the time she was a teenager she was not the girl on the side of things anymore. She was in the middle of them. She could keep up with anyone her age.
 
 The body a doctor had written off was carrying her now. That weak leg. The one her family had worked by hand, four times a day, for years.
 
-And when people at home wanted to throw a party for her, she made one condition. Back then, a party like that would have been split by the color of people's skin. She said she would only come if everyone could come. They held it her way.
+She grew into someone who taught, and spent her working years around young people.
 
-The girl who couldn't walk had decided, again, that the rules about what she was allowed did not get the last word.`,
+And she never let go of what those years taught her. What other people decided she was allowed did not get the last word. She had already outlived one of those decisions, on her own two legs.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -3288,12 +3304,16 @@ You don't have to be seen to matter. He wasn't, for a long time.`,
 //    not his debt. The real story is the auction and the road-trip franchising. Soften era markers
 //    (the highway is fine; keep exact dates/places out). Some sources say he was 74 at the 1964
 //    sale; the January 6, 1964 close makes him 73, so the entry says seventy-three.
-//    A blind reader still named him from beats 0-5, so the signature telling is softened
-//    further: the road change is stated plainly (no "big new road" bypass image), the "age
-//    when people retire" line is gone, the deal is "a share of what sold" instead of a
-//    per-item cut, the word "handshake" is kept out of the beats, and the growth is told
-//    without the chain crescendo ("a dozen became a hundred," "town after town after town").
-//    All of it stays in biographicalFacts and the bridge.
+//    A blind reader named him again from beats 0-5, so the identifying legs are now removed
+//    rather than softened. Beats 0-5 no longer contain: a road, a highway, a route change or
+//    bypass; a restaurant, a kitchen, cooking, a dish or a recipe; the words franchise or
+//    handshake; a payment per item sold; any outlet count or scale marker; the sale price;
+//    or any claim of fame. What he was known for is only "the one thing he did"; the collapse
+//    is "something outside his control changed and the people stopped coming"; the demos are
+//    "he would do it for them himself"; the deal is only "they would pay him for it"; the
+//    growth is "more people than he could get to"; the ending is that it passed into other
+//    hands and he was paid enough never to worry about money again. Every specific stays in
+//    biographicalFacts, and the bridge still names him, the brand and the highway.
 const sanders: FigureStageRow = {
   figureKey: "sanders",
   displayName: "Harland Sanders",
@@ -3334,12 +3354,14 @@ const sanders: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "Anonymized. A man with a long history of failed ventures who finally built a thriving roadside restaurant locally famous for one dish - documented. The dish/brand kept unnamed for the bridge.",
+        "Anonymized. A man with a long history of failed ventures who finally built a small business that thrived on the people passing through his town - documented. Withheld for anonymity: the kind of business, the kind of work he was known for, and the brand markers; all of it stays in biographicalFacts and the bridge.",
       text: `There was a man in his sixties.
 
-He'd had a hard, scrappy life. Dozens of jobs, a lot of them gone wrong. But late in middle age he had finally built something good. A little place out on a busy road, where people stopped on their way through. He had gotten known around there for one thing he made better than anyone else did. People drove out of their way for it.
+He'd had a hard, scrappy life. Dozens of jobs, and a lot of them had gone wrong. But late in middle age he finally built something good. A small place of his own, in a town people passed through, and for once the work held.
 
-It wasn't a fortune. But it was his, and it worked. After a lifetime of false starts, he could finally picture growing old without worrying about money.
+He got known around there for one thing he did. People came for it, and then they came back.
+
+It wasn't a fortune. But it was his, and it worked. After a lifetime of false starts, he could finally picture getting old without worrying about money.
 
 He had earned a rest. He thought he was going to get one.
 
@@ -3350,62 +3372,64 @@ He had no idea the ground was about to drop out from under him, at the worst pos
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "A new road route bypassed the town and killed the business; the property was auctioned in March 1956 for far less than its appraised value, and the proceeds went to his debts and taxes, leaving him with almost nothing at 65 - documented. The Social Security-check myth is deliberately avoided. The road change is told plainly and the retirement-age line withheld for anonymity.",
-      text: `Then the route changed.
+        "A change he had no control over took away the passing trade the business lived on; it collapsed, was sold for far less than it was worth, and the proceeds went to his debts and taxes, leaving him with almost nothing at sixty-five - documented. The motivational-poster myths (the retirement check, a huge personal debt) are deliberately avoided. Withheld for anonymity: what the change was, the sale figures, his exact age, and the retirement-age line.",
+      text: `Then the people stopped coming.
 
-They moved the road, and the new one went around his town. Just like that, the steady stream of travelers who had kept his little place alive stopped coming. They were all somewhere else now, miles away.
+Something outside his control changed, and the flow of people who had kept his little place alive went somewhere else. It wasn't anything he had done wrong. There was nothing he could have done to stop it either.
 
-His business dried up almost overnight. He held on as long as he could, then had to give it up. It sold for a fraction of what it was worth. After the debts were paid, there was almost nothing left.
+His business dried up. He held on as long as he could, and then he had to let it go. It sold for a fraction of what it was worth. After his debts were paid, there was almost nothing left.
 
-He was in his mid-sixties. Broke. The thing he had spent his best late years building was gone, and there was nothing he could have done to keep it.
+He was in his mid-sixties. Broke. The thing he had spent his best late years building was gone.
 
-He had next to nothing. By every reasonable measure, he was too old to start again. The rest he thought he had earned was not coming.`,
+By every reasonable measure, he was too old to start over. The rest he thought he had earned was not coming.`,
     },
     // Beat 2 — Response
     {
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "He had signed a first handshake franchise with a distant restaurateur years earlier and still had only six or eight franchisees when the business failed; afterward he drove restaurant to restaurant, cooked the dish for owners himself, and took a few cents per sale - documented. No invented dialogue. The beat says a share of what sold rather than the per-item rate - withheld for anonymity.",
-      text: `He took stock of what he had left.
+        "Years before the collapse he had shown his way of working to an owner far from home, who did very well with it, and only a handful of others had taken it up; afterward he went out to others himself and was paid out of what it earned them - documented. No invented dialogue. Withheld for anonymity: the trade, the word for the arrangement, and the per-item share of every sale.",
+      text: `He took stock of what he was left with.
 
-It wasn't much. But there was one thing. The way he made it — the thing people used to drive out of their way for. That was still his. Nobody could build a road around that.
+It wasn't much. But there was one thing. The way he did the thing his place had been known for. That was still his. Nobody could take that away from him.
 
-Years before, he had shown it to a place far from home, and it sold well there too. Only a handful of others made it. It had never been the main thing. Now it was the only thing.
+Years before, he had shown it to someone far away, and it had worked just as well for them. A few others had too. It had never been the main thing. Now it was the only thing.
 
-So he decided to teach it to other people who ran places like his. He would make it for them himself. If it sold for them, they would pay him a share.
+So he decided to bring it to other people in the same line of work. He would do it for them himself. If it worked for them, they would pay him for it.
 
-He got in his car and started driving. He was starting completely over. In his mid-sixties.`,
+He got in his car and started driving. He was starting over from nothing, in his mid-sixties.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "Long drives, frequent rejection, cooking his dish in owners' kitchens to prove it, and the slow accumulation of handshake deals - documented for the franchising years. 'He slept cheap' is minimal dramatized texture; the specific lodging is not documented here. The deal's name is withheld for anonymity; the beat says one yes at a time.",
+        "Long drives, frequent refusals, and demonstrating his way of working himself, on the spot, to convince owners; the deals accumulated slowly - documented for these years. No dramatized lodging or road detail. Withheld for anonymity: the trade, the kitchens, and the rejection-count parable.",
       text: `It was a hard, humbling way to live.
 
-He drove enormous distances. He slept cheap. He walked into restaurants run by people half his age and asked them to trust an old man they had never met. Plenty of them said no. Plenty looked at him like what he obviously was — an elderly man whose own place had failed, trying to sell them something.
+He drove long distances. He walked in and asked people half his age to trust an old man they had never met. A lot of them were not interested. Some looked at him like what he obviously was, an old man whose own place had failed, asking them for something.
 
-He made it for them right there, in their own kitchens, to prove it. Some still passed. He would thank them and drive to the next town and do it all again.
+So he would do it for them himself, right there, so they could see it was real. Some still weren't interested. He would thank them, and drive to the next town, and do it again.
 
-For a man in his late sixties, it was exhausting and often discouraging. Every yes was paid for with a lot of nos.
+For a man in his late sixties, it was exhausting. Most days gave him nothing to show for the miles.
 
-But every so often, someone said yes. And then their customers came back asking for more. And slowly, one yes at a time, the thing began to grow.`,
+But every so often, somebody was willing. And their people liked it and asked for it again. And slowly, one at a time, it started to grow.`,
     },
     // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The franchises multiplied through his late sixties and early seventies - more than 600 outlets by 1963, the largest fast-food operation in the country - and the bypassed little business was reborn far larger. Documented. The growth is told plainly, without the scale markers - withheld for anonymity.",
+        "The arrangements multiplied through his late sixties and early seventies while he kept working the road himself, and what he had lost came back far larger - documented. Withheld for anonymity: the trade, the outlet counts, the scale markers, and the industry.",
       text: `And then it caught.
 
-One yes turned into a few. The people who tried it came back wanting it again. Then more owners said yes, and then more. What he made started spreading faster than he could keep up with. A broke old man in a car was carrying it kitchen to kitchen.
+One willing owner turned into a few. The people who tried it came back wanting it again, and other owners heard about that and wanted it too. It started spreading faster than he could keep up with.
 
-By his early seventies, hundreds of places were paying him for it. Most men his age had stopped working years before. He was still driving, still cooking it himself in other people's kitchens. The small thing the road had killed had come back much larger than it had ever been.
+By his early seventies, more people than he could get to were paying him for it. Men his age had stopped working years before. He was still driving. He was still doing it for them himself, in their own places, the same way he had from the start.
 
-The failure that wiped him out had not been the end of his story. It had forced the beginning of the biggest chapter of his life.
+The small thing he had lost had come back, bigger than it had ever been when it was only his.
+
+Losing it had not been the end of his story. It had forced the beginning of the part that would fill the rest of his life.
 
 He had been right about the one thing he had left.`,
     },
@@ -3414,14 +3438,16 @@ He had been right about the one thing he had left.`,
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The venture grew far past the roadside business he had lost, and he sold the company for $2 million in his early seventies - documented. Name, brand and the globally recognizable markers withheld for the bridge. The scale wording is plainer here too - withheld for anonymity.",
-      text: `It kept growing, far past the small place he had lost. Bigger than he could have pictured, standing in his dead restaurant with nothing left.
+        "What he built grew far past the small business he had lost, he kept working into his seventies, and it eventually passed into other hands for enough money to leave him secure for life - documented. Withheld for anonymity: the name, the trade, the brand, the sale figure, and the fame; the bridge carries all of it.",
+      text: `It kept growing, far past the small place he had lost. Bigger than he could have pictured, standing in that empty building with nothing left.
 
-The thing he had carried around in his car was being made by people he never met. It had outlived the little place the road took from him. When he finally sold the business, the money set him up for the rest of his life.
+The thing he knew how to do was being done every day by people he would never meet. He was still working at it in his seventies, long past the age when he could have stopped.
 
-The broke old man became a wealthy one. And more than that, he became known for the one thing he had refused to give up on.
+He had spent most of his life as a man whose ventures kept falling apart. For years he had been the one asking, the one nobody had a reason to trust. By the end, he was the one people wanted to hear from.
 
-He had lived most of his life as a man whose ventures kept falling apart. And then, at the age when most people stop, he built the thing he would be remembered for.
+In the end he let it go into other hands. He was paid enough that he never had to worry about money again.
+
+He was not a young man who got lucky. He was an old one who kept going.
 
 Not despite starting late. Because he was willing to start at all, when everything said he was finished.`,
     },
@@ -3633,12 +3659,16 @@ The math you're doing on yourself can be wrong too. His was.`,
 //    out of the beats; keep the mother's death un-graphic; no "soul music" before the bridge; and
 //    keep the boxer-collision name change, the gospel-plus-blues pairing, the sacrilege charge, the
 //    "people have been building on it ever since" influence claim and the touring/prizes out of beat
-//    5 too — two blind-reader tests named him from those alone. Beat 5 now says only that he changed
-//    the name he worked under, made music his own way, and was told loudly it was wrong; which
-//    traditions, what it was called, and the honors all wait for the bridge. Beat 0 states the
-//    mother's rule as plain "do for yourself" rather than the widely circulated "blind, not
-//    stupid / not helpless" wording, which travels as a signature line. The blindness itself, the
-//    mother's death at 14, the band years and the map-and-bus decision stay: they are the episode.
+//    5 too. Three blind-reader tests named him anyway, so this pass strips the remaining headline
+//    forms as well. Beat 0 no longer says the school was for blind children, names no instrument
+//    and drops braille music, and gives his mother's rule as plain "nobody was going to carry him"
+//    rather than any quotable version of it. Beat 1 drops the ranking of her death against the loss
+//    of his sight — he is on record making it, but it travels as a signature line — and keeps the
+//    feeling. Beat 4 drops the map question, the biggest-city-farthest-away answer and the five-day
+//    count (the single most retold anecdote of this life, and the opening of the film about him),
+//    keeping only that at seventeen he chose a far city he had never seen, knew nobody there, and
+//    rode a bus for days alone. Beat 5 drops the name change too. The blindness, the mother's death
+//    at 14, the band years and the fact of the move stay: they are the episode.
 const charles_r: FigureStageRow = {
   figureKey: "charles_r",
   displayName: "Ray Charles",
@@ -3678,12 +3708,12 @@ const charles_r: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "Blind by 7; mother's fierce self-reliance rules (chores, no pity, over neighbors' objections); boarding school far from home; braille music, piano, clarinet — all documented. Withheld for anonymity: her rule is given here as a plain paraphrase of her documented line that he would have to do for himself because no one else would; the more quotable version of it travels widely and names him. The closing thought that being good at something felt almost like seeing is interpretive, not his words.",
-      text: `There was a boy at a boarding school for blind children, far from home.
+        "Blind by 7; his mother's insistence that he do things himself (chores, finding his own way, over other people's objections); a boarding school far from home; the trained musical memory — all documented. Withheld for anonymity: what kind of school it was, the instruments he played, and how he was taught to read music, plus any quotable form of his mother's rule — blind readers named him from that combination. The closing thought that being good at something felt almost like seeing is interpretive, not his words.",
+      text: `There was a boy at a boarding school a long way from his home.
 
-He had lost his sight slowly, when he was little — the world dimming out by the time he was seven. His mother had no money, but she had rules. The big one: he would do for himself, because nobody else was going to do it for him. She made him do chores. She made him find his own way. Neighbors said she was too hard on a blind child. She didn't care.
+He had lost his sight slowly, when he was little. By the time he was seven the world had gone dark for good. His mother had almost nothing, and she had one hard rule about him: nobody was going to carry him. She gave him chores. She made him find his own way around. People told her she was too hard on him. She kept doing it.
 
-At school he found the thing: music. He learned to read notes with his fingers and hold whole songs in his head. Piano. Clarinet. He was good, and he knew he was good, and being good at something felt almost like seeing.
+At school he found the thing he was good at. Music. He could hear a song once and hold the whole of it in his head. He learned to play, and he got better fast, and being good at something felt almost like seeing.
 
 Home was poor and far away. But it was there, and she was in it.`,
     },
@@ -3692,12 +3722,12 @@ Home was poor and far away. But it was there, and she was in it.`,
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "Mother's sudden death in 1945 when he was 14; his own account calls it the worst loss of his life; he couldn't cry until an older family friend talked him through it; he did not return to school — all documented. The crowd at the funeral, and being called out of class, are dramatized texture, and the beat names no season because sources differ on the exact date.",
+        "Mother's sudden death in 1945 when he was 14; his own account calls it the most devastating loss of his life; he could not cry until an older family friend talked him through it; he did not go back to school — all documented. Withheld for anonymity: he is on record ranking that loss against the loss of his sight, and that comparison is quoted everywhere, so the beat keeps the feeling and drops the formula. Being called out of class and the crowd at the funeral are dramatized texture, and the beat names no season because sources differ on the exact date.",
       text: `One day, when he was fourteen, they came and got him out of class. His mother had died. No warning. She was still young.
 
 He went home for the funeral. People around him were crying. He couldn't. The grief locked itself somewhere he couldn't reach.
 
-He said later it was the worst thing that ever happened to him. Worse than going blind. Going blind had happened slowly, with her voice right beside him. This happened all at once. And her voice was the thing that was gone.
+He said later that nothing in his life ever hit him harder. His sight had gone slowly, over years, with her voice right there beside him the whole time. This came all at once. And her voice was the part that was gone.
 
 For days he stayed locked like that. Then an old woman in town, a friend of his mother's, sat him down. She talked to him plainly, for a long time. Whatever she said, it worked. The grief broke open and let him through it.
 
@@ -3708,12 +3738,12 @@ He did not go back to school.`,
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "He left the town after the funeral and was taken in by family friends in a bigger city; began sitting in with working bands at fourteen — documented. The 'her list' framing is interpretive, grounded in his account of her teaching that he had to do things for himself.",
+        "He left the town after the funeral and was taken in by family friends in a bigger place; began sitting in with working bands at fourteen — documented. The 'her list' framing is interpretive, grounded in his account of her teaching that he had to do things for himself. Withheld for anonymity: the towns and cities are never named.",
       text: `He was fourteen, blind, and now without her, in a poor little town that had no way to keep him.
 
-He took stock the way she had taught him. Feeling sorry for himself was not on her list. Waiting for somebody else to do it was not on her list. Doing for himself — that was the whole list.
+He took stock the way she had taught him. Feeling sorry for himself was not on her list. Waiting for somebody else to fix it was not on her list. Doing it himself was the whole list.
 
-He had one skill the world might pay for. So he went where the music was. Family friends in a bigger city took him in, and he started showing up wherever bands played, asking to sit in.
+He had one skill the world might pay for. So he went where the music was. Family friends in a bigger town took him in, and he started showing up wherever bands played, asking to sit in.
 
 Fourteen years old, out at night, in rooms full of grown men.
 
@@ -3731,39 +3761,41 @@ Some weeks there was work. Some weeks he ate crackers and drank water and told n
 
 He was getting better. He was also going in circles — the same little towns, the same little rooms, the same state he had grown up in.
 
-He knew that map by heart. That was exactly the problem.`,
+He knew every inch of it by heart. That was exactly the problem.`,
     },
     // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The documented map decision at 17: he asked a friend to find the biggest city farthest away, and the friend went diagonally across the map; ~5-day bus ride alone; playing clubs within weeks, first recordings within a year — all in the facts.",
-      text: `At seventeen he made a decision that still sounds half crazy.
+        "Documented: at seventeen he chose a big city on the far side of the country that he had never seen and where he knew nobody, rode a bus there alone for days, was playing for money within weeks and recording within a year. Withheld for anonymity: how he chose it. The map question, the answer it produced and the length of the ride are the single most retold anecdote of this life, so the beat keeps the decision and drops the mechanism. That nobody made him go, and that he wanted to be beyond the reach of the life he was leaving, are interpretive readings of his documented choice of a city picked for its distance; the sources record no one sending him. The beat makes no claim about what money he had, because the facts paragraph establishes none.",
+      text: `At seventeen he did something that still sounds half crazy.
 
-He asked a friend to look at a map of the whole country and find the biggest city farthest from where they stood. The friend ran a line diagonally across the map and named a city in the far corner. About as far as you could go without leaving the country.
+He decided to leave. Not the next town over. Not the next state either. He wanted to be far enough away that none of it could follow him. The same rooms. The same faces. The same small corner of the world.
 
-That one, he said.
+So he settled on a city he had never been to. He knew nobody there. Not one person. He was seventeen, and he could not see. He got on a bus and rode it for days and nights, alone.
 
-He had never been there. He knew no one there. He was blind and seventeen. He got on a bus alone and rode five days and nights to a city he had picked because it was far.
+Nobody made him go. Nobody was waiting at the other end.
 
-Within weeks he was playing in its clubs. Within a year, people were paying to record him.
+Within weeks he was working nights there. Within a year, people were paying to record what he played.
 
-The new city didn't know what he used to be. It only knew what he sounded like.`,
+He had bet everything on the one thing he could do. It held.`,
     },
     // Beat 5 — What he became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "Documented: he dropped the surname he was born with once he started recording; he modeled his early singing on a singer he admired before finding his own sound; the music he then made was publicly condemned, by preachers and by an older musician; the long career that followed is in the facts. Withheld for anonymity: which name he dropped and why, which two traditions he put together, what the result came to be called, the influence claim, and the touring and prizes — a blind reader named him from those alone, so they wait for the bridge.",
-      text: `He changed the name he worked under. A new name for the new life.
+        "Documented: he arrived where nobody knew him; he modeled his early singing on a singer he admired before finding his own sound; the music he then made was condemned publicly and loudly; steady work followed and he never went back to the lean years. Withheld for anonymity: the name he dropped and why, which two traditions he put together, what the result came to be called, what the objection to it actually was, the influence claim, and the touring and prizes — blind readers named him from those, so they all wait for the bridge.",
+      text: `Nobody in the new place knew what he used to be. He got to decide who he was now.
 
-For a few years he sang like the singers he admired. Then he stopped copying them. He started making music the way he heard it in his own head, instead of the way it was supposed to be done. That crossed a line other people cared a great deal about. They told him so, and not quietly. He kept doing it anyway.
+For a few years he sounded like the singers he admired. He was good at it, and it paid. Then he stopped. He started making music the way he heard it in his own head, instead of the way it was supposed to be done.
 
-It sounded like him and not like anyone he had copied. That was the whole point.
+Some people were angry about that. They said so loudly, and not kindly. He kept going anyway.
 
-The work came steadily after that. He never had to go back to the lean weeks and the little rooms. And all of it ran on the rules of a woman from a poor little town who taught him to do for himself.`,
+It sounded like him, and not like anyone he had copied. That was the whole point.
+
+The work came steadily after that. He never had to go back to the lean weeks and the little rooms. And all of it ran on the rules of a poor woman from a small town who would not let anybody carry him.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -5776,11 +5808,17 @@ You don't have to be done grieving to keep going. She never fully was, and she w
 //    number of days inside, or the race around the world (that belongs to the bridge); no "stunt
 //    journalism" label; don't say she invented undercover reporting (Julius Chambers feigned
 //    insanity into the Bloomingdale Asylum in 1872); asylum conditions stay in one restrained line.
-//    Withheld for anonymity (2026-09-01): beats 0-5 also stay off the word "madhouse" (it is the
-//    title of her report), the term "pen name", and every fame billing — "the story was
-//    everywhere", "the most talked-about reporter in the country", "the one who made it famous".
-//    A woman reporter who had herself committed is already her; the standing she won for it, and
-//    the "made the method famous" line, belong to the bridge.
+//    Withheld for anonymity (2026-09-01, second pass — a blind reader still named her from
+//    beats 0-5): beats 0-5 now also stay off HOW she got inside — no practiced madness, no
+//    mirror, no examining doctors, no "committed", no "insane" — plus the words madhouse and
+//    asylum, the number of days, the island, the grand jury and the city's new spending, the
+//    night in a jail cell, the country she reported from, the wording of the parting note and
+//    its "look out for me", the made-up signature on the letter, the working name the paper
+//    printed over her stories, her father's mill and judgeship, and the superlatives ("the
+//    biggest paper", "the biggest city"). What the beats keep: a locked place past the edge of
+//    the city where women were sent when the city had given up on them, that the only way to
+//    learn what happened there was to go in as one of them, and that she said yes. The method,
+//    the standing she won for it, the fame and the race around the world belong to the bridge.
 const bly: FigureStageRow = {
   figureKey: "bly",
   displayName: "Nellie Bly",
@@ -5822,12 +5860,12 @@ const bly: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "Her father's death when she was six, the family's narrowing circumstances, and her joblessness at twenty are documented, as is the column she read. Its title and its author are withheld here for anonymity; her quickness in an argument is interpretive.",
-      text: `There was a young woman. She was twenty. She lived in a mill town. The world had no place set for her.
+        "Her father's death when she was six, the family's slide from comfort into hardship, and her joblessness at twenty are documented, as is the column she read. Withheld for anonymity: the column's title and author, the paper, the town, and her father's mill and judgeship — a mill-owning judge in a mill town points straight at the place. The beat gives the place no size: by twenty the family had moved to a city, so calling it a small town would be wrong. Her quickness in an argument is interpretive.",
+      text: `There was a young woman. She was twenty. She was out of work. The world had no place set for her.
 
-Her father had died when she was six. He had been a judge, a mill owner, a somebody. After that it was one widow and a houseful of children, sliding year by year from comfortable to cornered. She watched her mother's choices shrink to nothing. She learned early what happens to a woman with no money of her own.
+Her father had died when she was six. While he lived there was money and standing. After that it was one widow and a houseful of children, sliding year by year from comfortable to cornered. She watched her mother's choices shrink to nothing. She learned early what happens to a woman with no money of her own.
 
-She wanted to work. She was quick and sharp and fearless in an argument. It didn't matter. For a girl in that town there was mill work, kitchen work, or marriage.
+She wanted to work. She was quick and sharp and fearless in an argument. It didn't matter. For a girl in her town there was factory work, kitchen work, or marriage.
 
 She was sitting in that cornered life one morning when she opened the paper and found a column about women like her.`,
     },
@@ -5836,16 +5874,16 @@ She was sitting in that cornered life one morning when she opened the paper and 
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The column's argument, including its line calling a working woman a monstrosity, is documented; it is paraphrased here rather than quoted or titled, so the piece is not identifiable. Reading it cold and then hot, and the shame turning to anger, are interpretive — her state of mind that day is not recorded.",
-      text: `A man had written it. Girls belonged at home, he said. Keeping house. Bearing children. A woman who went out and worked for herself was a thing gone wrong. Better she stay home, quiet and decorative, until a husband collected her.
+        "The column's argument — that girls were for keeping house and bearing children, and that a woman who worked outside the home had gone wrong — is documented, and is paraphrased here rather than quoted or titled. Withheld for anonymity: the title, the author, and the standing of the paper that printed it. Reading it cold and then hot, and the shame turning to anger, are interpretive; her state of mind that day is not recorded.",
+      text: `A man had written it. Girls belonged at home, he said. Keeping house. Bearing children. A woman who went out and worked for herself had gone wrong somewhere. Better she stay home, quiet and decorative, until a husband collected her.
 
 She read it, and went cold, and then hot.
 
 Because the column was a joke, and her life wasn't. It was only saying out loud what every door in that town had already told her. No work for you. No wages for you. No name of your own. Wait to be chosen.
 
-She was broke. And the biggest paper in town had just printed that she was fit for nothing she actually wanted.
+She was broke. And here it was in print: she was fit for nothing she actually wanted.
 
-She could have folded it up and gone back to the kitchen. Plenty of women did. Instead the shame turned into anger.
+She could have folded the paper up and gone back to the kitchen. Plenty of women did. Instead the shame turned into anger.
 
 She sat down and wrote the angriest letter of her life.`,
     },
@@ -5854,68 +5892,68 @@ She sat down and wrote the angriest letter of her life.`,
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The rebuttal under a made-up signature, the editor's advertisement seeking its author, the hire, the working name the paper printed over her stories and the first series on factory girls are documented. Withheld for anonymity: that signature, the working name itself, and the term pen name — the public knows her by an invented byline, so the beat says only that the name printed over her work was not hers. Expecting to be laughed at is interpretive; the day she came in is not recorded.",
-      text: `She didn't sign her name. She signed a made-up one instead.
+        "The unsigned rebuttal, the editor's public call for its author, the meeting, the hire, and her early series on the lives of factory girls are documented. Withheld for anonymity: the made-up name she signed, the working name the paper printed over her stories, and the term pen name — an invented byline is one of the best-known things about her. Expecting to be laughed at is interpretive; the day she came in is not recorded.",
+      text: `She didn't sign her own name to it.
 
 It wasn't polished. It was alive. It was about what actually happens to girls with no money, written by someone who obviously knew.
 
-The editor read it and did something editors almost never do. He put an advertisement in his own paper, asking the author to come forward.
+The editor read it and did something editors almost never do. He asked, in his own paper, for whoever wrote it to come in.
 
 So she went in. She expected to be laughed at.
 
 He gave her a story to write instead. Then a job.
 
-The name they printed over her work wasn't hers either. That was normal for women then. Fine. Under it she started writing about the girls in the factories. The hours. The pay. She wrote from the inside, where no gentleman reporter had bothered to look.`,
+Her early work was about the girls in the factories. The hours. The pay. She wrote it from the inside, where the men who wrote the news had never bothered to look.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "Manufacturers' complaints, the reassignment to the women's pages, the self-arranged half-year abroad and the reporting she sent back, the return to the same pages, and the parting note are documented; the note's wording is given indirectly here rather than quoted, and its layout is not described. 'A small life, politely enforced' is interpretive.",
-      text: `The factory series was too good. That was the problem.
+        "The manufacturers' complaints, the reassignment to fashion, society and gardening, the half-year of reporting she arranged for herself far from home, the return to the same pages, and the note she left when she quit are documented. Withheld for anonymity: the country she went to, and what the note said — its wording is quoted everywhere. \"A small life, politely enforced\" is interpretive.",
+      text: `The factory pieces were too good. That was the problem.
 
-The factory owners complained to the paper. The paper needed those owners more than it needed her. So it fixed the problem the easy way. She was moved. To fashion. To flower shows. To garden parties and society teas.
+The owners complained to the paper. The paper needed those men more than it needed her. So it fixed the problem the easy way. She was moved. To fashion. To flower shows. To garden parties and afternoon teas.
 
-She tried everything to get off that page. She took herself off to another country for half a year, with no one's permission, and mailed back real reporting. Politics. Poverty. How people lived.
+She tried everything to get off that page. She went far from home for half a year, asking no one's permission, and sent back the real thing. Politics. Poverty. How people actually lived.
 
-They ran all of it. Then they put her right back on the garden parties.
+They printed all of it. Then they put her right back on the garden parties.
 
 She could see the whole rest of it from there. Years of teas. A pat on the head. A small life, politely enforced.
 
-One day she just didn't come in. She left a short note on a friend's desk. It said where she was going, and to watch for her.`,
+One day she simply didn't come in. She left a note behind, and she went.`,
     },
     // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "About four months of closed doors and spent savings, talking her way into the country's biggest paper, volunteering for the asylum assignment, the mirror practice and the boarding-house night, the commitment, the days inside, and the paper's attorney getting her out are documented. That the only way in was to be committed is the assignment's framing, not a separately checked claim. Withheld for anonymity: the asylum's island, the exact number of days, and the word her published report used for the place — the beat calls it a locked hospital instead. Conditions kept to one restrained line.",
-      text: `The biggest city in the country didn't want her either. For four months she walked from newspaper to newspaper and every door stayed shut. No women. No exceptions.
+        "Four months of closed doors and spent savings, talking her way in to the editors of a large city paper, an assignment no one else would take, entering the locked institution as one of the women held there, the conditions she found, and the paper's lawyer getting her out are documented. That going in as one of them was the only way to learn what happened inside is the assignment's framing, not a separately checked claim. Withheld for anonymity: the city, the paper, the island, how many days she was inside, and above all how she got herself admitted — the manner of her entry is the single most recognizable thing about her life. Conditions kept to one restrained line.",
+      text: `The city she went to didn't want her either. For four months she walked from paper to paper and every door stayed shut. No women. No exceptions.
 
 Her savings ran out. She kept going back.
 
-Then she got into the biggest paper of all and talked her way to the editors. They had one assignment nobody would take. A locked hospital for women, out past the edge of the city. The only way in was to be committed.
+Then one paper let her past the door, and she talked her way to the editors. They had one job nobody would take. Out past the edge of the city there was a locked place. Women were sent there when the city had given up on them. The only way to find out what happened in there was to go in as one of them.
 
-She volunteered.
+She said yes.
 
-She practiced her face in a mirror. She took a room in a boarding house and behaved strangely for a night. Doctors called her insane. The city shipped her out there.
+So she went in. Once she was inside she could not leave. The cold. The bad food. The cruelty. And the women who had nothing wrong with them, kept there because they were poor, or alone, or spoke the wrong language.
 
-Day after day. The cold, the spoiled food, the cruelty. And the women who weren't sick at all, locked up because they were poor, or alone, or spoke the wrong language.
-
-The paper sent a lawyer to bring her out. Then she wrote it. All of it.`,
+The paper had to send someone to get her out. Then she wrote it. All of it.`,
     },
     // Beat 5 — What she became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The grand jury taking her testimony, her return to the asylum with it, the increased city funding and the reforms that followed — better food, better sanitation, interpreters, stricter examination before commitment — and her later undercover work in a box factory and a jail are documented, as is the fact that she was not the first reporter to work under a false identity. That the paper kept sending her on the hard assignments is a fair reading of that later work, not a quoted claim. Withheld for anonymity: her standing after the story — 'the most talked-about reporter in the country' and 'the one who made it famous' are fame billings that name her, so the beat says only that people read it and that she kept going in. Names, places, titles and the race around the world are withheld until the bridge.",
-      text: `People read it. A grand jury took her testimony. She went back there with them and showed them what she had seen. The city finally spent money on the place. Better food. Cleaner rooms. Stricter checks before a woman could be sent there. Someone to speak to the women nobody had bothered to understand.
+        "That the report was read and acted on, her return to the institution with the officials who had the power to change it, and the reforms that followed — better food, better sanitation, someone to speak with the women who spoke other languages, stricter examination before a woman could be sent there — are documented, as is her later undercover work in a factory that underpaid its women. That the paper kept sending her on the hard stories is a fair reading of that later work. Withheld for anonymity: the grand jury, the size of the city's new spending, the night in a jail cell, and every billing of her fame — the standing she won here belongs to the bridge.",
+      text: `People read it. And then people who had never once listened to her had to listen. She went back to that place one more time, with the men who had the power to change it. She showed them what she had seen.
 
-And the woman they had parked on the flower shows was suddenly the one they sent when a story was hard.
+Things changed. Better food. Cleaner rooms. Someone who could talk with the women nobody had bothered to understand. And a real look at a woman before anyone could send her there.
 
-She kept going inside. A factory that paid women almost nothing. A jail cell, to learn how women were treated there. Other reporters had used a false name before her. She kept using one, and kept coming back with what she found.
+And the one they had parked on the flower shows was now the one they sent when a story was hard.
+
+She kept going in. A factory where the women were paid almost nothing. Places nobody outside was meant to see. She kept coming back with what was in there.
 
 Keep house, the column had said. Be quiet. She never did learn to stay in the room they put her in.`,
     },
@@ -6158,6 +6196,19 @@ You don't have to be let in yet. He wasn't either.`,
 //    the soil work told as bringing worn-out land back to life, and the classroom on wheels
 //    (beat 5 now says only that he taught poor families to get more out of tired ground and
 //    carried the lessons out to people who could not reach him).
+//    Third anonymity pass (2026-09-01, round 1): a blind reader named him again from beats 0-5,
+//    quoting the born-enslaved-plus-plant-scientist combination, the accepted-by-letter /
+//    turned-away-at-the-college-door anecdote in its famous form, the art teacher who said a
+//    Black artist would starve and steered him into agriculture, the fifty years at a school in
+//    the South, and the classroom taken out to farmers. All are now withheld from the beats and
+//    kept only in biographicalFacts and the bridge: the beats no longer say he was born unfree,
+//    never name plants as his gift or his subject (beat 3 says only that he studied the ground he
+//    lived on and drew and painted; beat 4 never names art, piano or what the bigger school
+//    taught), say "school" not "college" at the door, drop the letters-were-acceptable-he-was-not
+//    phrasing, and in beat 5 give no number of years, no soil or crop teaching and no travelling
+//    classroom — only that he taught people who had almost nothing to make more of what was in
+//    their hands.
+//    This supersedes the 2026-08-27 line above that said to keep the plant gift in beat 0.
 const carver: FigureStageRow = {
   figureKey: "carver",
   displayName: "George Washington Carver",
@@ -6197,16 +6248,16 @@ const carver: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "Documented: his boyhood gift with growing things (his own later account), the drift from town to town for school from about eleven, self-supported by laundry and farm work, and the 1885 acceptance by mail. 'Walking toward school' is interpretive framing, and the drawing and painting of plants are reported by his biographers rather than established for these boyhood years in the facts. Withheld for anonymity: the boyhood reputation for bringing a dying plant back, and the timing of his birth and emancipation — the beat says only that he was born unfree.",
+        "Documented: his mother was taken from him as an infant and never found; he was raised by the older couple on whose farm he was born; he was frail and often sick; from about eleven he moved from town to town looking for schooling, paying his way with laundry, cooking and farm work; at about twenty he applied by mail and was accepted. 'Walking toward school' and 'he noticed everything' are interpretive framing. Age is given as 'about twenty' because his birth date was never recorded. Withheld for anonymity: that he was born enslaved and freed as an infant, and his boyhood gift with plants and the drawing of them — both stay in biographicalFacts.",
       text: `There was a young man who had spent his whole youth walking toward school.
 
-He had been born unfree. His mother was taken from him before he could remember her face. He grew up frail and often sick, raised by an older couple on a farm. He was hungry to learn. Bottomlessly hungry.
+His mother was taken from him before he could remember her face. He was raised on a farm by the older couple who lived on it. He was frail, and sick more often than not. He was hungry to learn. Bottomlessly hungry.
 
 From about eleven he drifted from town to town, wherever a school would take him. He paid his way with wash-work and farm labor, and slept where he could.
 
-Growing things were his gift. He studied every plant he met. He drew and painted them so true you could smell them.
+He noticed everything. Whatever was put in front of him, he studied until he understood it.
 
-At about twenty, he did the boldest thing yet. He applied to a real college, by letter.
+At about twenty, he did the boldest thing yet. He wrote to a real school and asked to be let in.
 
 The letter that came back said yes. He sold what he had and went.`,
     },
@@ -6215,18 +6266,18 @@ The letter that came back said yes. He sold what he had and went.`,
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "Documented: the college withdrew the admission on his arrival, when it saw he was Black. No invented dialogue and no invented props; 'his letters were acceptable, he was not' is interpretive framing. So is 'no family waiting, no room kept for him anywhere' — the couple who raised him were still living, but he had been itinerant since about eleven and had no home of his own to return to. Age given as 'about twenty' because his birth date was never recorded.",
-      text: `He arrived with everything he owned and presented himself at the college.
+        "Documented: the school withdrew the admission on his arrival, when it saw he was Black. No invented dialogue and no invented props. 'No family waiting, no room kept for him anywhere' is interpretive framing — the couple who raised him were still living, but he had been itinerant since about eleven and had no home of his own to return to. Age given as 'about twenty' because his birth date was never recorded. Withheld for anonymity: that the place was a college and which one, his race stated outright, and the letters-were-acceptable-he-was-not phrasing of the refusal — all stay in biographicalFacts.",
+      text: `He arrived with everything he owned and presented himself at the school.
 
-And the college looked at him — at his face — and took the acceptance back.
+And they looked at him — at his face — and took the acceptance back.
 
-They hadn't known, from the letters, what he was. Now they knew, and the answer changed. There was no appeal. There was no discussion worth having. The door that had opened by mail closed in person, and he was standing outside it.
+They hadn't known, from the letters, what he was. Now they knew, and the answer changed. There was no appeal. There was no discussion worth having. They had said yes to a name on a page. They would not say it to the person standing in front of them.
 
 Other people, turned away like that, had a home to absorb them. He had none. No family waiting. No room kept for him anywhere on earth. The walking-toward-school life had been aimed at this one door.
 
-He was about twenty years old, alone in a town with no reason to stay in it.
+He was about twenty years old, standing in a town with no reason to be in it.
 
-And the message could not have been plainer. His letters were acceptable. He was not.`,
+He had done everything right. It had not mattered at all.`,
     },
     // Beat 2 — Response
     {
@@ -6249,14 +6300,14 @@ It wasn't the plan. It was the plan he could reach.`,
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "Documented: the homestead years from 1886 to about 1889 — hard dry farming, the plant collecting, the painting — and giving the claim up to pay for school (sources differ on the exact year he left). The homemade brushes and colors are reported by his biographers rather than confirmed here. The loneliness framing is interpretive but grounded.",
+        "Documented: the homestead years from 1886 to about 1889 — hard dry farming, the studying, the drawing and painting — and giving the claim up to pay for school (sources differ on the exact year he left). The homemade brushes and colors are reported by his biographers rather than confirmed here. 'In the evenings' is minimal dramatized texture; the facts do not record when he painted. The loneliness framing is interpretive but grounded. Withheld for anonymity: that what he collected, studied and painted out there was plants — it stays in biographicalFacts.",
       text: `About three years on that claim.
 
 The land fought him. Dry summers, killing winters, wind that never once stopped. He hauled water. He coaxed crops out of dirt that didn't want to give them.
 
 The solitude was its own weather. Days without a voice. The nearest neighbors were miles off. The nearest person who looked like him was farther than that.
 
-He filled the silence with the work of his heart. He collected plants and studied them. He painted them too — flowers, grasses, whatever bloomed — with homemade brushes and whatever colors he could get.
+He filled the silence with the work of his heart. He studied the ground he was living on, and what it would and wouldn't grow. In the evenings he drew and painted, with brushes he made himself and whatever colors he could get.
 
 He was keeping something alive out there, and it wasn't just the crops. It was the aim.
 
@@ -6267,14 +6318,14 @@ He saved what little he could. When the time came he let the claim go, turned ba
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "Documented: the 1890 Simpson admission (art and piano), the laundry he took in to pay his way, the art teacher who steered him toward botany at the state agricultural college, and his enrolling there in 1891 as its first Black student. Her reasoning is reported by his biographers and is given here indirectly, never quoted. The claim that a building was later named for him is removed as unverified for this school. Withheld for anonymity: the first-student-in-the-school's-history framing — the beat says only that the second door held.",
-      text: `A small college in the next state said yes — and this time the yes held when they saw him.
+        "Documented: the 1890 admission to a small college in the next state, the laundry he took in to pay his way, the teacher who saw his gift and, judging that a Black man could not make a living at it, steered him toward a practical course at the larger state college, where he enrolled in 1891. Her reasoning is reported by his biographers and is given here indirectly, never quoted. 'It cost him the thing he loved' is interpretive framing. Withheld for anonymity: that the subjects he enrolled in were art and piano, that the teacher was his art teacher, what the larger school actually taught him, and the first-Black-student-in-its-history framing — all stay in biographicalFacts.",
+      text: `A small school in another state said yes — and this time the yes held when they saw him.
 
-He enrolled in what he loved: art, and piano. He was older than his classmates, and poorer. He took in other people's washing to pay his way. He was also, very quickly, the art teacher's most remarkable student.
+He signed up to study the things he loved most. He was older than his classmates, and poorer. He took in other people's washing to pay his way.
 
-It was that teacher who changed his aim. She looked at his paintings. They were always plants, drawn with a scientist's eye. She told him the truth as she saw it. His gift was real, and the world would starve an artist with his face. But the state's great farming college could turn that same gift into a life.
+One of his teachers watched what he made and saw the gift in it. She also saw the world clearly, and she told him the truth as she understood it. He would not be allowed to earn a living that way. Not with his face. But the same eye, turned to something practical, could keep him — and a bigger school across the state taught exactly that.
 
-He went.
+It cost him the thing he loved. He went anyway.
 
 That door held too. It did not just open a crack. It opened all the way, and he walked through it.`,
     },
@@ -6283,16 +6334,18 @@ That door held too. It did not just open a crack. It opened all the way, and he 
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "Documented: the two degrees and his appointment to the faculty of the college that trained him; the 1896 move to a school in another state and the forty-seven years he taught there; the soil and crop-rotation teaching for poor farmers; the demonstrations he carried out to farmers who could not reach the school. The crops he is famous for, the presidents who met him, and his public fame are deliberately left out of this beat and held for the bridge — a blind reader named him from beats 0-5 while they were in. Withheld for anonymity: that the faculty post was the first held by a Black teacher there, and the horse-drawn movable school — both stay in the facts. 'He never stopped looking at plants' is interpretive framing.",
-      text: `He took two degrees, and then the school that had trained him asked him to stay and teach.
+        "Documented: the two degrees he finished there and the teaching post at the college that trained him (he was close to thirty); the 1896 move to a school in another state, where he taught for the rest of his life; the teaching of people who had almost nothing. 'The lost years did not come back' is interpretive framing. Withheld for anonymity: that the faculty post was the first held by a Black teacher there, what he actually taught those families (crop rotation and the restoring of worn-out soil), the forty-seven years as a number, the movable school he carried out to people who could not reach him, the two degrees as a count (rare enough in that decade to narrow the field), the crops he is famous for, the presidents who met him, and his public fame — all stay in biographicalFacts and the bridge. A blind reader named him from beats 0-5 while any of them were in.",
+      text: `He finished. Then the school that had trained him asked him to stay and teach.
 
-Later a school far away asked him to come and teach there. He went. He stayed for the rest of his life.
+Later a school far away asked him to come and teach there. He went, and he stayed the rest of his working life.
 
-He taught families who had almost nothing how to get more out of tired ground. When people could not get to his classroom, he took the lessons out to them. He kept studying plants, the way he had as a sick boy on a farm. Only now what he learned went straight to people who needed it.
+He taught people who had almost nothing and were expected to want nothing. He showed them how to make more out of what was already in their hands. He kept studying, the way he had as a sick boy on a farm and as a man alone on the plains. Only now what he learned went straight to people who needed it.
 
-Almost fifty years of that. He never stopped teaching, and he never stopped looking at plants.
+He was close to thirty when any of that started. The years the closed doors had cost him did not come back.
 
-The young man turned away from a college door on sight spent the rest of his life standing inside one, letting other people in.`,
+Decades of it. He never stopped teaching, and he never stopped learning.
+
+The young man turned away from a door on sight spent the rest of his life standing inside one, letting other people in.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -6343,7 +6396,18 @@ A no at one door is one door. He kept knocking, and his name outlived every plac
 //    still working through the pages" — beat 5 now says the notebooks were read at last, not
 //    that they are still being mined. No equations; the religious dimension (Namagiri) and the
 //    1909 marriage are left out of the beats; the death at 32 mentioned nowhere (bridge keeps to
-//    the notebooks' living legacy).
+//    the notebooks' living legacy). Withheld for anonymity (2026-09-01, round two, after a
+//    third blind reader named him off beats 0-5): THE SUBJECT ITSELF. Beats 0-5 never say
+//    mathematics or mathematician — not the boyhood obsession, not the one exam he passed,
+//    not the men he carried the notebooks to, not his boss, not the strangers he wrote to, not
+//    the society that elected him; it is the one subject, the work, the pages. Also out of beats
+//    0-5: the port and the Trust, the nine pages and the ~120 theorems, the colleague at the
+//    third reader's side that night and the three classes he sorted the results into, the
+//    summons to a great university, the five-year burst of work, the society's standing and his
+//    youth in it, and — for the notebooks — any claim that they held what nobody else
+//    had found. The bridge still names everything. Do not write that he had no
+//    degree when the society elected him: a Cambridge research degree was awarded
+//    March 16, 1916, two years before the May 2, 1918 election.
 const ramanujan: FigureStageRow = {
   figureKey: "ramanujan",
   displayName: "Srinivasa Ramanujan",
@@ -6384,14 +6448,14 @@ const ramanujan: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The poor small-town childhood, the mother's singing for a little money and the student lodgers, the self-teaching and the college scholarship — documented; nothing dramatized. The town's temple is left out so the place stays unidentifiable. Withheld for anonymity: the one borrowed book at about sixteen, what was in it, and the working-out-every-result-from-nothing framing — the beat says only that he taught himself out of what mathematics he could get hold of, because the borrowed-book origin is the version of this life people already know.",
+        "The poor small-town childhood, the mother's singing for a little money and the student lodgers, the self-teaching and the college scholarship — documented; nothing dramatized. The town's temple is left out so the place stays unidentifiable. Withheld for anonymity (round two): the subject itself is never named anywhere in beats 0-5, and neither is the one borrowed book at about sixteen nor the working-out-every-result-from-nothing framing — a poor self-taught prodigy in that one named field, failing every other exam, is the version of this life people already know.",
       text: `There was a young man in a small town a long way from any city.
 
-His family was poor. His mother sang for a little money. They rented rooms to students to help make the rent. He was quiet, and from the time he was a boy he thought about one thing. Mathematics.
+His family was poor. His mother sang for a little money. They rented rooms to students to help make the rent. He was quiet, and from the time he was a boy one subject had hold of him and would not let go.
 
-He taught himself. He worked through whatever mathematics he could get hold of, then went past it into results that were his own. Nobody had taught him that. Nobody could tell him if he was right.
+He taught himself. He worked through whatever he could get his hands on, then went past it into work that was his own. Nobody had taught him that. Nobody could tell him if he was right.
 
-Everything else — history, languages, the sciences — was noise.
+Everything else the school wanted — history, languages, the rest — was noise.
 
 He won a college scholarship. It was about to go wrong in the most ordinary way there is.`,
     },
@@ -6400,8 +6464,8 @@ He won a college scholarship. It was about to go wrong in the most ordinary way 
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The lost scholarship, the two First Arts failures, the degreeless years of poverty and tutoring, and the serious illness that needed an operation — documented; sources differ on the date of the illness, so the beat gives none.",
-      text: `He failed everything except mathematics.
+        "The lost scholarship, the two First Arts failures, the degreeless years of poverty and tutoring, and the serious illness that needed an operation — documented; sources differ on the date of the illness, so the beat gives none. Withheld for anonymity: the name of the subject he failed everything else for — the beat says only the one subject.",
+      text: `He failed everything except the one subject.
 
 Not from laziness. He could not make himself care about anything else while the real work was burning in him. The scholarship was taken back. At a second college he sat the big qualifying exam and failed it. He tried again. Failed again.
 
@@ -6420,34 +6484,34 @@ He believed he knew. But belief isn't proof, and there was no one within a thous
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The slate-and-chalk economy, the growing notebooks, carrying the work to anyone who might read it, and the small allowance from an amateur mathematician — documented.",
+        "The slate-and-chalk economy, the growing notebooks, carrying the work to anyone who might read it, and the small allowance from a well-placed amateur who did the same kind of work — documented. Withheld for anonymity: the field, so the men he showed the notebooks to are described only as people who had studied, and his benefactor only as a man who had kept up the subject for love of it. The elbow-erasing habit stays out.",
       text: `He kept working. Whatever else those years took, they did not get the notebooks.
 
-Paper cost money. So he worked his results out on a slate, chalk clicking for hours, then wiped it clean and started again. Only the finished ones were worth ink.
+Paper cost money. So he worked on a slate, chalk clicking for hours, then wiped it clean and started again. Only the finished results were worth ink.
 
-And he would not let the work stay private. He carried the notebooks to every educated man who might understand. Officials, teachers, anyone with mathematics in their past. Most turned the pages politely and saw nothing they could read.
+And he would not let the work stay private. He carried the notebooks to every educated man who might understand. Officials, teachers, anyone who had studied. Most turned the pages politely and saw nothing they could read.
 
-A few sensed something. One man who did mathematics for love listened, was staggered, and paid him a small allowance for a while so he could keep working.
+A few sensed something. One man had kept up the subject for love of it. He listened, and he was staggered. He paid a small allowance for a while so the work could go on.
 
-It wasn't a living. It was holding on, waiting for one reader who could actually judge.`,
+It wasn't a living. It was holding on, waiting for one reader who could judge.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The Port Trust clerkship at twenty-four under a chief accountant who was himself a mathematician, and the two English mathematicians who did not take up his results — documented; accounts differ on whether they never replied or returned the papers, so the beat says only that neither took it up.",
+        "The clerkship at twenty-four under a chief accountant who did the same kind of work, and the two foreign scholars who did not take up his results — documented; accounts differ on whether they never replied or returned the papers, so the beat says only that neither took it up. Withheld for anonymity: the field, the port and the office that employed him, and how eminent the men he wrote to were — the beat says only that the people who could judge the notebooks lived in another country.",
       text: `At twenty-four he finally got a real job. A clerk's desk in an office, adding up accounts for a small wage.
 
-It was a rescue of a small kind, and there was luck hidden in it. His boss loved mathematics, saw what the new clerk was scribbling, and made room for it. Finish the accounts, then work.
+It was a rescue of a small kind, and there was luck hidden in it. His boss cared about the same work he did, saw what the new clerk was scribbling, and made room for it. Finish the accounts, then work.
 
-But the real problem had not moved. The only people alive who could judge the notebooks lived on the other side of the world.
+But the real problem had not moved. The only people alive who could judge the notebooks lived in another country, an ocean away.
 
-So he wrote to them. Cold letters from an unknown clerk with no degree, with pages of his results enclosed.
+So he wrote to them. Cold letters from an unknown clerk with no degree, with pages of his own work enclosed.
 
-The first famous mathematician did not take it up. The second did not either.
+The first man did not take it up. The second did not either.
 
-Every famous mathematician got letters like that from cranks. He knew which pile his was landing in.
+Men like that got letters from strangers all the time. He knew which pile his was landing in.
 
 He wrote a third letter anyway.`,
     },
@@ -6456,32 +6520,32 @@ He wrote a third letter anyway.`,
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The January 1913 letter (nine pages, about 120 theorems), the recipient's first doubt, the evening spent working through the claims with a colleague, and the reply that invited him — documented. The verdict is indirect speech, not quoted; the pages nagging at him through the day is dramatized texture over the documented gap between his setting the letter aside and taking it up that evening. Withheld for anonymity: how eminent the recipient was, the word hoax, and the forger-versus-genius verdict in its famous form — the beat says only that a stranger who could judge had no reason to believe the letter, worked through it that night, and stopped doubting.",
-      text: `The third letter went out like the other two. Another stranger in the same far country. Another chance at nothing.
+        "The third letter of January 1913, the recipient's first doubt, the evening he spent working through the claims, and the reply that invited him — documented. The pages nagging at him through the day is dramatized texture over the documented gap between his setting the letter aside and taking it up that evening. Withheld for anonymity: the field, the nine pages and the count of theorems, how eminent the recipient was, the colleague who sat with him that night, the three classes he sorted the results into, the word hoax, and the forger-versus-genius verdict in any quotable form — the beat says only that a stranger with no reason to believe the letter went through it late into the night and stopped doubting.",
+      text: `The third letter went out like the other two. Another stranger a long way off. Another chance at nothing.
 
-He sent his results, written out plainly, with none of the workings shown. The note with them said what he was. A clerk with no degree. He asked the man to look at the pages.
+He sent the results themselves, plainly written, without the working that got him there. The note with them said what he was. A clerk with no degree. He asked the man to look at the pages.
 
 The stranger read it and set it aside. He had no reason to believe a word of it.
 
-But the pages nagged at him all day. That night he sat down with a colleague and they worked through the claims hour by hour.
+But the pages nagged at him all day. That evening he came back to them and went through the claims line by line, late into the night.
 
-Some of it they knew already — found again, from nothing, by this clerk. Some they could prove only with effort. And some was past anything the two of them could do.
+Some he could check. Some he could not. None of it was nonsense.
 
 By the end of the night he had stopped doubting. The work was real.
 
-The reply that came back changed everything. They wanted the clerk. By name.`,
+Then the reply came, and it changed everything. After all those years of no one, someone wanted him to come.`,
     },
     // Beat 5 — What he became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "Cambridge, the flood of papers, election as one of the youngest fellows of the Royal Society, and the notebooks being read and worked on by other mathematicians — documented; the early death is deliberately not dwelt on. Withheld for anonymity: that his notebooks are still being mined a century later, a line attached in public to one person only; the beat says instead that other people could read them at last.",
-      text: `He left home for a great university far away, and the work poured out. Papers written with the man who had answered. Results that startled the field. Five years of discoveries that would have honored five careers.
+        "The move abroad, the flood of work written up with the man who had answered, election to a learned society, and the notebooks being read at last by other people — documented; the early death is deliberately not dwelt on. He held a Cambridge research degree from March 1916, so the beat does not claim he was still without one when the society elected him in 1918. Withheld for anonymity: the field, the university and the society by name or standing, that he was unusually young for that honour, the five-year span of the burst of work, and that the notebooks are still being mined a century later — the beat says only that other people read them at last and that what he had put there held up.",
+      text: `He crossed the world to a place where people gave their whole lives to this work. For years it poured out of him. He wrote it up with the man who had answered his letter. Results that startled the people who knew the subject.
 
-The places that ran on exams and degrees had to invent exceptions for him. A great scientific society elected him a member, young for such an honor. The clerk who had failed nearly every exam he ever sat, except the one he set himself.
+The places that ran on exams and degrees had to make room for him. A society of men who had given their lives to this took him in as one of them. He had come to them from a clerk's desk.
 
-And the notebooks. The notebooks stopped being something only he could read. Other people read them at last. The pages he had filled when nobody would look were full of things nobody else had found.
+And the notebooks. The notebooks stopped being something only he could read. Other people read them at last, and what he had put there held up.
 
 He had been right about himself. In all the years when every measure said failure, the notebooks said otherwise. The notebooks were correct.`,
     },
@@ -6530,11 +6594,19 @@ You don't have to prove the measures wrong today. He couldn't either, not for ye
 //    no long neck, no "sea creature" / "sea dragon" / "flying reptile", no "at twelve", no "first
 //    flying reptile found in her country" (a blind reader named her from exactly those, 2026-08-27);
 //    NO "she sells seashells" (the tongue-twister link is apocryphal);
-//    and, after a second blind reader named her off beats 0-5 (2026-09-01), drop the storybook
-//    picture as well: no "monsters" for what she dug up, no sea, no seaside town, no beach, no
-//    tourist buyers, no skeleton in the shop window, and no textbook line about whole kinds of
-//    animals dying out before there were people — the cliff work, the family's bone-selling, the
-//    doubted find and the closed society stay, because they are the episode itself;
+//    and, after two further blind readers named her off beats 0-5 (2026-09-01), beats 0-5 no
+//    longer say what she dug up at all: no "monsters", no bones, no skeleton, no animal or
+//    creature, no fossils, no sea, no seaside town, no beach, no cliffs (the danger is "ground
+//    that slid"), no tourist buyers, no skeleton in the shop window, no long neck or extra
+//    vertebrae for the doubted find, no naming of anatomy or French as what she taught herself,
+//    no dissections, no "understands more of the science than anyone else in this kingdom"
+//    phrasing for the 1824 diary line, no "first of its kind found in her country" for the 1828
+//    find, and no statement of what her finds proved about the age of the earth or about whole
+//    kinds of animals dying out — the beats say only that she dug curious things out of the rock
+//    and sold them; the poverty, the father's death and debts, the winter danger, the find called
+//    a join of two things, the closed society, the self-teaching, the shop at twenty-seven, the
+//    yearly sum, the money raised in her illness and the tribute after her death all stay,
+//    because they are the episode itself, and the bridge names everything;
 //    don't say she personally argued her case to Cuvier (not documented — fuller drawings and the
 //    society's own men settled it); don't attribute "the greatest fossilist the world ever knew"
 //    to a named contemporary (it is Torrens's 1995 article title and its origin is not established;
@@ -6582,36 +6654,36 @@ const anning: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The poor childhood, the Dissenter family, the father's fossil trade and his 1810 death leaving debts, the ichthyosaur she dug out at about twelve, and the winter cliff work are documented. \"She had the eye\" is editorial framing, not a quoted judgment. Withheld for anonymity: the sea, the seaside town, the tourists the family sold to, and the word monsters for what she dug up - the beat says only that she dug old bones out of the rock and sold them.",
-      text: `There was a young woman who dug old bones out of the rock and sold them.
+        "The poor childhood, the Dissenter family, the father's trade and his death in 1810 leaving debts, most of the strange thing she dug out before she was grown (her brother found the first piece), and the winter work on dangerous ground are documented. \"She had the eye\" is editorial framing, not a quoted judgment. Withheld for anonymity: the sea, the seaside town, the cliffs, the tourists the family sold to, and every word for what she actually dug up - the beat says only that she dug curious things out of the rock and sold them.",
+      text: `There was a young woman who dug curious things out of the rock and sold them.
 
-She grew up poor in a small town. Her family was looked down on twice over — for being poor, and for praying in the wrong building. Her father made furniture, and he taught the children his side trade: digging strange stone bones out of the ground to sell.
+She grew up poor in a small town. Her family was looked down on twice over — for being poor, and for praying in the wrong building. Her father made furniture, and he taught the children his side trade: getting curious things out of the ground to sell.
 
-Then he died and left debts. After that the bones were the difference between eating and not.
+Then he died and left debts. After that, what the children dug up was the difference between eating and not.
 
-She had the eye. Before she was grown she dug most of a strange animal out of the cliff. It was years before anyone could say what it was.
+She had the eye. Before she was grown she dug most of something strange out of the ground. It was years before anyone could say what it was.
 
-The cliffs were killers. They slid without warning, worst in winter. Fresh falls opened new bone, so winter was when she went out.
+The ground there slid without warning, worst in winter. It gave up the most then, so winter was when she went.
 
-She was in her twenties now. The finds were getting stranger.`,
+She was in her twenties now. What she found was getting stranger.`,
     },
     // Beat 1 — Dark moment
     {
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The 1823 plesiosaur, its unusually long neck, Cuvier's fake-or-composite suspicion, the special society meeting, the gentleman presenting her find from her drawing without naming her, and the total exclusion of women are documented. Her fear of being ruined is inference from the family's dependence on fossil sales.",
-      text: `One winter she uncovered the strangest thing yet. A whole skeleton, shaped like nothing alive.
+        "Documented: the strange complete find of December 1823, the leading anatomist's suspicion that it was a fake or two animals joined, the special meeting the learned society held on it, the gentleman who presented it there from her own drawing without naming her, and the total exclusion of women. Her fear of being ruined is inference from the family's dependence on what she sold. Withheld for anonymity: what the find was, its long neck and its extra vertebrae, the word skeleton, and the names of the expert and the society.",
+      text: `One winter she got out the strangest thing yet. Whole, end to end, and shaped like nothing anybody knew.
 
-The shape was the problem. Too long in the wrong places. Too many bones in it. The greatest expert of the age lived across the water, and his word settled arguments. He called the thing a probable fake. He thought she had stitched two animals together and sold them as one.
+The shape was the problem. There was too much of it, and in the wrong places. A famous man in another country was the highest authority there was, and his word settled arguments. He said it was probably a fake. He thought she had joined two finds together and sold the join as one.
 
 A cheat. Her.
 
-Everything her family ate came from her name for honest bone. If his verdict stood, she wasn't just wrong. She was finished.
+Everything her family ate came from her name for honest work. If his verdict stood, she wasn't just wrong. She was finished.
 
-The learned society in the capital called a meeting about the creature. Her creature. A gentleman presented it there, using her own drawing. He did not say her name.
+A society of learned men in the capital called a special meeting about her find. A gentleman presented it there, using her own drawing. He did not say her name.
 
-She was not in the room. The society did not let women in at all.
+She was not in the room. That society did not let women in at all.
 
 They argued about her find and her honesty without her.`,
     },
@@ -6620,14 +6692,14 @@ They argued about her find and her honesty without her.`,
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "Documented: fuller drawings and detail went to Cuvier, he conceded the specimen was genuine, her name stayed out of the official account, and her standing among working geologists rose. That she personally argued the case is not documented; \"she stood by the bones\" is editorial framing of her position, not a recorded act or speech.",
-      text: `She stood by the bones.
+        "Documented: fuller drawings and detail went to the doubting expert, he conceded the find was genuine, her name stayed out of the official account, and her standing among working men of science rose. That she personally argued her case is not documented; \"she stood by what she had dug\" is editorial framing of her position, not a recorded act or speech. Withheld for anonymity: the field, what the find was, and both men's names.",
+      text: `She stood by what she had dug.
 
-She had lifted every one of them out of the cliff herself. There was no seam. There was no second animal. The creature was simply true, and the expert's imagination had not stretched that far yet.
+She had lifted every piece of it out of the rock herself. There was no seam. The find was simply true, and the great man's imagination had not stretched that far yet.
 
-So she kept working, and the evidence went across the water. Better drawings. Fuller detail. The whole animal described bone by bone.
+So she kept working, and the proof went across the water. Better drawings. Fuller detail. The whole of it laid out piece by piece.
 
-He looked again. And the most powerful voice in the science took it back. The creature was real. The bones were one animal. She had been right and he had been wrong, and every gentleman in that closed room knew it.
+He looked again. And the most powerful voice in the field took it back. The find was real. It was one thing, not two. She had been right and he had been wrong, and every gentleman in that closed room knew it.
 
 Her name did not appear in the official account.
 
@@ -6638,16 +6710,16 @@ But in the letters those men wrote each other, it started appearing.`,
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The ongoing credit-taking, the small fossil income, the self-taught anatomy and French, and the dissections are documented. The visitor's line is Lady Harriet Silvester's 1824 diary, given as indirect speech. The kitchen table is dramatized texture. Withheld for anonymity: the beach she bargained on, and the word monsters for her finds.",
+        "Documented: the years of uncredited publishing, the small income and money worries, the science she taught herself out of borrowed books, and the foreign language she learned so she could read the man who doubted her. The visitor's line is a diary entry from 1824, given as indirect speech. The kitchen table is dramatized texture. Withheld for anonymity: which science and which language she taught herself, the dissections she compared her finds against, and the diary's \"understands more of the science than anyone else in this kingdom\" phrasing.",
       text: `Being right paid nothing and changed less.
 
-The pattern held for years. She found; gentlemen published. Her finds filled museum halls and made careers under other men's names. She bargained over small change and worried about the rent.
+The pattern held for years. She found; gentlemen published. Her finds filled the halls of great collections and made careers under other men's names. She bargained over small change and worried about the rent.
 
-She refused to stay a pair of hands. At her kitchen table she taught herself the science of her own finds. Anatomy, out of borrowed books. Then the foreign language the great expert wrote in, so she could read the man who doubted her in his own words. She cut open fish and squid and compared their bones to her stone ones.
+She refused to stay a pair of hands. At her kitchen table she taught herself the science behind her own work, out of borrowed books. She learned the language the doubting expert wrote in, so she could read him with nobody in between.
 
-She had made herself a scientist, alone, with no door opening to help.
+She had made herself an expert, alone, with no door opening to help.
 
-A visitor wrote it down in her diary. The professors all admitted it: this young woman understood the science better than anyone in the country.
+A visitor wrote it down in her diary. The learned men all admitted it: this young woman knew more about the subject than they did.
 
 The rooms stayed shut anyway. She kept digging.`,
     },
@@ -6656,16 +6728,16 @@ The rooms stayed shut anyway. She kept digging.`,
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The 1826 shop with its glass storefront and the ichthyosaur in the window, the collectors and savants who traveled from across Europe, and the December 1828 pterosaur (the first found in Britain) are documented. \"Her doorway had become the room\" is editorial framing. Withheld for anonymity: the seaside town, and the fact that the piece in the window was a mounted skeleton - the beat says only that she opened her own shop, with her name over the door and one of her finds in the window.",
+        "Documented: the house with the shop she bought and opened at twenty-seven, her name over it and one of her finds in the window, the collectors and men of science who traveled from across Europe to visit, and the second remarkable find two years later. \"Her doorway had become the room\" is editorial framing. Withheld for anonymity: the town, the fact that the piece in the window was a mounted skeleton, and that the 1828 find was the first of its kind ever discovered in her country.",
       text: `So the world started coming to her instead.
 
-At twenty-seven she opened her own shop. Her name over the door. One of her finds in the front window, facing the street.
+At twenty-seven she opened her own shop. Her name over the door. One of her best finds in the front window, facing the street.
 
-And the shop turned the science around. Collectors, professors, and famous men from across the continent began making the trip to a shop run by a furniture-maker's daughter. They came to buy from her. They also came to ask her.
+And the shop turned things around. Collectors, professors and famous men from other countries began making the trip to a shop run by a furniture-maker's daughter. They came to buy from her. They also came to ask her.
 
-There was no substitute for her. She knew the cliffs and the creatures better than the members of any society did.
+There was no substitute for her. She knew that ground, and what lay in it, better than any member of any society did.
 
-Two years after the shop opened, she pulled another impossibility out of the rock. Nothing of its kind had ever been found in her country. Another sensation. Another round of learned papers.
+Two years after the shop opened, she got another remarkable thing out of the rock. Another sensation. More papers written by men who had not been there.
 
 The rooms in the capital never did open to her.
 
@@ -6676,18 +6748,20 @@ Her doorway had become the room.`,
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "Her finds' role as evidence for extinction and for the new science of the deep past, the money the Geological Society helped raise for her, her death at forty-seven, and the president's eulogy for her — the first the society gave for a woman — are documented. She is never named here. Withheld for anonymity: the plain textbook statement of extinction and deep time that her finds are famous for - the beat says only that they forced the learned world to accept a far older, stranger past.",
-      text: `The creatures she found changed what people believed about the earth.
+        "Documented: her specimens ending up in the great collections, the men of science who wrote to her and visited her, the small yearly sum arranged for her from about 1838 with Buckland's help, the money the Geological Society raised for her when she was ill in 1846, her death at forty-seven, and the president's tribute afterward - the first that society read for a woman. She is never named here. Withheld for anonymity: what her finds proved about the age of the earth and about whole kinds of animals dying out, which is the single most identifying fact about her - the beat says only that the men who ran the field learned to come to her door.",
+      text: `She kept at it for the rest of her life.
 
-What she pulled out of the rock forced the learned world to accept an idea that frightened it. The story of the world was far older and stranger than they had believed. The new science of that story stood on bones her hands had freed from the ground.
+What she pulled out of the rock ended up in the great collections. The men who ran that field learned to travel to her door and take her word. Men who had studied for years wrote to ask her what she thought.
 
-The institutions came around slowly, and small. Near the end of her life, the society that had never admitted her helped raise money to keep her cared for.
+She stayed in the same small town, working the same dangerous ground, and money stayed tight for years. Later, men of science arranged a small yearly sum for her.
 
-Then she got sick, and she died at forty-seven, in the same small town.
+Near the end, the society that had never let her in raised money to keep her cared for.
 
-And the head of that society stood up in the room she had never been allowed to enter, and read a tribute to her. It was the first one they had ever read for a woman.
+Then she got sick, and she died at forty-seven.
 
-The rooms stayed shut. The science inside them was hers anyway.`,
+And the head of that society stood up in the room she had never been allowed to enter. He read out a tribute to her. They had never done that for a woman before.
+
+The rooms stayed shut. What was inside them was hers anyway.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -6727,14 +6801,21 @@ You don't have to be let in to do the work. She never was.`,
 //    cars, no president named by office, no named award, no "the biggest games in the world",
 //    and no fame superlatives ("the most celebrated athlete alive", "the fastest runner in the
 //    world", "the fastest legs alive"). Blind readers named him at 0.97 confidence off two
-//    successively softer drafts, so those forms were cut too. What the beats now say: he raced
-//    the best there was and won; the exhibition work is "paid races at fairs" against whatever
-//    the promoters lined up; the late honor is "his own country finally gave him its thanks in
-//    public"; and the silence from home survives as "no word came at all" from the leaders of
-//    the country he had just made proud. The medal count, the horses and the award's name
+//    successively softer drafts, so those forms were cut too. Withheld for anonymity (third
+//    pass, 2026-09-01), after a blind reader named him again: the SPORT itself. Beats 0-5 no
+//    longer say he ran, raced or was fast — a poor boy who becomes the fastest man alive
+//    and wins everything in one summer far from home is him and nobody else. What the beats now
+//    say: he was better at his sport than anyone they put him against, and he won the biggest
+//    contest he had ever been in, far from home. Also cut in that pass: "he raced the best
+//    there was"; the silence from his country's leaders (the offers simply going quiet now
+//    carries the abandonment, and no head of state appears in beats 0-5 at all); the fairs and
+//    "whatever the promoters lined up beside him" (now paid shows where he put on a display);
+//    the "what he won fed nobody" answer (now only "what else was he supposed to do"); the
+//    ambassador years and the return to the games as his country's official guest; and the
+//    forty-year gap before the honor. The medal count, the games, the horses and the award
 //    appear only in the bridge; the quote, the vehicles and any president as its giver stay
 //    out of all seven beats. Why the cleaning chain failed is disputed across sources, so the
-//    beats leave the cause unstated; the exhibition racing is rendered with his own
+//    beats leave the cause unstated; the exhibition work is rendered with his own
 //    dignity-forward framing, never as minstrelsy; no dollar figures; no "telegram" (era word).
 const owens: FigureStageRow = {
   figureKey: "owens",
@@ -6777,14 +6858,14 @@ const owens: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The poor farming family, the northern childhood, the win at twenty-two, the homecoming crowds and the promised offers — all documented. Withheld for anonymity: the host city, the host regime, the name and the scale of the games, the events he entered, the medal count, and every fame superlative; the beat says only that he raced the best there was and won. No dramatized detail added.",
-      text: `There was a young man who ran, and for one summer everything went right.
+        "The poor farming family, the northern childhood, the win at twenty-two, the homecoming crowds and the promised offers — all documented. Withheld for anonymity: the host city, the host regime, the name and the scale of the games, the events he entered, the medal count, every fame superlative, and now the sport itself. Beats 0-5 no longer say he ran or was fast, because a poor boy who becomes the fastest man alive is him and nobody else. The beat says only that he was better at his sport than anyone they put him against, and that he won the biggest contest he had ever been in, far from home. No dramatized detail added.",
+      text: `There was a young man, and for one summer everything went right.
 
-He was born poor, in a family that worked another man's land. He grew up in a big city up north. And he was fast. Faster than the men beside him. Faster than the men who had come before him.
+He was born poor, in a family that worked another man's land. He grew up in a big city up north. From the time he was small, he was better at his sport than anyone they put him against.
 
-That summer he raced the best there was, and he won. Then he came home.
+That summer he went far from home, into the biggest contest he had ever been in. He won it.
 
-He was twenty-two. Strangers cheered him in the street. Businessmen promised him the moon.
+Then he came home. He was twenty-two. Strangers cheered him in the street. Businessmen promised him the moon.
 
 He had done the thing nobody thought a poor boy could do. He had earned every bit of it. Now, surely, came the reward.`,
     },
@@ -6793,34 +6874,34 @@ He had done the thing nobody thought a poor boy could do. He had earned every bi
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The unpaid overseas exhibition tour he left, the permanent suspension from amateur competition, the endorsements that never came, the silence from his own country's leadership, and the wife and small daughter at home — all documented. The head of state is not named by office. Withheld for anonymity: the superlative framing of his speed, and any mention of medals; the beat says only that what he won that summer bought nothing. Where the tour money went is not claimed.",
+        "The unpaid tour abroad he refused, the permanent suspension from competition, the endorsements that never came, and the wife and small daughter at home — all documented. Withheld for anonymity: the sport, the words race and fast, the medals, and the silence from his own country's leadership after he had made it proud, which is one of the most retold details about him. The offers going quiet now carries the whole abandonment; no head of state appears in the beats, by name or by office. Where the tour money went is not claimed.",
       text: `First came a bill.
 
-The men who ran his sport had arranged a long tour overseas. More races. More crowds. No pay for the runners. He was worn out and homesick, and his family needed him earning. He said no.
+The men who ran his sport had arranged a long tour abroad. More appearances. More crowds. No pay for the athletes. He was worn out and homesick, and his family needed him earning. He said no.
 
-The officials answered with a ruling. He was suspended from amateur competition. Permanently.
+The officials answered with a ruling. He was suspended from competition. Permanently.
 
-Just like that, he was forbidden to race. Not injured. Not beaten. Banned. By men in offices, weeks after the best summer of his life.
+Just like that, he was finished. Not injured. Not beaten. Banned. By men in offices, weeks after the best summer of his life.
 
-Then the promised moon evaporated. The endorsements never got signed. The offers dried up inside a few months. From the leaders of the country he had just made proud, no word came at all.
+Then the promised moon evaporated. The businessmen who had made him offers went quiet. Inside a few months there was nothing left of any of it.
 
-He was twenty-three and broke. He had a wife and a small daughter. Everything he had won that summer bought nothing.`,
+He was twenty-three and broke. He had a wife and a small daughter. And no way to earn a living from the one thing he was great at.`,
     },
     // Beat 2 — Response
     {
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The paid exhibition races at fairs, the gas-station and playground jobs, and the 1937 entertainment contract and band tour are documented. Withheld for anonymity: the opponents the promoters arranged — horses, motorcycles, cars — which are the widely retold image of him, and the word medals. His own answer, that what he had won could not feed anyone, is rendered as indirect speech in plain words — never as quotation, never in his own famous phrasing. The dignity framing is his, from his later accounts.",
+        "The paid exhibition appearances, the gas-station and playground jobs, and the 1937 entertainment contract and band tour are documented. Withheld for anonymity: that the exhibitions were races at fairs against horses, motorcycles and cars, which is the single most retold image of him, and any version of his line about what his medals could not buy. His answer survives only as plain indirect speech — what else was he supposed to do — never as quotation and never in his famous phrasing. The dignity framing is his, from his later accounts.",
       text: `So he worked. Whatever there was.
 
-The strangest work left standing was this: paid races at fairs. Against whatever the promoters lined up beside him. People said it was beneath him.
+The strangest work was this. Promoters paid him to turn up at their shows and put on a display. Not a real contest. People told him it was beneath him.
 
-He had an answer, and he gave it plainly for the rest of his life. What he had won that summer fed nobody.
+He had an answer, and he gave it for the rest of his life. What else was he supposed to do? Nobody was offering him better.
 
-So he ran. He took the pay. He kept his head up doing it.
+So he took the pay. He kept his head up doing it.
 
-Between the exhibitions he pumped gas. He swept a playground. He danced and toured with a band for a season.
+Between those jobs he pumped gas. He swept a playground. He danced and toured with a band for a season.
 
 None of it was the plan. All of it was food on his family's table, earned in daylight.
 
@@ -6831,16 +6912,16 @@ Shame, he decided, belonged to the men who had banned him. Not to the man doing 
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The chain of cleaning shops that carried his name, its failure, the debts and the personal bankruptcy — documented. Sources disagree on why the chain collapsed, so no cause is stated. Withheld for anonymity: the fame superlatives this beat used to carry, the world that had cheered him and the fastest legs alive. That people listened when he spoke is drawn from his later speaking career, not from any documented room.",
-      text: `He tried to build something of his own. A chain of cleaning shops, with his own name on the sign.
+        "The chain of cleaning shops that carried his name, its failure, the debts and the personal bankruptcy — documented. Sources disagree on why the chain collapsed, so no cause is stated. Withheld for anonymity: the fame superlatives this beat used to carry, and the legs that were named here as the best thing he had, which handed the sport back to the reader. That people listened when he spoke is drawn from his later speaking career, not from any documented room.",
+      text: `He tried to build something of his own. A chain of shops that cleaned people's clothes, with his name over the door.
 
-It failed. The debts landed on him. Within a couple of years he was bankrupt.
+It failed. The debts landed on him. Within a couple of years he had to declare himself bankrupt.
 
-Those were long years. The crowds that had chanted his name moved on to new names.
+Those were long years. The cheering had stopped. People had moved on to whoever was new.
 
-He was still a young man. The legs still worked. They were the best thing he had, and there was nowhere he was allowed to use them for what they were for.
+He was still a young man. His body was still the best thing he owned, and there was nowhere left he was allowed to use it.
 
-He kept working the small jobs and the exhibition races. He kept his name clean even when it wasn't worth much on a storefront.
+He kept working the small jobs and the paid appearances. He kept his name clean even when it wasn't worth much on a storefront.
 
 And slowly he noticed the one thing the officials could not ban. When he stood up in a room and told his own story, people listened all the way to the end.`,
     },
@@ -6849,18 +6930,18 @@ And slowly he noticed the one thing the officials could not ban. When he stood u
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The rebuild as a public speaker and his standing among the most sought-after speakers in the country are documented, but compressed: that growth ran across the 1940s and 1950s, past the lean years of this episode. The kinds of rooms he spoke in are given only in general terms, since biographicalFacts establishes the speaking career and not particular audiences. Withheld for anonymity: the 'beat the world' framing of that summer, kept here in the plainer form beat 0 uses. The quiet room is dramatized texture.",
-      text: `The talking became the new running.
+        "The rebuild as a public speaker and his standing among the most sought-after speakers in the country are documented, but compressed: that growth ran across the 1940s and 1950s, past the lean years of this episode. The kinds of rooms he spoke in are given only in general terms, since biographicalFacts establishes the speaking career and not particular audiences. Withheld for anonymity: the running that the old opening line leaned on, and the exhibition detail, kept here only as the shows. The quiet room is dramatized texture.",
+      text: `The talking became the new work.
 
 People started asking him to come and speak. Schools. Churches. Companies. Anywhere people would gather to listen.
 
-He would stand up, plain and warm, and tell them the whole thing. The dirt-poor start. The summer everything went right. The exhibitions and the gas pumps after.
+He would stand up, plain and warm, and tell them the whole thing. The dirt-poor start. The summer everything went right. The shows and the gas pumps after.
 
 And then the part he cared about most. Getting up anyway.
 
 He was good at it. Better than good. A room would go quiet, and he would give it something true, and people carried it home.
 
-The invitations kept coming, and then they kept multiplying. The man the officials had silenced ended up with more rooms wanting him than he could reach. Paid, at last. Honored, at last. For exactly what he was.
+The invitations kept coming, and then they kept multiplying. The man the officials had silenced ended up with more rooms wanting him than he could reach. Paid, at last. Wanted, at last. For exactly what he was.
 
 Nobody handed him that second life. There was no committee for it. He built it out of the wreckage, by hand.`,
     },
@@ -6869,20 +6950,18 @@ Nobody handed him that second life. There was no committee for it. He built it o
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The goodwill-ambassador years, the return to the Games as his country's official representative, and the national civilian honor forty years after that summer — documented, kept anonymous. Withheld for anonymity: the medal count and the word medals, the name of the award, the office that presented it, and any label for the games he went back to; the presentation itself was public. The 'shorthand' line is editorial framing, not a sourced claim.",
-      text: `For the rest of his life he was his country's ambassador of the possible.
+        "The years of constant speaking and travel, and the public national honor late in his life, are documented and kept anonymous here. Withheld for anonymity: the medal count and the word medals, the name of the award, the office that presented it, the ambassador title, the return to the same games as his country's official representative, and the forty-year gap — each of which names him. The becoming is given in human terms: rooms, travel, children, and a thank-you that came late. The stripped-but-not-emptied line is editorial framing, not a sourced claim.",
+      text: `He spent the rest of his life in front of people. Room after room, year after year, saying the same true thing.
 
-He traveled the world for it. He spoke to its children. He went back to the same races that had been his triumph and his ruin, this time as his country's official guest.
+He traveled a great deal for it. He spoke to children most of all. He had gone from banned to trusted, and he had made the crossing on his own.
 
-And late in his life, his own country finally gave him its thanks in public.
-
-It took forty years.
+Late in his life, in public, his country said thank you. It had taken most of his life to arrive.
 
 The men who banned him were long gone by then. He had outlasted them.
 
-His own name had become a kind of shorthand. It meant that being the best can outlast the people who hate you. It meant that a man can be stripped of everything except who he is, and build again from exactly that.
+What he built by hand lasted longer than what was taken from him. Being stripped of a thing is not the same as being emptied out. He was still in there. He always had been.
 
-What he won was never the treasure. It turned out the man was.`,
+What he won that summer was never the treasure. It turned out the man was.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -7108,7 +7187,25 @@ A no can end a hope without ending you. What you do with the feeling is still yo
 //    chili parlor before the bridge (the "country across the ocean" phrasing keeps it soft); her
 //    death is NOT in the beats or bridge; no "Queen Bess" and no royal-nickname wording
 //    before the bridge; beats 0-5 state NO "first" claim at all (both firsts are saved for
-//    the bridge) and beat 5 describes the segregated-entrance stand without the word "gate".
+//    the bridge). Second anonymity pass (a blind reader still named her from beats 0-5): beats
+//    0-5 now name her race nowhere — no "Black", no "her people", no "skin" or "color", no
+//    cotton, no "deep South", no northward migration, no Black audiences, and no "segregated",
+//    "gate" or "entrance" in the stand she took (the beat says only that she would not fly if
+//    the crowd was split). Also withheld now, because the blind reader quoted each one:
+//    "barbershop" and "manicurist" (she has a small table in a shop and works on people's
+//    hands); "night school" and the phrase that she learned a language in order to be taught to
+//    fly (evening classes, and the beat gives the reason as living there); the nine-mile walk
+//    ("a long walk"); the ten-month course finished in seven ("most of a year", "months
+//    early"); the seven-months-ago framing of the license ("a year before"); the word
+//    "international" and the federation that issued the license; and the named war (her
+//    brothers were "soldiers overseas"). Every one of these stays in biographicalFacts, and the
+//    bridge still names her race, both firsts and the segregated gate.
+//  Left inferable on purpose (do not describe beats 0-5 as fully race-free): beat 1 says the
+//    second refusal was about something she could not go home and fix, beat 3 says the school
+//    abroad had "only one reason this time", and beat 5 has promoters wanting the crowd split.
+//    A reader can infer her race from those three. They stay because the double refusal and
+//    the stand she took ARE the episode. Do not add another implicit marker, and do not let
+//    any of the explicit words back in.
 const coleman: FigureStageRow = {
   figureKey: "coleman",
   displayName: "Bessie Coleman",
@@ -7150,12 +7247,12 @@ const coleman: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The cotton-field childhood, the move north, the manicure table, and a brother's teasing that women overseas could fly are documented; sources differ on her birth order among thirteen children, so the beat says only one of thirteen. Her reaction to the teasing is interpretive, not a sourced moment.",
-      text: `There was a young woman doing nails in a barbershop in a big northern city.
+        "The field-work childhood, the move to the city, the shop table where she worked on people's hands, and a brother's teasing that women overseas could fly are documented; sources differ on her birth order among thirteen children, so the beat says only one of thirteen. Her reaction to the teasing is interpretive, not a sourced moment. The table's place in the corner of the shop and the age at which the field work started are minimal staging around documented facts, not sourced details. Withheld for anonymity (second pass, after a blind reader named her): her race, the region, the cotton, the northward migration, the barbershop and the word manicurist, and the war her brothers served in — all kept in biographicalFacts, and the bridge names her race.",
+      text: `There was a young woman with a small table in the corner of a shop. She worked on people's hands all day.
 
-She had grown up picking cotton in the deep South, one of thirteen children. She got herself north on her own, part of a great tide of people moving toward something better. Now she sat at a small table all day and worked on other people's hands.
+She had grown up a long way from that city, in a poor farming family, one of thirteen children. She was out in the fields as soon as she was big enough to be useful. She got herself to the city on her own, and this was the work she found.
 
-Her brothers had fought in a war, in a country across the ocean. They came home with stories. One of them liked to tease her with a particular one. Over there, he said, women flew airplanes. She never would.
+Her brothers had been soldiers overseas. They came home with stories. One of them liked to tease her with a particular one. Over there, he said, women flew. She never would.
 
 He meant it as a joke.
 
@@ -7166,52 +7263,52 @@ Something in her stood up and never sat back down. That. That was the thing. She
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The blanket refusals by American flight schools — for her sex and for her race — and the fact that no aviator would train her privately are documented. She was twenty-seven or twenty-eight when the refusals came.",
+        "The blanket refusals by American flight schools — for her sex and for her race — and the fact that no aviator would train her privately are documented. She was twenty-seven or twenty-eight when the refusals came. Withheld for anonymity: that the second refusal was racial, and that the schools were her own country's; the beat says only that there were reasons under the first one that nobody wrote down.",
       text: `Finding a flight school turned out to be easy. There were plenty.
 
-Getting into one was another matter. She wrote. She asked. She showed up in person. The answer came back the same from every direction, sometimes politely, sometimes not:
+Getting into one was another matter. She wrote. She asked. She showed up in person. The answer came back the same from every direction, sometimes politely, sometimes not.
 
 No women.
 
-And under that, the second no, the one that didn't always bother being polite. Certainly no Black women. Not in any school. Not in any cockpit. Not in this country. She could not even hire a private teacher. No pilot would take her money.
+And under that, other reasons. Nobody put those in writing. Nobody had to. They were about her, about what she was, and there was nothing she could go home and fix. She could not even hire a teacher privately. No pilot would take her money.
 
-It wasn't one closed door. It was worse than that. There were no doors at all. Her whole country had agreed, long before she was born, that a woman like her did not fly.
+It wasn't one closed door. It was worse than that. There were no doors at all. Everyone had agreed, long before she was born, that a woman like her did not fly.
 
-She was in her late twenties, doing nails ten hours a day, in love with a thing she had never once touched.`,
+She was in her late twenties, working on people's hands ten hours a day, in love with a thing she had never once touched.`,
     },
     // Beat 2 — Response
     {
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The newspaperman's advice to train abroad, the night classes in a foreign language, the better-paying restaurant job taken to save faster, and the saved wages are documented. His advice is paraphrased here, not quoted.",
-      text: `A powerful friend — a newspaperman who spoke for her people — told her the plain thing. The schools here would never take her. The schools over there might.
+        "The newspaperman's advice to train abroad, the language classes she took in the evenings, the better-paying restaurant job taken to save faster, and the saved wages are documented. His advice is paraphrased here, not quoted. Withheld for anonymity: the country, the language, the paper he published and the readers he spoke for; the beat also stops short of the exact phrase that named her — that she learned a foreign language at night school in order to be taught to fly.",
+      text: `A man she knew, who ran a newspaper, told her the plain thing. The schools here would never take her. The schools over there might.
 
-Over there. The country her brothers had fought in. Where women flew.
+Over there. Across the ocean. Where women flew.
 
-There was one problem. The schools over there taught flying in their own language, and she did not speak a word of it.
+There was one problem. Over there they did not speak her language, and she did not speak theirs.
 
-So she signed up for night classes. After ten hours at the table she sat down and studied, evening after evening, month after month.
+So she found classes in the evenings. After ten hours at the table she sat down and studied, night after night, month after month.
 
 She saved every wage she could. She took a better-paying job running a small restaurant so the money would come faster.
 
-If her own country wouldn't teach her, fine. She would change countries. She was not going to change her mind.`,
+If nobody here would teach her, fine. She would change countries. She was not going to change her mind.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The crossing at twenty-eight, the first school abroad refusing her for being a woman, the acceptance at the second, the nine-mile walk each way, the wood-and-fabric biplane that failed often, a fellow student killed in a crash during her training, and finishing the ten-month course in seven — all documented.",
+        "The crossing at twenty-eight, the first school abroad refusing her for being a woman, the acceptance at the second, the long daily walk to the airfield, the wood-and-fabric biplane that failed often, a fellow student killed in a crash during her training, and finishing the ten-month course in seven — all documented. Withheld for anonymity: the country, the school names, the nine-mile figure and the ten-in-seven figure, given here as a long walk and a course finished months early; that she flew again the very next morning after the crash is dramatized continuation, not a dated record.",
       text: `At twenty-eight she boarded a ship alone and crossed the ocean.
 
-The first school she applied to over there turned her down too. Not for her skin this time. For being a woman. Even the freer country had its locks.
+The first school she asked over there turned her down too. Only one reason this time. She was a woman. Even that country had its locks.
 
 The second school said yes.
 
-Then came the hard part. Months of training, through the winter, in a language she had learned at night. Nine miles' walk to the field in the morning and nine miles back. Machines of wood and cloth that quit in the air. One day another student went down and died. She went up the next morning, and every morning after.
+Then came the hard part. Months of training, through the winter, in a language that was not hers. A long walk out to the field in the morning and the same walk back. Machines of wood and cloth that quit in the air. One day another student went down and died. She went up the next morning, and every morning after.
 
-She finished the ten-month course in seven.
+The course was meant to take most of a year. She finished it months early.
 
 Nobody was cheering. It was just her, a cold field, a language she was still learning, and the one thing she had crossed an ocean to get.`,
     },
@@ -7220,32 +7317,32 @@ Nobody was cheering. It was just her, a cold field, a language she was still lea
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The June 1921 license from the international federation, the advanced course she took afterward, and the press attention when she returned home that September — documented, as are the night language classes she took before sailing and the November 1920 crossing this beat looks back on. Withheld for anonymity: the firsts the license represented, which are stated only in the bridge.",
-      text: `On a June day, the international body that governed the world's flying issued her its license.
+        "The June 1921 license, the advanced course she took afterward, and the press attention when she returned home that September are documented, as are the evening language classes and the November 1920 crossing this beat looks back on. Withheld for anonymity: the firsts the license represented and the body that issued it, the word international, the seven-months figure (given here as a year before), and the manicure table — the firsts are stated only in the bridge.",
+      text: `On a June day the license came through.
 
-Hers. By name.
+Hers. With her name on it.
 
 She had asked at home and been told no by everyone she asked. Every school. Every pilot who might have taught her privately. So she went where the answer was different, and she came back with the thing itself.
 
-Seven months earlier she had never flown a plane in her life. She had learned all of it in a language she had studied at night, in a country she had reached only the winter before.
+A year before, she had never been off the ground. She had learned all of it in a language she studied at night, in a country she had reached only that winter.
 
 She stayed on a while and took a harder course. Then she sailed home.
 
-This time the newspapers wanted to talk to her. The years at the manicure table were over. The young woman no school in her own country would admit came off that ship a pilot, with the papers to prove it.`,
+This time the newspapers wanted to talk to her. The years at that little table were over. The young woman nobody at home would teach came off that ship a pilot, with the papers to prove it.`,
     },
     // Beat 5 — What she became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The show flying before large crowds (loops, figure eights and near-ground dips), the lectures recruiting her people into aviation, the flying school she hoped to found, and her refusal to fly over a segregated gate (including the Texas standoff she won) — documented; her death deliberately excluded. Withheld for anonymity: the crowd nickname and the fame wording, both held for the bridge.",
+        "The show flying before large crowds (loops, figure eights and near-ground dips), the lectures recruiting her people into aviation, the flying school she hoped to found, and her refusal to fly where the audience was segregated (including the Texas standoff she won) are documented; her death is deliberately excluded. Withheld for anonymity: the crowd nickname and the fame wording; that the audiences she spoke to and the spectators the promoters wanted separated were Black; and the words segregated, gate and entrance — the beat says only that she would not fly if the crowd was split. All of it is in the bridge.",
       text: `She started flying in shows.
 
-Crowds came out to watch her. She turned the plane through circles and figures in the air, then dropped low over the field. Children of her people looked up, and there she was.
+Crowds came out to watch her. She turned the plane through circles and figures in the air, then dropped low over the field. People looked up, and there she was.
 
-She used the attention. She spoke in churches, schools and theaters. She told young Black men and women that the sky was open to them too. She talked about starting a flying school of her own, so nobody would ever have to cross an ocean the way she had.
+She used the attention. She spoke wherever anyone would have her. Churches, schoolrooms, halls. She told young people who had been told no that the air was open to them too. She talked about starting a flying school of her own, so nobody would ever have to cross an ocean the way she had.
 
-And she set terms. When promoters wanted one door for her people and another for everybody else, she would not fly. One way in, or no show. In one town they gave in.
+And she set terms. When the people running a show wanted to split the crowd up, she would not fly. All of them together, or no show. In one town they gave in.
 
 She knew what a locked door cost. She would not have one standing in front of her own show.`,
     },
@@ -7284,22 +7381,33 @@ You don't have to be let in yet to keep going. She wasn't, for a long time.`,
 //    invention); recognition came late: EFF Pioneer Award 1997 ("It's about time" is widely
 //    reported as her answer, secondary sources only), National Inventors Hall of Fame
 //    posthumously 2014. d. Jan 19, 2000.
-//  Interpretive: "they could not see the mind past the face." Grounded. Also interpretive: that
-//    interviewers only ever asked about looks/husbands/clothes (a fair generalization of her
-//    press, not one documented exchange), and that children now learn her as an inventor first.
-//  Avoid saying: don't name Lamarr / Hollywood / the Navy / Antheil / the EFF / the Inventors
-//    Hall of Fame before the bridge; no years, sums or organization names anywhere in beats 0-5;
-//    also held back from beats 0-5, because each one alone lets a reader name her: the tagline
-//    her employers sold her with ("the most beautiful woman in the world") and any superlative
-//    about her fame; the film trade itself — studio, posters, movie star, even "the film
-//    work"; the words torpedo and frequency; how the invention actually worked (a signal that
-//    keeps moving in a pattern only the two ends know); the collaborator's trade (composer); the
-//    era's own name for what she sold on the fundraising tour; the kisses-for-bonds stunt; the
-//    picture of her idea living inside the machines people carry today; and the three-word reply
-//    to the award — all of these belong to the reveal, not before it;
-//    do NOT claim she "invented Wi-Fi" (ancestry framing only); do NOT claim the Navy's later
-//    frequency-hopping systems were taken from her patent; the beauty rendered as the thing that
-//    blinded people to the mind, never lingered on.
+//  Interpretive: "they could not see the mind past the face." Grounded, and still the
+//    engine of this stage, though the face itself is now kept out of beats 0-5 entirely. Also
+//    interpretive: that the questions put to her always stayed small (a fair summary of her
+//    press, not one documented exchange), and that she used the one door they left open on
+//    purpose, knowing what it cost.
+//  Avoid saying: don't name Lamarr / Vienna / Hollywood / the Navy / Antheil / the EFF / the
+//    Inventors Hall of Fame before the bridge; no years, sums or organization names anywhere in
+//    beats 0-5. A blind reader named her twice, so beats 0-5 now withhold BOTH halves of the
+//    famous pairing, since either half plus the other is her. (a) The looks-based public career:
+//    no face, no beauty, no movie star, no studio, no tagline, no fame superlative, and not the
+//    interviewers asking about looks, husbands and clothes. The public life is given only as
+//    work that used nothing of her mind. (b) The invention as a technical object: no radio, no
+//    signal, no jamming, no torpedo, no frequency, not the words patent or invention, no account
+//    of how it worked, no later spread into everyday machines, no idea that kept spreading. Also
+//    withheld: her first husband's own trade in arms (in beat 0 he is only a rich man with
+//    powerful friends whose guests talked about what armies needed); the free offer named as
+//    such to a named service; war bonds, the kisses-for-bonds stunt and the sums; the
+//    seventeen-year term; the collaborator's trade; the award-giver and the posthumous hall of
+//    fame; and the three-word reply, left out entirely rather than paraphrased. What beats 0-5
+//    keep: the two lives, the marriage she ran from and the dinners where the talk was of what
+//    armies needed, the joint filing offered for nothing and refused with a joke, the redirect
+//    to public appearances for the war, the drawer, the paper running out with no payment and no
+//    use, the work falling away, the twenty-year lag, other people arriving at the same problem
+//    later, the old paper reread with two names on it, and recognition half a century late with
+//    more after her death. Do NOT claim she "invented Wi-Fi" (ancestry framing only); do NOT
+//    claim the Navy's later frequency-hopping systems were taken from her patent; the beauty
+//    stays out of the beats entirely and belongs to the bridge.
 const lamarr: FigureStageRow = {
   figureKey: "lamarr",
   displayName: "Hedy Lamarr",
@@ -7341,36 +7449,36 @@ const lamarr: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The two lives — a public face sold on her looks by day, a work table at home by night — and the first marriage to a weapons dealer whose dinner guests talked munitions, are all documented. Withheld for anonymity: her trade, and the tagline her employers used to sell her; either one alone names her, so both wait for the bridge. No invented room detail and no invented dialogue.",
+        "The two lives, the work table at home, the habit of taking machines apart since childhood, and the first marriage to a rich man whose dinner guests talked about weapons are all documented. Withheld for anonymity: what her public work actually was, that she was paid for how she looked, and her husband's own trade in arms. A blind reader named her twice from the famous-face-plus-inventor pairing, so both halves of it now wait for the bridge, and the public life is given only as work that used nothing of her mind. No invented room detail and no invented dialogue.",
       text: `There was a woman with two lives.
 
-In the public one, people knew her face. The people who paid her sold that face and nothing else. Strangers assumed it was the whole story. Strangers always did.
+In the public one, people knew who she was. What they paid her for had nothing to do with her mind. Strangers decided what she was the moment they saw her, and never revised it.
 
-In the private one, she kept a work table in her house. After the day's work she sat at it and invented things. She had been taking machines apart since she was small.
+In the private one, she kept a work table in her house. After the day's work she sat at it and made things. She had been taking machines apart since she was small. Nobody paid her for that.
 
-Years earlier she had been married to a man whose money came from weapons. She ran from that marriage. But she had sat through years of his dinners, listening to military men talk about weapons and their weak points.
+Years earlier she had been married to a rich man with powerful friends. She ran from that marriage. But she had sat through years of his dinners, listening to his guests talk about what armies needed and what kept going wrong.
 
-Then the world went to war against the country she had run from.
+She listened. She remembered.
 
-And her two lives met on one idea.`,
+Then the war came, and both lives met on one idea.`,
     },
     // Beat 1 — Dark moment
     {
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The unjammable radio-guidance design, the collaborator who solved the hardest piece of it, the free offer to the wartime Navy, the rejection and the redirect to fundraising are all documented. Withheld for anonymity: the weapon it was built for, the collaborator's trade, and how the invention actually worked — the beat says only that she found a way to make the signal impossible to block, because the method, described, names her. The officer's remembered jibe survives only through the collaborator's account, so it is summarized as a joke at her expense rather than quoted.",
-      text: `The idea was about weapons steered by radio.
+        "Documented: the idea she worked out during the war, the friend who worked on it with her, both names on the filing, the offer made to the government for no payment, the refusal, and the redirect to public appearances for the war effort. The remembered joke at her expense survives only through her collaborator's later account, so it is summarized, never quoted. Withheld for anonymity: what the idea was, what it was for, the field it belonged to, how it worked, the word for the document they filed, which service turned it down, and the collaborator's trade. Any one of those, said plainly, hands the reader her name.",
+      text: `Then she had an idea.
 
-A radio signal can be found and drowned out. Then the weapon goes blind. She worked out a way to make that signal impossible to block. It was a real answer to a real problem, and it worked on paper.
+It came from both halves of her life. The years of listening at his table, and the years at her own. She saw a way around a problem the war had not solved. A friend worked on it with her. On paper, it worked.
 
-A friend of hers solved the hardest part of it. They patented it and offered it to the wartime government of her adopted country. Free. A gift.
+They wrote it up, put both their names on it, and took it to the men who decided what got built. They asked for nothing in return. It was a gift.
 
-The men in charge looked at the invention. Then they looked at the inventor.
+Those men looked at the paper. Then they looked at the woman who had brought it.
 
-A woman known for her looks, explaining radio to officers. What came back was a joke at her expense.
+A woman like her, in a room like that, talking about machines. Somebody made a joke. The joke is the part that got remembered.
 
-Shelved. And she was told where a woman like her could really help the war. Her fame. Her face. Go raise money.
+It went into a drawer. And she was told where a woman like her could really help. Not with that. With her name.
 
 The best thing her mind had ever made, waved off without a real reading.`,
     },
@@ -7379,64 +7487,68 @@ The best thing her mind had ever made, waved off without a real reading.`,
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The cross-country fundraising drives for the war are documented, including a much-retold stunt in which she sold kisses for bonds. Withheld for anonymity: that stunt, the sums she raised, and the era's own name for the thing she was selling — each of the three is famous enough on its own to name her. That she threw herself into the one job they allowed her is interpretive.",
-      text: `She did the job they allowed her, and she did it at full speed.
+        "Documented: she threw herself into the war-effort tour they sent her on, appearing city after city in front of crowds. Withheld for anonymity: what she was raising, the famous stunt she used to raise it, and the sums, which are repeated often enough that any of them names her. That she used the one door they left open on purpose, and knew what it cost, is interpretive.",
+      text: `She did the job they would give her, and she did it at full speed.
 
-If the face was the only tool they would take, she would use the face like a crowbar. She crossed the country raising money for the war. She stood in front of rooms full of strangers, night after night, and sold them the face. The money poured in for the same war effort that had just filed her mind under decorative.
+If her name was the only part of her they would take, she would use her name like a crowbar. Night after night she stood in front of rooms full of strangers and asked them to give what the war needed. They gave. It was the same war effort that had just decided her mind was not worth reading.
 
 There was steel in that, and she knew it.
 
-The patent sat in its drawer. She did not beg anyone to look again. Some walls you do not argue with. You outlive them.
+The paper stayed in its drawer. She did not beg anyone to look again. Some walls you do not argue with. You outlive them.
 
-At her table, on the quiet nights, she kept inventing. That part of her had never needed permission.`,
+At her table, on the quiet nights, she kept making things. That part of her had never needed permission.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The patent's seventeen-year term running out with no payment and no wartime use, and the film career thinning through her forties, are documented. Withheld for anonymity: her trade — the beat calls it the work that had made her famous, because naming the film work next to the inventing names her. The line about what interviewers asked is a fair summary of her press coverage, not one documented exchange.",
+        "Documented: the protection on the idea ran out with no payment to her and no use she ever learned of, and the work that had made her known thinned out and ended in her forties. Withheld for anonymity: how long that protection lasted, what the work was, and the three subjects interviewers actually pressed her on - her looks, her husbands, her clothes - since that list alone gives away the kind of fame she had. The line about small questions is a fair summary of her press, not one documented exchange.",
       text: `The war ended. The drawer stayed shut.
 
-Her patent ran out seventeen years after it was granted. Not one cent. Not one use she ever heard about. The work that had made her famous went on for a while, and then it thinned out and stopped. The world had exactly one file for her, and the label never changed. The face.
+The paper ran out, the way those papers do. Not one payment. Not one use she ever heard about. The work she was paid for went on a while, then thinned out, then stopped. The world had one file for her, and the label on it never changed.
 
 That was the long grind of it. Not one big rejection. Decades of a mind nobody looked at.
 
-Interviewers asked about her looks. About her husbands. About her clothes. Nobody asked what she thought about. Nobody asked what she had built.
+When people wanted to talk to her, they asked the same small questions they had always asked. Nobody asked what she thought about. Nobody asked what she had built.
 
-She knew what she had made. That knowledge does not pay you and it does not get printed in the papers. It also does not go away.`,
+She knew what she had made. That knowledge does not pay you, and it does not get printed anywhere. It also does not go away.`,
     },
     // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "Frequency-hopping and spread-spectrum systems entering military use about twenty years later, the spread of the idea past weapons into everyday use, and the later rediscovery of the patent are documented. Withheld for anonymity: the name of the technique, any description of how it works, and the everyday machines it ended up inside — the beat says only that the idea spread and that almost nobody knew where it had started. The beat deliberately says engineers found their own way to it — there is no claim that her patent was copied or credited at the time.",
+        "Documented: about twenty years on, the same approach turned up in use and was built on, and later researchers went back to the filing and read her name there. Reputable sources disagree about whether those engineers reached it on their own or through a chain of contractor work that led back to the filing, so the beat claims neither copying nor credit - only that others arrived at it, built on it, and never asked her. Withheld for anonymity: the name of the method, how it works, what it is used for now, and the ordinary machines it ended up inside. That last picture is the most repeated version of her story and names her by itself. The beat deliberately makes no claim that her filing was copied or credited at the time.",
       text: `The world caught up to her about twenty years late.
 
-Military systems began doing the thing she had described. It was the same idea she and her friend had patented and given away. Engineers found their own way to it, and then built on it. It answered a problem far bigger than the one she had aimed at.
+Other people came at the same problem from their own direction and arrived where she had already been. They built on it. Other people built on that. Nobody asked her about any of it.
 
-Bit by bit, it moved out of weapons and into ordinary life. She lived to see that, and to see that almost nobody knew where it had started.
+She lived to see it happen. She also lived to see that almost nobody knew where it had started.
 
 Her work was out in the world. Her name was not.
 
-And at last, someone went back and read the old paperwork. Historians and engineers found the patent and looked twice at the two names on it. One of them belonged to a woman the world had only ever looked at. The mind behind it had been on the record the whole time.`,
+That is a strange thing to carry. You are right in private and nowhere else.
+
+Then somebody went back and read the old paper. There were two names on it. One of them belonged to a woman nobody had ever thought to ask. It had been sitting in the record the whole time. Nobody had thought to check.`,
     },
     // Beat 5 — What she became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The award in her eighties and the posthumous induction into the inventors hall of fame are documented; both organizations are left unnamed until the bridge. Her three-word answer is widely reported in secondary sources only, so it is given indirectly rather than quoted — and the words themselves are well-known enough to name her. That children now learn her as an inventor first is interpretive.",
+        "Documented: an honor from inside the technical world when she was in her eighties, roughly half a century late, and a further honor after her death. Withheld for anonymity: who gave the award, what the later honor was, and her famous short answer to it - that answer is quoted everywhere and names her on its own, so it is left out entirely rather than paraphrased. That she kept working through all of it is documented; the reading of what the waiting cost her is interpretive.",
       text: `The honors arrived when she was in her eighties.
 
-An award finally came, and it came from the technical world. The world that had never once taken her calls, back when she was offering. Her answer was three words long. It told them how late they were. It did not give her back the years.
+People who did the kind of work she had done said in public, at last, that she had been right. It came far too late. It did not give her back the years she had spent being told she was wrong.
 
-After she died, her country counted her among its inventors. Children now learn her as an inventor first. That is the one thing nobody would let her be while it could still have mattered to her.
+More came after she died. She never saw that part.
 
-The face that had blinded everyone became a footnote to the mind.
+Here is what she was by then. A woman who had been right for fifty years with nobody agreeing, and who kept making things anyway. She did not stop when they put her idea in a drawer. She did not stop when the paper ran out. She did not stop when the questions stayed small.
 
-It took more than fifty years, which is a long time to be right with no credit. She spent those years the only way that works. She knew what she had made, whether or not anyone asked.`,
+That is not a happy ending. It is a real one.
+
+She knew what she had made. She held on to that alone, for as long as it took.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -7674,7 +7786,18 @@ Behind is a number, not a verdict. She crossed hers out.`,
 //    quickest way out of the city"), the compass direction of the passage (no "far coast", no
 //    "west"), and beat 5's fame markers (no "voice nobody had heard before", no "raw material"
 //    or "treasure" phrasing of the argument, no founding of the organization, no country "kept
-//    whole instead of cut"); those belong to the bridge now.
+//    whole instead of cut"); those belong to the bridge now. A second blind pass (2026-09-02)
+//    still named him from beats 0-5 -- the popular sketch was legible in the arc itself (a
+//    self-taught mechanic blinded at work becomes a naturalist, walks an enormous distance,
+//    lives for years in a western range, writes the books, organizes the movement), so the
+//    whole shape is now told at the level of a human life: no trade named (a shop, his hands,
+//    a bench), no tool and no eye named, no fluid in the palm and no sympathetic blindness,
+//    no frontier, no boyhood inventions, no distance or direction or coast for the walk, no
+//    plant press, no "high country" used as a place name, and beat 5 carrying only that he
+//    learned the mountains, wrote what people read, asked that some land be left as it was,
+//    and was still asking when he was old. The reach of the writing, the organization, the
+//    rooms of power, the land that was saved and his own religious register now live in the
+//    bridge only.
 //    Don't claim the exact tool
 //    (sources vary awl/file -- "a tool slipped"); don't claim the valley was read to him in the
 //    darkened room (his own account names the readers, never what they read); don't say the 1903
@@ -7724,84 +7847,84 @@ const muir: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The hard farm childhood, the self-teaching, the whittled inventions that won him notice, the factory rise and the partnership talk are documented; the someday framing of his postponed wild journey is editorial compression, not a plan he wrote down.",
-      text: `There was a young man who was good with machines. So good it was becoming his whole life.
+        "The hard farm childhood under a strict father, the self-teaching, his rise at the works and the partnership talk are documented; the someday framing of his postponed journey is editorial compression, not a plan he wrote down. Withheld for anonymity: the trade itself (the machinist, the efficiency man), the boyhood inventions that won him notice, and the frontier setting of the farm.",
+      text: `There was a young man who was good with his hands. So good that it was becoming his whole life.
 
-He'd grown up hard on a frontier farm, worked from dark to dark by a strict father, and taught himself everything. The machines he whittled as a boy had won him notice.
+He'd grown up hard on a farm a long way from any town, worked dark to dark under a strict father. Whatever he wanted to know, he taught himself.
 
-Now, at twenty-eight, he was rising fast at a factory in a city. He was the efficiency man. The owners talked about making him a partner. A comfortable, successful, indoor life was building itself around him.
+Now, at twenty-eight, he was doing well at a shop in a city. He was quick, and useful, and the owners had begun talking about making him a partner. A comfortable indoor life was building itself around him.
 
-There was one other thing in him. A pull toward wild country. Plants, mountains, rivers.
+There was one other thing in him. A pull toward open country. Hills, water, growing things.
 
-Someday he would take a long walk through all of it. Someday. The factory came first.`,
+Someday he would go out into all of it, properly, for a long time. Someday. The work came first.`,
     },
     // Beat 1 — Dark moment
     {
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The early-March injury (sources differ on the tool, so it stays a tool), his own account of the eye emptying into his hand and his belief that the sight was gone for good, the sympathetic blindness of the second eye and the weeks in the dark with no promised recovery are documented; the evening hour, the warmth of what ran into his palm, and the question he turns over are dramatized texture.",
-      text: `One evening in early spring he was working late at the bench when a tool slipped and struck his right eye.
+        "The early-spring injury at the bench, his own account that he believed the sight was gone for good and with it everything beautiful he had wanted to look at, the loss of the second eye within hours, and the weeks in a dark room with no promised recovery are documented; the evening hour and the question he turns over are dramatized texture. Withheld for anonymity: the tool and which eye it struck (sources differ on the tool), the fluid that ran into his hand, and the sympathetic mechanism that took the second eye.",
+      text: `One evening in early spring he was working late when he was hurt at the bench. It took a second. It took the sight in one eye.
 
-He felt something warm run out into his palm. He thought the eye was finished. And with it every beautiful thing he had ever wanted to look at.
+He knew straight away how bad it was. He thought of every beautiful thing he had ever wanted to look at. He believed he had looked at all of it for the last time.
 
-Within hours the left eye went dark too, in shock at its twin's wound. He was blind.
+Before the night was out, the other eye had gone dark too. He could not see at all.
 
-The doctors put him in a darkened room and could promise nothing.
+He was put in a dark room. Nobody could promise him the light would come back.
 
-He was twenty-eight. He was a man built on his hands and his eyes. Week after week he lay there doing the only arithmetic he had left. If the light never comes back, what did I do with it while I had it?
+He was twenty-eight. He was a man who had lived by his hands and his eyes. Week after week he lay there doing the only arithmetic he had left. If the light never comes back, what did I do with it while I had it?
 
-The answer made him sicker than the wound. He had spent it on gears. The thing he loved most, he had kept for someday.`,
+The answer made him sicker than the injury. He had spent it indoors. The thing he loved most, he had kept for someday.`,
     },
     // Beat 2 — Response
     {
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The friends — many of them children — who read to him in the dark and brought him flowers, his resolve while still blind to quit industry and store his mind with beauty, and his own later line about being nearly killed to learn a lesson are documented; his own account does not record what was read to him, so nothing he heard is named here.",
+        "The friends — many of them children — who read to him in the dark and brought him flowers, his resolve while still blind to leave the trade and fill his mind with beauty, and his own later line about being nearly killed in order to learn a lesson are documented; his account never records what was read to him, so nothing he heard is named here. Withheld for anonymity: the religious register of his own two lines, which are paraphrased plainly here.",
       text: `Friends came and read to him in the dark. Some of them were children. They brought him handfuls of the flowers he liked best.
 
-He lay there with his eyes bandaged and listened.
+He lay there with his eyes covered and listened.
 
-Somewhere in those weeks the decision quietly finished itself. If the light came back — if — he was done spending it on machinery. He would go straight to the wild world and fill his mind with its beauty. Then no darkness could ever empty him again.
+Somewhere in those weeks the decision quietly finished itself. If the light came back — if — he was not going to spend it indoors. He would go out into the country he loved and fill himself up with it. Then no darkness could ever empty him again.
 
-He wrote later that God has to nearly kill us sometimes, to teach us lessons. He had heard his.
+He wrote later that sometimes a man has to be nearly killed before he learns the lesson. He had heard his.
 
 Then the light started coming back, week by week.
 
-He did not go back to the workbench.`,
+He did not go back to the bench.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The September start, the pack with the plant press and books, the long walk south to the water, the near-total lack of money, sleeping rough and the several nights in a cemetery are documented; the one-sentence plan is editorial compression.",
-      text: `That September he strapped on a small pack and started walking south. In it: a press for the plants he collected and a few books. The plan was one sentence — the wildest country he could find, on foot, until the land ran out at the water.
+        "The autumn start on foot, the pack with a few books, the months of walking, the near-total lack of money, sleeping rough, the several nights in a graveyard and the hunger are documented; the one-sentence plan is editorial compression. Withheld for anonymity: the distance, the direction he walked, the coast the walk ended at, and the plant press he carried.",
+      text: `That autumn he put a few things in a pack and left on foot. A few books, and not much else. No route, and no date to be back. He would go where the country was emptiest and keep going.
 
-It was no stroll. He had almost no money. He slept in the open, in barns, once for several nights in a graveyard because it was the safest place around. He waded swamps. He went hungry.
+It was no stroll. He had almost no money. He slept in the open, in barns, once for several nights in a graveyard because it was the safest place around. He went hungry.
 
-And he was happy. A kind of happy the factory had never once paid him.
+And he was happy. A kind of happy the shop had never once paid him.
 
-He collected plants all day like a man let out of prison.
+He spent his days looking at everything that grew.
 
-Mile after mile of walking, on faith that the accident had told him the truth.`,
+Week after week of walking, on faith that the accident had told him the truth.`,
     },
     // Beat 4 — Turning point
     {
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The fever at the sea coast that turned him away from South America, the passage by ship, his leaving the port city on foot as soon as he landed, the walk inland into the high country in 1868 and the return the following year are documented; the line about the country he had been postponing is this entry's interpretation, not his words. Withheld for anonymity: the direction he sailed, and the question he asked a stranger on the street when he landed.",
-      text: `At the sea a hard fever caught him. And it bent the plan in the best possible direction.
+        "The fever at the end of the walk that turned him away from the journey he had planned, the passage by boat, his leaving the port on foot as soon as he landed, the weeks of walking inland into the mountains that spring and the return the following year are documented; the line about the country he had been postponing is this entry's interpretation, not his words. Withheld for anonymity: the direction he sailed, the country and the range he walked into, and the question he asked a stranger on the street when he landed.",
+      text: `At the end of the walk a hard fever caught him. And it bent the plan in the best possible direction.
 
-The far rivers he had dreamed of were too much for a body wrung out by fever. But there was other wild country, a long way off, and he could still reach it. He took a ship.
+The far-off rivers he had meant to reach were too much now for a body wrung out like that. But there was other empty country he could still get to. He went the rest of the way by boat.
 
-He landed in a port city and did not stay. He walked out of it and kept going.
+He came ashore in a town and did not stay in it. He walked out and kept going.
 
-He kept walking inland for weeks. Then the ground began to climb, and he came up into high country.
+For weeks he went inland. Then the ground began to climb, and he came up into mountains.
 
-The man who had nearly lost the light was standing in the country he had been postponing his whole life. Every step since the dark room had been correct.
+The man who had nearly lost the light was standing in the kind of country he had been postponing his whole life. Every step since the dark room had been correct.
 
 He went back the next year, and then he stayed. Not just in that country. In the life.`,
     },
@@ -7810,14 +7933,14 @@ He went back the next year, and then he stayed. Not just in that country. In the
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The years living in the high country, the wilderness essays, the organization he helped found and led until his death, and his arguing for wild land in front of men with the power to decide are documented; nothing here is claimed as caused by him. Names withheld. Withheld for anonymity: the founding of the organization, the reach of his writing, and the land that ended up protected -- all of that is told in the bridge instead.",
-      text: `The wild became his work. And the work turned out to be bigger than he was.
+        "The years living in the mountains, the writing that people read, and the rest of his life spent asking that wild land be left alone — said to people who decided its fate, and still being said when he was old — are documented; nothing here is claimed as caused by him. Names withheld. Withheld for anonymity: the reach and standing of the writing, the organization he helped found and led until his death, the men in power he made the case to, and the land that ended up protected — all of that is told in the bridge instead.",
+      text: `He stayed up there for years. He came to know those mountains the way a scholar knows a subject — the water, the weather, the rock, the seasons.
 
-He lived up in that high country for years and learned it the way a scholar learns a subject. Then he began writing about wild places, and people read him.
+Then he began writing down what he was seeing, and people read it. The man who had been good with his hands had turned into a man who was listened to.
 
-He was writing to people who looked at a forest and counted lumber. He told them the land was worth keeping as it was. And that it was going fast.
+He spent the rest of his life speaking up for that country. He asked people who had never seen it to leave some of it alone, and to hurry, because it was going fast. He was still asking when he was an old man.
 
-He joined with others to defend it, and he gave the rest of his life to that. He made the argument in front of men who had the power to decide. He was still making it when he died.
+He never got the safe indoor life back. He got a harder one, out in the weather, and it was his own.
 
 None of that was in the plan he had at twenty-eight. It goes back to a dark room, and a man who finally heard what his own heart had been saying the whole time.`,
     },
@@ -7867,9 +7990,19 @@ You don't have to know yet what this stretch is for. He didn't either, not while
 //    lines were softened: the disease nickname ("the sugar sickness"), the wards of wasting
 //    children, the blood-sugar readings (now "the numbers on its chart"), "its highest honor"
 //    for the prize (now "honors"), and the last trace of the give-it-away line. Beats 0-5 now
-//    say only that the disease had no treatment and that children died. Don't put any of it
-//    back. What STAYS is the documented episode itself: the dog that stood up, the boy's two
-//    injections, and the months-later recovery of the ward children — the arc needs them.
+//    say only that the disease had no treatment and that children died. A third blind pass
+//    (2026-09-02) named him again, so that line went too: beat 1 now says only that nobody
+//    could treat the illness, that the people who got it did not get better, and that many of
+//    them were young. Beats 0-5 also now withhold: the number and species of the research
+//    animals (was ten dogs; the beat says only "some animals"); the coin toss that picked
+//    the assistant; the twenty-five-word length of the 2am note; the claim that nobody had
+//    ever isolated the substance; the thirty-years-of-failed-experts line; the count of years
+//    to the honors; the ward of children waking and asking for food; and the splitting of the
+//    prize money with the assistant (only his documented anger that the young man was left
+//    off stays). Don't put any of it back. What STAYS is the documented episode itself: the
+//    empty practice, the 2am note with the misspelled disease name, the professor's refusals,
+//    the one borrowed summer, the thing in the lab that recovered, the first patient who was
+//    tried twice, and the people who lived after — the arc needs them.
 const banting: FigureStageRow = {
   figureKey: "banting",
   displayName: "Frederick Banting",
@@ -7928,14 +8061,14 @@ A decorated surgeon, not yet thirty, paid almost nothing to fill an hour of othe
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The failed practice, the borrowed money, the strained engagement, the assigned lecture he had to cram for, and the state of care for that disease are documented in Bliss. Calling that autumn the low point is editorial framing. Withheld for anonymity: the organ, the disease and its common name — the beat says only that there was no treatment and that children died.",
+        "The failed practice, the borrowed money, the strained engagement, the assigned lecture he had to cram for, and the state of care for that illness are documented in Bliss. Calling that autumn the low point is editorial framing. Withheld for anonymity: the organ and the illness stay unnamed, and the beat no longer leads with children dying — it says only that there was no treatment and that many of the sick were young.",
       text: `The autumn was the low point. The practice was a confirmed failure — not slow, failed. He was living on borrowed money. The engagement he had come home to was under strain.
 
 The part-time lecturing rubbed salt in it. He was handed topics he barely knew. He crammed journals the night before, like a student, so he could teach students.
 
-One of those topics was an organ he barely knew anything about — and the disease tied to it. There was no treatment. Children who got it died, and all the doctors could do was watch.
+One of those topics was a part of the body he barely understood, and an illness tied to it. Nobody could treat it. The people who got it did not get better, and many of them were young. Doctors could only watch.
 
-He sat up late with the journal articles. A failed doctor, reading about an unsolvable disease, for a lecture nobody would remember.
+He sat up late with the journals. A failed doctor, reading about an illness nobody could solve, for a lecture nobody would remember.
 
 He went to bed defeated. At two in the morning his mind — still working the problem in the dark — woke him.`,
     },
@@ -7944,28 +8077,28 @@ He went to bed defeated. At two in the morning his mind — still working the pr
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The 2am note — twenty-five words, with the name of the disease misspelled — and his decision to take it to the Toronto professor are documented. The weighing in the dark is editorial framing, not a recorded thought. Withheld for anonymity: the organ and the disease stay unnamed until the bridge.",
-      text: `He got up and wrote twenty-five words in his notebook.
+        "The 2am note, written in his own notebook with the name of the illness misspelled, and his decision to take it to a professor with a laboratory are documented. The weighing in the dark is editorial framing, not a recorded thought. Withheld for anonymity: the organ, the illness, the twenty-five-word length of the note, and the claim that the substance was one nobody had ever managed to isolate.",
+      text: `He got up and wrote the idea down in his notebook. A few lines, no more.
 
-An idea. A way — maybe — to get at the one substance nobody had ever managed to isolate. Get it pure, and it might stop the disease cold. He misspelled its name as he scribbled it down. He was not an expert. That was exactly the objection everyone would make.
+A way — maybe — to get hold of the thing that could hold the illness back, and get it clean enough to use. He misspelled the name of the illness as he scribbled. He was not an expert. That was exactly the objection everyone would make.
 
 But lying there in the dark he knew two things. The idea could be tested. And he had — this was the strange gift of failure — nothing else. No thriving practice to protect. No reputation to risk. An empty waiting room and a written-down idea.
 
-So he took it to the one man in the country with the lab and the standing to test it.`,
+So he took it to a man with a laboratory and a name that carried weight.`,
     },
     // Beat 3 — Struggle
     {
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "Macleod's skepticism of the untrained unknown, the repeated approaches, the grudging grant of one summer, ten dogs and one student, the coin toss that picked the student, and Banting giving up the London practice are all documented. The fly line is the narrator's, not a quote.",
-      text: `The great professor was not impressed.
+        "The professor's skepticism of the untrained unknown, the repeated approaches, the grudging grant of one summer with borrowed lab space, research animals and a single student assistant, and Banting giving up the London practice are all documented. The fly line is the narrator's, not a quote. Withheld for anonymity: the number and species of the research animals, the coin toss that picked the assistant, and how many years and how many better-trained men the problem had already defeated.",
+      text: `The professor was not impressed.
 
-Here was an unknown small-town surgeon proposing to solve a problem in one summer. No research training. Thin knowledge of the literature. The problem had beaten the best physiologists in the world for thirty years, and the professor knew every failed attempt. He explained, with the patience of a man swatting a fly, why this would likely be another.
+Here was an unknown small-town surgeon proposing to solve a problem in one summer. No research training. Thin knowledge of the literature. Better-trained men had worked at this for years and gotten nowhere, and the professor knew every one of their failures. He explained, with the patience of a man swatting a fly, why this would likely be another.
 
 The young doctor came back. And came back again. He had no standing, no polish, and no other plan. Under the farm-boy manner was a stubbornness the professor finally found easier to allow than to keep refusing.
 
-Fine. One summer, while the professor traveled. Borrowed lab space. Ten dogs. One student assistant, picked by a coin toss between two volunteers.
+Fine. One summer, while the professor traveled. Borrowed lab space. Some animals. One student to help.
 
 It was scraps from the table. He gave up the practice and took the scraps.`,
     },
@@ -7974,30 +8107,30 @@ It was scraps from the table. He gave up the practice and took the scraps.`,
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The summer 1921 experiments and the first working extract, the chemist joining to purify it, and Thompson's two January 1922 injections — the first with little effect, the second successful — are documented, as is the recovery of the wards over the following months. Withheld for anonymity: the common name of the disease is gone, and the falling blood-sugar readings are told plainly as numbers on a chart.",
-      text: `The summer was brutal. Heat, failed surgeries, dogs lost, techniques invented on the spot by two young men learning research by doing it.
+        "The summer 1921 experiments and the first working extract, the chemist joining to purify it, the first patient's two January 1922 injections (the first with little effect, the second successful), and the recovery of other patients over the following months are documented. Withheld for anonymity: the species of the animal that recovered, the first patient's age, and the ward of children waking and asking for food; the beat keeps the sequence and drops the pictures that name the discovery.",
+      text: `The summer was brutal. Heat, failed attempts, long days, two young men teaching themselves research by doing it.
 
-And then, late in the summer, it worked. A dying dog got their extract and stood up. The numbers on its chart came down. Again. Repeatable.
+And then, late in the summer, it worked. Something in that lab that had been dying got up and stayed up. The numbers on its chart came down. They tried it again. It held.
 
-The failed doctor stood in the borrowed lab, looking at numbers every expert said he would never see.
+The failed doctor stood in the borrowed room, looking at numbers every expert had told him he would never see.
 
-Months of refinement followed. A real chemist joined to purify the extract. Then, that winter, a hospital ward, and a boy down to skin and bone, days from the end.
+Months of careful work followed. A chemist joined them to get it clean enough for a person.
 
-The first injection barely helped. They purified it further and tried again.
+Then, that winter, a hospital, and a patient who had run out of time. The first try barely helped. They purified it further and tried again.
 
-The boy woke up. Strength came back. In the months that followed, children who had been dying by inches were sitting up and asking for food.`,
+This time it took. Strength came back. In the months that followed, others who had been given up on began to come back.`,
     },
     // Beat 5 — What he became
     {
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The 1923 Nobel, splitting his prize money with his assistant, and the children who lived afterward are documented. Not taking the credit alone is editorial framing of his documented fury that his assistant was passed over. Withheld for anonymity: the prize's name, the youngest-laureate record, the university, and the patent handed over for a dollar — including the giving-it-away line — are all held back for the bridge.",
-      text: `Three years after the empty waiting room, his own profession was handing him honors.
+        "The honors that came a few years later, his documented fury that his young assistant was passed over, and the lives saved afterward are documented. Not being thanked alone is editorial framing of that fury. Withheld for anonymity: the prize by name, the youngest-laureate record, the university, the patent handed over for a dollar, the count of years between the empty practice and the honors, and the splitting of the prize money with his assistant, which is a widely retold gesture.",
+      text: `A few years after the empty waiting room, the same profession that had no use for him was handing him honors.
 
-He stayed exactly who he was. Furious that his young assistant had been left off the prize, he split his own prize money with him, half and half. He would not take the credit alone.
+He stayed exactly who he was. The young man who had worked beside him all summer was left off, and he was angry about it, and he said so. He would not be thanked alone.
 
-Children with the disease he had read about in those journal articles grew up. People who would have died young have lived whole lives because of one borrowed summer. All of it came out of one bad autumn, one failed practice, and one idea written down at two in the morning. The man who wrote it down was someone the experts had seen no reason to take seriously.
+People who would have died from that illness grew up instead. They got whole lives out of one borrowed summer. And that summer came out of one bad autumn, one failed practice, and an idea written down at two in the morning. The man who wrote it down was someone the experts had seen no reason to take seriously.
 
 He had sat in that room thinking his life was over. It was the room where it started.`,
     },
@@ -8041,18 +8174,28 @@ You don't have to know what the empty stretch is for. He didn't either.`,
 //    bridge; keep "the moors", "the hills" and "parsonage" out of beats 0-5 (parson's daughter
 //    + moors + writing sisters identifies her instantly); never quote Jane Eyre itself in a
 //    beat, and never describe its story (a governess book about a small, plain, poor girl who
-//    asks to be treated as an equal names it as surely as the title does); don't number the
-//    sisters or say the pen names were men's names; leave the childhood miniature books out;
-//    the two-copies detail stays (unnamed book); no sister-author reveal before bridge —
-//    beats keep sisters as "her sisters".
-//  Withheld for anonymity (2026-09-01, blind-reader pass): beats 0-5 no longer say she was a
-//    clergyman's daughter (minister's daughter + cold house at the end of a village road is
-//    the standard popular picture of her); no longer say the sisters wrote in secret or that
-//    the names on the poems were used to hide women writers; no longer say what the second
-//    novel was about or echo its best-known speech; and no longer say the publisher believed
-//    it was corresponding with a man. The joint book of poems, the two copies, the sisters'
-//    novels being taken while hers came back, the brother's drinking and the father's eye
-//    operation stay — they are the episode itself.
+//    asks to be treated as an equal names it as surely as the title does); don't say the other
+//    writers were her sisters, don't number them, don't say the pen names were men's names;
+//    leave the childhood miniature books out; don't give the number of copies the poems sold
+//    (two) — that figure is the most quoted fact about this family; don't call the drinker her
+//    brother or the family's great hope; don't say the father's operation was on his eyes and
+//    don't name the city; don't put the crossed-out addresses of earlier publishers on the
+//    parcel; no poet-laureate label, and no paraphrase of the "business of a woman's life"
+//    sentence.
+//  Withheld for anonymity (2026-09-02, blind-reader round 2): a blind reader still named her
+//    from beats 0-5, so each identifying leg was blurred rather than the episode cut. Now
+//    withheld: the sisters (they are "the others she wrote with"), the two-copies figure ("you
+//    could have counted the copies sold on one hand"), the brother (an unnamed someone in the
+//    house), the eye operation ("an operation"), the crossed-out-addresses parcel (a package
+//    that had "obviously been somewhere else first"), the famous poet (an older writer everyone
+//    had heard of) and his sentence, and beat 5's fame framing (biggest book of the year, in
+//    print ever since). Kept: the printed book of poems almost nobody bought, the year of
+//    refusals, the others being taken while hers came back, the drinking in the house, the
+//    father's failing sight and the month in the darkened room, the letter that asked for a
+//    longer book, the yes, and the two later novels.
+//  Earlier pass (2026-09-01): beats 0-5 no longer say she was a clergyman's daughter, that the
+//    poems went out under invented names to get around the treatment of women writers, what the
+//    second novel was about, or that the publisher believed it was corresponding with a man.
 const bronte_c: FigureStageRow = {
   figureKey: "bronte_c",
   displayName: "Charlotte Brontë",
@@ -8092,16 +8235,16 @@ const bronte_c: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The remote household, the teaching and governess years she hated, her small stature and very poor eyesight, and the laureate's verdict at twenty (kept unnamed) are documented; the evening writing at the family table follows Gaskell's account of the household. Withheld for anonymity: her father's calling — the beat no longer says she was a minister's daughter, because that plus a cold house at the end of a village road is the standard popular picture of her.",
+        "The remote household, the teaching and governess years she hated, her small stature and very poor eyesight, and the older writer's verdict at twenty (kept unnamed) are documented; the evening writing at the family table follows Gaskell's account of the household. Withheld for anonymity: her father's calling; that the writer she wrote to was the poet laureate — he is now only an older writer everyone had heard of; and the wording of his refusal, which names her even in paraphrase.",
       text: `There was a woman of thirty in a cold house at the end of a village road.
 
 She was small, short-sighted and poor. She had spent her twenties teaching other people's children in other people's houses. She did the work well. She hated it.
 
-She had been writing since she was a kid. Whole invented worlds. Now poems and stories in every hour she could steal. At the table at night, after the house went quiet.
+She had been writing since she was a child. Poems and stories, in every hour she could steal. At the table at night, after the house went quiet.
 
-Once, when she was twenty, she sent some of her poems to one of the most famous poets in the country. She asked him honestly. Is this any good? Should I try to live by it?
+Once, when she was twenty, she sent some of her poems to an older writer everyone had heard of. She asked him honestly. Is this any good? Should I try to live by it?
 
-He wrote back kindly. He also told her that a woman had no business making a life out of writing. Not as a living.
+He wrote back kindly. He also told her the answer was no. Not as a living, and not for a woman.
 
 She kept the letter. She kept writing.`,
     },
@@ -8110,36 +8253,36 @@ She kept the letter. She kept writing.`,
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The 1846 poems paid for out of the sisters' own money, the two copies sold, the first novel's rejection round beginning, the father's failing sight and the brother's decline into drink and opium — all documented. Withheld for anonymity: that the book went out under invented names and that the reason was the treatment of women writers — three sisters publishing behind men's names is the one thing everybody knows about this family.",
+        "The book of poems paid for out of their own small savings, its near-total failure to sell, the first novel's rejection round beginning, her father's failing sight and the drinking in the house — all documented. Withheld for anonymity: that the other writers were her sisters, that the book went out under invented names, and the exact number of copies sold; three writing sisters and the two-copies figure are the two most quoted facts about this family.",
       text: `At thirty she made her real bid.
 
-She and her sisters paid, out of their own small savings, to have a book of poems printed. Then they waited to see what the world would do with it.
+She and the others she wrote with paid, out of their own small savings, to have a book of poems printed. Then they waited to see what the world would do with it.
 
-The book sold two copies.
+Almost nothing happened.
 
-Two. In a whole year, in the whole country. They'd have done better burying the money in the yard.
+In a whole year, in the whole country, you could have counted the copies sold on one hand. They'd have done better burying the money in the yard.
 
-She took that in and doubled the bet. A novel. She wrote it, she polished it, she sent it to a publisher in the capital.
+She took that in and doubled the bet. A novel. She wrote it, she polished it, she sent it to a publisher in the city.
 
 It came back.
 
 She sent it to the next one. It came back. And the next.
 
-At home her father was going blind and her brother was drinking himself to pieces upstairs.
+At home her father's sight was failing. Someone else in that house was drinking himself to pieces upstairs.
 
-The letter, the two copies, the book that kept coming home. The verdict on her writing was unanimous. It was no.`,
+The letter. The book nobody bought. The novel that kept coming home. The verdict on her writing was unanimous. It was no.`,
     },
     // Beat 2 — Response
     {
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "Beginning the second novel in rented lodgings in another city during her father's month-long recovery from cataract surgery, with the first novel still unsold — documented; the father, the failing house and the unwanted first book are all from the facts. Withheld for anonymity: what the new book was about — describing it names it as surely as the title would.",
+        "Beginning the second novel in rented rooms in another town, during her father's month-long recovery in a darkened room, with the first novel still unsold — documented. Withheld for anonymity: what the operation was, what town it was in, and what the new book was about; describing that book names it as surely as the title would.",
       text: `Here is what she did while the first novel was still coming back. She started the second one.
 
 Not after the first found a home. Not after somebody encouraged her. In the middle of the noes.
 
-She wrote it in rented rooms in a strange city. She had taken her father there for an eye operation. She sat with him in a darkened room for a month while he healed.
+She wrote it in rented rooms in another town. She had taken her father there for an operation. She sat with him in a darkened room for a month while he healed.
 
 That is where the new book started. She was writing it in the middle of everything. A father who could not see. A house going wrong. A first book nobody wanted.
 
@@ -8150,16 +8293,16 @@ If the world was going to keep saying no, it would have to say it to new work.`,
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The year-plus rejection round, the re-used wrapper carrying the crossed-out addresses of earlier refusals (Gaskell), the sisters' two novels accepted in 1847 on poor terms, and the brother's decline — all documented; a quotation from the novel itself was removed as unsupported.",
+        "The year-plus rejection round, the re-used wrapper she could not afford to replace (Gaskell), the other writers' novels accepted on poor terms while hers came back, and the drinking at home — all documented; a quotation from the novel itself was removed in an earlier pass as unsupported. Withheld for anonymity: that the other writers were her sisters, that the drinker was her brother and the family's great hope, and the crossed-out addresses of earlier publishers on the parcel — that image is one of the best-known anecdotes about her.",
       text: `The first novel kept coming home.
 
-Publisher after publisher, for more than a year. She could not afford new wrapping paper, so she reused the old. Every new publisher opened a parcel with the crossed-out addresses of everyone who had already said no still on the front.
+Publisher after publisher, for more than a year. She could not afford new wrapping paper, so she used the same parcel again. Every new publisher opened a package that had obviously been somewhere else first.
 
-Think about that for a second. She had to hand them the record of her own rejections.
+Think about that for a second. She had to hand them the proof that other people had already said no.
 
-At home things got worse. Her brother had been the one everyone expected great things from. He was far gone now, and the house lived around it.
+At home things got worse. The drinking upstairs was past fixing now, and the house lived around it.
 
-Her sisters found a publisher for their books, slowly and on bad terms. Hers alone kept coming back.
+The others she wrote with found a publisher for their books, slowly and on bad terms. Hers alone kept coming back.
 
 She finished the second novel with the first one still homeless. Two whole books now. Not one yes.`,
     },
@@ -8168,16 +8311,16 @@ She finished the second novel with the first one still homeless. Two whole books
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The August 1847 letter that declined the first novel but invited a longer one, the second novel sent within weeks, and the quick acceptance and publication that autumn — documented; the publisher's own Sunday-reading anecdote was cut as unverified. Withheld for anonymity: that the firm believed it was corresponding with a man — the beat says only that they did not know who she was — and what the new novel was made of; it is now identified by where she started it, which is documented.",
+        "The letter that declined the first novel but said a longer work by the same hand would receive careful attention, the second novel posted within weeks, and the quick acceptance and publication that autumn — documented; the publisher's own Sunday-reading anecdote was cut in an earlier pass as unverified. Withheld for anonymity: the firm's name and city, that it believed it was corresponding with a man, and what the new novel was made of.",
       text: `Then came the rejection that changed everything.
 
-A publishing house in the capital sent the first novel back with the usual no. But whoever wrote the letter had actually read the book. The letter said it was too short and too quiet for them. It also said the writing had real quality, and that a longer, fuller novel by the same hand would get careful attention.
+A publishing house sent the first novel back with the usual no. But whoever wrote the letter had actually read the book. The letter said it was too short and too quiet for them. It also said the writing had real quality. It said a longer, fuller novel by the same hand would get careful attention.
 
 Careful attention. After years of flat noes, someone had left a door open an inch.
 
 She put the second novel in the post within weeks. The one she had started in that darkened room.
 
-This time the answer was yes. The firm took it almost at once and had it in shops in a matter of weeks. They still had no idea who she was.
+This time the answer was yes. They took it almost at once, and it was in shops soon after. They still had no idea who she was.
 
 Years of no. It had only ever needed one yes.`,
     },
@@ -8186,18 +8329,20 @@ Years of no. It had only ever needed one yes.`,
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The immediate sensation, the public guessing about who the author was, her reveal to the publisher, and the novel's lasting readership — documented, names withheld; the closing two lines are editorial. Withheld for anonymity: that the name on the cover read as a man's, her father's calling, and the old last line, which paraphrased the novel's best-known speech.",
-      text: `The book went off like a bomb.
+        "The book's immediate success, the public guessing at who had written it, her reveal to the publisher, and the two later novels — documented, names withheld; the closing two lines are editorial. Withheld for anonymity: that the name on the cover read as a man's, the number of copies the poems sold, and the fame framing — the beat no longer says it was the biggest book of the year or that it has stayed in print ever since.",
+      text: `The book landed hard.
 
-Within weeks the name on the cover was the one everybody in the country was talking about. Some reviewers loved it. Some were shocked by it. What nobody could do was ignore it. Famous people argued about who the author could possibly be.
+Within weeks it was the thing people were reading and fighting about. Some loved it. Some were shocked by it. What nobody could do was ignore it. Strangers wanted to know who had written it, and nobody could tell them.
 
-The author was a woman in a cold house at the end of a village road.
+The person who wrote it was a woman in a cold house at the end of a village road.
 
-When she finally told them who she was, they could hardly believe it. She was small and short-sighted and had come from a village they had never heard of. She had written the biggest book of the year.
+When she finally told them who she was, they could hardly believe it. She was small and short-sighted. She had come from a village nobody had heard of. She had written the book everyone was arguing about.
 
-The poems sold two copies. The novel has stayed in print ever since and been read all over the world.
+She wrote two more books after that one. People kept reading her.
 
-The same woman wrote both. The difference was never her.`,
+The poems had sold almost nothing. The novel was read everywhere. The same woman wrote both.
+
+The difference was never her.`,
     },
     // Beat 6 — Bridge to you
     {
@@ -8599,24 +8744,25 @@ You don't have to be past the worst of it to begin again. He wasn't either.`,
 //  Interpretive: "the year that erased her, and the train where she began authoring herself
 //    again." Grounded.
 //  Avoid saying: don't name Christie / Poirot / the Orient Express / Harrogate before the
-//    bridge. After the third anonymity pass (a blind reader shown only beats 0-5 named her at
-//    0.97 and quoted the car, the search, the hotel and the false name, the memory loss, the
-//    train east, and the archaeologist husband), beats 0-5 hold back more: the eleven-day
-//    count, the abandoned car, the police and the volunteer search lines and the national
-//    scale of the hunt, the chalk quarry, the hotel and the false name entirely, the fact that
-//    it was the mistress's surname, the express train named or described as itself, and his
-//    profession — all documented, all too identifying before the reveal. What beats 0-5 now
-//    say: she drove off, by morning she was gone, for days no one could find her, people went
-//    out looking for her, then she turned up alive a long way from home; that autumn she went
-//    east alone toward the desert and the digs, with only the length of the going and "the
-//    strange stations" left of the journey, never the train itself; the man she married there
-//    worked on the digs. The doctors' finding of a genuine loss of memory and her lifelong
-//    silence about those days STAY — they are the episode, not decoration on it. The bridge
-//    restores the train, the titles, the eleven days and the sales; the car, the hotel, the
-//    false name, the place names and his profession are told nowhere in the story now, only
-//    here. The disappearance is still rendered ONLY as documented fact + her lifelong silence
-//    — no amnesia-vs-fugue-vs-revenge theorizing, no crisis speculation, nothing
-//    self-harm-adjacent.
+//    bridge. Blind readers have now named her twice from beats 0-5 alone (first the car, the
+//    search, the hotel and the false name; then the woman writer plus the vanishing plus the
+//    archaeologist husband), so this pass strips every remaining headline element. Beats 0-5
+//    withhold: her craft (they never say she wrote, only "work of her own" that earned), the
+//    car and the driving off, the eleven-day count, the search at any scale, the place names,
+//    the hotel and the false name, the newspapers and the publicity-stunt accusation, the
+//    train named or described as itself, the direction of travel, the desert, the digs and his
+//    profession, the settings and titles of the books, and the sales. What beats 0-5 say: she
+//    left the house one night after a quarrel, she was away for days, doctors found the loss
+//    of memory genuine, she never gave an account of that time; strangers talked and some did
+//    not believe her; that autumn she travelled alone for days to a country a long way off,
+//    the first journey she ever made by herself; the man she later married was working out
+//    there and was years younger than she was; her best work came in the decades after. The
+//    doctors' finding and her lifelong silence STAY — they are the episode, not decoration on
+//    it. The bridge restores the train, the titles, the eleven days and the sales; the car,
+//    the hotel, the false name, the place names, his profession and the press are told nowhere
+//    in the story now, only here. The disappearance is still rendered ONLY as documented fact
+//    + her lifelong silence — no amnesia-vs-fugue-vs-revenge theorizing, no crisis
+//    speculation, nothing self-harm-adjacent.
 const christie: FigureStageRow = {
   figureKey: "christie",
   displayName: "Agatha Christie",
@@ -8657,14 +8803,14 @@ const christie: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The country house, the marriage (they met at a dance in 1912, married 1914), the young daughter, the growing writing career, her shyness, and her mother's early encouragement of her writing — all documented. No invented detail.",
+        "The country house, the marriage (they met at a dance years before), the young daughter, her shyness, the work of her own that had begun to earn, and her mother's lifelong encouragement of it — all documented. No invented detail. Withheld for anonymity: what the work actually was; beats 0-5 never say she wrote, because a woman writer plus the winter that follows names her outright. The bridge restores the craft.",
       text: `There was a woman in her mid-thirties who seemed, from the outside, to have the complete life.
 
-A house in the countryside. A husband she had met at a dance years before. A small daughter. And work of her own — she wrote books, and they were starting to sell.
+A house in the countryside. A husband she had met at a dance years before. A small daughter. And work of her own, done quietly at home, that had started to bring in money.
 
-At the center of it, as it had been since she was small, was her mother. Her first believer. The one person who had always understood her odd imagination and protected it.
+At the center of it, as it had been since she was small, was her mother. Her first believer. The one person who had always understood the strange way her mind worked, and made room for it.
 
-She was shy. She was happier at her desk than at a party. She trusted her small circle completely: her mother, her husband, her child.
+She was shy. She was happier alone in a quiet room than at a party. She trusted her small circle completely: her mother, her husband, her child.
 
 Within one year, that circle was torn through twice.`,
     },
@@ -8695,16 +8841,16 @@ That winter, carrying all of it alone, something in her gave way.`,
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "The disappearance rendered strictly as documented: the quarrel, the sleeping daughter, driving off into the dark, the days when no one could find her, people out searching, her turning up alive and well a long way from home, the doctors' finding of a genuine loss of memory, and her never giving an account of the days. Withheld for anonymity: the abandoned car, the eleven-day count, the scale of the search, the place names, the hotel, and the false name she registered under — all documented, all too recognizable before the reveal. NO theory of what happened is adopted.",
-      text: `Here is what is known, and all that is known.
+        "The disappearance rendered strictly as documented: the quarrel, the sleeping daughter, her leaving the house that night, the days she was away, her own public statement that she had lost her memory of them, the doctors' conclusion that the loss was genuine, and her never giving an account of that time. Withheld for anonymity: the car she drove off in, the eleven-day count, the search and its national scale, the place names, the hotel, the false name she registered under, and the distance from home — all documented, all too recognizable before the reveal. The beat tells it as her own lost stretch of time rather than as a public event, and it attributes the memory loss to her own telling and the doctors' finding rather than asserting it in the narrator's voice. NO theory of what happened is adopted.",
+      text: `Then something happened that she never explained.
 
-One night, after a quarrel, she went upstairs and kissed her sleeping daughter. Then she drove off into the dark.
+One night, after a quarrel, she went upstairs and kissed her sleeping daughter. Then she left the house.
 
-By morning she was gone. For days no one could find her. People went out looking for her.
+She was away for days. When she came back, she said those days were gone from her. She could not say where she had been or what she had done.
 
-Then she turned up, alive and well, a long way from home.
+Doctors saw her afterwards. They found that the loss of memory was real.
 
-Her doctors said she had genuinely lost her memory. She never explained those days, for the rest of her life.
+By her own telling, whatever that stretch of time had been, she did not have it. She never gave an account of those days, for the rest of her life.
 
 She had buried her mother, lost her marriage, and briefly lost herself. Then she came back.`,
     },
@@ -8713,14 +8859,14 @@ She had buried her mother, lost her marriage, and briefly lost herself. Then she
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The press hostility and the publicity-stunt accusations, the 1928 divorce and his remarriage within weeks, her age, single motherhood, and her continuing to write and publish — documented. Withheld for anonymity: the scale of her fame at that moment; the accusation itself is documented and stays. The closing question is the editorial through-line, not a quotation.",
+        "The public hostility and disbelief that met her return, the divorce becoming absolute when she was thirty-eight, his remarriage within weeks, her single motherhood, and her going on with her own paid work — documented. Withheld for anonymity: the newspapers, the accusation that she had staged it for publicity, and the national scale of the attention; the beat keeps only that strangers talked and some did not believe her. The closing question is the editorial through-line, not a quotation.",
       text: `Coming back was the hard part.
 
-The newspapers had wanted a tragedy. They got a live woman, and turned mean. Had she done it on purpose, for the attention? The shyest of women had the worst days of her life picked over by strangers. She had to keep living in front of everybody.
+It got out, the way these things do. People who had never met her decided they knew what she had done. Some of them did not believe her. The shyest of women had the worst days of her life turned over by strangers. She had to keep living in front of them.
 
-The divorce went through anyway. He married the other woman within weeks. She was thirty-eight. A single mother, humiliated in public, still grieving her mother underneath all of it.
+The divorce went through anyway. He married the other woman within weeks. She was thirty-eight. A single mother, talked about, still grieving her mother.
 
-So she did the small things that survival is made of. She looked after her daughter. She managed the money. And she kept writing, because it was hers and because it paid.
+So she did the small things that survival is made of. She looked after her daughter. She managed the money. And she kept doing her own work, because it was hers and because it paid.
 
 Slowly a question came up through the wreckage. She had gone from her mother's house straight to her husband's. Nobody had ever asked her this one.
 
@@ -8731,16 +8877,18 @@ What did she want?`,
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The dinner-party conversation that redirected her plans and the autumn 1928 journey alone, east toward Baghdad and the excavation at Ur — documented, and her first fully solo journey. Her delight in the trip is her own recorded account. The long hours and the stations are ordinary features of that journey rather than recorded incidents. Withheld for anonymity: the famous express train she took, named or described as itself; the beat says only that she went east alone, days of travel, farther from home than she had ever been. The bridge restores the train; the place names are told nowhere in the story.",
+        "The dinner-party conversation about a far-off country, the autumn journey she made alone soon after the divorce, and her own recorded delight in it — documented, and it was the first journey she ever took by herself. The long hours and the stations are ordinary features of such a journey rather than recorded incidents. Withheld for anonymity: the famous train, the direction of travel, the desert, the excavations and the place names; the beat says only that she went alone to a country a long way off. The bridge restores the train.",
       text: `The answer arrived as a ticket.
 
-At a dinner party, people talked about the far side of the world. Ancient cities being dug out of the desert, a long way east. Something in her sat up.
+At a dinner party, people talked about a country a long way off, and what it took to get there. Something in her sat up.
 
-That autumn, with the divorce papers barely dry, she went alone. No husband. No companion. No one to answer to. A woman traveling by herself, days of it, farther from home than she had ever been.
+This was the first journey she had ever taken by herself.
 
-She loved every mile of it. The long slow hours of the journey. The strange stations. The desert at the end of it. The dig where people were lifting whole lost cities out of the sand.
+That autumn, with the divorce papers barely dry, she went. No husband. No companion. No one to answer to. A woman traveling alone, days of it, farther from home than she had ever been.
 
-Grief had erased her. So had betrayal, and those blank days. Somewhere on that journey she started writing herself back in.
+She loved every mile of it. The long slow hours. The strange stations. The country at the end of it, which was nothing like the one she had left.
+
+Grief had erased her. So had betrayal, and those blank days. Somewhere on that journey she started filling herself back in.
 
 Nobody had chosen this for her. She had chosen it.`,
     },
@@ -8749,14 +8897,14 @@ Nobody had chosen this for her. She had chosen it.`,
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The second marriage (met on a later dig season, married September 1930, happy by both accounts until her death), her seasons working on his excavations, and the decades of celebrated work that followed — documented. Withheld for anonymity: his profession and his name, the dig sites, the settings and titles of the books, and her sales standing; the beat says only that he worked on the digs and was years younger than she was.",
+        "The second marriage (met on a later trip to the same country, a man years younger than she was, happy by both accounts until her death), the months she spent out there helping with his work while doing her own, and the decades of her best work that followed — documented. The daytime-and-night split of the two kinds of work is a plain rendering of the documented seasons spent working on the finds and writing, not a recorded schedule. Withheld for anonymity: his profession, the excavations and the finds, the settings and titles of the work, her sales standing, and the fact that it went on selling for generations; the becoming is told in human terms only.",
       text: `The journey gave her back more than herself.
 
-On a later visit to the digs she met a man who worked there, years younger than she was. She married him, and it held, happily, for the rest of her life. She spent seasons out at the digs after that, working on the finds by day and writing by night.
+On a later trip out to the same country she met a man who was working there, years younger than she was. She married him, and it held, happily, for the rest of her life. She went out with him for months at a time after that. She helped with his work in the daytime and did her own at night.
 
-And the books. The decades after the terrible year produced her best work. Much of it grew out of the places her second life took her.
+And her own work got better. The decades after the terrible year were the best of it. A lot of it came out of the places her second life took her.
 
-She kept writing for the rest of her life. The books kept selling, and they went on selling long after she was gone. People who were not born yet would read her.
+She kept working for the rest of her life. It was hers. Nobody had given it to her.
 
 The woman whose life fell apart at thirty-six spent the next fifty years building something no one could take from her.`,
     },
@@ -8803,10 +8951,19 @@ You don't have to know who you'll be on the other side of this. She didn't eithe
 //    of the book, and "an honor never given a woman before". A blind reader still named her off
 //    that draft, so the 2026-09-01 signature pass also holds back: the team of women she took to
 //    the war hospital, the comparison of deaths from filth against deaths from wounds, the papers
-//    and the word "saint", the book described as what caring for the sick is, the school framed as
-//    training professionals instead of servants, and the chart set against the deaths from
-//    fighting. The bridge restores the profession, the charts-and-numbers work and the Order of
-//    Merit; the rest simply stays out. Don't call the school "the first professional nursing
+//    and the word "saint", the book described as what caring for the sick is, the school framed
+//    as training professionals instead of servants, and the chart set against the deaths from
+//    fighting. A blind reader named her again, so the 2026-09-02 pass strips the whole war frame
+//    and the chart from beats 0-5: no war, soldiers, army, generals, barracks, wards or hospital,
+//    and no picture, chart or diagram of any kind, only something going badly wrong far from
+//    home, the place they were sending the hurt, the men in charge, and plain numbers laid out so
+//    a busy man could take them in at once. Also withheld now: the tasks that name the profession
+//    (cleaning, feeding, sitting with the dying), the family's stated reason for refusing her,
+//    the length of the report, what the book and the school were for, the hospital that housed
+//    the school, hospital design and sanitation as such, the reach of the reform beyond her own
+//    country, and her age at death. The bridge restores the profession, the charts-and-numbers
+//    work and the Order of Merit; the rest simply stays out.
+//    Don't call the school "the first professional nursing
 //    school" (the sourced claim is "first secular"); don't call her the inventor of the polar-area
 //    diagram or the founder of medical statistics; don't romanticize the 20-hour ward days
 //    (they're what broke her); no medical diagnosis debates; the couch/bed decades rendered as
@@ -8852,14 +9009,16 @@ const nightingale: FigureStageRow = {
       kind: "narrative",
       role: "scene",
       sourceNotes:
-        "The family's opposition, the wartime mission to the place the wounded were sent, the party she took with her, the legendary hours, the fever contracted at the front, and the fame that reached home are documented. Withheld for anonymity: the lamp, the night rounds by lamplight, the profession by name, the newspapers, the size of her fame, and the documented comparison between deaths from filth and deaths from wounds — the beat says only that men who should have lived were dying of it. The hours are rendered as cost, not glory, per provenance.",
-      text: `There was a woman who had given a war everything she had.
+        "The family's long opposition to her working at all, the journey far from home to the place the hurt were being sent, the filthy conditions killing people who should have lived, the legendary hours, the fever she caught there, and the fame that reached home ahead of her are all documented. Withheld for anonymity: the war and everything that marks it (the soldiers, the army, the party of women she took with her, the lamp and the night rounds), the profession by name, the tasks that would name it, the newspapers, the national scale of the fame, the family's stated reason, and the documented comparison between deaths from filth and deaths from wounds. The hours are rendered as cost, not glory, per provenance.",
+      text: `There was a woman who had given one piece of work everything she had.
 
-She had fought her family for years just for the right to work at all. What she wanted to do was beneath her, they told her. When the war came, she went to the place the wounded were sent, and took others with her. It was filthy past believing. Men who should have lived were dying of it.
+For years her family would not allow it. She fought them over it, year after year, and in the end she won.
 
-She worked like a woman possessed. Twenty-hour days, months on end. Cleaning, feeding, sitting with the dying.
+Then, far from home, something went badly wrong, and she went to where they were sending the hurt. It was filthy past believing. People who should have lived were dying of it.
 
-Word of it got home. People who had never met her made her into something larger than a person.
+She worked like a woman possessed. Twenty-hour days, months on end. She did whatever the place needed, and it needed everything.
+
+Word got home before she did. People who had never met her turned her into a story.
 
 Somewhere in those years a fever got into her body and never fully left. She ignored it. There was no time.
 
@@ -8870,38 +9029,38 @@ There is always no time. Right up until the body decides otherwise.`,
       kind: "narrative",
       role: "dark_moment",
       sourceNotes:
-        "The return home depleted in 1856 and the collapse from 1857 into years of intermittent bedriddenness, with the old capacity gone for good, are documented. The pain and the absence of a cure or timeline stand in for the documented chronic exhaustion and pain; no diagnosis is named, and the specific hour of the question is dramatized texture.",
-      text: `She came home to a country that wanted to celebrate her, and she could barely stand up in it.
+        "The return home depleted in 1856 and the collapse from 1857 into years of intermittent bedriddenness, with the old capacity gone for good, are documented. The pain and the absence of a cure or timeline stand in for the documented chronic exhaustion and pain; no diagnosis is named, and the quiet room is dramatized texture. Withheld for anonymity: that the people who wanted her back were a whole country wanting its heroine, and what the cause of her life actually was.",
+      text: `She came home to people who wanted to celebrate her, and she could barely stand up.
 
 Something was badly wrong. The tiredness did not lift with rest. Not weeks of rest, not months. Pain moved in and stayed. The engine that had run twenty-hour days for two years would not start anymore.
 
-Within a year of coming home she was spending most of her days lying down. She was thirty-seven.
+Within a year she was spending most of her days lying down. She was thirty-seven.
 
 The doctors had nothing. No cure, no timeline. This was how she lived now.
 
 Work was not what she did. It was what she was. She had defied her whole world for it.
 
-Now the country wanted its tireless heroine back. The cause of her life was finally winnable. And she could not reliably sit through a meeting.
+Now people wanted the tireless woman from the stories back. The thing she had given her life to was finally within reach. And she could not reliably sit through a meeting.
 
-So she lay in a quiet room and asked the question every worn-out person asks. What am I, if I can't do it anymore?`,
+So she lay in a quiet room and asked what every worn-out person asks. What am I, if I can't do it anymore?`,
     },
     // Beat 2 — Response
     {
       kind: "narrative",
       role: "response",
       sourceNotes:
-        "Her refusal of ornamental invalidism, the retreat to her rooms, the rationed one-at-a-time interviews with ministers and army officers, and the shift from ward work to writing and statistics are documented.",
+        "Her refusal of ornamental invalidism, the retreat to her rooms, the rationed one-at-a-time interviews with ministers and army officers, and the shift from hands-on care to writing and statistics are documented. Withheld for anonymity: who the visitors were (ministers and generals), the soldiers and the barracks, and the wards she gave up; the beat says only that she stopped doing the work with her own hands.",
       text: `The answer she found was not the heroic one. It was better.
 
-She stopped trying to be the woman she had been at the war. The soldiers still dying in filthy barracks needed her mind, not her death.
+She stopped trying to be the woman she had been out there. The people still dying in places like that one needed her mind, not her death.
 
 So she rebuilt the work around what was actually left.
 
-She took rooms and rarely left them. Visitors came one at a time, and not for long. The ministers and the generals came to her.
+She took rooms and rarely left them. Visitors came one at a time, and not for long. The men who ran things came to her.
 
 She worked lying down when sitting was too much. She spent her strength only where nothing else would do.
 
-No more wards. A pen, paper, and numbers.
+No more doing it with her own hands. A pen, paper, and numbers.
 
 From outside it looked like retirement. It was about to become the most useful part of her life.`,
     },
@@ -8910,14 +9069,14 @@ From outside it looked like retirement. It was about to become the most useful p
       kind: "narrative",
       role: "struggle",
       sourceNotes:
-        "The inquiry she pressed for (the Royal Commission on the Health of the Army, appointed 1857), the evidence she gave it, and the report of more than eight hundred pages she wrote for it from her sickroom (printed 1858) are documented, as is her use of a chart to make preventable deaths visible. Withheld for anonymity: the exact page count, the chart's distinctive shape, and the comparison that made it famous — preventable deaths set against deaths from fighting; the beat says only that the picture showed how many of the deaths had never had to happen. She popularized that chart form rather than inventing it, so the beat says she drew the deaths, not that she invented the chart. That reforms followed is documented; the beat claims no specific fall in deaths, which the facts do not state.",
-      text: `From that room, she went after the men who ran the army.
+        "The inquiry she pressed for (the Royal Commission on the Health of the Army, appointed 1857), the evidence she gave it, and the very long report she wrote for it from her sickroom (printed 1858) are documented, as is her use of a chart to make preventable deaths undeniable to politicians. Withheld for anonymity: the army and the war, the page count, and the chart itself in every recognizable form, including that it was a picture at all, its shape, its month-by-month layout, and the comparison that made it famous; the beat says only that she laid the numbers out so a busy man could take them in at once. She popularized that form rather than inventing it, so no invention is claimed. That reforms followed is documented; the beat claims no specific fall in deaths, which the facts do not state.",
+      text: `From that room, she went after the men in charge.
 
-She pushed until the government opened a formal inquiry into what had really killed the soldiers. Not enemy fire. Filth. Then she gave that inquiry its evidence. A report hundreds of pages long, written lying down, in stretches as long as her body allowed.
+She pushed until the government opened a formal inquiry into why so many had died out there. Then she gave that inquiry its evidence. A report far longer than anyone wanted to read, written lying down, in whatever stretches her body allowed.
 
-Nobody in power reads hundreds of pages. So she drew the deaths instead. One picture, month by month, showing how many of them had never had to happen. Nobody could argue with a picture.
+Men in power do not read long reports. So she took the same truth and made it small. Plain numbers, laid out so a busy man could see in one moment what he had been avoiding for years.
 
-It worked. Real reforms followed.
+It worked. Real changes followed.
 
 None of it felt like the old fire. Some days she managed an hour of work. Some days none. She missed her old self badly.
 
@@ -8928,16 +9087,16 @@ She did it anyway, at the pace her body set. The pace mattered less than the aim
       kind: "narrative",
       role: "turning_point",
       sourceNotes:
-        "The small practical book (1859, still in print) and the training school founded in 1860 at forty — chosen, shaped and run largely by letter and interview from her rooms — are documented, as is that she never returned to ward nursing. Withheld for anonymity: the book named or described by its subject, its standing as the founding text of the profession, the school framed as training professionals instead of servants, and the school's standing (reference sources call it the first secular nursing school in the world). The bridge restores the profession itself; the rest simply stays out.",
+        "The small practical book (1859) and the training school founded in 1860 at forty, chosen, shaped and reviewed largely by letter and interview from her rooms, are documented, as is that she never went back to hands-on care. Withheld for anonymity: what the book and the school were for, the book's subject and its standing as the founding text of the profession, that it is still in print, the hospital that housed the school, and the school's standing (reference sources call it the first secular nursing school in the world). The bridge restores the profession; the rest simply stays out.",
       text: `Then, at forty, still working from her rooms, she built the two things that outlived everything else.
 
-First, a small book. Plain, sharp, practical, written so that anyone could use it. Not medicine — the ordinary things that decide whether a person in a bed gets better or worse.
+First, a small book. Plain, sharp, practical. What she had learned, in language anyone could follow.
 
-Second, she started a school to train people to do that same work properly. She chose the hospital it would sit in, shaped its rules, and reviewed every detail by letter and interview.
+Second, she started a school, so that people could be properly trained for the work instead of picking it up by luck. She chose where it would sit, shaped its rules, and reviewed every detail by letter and interview.
 
-She could not walk its wards. She never really would.
+She could not walk its halls. She never really would. She built it anyway, from a bed, one letter at a time.
 
-It did not matter. Her students went out and trained others, and those students trained more still. Thousands of hands doing what her two could no longer do.
+Her students went out and trained others, and those students trained more still. Thousands of hands doing what her two could no longer do.
 
 That was what she was, without the engine. Still her. Differently shaped, and bigger.`,
     },
@@ -8946,14 +9105,16 @@ That was what she was, without the engine. Still her. Differently shaped, and bi
       kind: "narrative",
       role: "became",
       sourceNotes:
-        "The decades of letter-driven reform from her rooms, the honor given near the end of her life, and her death at ninety are documented; the award is left unnamed here and its first-for-a-woman distinction is held back for the bridge reveal. Adaptation framing per provenance — she mattered differently, she did not simply work harder.",
+        "The decades of letter-driven reform from her rooms, the ministers and officials who sought her advice, the honor given near the end of her life, and the great length of that life are documented; the award is left unnamed here and its first-for-a-woman distinction is held back for the bridge reveal. Withheld for anonymity: that the places she redesigned were hospitals, the sanitation and public-health language, the reach of that work far beyond her own country, and her exact age at death. Adaptation framing per provenance: she mattered differently, she did not simply work harder.",
       text: `She lived another fifty years, and worked through most of them at her rationed pace.
 
-From her rooms, by letter, she steered how hospitals were designed, far beyond her own country. Clean water and drains in places she would never see. Government ministers came to her for advice. Thousands of letters, decade after decade, each one written inside that day's actual allowance of strength.
+From her rooms, by letter, she kept changing how that work was done everywhere it was done. How the places were built. How they were run. Who was allowed to do it. Dull questions. They decided who lived.
 
-She never got the old body back. She never returned to the wards. The version of her the legend loved had ended at thirty-six.
+Officials came to her for advice. Thousands of letters, decade after decade, each written inside that day's allowance of strength.
 
-The version that mattered more lived to ninety. Near the end, her country honored her for the work. Almost all of it had been done from those rooms.
+She never got the old body back. She never went back to doing the work with her hands. The version of her the stories loved had ended at thirty-six.
+
+The version that mattered more kept working for decades after that. Near the end, they honored her for the work. Almost all of it had been done from those rooms.
 
 She did her best work at a fraction of her old power. It was still more than enough.`,
     },

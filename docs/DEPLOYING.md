@@ -98,6 +98,38 @@ change. A figure-library, prompt, validator, schema, or story-composer change is
 a code/content release, not a matching-recipe promotion; it requires its own
 forward/rollback release plan and cannot borrow this selector guarantee.
 
+### Figure-library releases
+
+`config/figure-library-releases.json` is the append-only lineage of
+`lib/figures-data.ts` snapshots. The newest entry is the snapshot a build
+installs; `check-recipe-governance` fails whenever the committed library hashes
+to anything else, and `check-recipe-immutability` rejects any edit to an
+existing entry. A recipe manifest keeps pinning the snapshot its evidence was
+evaluated on, and the runtime accepts a selected recipe as long as that
+snapshot is somewhere in the lineage, so a content release never needs a new
+recipe, a promotion, or an `ONWARD_PRODUCTION_RECIPE_ID` change.
+
+To ship a content change to the library:
+
+1. Land the content on a branch and commit it, then run the real reranker
+   against it from that commit (`EVAL_CONCURRENCY=1 RETRIEVAL_MODE=keyword
+   EVAL_RECIPE_ID=<primary recipe id> EVAL_REQUIRE_GATE=1 npm run eval`).
+   The harness appends an evidence record under `evals/history/`; commit it.
+2. If the trust gate failed, the content cannot ship. Fix the regressions and
+   re-run; do not append a release. The evidence stays as the audit trail.
+3. If it passed, append one entry to `config/figure-library-releases.json`:
+   the new `sha256` of `lib/figures-data.ts`, `releasedAt`, `supersedes` (the
+   previous entry's hash), a `note` describing the change, and the passing
+   `evidenceIds`. The governance check verifies that each cited evidence record
+   evaluated a promoted recipe with the real provider, passed the gate, and
+   was computed at a commit whose `lib/figures-data.ts` hashes to the new
+   entry (it fetches that single commit on a shallow CI checkout).
+4. After the merge deploys, reseed the database from the same commit:
+   `npm run seed` for `figure_stages`, `npm run seed-story-specs` for review
+   drafts, and `npm run seed-embeddings` when a FacetsRAG recipe is selectable.
+   Rolling the content back is the reverse: append the previous snapshot as a
+   new release (its evidence is already in the lineage) and reseed.
+
 Migration `0021` is schema-first compatible. Apply it before this application
 build, but first pause new stories and drain in-flight story/progress/deletion
 requests because it takes explicit session-then-artifact access-exclusive

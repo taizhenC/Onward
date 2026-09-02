@@ -192,7 +192,7 @@ The library is the product. A stage is done only when all three land:
 2. Route it in `STUB_KEYWORD_MAP` in `lib/match-config.ts` so the keyword matcher can reach it.
 3. Add gold cases to `evals/match.json`, including at least one hard confusion pair against its nearest neighbour.
 
-Then run `npm run check-figure`, `npm run smoke`, and the eval. The production recipe pins a hash of the library, so a content change is also a library release under the recipe governance described in [`docs/production-recipe.md`](docs/production-recipe.md).
+Then run `npm run check-figure`, `npm run smoke`, and the real eval. A content change ships as a library release: the real reranker has to pass the trust gate on the new snapshot, and the passing evidence is recorded with the snapshot's hash in `config/figure-library-releases.json`. The procedure is in [`docs/DEPLOYING.md`](docs/DEPLOYING.md#figure-library-releases).
 
 ## Contributing
 

@@ -102,9 +102,10 @@ forward/rollback release plan and cannot borrow this selector guarantee.
 
 `config/figure-library-releases.json` is the append-only lineage of
 `lib/figures-data.ts` snapshots. The newest entry is the snapshot a build
-installs; `check-recipe-governance` fails whenever the committed library hashes
-to anything else, and `check-recipe-immutability` rejects any edit to an
-existing entry. A recipe manifest keeps pinning the snapshot its evidence was
+installs (memory mode serves it directly; production serves it once the
+database is reseeded from the same commit, step 4 below); `check-recipe-governance`
+fails whenever the committed library hashes to anything else, and
+`check-recipe-immutability` rejects any edit to an existing entry. A recipe manifest keeps pinning the snapshot its evidence was
 evaluated on, and the runtime accepts a selected recipe as long as that
 snapshot is somewhere in the lineage, so a content release never needs a new
 recipe, a promotion, or an `ONWARD_PRODUCTION_RECIPE_ID` change.

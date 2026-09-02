@@ -33,9 +33,10 @@ next-env.d.ts
 # production
 build/
 
-# environment
-.env
-.env*.local
+# environment — every dotenv variant Next.js loads natively (.env.development,
+# .env.production, .env.staging, ...) except the committed template
+.env*
+!.env.example
 
 # logs
 logs/

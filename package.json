@@ -1,6 +1,12 @@
 {
   "name": "onward",
   "version": "0.1.0",
+  "description": "A companion for hard seasons: tell Onward what you are carrying and read how a real person from history came through the same kind of season.",
+  "homepage": "https://onwardapp.me",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taizhenC/Onward.git"
+  },
   "private": true,
   "engines": {
     "node": "22.x"

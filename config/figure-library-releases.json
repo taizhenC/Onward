@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "figure-library-release-registry-v1",
+  "releases": [
+    {
+      "sha256": "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+      "releasedAt": "2026-07-23T20:41:11.000Z",
+      "supersedes": null,
+      "note": "Bootstrap release: the figure-library-50 snapshot pinned by the first immutable production recipe (commit 99880ab, 2026-07-23). Its trust-gate evidence predates the pin and was computed at commit 138d247 before the 2026-07-10 bridge-beat privacy edit; the pin is retained exactly as the recipe registry recorded it.",
+      "evidenceIds": [
+        "ev_7a7d9bfa19852146f38ee523c1c0caa916601720cdc9e446bbf32984e38053ad"
+      ]
+    }
+  ]
+}

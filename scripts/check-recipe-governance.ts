@@ -5,6 +5,7 @@ import {
 } from "node:fs";
 import { relative, resolve, sep } from "node:path";
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   EVAL_EVIDENCE_SCHEMA_VERSION,
   EVAL_HARNESS_VERSION,
@@ -49,6 +50,24 @@ const SAFE_ID = /^[A-Za-z0-9][A-Za-z0-9._:@-]{0,127}$/;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/;
 const EPSILON = 1e-12;
 const FULL_GIT_COMMIT = /^(?:[a-f0-9]{40}|[a-f0-9]{64})$/;
+const LIBRARY_RELEASES_PATH = resolve(
+  process.cwd(),
+  "config/figure-library-releases.json",
+);
+const LIBRARY_RELEASE_SCHEMA_VERSION = "figure-library-release-registry-v1";
+
+// A figure-library content change is a release, not a recipe promotion: the
+// release registry is an ordered, append-only lineage. The newest entry is the
+// snapshot this checkout installs; every selectable recipe pins the entry its
+// evidence was evaluated on; and every entry after the bootstrap must carry
+// real trust-gate evidence computed on exactly that snapshot.
+type LibraryRelease = {
+  sha256: string;
+  releasedAt: string;
+  supersedes: string | null;
+  note: string;
+  evidenceIds: string[];
+};
 
 // The first production selector predates challenger promotion governance. Keep
 // exactly this retain record as the one explicit bootstrap exception; no future
@@ -113,14 +132,23 @@ function main(): void {
     primaryPromotion.decisionId === registry.selection.decisionId,
     "active selection decision differs from the primary promotion record",
   );
+  const libraryReleases = loadLibraryReleases();
+  const installedLibraryRelease = libraryReleases[libraryReleases.length - 1]!;
   const installedLibraryHash = sha256File(FIGURE_LIBRARY_PATH);
+  assert(
+    installedLibraryHash === installedLibraryRelease.sha256,
+    `lib/figures-data.ts (${installedLibraryHash}) is not the newest registered figure-library release (${installedLibraryRelease.sha256}); a content change ships by appending a release with passing trust-gate evidence to config/figure-library-releases.json (docs/DEPLOYING.md, "Figure-library releases")`,
+  );
+  const registeredLibraryHashes = new Set(
+    libraryReleases.map((release) => release.sha256),
+  );
   for (const recipeId of new Set([
     registry.selection.primaryRecipeId,
     registry.selection.rollbackRecipeId,
   ])) {
     assert(
-      recipes.get(recipeId)?.librarySnapshotSha256 === installedLibraryHash,
-      `${recipeId} does not match the installed figure-library snapshot`,
+      registeredLibraryHashes.has(recipes.get(recipeId)!.librarySnapshotSha256),
+      `${recipeId} was evaluated on an unregistered figure-library snapshot`,
     );
   }
   const primary = recipes.get(registry.selection.primaryRecipeId)!;
@@ -148,6 +176,7 @@ function main(): void {
   }
   validateRegisteredPromotions(state);
   validateDecisionChain(state);
+  validateLibraryReleases(libraryReleases, state);
   validateGeneratedDoc(registry);
   validateTrustedAttestorPolicy();
   validateAppendOnlyDiff();
@@ -160,6 +189,9 @@ function main(): void {
   );
   console.log(
     `  evidence=${evidence.size} shadow=${shadows.size} decisions=${decisions.size} selected=${selected.decisionType}`,
+  );
+  console.log(
+    `  figure-library releases=${libraryReleases.length} installed=${installedLibraryRelease.sha256.slice(0, 12)}`,
   );
   console.log(
     "  synthetic/legacy evidence is retained for audit but cannot authorize promotion",
@@ -1720,6 +1752,136 @@ function aggregateMetrics(items: EvalEvidence[]): {
   };
 }
 
+function loadLibraryReleases(): LibraryRelease[] {
+  const root = record(readJson(LIBRARY_RELEASES_PATH), "figure-library releases");
+  exactKeys(root, ["schemaVersion", "releases"], "figure-library releases");
+  literal(
+    root.schemaVersion,
+    LIBRARY_RELEASE_SCHEMA_VERSION,
+    "figure-library releases.schemaVersion",
+  );
+  const entries = array(root.releases, "figure-library releases.releases");
+  assert(entries.length >= 1, "at least one figure-library release is required");
+  const releases: LibraryRelease[] = [];
+  entries.forEach((entry, index) => {
+    releases.push(
+      parseLibraryRelease(
+        entry,
+        `figure-library releases.releases[${index}]`,
+        releases[releases.length - 1] ?? null,
+      ),
+    );
+  });
+  return releases;
+}
+
+function parseLibraryRelease(
+  value: unknown,
+  path: string,
+  previous: LibraryRelease | null,
+): LibraryRelease {
+  const item = record(value, path);
+  exactKeys(
+    item,
+    ["sha256", "releasedAt", "supersedes", "note", "evidenceIds"],
+    path,
+  );
+  const release: LibraryRelease = {
+    sha256: sha(item.sha256, `${path}.sha256`),
+    releasedAt: iso(item.releasedAt, `${path}.releasedAt`),
+    supersedes:
+      item.supersedes === null
+        ? null
+        : sha(item.supersedes, `${path}.supersedes`),
+    note: string(item.note, `${path}.note`),
+    evidenceIds: idArray(item.evidenceIds, EVIDENCE_ID, `${path}.evidenceIds`),
+  };
+  assert(release.note.trim().length > 0, `${path}.note must explain the release`);
+  assert(
+    release.evidenceIds.length >= 1,
+    `${path}.evidenceIds must cite trust-gate evidence for this snapshot`,
+  );
+  assert(
+    release.supersedes === (previous?.sha256 ?? null),
+    `${path}.supersedes must name the previous release`,
+  );
+  assert(
+    previous === null || release.sha256 !== previous.sha256,
+    `${path}.sha256 repeats the previous release`,
+  );
+  assert(
+    previous === null || release.releasedAt > previous.releasedAt,
+    `${path}.releasedAt must follow the previous release`,
+  );
+  return release;
+}
+
+function validateLibraryReleases(
+  releases: LibraryRelease[],
+  state: GovernanceState,
+): void {
+  const promotedRecipeIds = new Set(
+    state.registry.promotions.map((promotion) => promotion.recipeId),
+  );
+  const seen = new Set<string>();
+  releases.forEach((release, index) => {
+    assert(!seen.has(release.sha256), `duplicate figure-library release ${release.sha256}`);
+    seen.add(release.sha256);
+    // The first entry is the snapshot the bootstrap recipe pinned; its legacy
+    // evidence predates the pin and is accepted exactly as the registry did.
+    const bootstrap = index === 0;
+    for (const evidenceId of release.evidenceIds) {
+      const evidence = requiredMap(state.evidence, evidenceId);
+      assert(
+        promotedRecipeIds.has(evidence.recipeId),
+        `${evidenceId} must evaluate a promoted recipe to release a figure library`,
+      );
+      assert(
+        evidence.config.provider === "real",
+        `${evidenceId} must come from the real reranker`,
+      );
+      assert(
+        evidence.metrics.trustGate.passed,
+        `${evidenceId} did not pass the rerank trust gate; figure-library release ${release.sha256} cannot ship`,
+      );
+      if (bootstrap) continue;
+      assert(
+        !evidence.legacyImported,
+        `${evidenceId} is legacy evidence; a new figure-library release needs fresh evidence`,
+      );
+      const commit = evidence.provenance.gitCommit;
+      assert(
+        commit !== null && FULL_GIT_COMMIT.test(commit),
+        `${evidenceId} needs a full git commit so its library can be verified`,
+      );
+      assert(
+        libraryHashAtCommit(commit) === release.sha256,
+        `${evidenceId} was computed at ${commit}, whose figure library is not release ${release.sha256}`,
+      );
+    }
+  });
+}
+
+// Hashes lib/figures-data.ts as committed at the given commit, fetching that
+// single commit first when a shallow CI checkout does not carry it.
+function libraryHashAtCommit(commit: string): string {
+  const run = (args: string[]) =>
+    spawnSync("git", args, {
+      cwd: process.cwd(),
+      windowsHide: true,
+      maxBuffer: 64 * 1024 * 1024,
+    });
+  if (run(["cat-file", "-e", `${commit}^{commit}`]).status !== 0) {
+    run(["fetch", "--no-tags", "--depth=1", "origin", commit]);
+  }
+  const shown = run(["show", `${commit}:lib/figures-data.ts`]);
+  assert(
+    shown.status === 0,
+    `evidence commit ${commit} is unavailable; fetch it before running the governance check`,
+  );
+  return createHash("sha256").update(shown.stdout).digest("hex");
+}
+
 function validateGeneratedDoc(registry: StoryRecipeRegistry): void {
   assert(existsSync(PRODUCTION_RECIPE_DOC_PATH), "generated production recipe doc is missing");
   const expected = renderProductionRecipeDoc(registry).replaceAll("\r\n", "\n");
@@ -1786,6 +1948,31 @@ function runTamperSelfChecks(state: GovernanceState): void {
     extraKeyRejected = true;
   }
   assert(extraKeyRejected, "exact-shape self-check did not reject an unknown key");
+  const releaseSample = loadLibraryReleases()[0]!;
+  let releaseKeyRejected = false;
+  try {
+    parseLibraryRelease({ ...releaseSample, unexpected: true }, "self-check", null);
+  } catch {
+    releaseKeyRejected = true;
+  }
+  assert(
+    releaseKeyRejected,
+    "figure-library release self-check did not reject an unknown key",
+  );
+  let brokenLineageRejected = false;
+  try {
+    parseLibraryRelease(
+      { ...releaseSample, supersedes: "0".repeat(64) },
+      "self-check",
+      null,
+    );
+  } catch {
+    brokenLineageRejected = true;
+  }
+  assert(
+    brokenLineageRejected,
+    "figure-library release self-check did not reject a broken lineage",
+  );
   const selected = state.decisions.get(state.registry.selection.decisionId)!;
   assert(
     selected.decisionType !== "promote_challenger" || selected.dataset.visibility === "protected_holdout",

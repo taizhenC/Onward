@@ -29,8 +29,8 @@ import {
   DEFAULT_EMBEDDING_TIMEOUT_MS,
 } from "./embedding-recipe-constants";
 import {
-  LIBRARY_SNAPSHOT_SHA256,
   MATCH_CONFIG_IMPLEMENTATION_VERSION,
+  isRegisteredFigureLibrarySnapshot,
 } from "./match-recipe-constants";
 import {
   STORY_ARTIFACT_VALIDATOR_VERSION,
@@ -863,7 +863,7 @@ export function assertStoryRecipeCodeIdentity(
   if (
     isStoryRecipeManifestV2(recipe) ||
     recipe.matchConfigVersion !== MATCH_CONFIG_IMPLEMENTATION_VERSION ||
-    recipe.librarySnapshotSha256 !== LIBRARY_SNAPSHOT_SHA256 ||
+    !isRegisteredFigureLibrarySnapshot(recipe.librarySnapshotSha256) ||
     recipe.rerankPromptVersion !== RERANK_PROMPT_VERSION ||
     !isSupportedStoryPromptVersion(recipe.storyPromptVersion) ||
     recipe.composerVersion !== STORY_COMPOSER_VERSION ||

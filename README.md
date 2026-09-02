@@ -1,142 +1,203 @@
-# Onward
+<p align="center">
+  <img src="app/icon.png" alt="" width="64" height="64">
+</p>
 
-An emotional-companion web app. You write a few sentences about what you're going through. Onward looks for a grounded point of contact in a real historical life, says when the parallel is only adjacent, and walks you through the episode as a quiet linear narrative.
+<h1 align="center">Onward</h1>
 
-The product is for hurting people. Tone, pacing, and prose quality matter more than features.
+<p align="center"><em>You are not the first to carry this.</em></p>
 
-## Status
+<p align="center">
+  Tell Onward what you are carrying. It finds a real person whose documented life held the same hard season,
+  and walks you through that episode one page at a time, at your pace, until the story turns back to you.
+</p>
 
-Roadmap-stack snapshot (2026-07-14; these slices are not assumed to be on the June production deployment). The matching engine is real and validated:
+<p align="center">
+  <a href="https://onwardapp.me">Live app</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#privacy-and-safety">Privacy and safety</a> ·
+  <a href="#adding-a-figure">Adding a figure</a> ·
+  <a href="docs/DEPLOYING.md">Deploying</a>
+</p>
 
-- **Library**: 50 hand-authored figure stages (weighted toward ages 15-30), seeded to Supabase.
-- **Retrieval**: the latest fifty-figure gate approves keyword retrieval; FacetsRAG remains a six-lane semantic shadow challenger until it proves superiority.
-- **Rerank**: GPT-OSS 120B on Cerebras, trust-gated by eval.
-- **Auth**: anonymous-first via Supabase Auth — no login wall; sessions are owned and private; a confirmed email upgrade keeps stories beyond guest cleanup, until the owner deletes them. A temporary guest account and every story in it are deleted about six hours after the latest story creation or saved reading progress in that account.
-- **Safety**: deterministic crisis regex before any LLM call; crisis input is never persisted and never rate-limited.
-- **Story boundaries**: optional detail/topic limits are hard eligibility rules before retrieval and composition; selections persist only on the original session with its private context and are cleared by daily cleanup after the fixed 60-day disclosure deadline, or earlier with guest, story, or account deletion.
-- **Resonance boundary**: prose composition receives a short-lived governed brief, not the raw disclosure; HMAC fingerprints reject copied phrases and named details without persisting them.
-- **Hybrid Story Composer**: the model selects only allowlisted placement/template IDs; deterministic rendering preserves canonical facts, retries once, and always returns a validated canonical fallback on failure.
-- **Honest match recovery**: uncertain matches ask at most one bounded question; unresolved fits persist nothing, and an accepted adjacent story is labeled before playback.
-- **Source transparency**: v5 artifacts freeze a controlled rationale, explicit gap, StorySpec version, claim/quote evidence, and safe source list; older artifacts are never backfilled from mutable content.
-- **Historical concerns**: owners can send only a selected shared historical-library fact ID and closed reason into a privacy-safe editorial queue; no disclosure, generated story prose, account, session, saved-story, or artifact identifier is retained there.
-- **Resonance recovery**: completed-story readers can answer one bounded close/not-close question without linking an email. An explicitly rejected root story can use one short-lived capability to produce a different, always-partial story without resending the disclosure, relaxing its limits, or consuming another public rate-limit unit.
-- **Rate limiting**: 5/hour, 30/day per user on `/api/match` (+ hashed-IP backstop), durable in Postgres; denials carry only an unlinkable user/IP scope event committed with the counter update.
-- **Retention**: the disclosure and its closed boundary/clarification context are kept only on the original session, become eligible for daily cleanup together at its immutable 60-day deadline, and may be deleted earlier with the guest account, story, or account; an alternate never resets that clock.
-- **Safe telemetry contract**: exact allowlisted product events and unlinkable operational attempts have no generic metadata or story/input fields; entry, flow-bound anonymous auth, initial/alternate match and artifact, reader progress/completion/visibility, bounded feedback, alternate demand/resolution, and one bounded eligible initial-composition failure now use narrow authoritative producers. Migration `0017` installs a first-party Postgres rollup dispatcher, disabled by default; raw events are never sent to an external sink.
+---
 
-## Run locally
+Onward is a small web app for people in a hard moment: a failed exam, a lonely move, a door that just closed. You write a few honest sentences and your age. Onward matches them against a hand-authored library of emotional episodes from real historical lives, picks the one that rhymes closest, and streams a short seven-part narrative. The figure's name is withheld until the final page, so you meet the person before you meet the legend.
 
-```powershell
+It is built around three refusals: no invented history, no unearned intimacy, and no memory of you that you did not ask for.
+
+## Demo
+
+<p align="center">
+  <img src="docs/demo/onward-demo.gif" alt="Animated walkthrough: writing a disclosure on the intake page, the preface, a passage streaming in word by word, and the final reflection that reveals the figure's name." width="900">
+</p>
+
+| Landing | Intake | A passage |
+| --- | --- | --- |
+| ![Landing page: "You are not the first to carry this."](docs/demo/landing.png) | ![Intake page with the age field and the disclosure box](docs/demo/intake.png) | ![A story passage with a Continue control](docs/demo/passage.png) |
+
+| The reveal | The coda | Phone |
+| --- | --- | --- |
+| ![The bridge passage revealing Frederick Douglass](docs/demo/bridge.png) | ![The reflection, the coda, and the start of the afterword](docs/demo/afterword.png) | ![The landing page on a phone](docs/demo/mobile.png) |
+
+Every image above was captured from a zero-config local run (`npm run dev`), so what you see is exactly what a fresh clone produces.
+
+## Quick start
+
+You need Node 22. Nothing else: no database, no API keys, no accounts.
+
+```bash
+git clone https://github.com/taizhenC/Onward.git
+cd Onward
 npm install
-npm run dev          # http://localhost:3000 — zero-config (memory mode, stub providers)
+npm run dev
 ```
 
-Memory mode needs no keys, no database, no auth setup: sessions live in-process, figures come from the authored const, matching uses the keyword stub, and the server uses a fixed local user.
+Open <http://localhost:3000>, press **Read a story**, and write something true.
 
-For the full stack locally, copy `.env.example` to `.env.local` and fill in the Supabase / Cerebras / Gemini sections.
+This default *memory mode* runs entirely in-process: sessions live in memory, the figure library is served from the authored constant, matching uses a keyword router instead of the LLM reranker, and the prose is the hand-authored text streamed word by word. It is the same reader, the same library, and the same privacy rules as production, minus the network. One visible difference: the afterword marks each story's source mapping as an editorial draft, because only stories that have passed evidence review in the database clear that banner.
 
-### Scripts
+To run the full stack (Supabase persistence and auth, Cerebras reranking, optional Gemini embeddings), copy `.env.example` to `.env.local`, fill in the sections you want, and follow [`docs/DEPLOYING.md`](docs/DEPLOYING.md).
 
-```powershell
-npm run typecheck         # tsc --noEmit
-npm run build             # production build
-npm run smoke             # hermetic regression suite (memory + stubs)
-npm run eval              # match eval (set EVAL_RECIPE_ID; use EVAL_CONCURRENCY=1 with real providers)
-npm run seed              # seed figures + figure_stages to Supabase
-npm run check-story-spec  # validate all draft contracts and publish rejection gates
-npm run check-story-spec-cutover # live pre-0023 gate; requires zero published StorySpecs
-npm run check-story-artifact # validate complete replay payloads, privacy, and tamper rejection
-npm run check-source-transparency # validate rationale, evidence, sources, and bounded reports
-npm run check-resonance-feedback # validate bounded post-story feedback and privacy gates
-npm run check-try-another   # validate one-use alternate, exclusion, retry, and retention gates
-npm run check-telemetry     # validate exact safe events, reductions, retention, and SQL privacy
-npm run check-telemetry-lifecycle # memory lifecycle + SQL/runtime static invariants (not a real-Postgres proof)
-npm run check-telemetry-producers # validate initial match/recovery/artifact producer mappings and privacy
-npm run check-story-progress-telemetry # validate atomic passage/completion producers and replay
-npm run check-feedback-telemetry # validate atomic feedback producer, replay, roles, and privacy
-npm run check-alternate-request-telemetry # validate claim-only alternate demand telemetry
-npm run check-alternate-resolution-telemetry # validate terminal/match/artifact alternate telemetry
-npm run check-entry-telemetry # validate landing-to-intake handoff and first interaction telemetry
-npm run check-auth-telemetry # validate flow-bound anonymous-auth proof, singleton capture, and silence rules
-npm run check-flow-failure-telemetry # validate bounded initial-composition failure capture and privacy
-npm run check-telemetry-dispatcher # validate private daily rollups, atomic delivery, k suppression, and queue health
-npm run check-story-deletion # validate owner cascades, CSRF, telemetry retirement, and deletion UX
-npm run check-reader-visibility-telemetry # validate first-content, passage-presentation, and source-open telemetry
-npm run check-story-boundaries # validate hard exclusions, recovery, and crisis precedence
-npm run check-resonance-brief # validate bounded derived input and provider privacy
-npm run check-story-composer # validate hybrid retry, gates, and canonical fallback
-npm run check-match-recovery # validate one-question and adjacent-match recovery
-npm run seed-story-specs  # seed review drafts; never overwrites reviewed/published content
-npm run check-db          # Supabase acceptance check (after seed)
-npm run seed-embeddings   # embed shape/facet texts (requires EMBEDDING_PROVIDER=gemini)
-npm run check-embeddings  # live embed probe + cache validity check
-npm run eval-retrieval    # Stage A/B gold survival (no Cerebras)
+## How it works
+
+### The reader's path
+
+1. **Intake** (`/begin`). Age and a few sentences. Optional limits let you keep certain topics or intensities out of the story. Crisis resources are on the page before you type anything, and on the landing page without any detection at all.
+2. **Crisis gate.** A deterministic regex runs before authentication, before rate limiting, and before any model call. If it matches, the app shows crisis resources and persists nothing: no session, no embedding, no provider request. This path is never rate-limited.
+3. **Matching.** Stages within ten years of your age form the pool. Retrieval narrows it to a handful, an LLM reranker judges emotional fit from each candidate's biographical facts, and the result is framed as either a close match or a *partial parallel*. When the fit is genuinely uncertain, the app asks one bounded question rather than guessing, and when nothing fits it says so.
+4. **Preface.** A few lines of comfort and, when it applies, an honest note that the parallel is only adjacent. No name yet.
+5. **Seven passages**, streamed and acknowledged one at a time: where it began, the dark moment, the response, the struggle, the turning point, what they became, and a reflection written back to you. Progress is never shown as "4 of 7".
+6. **Afterword.** The figure's name, why this story was chosen, the historical claims and quotations with their evidence, and the sources. A reader can flag any single fact for editorial review without sending anything about themselves.
+7. **Afterwards.** One bounded question (did this feel close?), an optional one-use alternate story if it did not, and the choice to keep the story by adding an email. Nothing is kept unless you ask.
+
+### The library
+
+The retrievable unit is not a person but a **stage**: one emotional episode, organised around one down moment, with a documented age range. Each stage carries three deliberately separated surfaces:
+
+- **Shape sentences and facets** describe the emotional shape of the episode. They are used for retrieval only.
+- **Biographical facts** are primary-source facts scoped to the episode. They are the only thing the reranker reads.
+- **Beats** are the seven authored passages, each with a structural role and a provenance note.
+
+Keeping retrieval text away from the reranker is the *anti-echo* rule: the model must judge fit from facts, not confirm what similarity search already said. The library holds 50 stages (about 48,000 words, a five-minute read each), tagged from a controlled vocabulary of 23 themes, weighted toward ages 15 to 30, with subjects ranging from a six-year-old who stopped speaking to a sixty-five-year-old who was broke. Every entry in `lib/figures-data.ts` records what is documented, what is interpretive, and what must not be said. In production a stage becomes matchable only after its evidence-bound StorySpec passes review.
+
+### Matching modes and recipes
+
+- **Keyword retrieval** is the production path. Under the LLM reranker it reaches 98% top-1 on the 104-case gold set with zero definitive-wrong matches, and the trust gate fails loudly rather than degrading quietly.
+- **FacetsRAG** is a six-lane semantic challenger (shape, four facet lanes, and a deterministic theme lane fused with reciprocal rank fusion over in-memory cosine). It wins on metaphor-heavy inputs and stays behind an eval gate until it wins overall.
+- **The model never writes story prose.** Passages are the authored text. Where the composer personalises the transition and the reflection, the model may only choose template identifiers from a closed allowlist; code renders them, validates the result, and falls back to the canonical text on any failure.
+- A served deployment does not pick any of this with loose flags. `config/story-recipes.json` is an immutable manifest; `ONWARD_PRODUCTION_RECIPE_ID` selects one entry, and that entry fixes retrieval, models, prompts, embedder, and composer behaviour. Changing production behaviour is a reviewed promotion with content-addressed evidence, not an environment edit.
+
+### Persistence modes
+
+| | `PERSISTENCE=memory` (default) | `PERSISTENCE=supabase` |
+| --- | --- | --- |
+| Sessions | in-process | Postgres, owned by an anonymous Supabase Auth user |
+| Figures | authored constant | `figure_stages` and reviewed `story_specs` tables |
+| Sign-in | fixed local user | anonymous-first; optional email link or password to keep stories |
+| Rate limit | in-process counters | 5 per hour and 30 per day per user, plus a hashed-IP backstop, durable in Postgres |
+| Telemetry | in-memory contract checks | closed, identifier-free daily rollups inside Postgres |
+
+## Privacy and safety
+
+The product is for hurting people, so the privacy rules are enforced in code and tested in CI, not left to convention.
+
+- **Anonymous by default.** No account is needed. A guest account and every story in it are deleted about six hours after its last activity.
+- **Stories are owned.** Another person's story URL is a 404 that is indistinguishable from a missing one.
+- **Your words expire.** The disclosure is deleted 60 days after it was written, saved story or not, and earlier if you delete the story or the account. Owners can hard-delete any story or the whole account without contacting anyone.
+- **Nothing sensitive is logged.** Prompts, provider responses, disclosures, raw IPs, and raw errors never reach logs or telemetry, including on error paths. Telemetry accepts only closed event names and unlinkable identifiers. Historical concern reports carry only library identifiers and a closed reason; they currently have no automatic expiry or user-controlled deletion because nothing in them can identify a reader.
+- **Crisis first.** The crisis check is regex-only, runs before any model call, persists nothing, and cannot be rate-limited. The resources it shows link each service's own page and were reviewed on the date recorded in `lib/safety.ts`.
+- **The browser never talks to the database.** It calls Supabase Auth endpoints only, with the public anon key; every table is behind default-deny row-level security and is read server-side through the service role or security-definer functions.
+
+The plain-language version of these promises is the app's privacy page (`app/privacy/page.tsx`); the operational detail is in [`docs/SAFETY_RUNBOOK.md`](docs/SAFETY_RUNBOOK.md) and [`roadmap/telemetry_contract.md`](roadmap/telemetry_contract.md).
+
+## Project layout
+
+```
+app/                Next.js App Router: landing, /begin, /story/[id], /stories, /account, /signin,
+                    /privacy, and the API routes (match, beat, feedback, deletion, telemetry)
+components/         The reader (StoryPlayer, StoryBeat, PrefaceCard, StoryAfterword), the intake form,
+                    the crisis card, sign-in and save cards, the landing-page demo
+lib/                Everything server-side, grouped by prefix:
+  figures*          the authored library and its two sources (constant, database)
+  matching, keyword-match, facets-retrieval, rrf, themes, match-config, match-recovery*
+                    retrieval, reranking, framing, and the one-question recovery path
+  llm*, embeddings* provider boundaries; the stub implementations are the default
+  safety, crisis-language, rate-limit
+                    the crisis gate and the limiter
+  story-*, hybrid-composition, chunks, opening-copy*, resonance-brief*
+                    StorySpecs, composition, immutable artifacts, playback, boundaries, transparency
+  session*, auth, supabase/, db, persistence
+                    sessions, ownership, and the two persistence modes
+  telemetry-*       the privacy-safe telemetry contract
+  *-deletion*, resonance-feedback*, alternate-story*, historical-concern*, owner-story-save*
+                    what an owner can do after a story
+config/             Immutable recipe manifest, prompt releases, quality policy, decision records
+supabase/           Migrations 0001 to 0024 and a rollout script (schema and functions only; no data)
+evals/              Gold sets (match, crisis) and content-addressed evaluation evidence
+scripts/            check-* validators wired into CI, evals, seeding, and the smoke suite
+prompts/            The authoring template for figure beats
+docs/               Deploy runbook, safety runbook, decision records, demo assets
+roadmap/            Product and technical roadmap, release evidence, telemetry contract
 ```
 
-`keyword` now has both the promoted v1 recipe and an unpromoted personalized-
-preface v2 challenger. Set `EVAL_RECIPE_ID` explicitly for match evaluation so
-two recipes with the same retrieval mode cannot be confused. Story-quality
-evaluation instead binds the candidate recipe inside its protected packet and
-manifest. The v2 recipe is evaluation-only and cannot be selected by served
-production until a separate evidence-backed promotion changes the protected
-selector. The selected v1 request contract remains frozen, but its returned
-eyebrow is displayed only when it exactly matches a code-reviewed line;
-otherwise the neutral eyebrow is used.
+## Configuration
 
-## Environment
+`.env.example` documents every variable. The short version:
 
-See `.env.example` for the documented template. Summary:
-
-| Variable | Notes |
+| Variable | Purpose |
 | --- | --- |
 | `PERSISTENCE` | `memory` (default) or `supabase` |
-| `ONWARD_ALLOW_MEMORY_IN_PRODUCTION` | Build-only escape hatch. It is honored only while `npm run build` is executing; served production runtimes still reject memory or unknown persistence modes even if the variable was copied. |
-| `NEXT_PUBLIC_SUPABASE_URL` | public |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public; browser uses it for **auth endpoints only** (RLS default-deny) |
-| `SUPABASE_SERVICE_ROLE_KEY` | **secret**, server-only, bypasses RLS |
-| `IP_HASH_SALT` | **secret**; required with `PERSISTENCE=supabase`; minimum 32 bytes, generated with `openssl rand -hex 32` |
-| `TELEMETRY_ID_SECRET` | **Dedicated secret required in Supabase and production modes** for authenticated telemetry identifiers; minimum 32 bytes. There is no `IP_HASH_SALT` fallback and the values must be different. |
-| `TELEMETRY_ID_PREVIOUS_SECRETS` | Optional comma-separated verification ring of up to eight prior telemetry secrets. Retain each previous key for at least 30 days after its last issuance and until its outbox retries are drained. |
-| `TELEMETRY_FLOW_BINDING_ENABLED` | Temporary schema/config availability kill switch. Defaults enabled; set `false` only to keep stories on legacy v2, reader progress on the prior CAS, feedback on the legacy RPC, and alternate claim/completion on the legacy RPCs while `0011`-`0016` or their configuration is unavailable. This incident mode intentionally loses linked telemetry, including story-flow auth measurement. |
-| `MATCH_RECOVERY_TOKEN_SECRET` | Optional dedicated HMAC secret for single-use recovery fingerprints; minimum 32 bytes; production falls back to `IP_HASH_SALT`. |
-| `ALTERNATE_STORY_TOKEN_SECRET` | Optional dedicated HMAC secret for post-story alternate capabilities; minimum 32 bytes; falls back to the recovery secret, then `IP_HASH_SALT`. |
-| `STORY_DELETION_TOKEN_SECRET` | Optional dedicated HMAC secret for ten-minute story-delete confirmations; minimum 32 bytes; production falls back to `IP_HASH_SALT`. Rotation invalidates only outstanding confirmation forms. |
-| `ACCOUNT_DELETION_TOKEN_SECRET` | Optional dedicated HMAC secret for ten-minute account-delete and reauthentication continuations; minimum 32 bytes; falls back to `STORY_DELETION_TOKEN_SECRET`, then `IP_HASH_SALT`. Rotation invalidates only outstanding forms. |
-| `LLM_PROVIDER`, `LLM_MODEL_RERANK`, `LLM_MODEL_PROSE` | Local/eval controls. Served production ignores them and uses the selected immutable recipe. |
-| `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL` | Production credential and pinned Cerebras endpoint. |
-| `EMBEDDING_PROVIDER`, `EMBEDDING_MODEL`, `EMBEDDING_DIM` | Local/eval controls. Served production derives them from the selected recipe. |
-| `GEMINI_API_KEY` | Required when the selected production recipe uses Gemini embeddings. |
-| `RETRIEVAL_MODE` | Local/eval control only. Production ignores it—including `auto`—and uses the selected recipe's exact retrieval path and top-K. |
-| `ONWARD_PRODUCTION_RECIPE_ID` | Required in production and the sole non-secret behavior selector. It can name only the primary or pre-registered rollback recipe in [`config/story-recipes.json`](config/story-recipes.json). A compatible matching-recipe rollback is this one change and needs no data migration. |
-| `ONWARD_DEPLOYMENT_VERSION` | Required outside Vercel when no `VERCEL_GIT_COMMIT_SHA` is present. Stored with the immutable session recipe for release audit. |
-| `STORY_CREATION_ENABLED` | Optional emergency kill switch; set `false` to pause new stories while leaving crisis resources available. |
-| `HYBRID_STORY_COMPOSER_ENABLED` | Local/eval control only. Production composer behavior is pinned by the selected recipe; local development exercises hybrid by default. |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | public; the browser uses them for auth endpoints only |
+| `SUPABASE_SERVICE_ROLE_KEY` | secret, server-only, bypasses RLS |
+| `IP_HASH_SALT`, `TELEMETRY_ID_SECRET` | secrets; required with Supabase; generate each with `openssl rand -hex 32` |
+| `CEREBRAS_API_KEY`, `CEREBRAS_BASE_URL` | reranking and opening copy in real mode |
+| `GEMINI_API_KEY` | only when the selected recipe uses FacetsRAG embeddings |
+| `ONWARD_PRODUCTION_RECIPE_ID` | required in production; the sole behaviour selector |
+| `LLM_PROVIDER`, `EMBEDDING_PROVIDER`, `RETRIEVAL_MODE` | local and eval controls; ignored by served production |
+| `STORY_CREATION_ENABLED` | emergency switch; `false` pauses new stories while crisis resources stay up |
 
-## Deploying
+## Scripts
 
-The Supabase and Vercel runbook (migration order, dashboard settings, email
-templates, rollout gates, and the live-flow checklist) lives in
-[`docs/DEPLOYING.md`](docs/DEPLOYING.md).
+```bash
+npm run dev            # local server, memory mode
+npm run build          # production build
+npm run lint           # eslint, zero warnings allowed
+npm run typecheck      # tsc --noEmit
+npm run smoke          # hermetic end-to-end regression suite (memory + stubs)
+npm run eval-crisis    # crisis regex regression set; a false negative fails
+npm run eval           # match eval against evals/match.json (see Evaluation)
+npm run check-figure   # structural validation of the library
+npm run seed           # seed figures and stages to Supabase
+npm run check-db       # Supabase acceptance check after seeding
+```
 
-## Privacy posture (plain words, enforced in code)
+CI runs about fifty `check-*` scripts in addition to lint, typecheck, the crisis eval, the smoke suite, and a production build, all offline with stub providers. Each script asserts a specific contract (telemetry privacy, story boundaries, deletion cascades, accessibility tokens, recipe immutability), and many of them assert on literal markup or copy, so read the relevant script before changing a component or a document it cites. `.github/workflows/ci.yml` is the canonical list.
 
-- Anonymous by default; no account required to use the product.
-- Stories are owned: another person's story URL is a 404, indistinguishable from a missing one.
-- A temporary guest account and every story in it are deleted about six hours after the latest story creation or saved reading progress in that account (`ANON_USER_TTL_HOURS`). Sending an email link does not change that lifecycle. Confirming it commits one immutable account-level Save State for the same owner, covering existing and future Owner Stories until story/account deletion; older permanent accounts are marked as legacy without a fabricated confirmation time.
-- Owners can hard-delete any saved story or their entire account from the active Onward database without support. Account deletion removes the sign-in, all owned stories/artifacts/feedback/recovery state, owner-linked telemetry flows, and user rate-limit keys; guest expiry uses the same cascade. Deleting an original story also deletes its alternate; deleting only an alternate preserves the original. Daily counts already settled before deletion follow a 30-day expiry schedule without an account, session, or saved-story identifier, with physical removal by daily cleanup. Historical concern reports remain attached to shared historical-library StorySpec and fact identifiers but contain no reporter, account, session, saved-story, artifact, disclosure, or generated-prose identifier; they currently have no automatic expiry or user-controlled deletion. Provider processing and infrastructure backups follow separately reviewed schedules and are not recalled by the in-app transaction.
-- Legacy v5 replay eligibility is a database-owned marker containing only the existing `artifact_id`. It follows the Owner Story lifecycle: its foreign key cascades when the artifact is removed by story deletion, account deletion, or guest expiry. It copies no account, session, disclosure, source, or generated prose, and it is not an analytics record. Forced RLS keeps it browser-inaccessible; the service role may only read it while loading an already-owned artifact.
-- The situation text and private request context become eligible for daily cleanup at their fixed 60-day deadline (`FEELING_RETENTION_DAYS`), saved or not, and are deleted earlier with the guest account, story, or account. The submitted age and validated generated wording follow the Owner Story lifecycle until story or account deletion; Save never extends the private-context deadline.
-- Crisis input is detected by a deterministic regex before any LLM call and is never persisted.
-- Optional story intensity/topic limits and a closed clarification choice are retained with the disclosure only on the original session so one alternate can reuse them exactly. They are never placed in either StoryArtifact or the alternate session, become cleanup-eligible at the original disclosure deadline, and are NULL'd by the next daily cleanup.
-- Pre-story recovery keeps only an opaque-token hash and keyed input fingerprint; the key is usable for ten minutes and expired rows are removed by the 15-minute cleanup job.
-- Historical concerns retain only shared historical-library StorySpec/stage/fact identifiers, a closed reason/status, aggregate count, and timestamps. They do not retain the reporter, account, session, saved-story, artifact, rationale, disclosure, or generated prose.
-- Resonance feedback is owner-linked for deletion but contains only story/recipe identifiers and a closed verdict/reason. It becomes cleanup-eligible after 90 days and is physically removed by scheduled cleanup; no optional note field exists until separate consent, encryption, reviewer access, and shorter deletion are implemented.
-- Alternate flow rows contain only owner/content identifiers, a token hash, closed state, bounded attempt count, lease, and timestamps. The browser sends no age, disclosure, boundaries, clarification, feedback reason, candidate list, or prose; the alternate session stores none of the original sensitive context.
-- Product telemetry accepts only exact closed events and HMAC-authenticated, purpose-separated opaque IDs; raw session/artifact IDs and flow-derived IDs at unlinkable boundaries are rejected. Outbox-only repeatable-occurrence tokens are never stored. IDs carry a non-secret key ID so current and retained previous keys can verify deletion and retries across rotation. Crisis, rate-limit, and deletion events are unlinkable. Operational attempts contain no flow/user/session/story ID. Product events and identifier-free daily marginal rollups become cleanup-eligible by 30 days; attempts do so by 14 days, and scheduled jobs perform physical deletion. New flows have an issued/owner-claimed/root-bound mapping with root/account cascades and opaque revocation tombstones. Individual-story/account deletion, just-in-time Save consent, durable owner Save State, and a closed code-owned retention registry now exist; real managed-database/backup proof and external provider/infrastructure review remain. Save/reopen telemetry is still disabled until a separate transaction-derived producer is reviewed. Raw product events stay inside Postgres: when explicitly enabled after release gates, the first-party dispatcher claims IDs only and atomically folds source-first before delivery. The candidate aggregate read remains private pending a separate dashboard privacy review. External raw-event consumers remain prohibited because no deletion-retraction protocol exists. See [`roadmap/telemetry_contract.md`](./roadmap/telemetry_contract.md).
-- Application code does not intentionally log prompt/response bodies, disclosures, raw IPs, or raw errors; production proxy, APM, and provider logging/retention must be configured and verified separately.
+## Evaluation
 
-## Architecture
+`evals/match.json` holds 104 hand-graded cases: 3 deliberate misses and 44 hard confusion cases across 25 groups. A matching change is judged by top-1 accuracy, miss detection, hard-pair confusion, and definitive-wrong count. Evidence for a promoted recipe is content-addressed under `evals/history/` and `evals/shadow/`, and CI refuses edits to it.
 
-- [`CLAUDE.md`](./CLAUDE.md) — working guidance: invariants (anti-echo, recovery-asymmetry, privacy taint), conventions, file layout, current status.
-- [`tbd_plan.md`](./tbd_plan.md) — full target architecture (matching pipeline, FacetsRAG, privacy taint model, prompt design).
-- [`MVP.md`](./MVP.md) — the Phase 0 plan snapshot (historical; forks described there were cut).
+```bash
+LLM_PROVIDER=stub RETRIEVAL_MODE=keyword npm run eval           # offline harness self-test
+EVAL_CONCURRENCY=1 RETRIEVAL_MODE=keyword npm run eval          # real reranker; needs CEREBRAS_API_KEY
+npm run eval-retrieval                                          # FacetsRAG Stage A/B gold survival, no reranker
+```
+
+## Adding a figure
+
+The library is the product. A stage is done only when all three land:
+
+1. Author the stage in `lib/figures-data.ts` following [`prompts/figure-beats.md`](prompts/figure-beats.md): one clean through-line sentence, four facets each supported by the biographical facts, seven beats in the fixed role order, no name or era markers before the final beat, and a provenance comment.
+2. Route it in `STUB_KEYWORD_MAP` in `lib/match-config.ts` so the keyword matcher can reach it.
+3. Add gold cases to `evals/match.json`, including at least one hard confusion pair against its nearest neighbour.
+
+Then run `npm run check-figure`, `npm run smoke`, and the eval. The production recipe pins a hash of the library, so a content change is also a library release under the recipe governance described in [`docs/production-recipe.md`](docs/production-recipe.md).
+
+## Contributing
+
+Before opening a pull request run `npm run lint`, `npm run typecheck`, `npm run smoke`, and the `check-*` scripts for the area you touched. Keep commits small and one concern each. The design conventions (paper and ink palette, Source Serif 4 with real small caps, no shadows or gradients, passages that fade in) and the engineering invariants are in `CLAUDE.md`; the domain vocabulary is in `CONTEXT.md`.
+
+## License
+
+A code license has not been chosen yet. The figure library reproduces only short quotations from primary sources; the Source Serif 4 fonts are distributed under the SIL Open Font License (see `app/fonts/OFL.txt`).

@@ -4,6 +4,8 @@
 /.github/workflows/ @taizhenC
 /.github/CODEOWNERS @taizhenC
 /config/story-recipes.json @taizhenC
+/config/figure-library-releases.json @taizhenC
+/lib/figures-data.ts @taizhenC
 /config/prompt-releases.json @taizhenC
 /config/story-quality-policy.json @taizhenC
 /config/recipe-decisions/ @taizhenC

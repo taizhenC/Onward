@@ -713,7 +713,8 @@ function checkIntegrationWiring(failures: string[]): void {
   const databaseCheck = read("../scripts/check-db.ts");
   const retentionCheck = read("../scripts/check-derived-output-retention.ts");
   const matchHandler = read("../app/api/match/handler.ts");
-  const readme = read("../README.md");
+  // The operator runbook moved out of the README (see docs/DEPLOYING.md).
+  const runbook = read("../docs/DEPLOYING.md");
   const decision = read("../docs/owner-story-save-decision.md");
   const saveSurface = DERIVED_OUTPUT_SURFACES["owner.save_state"];
   const saveTable = PERSISTENCE_RETENTION_REGISTRY[
@@ -734,13 +735,13 @@ function checkIntegrationWiring(failures: string[]): void {
     creationGateIndex >
       matchHandler.indexOf("const activation = await activateTelemetryFlowForOwner") ||
     creationGateIndex > matchHandler.indexOf("await intake.handleIntake") ||
-    /Migration `0022` is also schema-first compatible/i.test(readme) ||
+    /Migration `0022` is also schema-first compatible/i.test(runbook) ||
     /The migration is additive and schema-first/i.test(decision) ||
-    !/coordinated (?:production )?cutover/i.test(readme) ||
-    !/STORY_CREATION_ENABLED=false/.test(readme) ||
-    !/returning-only sign-in\s+guard active/i.test(readme) ||
-    !/\/auth\/confirm[\s\S]{0,180}(?:pending|already-issued)/i.test(readme) ||
-    !/already-issued links must remain unredeemable/i.test(readme) ||
+    !/coordinated (?:production )?cutover/i.test(runbook) ||
+    !/STORY_CREATION_ENABLED=false/.test(runbook) ||
+    !/returning-only sign-in\s+guard active/i.test(runbook) ||
+    !/\/auth\/confirm[\s\S]{0,180}(?:pending|already-issued)/i.test(runbook) ||
+    !/already-issued links must remain unredeemable/i.test(runbook) ||
     !/coordinated\s+cutover/i.test(decision) ||
     !/STORY_CREATION_ENABLED=false/.test(decision) ||
     !/\/auth\/confirm[\s\S]{0,180}(?:pending|already-issued)/i.test(decision) ||

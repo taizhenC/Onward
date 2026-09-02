@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 
 const REGISTRY_PATH = "config/story-recipes.json";
+const LIBRARY_RELEASES_PATH = "config/figure-library-releases.json";
 const IMMUTABLE_PATHS = [
   "evals/history",
   "evals/shadow",
@@ -12,6 +13,10 @@ type RecipeRegistry = {
   datasets?: Array<{ version?: unknown }>;
   promotions?: Array<{ recipeId?: unknown }>;
   recipes?: Array<{ recipeId?: unknown }>;
+};
+
+type LibraryReleaseRegistry = {
+  releases?: Array<{ sha256?: unknown }>;
 };
 
 function fail(message: string): never {
@@ -179,6 +184,72 @@ function assertExistingRecipesUnchanged(base: string): void {
   }
 }
 
+function parseLibraryReleases(
+  text: string,
+  label: string,
+): Array<{ sha256: string; entry: unknown }> {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    fail(`${label} figure-library release registry is not valid JSON`);
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    fail(`${label} figure-library release registry is not an object`);
+  }
+  const releases = (parsed as LibraryReleaseRegistry).releases;
+  if (!Array.isArray(releases)) {
+    fail(`${label} figure-library release registry has no releases array`);
+  }
+  const seen = new Set<string>();
+  return releases.map((release) => {
+    if (!release || typeof release.sha256 !== "string") {
+      fail(`${label} figure-library release registry contains a release without a sha256`);
+    }
+    if (seen.has(release.sha256)) {
+      fail(`${label} figure-library release registry repeats release ${release.sha256}`);
+    }
+    seen.add(release.sha256);
+    return { sha256: release.sha256, entry: release };
+  });
+}
+
+// Library releases are an ordered lineage: a pull request may append new
+// snapshots at the end but may never rewrite, reorder, or drop the ones the
+// selected recipe and its evidence were bound to.
+function assertExistingLibraryReleasesUnchanged(base: string): void {
+  let baseText: string;
+  try {
+    baseText = execFileSync("git", ["show", `${base}:${LIBRARY_RELEASES_PATH}`], {
+      cwd: process.cwd(),
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+  } catch {
+    // The release registry's first landing has no prior lineage to protect.
+    return;
+  }
+  const previous = parseLibraryReleases(baseText, "base");
+  const current = parseLibraryReleases(
+    readFileSync(LIBRARY_RELEASES_PATH, "utf8"),
+    "current",
+  );
+  if (current.length < previous.length) {
+    fail("existing figure-library releases were removed");
+  }
+  previous.forEach((release, index) => {
+    const next = current[index];
+    if (next.sha256 !== release.sha256) {
+      fail(
+        `figure-library release ${release.sha256} was reordered or replaced instead of appended after`,
+      );
+    }
+    if (canonical(release.entry) !== canonical(next.entry)) {
+      fail(`existing figure-library release ${release.sha256} was modified instead of appended`);
+    }
+  });
+}
+
 function main(): void {
   const base = process.argv[2]?.trim();
   if (!base) {
@@ -187,6 +258,7 @@ function main(): void {
   git(["rev-parse", "--verify", base]);
   assertAppendOnlyFiles(base);
   assertExistingRecipesUnchanged(base);
+  assertExistingLibraryReleasesUnchanged(base);
   console.log("Recipe immutability check passed (history is append-only).");
 }
 

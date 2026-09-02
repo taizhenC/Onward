@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "match-eval-evidence-v1",
+  "harnessVersion": "match-eval-harness-v3-2026-08",
+  "evidenceId": "ev_77698236394abf44023acc1aabf6e62b6bee8b9b33427ea3647880d86c29ba38",
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "dataset": {
+    "version": "match-104-2026-07-02",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "visibility": "synthetic"
+  },
+  "catalog": null,
+  "run": {
+    "startedAt": "2026-09-02T19:01:38.454Z",
+    "completedAt": "2026-09-02T19:02:57.858Z",
+    "k": 2,
+    "concurrency": 1,
+    "maxRetries": 2,
+    "caseCount": 104,
+    "trialCount": 208
+  },
+  "config": {
+    "provider": "real",
+    "model": "gpt-oss-120b",
+    "retrievalMode": "keyword",
+    "embeddingModelId": null,
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "rerankTemperature": 0,
+    "rerankReasoningEffort": "low",
+    "rerankTopK": 6
+  },
+  "metrics": {
+    "rerankTop1": 0.9603960396039604,
+    "overallTop1": 0.9603960396039604,
+    "missDetection": 1,
+    "hardConfusion": 0.022727272727272728,
+    "goldSurvivalStageA": null,
+    "goldSurvivalStageB": null,
+    "stability": 1,
+    "counts": {
+      "rerankCorrect": 194,
+      "rerankTotal": 202,
+      "overallCorrect": 194,
+      "overallTotal": 202,
+      "missDetected": 6,
+      "missTotal": 6,
+      "hardConfused": 2,
+      "hardTotal": 88,
+      "survivedStageA": 0,
+      "survivedStageB": 0,
+      "survivalTotal": 0,
+      "rerankChosen": 208,
+      "keywordFallback": 0
+    },
+    "calibration": {
+      "definitiveCorrect": 186,
+      "definitiveWrong": 4,
+      "partialCorrect": 8,
+      "partialWrong": 4
+    },
+    "latency": {
+      "p50Ms": 311,
+      "p95Ms": 611
+    },
+    "trustGate": {
+      "passed": false,
+      "coverage": 1,
+      "checks": {
+        "coverage": true,
+        "rerankTop1": false,
+        "missDetection": true,
+        "noDefinitiveWrong": false,
+        "top1": false,
+        "hardConfusion": false
+      },
+      "thresholds": {
+        "minCoverage": 0.95,
+        "minRerankTop1": 0.971,
+        "minOverallTop1": 0.971,
+        "minMissDetection": 1,
+        "maxDefinitiveWrong": 0,
+        "maxHardConfusion": 0
+      }
+    }
+  },
+  "provenance": {
+    "gitCommit": "4d28824f80d3414a2ba737dd3cb86abc8b4cc878",
+    "deploymentId": null,
+    "sourceRun": "2026-09-02T19-02-57-858Z.json",
+    "runId": "figure-library-release-2026-09-02-local-k2",
+    "sourceRunSha256": "3e60f2d36e3e1e5d469cfbd95fa5d4283058945a1ce8eee757367cc91afcc9f5",
+    "inputTreeSha256": "89d679c8b0cfcf13f7fbe2b145e7029a6b0de8a690a5ba0f07ad31304ce8dce4"
+  },
+  "legacyImported": false,
+  "candidate": false,
+  "promotable": false
+}

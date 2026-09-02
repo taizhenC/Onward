@@ -759,20 +759,4 @@ export const STUB_KEYWORD_MAP: Record<string, string[]> = {
   "nothing left to give": ["burnout"],
   "used up": ["burnout"],
   "tired all the time": ["burnout"],
-
-  // Re-eval additions (2026-08-26)
-  "no cure": ["illness"],  // oconnor: 'incurable' is already routed but the plainer phrase a hurting person 
-  "past retirement": ["late_start"],  // sanders: A reader in their sixties describing themselves as past retirement age
-  "too old to start": ["late_start"],  // sanders: Natural phrasing of the feeling this stage answers. 'too old' already 
-  "mouth to feed": ["worthlessness", "dispossession"],  // berlin_i: The existing route is the narrower "one less mouth". Real intake phras
-  invisible: ["solitude", "dispossession"],  // fitzgerald_e: The entry's own known-good eval case ('i have nowhere to go and no fam
-  "wasting everyone's time": ["dismissed", "worthlessness"],  // poitier: The exact shape of this episode — being told you are wasting people's 
-  "didn't get accepted": ["dismissed", "shame"],  // simone: The existing simone routes cover 'conservatory', "didn't get in", 'tur
-  "treated like a servant": ["social_constraint", "dismissed"],  // faraday: The map already routes the present tense "treat me like a servant" to 
-  "took it back": ["dismissed"],  // carver: The exact shape of this episode: an offer or acceptance withdrawn afte
-  "changed their mind about me": ["dismissed"],  // carver: Same shape, everyday phrasing; specific enough not to fire on generic 
-  "no one will teach me": ["dismissed"],  // coleman: A hurting person locked out of training writes this more often than th
-
-  // Re-eval additions (2026-08-26)
-  "oldest person in the room": ["late_start"],  // hurston: The Hurston shape is specifically starting over at the beginning next 
 };

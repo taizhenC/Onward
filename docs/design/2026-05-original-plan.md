@@ -1,6 +1,6 @@
 # Plan: Onward — an emotional-companion app
 
-> **Design record, May 2026.** This is the plan Onward was first built from, kept for the reasoning behind the invariants (anti-echo, recovery-asymmetry, the privacy taint model). It predates the fork cut, the immutable recipe registry, and the StorySpec pipeline. `CLAUDE.md` and the README describe what shipped; `2026-07-target-architecture.md` beside this file is the later design pass.
+> **Design record, May 2026.** This is the plan Onward was first built from, kept for the reasoning behind the invariants (anti-echo, recovery-asymmetry, the privacy taint model). It predates the fork cut, the immutable recipe registry, and the StorySpec pipeline. `CLAUDE.md` and the README describe what shipped; the July 2026 target architecture is the later design pass.
 
 ## Context
 

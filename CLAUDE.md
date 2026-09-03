@@ -156,10 +156,10 @@ app/
   page.tsx                          # landing; crisis resources visible without any detection
   begin/page.tsx                    # intake (age + disclosure)
   story/[sessionId]/page.tsx        # story player; not-found.tsx renders the drifted-away state
-  stories/page.tsx                  # a reader's own stories + Account section
-  signin/, account/, privacy/       # sign-in, account deletion, privacy page
+  stories/page.tsx                  # a reader's own stories
+  signin/, account/, privacy/       # sign-in; the account page (password, retention, sign-out) and account/delete; privacy page
   auth/confirm/route.ts             # token_hash confirmation for magic links and email changes
-  api/match/                        # route.ts composes auth + IP hash; handler.ts is the testable core
+  api/match/                        # route.ts is the thin runtime entry; handler.ts composes auth + IP hash and is the testable core
   api/beat/, api/beat/ack/          # stream the next passage chunk; acknowledge reading progress
   api/story-feedback/, api/story-delete/, api/account-delete/, api/historical-concern/
   api/telemetry/*                   # closed-vocabulary product events
@@ -188,7 +188,7 @@ evals/
 supabase/migrations/                # 0001 ... 0024; the SQL is the live copy of the retention constants
 scripts/                            # check-* CI gates, eval-*, seed-*, smoke; trusted/ holds the promotion attestor
 docs/                               # DEPLOYING.md runbook, SAFETY_RUNBOOK.md, decision records, design/ (dated design history)
-roadmap/                            # execution scope (controlled_public_beta.md), backlog, telemetry contract, story-quality protocol
+roadmap/                            # execution scope (controlled_public_beta.md) and the contracts CI enforces (telemetry, story quality)
 ```
 
 ## Visual conventions

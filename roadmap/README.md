@@ -1,57 +1,48 @@
-# Onward: MVP-to-Public-Release Roadmap
+# Onward roadmap
 
-**Prepared:** July 9, 2026  
-**Perspective:** Senior Product Management and Lead Technical Architecture  
-**Scope:** Repository-based assessment and roadmap for the next viable public release
+What stands between the current build and a public release, and the contracts
+CI enforces along the way.
 
-> **Current execution scope (August 10, 2026):** the
-> [controlled public beta release contract](./controlled_public_beta.md) is
-> authoritative. The 43-item roadmap remains a long-term product reference; it
-> is not a commitment to finish every item before the beta.
-
-## Purpose
-
-This roadmap treats Onward as the barebones MVP described in the brief: a product built to prove one loop—user disclosure → matched historical story → a moment of recognition. The repository already contains meaningful deployment, privacy, content, and matching foundations, but the public-release product has not yet proved the outcome that matters: that a real user reliably receives a true, personally resonant story in a calm, trustworthy reading experience.
-
-The roadmap therefore prioritizes end-to-end story quality and presentation over breadth, social mechanics, or premature platform expansion.
-
-The long-term backlog contains **43 items: 17 P0, 18 P1, and 8 P2**. The beta
-contract intentionally narrows that plan to the core story loop, safety, trust,
-accessibility, and production operations.
+The long-form planning set written in July 2026 (executive summary, 43-item
+feature roadmap, implementation ledger, release and measurement plan) was
+condensed on 2026-09-03. Its full text is in git history before that date. The
+target architecture it described is kept as a dated design record in
+[`docs/design/2026-07-target-architecture.md`](../docs/design/2026-07-target-architecture.md).
 
 ## Documents
 
 1. [Controlled public beta release contract](./controlled_public_beta.md) — the
-   current finish line, required external gates, explicit deferrals, and stop
-   rule.
-2. [Executive summary](./executive_summary.md) — product thesis, current capabilities, unique value proposition, mission, direction, target audience, and strategic diagnosis.
-3. [Feature roadmap](./feature_roadmap.md) — the complete long-term P0/P1/P2 backlog. Every proposed item has exactly one priority and one required type tag.
-4. [Technical architecture](./technical_architecture.md) — current-state review, target story-composition pipeline, data model, service boundaries, privacy model, and refactor rationale.
-5. [Release and measurement plan](./release_and_measurement.md) — broad-release sequence, quality gates, metrics, rollout, ownership, dependencies, and risks.
-6. [Implementation status](./implementation_status.md) — evidence ledger for all 43 long-term items; it is no longer the current execution scope.
-7. [Story-quality benchmark protocol](./story_quality_benchmark.md) — consented blind-holdout design, independent review contract, privacy boundary, broad-release thresholds, and custodian attestation requirements.
+   authoritative execution scope, decided 2026-08-10: the fixed beta scope, the
+   launch-critical engineering closure, the seven external gates that still
+   block invitations, the explicit deferrals, and the stop rule.
+2. [Backlog](./backlog.md) — the 43 long-term items in one table: id, priority,
+   type, status as of 2026-08-10, how the beta contract treats each, and what is
+   left. It is a reference, not a commitment to finish everything before the
+   beta.
+3. [Privacy-safe telemetry contract](./telemetry_contract.md) — the hard privacy
+   boundary, the event registry, and the producer rules. `check-owner-story-save`
+   reads this file in CI, so its wording is load-bearing.
+4. [Story-quality benchmark protocol](./story_quality_benchmark.md) — the
+   consented blind-holdout design and the promotion thresholds. Story-quality
+   evidence hashes this file and `check-story-quality-immutability` protects it,
+   so a change means a new protocol version, not an edit.
 
-## Priority and tag contract
+## Priorities and tags
 
-Priorities are strict and mutually exclusive:
+Priorities are strict and mutually exclusive: **P0** is required before opening
+the product to the public, **P1** is a fast-follow that is not a launch blocker,
+**P2** is a future consideration. Every item carries exactly one type tag:
+`[Feature]`, `[Bug Fix]`, `[Refactor]`, or `[UI/UX]`.
 
-- **P0 — Critical:** required before opening the product to the public.
-- **P1 — High Priority:** a fast-follow or high-value capability that is not a launch blocker.
-- **P2 — Low Priority:** a future consideration or nice-to-have.
+## Release thesis
 
-Every backlog item uses exactly one of the requested tags:
+Do not launch "an AI story generator." Launch a **trusted historical-story
+companion** whose AI is constrained by an editorially verified spine:
 
-- `[Feature]`
-- `[Bug Fix]`
-- `[Refactor]`
-- `[UI/UX]`
+> Tell Onward what you are carrying. It will find a documented human parallel,
+> tell that episode with care, and return to you without pretending the two
+> lives are identical.
 
-## Recommended release thesis
-
-Do not launch “an AI story generator.” Launch a **trusted historical-story companion** whose AI is constrained by an editorially verified spine.
-
-The public-release promise should be:
-
-> Tell Onward what you are carrying. It will find a documented human parallel, tell that episode with care, and return to you without pretending the two lives are identical.
-
-The release is ready only when the complete experience—not merely top-1 figure selection—passes factuality, resonance, safety, privacy, reliability, and reading-experience gates.
+The release is ready only when the complete experience, not merely top-1 figure
+selection, passes the factuality, resonance, safety, privacy, reliability, and
+reading-experience gates in the beta contract.

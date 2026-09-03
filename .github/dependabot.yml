@@ -1,5 +1,6 @@
-# Weekly dependency updates. Actions are pinned to commit hashes in the
-# workflows; Dependabot keeps those pins and their version comments current.
+# Weekly dependency updates for npm packages and the workflows' actions. When
+# an action is pinned by commit hash, Dependabot updates the pin and its
+# version comment together.
 version: 2
 updates:
   - package-ecosystem: npm

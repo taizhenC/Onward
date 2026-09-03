@@ -58,7 +58,12 @@ jobs:
 
   attest-recipe-promotion:
     needs: detect-recipe-promotion
-    if: needs.detect-recipe-promotion.outputs.required == 'true'
+    # Only a branch in this repository may reach the environment secret. A fork
+    # that proposes a promotion still fails the gate below, it just never gets
+    # near the attestation authority.
+    if: >-
+      needs.detect-recipe-promotion.outputs.required == 'true' &&
+      github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 10
     environment: recipe-promotion
@@ -133,9 +138,14 @@ jobs:
           DETECT_RESULT: ${{ needs.detect-recipe-promotion.result }}
           PROMOTION_REQUIRED: ${{ needs.detect-recipe-promotion.outputs.required }}
           ATTEST_RESULT: ${{ needs.attest-recipe-promotion.result }}
+          HEAD_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
         run: |
           test "$DETECT_RESULT" = "success"
           if test "$PROMOTION_REQUIRED" = "true"; then
+            if test "$HEAD_REPOSITORY" != "$GITHUB_REPOSITORY"; then
+              echo "::error::a recipe promotion must be proposed from a branch in $GITHUB_REPOSITORY, not from a fork ($HEAD_REPOSITORY)"
+              exit 1
+            fi
             test "$ATTEST_RESULT" = "success"
           else
             test "$PROMOTION_REQUIRED" = "false"

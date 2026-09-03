@@ -1,6 +1,6 @@
 # Technical Architecture
 
-> **Design record, July 2026.** The target architecture written for the public-release roadmap. Much of it has since shipped (StorySpec, the story composer and immutable artifacts, atomic progress, the recipe manifest, safe observability, the retention classes); what remains is tracked in `roadmap/backlog.md`, and the current execution scope is `roadmap/controlled_public_beta.md`. The May 2026 plan beside this file is the earlier pass.
+> **Design record, July 2026.** The target architecture written for the public-release roadmap. Much of it has since shipped (StorySpec, the story composer and immutable artifacts, atomic progress, the recipe manifest, safe observability, the retention classes); what remains is tracked in `roadmap/backlog.md`, and the current execution scope is `roadmap/controlled_public_beta.md`. The May 2026 original plan is the earlier pass.
 
 ## Architectural recommendation
 

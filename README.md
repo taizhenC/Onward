@@ -137,8 +137,8 @@ supabase/           Migrations 0001 to 0024 and a rollout script (schema and fun
 evals/              Gold sets (match, crisis) and content-addressed evaluation evidence
 scripts/            check-* validators wired into CI, evals, seeding, and the smoke suite
 prompts/            The authoring template for figure beats
-docs/               Deploy runbook, safety runbook, decision records, demo assets
-roadmap/            Product and technical roadmap, release evidence, telemetry contract
+docs/               Deploy runbook, safety runbook, decision records, dated design records, demo assets
+roadmap/            Beta release contract, backlog, telemetry contract, story-quality protocol
 ```
 
 ## Configuration

@@ -14,8 +14,26 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # Majors that move with the framework or its toolchain are bumped by
+      # hand: next and eslint-config-next in lockstep; eslint and typescript
+      # once eslint-config-next's typescript-eslint supports them; @types/node
+      # together with the engine major in package.json.
+      - dependency-name: next
+        update-types: ["version-update:semver-major"]
+      - dependency-name: eslint-config-next
+        update-types: ["version-update:semver-major"]
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
       day: monday
+    groups:
+      actions:
+        patterns: ["*"]

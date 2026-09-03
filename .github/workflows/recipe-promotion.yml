@@ -31,6 +31,12 @@ jobs:
           path: candidate
           fetch-depth: 0
           persist-credentials: false
+          # actions/checkout v7 refuses fork pull-request refs under
+          # pull_request_target unless told otherwise. This step is the case
+          # the guidance at https://gh.io/securely-using-pull_request_target
+          # allows: the candidate is data only, no credentials are persisted,
+          # and the only code that runs comes from the protected base.
+          allow-unsafe-pr-checkout: true
       - name: Load detector from the protected base commit
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -76,6 +82,12 @@ jobs:
           path: candidate
           fetch-depth: 0
           persist-credentials: false
+          # actions/checkout v7 refuses fork pull-request refs under
+          # pull_request_target unless told otherwise. This step is the case
+          # the guidance at https://gh.io/securely-using-pull_request_target
+          # allows: the candidate is data only, no credentials are persisted,
+          # and the only code that runs comes from the protected base.
+          allow-unsafe-pr-checkout: true
       - name: Load locked attestor from the protected base commit
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:

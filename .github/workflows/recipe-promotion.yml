@@ -24,7 +24,7 @@ jobs:
       head_sha: ${{ steps.detect.outputs.head_sha }}
     steps:
       - name: Check out candidate bytes without executing them
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ github.repository }}
           ref: refs/pull/${{ github.event.pull_request.number }}/head
@@ -38,7 +38,7 @@ jobs:
           # and the only code that runs comes from the protected base.
           allow-unsafe-pr-checkout: true
       - name: Load detector from the protected base commit
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ github.repository }}
           ref: refs/heads/${{ github.event.pull_request.base.ref }}
@@ -75,7 +75,7 @@ jobs:
     environment: recipe-promotion
     steps:
       - name: Check out candidate bytes without executing them
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ github.repository }}
           ref: refs/pull/${{ github.event.pull_request.number }}/head
@@ -89,7 +89,7 @@ jobs:
           # and the only code that runs comes from the protected base.
           allow-unsafe-pr-checkout: true
       - name: Load locked attestor from the protected base commit
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ${{ github.repository }}
           ref: refs/heads/${{ github.event.pull_request.base.ref }}

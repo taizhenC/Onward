@@ -57,6 +57,10 @@ evals/runs/*
 evals/story-quality/private/
 evals/story-quality/runs/
 
+# figure-story research workspace: candidate StorySpecs and their evidence
+# stay local until a story is reviewed and seeded
+docs/research/
+
 # IDE / OS
 .vscode/
 .idea/

@@ -196,8 +196,8 @@ Then run `npm run check-figure`, `npm run smoke`, and the real eval. A content c
 
 ## Contributing
 
-Before opening a pull request run `npm run lint`, `npm run typecheck`, `npm run smoke`, and the `check-*` scripts for the area you touched. Keep commits small and one concern each. The design conventions (paper and ink palette, Source Serif 4 with real small caps, no shadows or gradients, passages that fade in) and the engineering invariants are in `CLAUDE.md`; the domain vocabulary is in `CONTEXT.md`.
+Before opening a pull request run `npm run lint`, `npm run typecheck`, `npm run smoke`, and the `check-*` scripts for the area you touched. Keep commits small and one concern each. The design conventions (paper and ink palette, Source Serif 4 with real small caps, no shadows or gradients, passages that fade in) and the engineering invariants are in `CLAUDE.md`; the domain vocabulary is in `CONTEXT.md`. By contributing you agree that your contribution is licensed under the MIT License.
 
 ## License
 
-A code license has not been chosen yet. The figure library reproduces only short quotations from primary sources; the Source Serif 4 fonts are distributed under the SIL Open Font License (see `app/fonts/OFL.txt`).
+Onward is released under the [MIT License](LICENSE). The figure library reproduces only short quotations from primary sources; the Source Serif 4 fonts are distributed under the SIL Open Font License (see `app/fonts/OFL.txt`).

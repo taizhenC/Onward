@@ -85,7 +85,7 @@ The following work is useful later but unnecessary for this beta:
 - P1 [Feature] The formal 150-session/75-response benchmark before beta entry. Use
   the capped beta to gather that evidence before broad self-serve release.
 - Every other item keeps its single P1 or P2 priority and type in
-  `feature_roadmap.md`; all remain outside the controlled-beta engineering goal.
+  `backlog.md`; all remain outside the controlled-beta engineering goal.
 
 ## Stop rule
 

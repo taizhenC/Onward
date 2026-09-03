@@ -109,7 +109,7 @@ The product is for hurting people, so the privacy rules are enforced in code and
 - **Crisis first.** The crisis check is regex-only, runs before any model call, persists nothing, and cannot be rate-limited. The resources it shows link each service's own page and were reviewed on the date recorded in `lib/safety.ts`.
 - **The browser never talks to the database.** It calls Supabase Auth endpoints only, with the public anon key; every table is behind default-deny row-level security and is read server-side through the service role or security-definer functions.
 
-The plain-language version of these promises is the app's privacy page (`app/privacy/page.tsx`); the operational detail is in [`docs/SAFETY_RUNBOOK.md`](docs/SAFETY_RUNBOOK.md) and [`roadmap/telemetry_contract.md`](roadmap/telemetry_contract.md).
+The plain-language version of these promises is the app's privacy page (`app/privacy/page.tsx`); the operational detail is in [`docs/SAFETY_RUNBOOK.md`](docs/SAFETY_RUNBOOK.md) and [`roadmap/telemetry_contract.md`](roadmap/telemetry_contract.md). To report a vulnerability privately, see [`SECURITY.md`](SECURITY.md).
 
 ## Project layout
 

@@ -3,6 +3,7 @@
 # Code Owner review for this file to be effective.
 /.github/workflows/ @taizhenC
 /.github/CODEOWNERS @taizhenC
+/.github/dependabot.yml @taizhenC
 /config/story-recipes.json @taizhenC
 /config/figure-library-releases.json @taizhenC
 /lib/figures-data.ts @taizhenC

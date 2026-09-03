@@ -9,16 +9,19 @@ the wrong resources, is treated as the most urgent kind of bug.
 Please do not open a public issue or pull request for a security problem.
 
 Report it privately through GitHub: open the repository's **Security** tab and
-choose **Report a vulnerability**. Include what you found, where it is (a URL,
-file, or endpoint), the steps to reproduce it, and what you believe the impact
-is. A proof of concept is welcome when it can be run without touching anyone
-else's data.
+choose **Report a vulnerability**. If that option is not visible, open a plain
+issue titled "Security contact request" with no details in it, and the
+maintainer will reply with a private channel.
+
+Include what you found, where it is (a URL, file, or endpoint), the steps to
+reproduce it, and what you believe the impact is. A proof of concept is welcome
+when it can be run without touching anyone else's data.
 
 What to expect:
 
 - an acknowledgement within 7 days;
 - an assessment and a plan within 14 days of that acknowledgement;
-- a note when the fix ships, and credit in the release note if you want it.
+- a note when the fix ships, and credit in the fixing pull request if you want it.
 
 If you find a problem with the crisis resources the app shows readers, such as
 a wrong number or a dead link, report it the same way. It is handled with the
@@ -33,8 +36,9 @@ In scope:
 
 Out of scope:
 
-- volumetric denial of service, resource exhaustion, or anything that degrades
-  the service for other readers;
+- volumetric denial of service or sustained load. A rate-limit bypass shown
+  with a handful of requests is in scope; degrading the service for other
+  readers to prove it is not;
 - reports from automated scanners with no demonstrated impact;
 - missing hardening headers or best-practice findings without a demonstrated
   impact;
@@ -54,7 +58,9 @@ Out of scope:
 
 Research that follows these rules is considered authorised. The maintainer will
 not pursue legal action against you for it and, if a third party does, will say
-that you acted in good faith.
+that you acted in good faith. That authorisation covers only what the maintainer
+controls; it cannot authorise testing of Supabase, Vercel, or the model
+providers' own systems.
 
 ## Supported versions
 

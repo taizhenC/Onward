@@ -234,7 +234,9 @@ PR first lands its content-addressed candidate evidence on `main`. A separate
 promotion-only PR must target `main` and may modify only the selector registry,
 one new decision, the generated recipe document, and one new registration
 migration. It cannot introduce or modify evidence, manifests, datasets, code,
-workflows, or the attestor while requesting authority.
+workflows, or the attestor while requesting authority. It must also come from a
+branch in this repository: the attestation job never runs for a fork's pull
+request, and the gate fails a fork that proposes a promotion.
 
 For that promotion PR, set protected environment variables for the exact head,
 decision, dataset, catalog, evidence IDs, shadow IDs, evaluated commits and

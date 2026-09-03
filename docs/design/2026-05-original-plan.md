@@ -1,5 +1,7 @@
 # Plan: Onward — an emotional-companion app
 
+> **Design record, May 2026.** This is the plan Onward was first built from, kept for the reasoning behind the invariants (anti-echo, recovery-asymmetry, the privacy taint model). It predates the fork cut, the immutable recipe registry, and the StorySpec pipeline. `CLAUDE.md` and the README describe what shipped; the July 2026 target architecture is the later design pass.
+
 ## Context
 
 The user wants an AI web app for people who are feeling down. A user enters their age and a short description of what they're going through. The app finds a real historical figure who, at a similar age, lived through a genuinely similar *emotional episode*, and tells that episode of the figure's life as a warm narrative — from the dark moment, through the struggle, to the turning point, to who they became out of it — ending with a personal bridge back to the user.
@@ -8,7 +10,7 @@ The user added a key feature: **author mode**. After the figure is matched, the 
 
 The product purpose is heart-healing, so the frontend has to feel calm, dignified, and beautiful — not like a chatbot.
 
-This directory (`D:\code_save\onward`) is currently empty. Nothing to reuse — building from scratch.
+The repository was empty when this plan was written. Nothing to reuse — building from scratch.
 
 ## Architecture
 

@@ -20,7 +20,7 @@ The body of this doc still describes the **original forked design**. It's preser
 
 Phase 1 direction (decided 2026-05-13, not yet built): **prototype + LLM regeneration with RAG-grounded entity validation** as the path to interactive storytelling, not a return to forks. User agency comes via Wuwa-style **cosmetic choices** that do not branch the story. Hallucination control via strict prompt constraints + entity allowlist validation against a per-figure prototype, with hand-authored beats as the regression-reference and validation-failure fallback. Replace the Phase 0 hardcoded preface with LLM-personalized comfort copy generated from `session.feeling`, subject to the same tone and validation discipline.
 
-See `MVP.md` for the as-shipped Phase 0 reality. Below is the original target.
+The README and the update paragraphs below describe what shipped. The rest of this file is the original target.
 
 **Repo state:** Phase 0 code lives. The body below describes the *original target* design that pre-dated the 2026-05-13 fork-cut. Treat file paths, table names, and interface shapes that contradict the Status section above as historical, not current.
 
@@ -131,7 +131,7 @@ The promotion authority is not yet enforceable. Verified on 2026-07-23, this rep
 
 - **Recipe pinning + auditable replay.** `sessions.match_recipe JSONB` freezes the active versions at session creation (matchConfigVersion, embeddingModelId, taggerModelId, rerankModelId, projectionSchemaVersion, expansionEnabled, rerankTopK, crisisRegexVersion). To debug a match, run `npx tsx scripts/replay-match.ts <sessionId>`; full sensitive trace requires `--include-sensitive-local-trace`; every invocation appends a row to `logs/replay-audit.jsonl`. This is the *only* path that touches user disclosure outside the live match. Production traces deliberately can't surface it.
 - **`framing` is the only confidence signal that crosses the wire.** `pick.confidence` and `pick.resonance`/`pick.gap` stay server-side. The client only sees `framing: "definitive" | "partial"`, which the story page uses to choose opening copy. Low-confidence matches presented as definitive mirrors corrode trust faster than honest "fragment that rhymes" framing.
-- **Eval set is the regression net.** Before merging any change to `lib/llm.ts`, `lib/embeddings.ts`, `lib/matching.ts`, `lib/match-config.ts`, `lib/themes.ts`, `scripts/research-figure.ts`, or any prompt template, run `npx tsx scripts/eval-match.ts`. The metrics — top-1 accuracy, top-5/10 retrieval recall, MRR, near-miss confusion rate, miss-detection rate, confidence-calibration spread, latency p50/p95 — are the only honest way to know whether a "tightening" actually tightened. FacetsRAG-positive results require top-1 improving AND near-miss confusion rate dropping on modeled-facet hard negatives. The expansion-vs-projection ablation (configs A/B/C — see `tbd_plan.md`) is decided by eval, not intuition; `expansionEnabled` flips are config-version bumps.
+- **Eval set is the regression net.** Before merging any change to `lib/llm.ts`, `lib/embeddings.ts`, `lib/matching.ts`, `lib/match-config.ts`, `lib/themes.ts`, `scripts/research-figure.ts`, or any prompt template, run `npx tsx scripts/eval-match.ts`. The metrics — top-1 accuracy, top-5/10 retrieval recall, MRR, near-miss confusion rate, miss-detection rate, confidence-calibration spread, latency p50/p95 — are the only honest way to know whether a "tightening" actually tightened. FacetsRAG-positive results require top-1 improving AND near-miss confusion rate dropping on modeled-facet hard negatives. The expansion-vs-projection ablation (configs A/B/C — see `docs/design/2026-05-original-plan.md`) is decided by eval, not intuition; `expansionEnabled` flips are config-version bumps.
 
 - **Privacy regressions are CI-tested, not convention-enforced.** `lib/trace.test.ts` asserts the production-trace schema *throws or fails type-check* when given `feeling`, anchor texts, projection text, expansion text, raw LLM prompt/response bodies, ranked figure-key arrays, raw enum tags from user classification, or raw vectors. Schema-level testing catches regressions across all log call sites with one test surface — testing the logger function in isolation only catches one path.
 
@@ -149,53 +149,46 @@ Each `figure_stages` row declares its `arc_variant` and carries the correspondin
 
 ## File layout
 
+As built (2026-09). The target-design tree that used to sit here listed a choose route, decision cards, and YAML evals that never shipped; see the design records in `docs/design/` for that history.
+
 ```
 app/
-  page.tsx                    # intake form
-  story/[sessionId]/page.tsx  # story player state machine
-  api/match/route.ts          # rate-limit + safety + matching.match() + persist
-  api/beat/route.ts           # SSE stream of next narrative beat
-  api/choose/route.ts         # record choice, SSE stream next beat
+  page.tsx                          # landing; crisis resources visible without any detection
+  begin/page.tsx                    # intake (age + disclosure)
+  story/[sessionId]/page.tsx        # story player; not-found.tsx renders the drifted-away state
+  stories/page.tsx                  # a reader's own stories
+  signin/, account/, privacy/       # sign-in; the account page (password, retention, sign-out) and account/delete; privacy page
+  auth/confirm/route.ts             # token_hash confirmation for magic links and email changes
+  api/match/                        # route.ts is the thin runtime entry; handler.ts composes auth + IP hash and is the testable core
+  api/beat/, api/beat/ack/          # stream the next passage chunk; acknowledge reading progress
+  api/story-feedback/, api/story-delete/, api/account-delete/, api/historical-concern/
+  api/telemetry/*                   # closed-vocabulary product events
 lib/
-  types.ts                    # BeatBlueprint, FigureRow, FigureStageRow, ArcVariant, BeatRole, Session, MatchResponse, FacetSignal, FacetQuery
-  llm.ts                      # LLM interface (tagAndExpand, pickFigure, streamBeat) + provider switch
-  llm-stub.ts                 # keyword-routing implementation (default)
-  llm-real.ts                 # GPT-OSS 120B via Cerebras
-  embeddings.ts               # Embedder interface (modelId, dim, embedDocuments, embedQuery) + provider switch
-  embeddings-stub.ts          # modelId="stub@v0", returns zero vector → matching skips vector branch
-  embeddings-real.ts          # Gemini gemini-embedding-001@1536 (primary) + Voyage voyage-4-lite@1024 (challenger)
-  matching.ts                 # retrieval: filter → tag/project → 6 lanes with quotas → dynamic-weighted RRF → rerank → framing
-  match-config.ts             # BASE_WEIGHTS, WEIGHT_BOUNDS, λ, lane quotas, theme λ + clamp, projection schema version, expansionEnabled, rerank top-K, retention TTLs, matchConfigVersion
-  match-config.test.ts        # invariant + determinism tests for the weighter and bounded-normalization helper
-  rrf.ts                      # reciprocal rank fusion, k=60 default; dynamic-weighted variant for Stage B
-  themes.ts                   # controlled vocabulary of emotional themes (positive + antiTheme name space)
-  sensitive.ts                # privacy taint model: SensitiveRaw / SensitiveDerivedText / SensitiveDerivedTags / SensitiveDerivedVector wrappers with named unwrap exits
-  trace.ts                    # string-hostile production-trace schema + reduction helpers; writeProdTrace is the only path; no console.* outside tests
-  trace.test.ts               # privacy regression tests: schema rejects feeling, anchors, projection text, raw enum tags, raw vectors, prompt/response bodies, raw exception objects
-  db.ts                       # sessions (+ match_recipe) + match_misses + figure_editorial_warnings (server-only)
-  figures.ts                  # listByAge, getByKey, vectorSearch, facetSearch, themeSearch, toClientOutline
-  safety.ts                   # crisis regex check; never persists; emits only { crisisDetected, crisisRegexVersion, latencyMs }
-scripts/
-  research-figure.ts          # Llama drafts a candidate FigureRow JSON
-  check-figure.ts             # structural + style validation
-  seed-figure.ts              # validates, embeds, inserts with version metadata
-  reembed.ts                  # refresh embeddings after provider swap or content edits
-  eval-match.ts               # run evals/match.yaml through matching.match(), report metrics across the three expansion configs
-  eval-crisis.ts              # run evals/crisis-regex.yaml through safety.classifyCrisis; safety regression — false-negatives fail
-  replay-match.ts             # auditable replay: SELECT feeling FROM sessions, reconstruct via match_recipe; --include-sensitive-local-trace gates writes
-  drafts/                     # gitignored editorial workspace
+  types.ts, story-spec-types.ts     # FigureStageRow, Session, MatchRecipe; the StorySpec contract
+  llm.ts (+ llm-stub, llm-real, llm-prompts)              # the only LLM boundary
+  embeddings.ts (+ -stub, -real, embeddings-cache)        # the only embedder boundary
+  matching.ts, keyword-match.ts, facets-retrieval.ts, rrf.ts, themes.ts, match-config.ts
+  story-recipe*.ts, match-recipe-constants.ts             # immutable recipe registry, runtime selection, library lineage
+  figures.ts, figures-data.ts, figures-source-*.ts        # library access; figures-data.ts is the released snapshot
+  story-composer.ts, story-artifact*.ts, story-spec*.ts   # StorySpec -> validated, immutable story artifact
+  safety.ts, crisis-language.ts     # regex-only crisis check
+  session.ts, session-store-*.ts, db.ts, persistence.ts, auth.ts, rate-limit.ts
+  telemetry*.ts                     # string-hostile telemetry schema, producers, and stores
+  supabase/                         # server client, browser client (Auth endpoints only), middleware client
+components/                         # IntakeForm, PrefaceCard, StoryPlayer, StoryBeat, CrisisCard, SaveStoriesCard, SignInForm, ...
+config/
+  story-recipes.json                # immutable recipe registry + promotions (append-only)
+  figure-library-releases.json      # append-only lineage of lib/figures-data.ts snapshots
+  prompt-releases.json, prompt-artifacts/, recipe-decisions/, story-quality-policy.json
 evals/
-  match.yaml                  # 30-50 hand-graded gold pairs, incl. 5-10 deliberate misses; FacetsRAG hard negatives labeled by what they measure
-  crisis-regex.yaml           # synthetic crisis inputs; safety regression set, separate from match eval
-  runs/                       # JSON dumps of past eval runs, for diffing
-logs/
-  match-traces.jsonl          # dev-only full traces; written ONLY under replay-match.ts --include-sensitive-local-trace; gitignored, 90-day local rotation
-  replay-audit.jsonl          # append-only audit: one row per replay invocation; gitignored
-components/
-  IntakeForm.tsx
-  StoryBeat.tsx
-  DecisionCards.tsx
-  CrisisCard.tsx
+  match.json                        # hand-graded gold cases, incl. deliberate misses and confusion groups
+  crisis.json                       # crisis regex regression set; a false negative fails CI
+  history/, shadow/                 # content-addressed evidence records (append-only)
+  runs/                             # local eval dumps (gitignored)
+supabase/migrations/                # 0001 ... 0024; the SQL is the live copy of the retention constants
+scripts/                            # check-* CI gates, eval-*, seed-*, smoke; trusted/ holds the promotion attestor
+docs/                               # DEPLOYING.md runbook, SAFETY_RUNBOOK.md, decision records, design/ (dated design history)
+roadmap/                            # execution scope (controlled_public_beta.md) and the contracts CI enforces (telemetry, story quality)
 ```
 
 ## Visual conventions
@@ -214,37 +207,37 @@ components/
 
 ## Common commands
 
-(Once Next.js scaffolding lands.)
-
 ```powershell
-npm run dev          # http://localhost:3000
-npm run build
-npm run lint
+npm run dev            # http://localhost:3000, memory mode, stub providers, no Supabase needed
+npm run lint; npm run typecheck
+npm run smoke          # hermetic end-to-end regression suite (memory + stubs)
+npm run check-figure   # library structural + style validation
+npm run eval-crisis    # crisis regex regression set
+npm run eval           # match eval; LLM_PROVIDER=real EVAL_CONCURRENCY=1 for the trust gate
 ```
+
+CI runs about fifty `check-*` scripts on top of these; `.github/workflows/ci.yml` is the canonical list. Many of them assert on literal markup or copy, so read the script before editing a component or document it cites.
 
 ## Environment
 
+As built; `.env.example` documents every variable, including the optional per-purpose token secrets.
+
 ```
-LLM_PROVIDER=stub | real          # default stub
-EMBEDDING_PROVIDER=stub | gemini | voyage   # default stub
-EMBEDDING_MODEL_ID=gemini-embedding-001@2026-Q2-d1536    # canonical id; written into figure_shape_embeddings rows; routes the active partial HNSW index
-
-NEXT_PUBLIC_SUPABASE_URL          # public, fine in browser (browser shouldn't query Supabase anyway)
-SUPABASE_SERVICE_ROLE_KEY         # SECRET, server-only. Bypasses RLS. Treat like an SSH key.
-
-CEREBRAS_API_KEY                  # for LLM_PROVIDER=real
-CEREBRAS_BASE_URL=https://api.cerebras.ai/v1
-LLM_MODEL_PROSE=gpt-oss-120b
-LLM_MODEL_RERANK=gpt-oss-120b
-LLM_MODEL_TAGGER=llama-3.1-8b-instant   # tagAndExpand role; small model is correct here
-
-GEMINI_API_KEY                    # for EMBEDDING_PROVIDER=gemini (primary)
-VOYAGE_API_KEY                    # for EMBEDDING_PROVIDER=voyage (eval challenger)
+PERSISTENCE=memory | supabase                 # default memory: in-process sessions + const figures
+NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY   # public; the browser uses them for Auth endpoints only
+SUPABASE_SERVICE_ROLE_KEY                     # SECRET, server-only, bypasses RLS. Treat like an SSH key.
+IP_HASH_SALT, TELEMETRY_ID_SECRET             # SECRETS, required with Supabase; `openssl rand -hex 32` each, never reuse
+ONWARD_PRODUCTION_RECIPE_ID                   # required in production; the sole behaviour selector (config/story-recipes.json)
+CEREBRAS_API_KEY, CEREBRAS_BASE_URL           # real reranker + opening copy
+GEMINI_API_KEY                                # only when the selected recipe uses FacetsRAG embeddings
+STORY_CREATION_ENABLED                        # emergency switch; false pauses new stories, crisis resources stay up
+LLM_PROVIDER, EMBEDDING_PROVIDER, RETRIEVAL_MODE, LLM_MODEL_*, EMBEDDING_MODEL, EMBEDDING_DIM
+                                              # local/eval controls only; served production ignores them
 ```
 
 ## Database
 
-Seven tables in Supabase (target schema; design rationale in `tbd_plan.md`):
+Seven tables in Supabase (target schema; design rationale in `docs/design/2026-05-original-plan.md`):
 
 - **`figures`** — thin identity only. `key`, `display_name`, optional `birth_year`/`death_year` for narrative copy. No matching surfaces.
 - **`figure_stages`** — the actual retrievable unit. One row per *emotional episode organized around one down moment*. Composite key `(figure_key, stage_id)`. The anti-echo split lives here: `shape_sentences[]` (`shape_sentences[0]` is the editorial through-line by convention) and `facets` (4 typed sentences) are the embedded surfaces; `biographical_facts` is the rerank-only surface, scoped to the stage. `stage_label` is editorial-only (admin display, never user-facing). `age_min`/`age_max` is the documented age range of the episode (used by the soft age filter). `themes[]` and `antiThemes[]` drive the deterministic theme lane. `arc_variant` (`'single_fork' | 'double_fork'`) declares the beat structure; `beats jsonb` holds the 8 or 9 beats accordingly with `kind` + `role` per beat. `decision_continuations jsonb` holds per-option continuations. **Hand-graded scalars** (`narrative_dynamism`, `canon_exposure`) belt-and-suspender the rerank rules. `status in ('draft','published')` gates serving. Embeddings live in the two embedding tables, not on this row.
@@ -267,7 +260,7 @@ Read `match_misses` periodically to drive which stage to write next. Demand-driv
 
 ## When in doubt
 
-- See `tbd_plan.md` for full architecture: matching pipeline, FacetsRAG, facet query projection, theme/antiTheme lane, privacy taint model, prompt design, stage-based chunking rationale.
+- See `docs/design/2026-05-original-plan.md` for full architecture: matching pipeline, FacetsRAG, facet query projection, theme/antiTheme lane, privacy taint model, prompt design, stage-based chunking rationale.
 - Three structural invariants govern everything: *anti-echo* (shape and facet text never reach rerank), *recovery-asymmetry* (retrieval failures unrecoverable, rerank failures correctable), *privacy taint* (user-derived natural language and embeddings are sensitive until reduced to non-semantic telemetry). The retrieval unit is the *emotional episode* (one stage = one down moment with one through-line), not the figure or the age period — this is what makes age a *consequence* of when the episode happened rather than the separator between matchable units. Loosening any invariant requires eval evidence, not intuition.
 - Quality of the figures library *is* the v1 product. A figure entry is an editorial artifact — treat it with the care of an essay you'd publish under your name.
 - The embedder is provider-pluggable. Default is Gemini `gemini-embedding-001@2026-Q2-d1536`; Voyage `voyage-4-lite@2026-Q2-d1024` is the configured challenger. Don't bake provider-specific assumptions outside `lib/embeddings-real.ts`. Treat the free-tier quota as operational, not architectural — if Gemini's free tier ever caps you, swap `EMBEDDING_PROVIDER=voyage` (or pay) without touching any other code.

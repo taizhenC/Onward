@@ -1,5 +1,7 @@
 # Technical Architecture
 
+> **Design record, July 2026.** The target architecture written for the public-release roadmap. Much of it has since shipped (StorySpec, the story composer and immutable artifacts, atomic progress, the recipe manifest, safe observability, the retention classes); what remains is tracked in `roadmap/backlog.md`, and the current execution scope is `roadmap/controlled_public_beta.md`. The May 2026 plan beside this file is the earlier pass.
+
 ## Architectural recommendation
 
 Keep Onward as a **modular Next.js/Supabase application for the public release**, but replace the current static beat path with an evidence-grounded Story Composer that creates one validated, immutable story artifact per session.
@@ -602,7 +604,7 @@ resources return before flow parsing, auth, rate limiting, providers, and every
 application write. No durable `crisis_intercepted` row is currently emitted.
 Changing that rule requires an explicit safety/privacy decision rather than an
 observability shortcut. The full registry, retention, producer ownership, and
-delivery restrictions are in [`telemetry_contract.md`](telemetry_contract.md).
+delivery restrictions are in [`telemetry_contract.md`](../../roadmap/telemetry_contract.md).
 
 `flow_failed` is likewise bounded to one authoritative owner rather than wired
 to generic catches. Immediately before an eligible initial story enters

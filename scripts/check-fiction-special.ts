@@ -14,6 +14,8 @@ import { handleMatchRequest } from "../app/api/match/handler";
 import { _setMemoryAuthContextForTests, LOCAL_DEV_USER_ID } from "../lib/auth";
 import { listSessionsByUser } from "../lib/session";
 import { listMemoryProductEvents, listMemoryProductEventOutbox } from "../lib/telemetry-store-memory";
+import { issueGenerationAttemptId, issueTelemetryFlowId } from "../lib/telemetry-id";
+import { TELEMETRY_FLOW_HEADER } from "../lib/telemetry-flow-header";
 
 Object.assign(process.env, {
   NODE_ENV: "test", PERSISTENCE: "memory", LLM_PROVIDER: "stub",
@@ -65,6 +67,24 @@ async function main(): Promise<void> {
     assert.deepEqual(await success.json(), { fictionSpecial: NIUDA_FICTION_ID });
     assert.equal(success.headers.get("cache-control"), "no-store");
     assert.equal(success.headers.get("set-cookie"), null);
+    process.env.TELEMETRY_FLOW_BINDING_ENABLED = "true";
+    for (const [flow, expectedStatus] of [
+      [issueTelemetryFlowId(), 200],
+      [issueTelemetryFlowId(new Date("2000-01-01")), 409],
+      [issueTelemetryFlowId(new Date(Date.now() + 86_400_000)), 400],
+      [issueGenerationAttemptId(), 400],
+      ["forged-flow", 400],
+    ] as const) {
+      const flowRequest = request({ age: 25, feeling: "牛大" });
+      flowRequest.headers.set(TELEMETRY_FLOW_HEADER, flow);
+      const result = await handleMatchRequest(flowRequest);
+      assert.equal(result.status, expectedStatus, "Fiction changed signed flow validation");
+      assert.equal(result.headers.get("set-cookie"), null);
+    }
+    const crisisWithForgedFlow = request({ age: 0, feeling: "牛大，我想自杀" });
+    crisisWithForgedFlow.headers.set(TELEMETRY_FLOW_HEADER, "forged-flow");
+    assert.equal((await (await handleMatchRequest(crisisWithForgedFlow)).json()).crisis, true);
+    process.env.TELEMETRY_FLOW_BINDING_ENABLED = "false";
     for (const age of [17, 101, 25.5, "25", null]) {
       const result = await handleMatchRequest(request({ age, feeling: "牛大" }));
       assert.equal(result.status, 400, "Age rule bypassed");
@@ -106,6 +126,7 @@ async function main(): Promise<void> {
     globalThis.fetch = originalFetch;
     _setMemoryAuthContextForTests(undefined);
     process.env.STORY_CREATION_ENABLED = "true";
+    process.env.TELEMETRY_FLOW_BINDING_ENABLED = "false";
   }
   const page = readFileSync("app/fiction/niuda-v1/page.tsx", "utf8");
   const player = readFileSync("components/FictionStoryPlayer.tsx", "utf8");

@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { FictionStoryPlayer } from "../components/FictionStoryPlayer";
-import { isNiudaFictionRequest, fictionSpecialHref, NIUDA_FICTION_HREF, NIUDA_FICTION_ID } from "../lib/fiction-request";
+import { isNiudaFictionRequest, fictionRequestFailureMessage, fictionSpecialHref, NIUDA_FICTION_HREF, NIUDA_FICTION_ID } from "../lib/fiction-request";
 import { NIUDA_FICTION } from "../lib/fiction-niuda";
 import { resolveFictionRequest } from "../lib/fiction-request-server";
 import { validateIntakeDraft } from "../lib/intake-presentation";
@@ -26,6 +26,8 @@ const request = (body: unknown) => new Request("http://onward.test/api/match", {
 });
 
 async function main(): Promise<void> {
+  assert(!fictionRequestFailureMessage(false).includes("之前还提交过历史故事请求"));
+  assert(fictionRequestFailureMessage(true).includes("之前还提交过历史故事请求且未收到结果"));
   for (const text of ["牛大", " 牛大boy ", "牛大BOY", "牛大！", "我想看牛大", "给我讲个牛大的故事", "show me 牛大"]) {
     assert(isNiudaFictionRequest(text), `Explicit title request rejected: ${text}`);
     assert.equal(validateIntakeDraft({ age: "25", feeling: text }).feeling, null);
@@ -84,7 +86,7 @@ async function main(): Promise<void> {
 
     let dependencyLoads = 0;
     const brokenRecipe = async () => { dependencyLoads += 1; throw new Error("recipe unavailable"); };
-    for (const feeling of ["牛大 I want to kill myself", "给我讲牛大的故事，我想自杀", "牛大，我不想再活了", "牛大，我想自殺"]) {
+    for (const feeling of ["牛大 I want to kill myself", "给我讲牛大的故事，我想自杀", "牛大，我不想再活了", "牛大，我想自殺", "牛大，我準備去死", "牛大，我想结束生命", "牛大，我想結束生命"]) {
       const result = await handleMatchRequest(request({ age: 0, feeling, boundaries: "invalid" }), brokenRecipe);
       assert.equal(result.status, 200);
       assert.equal((await result.json()).crisis, true, "Crisis did not precede title/age/recipe checks");

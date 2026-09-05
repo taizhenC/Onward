@@ -20,6 +20,11 @@ export type FictionSpecialResponse = Readonly<{
   fictionSpecial: typeof NIUDA_FICTION_ID;
 }>;
 
+export function fictionRequestFailureMessage(priorStoryUncertainty: boolean): string {
+  return "暂时没能打开牛大。这是固定的公开虚构短篇，不会保存到 Your stories。输入仍留在本页，可以稍后重试。"
+    + (priorStoryUncertainty ? " 如果你之前还提交过历史故事请求且未收到结果，请先查看 Your stories，避免重复提交那次请求。" : "");
+}
+
 export function fictionSpecialHref(value: unknown): string | null {
   if (value === null || typeof value !== "object" || Array.isArray(value)) return null;
   const record = value as Record<string, unknown>;

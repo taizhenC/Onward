@@ -24,7 +24,7 @@ import {
   normalizeIntakeFeeling,
 } from "@/lib/intake-constraints";
 import { containsCrisisLanguage } from "@/lib/crisis-language";
-import { fictionSpecialHref, isNiudaFictionRequest, type FictionSpecialResponse } from "@/lib/fiction-request";
+import { fictionRequestFailureMessage, fictionSpecialHref, isNiudaFictionRequest, type FictionSpecialResponse } from "@/lib/fiction-request";
 import { buildIntakeMatchRequest } from "@/lib/intake-match-request";
 import {
   INTAKE_FICTIONAL_EXAMPLE,
@@ -274,6 +274,11 @@ export function IntakeForm({
     setFlowConflict(false);
 
     let response: Response;
+    // Capture earlier uncertainty before dispatch. Fiction failure copy must
+    // not imply this public text was saved, or erase an earlier unknown match.
+    const fictionFailureCopy = isNiudaFictionRequest(feeling) && !recoveryToken && !clarification && !acceptAdjacent
+      ? fictionRequestFailureMessage(matchRequestMayHaveCreatedStory(matchRequestPrivacyRef.current))
+      : null;
     const body = JSON.stringify(
       buildIntakeMatchRequest({
         age: ageNum,
@@ -321,7 +326,7 @@ export function IntakeForm({
       clearFirstContentRequestStarted();
       if (recoveryToken) resetMatchRecovery();
       setError(
-        `The connection dropped. What you wrote is still in this form on this page; refreshing or leaving will clear it. The server may already have received the request. ${ambiguousRequestRecoveryCopy}`,
+        fictionFailureCopy ?? `The connection dropped. What you wrote is still in this form on this page; refreshing or leaving will clear it. The server may already have received the request. ${ambiguousRequestRecoveryCopy}`,
       );
       finishSubmitting();
       return;
@@ -336,9 +341,9 @@ export function IntakeForm({
       clearFirstContentRequestStarted();
       if (recoveryToken) resetMatchRecovery();
       setError(
-        response.ok || response.status === 503
+        fictionFailureCopy ?? (response.ok || response.status === 503
           ? `Onward received the request, but this page could not read the result. A story may already exist. What you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`
-          : `The server returned an error (${response.status}).`,
+          : `The server returned an error (${response.status}).`),
       );
       finishSubmitting();
       return;
@@ -373,7 +378,7 @@ export function IntakeForm({
     if (response.status === 503 || "temporarilyUnavailable" in payload) {
       if (recoveryToken) resetMatchRecovery();
       setError(
-        `Onward could not confirm a new story. A story may already exist, and what you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`,
+        fictionFailureCopy ?? `Onward could not confirm a new story. A story may already exist, and what you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`,
       );
       finishSubmitting();
       return;

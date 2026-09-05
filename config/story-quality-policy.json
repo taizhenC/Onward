@@ -1,7 +1,7 @@
 {
   "schemaVersion": "story-quality-policy-v1",
-  "policyVersion": "story-quality-release-v1-2026-07",
-  "protocolVersion": "story-quality-protocol-v1-2026-07",
+  "policyVersion": "story-quality-release-v2-2026-09",
+  "protocolVersion": "story-quality-protocol-v2-2026-09",
   "evidenceSchemaVersion": "story-quality-evidence-v1",
   "packetSchemaVersion": "story-quality-review-packet-v1",
   "benchmarkSchemaVersion": "story-quality-benchmark-v1",

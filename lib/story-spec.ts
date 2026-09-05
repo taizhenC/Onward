@@ -13,7 +13,17 @@ import {
   type StorySpecValidation,
 } from "./story-spec-types";
 import { containsDisclosureEcho } from "./story-privacy";
-import { isReaderBridgeSentence } from "./reader-bridge-copy";
+import { STORY_TRANSPARENCY_TEXTURE_LIMITS } from "./story-transparency-types";
+import {
+  READER_PERMISSION_MAX_SENTENCES,
+  isReaderBridgeSentence,
+  readerPermissionRejection,
+} from "./reader-bridge-copy";
+import {
+  containsWholeWord,
+  extractDirectQuotes,
+  splitCanonicalSentences,
+} from "./story-sentences";
 import {
   hasUniqueStorySourceRefs,
   isBoundedTransparencyText,
@@ -99,8 +109,8 @@ export function buildDraftStorySpec(stage: FigureStageRow): StorySpec {
         allowed: false,
       })),
     dramatizationLimits: [
-      "No invented interior monologue or private thoughts.",
-      "No invented dialogue, gestures, weather, room detail, or sensory texture.",
+      "Scene detail, gestures, weather, and interior life may be written only as dramatized texture: each such sentence is grounded in a mapped fact and adds no person, place, date, amount, quotation, event, or causal link.",
+      "No invented dialogue or quotation.",
       "No unsupported causal link between hardship, choice, and later outcome.",
     ],
     avoidRules: [
@@ -135,6 +145,21 @@ export function validateStorySpec(
       interpretation,
     ]),
   );
+  // Proper-noun surfaces of the allowlisted entities. Dramatized texture and
+  // reader copy may never carry them, and beats before the bridge should not
+  // name the subject (anonymity is the reveal's whole payload).
+  const properNoun = (value: string) => /^[A-Z]/.test(value.trim());
+  const personNames = spec.entities
+    .filter((entity) => entity.kind === "person")
+    .flatMap((entity) => [entity.value, ...entity.aliases])
+    .filter(properNoun);
+  const namedEntityValues = spec.entities
+    .filter((entity) =>
+      ["person", "place", "organization", "work"].includes(entity.kind),
+    )
+    .flatMap((entity) => [entity.value, ...entity.aliases])
+    .filter(properNoun);
+  let readerPermissionCount = 0;
 
   if (spec.schemaVersion !== STORY_SPEC_SCHEMA_VERSION) {
     errors.push(`schemaVersion must be ${STORY_SPEC_SCHEMA_VERSION}`);
@@ -318,6 +343,12 @@ export function validateStorySpec(
     }
     const sentences = splitCanonicalSentences(beat.canonicalText);
     const sentenceCount = sentences.length;
+    const textureCount = beat.sentenceEvidence.filter(
+      (mapping) => mapping.treatment === "dramatized_texture",
+    ).length;
+    if (textureCount > STORY_TRANSPARENCY_TEXTURE_LIMITS.sentencesPerBeat) {
+      errors.push(`arc[${index}] dramatized texture exceeds the public sentence count limit`);
+    }
     const mappedSentenceIndexes = new Set<number>();
     for (const mapping of beat.sentenceEvidence) {
       if (
@@ -331,6 +362,7 @@ export function validateStorySpec(
         errors.push(`arc[${index}] maps one sentence more than once`);
       }
       mappedSentenceIndexes.add(mapping.sentenceIndex);
+      const sentence = sentences[mapping.sentenceIndex];
       if (mapping.treatment === "reader_bridge") {
         if (beat.role !== "bridge") {
           errors.push(
@@ -346,11 +378,73 @@ export function validateStorySpec(
             `arc[${index}] reader-bridge treatment cannot reference historical evidence`,
           );
         }
-        const sentence = sentences[mapping.sentenceIndex];
         if (sentence !== undefined && !isReaderBridgeSentence(sentence)) {
           errors.push(
             `arc[${index}] reader-bridge treatment must use reviewed reader copy`,
           );
+        }
+      } else if (mapping.treatment === "reader_permission") {
+        readerPermissionCount += 1;
+        if (beat.role !== "bridge") {
+          errors.push(
+            `arc[${index}] reader-permission treatment is only legal on the bridge`,
+          );
+        }
+        if (
+          mapping.factIds.length > 0 ||
+          mapping.interpretationIds.length > 0 ||
+          mapping.quoteIds.length > 0
+        ) {
+          errors.push(
+            `arc[${index}] reader-permission treatment cannot reference historical evidence`,
+          );
+        }
+        if (sentence !== undefined) {
+          const rejection = readerPermissionRejection(sentence, personNames);
+          if (rejection) {
+            errors.push(
+              `arc[${index}] reader-permission sentence is not bounded reader copy (${rejection})`,
+            );
+          }
+        }
+      } else if (mapping.treatment === "dramatized_texture") {
+        if (beat.role === "bridge") {
+          errors.push(`arc[${index}] dramatized texture is not legal on the bridge`);
+        }
+        if (mapping.factIds.length === 0) {
+          errors.push(
+            `arc[${index}] dramatized texture must be grounded in at least one fact`,
+          );
+        }
+        if (mapping.quoteIds.length > 0) {
+          errors.push(`arc[${index}] dramatized texture cannot carry a quotation`);
+        }
+        if (sentence !== undefined) {
+          if (!isBoundedTransparencyText(
+            sentence,
+            1,
+            STORY_TRANSPARENCY_TEXTURE_LIMITS.sentenceLength,
+          )) {
+            errors.push(`arc[${index}] dramatized texture exceeds the public sentence length limit`);
+          }
+          if (
+            /["\u201c\u201d]/.test(sentence) ||
+            extractDirectQuotes(sentence).length > 0
+          ) {
+            errors.push(
+              `arc[${index}] dramatized texture cannot contain quotation marks`,
+            );
+          }
+          if (/\d/.test(sentence)) {
+            errors.push(`arc[${index}] dramatized texture cannot carry digits`);
+          }
+          if (
+            namedEntityValues.some((value) => containsWholeWord(sentence, value))
+          ) {
+            errors.push(
+              `arc[${index}] dramatized texture cannot name an allowlisted entity`,
+            );
+          }
         }
       } else if (
         mapping.factIds.length === 0 &&
@@ -473,17 +567,84 @@ export function validateStorySpec(
           `arc[${index}] requires sentence-level evidence or reader-bridge classification before publish`,
         );
       }
+      if (
+        beat.role !== "bridge" &&
+        !beat.sentenceEvidence.some(
+          (mapping) => mapping.treatment === "historical_claim",
+        )
+      ) {
+        errors.push(
+          `arc[${index}] needs at least one documented sentence before publish`,
+        );
+      }
     }
     if (
       options.forPublish &&
       beat.sentenceEvidence.some(
-        (mapping) => mapping.treatment === "historical_claim",
+        (mapping) =>
+          mapping.treatment === "historical_claim" ||
+          mapping.treatment === "dramatized_texture",
       ) &&
       beat.requiredFactIds.length === 0
     ) {
       errors.push(`arc[${index}] requires at least one supporting fact before publish`);
     }
+    if (beat.role !== "bridge") {
+      // Story-recipe warnings (prompts/story-recipe.md §7). Warnings, not
+      // errors: the deployed build must keep serving already-published rows
+      // while their story-first replacements are authored; the promotion tool
+      // refuses candidates that carry them unless a human accepts each one.
+      if (
+        namedEntityValues.some((name) =>
+          containsWholeWord(beat.canonicalText, name),
+        ) ||
+        /(?<![A-Za-z0-9])(?:1[0-9]|20)\d{2}(?![A-Za-z0-9])/.test(
+          beat.canonicalText,
+        )
+      ) {
+        warnings.push(
+          `arc[${index}] names an allowlisted entity or a year before the bridge reveal`,
+        );
+      }
+      const textureMappings = beat.sentenceEvidence.filter(
+        (mapping) => mapping.treatment === "dramatized_texture",
+      );
+      if (textureMappings.length * 2 > sentenceCount) {
+        warnings.push(
+          `arc[${index}] is more than half dramatized texture; the stage may be under-researched`,
+        );
+      }
+      if (
+        textureMappings.some((mapping) => {
+          const sentence = sentences[mapping.sentenceIndex];
+          return (
+            sentence !== undefined &&
+            /\b(?:because|so that|realized|realised|decided|knew|understood|chose)\b/i.test(
+              sentence,
+            )
+          );
+        })
+      ) {
+        warnings.push(
+          `arc[${index}] dramatized texture carries a load-bearing verb (motive, decision, or realization)`,
+        );
+      }
+      if (
+        /\byou\b/i.test(
+          beat.canonicalText.replace(/\u201c[^\u201d]*\u201d|"[^"]*"/g, ""),
+        )
+      ) {
+        warnings.push(
+          `arc[${index}] addresses the reader before the bridge`,
+        );
+      }
+    }
   });
+  if (readerPermissionCount > READER_PERMISSION_MAX_SENTENCES) {
+    errors.push(
+      `bridge carries more than ${READER_PERMISSION_MAX_SENTENCES} reader-permission sentences`,
+    );
+  }
 
   for (const quote of spec.quotes) {
     if (!isSafeTransparencyId(quote.quoteId)) {
@@ -655,17 +816,6 @@ function splitFactSentences(text: string): string[] {
     .filter(Boolean);
 }
 
-function splitCanonicalSentences(text: string): string[] {
-  return text
-    .replace(/\s+/g, " ")
-    .trim()
-    .split(
-      /(?:(?<=[.!?])|(?<=[.!?]["'\u201d\u2019]))\s+(?=[A-Z0-9"'\u201c\u2018])/,
-    )
-    .map((sentence) => sentence.trim())
-    .filter(Boolean);
-}
-
 function buildDraftEntities(stage: FigureStageRow): AllowedEntity[] {
   const entities: AllowedEntity[] = [
     {
@@ -739,12 +889,6 @@ function draftContentNote(flags: ContentFlag[]): string {
 
 function pad(value: number): string {
   return String(value).padStart(3, "0");
-}
-
-function extractDirectQuotes(text: string): string[] {
-  return [
-    ...text.matchAll(/(?:\u201c([^\u201d]+)\u201d|"([^"\r\n]+)")/g),
-  ].map((match) => (match[1] ?? match[2]).trim());
 }
 
 // Keeps the privacy utility in the StorySpec module graph so later artifact

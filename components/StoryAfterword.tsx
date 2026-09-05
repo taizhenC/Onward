@@ -9,9 +9,16 @@ import type {
 import { storyEvidenceLabel } from "@/lib/story-transparency-presentation";
 import { sendSourceOpened } from "@/lib/story-visibility-client";
 
+type AfterwordFigure = {
+  displayName: string;
+  birthYear?: number;
+  deathYear?: number;
+};
+
 type Props = {
   sessionId: string;
   transparency: StoryTransparency | null;
+  figure?: AfterwordFigure | null;
 };
 
 type SubmissionState = "idle" | "submitting" | "sent" | "error";
@@ -39,7 +46,7 @@ const REASON_OPTIONS: Array<{
   },
 ];
 
-export function StoryAfterword({ sessionId, transparency }: Props) {
+export function StoryAfterword({ sessionId, transparency, figure }: Props) {
   const [factId, setFactId] = useState("");
   const [reason, setReason] = useState<HistoricalConcernReason>("incorrect_fact");
   const [submission, setSubmission] = useState<SubmissionState>("idle");
@@ -123,16 +130,34 @@ export function StoryAfterword({ sessionId, transparency }: Props) {
         className="group border-y border-[var(--color-ink-soft)]/30 py-4"
       >
         <summary className="cursor-pointer list-none font-ui text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]">
-          Sources and story notes
+          <h3 id="story-record-heading" className="inline font-ui text-sm font-medium">
+            Who this was, and what really happened
+          </h3>
           <span aria-hidden="true" className="float-right group-open:rotate-45">
             +
           </span>
         </summary>
         <div className="mt-5 space-y-7">
-          <StoryRecord transparency={transparency} />
+          <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            The story you just read keeps to what happened. Where it puts you
+            inside a moment, some of the scene is ours. This section separates
+            the two, and shows where to read more.
+          </p>
+
+          {figure ? <WhoThisWas figure={figure} /> : null}
+
+          {transparency.facts.length > 0 ? (
+            <EvidenceFacts transparency={transparency} />
+          ) : (
+            <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              Claim-level evidence links are still awaiting editorial review.
+            </p>
+          )}
+
+          <DramatizedLines transparency={transparency} />
 
           <div className="space-y-3">
-            <h3 className="font-ui text-sm font-medium">Passage treatment</h3>
+            <h4 className="font-ui text-sm font-medium">How each passage was told</h4>
             <ol className="space-y-3 text-sm leading-relaxed">
               {transparency.beats.map((beat, index) => (
                 <li key={`${beat.role}-${index}`}>
@@ -151,23 +176,18 @@ export function StoryAfterword({ sessionId, transparency }: Props) {
             </ol>
           </div>
 
-          {transparency.facts.length > 0 ? (
-            <EvidenceFacts transparency={transparency} />
-          ) : (
-            <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
-              Claim-level evidence links are still awaiting editorial review.
-            </p>
-          )}
-
           <QuoteEvidence transparency={transparency} />
           <SourceList transparency={transparency} />
+          <StoryRecord transparency={transparency} />
         </div>
       </details>
 
       {canReport ? (
         <details className="group border-b border-[var(--color-ink-soft)]/30 pb-4">
           <summary className="cursor-pointer list-none font-ui text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]">
-            Report a historical concern
+            <h3 id="story-concern-heading" className="inline font-ui text-sm font-medium">
+              Report a historical concern
+            </h3>
             <span aria-hidden="true" className="float-right group-open:rotate-45">
               +
             </span>
@@ -246,10 +266,30 @@ export function StoryAfterword({ sessionId, transparency }: Props) {
   );
 }
 
+function WhoThisWas({ figure }: { figure: AfterwordFigure }) {
+  const lifespan =
+    figure.birthYear && figure.deathYear
+      ? `${figure.birthYear}–${figure.deathYear}`
+      : figure.birthYear
+        ? `born ${figure.birthYear}`
+        : null;
+  return (
+    <div className="space-y-2 text-sm leading-relaxed">
+      <h4 className="font-ui text-sm font-medium">Who this was</h4>
+      <p>
+        <span className="font-medium">{figure.displayName}</span>
+        {lifespan ? (
+          <span className="text-[var(--color-ink-soft)]"> ({lifespan})</span>
+        ) : null}
+      </p>
+    </div>
+  );
+}
+
 function StoryRecord({ transparency }: { transparency: StoryTransparency }) {
   return (
     <div className="space-y-2 text-sm leading-relaxed">
-      <h3 className="font-ui text-sm font-medium">Story record</h3>
+      <h4 className="font-ui text-sm font-medium">Story record</h4>
       <p className="break-words">
         {transparency.storySpec.storySpecId} · version {transparency.storySpec.version} ·{" "}
         {transparency.storySpec.schemaVersion}
@@ -273,7 +313,10 @@ function EvidenceFacts({ transparency }: { transparency: StoryTransparency }) {
   );
   return (
     <div className="space-y-3">
-      <h3 className="font-ui text-sm font-medium">Claims and evidence</h3>
+      <h4 className="font-ui text-sm font-medium">What really happened</h4>
+      <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        The documented record, in order, with where each claim comes from.
+      </p>
       <ol className="space-y-4 text-sm leading-relaxed">
         {transparency.facts.map((fact) => (
           <li key={fact.factId} className="break-words">
@@ -296,6 +339,39 @@ function EvidenceFacts({ transparency }: { transparency: StoryTransparency }) {
   );
 }
 
+function DramatizedLines({ transparency }: { transparency: StoryTransparency }) {
+  const passages = transparency.beats
+    .map((beat, index) => ({
+      key: `${beat.role}-${index}`,
+      label: `Passage ${index + 1} — ${roleLabel(beat.role)}`,
+      sentences: beat.dramatizedSentences ?? [],
+    }))
+    .filter((passage) => passage.sentences.length > 0);
+  if (passages.length === 0) return null;
+  return (
+    <div className="space-y-3">
+      <h4 className="font-ui text-sm font-medium">What we wrote ourselves</h4>
+      <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        These lines are scene detail we wrote so the story could be told as a
+        story. Each one rests on a documented moment listed above, and none adds
+        a person, place, date, amount, quotation, or event to the record.
+      </p>
+      <ul className="space-y-4 text-sm leading-relaxed">
+        {passages.map((passage) => (
+          <li key={passage.key}>
+            <p className="font-medium">{passage.label}</p>
+            <ul className="mt-1 space-y-1 text-[var(--color-ink-soft)]">
+              {passage.sentences.map((sentence, index) => (
+                <li key={`${passage.key}-${index}`}>“{sentence}”</li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function QuoteEvidence({ transparency }: { transparency: StoryTransparency }) {
   if (transparency.quotes.length === 0) {
     return (
@@ -309,7 +385,7 @@ function QuoteEvidence({ transparency }: { transparency: StoryTransparency }) {
   );
   return (
     <div className="space-y-3">
-      <h3 className="font-ui text-sm font-medium">Quotations</h3>
+      <h4 className="font-ui text-sm font-medium">Quotations</h4>
       <ul className="space-y-3 text-sm leading-relaxed">
         {transparency.quotes.map((quote) => (
           <li key={quote.quoteId}>
@@ -336,7 +412,7 @@ function QuoteEvidence({ transparency }: { transparency: StoryTransparency }) {
 function SourceList({ transparency }: { transparency: StoryTransparency }) {
   return (
     <div className="space-y-3">
-      <h3 className="font-ui text-sm font-medium">Sources</h3>
+      <h4 className="font-ui text-sm font-medium">Where to read more</h4>
       <ol className="space-y-3 text-sm leading-relaxed">
         {transparency.sources.map((source) => (
           <li key={source.sourceId} className="break-words">

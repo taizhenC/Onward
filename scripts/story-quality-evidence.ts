@@ -90,7 +90,7 @@ const STORY_QUALITY_EVIDENCE_SCHEMA_VERSION =
 const STORY_QUALITY_POLICY_SCHEMA_VERSION =
   "story-quality-policy-v1";
 const STORY_QUALITY_PROTOCOL_VERSION =
-  "story-quality-protocol-v1-2026-07";
+  "story-quality-protocol-v2-2026-09";
 const STORY_QUALITY_CUSTODIAN_ATTESTATION_SCHEMA_VERSION =
   "story-quality-custodian-attestation-v1";
 const STORY_QUALITY_RESULT_ATTESTATION_SCHEMA_VERSION =
@@ -3042,13 +3042,17 @@ function assertExactTransparencyShape(value: unknown): void {
     array(quote.sourceRefs).forEach(assertExactSourceRefShape);
   }
   for (const beatValue of array(transparency.beats)) {
-    exactKeys(record(beatValue), [
-      "role",
-      "evidenceClass",
-      "hasPersonalizedTransition",
-      "factIds",
-      "quoteIds",
-    ]);
+    exactOptionalKeys(
+      record(beatValue),
+      [
+        "role",
+        "evidenceClass",
+        "hasPersonalizedTransition",
+        "factIds",
+        "quoteIds",
+      ],
+      ["dramatizedSentences"],
+    );
   }
 }
 

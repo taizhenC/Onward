@@ -1,10 +1,10 @@
 # Onward — Figure Beats Generator
 
-A prompt template for generating the 7-beat narrative arc for a single figure stage in Onward (Phase 0 / Phase 1).
+A prompt template for generating the 7-beat narrative arc for a single figure stage in Onward.
 
-Paste this whole document into the system message of a capable model (Llama 3.3 70B+, GPT-4o+, or Claude Opus/Sonnet). Provide the figure's biographical facts and themes in the user message. Expect a JSON array of 7 `BeatBlueprint` objects back.
+**The rulebook of record is `prompts/story-recipe.md` (September 2026).** Read it first. Where this template and the recipe differ, the recipe wins. The hand-authored beats in `lib/figures-data.ts` are no longer the gold standard: several of them carry the over-written register, hardened numbers, and invented causality the recipe bans (its section 9 lists the examples). Use them for the *shape* of the older-friend voice, not as a licence for their inventions.
 
-The hand-authored beats in `lib/figures-data.ts` (Butler / Douglass / Lee) are the gold-standard reference. If you have to choose between matching this prompt exactly and matching the voice of those three, match the voice of those three.
+Paste this whole document into the system message of a capable model. Provide the figure's biographical facts and themes in the user message. Expect a JSON array of 7 `BeatBlueprint` objects back.
 
 ---
 
@@ -71,33 +71,39 @@ Avoid period-coded objects unless emotionally essential AND universally understo
 
 ### 4. The bridge beat (beat 6)
 
-This is the most important beat. It has four parts, in this order:
+This is the most important beat. It has five parts, in exactly this order (recipe section 5, passage 6):
 
 1. **The reveal.** Open with `Her name was [Full Name].` or `His name was [Full Name].` Exactly that, on its own line.
-2. **One or two plain-spoken legacy sentences.** What they became known for. Phrased so a person who has never heard of them understands why they matter. End with something like: "None of that had happened yet on the morning we just sat with him." or "She did all of this after spending the first half of her life being told she couldn't."
-3. **Keep the reader's disclosure private.** Never quote, paraphrase, or include a placeholder for the user's intake. Bridge only at the level of a broad human shape, and state that the two lives are not the same. A safe pattern is: `Your life is not theirs. But a piece of this story may still sit beside you.`
-4. **One short permission sentence.** A line that gives the reader permission to be where they are. Examples: "You don't have to know how it ends to keep going. She didn't either." / "You don't have to be early. You just have to begin." / "You don't have to know who you are yet. He didn't either."
+2. **One plain sentence of what they are known for.** No superlatives, no list, no "one of the most important". Written so a person who has never heard of them understands why the name is in a book. Fame and achievements live in the folded record, not here.
+3. `Your life is not theirs.`
+4. `But a piece of this story may still sit beside you.`
+   These two sentences are fixed and verbatim. Never quote, paraphrase, or include a placeholder for the reader's intake anywhere.
+5. **One or two permission lines.** Second person, declarative, 3 to 24 words, no digits, no quotation marks, no name. They predict nothing, instruct nothing, compare nothing, and never mention the reader's particulars. The last line of the story is twelve words at most. Examples that pass: "You do not have to know how it ends to keep going." / "You are allowed to not be ready yet." Examples that fail: "You will get through this." / "You should keep going." / "If they could survive that, you can survive this."
 
-Do NOT lecture the user. Do NOT say "you should." Do NOT compare them to the figure directly ("just like Frederick, you..."). Do NOT promise them they'll succeed. The figure's story already does the work — the bridge just opens a door.
+Do NOT lecture the reader. Do NOT say "you should." Do NOT compare them to the figure directly. Do NOT promise them anything. The figure's story already does the work — the bridge just opens a door.
 
-### 5. Truth
+### 5. Truth (recipe sections 2, 4 and 6)
 
-Do not invent events. Every action in the story should be traceable to `biographicalFacts` or `sources`. If a detail is dramatized texture (the sound of a phone, the light through a window, the time of day), keep it minimal and note it in `sourceNotes`. If a detail is verified, you can lean on it.
+Do not invent events, causes, decisions, realizations, quotations, numbers, durations, chronology, or claims about real third parties. Every event in the story must be traceable to `biographicalFacts` or `sources`.
 
-If you are tempted to add a quote, ONLY use one if it appears in the source material. Quoted dialogue from secondary sources is OK; invented dialogue is not.
+Dramatized texture is allowed and must be disclosed: a room, a light, a gesture, a posture, an interior state the sources attest (a letter says he was afraid; a memoir says she could not sleep). A texture sentence is **inert**: deleting it changes nothing about what happened, why, or who the person was. It carries no person, place, date, amount, quotation, event, or causal link, and it never sits at the cause of the dark moment or the trigger of the turn. It renders the moment, not the meaning: never what they realized, decided, knew, or why. List every texture sentence verbatim in `sourceNotes`; in a StorySpec each one becomes a `dramatized_texture` sentence grounded in the fact it renders.
 
-### 6. Length
+Quotations: only text that appears verbatim in the sources, inside quotation marks, set up minimally and placed late. If the line is a later recollection, say so in the sentence. Invented dialogue, including a crowd's reply, is never allowed.
+
+### 6. Length (recipe section 3)
 
 | beat        | target words |
 | ----------- | ------------ |
-| 0 scene     | 100–150      |
+| 0 scene     | 90–140       |
 | 1 dark      | 120–180      |
 | 2 response  | 90–130       |
 | 3 struggle  | 100–150      |
 | 4 turning   | 130–180      |
-| 5 became    | 130–180      |
-| 6 bridge    | 130–180      |
-| **total**   | **750–1000** |
+| 5 became    | 100–150      |
+| 6 bridge    | 60–120       |
+| **total**   | **700–950**  |
+
+Scene, dark moment, response, and turning point are each one moment in one place; only struggle and became compress time. Mean sentence length at most 16 words per beat, nothing over 28, no beat ending on its longest sentence.
 
 If you find yourself going over, cut adjectives first, then sentences, then whole paragraphs. Density of feeling beats density of detail.
 
@@ -162,8 +168,11 @@ Before you emit the JSON, check each beat against these:
 - [ ] No literary phrase that would feel out of place in a 1am conversation with a friend
 - [ ] The bridge opens with "Her/His/Their name was [Full Name]."
 - [ ] The bridge contains no user-intake placeholder, quote, or paraphrase
-- [ ] The bridge ends with a short permission sentence, not a lecture
-- [ ] Total word count is between 750 and 1000
-- [ ] `sourceNotes` is honest about what is dramatized
+- [ ] The bridge ends with one or two bounded permission sentences, not a lecture
+- [ ] Total word count is between 700 and 950
+- [ ] `sourceNotes` lists every dramatized texture sentence verbatim and says which fact each one rests on
+- [ ] Every texture sentence is inert: no person, place, date, amount, quote, event, cause, decision, or realization
+- [ ] The bridge follows the five-part order and its last line is twelve words at most
+- [ ] Every item in the recipe's section 8 review checklist holds
 
 If any check fails, fix it before you return.

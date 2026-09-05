@@ -15,7 +15,21 @@ export type PersonalizationZone =
   | "emphasis"
   | "transition"
   | "reader_bridge";
-export type SentenceTreatment = "historical_claim" | "reader_bridge";
+// Sentence treatments. `historical_claim` sentences carry documented facts or
+// reviewed interpretations. `dramatized_texture` sentences render a documented
+// moment in scene (a room, a gesture, a thought) and must add no person, place,
+// date, amount, quotation, event, or causal link beyond the facts they are
+// grounded on; the afterword lists them as lines we wrote. `reader_bridge` and
+// `reader_permission` are the bridge's reader-directed copy: the two fixed
+// distance sentences, and one or two bounded permission lines.
+// The two story-first treatments were added on 2026-09-03 as a backward-
+// compatible extension of story-spec-v1: every v1 document stays valid and
+// means the same thing. See docs/design/2026-09-story-first.md.
+export type SentenceTreatment =
+  | "historical_claim"
+  | "dramatized_texture"
+  | "reader_bridge"
+  | "reader_permission";
 
 export const CONTENT_FLAGS = [
   "death_or_grief",

@@ -2,6 +2,8 @@ import "server-only";
 import { createHash, randomBytes } from "node:crypto";
 import { chunkBeatText } from "./chunks";
 import { validateStorySpec } from "./story-spec";
+import { containsToneViolation } from "./reader-bridge-copy";
+import { splitCanonicalSentences } from "./story-sentences";
 import {
   STORY_ARTIFACT_SCHEMA_VERSION,
   HYBRID_STORY_ARTIFACT_SCHEMA_VERSION,
@@ -686,6 +688,28 @@ export function validateStoredStoryArtifact(
       ) {
         return null;
       }
+      // Replay has no mutable StorySpec, but disclosed texture must still be
+      // exact sentences in this frozen passage, in order and without inventing
+      // extra occurrences. Absent lists preserve pre-texture artifact replay.
+      const texture = transparencyBeat.dramatizedSentences ?? [];
+      // renderHybridBeatText appends a single-paragraph template after this
+      // separator. Preserve that boundary even if canonical prose ends without
+      // punctuation; the template itself is never disclosed as story texture.
+      const templateBoundary = beat.personalization
+        ? beat.text.lastIndexOf("\n\n")
+        : beat.text.length;
+      if (texture.length > 0 && templateBoundary < 0) return null;
+      const sentences = splitCanonicalSentences(
+        beat.text.slice(0, templateBoundary),
+      );
+      let previousIndex = -1;
+      for (const sentence of texture) {
+        const sentenceIndex = sentences.indexOf(
+          normalizeText(sentence), previousIndex + 1,
+        );
+        if (sentenceIndex === -1) return null;
+        previousIndex = sentenceIndex;
+      }
     }
   }
   if (
@@ -837,12 +861,6 @@ function validStoredArtifactEnvelope(
     /^[0-9a-f]{64}$/.test(envelope.contentHash) &&
     (envelope.legacyV5ReplayEligible === undefined ||
       typeof envelope.legacyV5ReplayEligible === "boolean")
-  );
-}
-
-function containsToneViolation(value: string): boolean {
-  return /\b(?:you (?:will|must|should|need to)|everything will|guarantee|diagnos(?:e|is)|clinically|cure[ds]?|your life is (?:the same as|exactly like)|because (?:they|this person) did it,? you)\b/i.test(
-    value,
   );
 }
 

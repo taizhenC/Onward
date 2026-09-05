@@ -156,6 +156,7 @@ export function StoryPlayer({
             lines={openingCopy.prefaceLines}
             contentNote={contentNote}
             framing={framing}
+            hasSourceRecord={transparency !== null}
             onVisible={handlePrefaceVisible}
             onBegin={() => {
               passageFocusPendingRef.current = true;
@@ -216,8 +217,18 @@ export function StoryPlayer({
           block it would unmount the final bridge text. Covers both end paths. */}
       {reachedEnd || phase === "ended" ? (
         <section aria-label="After the story" className="space-y-12">
+          {transparency ? (
+            <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+              The record, and any lines we imagined, are in the folded section
+              below.
+            </p>
+          ) : null}
           <ClosingPause headingRef={captureEndingHeading} />
-          <StoryAfterword sessionId={sessionId} transparency={transparency} />
+          <StoryAfterword
+            sessionId={sessionId}
+            transparency={transparency}
+            figure={outline}
+          />
           {feedbackAvailable ? (
             <ResonanceFeedbackCard
               key={feedbackPresentationKey(initialFeedback)}

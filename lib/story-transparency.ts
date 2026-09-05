@@ -18,9 +18,11 @@ import {
   MATCH_RATIONALE_POLICY_VERSION,
   STORY_EVIDENCE_CLASSES,
   STORY_TRANSPARENCY_SCHEMA_VERSION,
+  STORY_TRANSPARENCY_TEXTURE_LIMITS,
   type StoryEvidenceClass,
   type StoryTransparency,
 } from "./story-transparency-types";
+import { splitCanonicalSentences } from "./story-sentences";
 import type { BeatRole, Framing } from "./types";
 
 const EXPECTED_ROLES: readonly BeatRole[] = [
@@ -112,15 +114,32 @@ export function buildStoryTransparency(
         ...(quote.speaker ? { speaker: quote.speaker } : {}),
         sourceRefs: projectSourceRefs(quote.sourceRefs),
       })),
-    beats: storySpec.arc.map((beat) => ({
-      role: beat.role,
-      evidenceClass: evidenceClassForBeat(beat, reviewed, factsById),
-      hasPersonalizedTransition:
-        beat.role !== "bridge" && beat.role === personalizedTransitionRole,
-      factIds: unique([...beat.requiredFactIds, ...beat.optionalFactIds]),
-      quoteIds: unique(beat.quoteIds),
-    })),
+    beats: storySpec.arc.map((beat) => {
+      const dramatizedSentences = dramatizedSentencesForBeat(beat);
+      return {
+        role: beat.role,
+        evidenceClass: evidenceClassForBeat(beat, reviewed, factsById),
+        hasPersonalizedTransition:
+          beat.role !== "bridge" && beat.role === personalizedTransitionRole,
+        factIds: unique([...beat.requiredFactIds, ...beat.optionalFactIds]),
+        quoteIds: unique(beat.quoteIds),
+        ...(dramatizedSentences.length > 0 ? { dramatizedSentences } : {}),
+      };
+    }),
   });
+}
+
+// The exact prose sentences a passage marks as dramatized texture, in reading
+// order. Public by construction: canonical prose is already on the wire.
+export function dramatizedSentencesForBeat(
+  beat: Pick<StorySpec["arc"][number], "canonicalText" | "sentenceEvidence">,
+): string[] {
+  const sentences = splitCanonicalSentences(beat.canonicalText);
+  return [...beat.sentenceEvidence]
+    .filter((mapping) => mapping.treatment === "dramatized_texture")
+    .sort((left, right) => left.sentenceIndex - right.sentenceIndex)
+    .map((mapping) => sentences[mapping.sentenceIndex])
+    .filter((sentence): sentence is string => typeof sentence === "string");
 }
 
 export function validateStoryTransparency(
@@ -307,19 +326,38 @@ function validateStoredStoryTransparencyWithPolicy(
   const referencedFactIds = new Set<string>();
   const referencedQuoteIds = new Set<string>();
   for (const [index, beat] of value.beats.entries()) {
+    if (!isRecord(beat)) return false;
+    const hasTexture = beat.dramatizedSentences !== undefined;
     if (
-      !isRecord(beat) ||
-      !hasExactKeys(beat, [
-        "evidenceClass",
-        "factIds",
-        "hasPersonalizedTransition",
-        "quoteIds",
-        "role",
-      ]) ||
-      beat.role !== EXPECTED_ROLES[index] ||
+      !hasExactKeys(
+        beat,
+        hasTexture
+          ? [
+              "dramatizedSentences",
+              "evidenceClass",
+              "factIds",
+              "hasPersonalizedTransition",
+              "quoteIds",
+              "role",
+            ]
+          : [
+              "evidenceClass",
+              "factIds",
+              "hasPersonalizedTransition",
+              "quoteIds",
+              "role",
+            ],
+      ) ||
+      (hasTexture &&
+        (beat.role === "bridge" ||
+          !isBoundedSentenceArray(beat.dramatizedSentences))) ||
       !STORY_EVIDENCE_CLASSES.includes(
         beat.evidenceClass as StoryEvidenceClass,
       ) ||
+      (hasTexture !==
+        (beat.evidenceClass as string).endsWith("_with_texture") &&
+        beat.evidenceClass !== "review_pending") ||
+      beat.role !== EXPECTED_ROLES[index] ||
       !isUniqueIdArray(beat.factIds, factIds) ||
       !isUniqueIdArray(beat.quoteIds, quoteIds) ||
       typeof beat.hasPersonalizedTransition !== "boolean" ||
@@ -380,6 +418,11 @@ function evidenceClassForBeat(
     return "reader_bridge";
   }
   if (!reviewed) return "review_pending";
+  // Texture is the strongest admission a passage can make, so it takes the
+  // label even when reviewed interpretation is also present.
+  const hasTexture = beat.sentenceEvidence.some(
+    (mapping) => mapping.treatment === "dramatized_texture",
+  );
   const hasInterpretation = beat.sentenceEvidence.some(
     (mapping) => mapping.interpretationIds.length > 0,
   );
@@ -388,13 +431,30 @@ function evidenceClassForBeat(
     ...beat.optionalFactIds,
   ].some((factId) => factsById.get(factId)?.confidence !== "documented");
   if (hasQualifiedEvidence) {
+    if (hasTexture) return "qualified_evidence_with_texture";
     return hasInterpretation
       ? "qualified_evidence_with_interpretation"
       : "qualified_historical_evidence";
   }
+  if (hasTexture) return "documented_with_texture";
   return hasInterpretation
     ? "documented_with_interpretation"
     : "documented_scene";
+}
+
+function isBoundedSentenceArray(value: unknown): value is string[] {
+  return (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    value.length <= STORY_TRANSPARENCY_TEXTURE_LIMITS.sentencesPerBeat &&
+    value.every((sentence) =>
+      isBoundedTransparencyText(
+        sentence,
+        1,
+        STORY_TRANSPARENCY_TEXTURE_LIMITS.sentenceLength,
+      ),
+    )
+  );
 }
 
 function validateSourceRefs(

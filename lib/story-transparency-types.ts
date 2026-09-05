@@ -13,11 +13,18 @@ export const MATCH_RATIONALE_POLICY_VERSION =
 export const STORY_EVIDENCE_CLASSES = [
   "documented_scene",
   "documented_with_interpretation",
+  "documented_with_texture",
   "qualified_historical_evidence",
   "qualified_evidence_with_interpretation",
+  "qualified_evidence_with_texture",
   "reader_bridge",
   "review_pending",
 ] as const;
+
+export const STORY_TRANSPARENCY_TEXTURE_LIMITS = Object.freeze({
+  sentencesPerBeat: 64,
+  sentenceLength: 1_000,
+});
 
 export type StoryEvidenceClass = (typeof STORY_EVIDENCE_CLASSES)[number];
 
@@ -50,6 +57,11 @@ export type StoryTransparencyBeat = {
   hasPersonalizedTransition: boolean;
   factIds: string[];
   quoteIds: string[];
+  // Present only when the passage carries dramatized texture: the exact
+  // sentences we wrote as scene detail, so the afterword can list them. The
+  // key is omitted (not empty) on passages without texture, which keeps every
+  // pre-2026-09 stored artifact byte-identical under re-projection.
+  dramatizedSentences?: string[];
 };
 
 export type StoryTransparency = {

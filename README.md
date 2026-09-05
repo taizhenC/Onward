@@ -24,7 +24,7 @@
 
 Onward is a small web app for people in a hard moment: a failed exam, a lonely move, a door that just closed. You write a few honest sentences and your age. Onward matches them against a hand-authored library of emotional episodes from real historical lives, picks the one that rhymes closest, and streams a short seven-part narrative. The figure's name is withheld until the final page, so you meet the person before you meet the legend.
 
-It is built around three refusals: no invented history, no unearned intimacy, and no memory of you that you did not ask for.
+It is built around three refusals: no invented history (the people, events, dates, and words are documented; where a passage renders a moment in scene, the afterword lists exactly which lines are ours), no unearned intimacy, and no memory of you that you did not ask for.
 
 ## Demo
 
@@ -68,7 +68,7 @@ To run the full stack (Supabase persistence and auth, Cerebras reranking, option
 3. **Matching.** Stages within ten years of your age form the pool. Retrieval narrows it to a handful, an LLM reranker judges emotional fit from each candidate's biographical facts, and the result is framed as either a close match or a *partial parallel*. When the fit is genuinely uncertain, the app asks one bounded question rather than guessing, and when nothing fits it says so.
 4. **Preface.** A few lines of comfort and, when it applies, an honest note that the parallel is only adjacent. No name yet.
 5. **Seven passages**, streamed and acknowledged one at a time: where it began, the dark moment, the response, the struggle, the turning point, what they became, and a reflection written back to you. Progress is never shown as "4 of 7".
-6. **Afterword.** The figure's name, why this story was chosen, the historical claims and quotations with their evidence, and the sources. A reader can flag any single fact for editorial review without sending anything about themselves.
+6. **Afterword.** Why this story was chosen, then a folded section the reader can open: who this was, what really happened claim by claim with its evidence, the lines we wrote as scene detail, the quotations, and where to read more. A reader can flag any single fact for editorial review without sending anything about themselves.
 7. **Afterwards.** One bounded question (did this feel close?), an optional one-use alternate story if it did not, and the choice to keep the story by adding an email. Nothing is kept unless you ask.
 
 ### The library

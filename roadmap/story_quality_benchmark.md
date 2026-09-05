@@ -1,7 +1,7 @@
 # End-to-End Story Quality Benchmark
 
 **Roadmap item:** P0-01 `[Feature]`  
-**Protocol version:** `story-quality-protocol-v1-2026-07`  
+**Protocol version:** `story-quality-protocol-v2-2026-09`  
 **Status:** Contract foundation only. A public-release pass still requires the
 consented study, sealed holdout, independent reviews, and launch-candidate
 evidence described here.
@@ -201,6 +201,22 @@ Any reviewer may record one or more closed critical categories:
 One occurrence fails that recipe arm. Reviewers escalate the underlying material
 through the controlled editorial/safety process; committed evidence contains
 only the category and aggregate count.
+
+**Dramatized texture (protocol v2, September 2026).** A passage may contain
+sentences the StorySpec marks as `dramatized_texture`: scene detail, gesture,
+weather, or interior life written so a documented moment can be told as a story
+rather than summarized. Such a sentence is not an `unsupported_sensory_detail`
+when it is grounded in a mapped fact, adds no person, place, organization, work,
+date, amount, quotation, event, or causal link, and is disclosed in the
+afterword's list of lines the editors wrote. `unsupported_sensory_detail`
+therefore covers sensory or interior detail that is not declared as texture, and
+declared texture that smuggles in any of those additions. Reviewers read the
+disclosure as part of the artifact: an undisclosed or mislabeled texture sentence
+is a critical failure even when it is harmless in isolation. The bridge may also
+close with up to two `reader_permission` sentences, bounded by the validator
+(second person, no instruction, no promise, no digits, no quotation, no name);
+they are scored under **Bridge quality**, never as historical claims. The craft
+rules that produce texture and permission lines live in `prompts/story-recipe.md`.
 
 ### 7. Compute a fail-closed decision
 

@@ -154,6 +154,20 @@ function checkDramatizedTextureProjection(
     return;
   }
 
+  // A recomputed hash cannot make a false disclosure match the frozen prose.
+  for (const sentences of [
+    ["This line never appeared in the story."],
+    [STORY_FIRST_TEXTURE_SENTENCE.slice(4)],
+    [STORY_FIRST_TEXTURE_SENTENCE, STORY_FIRST_TEXTURE_SENTENCE],
+  ]) {
+    const mismatch = structuredClone(artifact);
+    mismatch.transparency!.beats[1].dramatizedSentences = sentences;
+    mismatch.contentHash = storyArtifactContentHash(mismatch);
+    if (validateStoredStoryArtifact(mismatch)) {
+      failures.push("stored replay accepted texture absent from the corresponding prose");
+    }
+  }
+
   const rendered = renderToStaticMarkup(
     React.createElement(StoryAfterword, {
       sessionId: "texture-render",

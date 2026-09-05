@@ -3,6 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { chunkBeatText } from "./chunks";
 import { validateStorySpec } from "./story-spec";
 import { containsToneViolation } from "./reader-bridge-copy";
+import { splitCanonicalSentences } from "./story-sentences";
 import {
   STORY_ARTIFACT_SCHEMA_VERSION,
   HYBRID_STORY_ARTIFACT_SCHEMA_VERSION,
@@ -686,6 +687,18 @@ export function validateStoredStoryArtifact(
           (beat.role !== "bridge" && beat.personalization !== undefined)
       ) {
         return null;
+      }
+      // Replay has no mutable StorySpec, but disclosed texture must still be
+      // exact sentences in this frozen passage, in order and without inventing
+      // extra occurrences. Absent lists preserve pre-texture artifact replay.
+      const sentences = splitCanonicalSentences(beat.text);
+      let previousIndex = -1;
+      for (const sentence of transparencyBeat.dramatizedSentences ?? []) {
+        const sentenceIndex = sentences.indexOf(
+          normalizeText(sentence), previousIndex + 1,
+        );
+        if (sentenceIndex === -1) return null;
+        previousIndex = sentenceIndex;
       }
     }
   }

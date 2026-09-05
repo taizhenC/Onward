@@ -6,6 +6,39 @@ import {
 import type { FigureStageRow } from "../lib/types";
 import { READER_BRIDGE_SENTENCES } from "../lib/reader-bridge-copy";
 
+export const STORY_FIRST_TEXTURE_SENTENCE =
+  "The room stayed quiet for a long while after that.";
+export const STORY_FIRST_PERMISSION_SENTENCE =
+  "You do not have to know how it ends to keep going.";
+
+// The published fixture plus one dramatized-texture sentence on the dark
+// moment and one reader-permission sentence closing the bridge: the two
+// story-first treatments added on 2026-09-03.
+export function buildStoryFirstStorySpecFixture(
+  stage: FigureStageRow,
+): StorySpec {
+  const spec = buildPublishedStorySpecFixture(stage);
+  const darkMoment = spec.arc[1];
+  darkMoment.canonicalText = `${darkMoment.canonicalText} ${STORY_FIRST_TEXTURE_SENTENCE}`;
+  darkMoment.sentenceEvidence.push({
+    sentenceIndex: 1,
+    treatment: "dramatized_texture",
+    factIds: [...darkMoment.requiredFactIds],
+    interpretationIds: [],
+    quoteIds: [],
+  });
+  const bridge = spec.arc[spec.arc.length - 1];
+  bridge.canonicalText = `${bridge.canonicalText} ${STORY_FIRST_PERMISSION_SENTENCE}`;
+  bridge.sentenceEvidence.push({
+    sentenceIndex: READER_BRIDGE_SENTENCES.length,
+    treatment: "reader_permission",
+    factIds: [],
+    interpretationIds: [],
+    quoteIds: [],
+  });
+  return spec;
+}
+
 export function buildPublishedStorySpecFixture(
   stage: FigureStageRow,
 ): StorySpec {

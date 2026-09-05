@@ -2,6 +2,7 @@ import "server-only";
 import { createHash, randomBytes } from "node:crypto";
 import { chunkBeatText } from "./chunks";
 import { validateStorySpec } from "./story-spec";
+import { containsToneViolation } from "./reader-bridge-copy";
 import {
   STORY_ARTIFACT_SCHEMA_VERSION,
   HYBRID_STORY_ARTIFACT_SCHEMA_VERSION,
@@ -837,12 +838,6 @@ function validStoredArtifactEnvelope(
     /^[0-9a-f]{64}$/.test(envelope.contentHash) &&
     (envelope.legacyV5ReplayEligible === undefined ||
       typeof envelope.legacyV5ReplayEligible === "boolean")
-  );
-}
-
-function containsToneViolation(value: string): boolean {
-  return /\b(?:you (?:will|must|should|need to)|everything will|guarantee|diagnos(?:e|is)|clinically|cure[ds]?|your life is (?:the same as|exactly like)|because (?:they|this person) did it,? you)\b/i.test(
-    value,
   );
 }
 

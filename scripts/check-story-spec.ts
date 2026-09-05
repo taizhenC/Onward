@@ -9,7 +9,12 @@ import {
   validateStorySpec,
 } from "../lib/story-spec";
 import type { StorySpec } from "../lib/story-spec-types";
-import { buildPublishedStorySpecFixture } from "./_story-spec-fixtures";
+import {
+  STORY_FIRST_PERMISSION_SENTENCE,
+  STORY_FIRST_TEXTURE_SENTENCE,
+  buildPublishedStorySpecFixture,
+  buildStoryFirstStorySpecFixture,
+} from "./_story-spec-fixtures";
 
 const syntheticDisclosure =
   "I feel unusually marooned after a private problem nobody in this biography could possibly know.";
@@ -501,6 +506,8 @@ function main(): void {
     "content profile intensity",
   );
 
+  checkStoryFirstTreatments(failures);
+
   console.log("Onward StorySpec validator");
   console.log("==========================");
   if (failures.length > 0) {
@@ -516,7 +523,226 @@ function main(): void {
   );
   console.log("PASS untrusted documents require exact nested StorySpec shapes");
   console.log("PASS immutable publication and compare-and-set authority are migration-gated");
+  console.log(
+    "PASS dramatized texture stays grounded, quote-free, entity-free, and off the bridge; reader permission stays bounded",
+  );
 }
+
+// Story-first treatments (2026-09-03): a sentence may be dramatized texture
+// only when it is grounded in a fact and adds no quotation, digit, or named
+// entity; the bridge may close with bounded reader-permission copy.
+function checkStoryFirstTreatments(failures: string[]): void {
+  const storyFirst = buildStoryFirstStorySpecFixture(FIGURE_STAGES[0]);
+  if (parseStorySpecDocument(structuredClone(storyFirst)) === null) {
+    failures.push("story-first fixture failed the strict document shape");
+  }
+  expectAccepted(failures, "story-first texture and permission fixture", storyFirst);
+  const draft = validateStorySpec(
+    { ...storyFirst, status: "draft", review: {} },
+    { forPublish: false },
+  );
+  if (!draft.valid) {
+    failures.push(
+      `story-first fixture failed draft validation: ${draft.errors.join("; ")}`,
+    );
+  }
+  const publishResult = validateStorySpec(storyFirst, { forPublish: true });
+  if (
+    !publishResult.warnings.some((warning) =>
+      warning.includes("names the subject or a year before the bridge reveal"),
+    )
+  ) {
+    failures.push("anonymity warning did not fire for a dated pre-bridge passage");
+  }
+
+  const textureMapping = (spec: StorySpec) => {
+    const mapping = spec.arc[1].sentenceEvidence.find(
+      (candidate) => candidate.treatment === "dramatized_texture",
+    );
+    if (!mapping) throw new Error("story-first fixture lost its texture mapping");
+    return mapping;
+  };
+  const permissionMapping = (spec: StorySpec) => {
+    const bridge = spec.arc[spec.arc.length - 1];
+    const mapping = bridge.sentenceEvidence.find(
+      (candidate) => candidate.treatment === "reader_permission",
+    );
+    if (!mapping) throw new Error("story-first fixture lost its permission mapping");
+    return { bridge, mapping };
+  };
+
+  expectRejected(
+    failures,
+    "texture without a grounding fact",
+    mutate(storyFirst, (spec) => {
+      textureMapping(spec).factIds = [];
+    }),
+    true,
+    "dramatized texture must be grounded in at least one fact",
+  );
+  expectRejected(
+    failures,
+    "texture carrying a quotation link",
+    mutate(storyFirst, (spec) => {
+      const mapping = textureMapping(spec);
+      mapping.quoteIds = ["quote-verbatim"];
+      spec.arc[1].quoteIds = ["quote-verbatim"];
+    }),
+    true,
+    "dramatized texture cannot carry a quotation",
+  );
+  expectRejected(
+    failures,
+    "texture with quotation marks",
+    mutate(storyFirst, (spec) => {
+      spec.arc[1].canonicalText = spec.arc[1].canonicalText.replace(
+        STORY_FIRST_TEXTURE_SENTENCE,
+        'The room stayed quiet and someone said "wait" after that.',
+      );
+    }),
+    true,
+    "dramatized texture cannot contain quotation marks",
+  );
+  expectRejected(
+    failures,
+    "texture with digits",
+    mutate(storyFirst, (spec) => {
+      spec.arc[1].canonicalText = spec.arc[1].canonicalText.replace(
+        STORY_FIRST_TEXTURE_SENTENCE,
+        "The room stayed quiet for 3 days after that.",
+      );
+    }),
+    true,
+    "dramatized texture cannot carry digits",
+  );
+  expectRejected(
+    failures,
+    "texture naming an allowlisted entity",
+    mutate(storyFirst, (spec) => {
+      spec.arc[1].canonicalText = spec.arc[1].canonicalText.replace(
+        STORY_FIRST_TEXTURE_SENTENCE,
+        `The room stayed quiet around ${FIGURE_STAGES[0].displayName} after that.`,
+      );
+    }),
+    true,
+    "dramatized texture cannot name an allowlisted entity",
+  );
+  expectRejected(
+    failures,
+    "texture on the bridge",
+    mutate(storyFirst, (spec) => {
+      const { bridge, mapping } = permissionMapping(spec);
+      mapping.treatment = "dramatized_texture";
+      mapping.factIds = [spec.facts[0].factId];
+      bridge.requiredFactIds = [spec.facts[0].factId];
+    }),
+    true,
+    "dramatized texture is not legal on the bridge",
+  );
+  expectRejected(
+    failures,
+    "passage told entirely as texture",
+    mutate(storyFirst, (spec) => {
+      for (const mapping of spec.arc[1].sentenceEvidence) {
+        mapping.treatment = "dramatized_texture";
+      }
+    }),
+    true,
+    "needs at least one documented sentence before publish",
+  );
+
+  expectRejected(
+    failures,
+    "reader permission outside the bridge",
+    mutate(storyFirst, (spec) => {
+      spec.arc[1].canonicalText = `${spec.arc[1].canonicalText} ${STORY_FIRST_PERMISSION_SENTENCE}`;
+      spec.arc[1].sentenceEvidence.push({
+        sentenceIndex: 2,
+        treatment: "reader_permission",
+        factIds: [],
+        interpretationIds: [],
+        quoteIds: [],
+      });
+    }),
+    true,
+    "reader-permission treatment is only legal on the bridge",
+  );
+  expectRejected(
+    failures,
+    "reader permission with evidence",
+    mutate(storyFirst, (spec) => {
+      const { bridge, mapping } = permissionMapping(spec);
+      mapping.factIds = [spec.facts[0].factId];
+      bridge.requiredFactIds = [spec.facts[0].factId];
+    }),
+    true,
+    "reader-permission treatment cannot reference historical evidence",
+  );
+  expectRejected(
+    failures,
+    "reader permission that instructs",
+    mutate(storyFirst, (spec) => {
+      const { bridge } = permissionMapping(spec);
+      bridge.canonicalText = bridge.canonicalText.replace(
+        STORY_FIRST_PERMISSION_SENTENCE,
+        "You should keep going no matter what.",
+      );
+    }),
+    true,
+    "reader-permission sentence is not bounded reader copy (tone)",
+  );
+  expectRejected(
+    failures,
+    "reader permission without second person",
+    mutate(storyFirst, (spec) => {
+      const { bridge } = permissionMapping(spec);
+      bridge.canonicalText = bridge.canonicalText.replace(
+        STORY_FIRST_PERMISSION_SENTENCE,
+        "Nobody has to know how it ends to keep going.",
+      );
+    }),
+    true,
+    "reader-permission sentence is not bounded reader copy (not_second_person)",
+  );
+  expectRejected(
+    failures,
+    "reader permission naming the figure",
+    mutate(storyFirst, (spec) => {
+      const { bridge } = permissionMapping(spec);
+      bridge.canonicalText = bridge.canonicalText.replace(
+        STORY_FIRST_PERMISSION_SENTENCE,
+        `You do not have to be ${FIGURE_STAGES[0].displayName} to keep going.`,
+      );
+    }),
+    true,
+    "reader-permission sentence is not bounded reader copy (names_figure)",
+  );
+  expectRejected(
+    failures,
+    "too many reader-permission sentences",
+    mutate(storyFirst, (spec) => {
+      const { bridge } = permissionMapping(spec);
+      const extra = [
+        "You can rest here for a while.",
+        "You are allowed to not be ready yet.",
+      ];
+      bridge.canonicalText = `${bridge.canonicalText} ${extra.join(" ")}`;
+      extra.forEach((_, offset) => {
+        bridge.sentenceEvidence.push({
+          sentenceIndex: READER_BRIDGE_SENTENCE_COUNT + 1 + offset,
+          treatment: "reader_permission",
+          factIds: [],
+          interpretationIds: [],
+          quoteIds: [],
+        });
+      });
+    }),
+    true,
+    "bridge carries more than",
+  );
+}
+
+const READER_BRIDGE_SENTENCE_COUNT = 2;
 
 function checkDocumentBoundary(spec: StorySpec, failures: string[]): void {
   const jsonRoundTrip = JSON.parse(JSON.stringify(spec)) as unknown;

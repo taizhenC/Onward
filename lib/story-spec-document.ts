@@ -44,7 +44,9 @@ const PERSONALIZATION_ZONES = [
 ] as const;
 const SENTENCE_TREATMENTS = [
   "historical_claim",
+  "dramatized_texture",
   "reader_bridge",
+  "reader_permission",
 ] as const;
 const INTENSITIES = ["gentle", "moderate", "direct"] as const;
 

@@ -351,13 +351,13 @@ function validateStoredStoryTransparencyWithPolicy(
       (hasTexture &&
         (beat.role === "bridge" ||
           !isBoundedSentenceArray(beat.dramatizedSentences))) ||
+      !STORY_EVIDENCE_CLASSES.includes(
+        beat.evidenceClass as StoryEvidenceClass,
+      ) ||
       (hasTexture !==
         (beat.evidenceClass as string).endsWith("_with_texture") &&
         beat.evidenceClass !== "review_pending") ||
       beat.role !== EXPECTED_ROLES[index] ||
-      !STORY_EVIDENCE_CLASSES.includes(
-        beat.evidenceClass as StoryEvidenceClass,
-      ) ||
       !isUniqueIdArray(beat.factIds, factIds) ||
       !isUniqueIdArray(beat.quoteIds, quoteIds) ||
       typeof beat.hasPersonalizedTransition !== "boolean" ||

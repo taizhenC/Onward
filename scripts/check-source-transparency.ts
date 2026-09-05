@@ -179,6 +179,19 @@ function checkDramatizedTextureProjection(
   const emptied = structuredClone(transparency) as unknown as {
     beats: Array<Record<string, unknown>>;
   };
+  for (const invalidClass of [null, undefined, 42, {}, [], "unknown_class"]) {
+    const malformed = structuredClone(transparency) as unknown as {
+      beats: Array<Record<string, unknown>>;
+    };
+    malformed.beats[1].evidenceClass = invalidClass;
+    try {
+      if (validateStoredStoryTransparency(malformed)) {
+        failures.push("malformed evidence class passed stored transparency validation");
+      }
+    } catch {
+      failures.push("malformed evidence class threw instead of rejecting the document");
+    }
+  }
   emptied.beats[1].dramatizedSentences = [];
   const relabeled = structuredClone(transparency) as unknown as {
     beats: Array<Record<string, unknown>>;

@@ -24,6 +24,7 @@ import {
   normalizeIntakeFeeling,
 } from "@/lib/intake-constraints";
 import { containsCrisisLanguage } from "@/lib/crisis-language";
+import { fictionRequestFailureMessage, fictionSpecialHref, isNiudaFictionRequest, type FictionSpecialResponse } from "@/lib/fiction-request";
 import { buildIntakeMatchRequest } from "@/lib/intake-match-request";
 import {
   INTAKE_FICTIONAL_EXAMPLE,
@@ -68,6 +69,7 @@ type MatchNoClose = {
 type MatchError = { error: string };
 type MatchFlowConflict = { flowConflict: true };
 type MatchPayload =
+  | FictionSpecialResponse
   | MatchSuccess
   | MatchCrisis
   | MatchRateLimited
@@ -198,7 +200,9 @@ export function IntakeForm({
   const feelingError =
     feelingTouched || validationAttempted ? intakeValidation.feeling : null;
   const submissionCopy = submissionState
-    ? INTAKE_SUBMISSION_COPY[submissionState]
+    ? isNiudaFictionRequest(feeling)
+      ? { buttonLabel: "正在打开虚构喜剧…", liveStatus: "正在检查请求。牛大是虚构喜剧，不是历史人物匹配。" }
+      : INTAKE_SUBMISSION_COPY[submissionState]
     : null;
   const ambiguousRequestRecoveryCopy = recoveryToken
     ? "Check Your stories first. This follow-up cannot be safely replayed because its recovery token may have been used; review your draft and start a fresh match only if no story appeared."
@@ -270,6 +274,11 @@ export function IntakeForm({
     setFlowConflict(false);
 
     let response: Response;
+    // Capture earlier uncertainty before dispatch. Fiction failure copy must
+    // not imply this public text was saved, or erase an earlier unknown match.
+    const fictionFailureCopy = isNiudaFictionRequest(feeling) && !recoveryToken && !clarification && !acceptAdjacent
+      ? fictionRequestFailureMessage(matchRequestMayHaveCreatedStory(matchRequestPrivacyRef.current))
+      : null;
     const body = JSON.stringify(
       buildIntakeMatchRequest({
         age: ageNum,
@@ -317,7 +326,7 @@ export function IntakeForm({
       clearFirstContentRequestStarted();
       if (recoveryToken) resetMatchRecovery();
       setError(
-        `The connection dropped. What you wrote is still in this form on this page; refreshing or leaving will clear it. The server may already have received the request. ${ambiguousRequestRecoveryCopy}`,
+        fictionFailureCopy ?? `The connection dropped. What you wrote is still in this form on this page; refreshing or leaving will clear it. The server may already have received the request. ${ambiguousRequestRecoveryCopy}`,
       );
       finishSubmitting();
       return;
@@ -332,9 +341,9 @@ export function IntakeForm({
       clearFirstContentRequestStarted();
       if (recoveryToken) resetMatchRecovery();
       setError(
-        response.ok || response.status === 503
+        fictionFailureCopy ?? (response.ok || response.status === 503
           ? `Onward received the request, but this page could not read the result. A story may already exist. What you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`
-          : `The server returned an error (${response.status}).`,
+          : `The server returned an error (${response.status}).`),
       );
       finishSubmitting();
       return;
@@ -369,7 +378,7 @@ export function IntakeForm({
     if (response.status === 503 || "temporarilyUnavailable" in payload) {
       if (recoveryToken) resetMatchRecovery();
       setError(
-        `Onward could not confirm a new story. A story may already exist, and what you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`,
+        fictionFailureCopy ?? `Onward could not confirm a new story. A story may already exist, and what you wrote is still in this form on this page. ${ambiguousRequestRecoveryCopy}`,
       );
       finishSubmitting();
       return;
@@ -444,6 +453,18 @@ export function IntakeForm({
       bindFirstContentStory(payload.sessionId);
       setSubmissionState("opening_story");
       router.push(`/story/${payload.sessionId}`);
+      return;
+    }
+    const fictionHref = fictionSpecialHref(payload);
+    if (fictionHref) {
+      // Only a closed, locally known identifier can navigate. No server-supplied
+      // URL, Owner Story binding, saved progress or match-success telemetry.
+      matchRequestPrivacyRef.current = confirmCurrentRequestCreatedNoStory(
+        matchRequestPrivacyRef.current,
+      );
+      storyNavigationCommittedRef.current = true;
+      setSubmissionState("opening_story");
+      router.push(fictionHref);
       return;
     }
     setError("Unexpected response from the matcher.");

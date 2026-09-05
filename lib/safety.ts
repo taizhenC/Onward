@@ -4,7 +4,7 @@ import { containsCrisisLanguage } from "./crisis-language";
 
 export { containsCrisisLanguage } from "./crisis-language";
 
-export const crisisRegexVersion = "v2-2026-07";
+export const crisisRegexVersion = "v3-2026-09-zh-initial";
 export const crisisResourcesReviewedAt = "2026-07-10";
 
 export type CrisisResult = {

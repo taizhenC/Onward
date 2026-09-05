@@ -78,7 +78,7 @@ This is the most important beat. It has five parts, in exactly this order (recip
 3. `Your life is not theirs.`
 4. `But a piece of this story may still sit beside you.`
    These two sentences are fixed and verbatim. Never quote, paraphrase, or include a placeholder for the reader's intake anywhere.
-5. **One or two permission lines.** Second person, declarative, 3 to 24 words, no digits, no quotation marks, no name. They predict nothing, instruct nothing, compare nothing, and never mention the reader's particulars. The last line of the story is its shortest sentence. Examples that pass: "You do not have to know how it ends to keep going." / "You are allowed to not be ready yet." Examples that fail: "You will get through this." / "You should keep going." / "If they could survive that, you can survive this."
+5. **One or two permission lines.** Second person, declarative, 3 to 24 words, no digits, no quotation marks, no name. They predict nothing, instruct nothing, compare nothing, and never mention the reader's particulars. The last line of the story is twelve words at most. Examples that pass: "You do not have to know how it ends to keep going." / "You are allowed to not be ready yet." Examples that fail: "You will get through this." / "You should keep going." / "If they could survive that, you can survive this."
 
 Do NOT lecture the reader. Do NOT say "you should." Do NOT compare them to the figure directly. Do NOT promise them anything. The figure's story already does the work — the bridge just opens a door.
 
@@ -172,7 +172,7 @@ Before you emit the JSON, check each beat against these:
 - [ ] Total word count is between 700 and 950
 - [ ] `sourceNotes` lists every dramatized texture sentence verbatim and says which fact each one rests on
 - [ ] Every texture sentence is inert: no person, place, date, amount, quote, event, cause, decision, or realization
-- [ ] The bridge follows the five-part order and its permission line is the story's shortest sentence
+- [ ] The bridge follows the five-part order and its last line is twelve words at most
 - [ ] Every item in the recipe's section 8 review checklist holds
 
 If any check fails, fix it before you return.

@@ -24,6 +24,17 @@ const CRISIS_PATTERNS: readonly RegExp[] = Object.freeze([
   /\b(everyone|they|you)\s+would\s+be\s+better\s+off\s+(if\s+i\s+(was|were)\s+)?(dead|gone)\b/i,
   /\bhope\s+i\s+(don'?t|do\s+not|never)\s+wake\s+up\b/i,
   /\b(can'?t|cannot)\s+go\s+on\s+(anymore|like\s+this)\b/i,
+  // Initial explicit Simplified/Traditional Chinese signals. Conservative,
+  // not comprehensive multilingual detection; no matched phrase is exposed.
+  /自\s*[杀殺残殘]/u,
+  /[轻輕]\s*生/u,
+  /割\s*腕/u,
+  /我[^。！？\n]{0,12}(?:想|要|准[备備]|打算|[计計][划劃])\s*(?:去\s*)?死/u,
+  /(?:我[^。！？\n]{0,12})?(?:不想|不愿|不願)\s*(?:再|继续|繼續)?\s*(?:活(?:着|著)?|存在|醒[来來])/u,
+  /(?:活不下去|不想活了|不想再活|活[着著][没沒]有意[义義])/u,
+  /(?:[结結]束|[结結]束掉)[^。！？\n]{0,6}(?:我|自己)[^。！？\n]{0,4}生命/u,
+  /(?:[伤傷]害|[杀殺]死)\s*(?:我自己|自己)/u,
+  /我[^。！？\n]{0,12}(?:跳[楼樓]|跳[桥橋]|跳河)/u,
 ]);
 
 /**
@@ -32,5 +43,6 @@ const CRISIS_PATTERNS: readonly RegExp[] = Object.freeze([
  * must not expose which expression matched.
  */
 export function containsCrisisLanguage(value: string): boolean {
-  return CRISIS_PATTERNS.some((pattern) => pattern.test(value));
+  const normalized = value.normalize("NFKC").replace(/[\u200b-\u200d\ufeff]/gu, "");
+  return CRISIS_PATTERNS.some((pattern) => pattern.test(normalized));
 }

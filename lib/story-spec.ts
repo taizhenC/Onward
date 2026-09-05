@@ -575,16 +575,55 @@ export function validateStorySpec(
     ) {
       errors.push(`arc[${index}] requires at least one supporting fact before publish`);
     }
-    if (
-      beat.role !== "bridge" &&
-      (personNames.some((name) => containsWholeWord(beat.canonicalText, name)) ||
+    if (beat.role !== "bridge") {
+      // Story-recipe warnings (prompts/story-recipe.md §7). Warnings, not
+      // errors: the deployed build must keep serving already-published rows
+      // while their story-first replacements are authored; the promotion tool
+      // refuses candidates that carry them unless a human accepts each one.
+      if (
+        namedEntityValues.some((name) =>
+          containsWholeWord(beat.canonicalText, name),
+        ) ||
         /(?<![A-Za-z0-9])(?:1[0-9]|20)\d{2}(?![A-Za-z0-9])/.test(
           beat.canonicalText,
-        ))
-    ) {
-      warnings.push(
-        `arc[${index}] names the subject or a year before the bridge reveal`,
+        )
+      ) {
+        warnings.push(
+          `arc[${index}] names an allowlisted entity or a year before the bridge reveal`,
+        );
+      }
+      const textureMappings = beat.sentenceEvidence.filter(
+        (mapping) => mapping.treatment === "dramatized_texture",
       );
+      if (textureMappings.length * 2 > sentenceCount) {
+        warnings.push(
+          `arc[${index}] is more than half dramatized texture; the stage may be under-researched`,
+        );
+      }
+      if (
+        textureMappings.some((mapping) => {
+          const sentence = sentences[mapping.sentenceIndex];
+          return (
+            sentence !== undefined &&
+            /\b(?:because|so that|realized|realised|decided|knew|understood|chose)\b/i.test(
+              sentence,
+            )
+          );
+        })
+      ) {
+        warnings.push(
+          `arc[${index}] dramatized texture carries a load-bearing verb (motive, decision, or realization)`,
+        );
+      }
+      if (
+        /\byou\b/i.test(
+          beat.canonicalText.replace(/\u201c[^\u201d]*\u201d|"[^"]*"/g, ""),
+        )
+      ) {
+        warnings.push(
+          `arc[${index}] addresses the reader before the bridge`,
+        );
+      }
     }
   });
   if (readerPermissionCount > READER_PERMISSION_MAX_SENTENCES) {

@@ -549,10 +549,69 @@ function checkStoryFirstTreatments(failures: string[]): void {
   const publishResult = validateStorySpec(storyFirst, { forPublish: true });
   if (
     !publishResult.warnings.some((warning) =>
-      warning.includes("names the subject or a year before the bridge reveal"),
+      warning.includes("names an allowlisted entity or a year before the bridge reveal"),
     )
   ) {
     failures.push("anonymity warning did not fire for a dated pre-bridge passage");
+  }
+  const warningsFor = (change: (spec: StorySpec) => void) =>
+    validateStorySpec(mutate(storyFirst, change), { forPublish: true }).warnings;
+  if (
+    !warningsFor((spec) => {
+      spec.arc[1].canonicalText = spec.arc[1].canonicalText.replace(
+        STORY_FIRST_TEXTURE_SENTENCE,
+        "The room stayed quiet because nobody knew what to say.",
+      );
+    }).some((warning) => warning.includes("load-bearing verb"))
+  ) {
+    failures.push("load-bearing verb warning did not fire for causal texture");
+  }
+  if (
+    !warningsFor((spec) => {
+      spec.arc[1].canonicalText = `${spec.arc[1].canonicalText} The light moved across the floor. Nobody moved with it.`;
+      spec.arc[1].sentenceEvidence.push(
+        {
+          sentenceIndex: 2,
+          treatment: "dramatized_texture",
+          factIds: [...spec.arc[1].requiredFactIds],
+          interpretationIds: [],
+          quoteIds: [],
+        },
+        {
+          sentenceIndex: 3,
+          treatment: "dramatized_texture",
+          factIds: [...spec.arc[1].requiredFactIds],
+          interpretationIds: [],
+          quoteIds: [],
+        },
+      );
+    }).some((warning) => warning.includes("more than half dramatized texture"))
+  ) {
+    failures.push("texture proportion warning did not fire for a mostly imagined passage");
+  }
+  if (
+    !warningsFor((spec) => {
+      spec.arc[1].canonicalText = spec.arc[1].canonicalText.replace(
+        STORY_FIRST_TEXTURE_SENTENCE,
+        "The room stayed quiet, the way you would expect.",
+      );
+    }).some((warning) => warning.includes("addresses the reader before the bridge"))
+  ) {
+    failures.push("second-person warning did not fire before the bridge");
+  }
+  if (
+    warningsFor((spec) => {
+      spec.arc[1].canonicalText = spec.arc[1].canonicalText.replace(
+        STORY_FIRST_TEXTURE_SENTENCE,
+        'The room stayed quiet after someone said "you first" and left.',
+      );
+      const mapping = spec.arc[1].sentenceEvidence.find(
+        (candidate) => candidate.treatment === "dramatized_texture",
+      );
+      if (mapping) mapping.treatment = "historical_claim";
+    }).some((warning) => warning.includes("addresses the reader before the bridge"))
+  ) {
+    failures.push("second-person warning fired on a quoted 'you'");
   }
 
   const textureMapping = (spec: StorySpec) => {

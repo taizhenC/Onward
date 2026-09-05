@@ -7,6 +7,7 @@ type Props = {
   lines: readonly string[];
   contentNote: string | null;
   framing: Framing;
+  hasSourceRecord: boolean;
   onBegin: () => void;
   onVisible: () => void;
 };
@@ -17,6 +18,7 @@ export function PrefaceCard({
   lines,
   contentNote,
   framing,
+  hasSourceRecord,
   onBegin,
   onVisible,
 }: Props) {
@@ -33,6 +35,14 @@ export function PrefaceCard({
           <p key={index}>{line}</p>
         ))}
       </div>
+
+      <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
+        This is a real person&apos;s story, told in our words. Their name comes
+        at the end.
+        {hasSourceRecord ? (
+          <> The record and any scene details we imagined are listed there too.</>
+        ) : null}
+      </p>
 
       {framing === "partial" ? (
         <aside

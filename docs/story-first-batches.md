@@ -9,7 +9,7 @@ keeps the scope visible and avoids quietly dropping a difficult episode.
 
 | Set | Figures | State |
 |---|---|---|
-| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Research and revision in progress |
+| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Nine drafts researched; independent review corrections applied; owner reading and documented evidence/craft holds remain |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Queued |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
@@ -42,3 +42,18 @@ recorded for a separately evaluated figure-library release.
 
 The separately requested Chinese fictional story, 牛大, is not one of these
 41 historical stages and must never be given fabricated historical evidence.
+
+## Set 2 handoff boundary
+
+The local `wave-2` reading packet and exact-hash verification report separate
+machine validity from editorial readiness. Berlin's alternative episode lacks
+the original arc's primary emotional evidence; Butler and Carver remain below
+the whole-story length target. Child has a disclosed diploma/examination date
+conflict between sources. Other scene, access and matching-scope limitations
+are recorded in each evidence note and independent review. No new historical
+story has been approved or published. Thirty-two stages remain queued above.
+
+The application changes for the separately labeled Chinese fiction mode are
+reviewable in [PR #122](https://github.com/taizhenC/Onward/pull/122). That PR does
+not publish or approve these historical candidates. Its public fiction route
+is separate from the historical library, Owner Stories and saved progress.

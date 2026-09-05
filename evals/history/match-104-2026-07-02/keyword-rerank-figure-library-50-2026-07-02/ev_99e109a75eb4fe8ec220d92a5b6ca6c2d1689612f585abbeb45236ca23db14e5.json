@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "match-eval-evidence-v1",
+  "harnessVersion": "match-eval-harness-v3-2026-08",
+  "evidenceId": "ev_99e109a75eb4fe8ec220d92a5b6ca6c2d1689612f585abbeb45236ca23db14e5",
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "dataset": {
+    "version": "match-104-2026-07-02",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "visibility": "synthetic"
+  },
+  "catalog": null,
+  "run": {
+    "startedAt": "2026-09-05T02:38:05.540Z",
+    "completedAt": "2026-09-05T02:38:05.554Z",
+    "k": 1,
+    "concurrency": 3,
+    "maxRetries": 2,
+    "caseCount": 104,
+    "trialCount": 104
+  },
+  "config": {
+    "provider": "stub",
+    "model": "gpt-oss-120b",
+    "retrievalMode": "keyword",
+    "embeddingModelId": null,
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "rerankTemperature": 0,
+    "rerankReasoningEffort": "low",
+    "rerankTopK": 6
+  },
+  "metrics": {
+    "rerankTop1": 0.9603960396039604,
+    "overallTop1": 0.9603960396039604,
+    "missDetection": 1,
+    "hardConfusion": 0,
+    "goldSurvivalStageA": null,
+    "goldSurvivalStageB": null,
+    "stability": null,
+    "counts": {
+      "rerankCorrect": 97,
+      "rerankTotal": 101,
+      "overallCorrect": 97,
+      "overallTotal": 101,
+      "missDetected": 3,
+      "missTotal": 3,
+      "hardConfused": 0,
+      "hardTotal": 44,
+      "survivedStageA": 0,
+      "survivedStageB": 0,
+      "survivalTotal": 0,
+      "rerankChosen": 104,
+      "keywordFallback": 0
+    },
+    "calibration": {
+      "definitiveCorrect": 96,
+      "definitiveWrong": 0,
+      "partialCorrect": 1,
+      "partialWrong": 4
+    },
+    "latency": {
+      "p50Ms": 0,
+      "p95Ms": 0
+    },
+    "trustGate": {
+      "passed": false,
+      "coverage": 1,
+      "checks": {
+        "coverage": true,
+        "rerankTop1": false,
+        "missDetection": true,
+        "noDefinitiveWrong": true,
+        "top1": false,
+        "hardConfusion": true
+      },
+      "thresholds": {
+        "minCoverage": 0.95,
+        "minRerankTop1": 0.971,
+        "minOverallTop1": 0.971,
+        "minMissDetection": 1,
+        "maxDefinitiveWrong": 0,
+        "maxHardConfusion": 0
+      }
+    }
+  },
+  "provenance": {
+    "gitCommit": "b51103d727fac4c7d44324eb126d239b77df60b6",
+    "deploymentId": null,
+    "sourceRun": "2026-09-05T02-38-05-554Z.json",
+    "runId": null,
+    "sourceRunSha256": "8c5a45ce35eb5913a8ffc56a339f249aa907f90a876171fa9cf3539b35e07019",
+    "inputTreeSha256": "e7bb840f1e8c0a9ce791cdc6bfd1f2839d3c9b550b240975f4db4fe5e78b5018"
+  },
+  "legacyImported": false,
+  "candidate": false,
+  "promotable": false
+}

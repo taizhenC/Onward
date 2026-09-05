@@ -1,7 +1,8 @@
 # End-to-End Story Quality Benchmark
 
 **Roadmap item:** P0-01 `[Feature]`  
-**Protocol version:** `story-quality-protocol-v2-2026-09`  
+**Protocol version:** `story-quality-protocol-v2-2026-09`
+
 **Status:** Contract foundation only. A public-release pass still requires the
 consented study, sealed holdout, independent reviews, and launch-candidate
 evidence described here.

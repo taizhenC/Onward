@@ -14,6 +14,11 @@ research evidence held up when we opened the source; B means craft consensus
 from several credible practitioners or research that supports the direction
 but not the specifics; C means our own judgment, marked so it can be tested.
 
+The [source guide and continuation audit](../docs/story-recipe-evidence.md)
+links primary evidence and states the limits of applying it to Onward. Grades
+describe the supporting evidence, not experimental validation of our exact
+wording, passage structure, or numeric targets.
+
 ---
 
 ## 1. What we are making
@@ -249,10 +254,12 @@ Job: the reveal and the handing over. Order, exactly:
    longest sentence in the bridge.
 
 Permission lines that work: "You do not have to know how it ends to keep
-going." "You are allowed to not be ready yet." "You do not have to be early.
-You only have to begin." Permission lines that fail the validator or the
+going." "You are allowed to not be ready yet." "You do not have to be early."
+Permission lines that fail the validator or the
 recipe: "You will get through this." "You should keep going." "If they could
-survive that, you can survive this." *Grade A.*
+survive that, you can survive this." "You only have to begin." The last example
+is an instruction even if a mechanical tone check misses it. *Grade A for
+the supporting research; the wording and order are editorial decisions.*
 
 ## 6. The fold
 

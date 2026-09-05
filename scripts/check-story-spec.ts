@@ -9,6 +9,7 @@ import {
   validateStorySpec,
 } from "../lib/story-spec";
 import type { StorySpec } from "../lib/story-spec-types";
+import { STORY_TRANSPARENCY_TEXTURE_LIMITS } from "../lib/story-transparency-types";
 import {
   STORY_FIRST_PERMISSION_SENTENCE,
   STORY_FIRST_TEXTURE_SENTENCE,
@@ -629,6 +630,39 @@ function checkStoryFirstTreatments(failures: string[]): void {
     if (!mapping) throw new Error("story-first fixture lost its permission mapping");
     return { bridge, mapping };
   };
+
+  // A publishable spec must fit the public artifact it will compose into.
+  const textureAtLength = (length: number) => mutate(storyFirst, (spec) => {
+    spec.arc[1].canonicalText = spec.arc[1].canonicalText.replace(
+      STORY_FIRST_TEXTURE_SENTENCE,
+      `The room ${"a".repeat(length - 10)}.`,
+    );
+  });
+  expectAccepted(failures, "texture at public length limit",
+    textureAtLength(STORY_TRANSPARENCY_TEXTURE_LIMITS.sentenceLength));
+  expectRejected(failures, "texture beyond public length limit",
+    textureAtLength(STORY_TRANSPARENCY_TEXTURE_LIMITS.sentenceLength + 1),
+    true, "public sentence length limit");
+
+  const textureAtCount = (count: number) => mutate(storyFirst, (spec) => {
+    const beat = spec.arc[1];
+    const mapping = textureMapping(spec);
+    beat.canonicalText = beat.canonicalText.replace(
+      STORY_FIRST_TEXTURE_SENTENCE,
+      Array.from({ length: count }, () => STORY_FIRST_TEXTURE_SENTENCE).join(" "),
+    );
+    beat.sentenceEvidence = [
+      beat.sentenceEvidence[0],
+      ...Array.from({ length: count }, (_, index) => ({
+        ...structuredClone(mapping), sentenceIndex: index + 1,
+      })),
+    ];
+  });
+  expectAccepted(failures, "texture at public count limit",
+    textureAtCount(STORY_TRANSPARENCY_TEXTURE_LIMITS.sentencesPerBeat));
+  expectRejected(failures, "texture beyond public count limit",
+    textureAtCount(STORY_TRANSPARENCY_TEXTURE_LIMITS.sentencesPerBeat + 1),
+    true, "public sentence count limit");
 
   expectRejected(
     failures,

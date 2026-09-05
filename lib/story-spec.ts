@@ -13,6 +13,7 @@ import {
   type StorySpecValidation,
 } from "./story-spec-types";
 import { containsDisclosureEcho } from "./story-privacy";
+import { STORY_TRANSPARENCY_TEXTURE_LIMITS } from "./story-transparency-types";
 import {
   READER_PERMISSION_MAX_SENTENCES,
   isReaderBridgeSentence,
@@ -342,6 +343,12 @@ export function validateStorySpec(
     }
     const sentences = splitCanonicalSentences(beat.canonicalText);
     const sentenceCount = sentences.length;
+    const textureCount = beat.sentenceEvidence.filter(
+      (mapping) => mapping.treatment === "dramatized_texture",
+    ).length;
+    if (textureCount > STORY_TRANSPARENCY_TEXTURE_LIMITS.sentencesPerBeat) {
+      errors.push(`arc[${index}] dramatized texture exceeds the public sentence count limit`);
+    }
     const mappedSentenceIndexes = new Set<number>();
     for (const mapping of beat.sentenceEvidence) {
       if (
@@ -413,6 +420,13 @@ export function validateStorySpec(
           errors.push(`arc[${index}] dramatized texture cannot carry a quotation`);
         }
         if (sentence !== undefined) {
+          if (!isBoundedTransparencyText(
+            sentence,
+            1,
+            STORY_TRANSPARENCY_TEXTURE_LIMITS.sentenceLength,
+          )) {
+            errors.push(`arc[${index}] dramatized texture exceeds the public sentence length limit`);
+          }
           if (
             /["\u201c\u201d]/.test(sentence) ||
             extractDirectQuotes(sentence).length > 0

@@ -32,10 +32,16 @@ export type ReaderPermissionRejection =
   | "names_figure";
 
 // Shared with artifact validation of personalized templates: reader-directed
-// copy may never instruct, promise, diagnose, or equate.
+// copy may never instruct, promise, diagnose, or equate. These patterns catch
+// concrete prohibited forms; passing them does not replace editorial review.
 export function containsToneViolation(value: string): boolean {
-  return /\b(?:you (?:will|must|should|need to|have to be)|everything will|guarantee|diagnos(?:e|is)|clinically|cure[ds]?|your life is (?:the same as|exactly like)|because (?:they|this person) did it,? you)\b/i.test(
-    value,
+  return (
+    /\b(?:you (?:(?:only|just) )?(?:will|must|should|need to|have to)|everything will|guarantee|diagnos(?:e|is)|clinically|cure[ds]?|your life is (?:the same as|exactly like)|because (?:they|this person) did it,? you)\b/i.test(
+      value,
+    ) ||
+    /(?:^|[.!?]\s+)(?:(?:please|just)\s+)?(?:keep|take|make|put|give)\s+(?:your|yourself)\b/i.test(
+      value.trim(),
+    )
   );
 }
 

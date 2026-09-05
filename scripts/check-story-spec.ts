@@ -771,19 +771,44 @@ function checkStoryFirstTreatments(failures: string[]): void {
     true,
     "reader-permission treatment cannot reference historical evidence",
   );
-  expectRejected(
-    failures,
-    "reader permission that instructs",
-    mutate(storyFirst, (spec) => {
-      const { bridge } = permissionMapping(spec);
-      bridge.canonicalText = bridge.canonicalText.replace(
-        STORY_FIRST_PERMISSION_SENTENCE,
-        "You should keep going no matter what.",
-      );
-    }),
-    true,
-    "reader-permission sentence is not bounded reader copy (tone)",
-  );
+  for (const instruction of [
+    "You should keep going no matter what.",
+    "You have to keep going.",
+    "You only have to begin.",
+    "Keep your head up.",
+  ]) {
+    expectRejected(
+      failures,
+      `reader permission that instructs: ${instruction}`,
+      mutate(storyFirst, (spec) => {
+        const { bridge } = permissionMapping(spec);
+        bridge.canonicalText = bridge.canonicalText.replace(
+          STORY_FIRST_PERMISSION_SENTENCE,
+          instruction,
+        );
+      }),
+      true,
+      "reader-permission sentence is not bounded reader copy (tone)",
+    );
+  }
+  for (const permission of [
+    "You do not have to know the next step.",
+    "You don't have to know the next step.",
+    "You are allowed to be unsure.",
+    "You can take your time.",
+  ]) {
+    expectAccepted(
+      failures,
+      `non-directive reader permission: ${permission}`,
+      mutate(storyFirst, (spec) => {
+        const { bridge } = permissionMapping(spec);
+        bridge.canonicalText = bridge.canonicalText.replace(
+          STORY_FIRST_PERMISSION_SENTENCE,
+          permission,
+        );
+      }),
+    );
+  }
   expectRejected(
     failures,
     "reader permission without second person",

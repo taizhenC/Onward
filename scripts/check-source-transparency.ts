@@ -168,6 +168,42 @@ function checkDramatizedTextureProjection(
     }
   }
 
+  // Both terminal punctuation and an unpunctuated final sentence are valid
+  // canonical copy. Appending a template must not change their texture split.
+  for (const textureSentence of [
+    STORY_FIRST_TEXTURE_SENTENCE,
+    STORY_FIRST_TEXTURE_SENTENCE.slice(0, -1),
+  ]) {
+    const hybridSpec = structuredClone(storySpec);
+    hybridSpec.arc[1].canonicalText = hybridSpec.arc[1].canonicalText.replace(
+      STORY_FIRST_TEXTURE_SENTENCE,
+      textureSentence,
+    );
+    const hybridWithTexture = composeHybridStoryArtifact({
+      storySpec: hybridSpec,
+      stage: fixture.stage,
+      matchRecipe: recipe,
+      openingCopy: artifact.openingCopy,
+      framing: "partial",
+      resonanceBrief: fixture.resonanceBrief,
+      plan: {
+        schemaVersion: HYBRID_PLAN_SCHEMA_VERSION,
+        transitionRole: "dark_moment",
+        transitionTemplateId: HYBRID_TRANSITION_TEMPLATE_IDS[0],
+        bridgeTemplateId: HYBRID_BRIDGE_TEMPLATE_IDS[0],
+      },
+      attemptCount: 1,
+    });
+    if (
+      !validateStoredStoryArtifact(structuredClone(hybridWithTexture)) ||
+      hybridWithTexture.transparency?.beats[1].hasPersonalizedTransition !== true ||
+      JSON.stringify(hybridWithTexture.transparency.beats[1].dramatizedSentences) !==
+        JSON.stringify([textureSentence])
+    ) {
+      failures.push(`hybrid replay lost texture before appended personalization: ${textureSentence}`);
+    }
+  }
+
   const rendered = renderToStaticMarkup(
     React.createElement(StoryAfterword, {
       sessionId: "texture-render",

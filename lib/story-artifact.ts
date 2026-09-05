@@ -691,9 +691,19 @@ export function validateStoredStoryArtifact(
       // Replay has no mutable StorySpec, but disclosed texture must still be
       // exact sentences in this frozen passage, in order and without inventing
       // extra occurrences. Absent lists preserve pre-texture artifact replay.
-      const sentences = splitCanonicalSentences(beat.text);
+      const texture = transparencyBeat.dramatizedSentences ?? [];
+      // renderHybridBeatText appends a single-paragraph template after this
+      // separator. Preserve that boundary even if canonical prose ends without
+      // punctuation; the template itself is never disclosed as story texture.
+      const templateBoundary = beat.personalization
+        ? beat.text.lastIndexOf("\n\n")
+        : beat.text.length;
+      if (texture.length > 0 && templateBoundary < 0) return null;
+      const sentences = splitCanonicalSentences(
+        beat.text.slice(0, templateBoundary),
+      );
       let previousIndex = -1;
-      for (const sentence of transparencyBeat.dramatizedSentences ?? []) {
+      for (const sentence of texture) {
         const sentenceIndex = sentences.indexOf(
           normalizeText(sentence), previousIndex + 1,
         );

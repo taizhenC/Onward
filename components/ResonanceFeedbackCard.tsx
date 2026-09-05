@@ -425,7 +425,7 @@ export function ResonanceFeedbackCard({
           {state.reason === "historical_concern" ? (
             <p className="text-sm leading-relaxed text-[var(--color-ink-soft)]">
               {historicalReportingAvailable
-                ? "To identify a specific fact or source, use the separate historical concern control in Sources and story notes above."
+                ? "To identify a specific fact or source, use the separate historical concern control in the afterword above."
                 : "This records the concern category. Fact-level reporting is not available for this earlier story record."}
             </p>
           ) : null}

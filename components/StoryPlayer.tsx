@@ -217,7 +217,11 @@ export function StoryPlayer({
       {reachedEnd || phase === "ended" ? (
         <section aria-label="After the story" className="space-y-12">
           <ClosingPause headingRef={captureEndingHeading} />
-          <StoryAfterword sessionId={sessionId} transparency={transparency} />
+          <StoryAfterword
+            sessionId={sessionId}
+            transparency={transparency}
+            figure={outline}
+          />
           {feedbackAvailable ? (
             <ResonanceFeedbackCard
               key={feedbackPresentationKey(initialFeedback)}

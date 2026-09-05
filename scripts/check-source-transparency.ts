@@ -58,7 +58,11 @@ import {
 import { createTelemetryFlowId } from "../lib/telemetry";
 import { APPROVED_PRODUCTION_RECIPE } from "../lib/match-config";
 import type { MatchRecipe } from "../lib/types";
-import { buildPublishedStorySpecFixture } from "./_story-spec-fixtures";
+import {
+  STORY_FIRST_TEXTURE_SENTENCE,
+  buildPublishedStorySpecFixture,
+  buildStoryFirstStorySpecFixture,
+} from "./_story-spec-fixtures";
 
 process.env.PERSISTENCE = "memory";
 process.env.LLM_PROVIDER = "stub";
@@ -89,6 +93,7 @@ async function main(): Promise<void> {
   checkQuoteEvidenceClosure(fixture, failures);
   checkRationalePrivacy(failures);
   checkTamperAndLegacyReplay(fixture, failures);
+  checkDramatizedTextureProjection(fixture, failures);
   await checkHistoricalConcernFlow(failures);
   checkStaticContracts(failures);
 
@@ -108,6 +113,95 @@ async function main(): Promise<void> {
     "PASS owner-scoped bounded reports, including marked legacy facts, are private and idempotent",
   );
   console.log("PASS migration, API, and accessible end-of-story surface contracts");
+  console.log(
+    "PASS dramatized texture is projected sentence-by-sentence, labeled, rendered, and tamper-checked",
+  );
+}
+
+// Story-first (2026-09-03): a passage that carries dramatized texture must say
+// so in its evidence class, list the exact sentences, and render them in the
+// afterword's fold-up; a passage without texture must not carry the key.
+function checkDramatizedTextureProjection(
+  fixture: Fixture,
+  failures: string[],
+): void {
+  const storySpec = buildStoryFirstStorySpecFixture(fixture.stage);
+  const artifact = composeCanonicalStoryArtifact({
+    storySpec,
+    stage: fixture.stage,
+    matchRecipe: recipe,
+    openingCopy: fixture.artifact.openingCopy,
+    framing: "partial",
+    resonanceBrief: fixture.resonanceBrief,
+    now: new Date("2026-09-03T12:00:00.000Z"),
+  });
+  const transparency = artifact.transparency;
+  const darkMoment = transparency?.beats[1];
+  const bridge = transparency?.beats.at(-1);
+  if (
+    !transparency ||
+    darkMoment?.evidenceClass !== "documented_with_texture" ||
+    JSON.stringify(darkMoment.dramatizedSentences) !==
+      JSON.stringify([STORY_FIRST_TEXTURE_SENTENCE]) ||
+    transparency.beats.some(
+      (beat, index) => index !== 1 && "dramatizedSentences" in beat,
+    ) ||
+    bridge?.evidenceClass !== "reader_bridge" ||
+    !validateStoredStoryArtifact(structuredClone(artifact)) ||
+    !validateStoryArtifact(artifact, storySpec, fixture.resonanceBrief).valid
+  ) {
+    failures.push("dramatized texture was not projected as an explicit, exact list");
+    return;
+  }
+
+  const rendered = renderToStaticMarkup(
+    React.createElement(StoryAfterword, {
+      sessionId: "texture-render",
+      transparency,
+      figure: {
+        displayName: fixture.stage.displayName,
+        birthYear: fixture.stage.birthYear,
+        deathYear: fixture.stage.deathYear,
+      },
+    }),
+  );
+  if (
+    !rendered.includes("What we wrote ourselves") ||
+    !rendered.includes(STORY_FIRST_TEXTURE_SENTENCE) ||
+    !rendered.includes("Who this was") ||
+    !rendered.includes(fixture.stage.displayName) ||
+    !rendered.includes("told with scene detail we wrote") ||
+    !rendered.includes("What really happened")
+  ) {
+    failures.push("afterword did not disclose dramatized texture or the figure");
+  }
+
+  const emptied = structuredClone(transparency) as unknown as {
+    beats: Array<Record<string, unknown>>;
+  };
+  emptied.beats[1].dramatizedSentences = [];
+  const relabeled = structuredClone(transparency) as unknown as {
+    beats: Array<Record<string, unknown>>;
+  };
+  delete relabeled.beats[1].dramatizedSentences;
+  const smuggled = structuredClone(transparency) as unknown as {
+    beats: Array<Record<string, unknown>>;
+  };
+  smuggled.beats[0].dramatizedSentences = ["An undeclared line."];
+  const bridgeTexture = structuredClone(transparency) as unknown as {
+    beats: Array<Record<string, unknown>>;
+  };
+  bridgeTexture.beats[bridgeTexture.beats.length - 1].dramatizedSentences = [
+    "A bridge line.",
+  ];
+  if (
+    validateStoredStoryTransparency(emptied) ||
+    validateStoredStoryTransparency(relabeled) ||
+    validateStoredStoryTransparency(smuggled) ||
+    validateStoredStoryTransparency(bridgeTexture)
+  ) {
+    failures.push("dramatized texture projection accepted an empty, missing, undeclared, or bridge list");
+  }
 }
 
 type Fixture = ReturnType<typeof makeFixture>;

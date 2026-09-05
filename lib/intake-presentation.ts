@@ -8,6 +8,7 @@ import {
   isValidIntakeFeeling,
   normalizeIntakeFeeling,
 } from "./intake-constraints";
+import { isNiudaFictionRequest } from "./fiction-request";
 
 export type IntakeField = "age" | "feeling";
 
@@ -118,6 +119,9 @@ function feelingValidationMessage(feelingInput: string): string | null {
   if (intakeFeelingLength(normalized) > INTAKE_MAX_FEELING_LENGTH) {
     return INTAKE_VALIDATION_COPY.feelingTooLong;
   }
+  // An explicit title request needs no invented padding. Historical disclosure
+  // validation stays unchanged; the server resolves this separate mode first.
+  if (isNiudaFictionRequest(normalized)) return null;
   if (
     meaningfulLength < INTAKE_MIN_FEELING_LENGTH ||
     !isValidIntakeFeeling(normalized)

@@ -102,6 +102,13 @@ export async function handleMatchRequest(
     }
   }
 
+  // Explicit entertainment is a separate authored fiction mode, not a match.
+  // Keep it behind crisis/incident/runtime/flow validation, but before Auth:
+  // a public fictional page creates no Owner Story or anonymous account.
+  const { resolveFictionRequest } = await import("@/lib/fiction-request-server");
+  const fictionResponse = resolveFictionRequest(body);
+  if (fictionResponse) return fictionResponse;
+
   // The shared pure parser keeps malformed intake, boundary, and recovery
   // requests out of both authentication and its funnel telemetry. handleIntake
   // repeats this check as a defense for non-route callers.

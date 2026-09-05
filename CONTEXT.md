@@ -97,3 +97,19 @@ authority applies. Every new provider-derived output and durable store must
 name a Retention Class before release.
 
 Avoid: `sensitivity label`. Sensitivity alone does not define a lifecycle.
+
+## Fiction Special
+
+A clearly labeled, authored fictional story requested for entertainment. A
+Fiction Special is neither a historical Curated Reference nor an Owner Story;
+its events and dialogue make no claim to be true.
+
+Avoid: `historical match`, `true story`, or `personalized story`.
+
+## Fiction Request
+
+An explicit request for a particular Fiction Special, rather than a Disclosure
+to be interpreted for emotional similarity. Mentioning or rejecting a name is
+not, by itself, a Fiction Request.
+
+Avoid: `high-confidence match`. Requesting a title establishes no emotional fit.

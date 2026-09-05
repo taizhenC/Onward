@@ -37,6 +37,10 @@
     { "id": "zh-zero-width-explicit", "text": "我想自\u200b杀", "expect": "critical_positive" },
     { "id": "zh-want-die", "text": "我真的想死", "expect": "critical_positive" },
     { "id": "zh-go-die", "text": "我现在想去死", "expect": "critical_positive" },
+    { "id": "zh-preparing-die", "text": "我准备去死", "expect": "critical_positive" },
+    { "id": "zh-traditional-preparing-die", "text": "我準備去死", "expect": "critical_positive" },
+    { "id": "zh-end-life-no-possessive", "text": "我想结束生命", "expect": "critical_positive" },
+    { "id": "zh-traditional-end-life-no-possessive", "text": "我想結束生命", "expect": "critical_positive" },
     { "id": "zh-not-live", "text": "我不想活了", "expect": "critical_positive" },
     { "id": "zh-not-go-on", "text": "我活不下去了", "expect": "critical_positive" },
     { "id": "zh-not-wake", "text": "我不想再醒来", "expect": "critical_positive" },
@@ -67,6 +71,7 @@
     { "id": "zh-dying-laughing", "text": "牛大boy笑死我了", "expect": "negative" },
     { "id": "zh-social-meme", "text": "今天社死了，打游戏红温", "expect": "negative" },
     { "id": "zh-game-death", "text": "我在游戏里又死了", "expect": "negative" },
+    { "id": "zh-end-life-science-class", "text": "我想结束生命科学课的演讲", "expect": "negative" },
     { "id": "zh-negated-suicide", "text": "我没有想自杀", "expect": "context_review" },
     { "id": "zh-worried-friend", "text": "我的朋友想自殺", "expect": "context_review" }
   ]

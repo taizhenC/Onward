@@ -245,7 +245,8 @@ Job: the reveal and the handing over. Order, exactly:
 5. One or two permission lines. Second person, declarative, 3 to 24 words,
    no digits, no quotation marks, no name. They predict nothing, instruct
    nothing, compare nothing, and never mention the reader's particulars. The
-   last line of the story is the shortest sentence in it.
+   last line of the story is short: twelve words at most, and never the
+   longest sentence in the bridge.
 
 Permission lines that work: "You do not have to know how it ends to keep
 going." "You are allowed to not be ready yet." "You do not have to be early.
@@ -316,8 +317,9 @@ Read the draft on a phone, one chunk at a time, before reading it whole.
       next.
 - [ ] Became ends at the episode; one documented hard thing where the record
       has one; no legacy list.
-- [ ] Bridge order is exact; the legacy sentence has no superlative; the
-      permission lines pass the validator; the last line is the shortest.
+- [ ] Bridge order is exact; the legacy sentence has no superlative or list;
+      the permission lines pass the validator; the last line is twelve words
+      at most.
 - [ ] Mean sentence length under 16 per passage; nothing over 28; a
       fourteen-year-old could follow every word; no idioms.
 - [ ] No banned intensifiers, no announced suspense, no provenance clause in

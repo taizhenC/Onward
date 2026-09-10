@@ -1,0 +1,1129 @@
+{
+  "storySpecId": "christie:1926-1928-the-year-that-broke:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "christie",
+  "stageId": "1926-1928-the-year-that-broke",
+  "version": 1,
+  "status": "draft",
+  "entities": [
+    {
+      "kind": "person",
+      "value": "Agatha Christie",
+      "aliases": [
+        "Christie"
+      ],
+      "entityId": "entity-subject"
+    },
+    {
+      "kind": "date",
+      "value": "1890",
+      "aliases": [],
+      "entityId": "entity-birth-year"
+    },
+    {
+      "kind": "date",
+      "value": "1976",
+      "aliases": [],
+      "entityId": "entity-death-year"
+    }
+  ],
+  "dramatizationLimits": [
+    "Only inert, explicitly mapped texture within an attested moment; no invented historical actions, motives, quotations, objects, weather, or outcomes.",
+    "Memoir and interview recollections remain qualified in source notes; do not turn remembered speech into verbatim scene dialogue.",
+    "Do not convert temporal sequence into a claim that grief, disability, rejection, travel, or work caused later achievement."
+  ],
+  "avoidRules": [
+    "Do not invent people, places, dates, dialogue, gestures, weather, or causality.",
+    "Do not quote or paraphrase the reader's disclosure.",
+    "Do not promise that the reader will succeed or that suffering creates greatness.",
+    "Keep identity, calendar years, named locations, and institutions out of the story until the bridge.",
+    "Do not remove the unresolved historical or craft holds recorded in the companion evidence note."
+  ],
+  "episode": {
+    "ageMin": 36,
+    "ageMax": 38,
+    "throughLine": "A writer struggled to dictate a book she needed to finish, accepted help without finding joy in the work, and later changed her travel plans to try a route she chose."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief",
+      "pregnancy_or_parenthood"
+    ],
+    "contentNote": "Includes bereavement, the end of a marriage, financial pressure, and difficulty working while parenting."
+  },
+  "facts": [
+    {
+      "factId": "a01",
+      "statement": "Agatha Christie was born September 15, 1890; she was thirty-six in February 1927 and thirty-eight in autumn 1928.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "The Early Years, birth date September 15, 1890, with episode dates from estate 2024 reading guide and 1928 travel account."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "a08",
+      "statement": "Christie's mother died in April 1926; her marriage ended in divorce in 1928.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "A Difficult Period, mother death and divorce paragraphs; no inferred explanation of disappearance is used."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "a02",
+      "statement": "In February 1927 Christie travelled to the Canary Islands with her daughter Rosalind and secretary/governess Carlo Fisher while separated from her husband.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-2024",
+          "scope": "bounded",
+          "locator": "March selection paragraph beginning This book was a challenging one; exact month/year and travelling companions."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a03",
+      "statement": "Christie recalled attempting to dictate her novel to Carlo in the hotel garden at Orotava, Tenerife. After telling Rosalind not to interrupt, she looked at Carlo's ready pencil and struggled to think before beginning hesitantly.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, paragraph beginning Look here, Rosalind and next paragraph through Finally, hesitantly, I began. Direct text re-read 2026-09-09; this initial difficulty precedes the interruptions."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a05",
+      "statement": "Christie described a pre-existing lack of joy in this writing. She had already worked out the plot, partly from an earlier story, but could not visualize scenes or make characters feel alive; she needed another book and its income.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, retrospective explanation beginning To begin with, I had no joy in writing through necessity to write another book and make some money. This explains the difficulty already present, not a new state caused by Rosalind's gaze. The later faltering is separately a17."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a04",
+      "statement": "Christie told her daughter not to interrupt for an hour, began dictating hesitantly, and was interrupted after nine minutes; her daughter returned and asked to stand nearby.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, dialogue and narrative from Look here, Rosalind through I suppose you can stand there."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a06",
+      "statement": "Christie resumed dictation after the first interruption, then allowed her returning daughter to stand nearby and started again; this preceded the faltering under her daughter's gaze.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, I resumed my hesitant dictation and I suppose you can stand there / And I started again."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a17",
+      "statement": "After allowing Rosalind to stand nearby and starting again, Christie felt even more strongly that her dictation was foolish; she faltered, stammered, hesitated and repeated herself.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, But Rosalind's eye upon me through I faltered, stammered, hesitated, and repeated myself. This follows permission and resumption; no further restart is documented in the paragraph."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a07",
+      "statement": "Christie completed and sent The Mystery of the Blue Train to her publishers despite disliking it; she recalled sales comparable to her previous book.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF pp. 320–321, concluding paragraph of writing account. Publication in 1928 separately confirmed by estate work record."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a09",
+      "statement": "Before the 1928 trip, Christie met her husband by arrangement, asked whether he would return, accepted his refusal, and went to her lawyers.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF pp. 322–323, section VII beginning My plan of life henceforward and ending Things were put in train."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a10",
+      "statement": "With her daughter at school and Carlo and Punkie available to visit her, Christie planned a trip to the West Indies and booked tickets.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 323, paragraph after Things were put in train through It was all arranged."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a11",
+      "statement": "Two days before her planned departure, Christie heard Commander Howe and his wife discuss Baghdad at dinner; she learned she could travel by train.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 323, dinner account; also corroborated by the estate's 2017 travel article."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a12",
+      "statement": "The next morning she cancelled her West Indies tickets and booked a rail route via Istanbul and Damascus toward Baghdad; visas took several days.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF pp. 323–324, Next morning I rushed round to Cook's through four or five days to get the visas; estate travel account corroborates changed booking."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a13",
+      "statement": "Christie felt excited but also reluctant to travel alone; she wanted to discover whether she could act without depending entirely on other people. She departed five days later.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 324, entire paragraph beginning All by yourself through Perhaps I was always going to be like that."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a14",
+      "statement": "On the train Christie shared a compartment with a woman who urged her to stay with her in Baghdad; Christie kept her plans loose, thanked her, and continued separately after they parted.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF pp. 325–326, Part VIII Second Spring, first encounter through We parted on the most friendly terms."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a15",
+      "statement": "Christie enjoyed looking from the train at mountain gorges and people on platforms, made acquaintances, and continued on her route.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 326, paragraph beginning The journey was all that I had hoped for through other acquaintances; no colonial characterizations are adopted."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a16",
+      "statement": "Agatha Christie became a detective novelist and playwright.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "Opening career summary: detective novels, short stories and The Mousetrap."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "In a hotel garden, a woman tried to work on a novel with her secretary. She was thirty-six. The secretary had a pencil ready. Her daughter was also staying at the hotel.\n\nShe had brought them away with her while she was separated from her husband. Her mother had died the previous year. Now she needed to write another book and earn money.\n\nShe told her daughter that the next hour was work time. She and the secretary were going to be busy. The child went away.",
+      "requiredFactIds": [
+        "a03",
+        "a01",
+        "a02",
+        "a08",
+        "a05",
+        "a04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a01",
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a02",
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a08",
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One remembered hotel-garden session before dictation begins. PDF p. 320 supplies the ready pencil, the work-time request and Rosalind's departure. Death and separation are brief verified context, not a diagnosis or an explanation invented for the writing block. Dates and names stay in the fold. Independent-check correction 2026-09-09: removed the woman's unsupported sitting posture; the source expressly seats the secretary, not the author."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She looked at her secretary and struggled to think of the words. The plot was already worked out. Part of it came from a story she had written before. She knew where the story was going, but she could not see its scenes. The characters would not come alive.\n\nThere was no pleasure in the work. She needed the money another book could bring. Having a plot and needing an income did not make the writing come easily. She was trying to begin.",
+      "requiredFactIds": [
+        "a03",
+        "a05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03",
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The low point is the initial effort before she begins, not the later faltering after permission to stay. PDF p. 320 explicitly places prolonged thinking before Finally, hesitantly, I began. Its subsequent To begin with paragraph describes pre-existing lack of joy, scene/character difficulty and financial need; these are not reassigned as effects of the child. No gesture, duration, resolution or new insight is added. This shorter beat is not padded to the word target. Independent-check correction 2026-09-09: removed the repeated unsupported sitting posture from the final sentence."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She began to dictate, hesitantly. After a few minutes she noticed her daughter across the path. The child wanted to know whether half an hour had passed. Only nine minutes had gone by.\n\nShe sent her daughter away and resumed the dictation. Then the child came back and asked to stand nearby without interrupting. She agreed, unwillingly, and started again.\n\nWith her daughter watching, the words sounded even more foolish to her. She faltered, hesitated and repeated herself. The secretary was still the person taking her dictation. The work was still difficult.",
+      "requiredFactIds": [
+        "a03",
+        "a04",
+        "a06",
+        "a17",
+        "a05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03",
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03",
+            "a17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05",
+            "a17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Forward sequence from the actual PDF p. 320: hesitant start; interruption at nine minutes; resumption; second request; reluctant permission and another start; faltering under the child's gaze. This is the one reported sequence, not a new restart after its final faltering. No extra writing session, improvement or present-tense inner resolve is invented. Splitting the original a05 into pre-existing difficulty (a05) and later faltering (a17) keeps the mapping honest."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "She finished most of the novel during the stay. The book she disliked was completed and sent to the publisher. It appeared the following year. Its sales were comparable to those of her previous book, but that did not make her proud of it.\n\nThe separation also continued. She met her husband by arrangement and asked whether he could return to her and their daughter. He would not. She went to her lawyers, and the marriage ended.\n\nWith her daughter at school and trusted people available to visit, she made a plan for herself. She booked a holiday somewhere warm. The arrangements were settled before another possibility appeared.",
+      "requiredFactIds": [
+        "a02",
+        "a07",
+        "a09",
+        "a08",
+        "a10",
+        "a11"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a02",
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a02",
+            "a09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a08",
+            "a09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a10",
+            "a11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed 1927–1928, not a claim that completing the book repaired the marriage or erased grief. Sales comparison is retrospective, not independently audited. The estate work record establishes 1928 publication. Divorce and arrangements for the daughter are retained; private medical history and unexplained disappearance are not dramatized."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "At thirty-eight, she went to the travel agent and cancelled the tickets she had already booked. She asked for a different route. The previous evening, at dinner, she had sat beside a man recently returned from a distant city. He and his wife had described it with enthusiasm.\n\nShe had assumed she would have to travel there by sea. They had told her she could go by train. Now she booked tickets and reservations for the new route. The old holiday plan was gone.\n\nThe visas would take several days to arrange. There were preparations to finish before she could leave.",
+      "requiredFactIds": [
+        "a01",
+        "a12",
+        "a11",
+        "a10"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a01",
+            "a12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a10",
+            "a12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The foreground turn is the next-morning rebooking at the travel agent; the previous dinner is explicitly past-perfect background supplying the documented trigger, not a second foreground scene. PDF pp. 323–324 and the estate's 2017 memoir extracts give the cancellation, route and visa wait. Departure and mixed feelings move to became. No cure or life-changing epiphany is added."
+    },
+    {
+      "role": "became",
+      "canonicalText": "She was excited, but reluctant to go alone. She wanted to discover whether she could manage without depending entirely on other people. Five days after changing her plans, she left.\n\nIn the shared train compartment, another passenger wanted to take charge of her arrangements. The woman offered her a place to stay and urged her to abandon parts of her route. She thanked her, but kept her plans unsettled. They parted on friendly terms when the other passenger got off.\n\nShe continued. Outside were mountain gorges and people waiting on station platforms. She met other passengers and talked with them along the way. There was company without a fixed companion making every choice.\n\nShe was travelling on the route she had chosen. The book had been finished; the marriage had ended. She enjoyed watching from the train.",
+      "requiredFactIds": [
+        "a13",
+        "a14",
+        "a15",
+        "a12",
+        "a07",
+        "a08"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a14",
+            "a15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a12",
+            "a15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07",
+            "a08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed departure and early portion of the autumn 1928 rail trip (age thirty-eight), based on PDF p. 324 and Part VIII's opening encounter/views. Mixed feelings precede departure; no claim that it was her first trip anywhere alone. The final view follows her own account. The book and divorce remain completed facts, not a claim that travel cured distress. The two-aim episode and owning-edition collation holds remain."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Agatha Christie.\n\nShe became a novelist and playwright known for stories that asked readers to puzzle out a mystery.\n\nYour life is not theirs.\nBut a piece of this story may still sit beside you.\n\nYou are allowed to have mixed feelings about something you have managed to finish.\nYou do not owe it a cheerful ending.",
+      "requiredFactIds": [
+        "a01",
+        "a16"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "One identity reveal and one legacy sentence. Fixed distance copy makes no equation between the reader and the author. Permission does not recommend travel, divorce, working through distress, or a particular recovery story."
+    }
+  ],
+  "interpretations": [],
+  "sources": [
+    {
+      "sourceId": "src-autobiography",
+      "citation": "Agatha Christie, An Autobiography (1977), accessible reflowed PDF hosted by NIBM e-library.",
+      "locator": "PDF pp. 320–327 (one-based PDF pages), dictation in Tenerife; completing The Mystery of the Blue Train; final discussion with Archie; changed booking; Part VIII, Second Spring. Printed edition pagination not verified. Page 320 and pp. 323–326 re-read directly on 2026-09-09; still a non-owning reflowed copy, not an original-edition collation.",
+      "url": "https://nibmehub.com/opac-service/pdf/read/agahta%20christie%20_%20an%20autobiography.pdf"
+    },
+    {
+      "sourceId": "src-estate-life",
+      "citation": "Agatha Christie Limited / Christie Archive Trust, About Agatha Christie.",
+      "locator": "Early Years birth date; A Difficult Period; The Orient Express and the Middle East. The broad page contains an erroneous 1928 Canary Islands placement and is not used for that date.",
+      "url": "https://www.agathachristie.com/about-christie"
+    },
+    {
+      "sourceId": "src-estate-2024",
+      "citation": "Agatha Christie Limited, Read Christie 2024, March selection: The Mystery of the Blue Train.",
+      "locator": "Our March choice, paragraphs on February 1927 departure and hotel-garden writing; explicitly references Christie's autobiography.",
+      "url": "https://www.agathachristie.com/news/2024/read-christie-2024"
+    },
+    {
+      "sourceId": "src-estate-travel",
+      "citation": "Agatha Christie Limited, Christie's Travels on the Orient Express, October 3, 2017.",
+      "locator": "Opening 1928 account through five days later departure; autobiography excerpts. Later 1931 letter is outside this episode.",
+      "url": "https://www.agathachristie.com/en/news/2017/christies-travels-on-the-orient-express"
+    },
+    {
+      "sourceId": "src-book",
+      "citation": "Agatha Christie Limited, The Mystery of the Blue Train work record.",
+      "locator": "Original publication year, More about this story, and dedication information.",
+      "url": "https://www.agathachristie.com/stories/the-mystery-of-the-blue-train"
+    }
+  ],
+  "review": {}
+}

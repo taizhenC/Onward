@@ -1,5 +1,11 @@
 # Reviewed wave 2 — publication decision pending
 
+**Later September 10 update:** the owner selected publication for stories that
+meet the standards and rewrites for the others. Andersen, Banting and Child
+are now database-published; see the [current release record](../2026-09-10-wave-2-publication.md)
+for worker-refresh status. The original assessment below and all nine candidate
+bytes remain the reviewed snapshot, not a claim that the other six are cleared.
+
 September 10, 2026. The owner (`taizhenC`) confirmed reading the September 9
 packet and requested a PR and production publication of complete stories.
 That review is acknowledged; it is not being requested again for unchanged

@@ -1,0 +1,1028 @@
+{
+  "storySpecId": "carver:1885-1891-turned-away-to-the-sod-house:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "carver",
+  "stageId": "1885-1891-turned-away-to-the-sod-house",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 19,
+    "ageMax": 27,
+    "throughLine": "Refused college admission because he was Black, he earned a living through laundry, farming and cooking; friends helped him resume schooling, and art study led toward agriculture."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination"
+    ],
+    "contentNote": "Includes racist exclusion from college, severe poverty and periods without food; no graphic violence."
+  },
+  "facts": [
+    {
+      "factId": "fact-001",
+      "statement": "George Washington Carver's birth date is uncertain; the working chronology in Gart uses circa 1865 and places him about twenty at Highland and in his mid-twenties at Simpson and Iowa Agricultural College.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "Executive Summary, p. vii (working estimate circa 1865); pp. 71–72, 80–83 (approximate ages). This is not a precise birth record."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-002",
+      "statement": "Carver's autobiographical fragment says he studied shorthand and typewriting and sought entry to Highland because he wanted more education, but was refused because of his race.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraphs beginning 'From here to Kans. City' and 'I was here to have a position'."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-003",
+      "statement": "In A Brief Sketch, c.1922, Carver recalled that he was admitted to Highland, went there, and was refused by the president upon being seen to be Black.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "p. 72 (PDF p. 89), quoted A Brief Sketch passage and note 185. The report notes no admission file was located."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-004",
+      "statement": "In the same recollection Carver said he had spent nearly all his money and had to open a laundry in Highland.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "p. 72, quoted A Brief Sketch passage: last sentence; note 185."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-005",
+      "statement": "Carver moved to western Kansas, worked, and homesteaded land; his autobiographical fragment says he saw there the subjects of his later Yucca and Cactus painting.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'I went from here to the Western part of Kans'."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-006",
+      "statement": "Carver's sworn June 21, 1888 affidavit states that he settled the claim April 20, 1887 after building a house, continued to live there and had broken and cultivated seventeen acres.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-affidavit-1888",
+          "scope": "exact",
+          "locator": "Complete transcript, first two paragraphs, signature and June 21, 1888 jurat."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-007",
+      "statement": "Contemporary homestead testimony describes Carver's small house with plastered walls and a roof of boards, tar paper and sod; it contained a stove, bed, cupboard, chairs, table, wash tub and iron.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "pp. 75–76, description and notes 214–215, Homestead, Pre-Emption and Commutation Proof, Testimony of Witness, June 21, 1888."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-008",
+      "statement": "The 1888 homestead records describe cultivated land, a garden, hens and planted trees. George H. Steeley testified that he saw Carver most weeks, sometimes daily, and that he had acted in good faith.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "p. 76, records and witness quotation, notes 216–218."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-009",
+      "statement": "Carver later moved to Winterset and worked as head cook in a hotel.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'I went from here'."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-010",
+      "statement": "In A Brief Sketch, Carver recalled sitting at the rear of a white church one evening; the next day a man visited him at the hotel and said his wife wanted to see him.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "p. 78, indented quotation from A Brief Sketch, note 5 (c.1922 manuscript citation given on p. 77)."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-011",
+      "statement": "Carver recalled visiting the Milholland home, being surprised to learn that his singing had attracted Helen, singing several pieces for her, and agreeing to visit at least weekly.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "p. 78, same indented quotation from A Brief Sketch."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-012",
+      "statement": "Carver called the Milhollands warm and helpful friends; his c.1897 fragment credits them with insisting on art school and choosing Simpson College.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'I went from here', last sentence."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-013",
+      "statement": "Carver remembered taking about a year to save for travel and school fees before attending Simpson.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "p. 79, statement attributed to A Brief Sketch, note 13."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-014",
+      "statement": "At Simpson Carver tried to support himself with laundry work and lived very cheaply; his c.1897 fragment describes about a month of cornmeal and beef suet, sometimes without either, and reluctance to tell strangers.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'The opening of school'."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-015",
+      "statement": "Carver remembered that when word spread he needed laundry work, faculty, students and townspeople gave substantial help; he named Etta Budd, the Liston family and the Field family.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraphs beginning 'The news soon spread' and 'But I wish to especially mention'."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-016",
+      "statement": "Carver attended Simpson in 1890–91, studied art and piano, and transferred to Iowa Agricultural College in 1891 after Etta Budd encouraged botany.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-simpson-collection",
+          "scope": "exact",
+          "locator": "About Carver paragraph."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-017",
+      "statement": "In a July 1940 interview Carver recalled that Budd advised studying agriculture to provide greater service to his people; the exact conversation sequence is not established.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "p. 83, quoted statement; note 41 cites John O. Gross, Interview with Doctor Carver, July 17, 1940, p. 3."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-018",
+      "statement": "George Washington Carver became an agricultural scientist and teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "Executive Summary p. vii; Chapter Five, Higher Education and Life as a Teacher."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "George Washington Carver",
+      "aliases": [
+        "George W. Carver",
+        "Carver"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He remembered arriving at the college when he was about twenty. He had already been accepted. He had learned skills for office work, but wanted to study more.\n\nThen the college president saw him. The admission was withdrawn. He was Black, and the college would not receive him. The earlier acceptance no longer held.\n\nHe had come to be a student. He would not study at this college.",
+      "requiredFactIds": [
+        "fact-001",
+        "fact-003",
+        "fact-002"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001",
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002",
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05; independent-check refinement 2026-09-09. One encounter reported in Carver's c.1922 recollection, not an independently preserved admission letter. A single opening memory cue qualifies the retrospective episode without repeated provenance clauses. The unverified standing posture stays removed. No luggage, doorway, facial expression or quoted administrator speech. Approximate age only; the scene's sparse evidence and phone-reading limitations remain held."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He had spent nearly all his money. Being turned away did not give it back. He had to find work in the town where he had expected to study.\n\nThe office skills he had learned had not been the end of what he wanted. He had left that course of work to seek more education. Now the college had refused him because of his race.\n\nThe admission he had counted on was gone. He needed work.",
+      "requiredFactIds": [
+        "fact-004",
+        "fact-003",
+        "fact-002"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003",
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003",
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002",
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003",
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05. No invented despair monologue or claim that no helpers/home existed. This is a short factual aftermath, not a new room scene; dark-moment craft hold remains. Refinement 2026-09-09: expenditure is no longer attributed specifically to the journey; the cited sentence gives depletion, not an expense breakdown."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He opened a laundry in the college town. He needed money, and this was the work he took up.\n\nHe had come to study. Now he was washing clothes.",
+      "requiredFactIds": [
+        "fact-004",
+        "fact-002",
+        "fact-003"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002",
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-004"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Refinement 2026-09-09. Cut generic instructions about washing and repetitive contrasts; no new laundry session or customer was invented to replace them. All four sentences map to Carver's remembered action. The actual opening session is still unavailable: short response and craft HOLD."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He later moved farther west and worked on a claim of his own. He built a house and moved into it. Inside were a bed, a stove, a cupboard, a table and chairs. He also had a wash tub and an iron. The roof had boards and earth over it.\n\nHe broke ground and planted. By the following summer he had cultivated seventeen acres. There was a garden, hens and trees. A neighbour gave evidence in support of his claim. The man had seen him most weeks, sometimes every day.\n\nHe also found plants there that he would later paint. But he had not entered college. He moved again and became a cook in a hotel. One evening, he sat at the back of a church. The next day, a man came to the hotel with an invitation. His wife wanted to meet him.",
+      "requiredFactIds": [
+        "fact-005",
+        "fact-006",
+        "fact-007",
+        "fact-008",
+        "fact-003",
+        "fact-016",
+        "fact-009",
+        "fact-010"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-005",
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006",
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-005"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003",
+            "fact-006",
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-009"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [],
+          "sentenceIndex": 13
+        },
+        {
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [],
+          "sentenceIndex": 14
+        },
+        {
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [],
+          "sentenceIndex": 15
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05. Compressed western Kansas years. House/property details come from the 1888 records as transcribed or summarized in Gart, not invented homesteader isolation. Settlement 1887 is distinct from claim improvements begun in 1886. No claim of selling the land in 1889. Refinement 2026-09-09: the church/hotel setup moved here so the turn itself can stay at the home. The source gives evening followed by next day; no departure motive is inferred. Removed editorial isolation commentary while retaining the witness's actual contact."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "He went to the couple's house. There, the woman told him why she had asked to see him. His singing at church had attracted her. He was surprised.\n\nHe sang several pieces for her. He agreed to visit the house every week.",
+      "requiredFactIds": [
+        "fact-011"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Refinement 2026-09-09. The turn now stays in one documented encounter at the Milholland home; the church/hotel setup is in struggle. Surprise, singing and agreement are all in the c.1922 passage quoted by Gart, printed p. 78. No song title, furniture, host gesture or same-day college offer. Future friendship/help stays in became. Still mediated late testimony, not original manuscript collation; short turning-point craft HOLD remains. Independent-check correction 2026-09-09: removed the future-tense echo; the documented weekly agreement is now the ending."
+    },
+    {
+      "role": "became",
+      "canonicalText": "His new friends pressed him to go to art school. He saved for about a year before he could go. Once there, he was again trying to support himself by washing clothes. At first, he sometimes had no food. He remembered being too reluctant to tell strangers how little he had.\n\nWhen word spread that he needed laundry work, people helped. Teachers, students and people in town were among them. He learned art and music. His art teacher encouraged him to study plants as well as paint them.\n\nThe next year he entered another college to study agriculture. He later named the families and teacher whose help had brought him there. At this college, he was a student.",
+      "requiredFactIds": [
+        "fact-012",
+        "fact-013",
+        "fact-014",
+        "fact-015",
+        "fact-016",
+        "fact-017"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-012"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016",
+            "fact-017"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05. Ends at the 1891 transition, not a peanut-invention or philanthropy legend. No claim that admission ended racism. c.1897 hunger estimate differs from c.1922 one-week account; no exact duration appears in prose."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was George Washington Carver.\n\nHe became a scientist who studied agriculture and taught others.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou may need help without losing your part in your own life. You are allowed to need people.",
+      "requiredFactIds": [
+        "fact-001",
+        "fact-018"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-018"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Research continuation 2026-09-05. Fixed distance then bounded permission; does not equate the reader's experience with racist exclusion or promise that help will arrive."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented administrator dialogue, appearance, luggage, solitary cabin thoughts or decision-making scene.",
+    "Keep Carver's late recollections probable; neither the original admission file nor the c.1922 manuscript was independently opened.",
+    "Inert texture may describe the attested laundry work, not invent particular customers, weather or materials.",
+    "Do not compress the Milholland meeting and the later school plan into the same conversation."
+  ],
+  "avoidRules": [
+    "Do not assert a precise birth date or imply the entire 1885–1891 episode fits ages twenty to twenty-six.",
+    "Do not confuse 1886 claim improvements with 1887 settlement.",
+    "Do not erase Black or white helpers or claim that no home existed behind him.",
+    "Do not say he sold the claim in 1889; do not turn default/loss into a voluntary sale.",
+    "Do not credit peanut-butter invention or claim universal acclaim.",
+    "Do not import the unsourced internet 'June 1891 Etta Budd letter'."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-fragment-c1897",
+      "citation": "Carver, George W. Autobiographical fragment, 1897 or thereabouts, written for Mrs. W. A. Liston and Miss Etta M. Budd. National Park Service transcription with explicit warning that the recollections are not definitive.",
+      "url": "https://www.nps.gov/gwca/learn/historyculture/index.htm",
+      "locator": "Paragraphs beginning 'I was here to have a position', 'I went from here', and 'The opening of school' through the thanks to helpers."
+    },
+    {
+      "sourceId": "source-affidavit-1888",
+      "citation": "George W. Carver. Affidavit Required of Claimant, June 21, 1888. Cash Files, 1875–1905; Records of the Bureau of Land Management, RG 49; National Archives Identifier 1656519. DocsTeach transcription.",
+      "url": "https://docsteach.org/document/affidavit-george-w-carver/",
+      "locator": "Complete sworn statement: settlement April 20, 1887, house built before settlement, seventeen cultivated acres; signature and jurat. Reopened 2026-09-09: complete DocsTeach transcription and cropped image showing signature/jurat; the crop does not independently verify all body handwriting."
+    },
+    {
+      "sourceId": "source-gart-primary-extracts",
+      "citation": "Gart, Jason H. He Shall Direct Thy Paths: The Early Life of George W. Carver. Historic Resource Study, National Park Service, 2014. Used for specified quoted primary passages and archival-document summaries; original manuscripts not independently opened. Official GovInfo copy reopened 2026-09-09.",
+      "url": "https://www.govinfo.gov/content/pkg/GOVPUB-I29-PURL-gpo236603/pdf/GOVPUB-I29-PURL-gpo236603.pdf",
+      "locator": "Printed pp. 71–83: c.1922 A Brief Sketch; 1888 homestead/witness records; quoted recollection of the Milholland meeting; 1938 Simpson credit record; July 17, 1940 Carver interview."
+    },
+    {
+      "sourceId": "source-simpson-collection",
+      "citation": "Simpson College, Dunn Library Archives and Special Collections. George Washington Carver Collection. Institutional account of its former student, consulted only for attendance and the move toward botany.",
+      "url": "https://www.simpson.edu/academics-programs/dunn-library/archives-special-collections/george-washington-carver-collection/",
+      "locator": "About Carver paragraph: art/piano in 1890–91, Etta Budd and transfer to Iowa Agricultural College. The page's birth and exposition timeline entries are not relied on."
+    }
+  ],
+  "review": {}
+}

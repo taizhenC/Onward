@@ -1,0 +1,1012 @@
+{
+  "storySpecId": "bronte_c:1846-1847-two-copies:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "bronte_c",
+  "stageId": "1846-1847-two-copies",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 31,
+    "ageMax": 31,
+    "startDate": "1847-06-16",
+    "throughLine": "After a poorly selling poetry book and repeated novel refusals, she submitted her first novel once more; a considerate refusal invited the second book already underway."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [],
+    "contentNote": "Repeated publication refusals, poor sales and remembered despair; no medical scene."
+  },
+  "facts": [
+    {
+      "factId": "fact-001",
+      "statement": "Charlotte Brontë was thirty-one during the June–November 1847 publication effort.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter II, letter of March 24, 1847: 'I shall be thirty-one next birthday'; October 19, 1847 letter."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-002",
+      "statement": "Charlotte and her sisters selected poems for publication under the ambiguous names Currer, Ellis and Acton Bell, concealing their gender because they expected prejudice against women writers.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-notice-1850",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'We agreed to arrange a small selection of the poems' and explanation of ambiguous names."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-008",
+      "statement": "Gaskell reports that Charlotte began Jane Eyre during the anxious Manchester stay while The Professor continued circulating, and that the new novel was only at its beginning when she returned home.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter I, paragraphs beginning 'But she had the heart' and 'This is all, I believe'; explicit prior attribution to Charlotte."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-009",
+      "statement": "Charlotte told Gaskell that she could not always write: sometimes weeks or months passed without an addition to a story.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter I, paragraph beginning 'She said, that it was not every day'."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-010",
+      "statement": "Charlotte's June 16, 1847 letter to De Quincey reported only two copies of the poetry volume sold in a year, and offered a presentation copy in thanks for his writing.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-shorter-1896",
+          "scope": "exact",
+          "locator": "p. 330, complete letter to Thomas De Quincey, June 16, 1847."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-011",
+      "statement": "Charlotte recalled that the sisters' novels circulated for about a year and a half; her sisters found a publisher on unfavourable terms while her first novel remained rejected.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-notice-1850",
+          "scope": "exact",
+          "locator": "Paragraphs beginning 'Ill-success failed to crush us' and 'At last Wuthering Heights and Agnes Grey were accepted'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-021",
+      "statement": "In her 1850 Notice, Brontë remembered despair after her first novel's repeated rejection and making the Smith, Elder submission with little hope.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-notice-1850",
+          "scope": "bounded",
+          "locator": "Consecutive paragraphs beginning At last Wuthering Heights and Agnes Grey were accepted and As a forlorn hope; the remembered emotional state is expressly attached to the further submission, not the 1846 operation."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-012",
+      "statement": "George Smith told Gaskell that The Professor arrived in a reused brown-paper parcel with previous publishers' addresses crossed out but still legible.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter II, paragraph beginning 'Mr. Smith has told me a little circumstance'."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-013",
+      "statement": "Charlotte's July 15, 1847 letter submitted The Professor to Smith, Elder; her August 2 follow-up asked whether it had arrived and enclosed an addressed reply cover.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter II, letters headed July 15, 1847 and August 2, 1847."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-014",
+      "statement": "Charlotte remembered opening Smith, Elder's response expecting two dismissive lines and instead finding two pages; she read the letter trembling.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-notice-1850",
+          "scope": "exact",
+          "locator": "Paragraphs beginning 'As a forlorn hope' and containing 'She read it trembling'."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-015",
+      "statement": "That response rejected The Professor for business reasons but discussed strengths and weaknesses courteously and offered careful attention to a three-volume work; Charlotte said the rejection cheered her.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-notice-1850",
+          "scope": "exact",
+          "locator": "Paragraph containing 'She read it trembling'."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-022",
+      "statement": "On August 6, 1847, Brontë proposed publication of The Professor followed by her nearly finished second novel and asked Smith, Elder for its judgment.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "bounded",
+          "locator": "Chapter II, reply introduced Four days later, following August 2, 1847; full letter begins Your objection to the want of varied interest and ends ask your judgment on this plan."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-016",
+      "statement": "Charlotte was already nearing completion of Jane Eyre before that invitation; her August 24, 1847 letter sent it to Smith, Elder and offered to repay carriage because she could not prepay locally.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter II, reply four days after August 2 and letter headed August 24."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-017",
+      "statement": "On October 19, 1847 Charlotte acknowledged receiving six published copies of Jane Eyre that morning, praised the paper, type and binding, and said she awaited press and public judgment.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter II, letter headed October 19, 1847."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-018",
+      "statement": "Charlotte found early notices qualified rather than uniformly glowing; on November 13 she worried that unfavourable notices could harm demand.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter II, letters of October 26 and November 13, 1847."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-019",
+      "statement": "Charlotte Brontë wrote Jane Eyre.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gaskell-v2",
+          "scope": "exact",
+          "locator": "Chapter II, Charlotte's August 24 and October 19, 1847 letters."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Charlotte Brontë",
+      "aliases": [
+        "Brontë",
+        "Currer Bell"
+      ]
+    },
+    {
+      "entityId": "entity-work",
+      "kind": "work",
+      "value": "Jane Eyre",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was thirty-one, writing to an author whose books had given her pleasure. Her own book had been out for a year. It contained poems by her and her sisters. Only two copies had sold. She put that number in the letter.\n\nThe names on the cover did not disclose that the poets were women. She and her sisters had chosen them because they expected prejudice against women who wrote. She offered the author a copy in thanks for his writing.",
+      "requiredFactIds": [
+        "fact-001",
+        "fact-010",
+        "fact-002"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001",
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The June 16, 1847 letter to De Quincey supplies the opening action and two-copy count; the 1850 Notice supplies only prior naming context. No invented room, gesture or reply. Age follows the dated 1847 correspondence. The offer is not claimed to have changed the book's sales."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Her first novel still had no publisher. She remembered making the next submission with little hope. The refusals had offered neither a place for the book nor acknowledgment that it had merit. Despair had begun to reach her.\n\nHer sisters' novels had been accepted, although the terms were poor. Her manuscript was going out again in old brown paper. The addresses of earlier publishers had been crossed out. They were still readable.",
+      "requiredFactIds": [
+        "fact-011",
+        "fact-021",
+        "fact-012",
+        "fact-013"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-012",
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-012"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-012"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Newly used primary emotional evidence: the 1850 Notice's paragraph beginning At last, immediately followed by the forlorn-hope Smith, Elder submission. This is her later remembered state at that attempt, not an invented reaction on the 1846 surgery day. George Smith's separately attributed wrapper recollection supplies the physical object; no envelope-opening, posture, tears or private thought is invented. Independent review correction: little hope does not claim she had resolved never to submit again."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She wrote a letter to the new publisher. She asked whether the firm approved of the novel and could undertake to publish it soon. The request was brief. She gave the address for an answer.\n\nIt directed the publisher to her pen name, in care of her real name at home. It was the name already printed on the poems. She sent the manuscript with the letter.",
+      "requiredFactIds": [
+        "fact-013",
+        "fact-002"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002",
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One contemporary act: the July 15, 1847 submission letter transcribed in Gaskell, Chapter II. Its request and return address are paraphrased, not fabricated dialogue. The pen-name address is in the letter. No claim that she newly decided to persevere, or that this was a first request for help."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "More than two weeks passed without an answer. She wrote again. Her letter asked whether the manuscript had arrived and whether the firm wished to publish it. She enclosed a cover already addressed for their reply.\n\nAnother novel was also in progress. Writing had not always come steadily. She remembered stretches of weeks, sometimes months, without adding anything to a story. The new book had begun while she was away caring for her father. It was only at its beginning when they returned home. Now it was nearly complete. The old manuscript was still the one awaiting this publisher's answer.",
+      "requiredFactIds": [
+        "fact-013",
+        "fact-016",
+        "fact-009",
+        "fact-008"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-009"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-009"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013",
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Explicit compression of the waiting and composition history, not a composite writing scene. The August 2 follow-up supplies the two questions; they paraphrase her written inquiries, not inner monologue or quotations. Composition context is attributed recollection in Gaskell. The near-completion status is attested in her August 6 reply, after the invitation; the Notice independently places it before the invitation. No claim that she wrote continuously or that a rejection created the second book."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The reply came. She opened it expecting another short refusal. There were two pages. She remembered trembling as she read.\n\nThe publisher was still refusing this book. But the letter discussed its strengths and weaknesses. It explained the business reasons for declining it. The writer offered to look carefully at a longer novel from the same author. She felt cheered by a letter that still said no. The second novel was already nearly finished.",
+      "requiredFactIds": [
+        "fact-014",
+        "fact-015",
+        "fact-016"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One remembered letter opening from the 1850 Notice. Trembling and encouragement are attested. The business refusal remains a refusal; it is not turned into acceptance of The Professor. The last sentence preserves the existing second novel rather than making the invitation its cause. The contemporary August 24 submission controls over the Notice's later September recollection."
+    },
+    {
+      "role": "became",
+      "canonicalText": "She replied that she had another novel almost ready. She still proposed publishing the first book, followed by the second. She asked the publisher to consider that plan. Later that month, she finished the new manuscript and sent it. She could not prepay the delivery charge where she left the parcel. She asked for the cost so she could repay it.\n\nThat autumn, six printed copies reached her. She wrote to thank the publisher. She liked the paper, the clear print and the binding. Then she waited for the judgments of the press and the public.\n\nSome early notices were cool. She worried that more criticism could hurt demand. Getting into print had not ended her concern about readers. The new book was in print.",
+      "requiredFactIds": [
+        "fact-016",
+        "fact-022",
+        "fact-017",
+        "fact-018"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-022"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-022"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-017"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-017"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-017"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-017"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-018"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-018"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-017",
+            "fact-018"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-017"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends with August through November 1847 correspondence, not a lifetime-success montage. The August 6 letter supplies her continued proposal for both books; August 24 supplies dispatch and carriage; October 19 supplies the six printed copies; October 26 and November 13 supply qualified reviews and anxiety about demand. The ending does not move later anxiety back to the delivery morning."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Charlotte Brontë.\n\nShe wrote Jane Eyre.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to care about work that has not found its readers. You do not have to call it worthless.",
+      "requiredFactIds": [
+        "fact-019"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject",
+        "entity-work"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-019"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-019"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Fixed distance and bounded permission. No promised success or instruction to submit, travel or keep working."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Only inert texture tied to existing facts; no added event, motive, diagnosis, dialogue or consequential action.",
+    "No invented first-writing session in Manchester. The sources establish a stay, not an hour.",
+    "Recollections are probable; dated letters take precedence for dates. Anonymous until bridge."
+  ],
+  "avoidRules": [
+    "Do not move the two-copy count from June 1847 back to the operation in 1846.",
+    "Do not make the courteous refusal cause the already-started Jane Eyre.",
+    "Do not turn publication into universal acclaim or promise a similar outcome to the reader.",
+    "No quotation, year, proper place or institution name before bridge."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-notice-1850",
+      "citation": "Brontë, Charlotte. Biographical Notice of Ellis and Acton Bell (1850). Author's retrospective account; public-domain transcription.",
+      "url": "https://www.gutenberg.org/files/771/771-h/771-h.htm",
+      "locator": "Paragraphs from 'We agreed to arrange a small selection' through the submission and publication of Jane Eyre."
+    },
+    {
+      "sourceId": "source-gaskell-v2",
+      "citation": "Gaskell, Elizabeth. The Life of Charlotte Brontë, volume II (1857). Dated letters and explicitly attributed recollections, distinguished below.",
+      "url": "https://www.gutenberg.org/cache/epub/1700/pg1700-images.html",
+      "locator": "Chapter I: Manchester composition and Charlotte's account of intermittent writing. Chapter II: March 24, July 15, August 2, August 24, and October 19/26/November 13, 1847 letters; Smith's reused-wrapper recollection."
+    },
+    {
+      "sourceId": "source-shorter-1896",
+      "citation": "Shorter, Clement K. Charlotte Brontë and Her Circle (1896). Used for transcribed contemporary letters, not editorial claims about composition chronology.",
+      "url": "https://www.gutenberg.org/cache/epub/19011/pg19011-images.html",
+      "locator": "Chapter XIII, pp. 328–330: letters to Aylott & Jones, May 11/25 and July 10, 1846; to Thomas De Quincey, June 16, 1847."
+    }
+  ],
+  "review": {}
+}

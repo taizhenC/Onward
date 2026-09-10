@@ -64,6 +64,8 @@ jobs:
       - run: npm run check-figure
       - run: npm run check-story-spec
       - run: npm run check-wave-2-reviewed
+      - name: Verify the held wave-two rewrite snapshot
+        run: npm run check-story-batch -- docs/releases/wave-2-rewritten-2026-09-10 6 --require-hashes
       - run: npm run check-story-spec-migration
       - run: npm run check-story-artifact
       - run: npm run check-derived-output-retention

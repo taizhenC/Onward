@@ -30,10 +30,30 @@ At 2026-09-10T04:27:50.094Z, a fresh read-back confirmed:
 - publication-schema health is fully true, and stage/catalog inventories agree;
 - matching-stage content is unchanged.
 
-Database publication is verified. **Production-worker refresh and a live
-reader canary are still pending** at this record's initial commit; do not
-confuse database success with verification that every warm worker sees the new
-stages.
+**Production publication and live reading are verified.**
+[PR #124](https://github.com/taizhenC/Onward/pull/124) merged at
+2026-09-10T04:32:59Z after CI and the Vercel preview passed. Its merge commit is
+`eb7a1e539fb4b297346e77202372d338af5725d3`. GitHub production deployment
+`6364634212` completed successfully at 2026-09-10T04:34:03Z for that commit,
+refreshing the workers' stage inventory.
+
+At 2026-09-10T04:35:35.819Z, an actual anonymous-reader canary on
+[Onward production](https://onwardapp.me) verified normal matching, reading and
+progress acknowledgements through all seven passages of each selected story:
+
+| Story | Passages | Reader chunks | Exact canonical prose |
+|---|---:|---:|---|
+| Andersen | 7 | 21 | Yes |
+| Banting | 7 | 22 | Yes |
+| Child | 7 | 24 | Yes |
+
+Every match, beat and acknowledgement request returned HTTP 200. The canary
+reached all three endings and compared returned text with the approved inputs.
+It used one newly created anonymous guest, never the operator's account. After
+verifying that identity, the normal CSRF-protected account-deletion flow removed
+only that test guest and its three test stories; the expected 303 redirect to
+`/account-deleted` confirmed completion. No reader identifiers or credentials
+are included in this receipt.
 
 ## Preflight and recovery
 
@@ -64,12 +84,13 @@ from the backup. Saved reader artifacts remain immutable.
 
 ## Why the other six are not included
 
-The six remaining drafts are being rewritten under the same standards, not
-published as exceptions. Brontë needs a writing-focused response, Berlin a
-sourced emotional episode, Butler and Carver bounded scene/action support,
-Charles a supported grief chronology, and Christie a coherent single episode.
-The original nine reviewed snapshots remain frozen; substantive revisions
-must have new hashes and independent checks before being treated as eligible.
+The six remaining drafts were rewritten under the same standards, not
+published as exceptions. The [separate rewrite packet](wave-2-rewritten-2026-09-10/README.md)
+records the actual revisions, source corrections and independent checks.
+Brontë and Christie now have more coherent writing-focused arcs; Charles omits
+the disputed grief sequence. All six still have specific source or scene-level
+holds under the unchanged recipe. The original nine reviewed snapshots remain
+frozen. The new drafts have separate hashes and no inherited approval metadata.
 
 The shorter length of Andersen is an editorial qualification, not a missing
 ending. Child's unresolved diploma/examination date disagreement is retained
@@ -94,4 +115,6 @@ or production workaround was added.
 The research skill determined the publish/rewrite split. The debugging skill
 isolated the deterministic dependency failure; bisection and instrumentation
 were unnecessary because the audit named exact packages and fixed versions.
-Remote CI and the eventual production deployment must still be verified.
+Remote CI run `34437341366` and recipe-gate run `34437487182` passed before
+merge. Production deployment and the live reader check subsequently passed as
+recorded above; no gate was bypassed.

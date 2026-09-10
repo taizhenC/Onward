@@ -9,7 +9,7 @@ keeps the scope visible and avoids quietly dropping a difficult episode.
 
 | Set | Figures | State |
 |---|---|---|
-| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Nine drafts researched; independent review corrections applied; owner reading and documented evidence/craft holds remain |
+| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child database-published September 10; worker refresh pending; six others in source-grounded revision |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Queued |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
@@ -45,15 +45,52 @@ The separately requested Chinese fictional story, 牛大, is not one of these
 
 ## Set 2 handoff boundary
 
-The local `wave-2` reading packet and exact-hash verification report separate
-machine validity from editorial readiness. Berlin's alternative episode lacks
-the original arc's primary emotional evidence; Butler and Carver remain below
-the whole-story length target. Child has a disclosed diploma/examination date
-conflict between sources. Other scene, access and matching-scope limitations
-are recorded in each evidence note and independent review. No new historical
-story has been approved or published. Thirty-two stages remain queued above.
+The September 9 continuation refines this existing set only. Earlier candidate
+bytes are preserved in the local `wave-2/snapshots/2026-09-09-before/` directory.
+The refreshed reading packet and exact-hash verification report separate machine
+validity from editorial readiness. Research and independent checks tightened
+chronology, removed unsupported posture and repetitive explanation, and narrowed
+source claims. No new historical story has been approved or published.
 
-The application changes for the separately labeled Chinese fiction mode are
-reviewable in [PR #122](https://github.com/taizhenC/Onward/pull/122). That PR does
+The main outstanding boundaries are:
+
+- Berlin: new first-song interview evidence does not establish the missing
+  primary emotional episode. The original matching shape remains unsupported.
+- Child: the inspected diploma inscription does not resolve the exam/receipt
+  chronology conflict. The implied post-exam diploma milestone was removed;
+  correspondence or school-record collation is still needed.
+- Butler and Carver: thinner material is not padded to reach the length target;
+  period-level scenes and access limits remain. Other drafts also fall short of
+  the soft length target after pruning.
+- Brontë and Christie: documented actions now follow a clearer sequence, but
+  caregiving versus writing, and work versus travel, still need owner cold-reading.
+- Charles: an owning interview supplies a more concrete performance turn; the
+  earlier grief-account and source-collation limitations remain.
+
+These September 9 holds preceded the owner's September 10 review. The owner
+has now confirmed reading and requested a PR and publication of complete
+stories. The [tracked reviewed packet](releases/wave-2-reviewed-2026-09-10/README.md)
+preserves the exact nine candidate JSONs, a reading copy and hash-bound
+readiness decisions; no prose was changed after that review.
+
+The final source check identifies complete supported arcs for Andersen,
+Banting and Child. Child's date disagreement is retained but is not asserted
+in the current prose, so it is not itself a necessary missing story fact.
+Brontë needs explicit acceptance of the caregiving-response tradeoff; Berlin,
+Butler, Carver and Christie retain format/episode decisions; Charles retains
+a historical-source adjudication hold. Shortness alone does not block release.
+The owner then directed publication for stories meeting the standards and
+rewrites for the others. Andersen, Banting and Child are database-published;
+the catalog now contains 12 valid historical stories, with zero quarantined.
+The [release record](releases/2026-09-10-wave-2-publication.md) tracks worker
+refresh and live verification separately. The other six remain unpublished
+while source-grounded rewrites are attempted.
+
+Matching corrections remain a separate evaluated release, not a silent edit
+to this content-only packet. The next set of nine has not been started;
+thirty-two stages remain queued above.
+
+The application changes for the separately labeled Chinese fiction mode were
+merged in [PR #122](https://github.com/taizhenC/Onward/pull/122). That PR does
 not publish or approve these historical candidates. Its public fiction route
 is separate from the historical library, Owner Stories and saved progress.

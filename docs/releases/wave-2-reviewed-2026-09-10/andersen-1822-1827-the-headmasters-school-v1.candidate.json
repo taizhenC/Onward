@@ -1,0 +1,1148 @@
+{
+  "storySpecId": "andersen:1822-1827-the-headmasters-school:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "andersen",
+  "stageId": "1822-1827-the-headmasters-school",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 17,
+    "ageMax": 23,
+    "throughLine": "A student who believed his headmaster's contempt asked for help in writing. Outside intervention ended the arrangement, but study and sensitivity continued in a different room."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "abuse_or_violence"
+    ],
+    "contentNote": "Includes humiliating treatment by a teacher and severe self-doubt. No self-harm behavior is described."
+  },
+  "facts": [
+    {
+      "factId": "fact-identity",
+      "statement": "Hans Christian Andersen identifies himself as born on April 2, 1805. His school-entry record gives October 28, 1822, making him seventeen at entry; his September 1826 letter was written at twenty-one.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter I, opening birth paragraph beginning 'Instead of a noble corpse'."
+        },
+        {
+          "sourceId": "source-character-book",
+          "scope": "bounded",
+          "locator": "Section II, 'I Det Hennebergske Hjem': quoted character-book entry beginning 'Mandagen den 28 October 1822'; scholarly text identifies age seventeen."
+        },
+        {
+          "sourceId": "source-letter-1826",
+          "scope": "bounded",
+          "locator": "Header: September 1826."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-theatre",
+      "statement": "Before arranging Andersen's schooling, the theatre's directors rejected his play as unsuitable for the stage but recognized signs of ability and recommended study.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter II, paragraph beginning 'In a few day I was sent for by the directors of the theatre'; corroborating theatre protocol quoted in Museum Odense section II, paragraph beginning 'Forfatteren af Sørgespillet Alfsol'."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-school",
+      "statement": "Andersen recalled entering the school among little boys, wanting to learn but feeling overwhelmed by grammar, geography, and mathematics.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraphs beginning 'I boarded with a respectable widow' and 'I was actually like a wild bird'."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-support",
+      "statement": "Jonas Collin arranged royal financial support and free school instruction for Andersen. Andersen was to report his needs and progress to Collin.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter II, paragraphs beginning 'In order therefore to obtain the means' through 'Mildly and kindly he said to me'."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-answer",
+      "statement": "Andersen recalled a particular occasion when he answered the headmaster incorrectly and was called stupid. He believed the headmaster's words unconditionally and feared he did not deserve the help received. He told Collin, who consoled him.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraph beginning 'To me he stood then as a divinity'."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-anxiety",
+      "statement": "In his September 1826 letter Andersen says fear of answering incorrectly made his head hot, confused his answers, and led him to fall silent and believe he was good for nothing. He says discouragement, not lack of effort, impaired his work.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letter-1826",
+          "scope": "bounded",
+          "locator": "Paragraph beginning 'Spørger De mig om noget' through 'det er Mangel paa Haab og Rolighed'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-plea",
+      "statement": "Andersen wrote directly to Meisling in September 1826, explaining that he lacked courage to speak in person. He asked him to read the whole letter, give advice and help, retain patience if there was hope, and not be angry at the appeal.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letter-1826",
+          "scope": "bounded",
+          "locator": "Opening paragraph beginning 'Jeg maa tale med Dem'; paragraph beginning 'O læg dog ikke mit Brev'; final two paragraphs beginning 'Mit høieste Ønske' and 'Foragt mig ikke'."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-stakes",
+      "statement": "The September 1826 letter says Andersen wanted above all to continue his studies. He feared facing disappointed benefactors, saw no other occupation he could undertake, blamed his own mind, and asked not to be abandoned. He still believed the headmaster meant well.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letter-1826",
+          "scope": "bounded",
+          "locator": "Opening 'At De mener mig det ærligt og godt'; paragraphs beginning 'Jeg burde forlade Studeringerne' and 'Mit høieste Ønske'."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-house",
+      "statement": "In 1826 Andersen followed Meisling from Slagelse to Helsingør and attended its highest class. Andersen recalled living in the headmaster's house, restricted after school to lessons, playing with the children, or his small room.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-reference-1827",
+          "scope": "bounded",
+          "locator": "Entire official reference, October 12, 1827: entry in late 1822, move in 1826, highest class."
+        },
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraphs beginning 'I, of course, immediately received' through 'When the school hours were over'."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-poem",
+      "statement": "Andersen recalled returning from a visit where he read a poem; the headmaster demanded to see it. Andersen brought The Dying Child while trembling. The headmaster dismissed it as sentimental rubbish, and Andersen described the ensuing time as his darkest.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraphs beginning 'From such a house as this' and 'He gave way freely to his anger'."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-letters",
+      "statement": "Andersen's memoir says his letters to Collin expressed despair; others misread the trouble as his disposition. A visiting teacher then described his treatment to Collin, who removed him from the school and household.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraphs beginning 'My letters to Collin' and 'Just then one of the masters'."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-leaving",
+      "statement": "Andersen recalled thanking the headmaster when taking leave. The headmaster cursed him, predicted he would never become a university student, and said his poems would lie unsold. Andersen trembled and left.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraph beginning 'Just then one of the masters' and next paragraph 'I trembled to my innermost being, and left him'."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-new-study",
+      "statement": "After leaving, Andersen rented a small attic room and studied with a private teacher. His allowance also paid tuition, requiring economies; families supplied meals. His teacher lived a considerable distance away; he walked there twice daily and was able to debate with this kindly teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraphs beginning 'I hired a little garret', 'I studied industriously', 'Released from the distressing existence', and 'My teacher dwelt at a considerable distance'."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-after-cost",
+      "statement": "Andersen recalled that even after leaving school, an unfriendly expression from someone he expected to be friendly could spoil a whole day. He wrote humorous parodies of earlier emotional poems; study continued alongside a small amount of writing.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraphs beginning 'From severe suffering', 'Every poem which I had formerly written', and 'My teacher dwelt at a considerable distance'."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-exam",
+      "statement": "Andersen's 1847 memoir dates his becoming a university student to September 1828, after the private study. A later paragraph calls it the October examination; the story therefore says only the following year, not an exact month.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraph beginning 'In September, 1828' and paragraph beginning 'We were the two young authors of the October examination'."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-teacher-reference",
+      "statement": "On October 12, 1827 Meisling officially reported Andersen's fairly good abilities, acceptable diligence and blameless conduct, while also recording some teachers' criticism of his steadiness near the end. This mixed contemporary assessment does not corroborate every remembered insult.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-reference-1827",
+          "scope": "bounded",
+          "locator": "Entire reference, especially paragraph beginning 'Uagtet en Deel af hans Lærere'."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Andersen wrote fairy tales; in his 1847 autobiography he describes composing many of them while staying in the countryside.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Passage beginning 'I met in the so-called first families of the country'; final clause 'there I wrote the greater number of my fairy tales'."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-publication",
+      "statement": "After leaving school, Andersen recalled difficulty getting The Dying Child printed because editors hesitated to publish a schoolboy. It eventually appeared with an excuse; Heiberg subsequently reprinted it respectfully.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography-1847",
+          "scope": "bounded",
+          "locator": "Chapter III, paragraphs beginning 'Refined, eloquent' and 'My best known poem'."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "probable",
+      "claimKind": "event"
+    }
+  ],
+  "quotes": [],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Hans Christian Andersen",
+      "aliases": [
+        "Andersen"
+      ]
+    },
+    {
+      "entityId": "entity-headmaster",
+      "kind": "person",
+      "value": "Simon Sørensen Meisling",
+      "aliases": [
+        "Meisling"
+      ]
+    },
+    {
+      "entityId": "entity-patron",
+      "kind": "person",
+      "value": "Jonas Collin",
+      "aliases": [
+        "Collin"
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He remembered starting school among boys much younger than himself. He was about seventeen. Grammar, geography, and mathematics were new work, arriving together. He wanted to learn them. The lessons seemed more than he could take in. His attempt to write for the theatre had been rejected.\n\nThe people reading his play had offered schooling instead of a place onstage. People had arranged money and a place for him at this school. His progress mattered to people outside the room. He kept his attention on the headmaster. A question came to him. He gave the wrong answer.",
+      "requiredFactIds": [
+        "fact-school",
+        "fact-identity",
+        "fact-theatre",
+        "fact-support",
+        "fact-answer"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-school"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-school"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-school"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-school"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-theatre"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-theatre"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-support"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-support"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Wave 2 research, 2026-09-05. One recollected early-school question; exact date is not recoverable. Approximate age follows entry at seventeen, not an invented dated lesson. No classmate age, furniture size, or laughter invented. No warnings accepted. Refinement 2026-09-09: opening explicitly frames the school episode as memory. Optional day-level episode boundaries removed: entry day does not date the remembered question, and October 31 was not an attested ending."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The headmaster called him stupid. He believed the man. He did not hear an error in a lesson being corrected. He heard a judgment about himself. The people helping him expected him to learn. He feared he did not deserve what they had done.\n\nThe help had opened a place at school. Now he doubted whether he belonged in it.",
+      "requiredFactIds": [
+        "fact-answer",
+        "fact-support"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-support"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-support"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Refinement 2026-09-09: same remembered exchange and attested self-doubt, with redundant restatements cut. Three retained inner-state texture sentences are inert. No new classroom action or later-letter feeling is relocated to this early question."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He had told the man arranging his support about his anxiety. The man had consoled him. Four years into school, he wrote directly to the headmaster. He said he could not find the courage to speak in person. He asked the man to read the whole letter. He still believed the headmaster meant to help him. He described how fear confused his answers. He said that he had worked, but had lost hope and calm.\n\nHe wanted to go on studying. He feared facing the people who had expected more from him. If any hope remained, he asked the man not to lose patience. He asked for advice and help. At the end, he worried that he had written too much. He asked the headmaster not to be angry.",
+      "requiredFactIds": [
+        "fact-answer",
+        "fact-plea",
+        "fact-stakes",
+        "fact-anxiety"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-stakes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-anxiety"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-anxiety"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-stakes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-stakes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Wave 2 research, 2026-09-05. Two retrospective context sentences explicitly preserve the earlier appeal to Collin and his consolation after the initial insult; no invented consolation is placed inside the classroom. The following letter is September 1826, age twenty-one, with an open four-year jump, not a first-ever appeal. Danish paraphrased, not translated dialogue. No warnings accepted."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He was now living in the headmaster's house as well as attending his school. After lessons, he could be kept inside with more work or the children. His letters to the man who arranged his support carried his despair. People treated that despair as a problem in his character. The arrangement continued. He also wrote a poem and read it during a visit away.\n\nWhen he returned, the headmaster demanded to see it. He brought it, trembling. The man read it and dismissed it as sentimental rubbish. Writing had not made the house easier to live in. The headmaster's anger had become another part of it.",
+      "requiredFactIds": [
+        "fact-house",
+        "fact-letters",
+        "fact-poem"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-poem"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-poem"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-poem"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-poem"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-poem"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-poem"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Wave 2 research, 2026-09-05. Compressed school-house pressure and remembered poem rejection. No unsupported claim that the letter immediately caused this sequence, no invented secret drafting scene, and no denial of earlier outside help. No warnings accepted."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "He remembered taking leave of the headmaster. Another teacher had described his treatment to the man arranging his support. That man had removed him from the school and the household. He thanked the headmaster for the kindness he had received. The headmaster answered with curses.\n\nHe said the young man would never become a university student. His poems, the headmaster predicted, would remain unsold. His body shook. He left the headmaster.",
+      "requiredFactIds": [
+        "fact-leaving",
+        "fact-letters"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-leaving"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-leaving"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-leaving"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-leaving"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-leaving"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-leaving"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-leaving"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Refinement 2026-09-09: remembered farewell explicitly marked as recollection. The preceding teacher report and outside removal remain context, not a consequence attributed to the 1826 plea. Removed invented standing posture and repeated judgment/approval commentary. No texture or quoted dialogue in this causal joint."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He rented a small room under a roof and began private lessons. The money for living also had to cover his teacher. He saved on other expenses, and families gave him meals. Twice a day he walked the long distance to his lessons. He studied languages and argued with a teacher who treated him kindly. An unfriendly face could still spoil a whole day. He had not left that fear behind with the school. He made comic versions of poems he had once written in tears.\n\nOnly a few poems reached paper alongside the schoolwork. He also tried to get a poem into print. Editors refused work from an unknown schoolboy. When it was finally published, an apology appeared beside it. The following year, he passed into university.",
+      "requiredFactIds": [
+        "fact-new-study",
+        "fact-after-cost",
+        "fact-publication",
+        "fact-exam"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-study"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-study"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-study"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-study"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-study"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-after-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-after-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-after-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-after-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exam"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Wave 2 research, 2026-09-05. Compressed private study ends at 1828 admission, not later fame. Episode deliberately extends beyond old stage key's 1827 end; stage matching metadata remains untouched. The memoir's September/October discrepancy is not repeated as an exact date. No warnings accepted. Refinement 2026-09-09: ends at admission without repeating the prediction and examination result."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Hans Christian Andersen.\n\nHe wrote fairy tales about people and the strange things that could happen to them.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to know the whole shape of your life before you are allowed to be uncertain.\n\nYou are allowed to need help.",
+      "requiredFactIds": [
+        "fact-identity",
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Wave 2 research, 2026-09-05. Exact reveal, plain legacy, fixed distance pair and two bounded permissions. No comparison, prediction, instruction, or claim about the reader's disclosure. No warnings accepted."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Only inert, sentence-mapped texture on attested fear and the remembered farewell. No invented causes, decisions, dialogue, or actions of third parties.",
+    "Memoir-only details remain probable; the fold must identify them as retrospective memory. No remembered speech is quoted as live dialogue.",
+    "The contemporary letter documents the plea and self-blame, not proof that every cruel word occurred exactly as later remembered."
+  ],
+  "avoidRules": [
+    "Do not claim that he never asked for help or that his letters said everything was fine.",
+    "Do not turn secretly writing poems into a verified cause of his removal.",
+    "Do not reproduce the headmaster's degrading prediction about institutionalization.",
+    "Do not use precise ages for classmates, invented laughter, or the seed's only-chance claim.",
+    "Keep proper names, dates and distinctive place details out of passages zero through five."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-autobiography-1847",
+      "citation": "Andersen, Hans Christian. The True Story of My Life: A Sketch. Authorized English translation by Mary Howitt, 1847. Project Gutenberg eBook 7007.",
+      "url": "https://www.gutenberg.org/files/7007/7007-h/7007-h.htm",
+      "locator": "Chapters I–III and the later paragraph beginning 'I met in the so-called first families'; full relevant HTML passages opened 2026-09-05. Retrospective memoir, not the 1855 autobiography."
+    },
+    {
+      "sourceId": "source-letter-1826",
+      "citation": "H. C. Andersen to Simon Sørensen Meisling, September 1826. SDU H. C. Andersen Centre letter database, bid=293.",
+      "url": "https://andersen.sdu.dk/brevbase/brev.html?bid=293",
+      "locator": "Complete Danish transcription, salutation through signature; source states H. C. Andersen og det Collinske Hus and microfilmscan 14, 772–73; exact day uncertain. Opened 2026-09-05."
+    },
+    {
+      "sourceId": "source-reference-1827",
+      "citation": "Simon Sørensen Meisling to the Directorate for the University and Learned Schools, October 12, 1827. SDU letter database, bid=20603.",
+      "url": "https://andersen.sdu.dk/brevbase/brev.html?bid=20603",
+      "locator": "Complete Danish transcription; original held at Rigsarkivet, transcription credited to Ejnar Askgaard. Opened 2026-09-05; manuscript scan not viewed."
+    },
+    {
+      "sourceId": "source-character-book",
+      "citation": "Museum Odense, H. C. Andersens dagbog fra hans sidste Slagelse-år 1825–1826, section II: quotation from Andersen's school character-book.",
+      "url": "https://museumodense.dk/udgivelser/h-c-andersens-dagbog-fra-hans-sidste-slagelse-aar-1825-1826/",
+      "locator": "Section II, 'I Det Hennebergske Hjem', paragraph quoting the entry for Monday October 28, 1822, with note 2. Used as an institution-hosted transcription of the primary entry, not as primary proof for the surrounding biographical analysis."
+    }
+  ],
+  "review": {}
+}

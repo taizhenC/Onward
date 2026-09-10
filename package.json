@@ -21,6 +21,7 @@
     "smoke": "tsx scripts/smoke.ts",
     "check-figure": "tsx scripts/check-figure.ts",
     "check-story-spec": "tsx scripts/check-story-spec.ts",
+    "check-wave-2-reviewed": "tsx scripts/check-wave-2-reviewed.ts",
     "check-story-spec-migration": "tsx scripts/check-story-spec-migration.ts",
     "check-story-spec-cutover": "tsx scripts/check-story-spec-cutover.ts",
     "check-story-artifact": "tsx scripts/check-story-artifact.ts",
@@ -107,6 +108,6 @@
   "overrides": {
     "nanoid": "3.3.18",
     "postcss": "8.5.25",
-    "sharp": "0.35.3"
+    "sharp": "0.35.4"
   }
 }

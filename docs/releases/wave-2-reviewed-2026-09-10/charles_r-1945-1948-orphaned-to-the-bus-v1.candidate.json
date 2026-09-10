@@ -1,0 +1,1126 @@
+{
+  "storySpecId": "charles_r:1945-1948-orphaned-to-the-bus:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "charles_r",
+  "stageId": "1945-1948-orphaned-to-the-bus",
+  "version": 1,
+  "status": "draft",
+  "entities": [
+    {
+      "kind": "person",
+      "value": "Ray Charles",
+      "aliases": [
+        "Charles"
+      ],
+      "entityId": "entity-subject"
+    },
+    {
+      "kind": "date",
+      "value": "1930",
+      "aliases": [],
+      "entityId": "entity-birth-year"
+    },
+    {
+      "kind": "date",
+      "value": "2004",
+      "aliases": [],
+      "entityId": "entity-death-year"
+    }
+  ],
+  "dramatizationLimits": [
+    "Only inert, explicitly mapped texture within an attested moment; no invented historical actions, motives, quotations, objects, weather, or outcomes.",
+    "Memoir and interview recollections remain qualified in source notes; do not turn remembered speech into verbatim scene dialogue.",
+    "Do not convert temporal sequence into a claim that grief, disability, rejection, travel, or work caused later achievement."
+  ],
+  "avoidRules": [
+    "Do not invent people, places, dates, dialogue, gestures, weather, or causality.",
+    "Do not quote or paraphrase the reader's disclosure.",
+    "Do not promise that the reader will succeed or that suffering creates greatness.",
+    "Keep identity, calendar years, named locations, and institutions out of the story until the bridge.",
+    "Do not remove the unresolved historical or craft holds recorded in the companion evidence note."
+  ],
+  "episode": {
+    "ageMin": 14,
+    "ageMax": 18,
+    "throughLine": "After his mother's death, a young musician sought work and learned from other players, then chose a distant city whose size felt manageable."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief",
+      "serious_illness"
+    ],
+    "contentNote": "Includes a parent's death and a remembered hospital stay after being unable to eat."
+  },
+  "facts": [
+    {
+      "factId": "c01",
+      "statement": "Ray Charles was born September 23, 1930; his mother died in spring 1945, when he was fourteen. Later interview ages are rounded inconsistently.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-lydon-preview",
+          "scope": "bounded",
+          "locator": "Printed p. 23, age fourteen and a half in spring 1945; birth date also stated by Aronowitz, section II, paragraph beginning Ray was born."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "c03",
+      "statement": "Charles was blind by childhood, studied Braille and music at boarding school, and said his mother taught him practical self-sufficiency.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, paragraphs beginning My mother; She taught him; and It was in Saint Augustine."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "c02",
+      "statement": "Charles told Aronowitz that a neighbor sent news of his mother's death to the school and it was read to him the next morning.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, Charles's direct answer beginning She was only thirty-one, thirty-two."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c04",
+      "statement": "Charles described being unable to eat or cry after his mother's burial and spending about six days in hospital receiving intravenous feeding.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, same direct answer beginning She was only thirty-one, thirty-two; this later account is not an inspected hospital record."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c05",
+      "statement": "Charles described the loss as frightening and difficult to accept; he needed to make his own decisions in his own time.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-ability-1995",
+          "scope": "bounded",
+          "locator": "Paragraphs beginning The thought's too terrible and But that week; explicitly attributed Brother Ray recollections."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c06",
+      "statement": "Lydon reproduces a school-card entry sending Charles home on October 5, 1945; the biographer says he had returned that September.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-lydon-preview",
+          "scope": "bounded",
+          "locator": "Printed p. 25; student-card wording reproduced within biography, original card not inspected."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c07",
+      "statement": "After leaving school Charles lived with friends of Mary Jane in Jacksonville, sought pianos and playing opportunities, and wanted live musical experience. Charles called music a source of pleasure, release, and expression.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-ability-1995",
+          "scope": "bounded",
+          "locator": "Paragraphs beginning But that week and It was about this time; profile narrative linked to Charles's recollections."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c08",
+      "statement": "Charles said he chose singing and piano as the skills he could use to support himself after his mother's death.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1973",
+          "scope": "bounded",
+          "locator": "Question Did you try to catch up with high school or college after you left school? and answer beginning But my mama always taught me."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c09",
+      "statement": "Lydon reports that Charles joined the musicians' union, waited for access to its piano, learned from older musicians, and obtained intermittent substitute work.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-lydon-preview",
+          "scope": "bounded",
+          "locator": "Printed pp. 30–34, especially p. 33 waiting at piano and pp. 34–35 substitute jobs. Alexander Perry's embedded interview corroborates the working community, not every narrated detail."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c10",
+      "statement": "Charles told Fong-Torres that the largest cities frightened him; he wanted a distant city that was not huge and selected Seattle.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1973",
+          "scope": "bounded",
+          "locator": "Question When you left Florida, why did you choose to go to the other corner of the country? Complete answer."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c11",
+      "statement": "Charles told Aronowitz that he rode a bus from Tampa to Seattle by himself, seeking a place where he might get a break.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, answer beginning I was in Tampa. Alone is his retrospective wording, not evidence that he lacked friends or assistance."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c12",
+      "statement": "Charles reached Seattle in March 1948, aged seventeen; the following local working period extends beyond his eighteenth birthday.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-historylink",
+          "scope": "bounded",
+          "locator": "Paragraph beginning R. C. Robinson arrived in Seattle in March 1948; date cross-checked against birth date."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "c16",
+      "statement": "Charles recalled admission to the Rocking Chair, an enthusiastic reception with club operators present, and Elks employment two days later.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-balliett-1970",
+          "scope": "bounded",
+          "locator": "Owning web text, consecutive first-person paragraphs 155–157 in the web reader's line index: arrival/club admission, performance, and first Elks engagement."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c13",
+      "statement": "Quincy Jones remembered visiting Charles's apartment in Seattle, seeing him repair a record player, and learning notation and arranging from him.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-jones",
+          "scope": "bounded",
+          "locator": "Interview paragraphs beginning When I first met him and And he used to. Jones's ages fourteen/sixteen conflict with the established 1948 arrival; exact visit date unknown."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c14",
+      "statement": "Charles said he imitated Nat King Cole as a teenager to help keep himself in paid work.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, direct answer beginning I was just in my teens."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c15",
+      "statement": "Charles became a singer and pianist whose work drew on gospel, blues, and popular music.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1973",
+          "scope": "bounded",
+          "locator": "Discussion beginning I come out of the Baptist church and question about Big Bill Broonzy; his own explanation of how he sang."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A boy at a boarding school listened while news from home was read to him. He was fourteen. His mother had died. A neighbor had sent the message, and he heard it the following morning.\n\nHe had been blind since childhood. At school, he studied music and read by touch. His lessons included piano and clarinet. Learning music meant reading notes with his fingers. His mother had taught him how to manage ordinary work without seeing. Washing clothes, preparing food, finding his way: these were things he could learn. The death was something he could not take in. He went home for her funeral.",
+      "requiredFactIds": [
+        "c02",
+        "c01",
+        "c03",
+        "c05",
+        "c04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded scene: receiving the death message at school. Charles's 1963 recollection supplies the message and following morning; other interviews round his age to fifteen. Age fourteen follows Lydon's spring 1945 chronology. The final sentence advances to the funeral. No invented messenger, room, dialogue, or gesture."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "After the burial, he could not eat. He could not cry either. The grief caught in his throat, and he could not get it out. He loved his mother and could not accept that she was gone.\n\nHe was taken to a hospital. For about six days, food had to reach his body through his veins. People told him that crying might help, but the tears would not come. His mother had warned him that she could not always be there. Hearing the warning had not prepared him for this. Decisions that she had helped him face were now his to make. He found that frightening.",
+      "requiredFactIds": [
+        "c04",
+        "c05",
+        "c08"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded scene: the approximately six-day hospital stay as Charles described it to Aronowitz. The advice about crying is remembered lay speech, not clinical advice or a proven treatment. Lydon's later funeral/crying sequence differs; this draft does not combine the accounts. Source hold: obtain memoir and original interview collation before approval."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He left school that autumn and went to live with family friends in a larger town. He was fifteen now. There were pianos there, and musicians earning money by playing them. He began looking for chances to join in.\n\nSinging and playing were the things he thought he could do best. He wanted experience with working musicians. Friends gave him a place to stay while he sought it. He looked for instruments he could play and jobs he could take. Music gave him pleasure and a way to express himself. It was also work he wanted to do.",
+      "requiredFactIds": [
+        "c06",
+        "c07",
+        "c01",
+        "c08"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c06",
+            "c07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c01",
+            "c06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07",
+            "c08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Response is deliberately a bounded transition rather than a fabricated first audition. The school-card transcription contradicts the seed claim that he never returned after the funeral. Primary scene hold: direct documentation of one first work-seeking encounter remains missing. This beat is not claimed to meet the full moment-scene target."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "At the musicians' meeting place, he had to wait for a turn at the piano. Older players already knew the songs and the ways of working together. He listened while they played. Some showed him unfamiliar chords and patterns for his left hand.\n\nLearning did not bring a regular job at once. He picked up substitute work when another pianist was unavailable. One engagement did not settle what came after it. Over the next few years, he worked in several towns. He sang and played, trying to turn those skills into a living. He also borrowed the sound of a singer he admired. He hoped imitation could help him keep working.",
+      "requiredFactIds": [
+        "c09",
+        "c07",
+        "c11",
+        "c08",
+        "c14"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "c09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c07",
+            "c11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c08",
+            "c11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed apprenticeship, not a composite jam-session scene. Union/piano/substitution details currently rely on Lydon's account with embedded Perry testimony; direct supporting memoir pages remain a source hold. The sentence about the next engagement is disclosed inert connective texture. No invented starvation meal, humiliation, pay theft, or audition."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "At the club door, he asked to come in. He was seventeen. He had heard about a chance to perform there that night. The man let him inside after he pleaded.\n\nHe had crossed the country by bus to reach the city. The biggest cities frightened him. He wanted a city far away, but not that large. He thought he might have a chance here.\n\nWhen his turn came, he sang a blues song. The crowd responded warmly. People from other clubs were listening.",
+      "requiredFactIds": [
+        "c16",
+        "c12",
+        "c11",
+        "c10"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "September 9 revision uses Balliett's owning interview text. Recollection, not an attendance record; historical review remains open. Earlier bus/size context retains the existing interview sources and chronology correction. No performed song title, recalled dialogue, hotel-sleep duration, companion claim or claim of knowing nobody is imported. The moment ends before the subsequent employment. The existing 1973 mirror and grief-sequence holds remain."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Two days later, he had a job. In the new city, he worked as a singer and pianist. A younger musician began visiting his apartment. The visitor found someone who could explain how music fitted together, and who could repair his own record player.\n\nHe taught the visitor about notes and arranging. They discussed rhythm and how the lengths of notes fitted together. He also kept singing in the style of the performer he admired. He hoped that singing like the popular performer would help him stay in paid work. His work now included playing for customers and sharing what he knew with another musician. There were people around him. He had not arrived at the end of learning.",
+      "requiredFactIds": [
+        "c16",
+        "c11",
+        "c14",
+        "c13",
+        "c09"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c11",
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c13",
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "c09",
+            "c13",
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Local Seattle working period only, approximately 1948; exact apartment-visit dates are unavailable. Jones's recollection is primary witness testimony, but his remembered ages are inconsistent. The last sentence is disclosed connective texture, not a later achievement claim. No recording dates or lifelong fame montage. The claim that a distinctive voice was not a condition for beginning was removed after independent review; S6 now paraphrases the attested work-related motive in c14, not an editorial maxim. September 9: opening S0 maps to c16; the subsequent sentence indexes shift by one."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Ray Charles.\n\nHe became a singer and pianist whose work brought gospel, blues, and popular song together.\n\nYour life is not theirs.\nBut a piece of this story may still sit beside you.\n\nYou are allowed to need other people around you while making a choice of your own.\nYou do not have to feel certain about everything.",
+      "requiredFactIds": [
+        "c01",
+        "c15"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity and one legacy sentence appear only here. The two distance sentences are fixed reader copy. The permission does not prescribe travel, self-sufficiency, work, or a recovery timetable."
+    }
+  ],
+  "interpretations": [],
+  "sources": [
+    {
+      "sourceId": "src-charles-1963",
+      "citation": "Ray Charles interviewed by Al Aronowitz in 1963; Aronowitz, The Great Ray Charles Needed No Justifying, revised republication, July 1, 2004.",
+      "locator": "Section II, paragraphs beginning 'Ray was born', 'She was only', 'My mother might pass', 'I was in Tampa', and 'I was just in my teens'.",
+      "url": "https://www.blacklistedjournalist.com/column107.html"
+    },
+    {
+      "sourceId": "src-charles-1973",
+      "citation": "Ben Fong-Torres, Ray Charles: The Rolling Stone Interview, January 18, 1973; accessible non-owning transcript posted December 2015.",
+      "locator": "Questions on leaving school; imitating Nat Cole; and choosing the other corner of the country. Original publisher URL failed to load; transcript has not been collated with print.",
+      "url": "https://ray-charlesz.blogspot.com/2015/12/ray-charles-rolling-stone-interview.html"
+    },
+    {
+      "sourceId": "src-ability-1995",
+      "citation": "ABILITY Magazine, Ray Charles interview/profile, Ray Charles issue, 1995.",
+      "locator": "Paragraphs beginning 'Ray Charles’ mama warned', 'The thought’s too terrible', 'But that week', and 'It was about this time'. Includes explicitly attributed Brother Ray excerpts.",
+      "url": "https://abilitymagazine.com/charles_interview.html"
+    },
+    {
+      "sourceId": "src-lydon-preview",
+      "citation": "Michael Lydon, Ray Charles: Man and Music, publisher-supplied preview, chapters 3–4.",
+      "locator": "Printed pp. 23–25 and 30–34; PDF pp. 35–37 and 42–46. School-card transcription and Alexander Perry testimony are embedded in a biographer's narrative.",
+      "url": "https://api.pageplace.de/preview/DT0400.9781135878108_A24933188/preview-9781135878108_A24933188.pdf"
+    },
+    {
+      "sourceId": "src-jones",
+      "citation": "Quincy Jones, Academy of Achievement interview.",
+      "locator": "Interview response beginning 'I was 14 years old when Ray came to town'; following paragraphs on visiting his apartment and musical instruction.",
+      "url": "https://achievement.org/achiever/quincy-jones/"
+    },
+    {
+      "sourceId": "src-historylink",
+      "citation": "Cassandra Tate, Charles, Ray (1930–2004), HistoryLink, June 17, 2004; corrected subsequently.",
+      "locator": "The Bottom of the Ladder; Sojourn in Seattle. Chronological cross-check only; not treated as a primary account.",
+      "url": "https://www.historylink.org/file/5707"
+    },
+    {
+      "sourceId": "src-balliett-1970",
+      "citation": "Whitney Balliett, It's Detestable When You Live It, The New Yorker, March 28, 1970 issue (web dateline March 21, 1970).",
+      "locator": "Owning full web text inspected September 9, 2026, first-person club-arrival sequence (web reader lines 155–157). Original print facsimile not inspected. Retrospective testimony; unrelated chronology and family claims are not adopted.",
+      "url": "https://www.newyorker.com/magazine/1970/03/28/its-detestable-when-you-live-it"
+    }
+  ],
+  "review": {}
+}

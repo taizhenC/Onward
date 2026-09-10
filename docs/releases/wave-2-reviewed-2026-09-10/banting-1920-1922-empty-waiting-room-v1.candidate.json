@@ -1,0 +1,1178 @@
+{
+  "schemaVersion": "story-spec-v1-2026-07",
+  "storySpecId": "banting:1920-1922-empty-waiting-room:v1",
+  "figureKey": "banting",
+  "stageId": "1920-1922-empty-waiting-room",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 28,
+    "ageMax": 30,
+    "startDate": "1920-10-30",
+    "throughLine": "A sleepless young doctor wrote down an experiment while worried about debts. Failed attempts at finding paid work and a laboratory collaboration followed; an animal result became a treatment only through more people's work and repeated clinical tests."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness",
+      "death_or_grief"
+    ],
+    "contentNote": "Includes financial worry, animal experiments and animal deaths, and a seriously ill child. No graphic procedures or treatment instructions."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Frederick Grant Banting was born November 14, 1891. He was twenty-eight on October 30–31, 1920, and thirty at the early clinical trials in January–February 1922.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel-facts",
+          "scope": "bounded",
+          "locator": "Born field: 14 November 1891. Indexed official page text retrieved; direct biographical page returned 403."
+        },
+        {
+          "sourceId": "source-note",
+          "scope": "bounded",
+          "locator": "Leaf dated Oct. 31/20."
+        },
+        {
+          "sourceId": "source-clinical",
+          "scope": "bounded",
+          "locator": "Offprint pp. 2–5: dates of Leonard Thompson's case."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-finances",
+      "statement": "In his 1940 handwritten account, Banting places the start of his London practice in July 1920. He describes little work, loneliness, heavy expenses and little income; buying a house and car increased his debts.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "First numbering sequence, manuscript pp. 34–37 (scans W10027_0067, _0069, _0071, _0073) and pp. 43–44 (_0085, _0087)."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-night",
+      "statement": "Banting's 1940 account places the reading on October 30, 1920. He wanted to read the journal received that day, first prepared a physiology lecture on carbohydrate metabolism with notes on cards, then took the journal to bed and read Moses Barron's article.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "First sequence, manuscript p. 45 (W10027_0089), from corrected date Oct. 30 through final lines about Barron's article."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-article",
+      "statement": "Banting recalls reading Barron's account of changes in a human pancreas whose duct was blocked by a gallstone, and the comparison with experimental duct ligation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "First sequence, manuscript pp. 45–46 (W10027_0089, _0091). Barron's paper itself was not inspected; this atom concerns Banting's reading account."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-night-worry",
+      "statement": "Banting describes being unable to sleep that night, thinking of the lecture and article along with his miseries, debt and wish to escape worry. About 2 a.m. an experimental idea occurred to him; he got up, wrote it down, and spent most of the night thinking about it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "First sequence, manuscript pp. 46–48 (W10027_0091, _0093, first two lines _0095)."
+        },
+        {
+          "sourceId": "source-early-account",
+          "scope": "bounded",
+          "locator": "Typescript p. 1 (W10015_0001), opening account of reading and idea at 2 a.m.; its 'early November' date conflicts with the original notebook."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-note",
+      "statement": "Banting's surviving notebook leaf dated October 31, 1920, names diabetes (spelled Diabetus), proposes duct ligation, preservation of islets, and an attempt to isolate their internal secretion to relieve glycosuria. It records a proposed experiment, not a successful treatment.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-note",
+          "scope": "bounded",
+          "locator": "Single original leaf N10002_0001, complete entry beneath date Oct. 31/20; scan inspected."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-meeting",
+      "statement": "Banting's September 1922 account describes consulting F. R. Miller and then J. J. R. Macleod. Macleod described earlier unsuccessful work but said the proposal was worth trying, including for negative evidence, and consented to Banting working in his laboratory.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-early-account",
+          "scope": "bounded",
+          "locator": "Typescript pp. 1–2 (W10015_0001 and _0002), first interview through consent to use laboratory. No exact meeting date asserted because participant chronologies differ."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-delay",
+      "statement": "Banting's 1922 account says Starr urged him to retain his surgery work until the school term ended and then try the idea. He left London at the term's conclusion in spring 1921.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-early-account",
+          "scope": "bounded",
+          "locator": "Typescript p. 2 (W10015_0002), first two paragraphs. Exact departure day omitted because 1940 retrospective chronology differs."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-expedition",
+      "statement": "In his 1940 account Banting says that around March he applied personally for an expedition's medical-officer job. Research seemed remote. He waited weeks for a letter and was told the expedition would not take a doctor; his financial hopes fell.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "First sequence, manuscript pp. 48–50 (W10027_0095, _0097, _0099): insertion beginning 'about the middle of March' through letter rejecting a medical officer."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-lab",
+      "statement": "Charles Best became Banting's student collaborator in the laboratory. Their experiments involved operations on dogs and measurements of blood sugar, urinary sugar, diet and other indicators through June and July 1921.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-early-account",
+          "scope": "bounded",
+          "locator": "Typescript p. 2 (W10015_0002), paragraphs beginning 'When I arrived' through June/July experiments."
+        },
+        {
+          "sourceId": "source-clinical",
+          "scope": "bounded",
+          "locator": "Offprint p. 1 (T10011_0001), initial experiments and effects, and p. 2 experimental summary."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-positive",
+      "statement": "Banting's 1922 account describes a late-July experiment using a pancreas whose duct had been tied for seven weeks. He and Best prepared an ice-cold extract, injected a diabetic dog, and found its blood sugar dropped; further experiments with the extract followed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-early-account",
+          "scope": "bounded",
+          "locator": "Typescript p. 2 final paragraph and p. 3 opening (W10015_0002–0003). The account says July 31; the story deliberately gives no exact day."
+        },
+        {
+          "sourceId": "source-clinical",
+          "scope": "bounded",
+          "locator": "Offprint p. 1 right column (T10011_0001), experimental duct ligation, ice-cold preparations and measured blood-sugar reductions."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-lab-cost",
+      "statement": "Banting's 1922 account describes dogs dying of infection, unsuitable operating space, and a move to another operating room. After Macleod returned in September, Banting requested salary, a room, animal-care help and floor repairs because he was deeply in debt and unable to borrow more.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-early-account",
+          "scope": "bounded",
+          "locator": "Typescript p. 3 (W10015_0003), laboratory conditions, infections and numbered requests; p. 4 gives subsequent discussion and other departments' help."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-team",
+      "statement": "The insulin work involved Banting and Best's animal studies, Macleod's guidance and laboratory, Collip's purification and preparation of extract suitable for people, and Campbell and Fletcher's clinical work.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-clinical",
+          "scope": "bounded",
+          "locator": "Offprint pp. 1–2 (author list; paragraphs beginning 'As the results' and 'For the investigation') and p. 6 acknowledgements."
+        },
+        {
+          "sourceId": "source-collip",
+          "scope": "bounded",
+          "locator": "Signed one-page account W10003_0001, numbered contribution 6 (semi-pure form suitable for human administration), 7 and 11."
+        },
+        {
+          "sourceId": "source-macleod",
+          "scope": "bounded",
+          "locator": "Letter September 20, 1922, pp. 1–3 (L10003_0002–0004), collaboration and guidance; original typescript inspected."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-clinical",
+      "statement": "The March 1922 clinical paper describes Leonard Thompson, age fourteen. January 11 extract caused a limited blood-sugar fall but no clinical benefit. Collip's preparation was used for the later course beginning January 23: Thompson became more active and reported feeling stronger. Treatment interruptions were followed by increased urinary sugar; injections resumed in February.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-clinical",
+          "scope": "bounded",
+          "locator": "Offprint p. 2 identifies Collip's preparation and Campbell/Fletcher's clinical roles; pp. 2–4 Thompson case, especially p. 4 right column January 11 and January 23–February 19 course; p. 5 Table I. All six offprint leaves inspected."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Banting was a co-discoverer of insulin. The early collaborative clinical report documented reduced blood sugar and improved condition with pancreatic extracts; this underlies his known role in developing insulin treatment for diabetes.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-clinical",
+          "scope": "bounded",
+          "locator": "Offprint author list p. 1, pp. 2 and 4 clinical course, p. 6 conclusions and acknowledgements."
+        },
+        {
+          "sourceId": "source-macleod",
+          "scope": "bounded",
+          "locator": "Letter pp. 1–3 (L10003_0002–0004): full discovery depended on a group, including Banting's initiating experiment."
+        },
+        {
+          "sourceId": "source-nobel-facts",
+          "scope": "bounded",
+          "locator": "Prize motivation and name in official indexed result."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-credit-dispute",
+      "statement": "By September 1922, the collaborators were in an explicit dispute over allocation of credit. Banting's account contains hostile judgments; Macleod's letter calls the misunderstandings unfortunate and argues for the group's contribution.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-early-account",
+          "scope": "bounded",
+          "locator": "Typescript pp. 3–9, especially p. 8 final acknowledgement amid complaints; account prepared for Gooderham."
+        },
+        {
+          "sourceId": "source-macleod",
+          "scope": "bounded",
+          "locator": "September 20, 1922 letter pp. 1–3 (L10003_0002–0004)."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "quotes": [],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Frederick Grant Banting",
+      "aliases": [
+        "Frederick Banting",
+        "Banting"
+      ]
+    },
+    {
+      "entityId": "entity-best",
+      "kind": "person",
+      "value": "Charles Herbert Best",
+      "aliases": [
+        "Charles Best",
+        "Best"
+      ]
+    },
+    {
+      "entityId": "entity-macleod",
+      "kind": "person",
+      "value": "John James Rickard Macleod",
+      "aliases": [
+        "Macleod"
+      ]
+    },
+    {
+      "entityId": "entity-collip",
+      "kind": "person",
+      "value": "James Bertram Collip",
+      "aliases": [
+        "Collip"
+      ]
+    },
+    {
+      "entityId": "entity-thompson",
+      "kind": "person",
+      "value": "Leonard Thompson",
+      "aliases": [
+        "Thompson"
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He remembered taking a medical journal to bed. He was twenty-eight, with a new medical practice and debts he could not stop thinking about. Earlier that evening, he had prepared a class about how the body uses sugar. He read for hours and put notes on cards.\n\nThe lecture was ready before he got into bed. He had been looking forward to the journal that arrived that day. Now he read an article about a small gland inside the body. It described what happened when the gland's outlet became blocked.",
+      "requiredFactIds": [
+        "fact-night",
+        "fact-age",
+        "fact-finances",
+        "fact-article"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-finances"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-article"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One night of lecture preparation and bedtime reading in the 1940 manuscript; age calculated from official birth metadata. Not a claim that teaching humiliated him. Memoir material remains probable. Wave 2 research 2026-09-05; no warnings accepted. Refinement 2026-09-09: identifies the night as memory in reader prose and cuts a repeated reading sentence."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He lay awake after reading. The lecture and the article kept returning to his mind. So did the money he owed. He wanted to get out of debt and away from the worry. He had opened his practice only a few months earlier.\n\nThere had been long hours with little work. Expenses continued while very little money came in. The house and the car had put him deeper in debt. He lay with the accounts running through his mind. He could not put them away long enough to sleep. A class was prepared, but he was still awake in bed.",
+      "requiredFactIds": [
+        "fact-night-worry",
+        "fact-finances",
+        "fact-night"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-finances"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-finances"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-finances"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-finances"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night-worry",
+            "fact-night"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One sleepless night, with debt and worry explicitly attested. Two inert interior renderings are disclosed; no claim that the practice was objectively doomed or nobody helped. Cause runs on historical claims. Wave 2 research 2026-09-05; no warnings accepted."
+    },
+    {
+      "role": "response",
+      "canonicalText": "At about two in the morning, he got up and wrote down an idea. He named the disease at the top of a notebook page. He wanted to test whether an extract could reduce sugar in the urine. Below it, he set out an experiment.\n\nHe proposed separating the part of the gland that made digestive juices from the part making another substance. Then he could try to collect that substance and test its effect on the disease. The page contained a plan, not a result. He wrote down what to try. He spent much of the remaining night thinking about it.",
+      "requiredFactIds": [
+        "fact-note",
+        "fact-night-worry"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note",
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-night-worry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The original dated notebook survives. Plain-language paraphrase, not a quoted medical protocol or a claim that he decided his entire future that night. The final action is attested in the memoir. Wave 2 research 2026-09-05; no warnings accepted."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He took the idea to a local colleague and then to a professor with a laboratory. The professor explained that other researchers had tried and failed. He also agreed that the experiment was worth trying and offered laboratory space. The young doctor stayed with his teaching work until the term ended. While waiting, he looked for another job. He applied to be a doctor on an expedition. He spoke to the organizer, then watched for the mail for weeks.\n\nA letter finally came. The expedition was not taking a doctor. His hope of earning money there was gone. By spring, he left his practice and went to the laboratory. A student began working beside him. They operated on dogs and measured sugar in their blood. The work continued through the summer.",
+      "requiredFactIds": [
+        "fact-meeting",
+        "fact-delay",
+        "fact-expedition",
+        "fact-lab"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expedition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expedition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expedition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expedition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expedition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expedition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lab"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lab"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lab"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Open compression from initial consultations through spring and summer. The unsuccessful expedition application is attested in Banting's own manuscript and preserves uncertainty about his next employment. Macleod's actual laboratory consent is retained. Wave 2 research 2026-09-05; no warnings accepted."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "In the laboratory, he and his assistant prepared a liquid from a dog's gland. They had waited weeks after blocking its outlet, letting part of the gland waste away. They kept the preparation cold. Another dog had developed the disease after its gland was removed. They gave that dog an injection of the liquid.\n\nThen they measured the sugar in its blood. The level had fallen. It was a positive result from the experiment he had proposed in his notebook. They still had to test what it could do. They continued their experiments with the extract.",
+      "requiredFactIds": [
+        "fact-positive",
+        "fact-note"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive",
+            "fact-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-positive"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One late-July laboratory test, using Banting's early account and the clinical paper's experimental summary. No invented animal awakening, exact disputed test date, observer dialogue, or first-in-the-world claim. Wave 2 research 2026-09-05; no warnings accepted. Refinement 2026-09-09: removed the duplicate positive-result explanation; the measurement and subsequent experiments remain. The optional February 22 episode end was removed because the closing resumption is not dated to that day."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The doctor still owed money and could not borrow more. He asked for pay, a room, help with the animals, and repairs to the laboratory floor. Dogs had died of infections. The work became a larger collaboration. A chemist worked on getting the active substance into a form suitable for people. Hospital doctors tested the preparations.\n\nThe first injection into a fourteen-year-old boy brought no clear improvement in his condition. His blood sugar fell a little, but that was not enough. Later injections used the chemist's preparation. The boy became more active and said he felt stronger. He needed repeated treatment. When injections stopped for a stretch, large amounts of sugar returned to his urine. The doctors resumed the injections.",
+      "requiredFactIds": [
+        "fact-lab-cost",
+        "fact-team",
+        "fact-clinical"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lab-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lab-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lab-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-team"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-team"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clinical"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chronological compression from September requests for practical support to January–February clinical work. The first injection did not produce clinical benefit. Collip and the hospital doctors' roles are not erased; no Banting-at-bedside scene is invented. Wave 2 research 2026-09-05; no warnings accepted."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Frederick Grant Banting.\n\nHe helped develop insulin, a treatment that lets people with diabetes control their blood sugar.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to make a difficult season mean something before you are allowed to need help.\n\nYou are allowed to be uncertain.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Exact name reveal, one plain collaborative legacy sentence, fixed distance pair and two non-directive permissions. No outcome promise or instruction. Wave 2 research 2026-09-05; no warnings accepted."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Only two inert interior renderings of an explicitly attested sleepless night. No invented motive, decision, action, conversation, or clinical observer.",
+    "Memoir-only claims remain probable and identified as memory in the disclosure. No retrospective speech is presented as a verbatim scene.",
+    "Source accounts disagree on several exact dates and credit; no exact disputed meeting or first-test day is installed in narrative."
+  ],
+  "avoidRules": [
+    "Do not call an initially quiet practice a confirmed failure or imply teaching was humiliating.",
+    "Do not claim failure was necessary for discovery, he had nothing else, or the idea instantly settled his career.",
+    "Do not portray Macleod as an obstacle worn down by repeated visits or erase Best, Collip, Campbell and Fletcher.",
+    "Do not make the first injection cure or awaken Thompson; do not invent a ward-wide resurrection.",
+    "Do not repeat patent-for-one-dollar mythology as a guarantee of universal access or absence of corporate ownership.",
+    "Do not carry Nobel prizes or lifetime legacy into the episode narrative."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-note",
+      "citation": "Frederick Grant Banting, note dated Oct. 31/20 from loose-leaf notebook, 1920/21. Academy of Medicine 123 (Banting), Folder 1. University of Toronto Libraries.",
+      "url": "https://collections.library.utoronto.ca/view/insulin:N10002",
+      "locator": "Original single-leaf scan N10002_0001 via owning institution's IIIF image service; complete entry inspected 2026-09-05."
+    },
+    {
+      "sourceId": "source-memoir",
+      "citation": "Frederick Grant Banting, The story of the discovery of insulin, holograph manuscript, January 1940. MS. COLL. 76 (Banting), Box 1, Folders 9–13. University of Toronto Libraries.",
+      "url": "https://collections.library.utoronto.ca/view/insulin:W10027",
+      "locator": "Bounded original scan inspection 2026-09-05: first numbering sequence pp. 34–37, 41–52, 55–59 and selected earlier/later leaves. Narrative chiefly uses pp. 45–50 (W10027_0089–0099, odd-numbered scans). Retrospective and partisan account; not all 296 leaves read."
+    },
+    {
+      "sourceId": "source-early-account",
+      "citation": "Frederick Grant Banting, F. G. Banting: account of the discovery of insulin, September 1922, carbon typescript. MS. COLL. 76 (Banting), Box 37, Folder 2. University of Toronto Libraries.",
+      "url": "https://collections.library.utoronto.ca/view/insulin:W10015",
+      "locator": "Original scans W10015_0001 through _0009 inspected in full; pp. 10–13 not inspected. Written for Colonel Gooderham during credit disputes, not neutral narration."
+    },
+    {
+      "sourceId": "source-clinical",
+      "citation": "F. G. Banting, C. H. Best, J. B. Collip, W. R. Campbell and A. A. Fletcher, Pancreatic extracts in the treatment of diabetes mellitus. Canadian Medical Association Journal, March 1922, six-page offprint. MS. COLL. 76 (Banting), Box 61, Folder 12.",
+      "url": "https://collections.library.utoronto.ca/view/insulin:T10011",
+      "locator": "All six original offprint scans T10011_0001–0006 inspected 2026-09-05. Locators use offprint pages 1–6, not the journal's original pagination."
+    },
+    {
+      "sourceId": "source-collip",
+      "citation": "James Bertram Collip, The contribution made by J. B. Collip to the development of insulin while he was in Toronto 1921–22, signed account, September 1922. University of Toronto Libraries.",
+      "url": "https://collections.library.utoronto.ca/view/insulin:W10003",
+      "locator": "Complete signed single leaf W10003_0001 inspected 2026-09-05; numbered contribution 6 concerns preparation suitable for human administration."
+    },
+    {
+      "sourceId": "source-macleod",
+      "citation": "J. J. R. Macleod to Colonel Albert Gooderham, History of the researches leading to the discovery of insulin, September 20, 1922. MS. COLL. 269 (Collip), Box 37, Folder 3. University of Toronto Libraries.",
+      "url": "https://collections.library.utoronto.ca/view/insulin:L10003",
+      "locator": "Cover and letter pp. 1–3, scans L10003_0001–0004, inspected 2026-09-05. Remaining account and appendix not inspected; evidence here confined to opening collaboration discussion."
+    },
+    {
+      "sourceId": "source-nobel-facts",
+      "citation": "Nobel Foundation, Frederick G. Banting – Facts.",
+      "url": "https://www.nobelprize.org/prizes/medicine/1923/banting/facts/",
+      "locator": "Official indexed text retrieved 2026-09-05: birth field November 14, 1891, name and prize motivation. Direct biographical and lecture page access returned 403; no claim those live pages were opened."
+    }
+  ],
+  "review": {}
+}

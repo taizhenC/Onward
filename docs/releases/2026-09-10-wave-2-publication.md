@@ -84,12 +84,13 @@ from the backup. Saved reader artifacts remain immutable.
 
 ## Why the other six are not included
 
-The six remaining drafts are being rewritten under the same standards, not
-published as exceptions. Brontë needs a writing-focused response, Berlin a
-sourced emotional episode, Butler and Carver bounded scene/action support,
-Charles a supported grief chronology, and Christie a coherent single episode.
-The original nine reviewed snapshots remain frozen; substantive revisions
-must have new hashes and independent checks before being treated as eligible.
+The six remaining drafts were rewritten under the same standards, not
+published as exceptions. The [separate rewrite packet](wave-2-rewritten-2026-09-10/README.md)
+records the actual revisions, source corrections and independent checks.
+Brontë and Christie now have more coherent writing-focused arcs; Charles omits
+the disputed grief sequence. All six still have specific source or scene-level
+holds under the unchanged recipe. The original nine reviewed snapshots remain
+frozen. The new drafts have separate hashes and no inherited approval metadata.
 
 The shorter length of Andersen is an editorial qualification, not a missing
 ending. Child's unresolved diploma/examination date disagreement is retained

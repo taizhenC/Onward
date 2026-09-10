@@ -9,7 +9,7 @@ keeps the scope visible and avoids quietly dropping a difficult episode.
 
 | Set | Figures | State |
 |---|---|---|
-| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child database-published September 10; worker refresh pending; six others in source-grounded revision |
+| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others in source-grounded revision |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Queued |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
@@ -80,10 +80,10 @@ Brontë needs explicit acceptance of the caregiving-response tradeoff; Berlin,
 Butler, Carver and Christie retain format/episode decisions; Charles retains
 a historical-source adjudication hold. Shortness alone does not block release.
 The owner then directed publication for stories meeting the standards and
-rewrites for the others. Andersen, Banting and Child are database-published;
+rewrites for the others. Andersen, Banting and Child are published and live-verified;
 the catalog now contains 12 valid historical stories, with zero quarantined.
-The [release record](releases/2026-09-10-wave-2-publication.md) tracks worker
-refresh and live verification separately. The other six remain unpublished
+The [release record](releases/2026-09-10-wave-2-publication.md) records the successful
+worker refresh and complete live reader verification. The other six remain unpublished
 while source-grounded rewrites are attempted.
 
 Matching corrections remain a separate evaluated release, not a silent edit

@@ -1,0 +1,985 @@
+{
+  "storySpecId": "butler:1974-1975-pre-patternmaster:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "butler",
+  "stageId": "1974-1975-pre-patternmaster",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 27,
+    "ageMax": 29,
+    "throughLine": "Unemployment payments gave her time to write while she feared her relatives were right about a steadier job; one submitted novel was rejected and another accepted, followed by publication in 1976."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Includes job loss, financial uncertainty and publication refusals; no death, self-harm or graphic material."
+  },
+  "facts": [
+    {
+      "factId": "fact-016",
+      "statement": "Butler recalled crying at her layoff.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-warrick-1998",
+          "scope": "exact",
+          "locator": "Paragraph about the final job loss immediately before the account of assembling Patternmaster; Butler's first-person statement, not the reporter's reconstruction."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-001",
+      "statement": "Octavia E. Butler recalled being twenty-seven, laid off, supported by unemployment compensation and afraid that her writing would never succeed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-beal-1985",
+          "scope": "exact",
+          "locator": "Final answer, paragraph beginning 'I was able to find the time'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-002",
+      "statement": "Butler said the idea for Patternmaster came when she was twelve, but she did not yet know how to write a novel and tried for years before she could write it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sanders-2004",
+          "scope": "exact",
+          "locator": "Answer to 'Where do you get your ideas?'"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-003",
+      "statement": "Butler recalled rising at two or three in the morning to write before office, factory or warehouse work; she disliked the jobs, left jobs and found others, and accumulated rejections.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-positive-obsession",
+          "scope": "exact",
+          "locator": "Printed p. 729, section 11."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-004",
+      "statement": "Butler recalled throwing away all her accumulated rejection slips one day in disgust.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-positive-obsession",
+          "scope": "exact",
+          "locator": "Printed p. 729, section 11, final sentence."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-005",
+      "statement": "At eighteen Butler won a college writing contest and received fifteen dollars, her first money from writing; at twenty-three she sold two short stories to writers teaching at Clarion.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-positive-obsession",
+          "scope": "exact",
+          "locator": "Printed p. 729, section 10; pp. 730–731, section 13."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-006",
+      "statement": "Butler said only one of those two stories was published, and she sold no other writing for five years before selling her first novel.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-positive-obsession",
+          "scope": "exact",
+          "locator": "Printed pp. 730–731, section 13."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-007",
+      "statement": "Butler feared that relatives urging a civil-service job might be right; she remembered feeling desperate during the period of unemployment-supported novel writing.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-beal-1985",
+          "scope": "exact",
+          "locator": "Final answer, last two paragraphs."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-008",
+      "statement": "While Patternmaster was with one publisher, Butler wrote Mind of My Mind and sent it to another publisher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-beal-1985",
+          "scope": "exact",
+          "locator": "Final answer, paragraph beginning 'I had my first short stories'."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-009",
+      "statement": "Butler said the idea for Mind of My Mind came when she was fifteen and the idea for Survivor when she was nineteen.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sanders-2004",
+          "scope": "exact",
+          "locator": "Answer to 'Where do you get your ideas?'"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-010",
+      "statement": "While those two novels were under consideration, Butler began revising Survivor, an old novel begun in her teens.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-beal-1985",
+          "scope": "exact",
+          "locator": "Final answer, first paragraph."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-011",
+      "statement": "While working on Survivor, Butler received a rejection of Mind of My Mind and an acceptance of Patternmaster; she did not specify the delivery medium, day, order or her physical reaction.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-beal-1985",
+          "scope": "exact",
+          "locator": "Final answer, paragraph beginning 'And while I was working on Survivor'."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-012",
+      "statement": "Butler said she sold Patternmaster in 1975 and it was published in 1976.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-beal-1985",
+          "scope": "exact",
+          "locator": "Final answer, first paragraph."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-013",
+      "statement": "Butler said her first novel's publication in 1976 enabled her first vacation: a month-long bus pass trip that included New York, Seattle and national parks.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sanders-2004",
+          "scope": "exact",
+          "locator": "Opening answers, beginning 'I went to Seattle for the first time in 1976'."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-014",
+      "statement": "Butler remembered that on the trip she and a woman with uncomfortable shoes encouraged each other up the Empire State Building and reached the top. Butler said she herself was out of shape; the other woman's difficulty was her feet.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sanders-2004",
+          "scope": "exact",
+          "locator": "Answer to 'What'd you think of New York?'"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-015",
+      "statement": "Octavia E. Butler was a science-fiction novelist and the author of Patternmaster.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-beal-1985",
+          "scope": "exact",
+          "locator": "Interview introduction and first/final answers."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Octavia E. Butler",
+      "aliases": [
+        "Octavia Butler",
+        "Butler"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was twenty-seven when she lost her job. She cried.\n\nBefore the layoff, she had fitted writing around paid work. She got up in the early morning to write, then left for the office, factory or warehouse. She left jobs she hated and found others.\n\nShe had sold two stories years earlier. Only one had appeared. Nothing else had sold since.",
+      "requiredFactIds": [
+        "fact-001",
+        "fact-016",
+        "fact-003",
+        "fact-005",
+        "fact-006"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-003"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-005"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Refinement 2026-09-09. The opening now starts with a reported event rather than a manuscript retrospective. Fact-016 is the only new claim from Warrick. The next paragraphs explicitly step back; workday routine and early story outcomes are not staged on the layoff day. No room, notice, time of day, cause of dismissal or invented gesture. A situated single-location scene remains unavailable; craft HOLD stays."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Unemployment payments were supporting her while she wrote. She was afraid that nothing would come of the writing.\n\nHer relatives thought she should get a steady government job. She feared they might be right.\n\nShe had been trying to write a novel from an idea she first had at twelve. Having an idea had come long before knowing how to make a book. She was working, and still afraid.",
+      "requiredFactIds": [
+        "fact-001",
+        "fact-007",
+        "fact-002",
+        "fact-008"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007",
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Refinement 2026-09-09. Removed abstract padding about where fear belonged and the repeated sales recap. Interiority is Butler's retrospective testimony, probable in the record. This remains a period-level fear; it is not claimed to be her thoughts at the instant of the layoff. No invented family conversation or private decision."
+    },
+    {
+      "role": "response",
+      "canonicalText": "With the first novel still out, she wrote another. This one also began with an idea she had carried since adolescence. She had been fifteen when she first thought of it.\n\nNow she made it into a novel and sent it to a different publisher. One publisher had the first manuscript. Another had the second. Neither submission had yet given her the answer she was waiting for.\n\nThere was an older novel she could return to. She began revising it.",
+      "requiredFactIds": [
+        "fact-008",
+        "fact-009",
+        "fact-010"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-009"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-009"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008",
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05. The documented writing/submission sequence, not an invented first keypress or purchase of paper. Craft hold: necessarily summarizes work over time; a single response moment needs manuscript or journal access."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The older book went back to her teens too. Revising it was work on a third novel while two others were being considered. The unemployment payments had made this stretch of writing possible. She remembered desperation as part of it.\n\nOne earlier sale had not led straight to another. Her first writing money had been a small prize in a college contest. Later, two writers teaching a workshop bought short stories from her. One story appeared. The other did not.\n\nThat was followed by five years without a sale. The two submitted novels were still with their publishers. She worked on the older manuscript.",
+      "requiredFactIds": [
+        "fact-009",
+        "fact-010",
+        "fact-008",
+        "fact-001",
+        "fact-007",
+        "fact-005",
+        "fact-006"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-009",
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008",
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-007"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-005",
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-005"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-005"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-006"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-008",
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-010"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05; cross-review correction 2026-09-05. Earlier contest and workshop sales prevent the false 'first money ever' seed claim. Time compression belongs here. This beat now ends with the manuscripts still under consideration, not with an ordered refusal. The following beat groups both outcomes within Survivor revision without establishing which arrived first."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "During those revisions, her two submissions received different answers. One was accepted; the other was refused.\n\nThe publisher taking a book wanted her first manuscript. It was the story she had tried for years to write. The second manuscript was still without a publisher. The first was going into print.",
+      "requiredFactIds": [
+        "fact-011",
+        "fact-002",
+        "fact-012"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-002",
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-011",
+            "fact-012"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05; cross-review correction 2026-09-05. Beal's final answer groups rejection and acceptance during Survivor revision but does not order the answers. The prose now gives the outcomes together within that period, not a refusal-then-acceptance sequence. No phone call, letter-opening gesture, room, weather or same-day coincidence is supplied by the interview. Source-supported change, but a deliberately short turning point and explicit craft hold."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The book came out the next year. After it was published, she took her first vacation. She bought a bus pass that let her travel for a month. She went to cities she had not visited before.\n\nIn one city, she met another woman who was sightseeing. They climbed a tall building together. The woman's shoes hurt. The writer was out of shape. They encouraged each other on the way up. She remembered that they made it to the top.\n\nFor once, the time away from a job was a holiday. There was a month to travel.",
+      "requiredFactIds": [
+        "fact-012",
+        "fact-013",
+        "fact-014",
+        "fact-001"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-012"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001",
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-013"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Research continuation 2026-09-05; cross-review correction 2026-09-05. Bounded 1976 coda from Butler's own 2004 recollection. The writer is Butler, who described herself as out of shape; her companion's difficulty was uncomfortable shoes. Identity stays stable but metadata extends beyond the 1974–1975 stage label. No ascent-as-success advice; no claim that first publication ended money worries."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Octavia Butler.\n\nShe wrote science-fiction novels.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou can care about something without feeling certain it will work. You can still be unsure.",
+      "requiredFactIds": [
+        "fact-015"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Research continuation 2026-09-05. Fixed distance then non-directive permission; no promise that persistence earns publication."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented delivery medium, response gesture, work room, dated rejection encounter or private dialogue.",
+    "Keep recollections probable and openly framed; no diary or manuscript claimed opened.",
+    "The unemployment-supported period is not a reconstruction of a single day. No motivational notebook inscription is relocated into it."
+  ],
+  "avoidRules": [
+    "Do not say first novel advance was her first writing money.",
+    "Do not call Patternmaster the third novel written in the unemployed period.",
+    "Do not equate a refusal with racism when its reason is unrecorded.",
+    "No career award list or advice to quit paid work.",
+    "Do not conflate selling short stories in 1970 with publication dates."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-positive-obsession",
+      "citation": "Butler, Octavia E. Positive Obsession. First published as Birth of a Writer, Essence, May 1989; Library of America authorized excerpt, copyright 1996 Octavia E. Butler.",
+      "url": "https://loa-shared.s3.amazonaws.com/static/pdf/Butler_Positive_Obsession.pdf",
+      "locator": "Printed pp. 728–731 (PDF pp. 4–7), sections 9–13 and Afterword."
+    },
+    {
+      "sourceId": "source-beal-1985",
+      "citation": "Butler, Octavia E., interviewed by Frances M. Beal, October 29, 1985. Black Women and the Science Fiction Genre, The Black Scholar 17(2), March/April 1986, pp. 14–18. Interview transcription on eNotes.",
+      "url": "https://www.enotes.com/topics/octavia-butler/criticism/criticism/octavia-butler-with-frances-m-beal-interview-date",
+      "locator": "Final question, 'How did you finally succeed in actually becoming a professional writer?' and answer; opening discussion of genre."
+    },
+    {
+      "sourceId": "source-sanders-2004",
+      "citation": "Butler, Octavia E., interviewed by Joshunda Sanders. Interview first published Africana.com, February 24, 2004; In Motion Magazine, March 14, 2004; republished by interviewer on Medium.",
+      "url": "https://joshunda.medium.com/an-interview-with-octavia-butler-2004-8933300df98a",
+      "locator": "Questions 'What made you want to move to Seattle?' and 'Where do you get your ideas?' The interviewer’s introduction incorrectly dates the first sale to 1976; Butler's own answer dates publication."
+    },
+    {
+      "sourceId": "source-warrick-1998",
+      "citation": "Warrick, Pamela. An Alternative Universe. Los Angeles Times, October 18, 1998. Profile based on interviews with Butler.",
+      "url": "https://www.latimes.com/archives/la-xpm-1998-oct-18-tm-33581-story.html",
+      "locator": "Job-loss paragraph directly before Patternmaster's synopsis. Consulted for fact-016 only; no room, notification method or acceptance scene taken from this account."
+    }
+  ],
+  "review": {}
+}

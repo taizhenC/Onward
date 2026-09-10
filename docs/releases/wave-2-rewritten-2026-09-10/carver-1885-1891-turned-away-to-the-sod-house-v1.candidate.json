@@ -1,0 +1,830 @@
+{
+  "storySpecId": "carver:1885-1891-turned-away-to-the-sod-house:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "carver",
+  "stageId": "1885-1891-turned-away-to-the-sod-house",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 25,
+    "ageMax": 27,
+    "throughLine": "After transferring to study agriculture, a student faced exclusion from the college dining hall, wrote a trusted friend for advice, and walked with her on campus when she visited."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination"
+    ],
+    "contentNote": "Includes racist exclusion from a college dining hall and financial difficulty; no graphic violence."
+  },
+  "facts": [
+    {
+      "factId": "fact-001",
+      "statement": "George Washington Carver's birth date is uncertain, conventionally circa 1864–1865. This narrower story concerns his 1891 arrival at Iowa Agricultural College, about twenty-six; 25–27 conservatively covers the approximate birth/episode dates.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "Executive Summary p. vii (working estimate circa 1865); printed pp. 83–84 (1891 transfer/initial experience). No precise birth date or dining-hall date established."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-012",
+      "statement": "Carver called the Milhollands warm and helpful friends; his c.1897 fragment credits them with insisting on art school and choosing Simpson College.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'I went from here', last sentence."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-014",
+      "statement": "At Simpson Carver tried to support himself with laundry work and lived very cheaply; his c.1897 fragment describes about a month of cornmeal and beef suet, sometimes without either, and reluctance to tell strangers.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'The opening of school'."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-015",
+      "statement": "Carver remembered that when word spread he needed laundry work, faculty, students and townspeople gave substantial help; he named Etta Budd, the Liston family and the Field family.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraphs beginning 'The news soon spread' and 'But I wish to especially mention'."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-016",
+      "statement": "Carver attended Simpson in 1890–91, studied art and piano, and transferred to Iowa Agricultural College in 1891 after Etta Budd encouraged botany.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-simpson-collection",
+          "scope": "exact",
+          "locator": "About Carver paragraph."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-019",
+      "statement": "In Crisp's undated draft, Pammel is quoted recalling that Etta Budd asked him to employ Carver; he gave Carver janitorial work and a former office for lodging. This is quoted recollection, not the original Pammel account.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-crisp-draft",
+          "scope": "bounded",
+          "locator": "Typed p. 49 (PDF p. 59), long Pammel quotation from Miss Etta Budd interested herself through connected with the college, superscript 8. Gart p. 85 assigns the room to James Wilson; this attribution conflict is not resolved and neither provider's name appears in canonical prose."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-020",
+      "statement": "Crisp reports that Professor Budd put Carver in charge of greenhouses and directed him to the commissary department to arrange boarding. There he was told he could not eat with white students.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-crisp-draft",
+          "scope": "bounded",
+          "locator": "Typed p. 49 (PDF p. 59), final paragraph, ending in superscript 9. The quoted discriminatory speech is not reproduced as verbatim dialogue in this candidate; the original testimony/letter behind note 9 is not yet located."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-021",
+      "statement": "Crisp reports a letter from Carver to Sophia Liston asking advice about racial hostility while expressing his strong wish to remain at Ames. The actual letter, its exact date and its writing place have not been located.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-crisp-draft",
+          "scope": "bounded",
+          "locator": "Typed p. 50 (PDF p. 60), first paragraph beginning Writing his friend. This is Crisp's reported letter content, not Carver's contemporaneous manuscript inspected here."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-022",
+      "statement": "Crisp says Liston received Carver's letter, travelled by train to Ames and consulted Etta Budd before visiting him.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-crisp-draft",
+          "scope": "bounded",
+          "locator": "Typed p. 50 (PDF p. 60), paragraphs 2–3. Wardrobe and remembered Budd dialogue are not used. Exact elapsed time after sending the letter is not established."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-023",
+      "statement": "Crisp describes Liston dining with the head carpenter's wife in the basement room where Carver habitually ate with hired workers. The inspected draft does not expressly place Carver at that particular meal. It then explicitly describes Liston walking with Carver on campus until evening.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-crisp-draft",
+          "scope": "bounded",
+          "locator": "Typed p. 50 (PDF p. 60), paragraph beginning And stand by him Mrs. Liston did, including the handwritten correction before the head carpenter's wife and the following Afterwards sentence. Gart printed p. 84, note 54 explicitly describes a shared meal but cites another Crisp draft in folder 154.16.f; that stronger statement's source trail remains unresolved, not disproved. Original Liston account not inspected."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-024",
+      "statement": "Crisp quotes Carver's later report to Liston that things went more easily from the day after her visit. This is his reported assessment, not evidence that racism ended or a dining policy changed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-crisp-draft",
+          "scope": "bounded",
+          "locator": "Typed p. 50 (PDF p. 60), following-day quotation immediately after the visit, superscript 9. Original letter or testimony behind the quotation remains unlocated."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-025",
+      "statement": "Carver continued to need paid work during his studies. In May 1922 he recalled doing many jobs for professors, including garden, field, house and laboratory work.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "bounded",
+          "locator": "Gart printed p. 85 (PDF p. 103), quotation and note 59: Carver to Pammel, May 5, 1922, Reel 1 Frame 0015. These jobs span his college years and are not all newly placed in 1891."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-018",
+      "statement": "George Washington Carver became an agricultural scientist and teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "Executive Summary p. vii; Chapter Five, Higher Education and Life as a Teacher."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "George Washington Carver",
+      "aliases": [
+        "George W. Carver",
+        "Carver"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He went to arrange his meals at the college. He was about twenty-six. He had transferred there to study agriculture.\n\nA professor had given him work caring for greenhouses and sent him to arrange a place in the dining hall. He was already a student. But he was told that he could not eat with the white students.\n\nHe was Black. He was to eat apart from them.",
+      "requiredFactIds": [
+        "fact-020",
+        "fact-001",
+        "fact-016",
+        "fact-023"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020",
+            "fact-023"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. Narrows to the 1891 arrival at Iowa Agricultural College within the existing stage ID. One reported boarding-arrangements encounter in Crisp typed p. 49. No exact day, counter, staff member's appearance, posture or live quotation invented. The original account behind Crisp note 9 is not yet inspected; primary-attribution HOLD remains. Conservative episode ages 25–27; matching metadata was not edited."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He wanted to remain at the college. There was feeling against him because of his race, and he did not know what to do.\n\nHe had come to study agriculture. The dining hall was part of the college, but he was not allowed to share it with the white students. His meals were with hired workers in a basement room.\n\nHe wanted to stay in school. He needed advice.",
+      "requiredFactIds": [
+        "fact-021",
+        "fact-016",
+        "fact-020",
+        "fact-023"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-023"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. The wish to stay and request for advice come from Crisp's reported letter, not an invented despair or claim he had decided to leave. Basement meals are documented in the same episode, but the exact setting and duration of this low-point reflection are not given. This remains a factual aftermath rather than a fully located felt moment; R2/R3 emotional-rendering HOLD is not cleared by the new source."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He wrote to a friend from his previous college. He told her about the hostility he had met and how much he wanted to stay. He asked what he should do.\n\nThis was someone who had helped him before. She and her family had supported him during his earlier studies and helped him reach the new college.\n\nHe put the difficulty into a letter. He asked her for advice.",
+      "requiredFactIds": [
+        "fact-021",
+        "fact-015"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. Replaces an unspecified period of laundry work with the reported, bounded action of writing for advice. Letter is the concrete anchor; no desk, pen, paper condition, posting walk, reply wait or mail date invented. The original letter remains unlocated, so this is probable testimony mediated by Crisp, not a documented firsthand letter claim."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Admission had not settled the conditions of his daily life. Finding a room had been difficult. His former art teacher had asked a professor to find him work. He had been given a cleaning job and a former office to live in.\n\nThere had been help with work and a room. There was still the refusal to let him eat with the white students. The college had not become a place where he was treated like them at meals.\n\nHis letter reached his friend. She took a train to the college. Before seeing him, she spoke to his former art teacher.",
+      "requiredFactIds": [
+        "fact-016",
+        "fact-019",
+        "fact-020",
+        "fact-022"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016",
+            "fact-019",
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-019"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-019"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-019"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-019"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-020"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-022"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-022"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-022"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. Explicit past-perfect background preserves the earlier job/room help without falsely saying it followed the letter. It did not resolve dining exclusion. The closing train/consultation sequence is as reported by Crisp; no manufactured period waiting by a window. Room-provider attribution conflict between Crisp/Pammel and Gart/Wilson stays disclosed, with no provider named in prose."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "He walked around the campus with his friend. She had travelled there after receiving his letter about the hostility he had met.\n\nShe stayed with him until evening.",
+      "requiredFactIds": [
+        "fact-023",
+        "fact-021",
+        "fact-022"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-023"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021",
+            "fact-022"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-023"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Independent-check correction 2026-09-10. The foreground is only the explicitly reported campus walk, not an inferred shared meal. The prior letter and journey are marked as background. Crisp gives no route, conversation, posture, weather, private realization or immediate policy change; none is invented. This very short attested encounter is not represented as a fully developed turning moment. The original Liston account and Crisp note 9 remain unlocated; publication HOLD remains."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He later told her that things had become easier from the following day. That was his account of the visit's aftermath. It was not the end of his need to earn a living while studying.\n\nHe remained a student, with paid work alongside his studies. The room and the work had helped him attend. When he needed advice about being treated differently, he had written to someone who knew him.\n\nHe still worked for his living.",
+      "requiredFactIds": [
+        "fact-024",
+        "fact-025",
+        "fact-019",
+        "fact-021"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-024"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-024"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-025"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-025"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-019"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-021"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-025"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Independent-check correction 2026-09-10. Campus walk precedes the reported next-day aftermath; neither this passage nor the turn asserts that Carver and Liston ate that particular meal together. One necessary memory cue qualifies the late reported assessment rather than asserting an objective end to racism (recipe §6; limited R11 tradeoff). Continued work is a broad documented condition, not every later college job compressed into 1891. No degree, fame or later career imported. Historical source trail and complete-story craft remain held."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was George Washington Carver.\n\nHe became a scientist who studied agriculture and taught others.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou may need help without losing your part in your own life. You are allowed to need people.",
+      "requiredFactIds": [
+        "fact-001",
+        "fact-018"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-018"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Research continuation 2026-09-05. Fixed distance then bounded permission; does not equate the reader's experience with racist exclusion or promise that help will arrive."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dining-office dialogue, appearance, posture, food, table arrangement or sympathetic observer.",
+    "Carver's letter, Liston's visit and the next-day report remain probable, mediated through Crisp's undated draft until underlying records are inspected.",
+    "Do not transfer the 1891 dining episode to Highland or make the new episode a laundry success story.",
+    "No invented private realization, promise that racism ended, or assertion that a formal dining policy changed.",
+    "Do not infer that Carver was present at Liston's particular basement meal; the inspected draft explicitly establishes only their later campus walk."
+  ],
+  "avoidRules": [
+    "Do not assert a precise birth date or exact day of this 1891 arrival episode.",
+    "Do not name the disputed provider of the room: Crisp quotes Pammel; Gart's narrative gives Wilson.",
+    "Do not claim that helpers were absent, that one white visitor ended racism, or that the student overcame prejudice through virtue.",
+    "Do not turn later recollection into unqualified firsthand documentation.",
+    "Preserve the unchanged stage ID and disclose the old matching-text mismatch; no matching library change was authorized."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-fragment-c1897",
+      "citation": "Carver, George W. Autobiographical fragment, 1897 or thereabouts, written for Mrs. W. A. Liston and Miss Etta M. Budd. National Park Service transcription with explicit warning that the recollections are not definitive.",
+      "url": "https://www.nps.gov/gwca/learn/historyculture/index.htm",
+      "locator": "Paragraphs beginning 'I was here to have a position', 'I went from here', and 'The opening of school' through the thanks to helpers."
+    },
+    {
+      "sourceId": "source-gart-primary-extracts",
+      "citation": "Gart, Jason H. He Shall Direct Thy Paths: The Early Life of George W. Carver. Historic Resource Study, National Park Service, 2014. Used for specified quoted primary passages and archival-document summaries; original manuscripts not independently opened. Official GovInfo copy reopened 2026-09-09.",
+      "url": "https://www.govinfo.gov/content/pkg/GOVPUB-I29-PURL-gpo236603/pdf/GOVPUB-I29-PURL-gpo236603.pdf",
+      "locator": "Executive Summary p. vii; printed pp. 79–85: earlier Simpson recollections, 1891 transfer and dining episode, and continued paid work. Printed p. 84 note 54 cites a different Crisp draft for the stronger shared-meal statement; its original source trail remains unresolved."
+    },
+    {
+      "sourceId": "source-simpson-collection",
+      "citation": "Simpson College, Dunn Library Archives and Special Collections. George Washington Carver Collection. Institutional account of its former student, consulted only for attendance and the move toward botany.",
+      "url": "https://www.simpson.edu/academics-programs/dunn-library/archives-special-collections/george-washington-carver-collection/",
+      "locator": "About Carver paragraph: art/piano in 1890–91, Etta Budd and transfer to Iowa Agricultural College. The page's birth and exposition timeline entries are not relied on."
+    },
+    {
+      "sourceId": "source-crisp-draft",
+      "citation": "Lucy Cherry Crisp, Carver of Tuskegee, unpublished draft, undated. Lucy Cherry Crisp Papers, 0154-s5-b16-fd, East Carolina Manuscript Collection. Archive-held manuscript with reported/quoted earlier testimony; not automatically a primary eyewitness to 1891.",
+      "url": "https://digital.lib.ecu.edu/86436",
+      "locator": "Typed pp. 49–50, PDF pp. 59–60 of the 117-page digitized draft; actual full-page renders visually inspected 2026-09-10. PDF: https://digital.lib.ecu.edu/encore/ncgre000/00000087/00086436/00086436.pdf. Superscripts 8–9 identify underlying testimony whose originals/date are not yet located. The draft's September 1891 registration differs from Gart's mid-July chronology; prose uses only 1891/approximate age."
+    }
+  ],
+  "review": {}
+}

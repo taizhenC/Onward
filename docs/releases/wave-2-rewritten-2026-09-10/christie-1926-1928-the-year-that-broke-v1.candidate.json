@@ -1,0 +1,859 @@
+{
+  "storySpecId": "christie:1926-1928-the-year-that-broke:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "christie",
+  "stageId": "1926-1928-the-year-that-broke",
+  "version": 1,
+  "status": "draft",
+  "entities": [
+    {
+      "kind": "person",
+      "value": "Agatha Christie",
+      "aliases": [
+        "Christie"
+      ],
+      "entityId": "entity-subject"
+    },
+    {
+      "kind": "date",
+      "value": "1890",
+      "aliases": [],
+      "entityId": "entity-birth-year"
+    },
+    {
+      "kind": "date",
+      "value": "1976",
+      "aliases": [],
+      "entityId": "entity-death-year"
+    }
+  ],
+  "dramatizationLimits": [
+    "Only inert, explicitly mapped texture within an attested moment; no invented historical actions, motives, quotations, objects, weather, or outcomes.",
+    "Memoir and interview recollections remain probable and qualified; one opening memory cue frames the memoir scene without turning remembered speech into verbatim scene dialogue.",
+    "Do not convert temporal sequence into a claim that grief, disability, rejection, travel, or work caused later achievement."
+  ],
+  "avoidRules": [
+    "Do not invent people, places, dates, dialogue, gestures, weather, or causality.",
+    "Do not quote or paraphrase the reader's disclosure.",
+    "Do not promise that the reader will succeed or that suffering creates greatness.",
+    "Keep identity, calendar years, named locations, and institutions out of the story until the bridge.",
+    "Do not turn the book's completion into recovery from grief or separation; no later train episode in this narrowed story.",
+    "Keep the dispatch scene sparse unless an actual source supplies its location and physical actions; do not invent a last-page or postbox moment."
+  ],
+  "episode": {
+    "ageMin": 36,
+    "ageMax": 38,
+    "throughLine": "A writer who needed another book's income struggled through dictation, completed the novel despite disliking it, and saw it published without becoming proud of it."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief",
+      "pregnancy_or_parenthood"
+    ],
+    "contentNote": "Includes bereavement, separation, financial pressure and difficulty writing; no graphic detail."
+  },
+  "facts": [
+    {
+      "factId": "a01",
+      "statement": "Agatha Christie was born September 15, 1890; she was thirty-six during the February 1927 Canary Islands writing stay. The novel appeared in 1928, when she was thirty-seven or thirty-eight; no exact publication day is used here.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "The Early Years, birth date September 15, 1890; cross-check February 1927 writing stay against src-estate-2024 and 1928 publication year against src-book."
+        },
+        {
+          "sourceId": "src-estate-2024",
+          "scope": "bounded",
+          "locator": "March selection, February 1927 departure with Rosalind and Carlo."
+        },
+        {
+          "sourceId": "src-book",
+          "scope": "exact",
+          "locator": "Original publication year: 1928. This supports the conservative end-age range, not a specific publication date."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "a08",
+      "statement": "Christie's mother died in April 1926; her marriage ended in divorce in 1928.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "A Difficult Period, mother death and divorce paragraphs; no inferred explanation of disappearance is used."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "a02",
+      "statement": "In February 1927 Christie travelled to the Canary Islands with her daughter Rosalind and secretary/governess Carlo Fisher while separated from her husband.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-2024",
+          "scope": "bounded",
+          "locator": "March selection paragraph beginning This book was a challenging one; exact month/year and travelling companions."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a03",
+      "statement": "Christie recalled attempting to dictate her novel to Carlo in the hotel garden at Orotava, Tenerife. After telling Rosalind not to interrupt, she looked at Carlo's ready pencil and struggled to think before beginning hesitantly.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, paragraph beginning Look here, Rosalind and next paragraph through Finally, hesitantly, I began. Direct text re-read 2026-09-09; this initial difficulty precedes the interruptions."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a05",
+      "statement": "Christie described a pre-existing lack of joy in this writing. She had already worked out the plot, partly from an earlier story, but could not visualize scenes or make characters feel alive; she needed another book and its income.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, retrospective explanation beginning To begin with, I had no joy in writing through necessity to write another book and make some money. This explains the difficulty already present, not a new state caused by Rosalind's gaze. The later faltering is separately a17."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a04",
+      "statement": "Christie told her daughter not to interrupt for an hour, began dictating hesitantly, and was interrupted after nine minutes; her daughter returned and asked to stand nearby.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, dialogue and narrative from Look here, Rosalind through I suppose you can stand there."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a06",
+      "statement": "Christie resumed dictation after the first interruption, then allowed her returning daughter to stand nearby and started again; this preceded the faltering under her daughter's gaze.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, I resumed my hesitant dictation and I suppose you can stand there / And I started again."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a17",
+      "statement": "After allowing Rosalind to stand nearby and starting again, Christie felt even more strongly that her dictation was foolish; she faltered, stammered, hesitated and repeated herself.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, But Rosalind's eye upon me through I faltered, stammered, hesitated, and repeated myself. This follows permission and resumption; no further restart is documented in the paragraph."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a07",
+      "statement": "Christie recalled writing most of The Mystery of the Blue Train during the Canary Islands trip, completing it and sending it to her publishers despite disliking it; she recalled sales comparable to her previous book and said she had never been proud of it.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "bounded",
+          "locator": "PDF p. 320, opening writing paragraph (best part written there), final paragraph beginning I have always hated The Mystery of the Blue Train, continuing at top of PDF p. 321 through proud of it. Actual text reread 2026-09-10. No dispatch date, location, physical mailing method or final-page scene is given. The opening paragraph's there refers to the Canary Islands trip; it does not confine most-of-book work to one hotel."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a18",
+      "statement": "The Mystery of the Blue Train was first published in 1928.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-book",
+          "scope": "exact",
+          "locator": "Work record, Original publication year: 1928."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a19",
+      "statement": "In her autobiography Christie retrospectively identified writing this disliked novel as the change from amateur to professional: the burden included writing without wanting to and without liking the work. This is her later interpretation, not an independently dated garden realization.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-autobiography",
+          "scope": "exact",
+          "locator": "PDF p. 320, paragraph after the no-joy/need-for-income explanation and before I have always hated: That was the moment when I changed from an amateur to a professional. No contemporaneous diary or precise realization time supplied."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "a16",
+      "statement": "Agatha Christie became a detective novelist and playwright.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "Opening career summary: detective novels, short stories and The Mousetrap."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She remembered trying to work on a novel with her secretary in a hotel garden. She was thirty-six. The secretary had a pencil ready. Her daughter was also staying at the hotel.\n\nShe had brought them away with her while she was separated from her husband. Her mother had died the previous year. Now she needed to write another book and earn money.\n\nShe told her daughter that the next hour was work time. She and the secretary were going to be busy. The child went away.",
+      "requiredFactIds": [
+        "a03",
+        "a01",
+        "a02",
+        "a08",
+        "a05",
+        "a04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a01",
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a02",
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a08",
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One remembered hotel-garden session before dictation begins. PDF p. 320 supplies the ready pencil, the work-time request and Rosalind's departure. Death and separation are brief verified context, not a diagnosis or an explanation invented for the writing block. Dates and names stay in the fold. Independent-check correction 2026-09-09: removed the woman's unsupported sitting posture; the source expressly seats the secretary, not the author. Independent-check correction 2026-09-10: a single opening memory cue frames the following memoir scene as retrospective (§6); this is a limited R11 tradeoff, not an added historical act."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She looked at her secretary and struggled to think of the words. The plot was already worked out. Part of it came from a story she had written before. She knew where the story was going, but she could not see its scenes. The characters did not feel alive.\n\nThere was no pleasure in the work. She needed the money another book could bring. Having a plot and needing an income did not make the writing come easily. She was trying to begin.",
+      "requiredFactIds": [
+        "a03",
+        "a05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03",
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The low point is the initial effort before she begins, not the later faltering after permission to stay. PDF p. 320 explicitly places prolonged thinking before Finally, hesitantly, I began. Its subsequent To begin with paragraph describes pre-existing lack of joy, scene/character difficulty and financial need; these are not reassigned as effects of the child. No gesture, duration, resolution or new insight is added. This shorter beat is not padded to the word target. Independent-check correction 2026-09-09: removed the repeated unsupported sitting posture from the final sentence. Independent-check correction 2026-09-10: past-tense difficulty wording removes the literal R2-banned would without changing the attested state."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She began to dictate, hesitantly. After a few minutes she noticed her daughter across the path. The child wanted to know whether half an hour had passed. Only nine minutes had gone by.\n\nShe sent her daughter away and resumed the dictation. Then the child came back and asked to stand nearby without interrupting. She agreed, unwillingly, and started again.",
+      "requiredFactIds": [
+        "a03",
+        "a04",
+        "a06"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. One continuous garden response in the memoir's actual order: first start, interruption, resumption, returning child, reluctant permission, another start. The subsequent faltering moves forward into struggle; no additional restart after it is invented."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "With her daughter watching, the words sounded even more foolish to her. She faltered, hesitated and repeated herself. Starting again had not made the dictation easy.\n\nThe plot was in place, but the people in it would not come alive. She knew where the story was going. That did not bring pleasure to the writing.\n\nShe wrote most of the novel during the trip. She still disliked the book.",
+      "requiredFactIds": [
+        "a17",
+        "a06",
+        "a05",
+        "a07"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a06",
+            "a17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. Begins with the documented failure after the response's final restart; then compresses the continuing difficulty and most-of-book work. No invented second writing session or completed manuscript yet. Travel and divorce actions are outside this narrowed book-writing episode. Independent-check correction 2026-09-10: trip means the broader Canary Islands visit, not one hotel stay; the memoir includes a hotel change. No second writing session is staged."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She completed the novel and sent it to her publishers. It was the book she had been struggling to dictate. She had got it written without coming to like it.\n\nThe book was finished.",
+      "requiredFactIds": [
+        "a07",
+        "a03"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a03",
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. Completion and dispatch are the actual change in the book's state, not a claimed emotional recovery. The source gives no dispatch place, physical mailing method or exact completion scene. This deliberately spare action paragraph does not invent those details; rendered-moment/complete-story HOLD remains for independent review, not resolved by structural validation."
+    },
+    {
+      "role": "became",
+      "canonicalText": "It appeared the following year. Its sales were comparable to those of her previous book. She had needed the money another novel could bring, and the book had found readers.\n\nThat did not make her proud of it. She continued to dislike the novel she had finished. The book was in print.",
+      "requiredFactIds": [
+        "a18",
+        "a02",
+        "a07",
+        "a05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a18",
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a05",
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rewrite 2026-09-10. Ends at publication and the author's unchanged assessment of this one book. Sales and lack of pride are retrospective, not independently audited sales figures. Her amateur-to-professional interpretation remains a qualified fold fact rather than a invented same-day realization. No train journey, marital recovery or lifetime achievement list."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Agatha Christie.\n\nShe became a novelist and playwright known for stories that asked readers to puzzle out a mystery.\n\nYour life is not theirs.\nBut a piece of this story may still sit beside you.\n\nYou are allowed to have mixed feelings about something you have managed to finish.\nYou do not owe it a cheerful ending.",
+      "requiredFactIds": [
+        "a01",
+        "a16"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "One identity reveal and one legacy sentence. Fixed distance copy makes no equation between the reader and the author. Permission does not recommend travel, divorce, working through distress, or a particular recovery story."
+    }
+  ],
+  "interpretations": [],
+  "sources": [
+    {
+      "sourceId": "src-autobiography",
+      "citation": "Agatha Christie, An Autobiography (1977), accessible reflowed PDF hosted by NIBM e-library.",
+      "locator": "PDF pp. 320–321 (one-based reflowed PDF pages): hotel-garden dictation, pre-existing lack of joy, professional-writing reflection, most-of-book work, completion, dispatch, comparable sales and continued lack of pride. Actual text reread 2026-09-10. Non-owning reflowed copy with encoding defects; original printed pagination and owning-edition collation remain unverified.",
+      "url": "https://nibmehub.com/opac-service/pdf/read/agahta%20christie%20_%20an%20autobiography.pdf"
+    },
+    {
+      "sourceId": "src-estate-life",
+      "citation": "Agatha Christie Limited / Christie Archive Trust, About Agatha Christie.",
+      "locator": "Early Years birth date; A Difficult Period; The Orient Express and the Middle East. The broad page contains an erroneous 1928 Canary Islands placement and is not used for that date.",
+      "url": "https://www.agathachristie.com/about-christie"
+    },
+    {
+      "sourceId": "src-estate-2024",
+      "citation": "Agatha Christie Limited, Read Christie 2024, March selection: The Mystery of the Blue Train.",
+      "locator": "Our March choice, paragraphs on February 1927 departure and hotel-garden writing; explicitly references Christie's autobiography.",
+      "url": "https://www.agathachristie.com/news/2024/read-christie-2024"
+    },
+    {
+      "sourceId": "src-book",
+      "citation": "Agatha Christie Limited, The Mystery of the Blue Train work record.",
+      "locator": "Original publication year, More about this story, and dedication information.",
+      "url": "https://www.agathachristie.com/stories/the-mystery-of-the-blue-train"
+    }
+  ],
+  "review": {}
+}

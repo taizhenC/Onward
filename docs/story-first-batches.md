@@ -9,7 +9,7 @@ keeps the scope visible and avoids quietly dropping a difficult episode.
 
 | Set | Figures | State |
 |---|---|---|
-| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Refined again September 9; nine drafts remain unapproved, with independent checks and source/craft holds |
+| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Owner reviewed September 10; exact nine-story snapshot prepared for PR; publication paused for remaining source/episode decisions |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Queued |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
@@ -67,9 +67,23 @@ The main outstanding boundaries are:
 - Charles: an owning interview supplies a more concrete performance turn; the
   earlier grief-account and source-collation limitations remain.
 
-Every draft still requires owner review and matching-scope alignment before
-publication readiness can be claimed. The evidence notes and dated independent
-checks specify the limits per story. The next set of nine has not been started;
+These September 9 holds preceded the owner's September 10 review. The owner
+has now confirmed reading and requested a PR and publication of complete
+stories. The [tracked reviewed packet](releases/wave-2-reviewed-2026-09-10/README.md)
+preserves the exact nine candidate JSONs, a reading copy and hash-bound
+readiness decisions; no prose was changed after that review.
+
+The final source check identifies complete supported arcs for Andersen,
+Banting and Child. Child's date disagreement is retained but is not asserted
+in the current prose, so it is not itself a necessary missing story fact.
+Brontë needs explicit acceptance of the caregiving-response tradeoff; Berlin,
+Butler, Carver and Christie retain format/episode decisions; Charles retains
+a historical-source adjudication hold. Shortness alone does not block release.
+Publication is paused pending an eligible-subset decision or resolution of
+these holds. No wave-2 story was written to production by this PR preparation.
+
+Matching corrections remain a separate evaluated release, not a silent edit
+to this content-only packet. The next set of nine has not been started;
 thirty-two stages remain queued above.
 
 The application changes for the separately labeled Chinese fiction mode were

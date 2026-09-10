@@ -1,0 +1,814 @@
+{
+  "schemaVersion": "story-spec-v1-2026-07",
+  "storySpecId": "berlin_i:1901-1907-bowery-to-first-song:v1",
+  "figureKey": "berlin_i",
+  "stageId": "1901-1907-bowery-to-first-song",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 18,
+    "ageMax": 19,
+    "throughLine": "Research-limited first-song vignette: a café waiter collaborated with its pianist, needed help with notation, and gained a first publication that earned little. Berlin's own later interview supplies surprise at the poor earnings, not an attested pre-publication low point. R2/R3 and source holds remain."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "A first collaboration, practical difficulty with notation, and small earnings. The unsupported abandonment narrative and biographer-only bodily fear are omitted. This remains a held research draft."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Irving Berlin was born May 11, 1888. His first published song appeared in 1907, when he was eighteen or nineteen. The candidate uses approximately nineteen, without claiming an exact composition or publication month.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-official",
+          "locator": "Concise Biography, paragraphs beginning 'Irving Berlin was born' and 'In 1907'.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-sheet",
+          "locator": "1907 copyright on first music page (image 077-181-001); cover credits I. Berlin.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 1
+    },
+    {
+      "factId": "fact-cafe",
+      "statement": "Woollcott's 1925 biography describes Berlin working as a singing waiter at the Pelham Café when he and pianist Mike Nicholson made their first published song. Institutional chronologies disagree with Woollcott on his café start year; no start year is asserted here.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter IV p. 40 (1904 café start claim), Chapter V pp. 65–68 (song composition while still employed there).",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-radio-stars",
+          "locator": "Printed pp. 32–33, PDF p. 27: Berlin's attributed first-song answer starts in the final paragraph of p. 33 left column and continues at the top of p. 33 right column.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 2
+    },
+    {
+      "factId": "fact-rival",
+      "statement": "Berlin's attributed answer in Radio Stars (1934) describes café competition as the impetus for his first collaboration. Woollcott gives the same motive. The printed interview is a later recollection, not a contemporaneous composition record; no order from the café owner is asserted.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V p. 65: paragraph beginning 'It had been concocted' and following division of work.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-radio-stars",
+          "locator": "Printed pp. 32–33, PDF p. 27: Berlin's attributed first-song answer starts in the final paragraph of p. 33 left column and continues at the top of p. 33 right column.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 3
+    },
+    {
+      "factId": "fact-composing",
+      "statement": "Woollcott says Berlin wrote the lyrics and Nicholson the tune; Berlin developed rhymes on scraps of paper, and Nicholson revised some words while experimenting at the piano. The original edition independently confirms the division between lyricist and composer, not the physical writing scene.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V pp. 65–67, especially p. 67 opening paragraph.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-sheet",
+          "locator": "Cover 077-181-000 and first music page 077-181-001, words/music credits.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 4
+    },
+    {
+      "factId": "fact-notation",
+      "statement": "Woollcott says that when the song was finished neither collaborator knew how to write down the tune. Nicholson could read sheet music imperfectly but could not transcribe their work. The book does not identify an interview or original document for this scene.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V p. 67, paragraph beginning 'Finally the thing was done'.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 5
+    },
+    {
+      "factId": "fact-asking",
+      "statement": "According to Woollcott, the pair consulted Fiddler John, a shoemaker who played violin after working daylight. He too could not transcribe their music. This is a biographical account, not an independently verified exchange.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V bottom p. 67 through top p. 68, paragraph beginning 'The baffled pair consulted'.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 6
+    },
+    {
+      "factId": "fact-copyist",
+      "statement": "Woollcott says a different young violinist finally transcribed the song. The biography explicitly withholds his identity. No source was located to independently identify him or verify the exchange.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V p. 68, opening paragraph ending with the unidentified concert violinist.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 7
+    },
+    {
+      "factId": "fact-submission",
+      "statement": "Woollcott describes Berlin taking the song to a publisher with shaking knees and Joseph Stern promptly accepting it. The physical fear is the biographer's phrase, not a located statement by Berlin. Actual publication is established by the sheet music.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V p. 68, paragraph beginning 'Next the masterpiece'.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-sheet",
+          "locator": "1907 edition, publisher Jos. W. Stern & Co. on cover and copyright on first music page.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 8
+    },
+    {
+      "factId": "fact-publication",
+      "statement": "Marie from Sunny Italy was published in 1907 by Jos. W. Stern & Co.; the original cover and music page credit I. Berlin with words and M. Nicholson with music. The score is for piano and voice. The official biography identifies it as his first published song.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sheet",
+          "locator": "JHU Levy Collection Box 077, Item 181: original cover 077-181-000, first music page 077-181-001; catalog date, instrumentation and plate number 5682-3.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-official",
+          "locator": "Concise Biography, paragraph beginning 'In 1907'.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 9
+    },
+    {
+      "factId": "fact-proceeds",
+      "statement": "In his attributed 1934 answer, Berlin said the first song was not a hit, earned under a dollar, and surprised him by its poor result. Woollcott's individual-share figure is not treated as the same accounting basis.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V p. 68, paragraph beginning 'Next the masterpiece', final sentence.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-radio-stars",
+          "locator": "Printed pp. 32–33, PDF p. 27: Berlin's attributed first-song answer starts in the final paragraph of p. 33 left column and continues at the top of p. 33 right column.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 10
+    },
+    {
+      "factId": "fact-name",
+      "statement": "The original score credits I. Berlin. That artifact establishes the printed name, not the date he began using it. The printer-error origin and a first-use date are not asserted.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sheet",
+          "locator": "Original cover and first music page, both credits.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 11
+    },
+    {
+      "factId": "fact-still-waiter",
+      "statement": "Woollcott explicitly says that the first song and the next two did not yet establish Berlin's transition away from waiting tables; the later Dorando episode preceded salaried lyric writing. The candidate ends with the first publication rather than importing the 1908–1909 change.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter V p. 70 final paragraph through p. 73; only the first publication's non-transition is used in prose.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 12
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Berlin wrote songs for performers, musical theatre and films.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-official",
+          "locator": "Concise Biography, paragraphs beginning 'Over the next five decades', 'He was equally at home' and 'Among the Hollywood movie musical classics'.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-interview",
+          "locator": "Questions about Ethel Merman and Fred Astaire and corresponding answers.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 13
+    },
+    {
+      "factId": "fact-seed-hold",
+      "statement": "The abandonment/self-worth mechanism in the seed was not established as Berlin's own testimony. Woollcott supplies the private-state narrative but also describes his mother searching for and welcoming him, contrary to the seed's claim that nobody followed or argued for his worth.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-woollcott",
+          "locator": "Chapter II pp. 21–22, departure and mother's search/welcome; narrative is not attributed to an identified interview.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 14
+    },
+    {
+      "factId": "fact-later-cost",
+      "statement": "The official biography records his wife's death in 1988, the year before his own death. The disclosure includes this limited later-life loss rather than presenting his life as uninterrupted success.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-official",
+          "locator": "Final paragraph beginning 'On September 22, 1989'.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 15
+    }
+  ],
+  "quotes": [],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Irving Berlin",
+      "aliases": [
+        "Berlin",
+        "Israel Beilin",
+        "Israel Baline"
+      ]
+    },
+    {
+      "entityId": "entity-nicholson",
+      "kind": "person",
+      "value": "Mike Nicholson",
+      "aliases": [
+        "Nicholson"
+      ]
+    },
+    {
+      "entityId": "entity-stern",
+      "kind": "person",
+      "value": "Joseph Stern",
+      "aliases": [
+        "Stern"
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He was a singing waiter, about nineteen, working in a café. Across the street, another waiter and pianist had written a hit.\n\nHe and the pianist at his own café began a song together. They wanted a song of their own. He wrote the words, and his partner wrote the tune.\n\nIt was a collaboration.",
+      "requiredFactIds": [
+        "fact-cafe",
+        "fact-age",
+        "fact-rival",
+        "fact-composing",
+        "fact-publication"
+      ],
+      "optionalFactIds": [],
+      "quoteIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cafe",
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-rival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cafe",
+            "fact-rival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-rival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-composing",
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-grounded rewrite 2026-09-10. Removed paper scraps and the piano revision session, whose only source was Woollcott's unattributed narration. Café rivalry and collaboration are instead bounded to Berlin's attributed Radio Stars answer; division of authorship is independently visible on the original score. Still not a situated single-stretch scene. No private fear or self-worth mechanism is implied. R2/R3 HOLD remains."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The song was finished, but neither man could put its music on paper. The pianist could read a little sheet music. Writing down their own tune was different.\n\nTheir song still needed a written score.",
+      "requiredFactIds": [
+        "fact-notation"
+      ],
+      "optionalFactIds": [],
+      "quoteIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-grounded rewrite 2026-09-10. Pruned repeated explanations of the same notation problem. This is still a practical obstacle from Woollcott p. 67, not an attested felt low point. No primary account of this exchange or of private distress was found. It cannot be relabeled as despair to pass R2."
+    },
+    {
+      "role": "response",
+      "canonicalText": "The pair asked a shoemaker who also played the violin. He could not write down their music either.\n\nThey had found another player, but not someone who could make the score. The tune still needed to be written.",
+      "requiredFactIds": [
+        "fact-asking"
+      ],
+      "optionalFactIds": [],
+      "quoteIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-asking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-asking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-asking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-asking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-grounded rewrite 2026-09-10. Removed the shoemaker's evening routine, which was not needed to establish the request. The pair's request and its failure remain explicitly dependent on Woollcott pp. 67–68; no newly discovered primary verification or dialogue. Source HOLD remains."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Eventually, a different violinist put the tune on paper. Neither collaborator had been able to do that. The first person they asked had not been able to do it either.\n\nNow there was a score.",
+      "requiredFactIds": [
+        "fact-copyist",
+        "fact-notation",
+        "fact-asking"
+      ],
+      "optionalFactIds": [],
+      "quoteIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-copyist"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-asking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-copyist"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-grounded rewrite 2026-09-10. Removed the backward composing recap and its biographer-only paper/piano detail. The prose preserves the two different helpers, not a solitary accomplishment or an invented training sequence. This short factual transition does not supply the missing extended struggle. Source and craft HOLD remain."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The publisher accepted their song. It was his first published song.\n\nThe printed sheet gave separate credit for the words and the music. The two collaborators had made different parts of it.\n\nHis part was the words.",
+      "requiredFactIds": [
+        "fact-publication"
+      ],
+      "optionalFactIds": [],
+      "quoteIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-grounded rewrite 2026-09-10. Removed shaking knees, submission staging and a repeated copyist recap. The original sheet verifies publication and separate authorship, not a particular acceptance meeting or emotional recovery. This is now an artifact-bounded outcome, openly NOT an R2 turning-point scene. No source/evidence approval claimed."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The song did not become a hit. He remembered being surprised by its small earnings. It brought less than a dollar.\n\nHe remained a waiter. This first publication had not yet given him a living from songs.\n\nThe edition carried an initial and a surname. His collaborator was credited too.\n\nHis words were in print.",
+      "requiredFactIds": [
+        "fact-proceeds",
+        "fact-still-waiter",
+        "fact-name",
+        "fact-publication"
+      ],
+      "optionalFactIds": [],
+      "quoteIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proceeds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proceeds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proceeds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-still-waiter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-still-waiter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-grounded rewrite 2026-09-10. Berlin's own attributed surprise at the song's poor earnings is used, without transforming surprise into despair. The score supports both names and the modest outcome. Continued waiting work still depends on Woollcott. No royalty statement inspected, no single-payment date, no hit or immediate financial independence. The later surprise does not cure the missing pre-turn emotional low point. Independent-C correction: the printed credit establishes a name on this edition, not when he began using that surname."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Irving Berlin.\n\nHe wrote songs for singers, plays, and films.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to turn what you can do into a complete answer about who you are.\n\nYou are allowed to need other people.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "quoteIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "EDITORIAL HOLD — research-limited Wave 2 candidate, 2026-09-05. Most scene actions are Woollcott's retrospective biographical narration, not traced primary testimony. Fixed reveal/legacy/distance/permission shape. Correct bridge form does not clear the story's evidence and recipe holds. No warnings accepted; no owner or reviewer approval claimed. September 10 rewrite: unchanged; reader permission does not convert this short research vignette into a recipe-complete story."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented private thoughts, actions, dialogue, fear, or redemption. No texture has been added.",
+    "The current candidate is an evidence-bounded editorial hold. Publication requires independently reviewed source sufficiency and a recipe-appropriate attested emotional scene, not merely clean validation.",
+    "Retrospective biographical claims remain probable. The original score does not verify the biographer's causal or emotional account.",
+    "Berlin's attributed surprise over poor earnings belongs after publication. Do not move it before composition or acceptance to manufacture the recipe's low point.",
+    "A printed credit is not proof of when a surname entered use."
+  ],
+  "avoidRules": [
+    "Do not claim that nobody sought him or that his family agreed he was worthless.",
+    "Do not present Woollcott's private-state narration as Berlin's own words.",
+    "Do not use the printer-error naming myth.",
+    "Do not move the 1911 hit, 1909 salaried writing, or a lifetime legacy into the 1907 episode.",
+    "Do not lengthen this short held draft with invented suffering, repeated moral interpretation or false scene detail.",
+    "Do not restore the biographer-only shaking knees, scraps-of-paper scene or piano revision gestures without an attributable original source."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-sheet",
+      "citation": "Marie from Sunny Italy. Words I. Berlin, music M. Nicholson. Jos. W. Stern & Co., 1907. Johns Hopkins University, Lester S. Levy Sheet Music Collection, Box 077, Item 181.",
+      "url": "https://levysheetmusic.mse.jhu.edu/collection/077/181",
+      "locator": "Catalog fields and original cover image 077-181-000.jpg and music page 077-181-001.jpg visually inspected 2026-09-05. The four-page PDF opened but screenshot calls did not render usable images; the institution's original image files did."
+    },
+    {
+      "sourceId": "source-woollcott",
+      "citation": "Alexander Woollcott, The Story of Irving Berlin. G. P. Putnam's Sons, 1925. Chapters II, IV and V.",
+      "url": "https://archive.org/download/storyofirvingber00wool/storyofirvingber00wool_djvu.txt",
+      "locator": "Public-domain scan OCR retrieved and read at printed pp. 21–25, 40 and 62–73. Early biography, not autobiography or a contemporaneous scene record; no individual underlying interview identified."
+    },
+    {
+      "sourceId": "source-official",
+      "citation": "Irving Berlin official website, Concise Biography.",
+      "url": "https://www.irvingberlin.com/biography",
+      "locator": "Paragraphs on May 11, 1888 birth; 1907 first publication; theatre and film writing; final paragraph on 1988–1989 bereavement and death. Opened 2026-09-05; retrospective official biography, not original vital records."
+    },
+    {
+      "sourceId": "source-interview",
+      "citation": "James A. Drake, Irving Berlin interview, telephone conversation dated May 8, 1978, published by Mainspring Press February 2022; current article August 15, 2023.",
+      "url": "https://mainspringpress.org/2023/08/15/irving-berlin-the-james-a-drake-interview/",
+      "locator": "Transcript questions on name change, after-hours Pelham piano practice, and Woollcott's biography. No audio or contemporaneous interview notes inspected; long publication delay and inconsistent chronology are explicit limitations."
+    },
+    {
+      "sourceId": "source-radio-stars",
+      "citation": "Bland Mulholland, Love Songs for Sale, Radio Stars, vol. 4 no. 5, August 1934, pp. 32–33 (continued p. 90).",
+      "url": "https://www.worldradiohistory.com/Archive-Radio-Stars/Radio-Stars-1934-08.pdf",
+      "locator": "Printed pp. 32–33, PDF p. 27. First-song answer crosses p. 33 left/right columns. Visually inspected September 9 and re-inspected September 10, 2026. Periodical preservation scan; no interview notes or recording inspected. Only Berlin's attributed answer is adopted, not surrounding reporter psychology."
+    }
+  ],
+  "review": {}
+}

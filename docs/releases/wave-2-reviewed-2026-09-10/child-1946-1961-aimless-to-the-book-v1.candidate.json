@@ -1,0 +1,1173 @@
+{
+  "storySpecId": "child:1946-1961-aimless-to-the-book:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "child",
+  "stageId": "1946-1961-aimless-to-the-book",
+  "version": 1,
+  "status": "draft",
+  "entities": [
+    {
+      "kind": "person",
+      "value": "Julia Child",
+      "aliases": [
+        "Child"
+      ],
+      "entityId": "entity-subject"
+    },
+    {
+      "kind": "date",
+      "value": "1912",
+      "aliases": [],
+      "entityId": "entity-birth-year"
+    },
+    {
+      "kind": "date",
+      "value": "2004",
+      "aliases": [],
+      "entityId": "entity-death-year"
+    }
+  ],
+  "dramatizationLimits": [
+    "Only inert, explicitly mapped texture within an attested moment; no invented historical actions, motives, quotations, objects, weather, or outcomes.",
+    "Memoir and interview recollections remain qualified in source notes; do not turn remembered speech into verbatim scene dialogue.",
+    "Do not convert temporal sequence into a claim that grief, disability, rejection, travel, or work caused later achievement."
+  ],
+  "avoidRules": [
+    "Do not invent people, places, dates, dialogue, gestures, weather, or causality.",
+    "Do not quote or paraphrase the reader's disclosure.",
+    "Do not promise that the reader will succeed or that suffering creates greatness.",
+    "Keep identity, calendar years, named locations, and institutions out of the story until the bridge.",
+    "Do not remove the unresolved historical or craft holds recorded in the companion evidence note."
+  ],
+  "episode": {
+    "ageMin": 38,
+    "ageMax": 49,
+    "throughLine": "A cooking examination exposed what she had not learned. She cooked the missed recipes that afternoon, then worked with others through years of revisions before their cookbook reached readers."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Includes a failed examination, disappointment, and repeated publishing rejection."
+  },
+  "facts": [
+    {
+      "factId": "j01",
+      "statement": "Julia Child was born in August 1912; she was thirty-eight in spring 1951 and forty-nine when the cookbook appeared in autumn 1961.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-memoir",
+          "scope": "bounded",
+          "locator": "Overview identifies age thirty-six in November 1948; Foreword dates death August 13, 2004 two days before ninety-second birthday. Spring 1951 age is stable across the unresolved exam/diploma month conflict."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "j02",
+      "statement": "In her memoir, Child dated her exam request letter to March 1951 and the scheduled exam to the first week of April, after her teacher intervened. The Smithsonian catalogue says she received her diploma in March; the displayed artifact is inscribed March 15, 1951. Inscription, exam and receipt dates are not interchangeable, and this chronology is not independently settled.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-exam",
+          "scope": "bounded",
+          "locator": "Paragraphs beginning After waiting and waiting and More time passed."
+        },
+        {
+          "sourceId": "src-smithsonian-object",
+          "scope": "bounded",
+          "locator": "Description, first sentence: diploma received March 1951. Conflicts with memoir exam chronology; catalogue prose is not a verified reading of the diploma's handwritten date."
+        },
+        {
+          "sourceId": "src-diploma-photo",
+          "scope": "bounded",
+          "locator": "Full-resolution photograph of the diploma displayed at NMAH, lower-center date line: 15 Mars 1951. Visually inspected 2026-09-09. This is the date inscribed, not proof of when the paper was awarded or the exam taken."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j07",
+      "statement": "The diploma displayed at the Smithsonian and donated by Child bears the date March 15, 1951. That inscription alone does not establish the exam or receipt date.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-smithsonian",
+          "scope": "bounded",
+          "locator": "Diploma, 1951 exhibit caption; image and record identify the artifact. Exact retest details are not used."
+        },
+        {
+          "sourceId": "src-diploma-photo",
+          "scope": "bounded",
+          "locator": "Lower-center date line, between professor and director signatures; visible inscription 15 Mars 1951. Independent visitor photograph, not a claim of access to the museum's original digital master."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "j03",
+      "statement": "At the exam Child received a typed card asking for ingredients for three dishes serving three people: eggs, a prepared veal chop, and caramel custard.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-exam",
+          "scope": "bounded",
+          "locator": "Paragraph beginning On the big day and the next paragraph describing the dishes."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j04",
+      "statement": "Child did not remember two dishes or the custard proportions; she invented answers, expected to fail the practical portion, but answered written questions on stock, vegetables and sauce correctly.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-exam",
+          "scope": "bounded",
+          "locator": "Paragraphs beginning Did I remember and I was stuck."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j05",
+      "statement": "Child was angry with herself, had prepared complex cookery instead of the basic booklet recipes, blamed herself, and despaired of receiving a certificate.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-exam",
+          "scope": "bounded",
+          "locator": "Paragraphs beginning I was furious at myself through I despaired; her account supplies both disappointment and self-blame."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j06",
+      "statement": "That afternoon Child went alone to the school's basement kitchen, opened the booklet, found the exam recipes, cooked them while angry, and ate them.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-exam",
+          "scope": "bounded",
+          "locator": "Single paragraph beginning Later that afternoon; no separate success verdict or instant emotional recovery is stated."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j08",
+      "statement": "Child collaborated with Simone Beck and Louisette Bertholle on a cookbook for American cooks; the work took nine years and involved adapting and testing instructions and ingredients.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-memoir",
+          "scope": "bounded",
+          "locator": "Overview paragraphs beginning In Paris and The first two-thirds identify the three collaborators and nine years; Chapter 6 opening and discussion of American portions establish operational recipe tests and adaptation. The AAPB interview corroborates, but is not the controlling text."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j09",
+      "statement": "The manuscript was rejected twice by Houghton Mifflin; Jones believed it addressed readers like herself and tested its recipes.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-jones",
+          "scope": "bounded",
+          "locator": "Discussion of the two Houghton Mifflin rejections and why Jones wanted the manuscript."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j10",
+      "statement": "The book's preparation involved repeated revision, a long chapter on sauces, and a manuscript considered too long before its final acceptance.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-time",
+          "scope": "bounded",
+          "locator": "Manuscript-development paragraphs; contemporary report with Child and Paul Child interviews."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j11",
+      "statement": "In mid-May 1960 Child received Jones's letter offering publication; she feared opening another publisher's envelope, breathed deeply, read, blinked and reread it.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-memoir",
+          "scope": "bounded",
+          "locator": "Chapter 6 paragraphs beginning In mid-May 1960 and I blinked and reread the letter."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j12",
+      "statement": "Jones's acceptance followed months of recipe testing and appraisal. Her offer letter praised the instructions and raised the need for a distinctive title. Subsequent editorial changes included larger serving quantities for American eating habits.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-memoir",
+          "scope": "bounded",
+          "locator": "Chapter 6 opening, the mid-May 1960 offer letter, and following editorial discussion through But she felt that we had badly underestimated the American appetite. Serving-size changes are not assigned to the instant of opening the offer."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j13",
+      "statement": "Child and the publisher worked on the title; Jones sent the final title on November 18, 1960 and Child replied with approval.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-memoir",
+          "scope": "bounded",
+          "locator": "Chapter 6, title discussion ending Finally, on November 18, 1960 and I loved the active verb."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j14",
+      "statement": "Mastering the Art of French Cooking appeared in 1961; Jones first met Child and her husband in person in her office that year, following their correspondence.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-jones",
+          "scope": "bounded",
+          "locator": "Opening recollection of meeting the Childs in 1961 and later discussion of the book launch."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j15",
+      "statement": "Julia Child became a cookbook author and television cooking teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-exam",
+          "scope": "bounded",
+          "locator": "Closing biographical credit identifying authorship and host of The French Chef."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A woman at a cooking school stared at the card she had just been handed. She was thirty-eight. The card asked for ingredients for three dishes, each to serve three people. There were eggs, a veal dish and a caramel custard.\n\nShe had spent months trying to get this examination scheduled. She had written to the director and asked her teacher to intervene. Now the test was here. She had studied difficult dishes and memorized proportions. But she did not recognize what the card required. Even the custard quantities escaped her. The card stayed in front of her.",
+      "requiredFactIds": [
+        "j03",
+        "j01",
+        "j02",
+        "j05",
+        "j04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "j03",
+            "j04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded exam scene from Child's memoir excerpt on her coauthor's own website. The memoir gives the first week of April 1951; the owning Smithsonian catalogue says diploma received March 1951. A visitor's full-resolution photograph of the displayed diploma was inspected on 2026-09-09 and confirms an inscription of March 15, 1951, not its receipt date. The chronological conflict remains held for correspondence/school-record collation; no backdating, retest or catalog error is assumed. Age thirty-eight is stable. Final sentence is inert disclosed texture, not an attested duration; names remain in the fold."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She made up answers for the dishes she could not remember. She knew the practical part was going wrong. The written questions were different: she could explain stock, green vegetables and a sauce. She answered those correctly, but the disappointment remained.\n\nShe was furious with herself. The recipes she needed were in the school's small booklet, meant for beginners. She had hardly studied it. Instead, she had concentrated on elaborate food, imagining an examination that would show what she could do.\n\nShe had spent six months at cooking school, with more time at markets and her own stove. After all that work, she wanted the certificate. Now she doubted the school would ever give her one. Worst of all, she blamed herself.",
+      "requiredFactIds": [
+        "j04",
+        "j05",
+        "j02"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j04",
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j02",
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Same exam, held before any remedial action. Feelings and self-blame are Child's attested retrospective account, not invented shame about age or a diagnosis. Her criticism of the director is not converted into an established motive for the exam. No claim of an unfair test or of complete culinary incompetence."
+    },
+    {
+      "role": "response",
+      "canonicalText": "That afternoon she went back into the school's basement kitchen, alone. She opened the booklet she had neglected and found the recipes from the examination. This time she had the instructions in front of her.\n\nShe cooked the eggs, the veal dish and the custard. The work did not wait for her anger to disappear. She was still angry while she made the food. The dishes that had defeated her on the card became something she could cook and eat.\n\nShe ate them. The examination was over, and this was not a new mark from an examiner. It was food she had made.",
+      "requiredFactIds": [
+        "j06",
+        "j04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j04",
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded scene: the same afternoon in the basement, sourced to the excerpt's final narrative paragraph. The two connective texture sentences add no gesture, ingredient, success verdict or recovery. The source says she cooked and ate; the appended present-day recipe method is not imported as a record of her precise movements."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "In the years that followed, she worked with two other cooks on a book for people cooking at home. Their recipes had to work far from the kitchens where they had learned them. Ingredients, quantities and explanations needed testing.\n\nThe manuscript grew. A chapter on sauces required long work, and the book became much larger than its intended publisher wanted. They revised it. The publisher rejected it again.\n\nThe collaboration stretched across nine years. She and her partners were trying to explain not only what to put into a pan, but how to make the cooking work. An editor elsewhere began trying their recipes in her own kitchen. She wanted this book herself.",
+      "requiredFactIds": [
+        "j08",
+        "j10",
+        "j09",
+        "j12"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j09",
+            "j10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08",
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed cookbook development, not a continuous kitchen scene. The memoir overview establishes collaboration and nine years; Jones supplies primary editor testimony on two rejections and recipe tests. The former diploma-arrival line is removed: neither year-only wording nor the March 15 inscription settles its position after the memoir's April exam. The conflict remains in j02/j07 and the evidence note; no retest or backdating is assumed."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "At forty-seven, she held another envelope from a publisher. She hardly dared open it. Earlier hopes had ended in rejection, and she was trying to prepare for another refusal. She still wanted the answer to be yes.\n\nShe took a deep breath and pulled out the letter. The editor had spent months studying the book and cooking from it. Now the publisher wanted to make an offer. The editor praised instructions that were clear and carefully organized.\n\nShe blinked, then read the letter again. Its warmth left her stunned. The answer had come from someone who had put the instructions to use, not only read the pages.\n\nThe letter also raised a question about the title. It needed to show what set this cookbook apart from the others. Their book still needed a name.",
+      "requiredFactIds": [
+        "j01",
+        "j11",
+        "j12"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j01",
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded turn: receipt and rereading of Jones's mid-May 1960 offer only. Envelope, breath, blink, rereading and the title question are in the first-person excerpt and reproduced offer. The later serving-size work is moved to became, so it is not staged as part of opening the letter. Acceptance is collaborative, not an instant reward for the exam response."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Acceptance still left work to do. The editor found that the meat portions were too small for the readers they expected. She and the authors worked on the quantities.\n\nThey still needed a title. Suggestions went back and forth among the editor, the authors, friends and family. A phrase built around learning to cook gradually took shape. When the editor sent the final version, she replied that they had it.\n\nThe following year she entered the publisher's office with her husband. Until then, she and her editor had known each other through their work and correspondence. The cookbook appeared that autumn, when she was forty-nine.\n\nIt carried the work of three authors and the testing of people in several kitchens. The recipes were now available for readers to use. Her own cooking had become something she could explain to others.",
+      "requiredFactIds": [
+        "j13",
+        "j14",
+        "j01",
+        "j08",
+        "j12"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j01",
+            "j14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08",
+            "j12",
+            "j14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08",
+            "j14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed post-acceptance serving-size work, late-1960 title correspondence and 1961 first meeting/publication. These edits are subsequent work, not actions at the moment of receiving the offer. Ends with the first cookbook, not the later television series. No invented book-arrival ceremony or handling of a first copy."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Julia Child.\n\nShe became a cookbook author and television teacher who made French cooking familiar to American home cooks.\n\nYour life is not theirs.\nBut a piece of this story may still sit beside you.\n\nYou are allowed to be disappointed in something you care about without giving up your interest.\nYou do not have to feel ready.",
+      "requiredFactIds": [
+        "j01",
+        "j15"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "The bridge names her and gives one legacy sentence. Fixed distance copy separates reader and subject. Permission allows mixed feelings without promising a career, urging persistence, or prescribing another attempt."
+    }
+  ],
+  "interpretations": [],
+  "sources": [
+    {
+      "sourceId": "src-exam",
+      "citation": "Julia Child with Alex Prud'homme, Sacre Cordon Bleu! The cooking-school exam that ate Julia Child, February 19, 2006; memoir excerpt republished by its coauthor.",
+      "locator": "Narrative paragraphs from By late 1950 through Later that afternoon; excludes the appended modern recipe instructions.",
+      "url": "https://alexprudhomme.com/2006/02/19/sacre-cordon-bleu-cooking-school-exam-ate-julia-child/"
+    },
+    {
+      "sourceId": "src-memoir",
+      "citation": "Julia Child with Alex Prud'homme, My Life in France (2006), Introduction and Chapter 6: Mastering the Art, excerpts on coauthor's website.",
+      "locator": "Chapter 6, opening through November 18, 1960 title decision; Foreword explains retrospective and letter-based composition.",
+      "url": "https://alexprudhomme.com/books/my-life-in-france/"
+    },
+    {
+      "sourceId": "src-jones",
+      "citation": "Judith Jones, oral-history remarks in Remembering Julia Child, John F. Kennedy Presidential Library forum transcript.",
+      "locator": "Opening recollection of 1961 first meeting; questions about Houghton Mifflin's two rejections and testing the manuscript; discussion of Craig Claiborne's first review.",
+      "url": "https://www.jfklibrary.org/events-and-awards/kennedy-library-forums/past-forums/transcripts/remembering-julia-child"
+    },
+    {
+      "sourceId": "src-smithsonian",
+      "citation": "National Museum of American History, A Passion for Food, Julia Child's Kitchen exhibition.",
+      "locator": "Diploma, 1951 object caption; original gift from Julia Child, reproduced for display.",
+      "url": "https://americanhistory.si.edu/explore/exhibitions/food/online/julia-childs-kitchen/passion-food"
+    },
+    {
+      "sourceId": "src-time",
+      "citation": "TIME, Food: Everyone's in the Kitchen, November 25, 1966, contemporary interview/profile.",
+      "locator": "Paragraphs covering manuscript preparation, the sauces chapter, repeated rejection, and Knopf publication in 1961.",
+      "url": "https://time.com/4230699/food-everyones-in-the-kitchen/"
+    },
+    {
+      "sourceId": "src-aapb",
+      "citation": "Rebecca Bain interviewing Alex Prud'homme, The Fine Print, May 20–21, 2006, WPLN; American Archive of Public Broadcasting.",
+      "locator": "Mid-program discussion of the final exam and subsequent collaboration; automated transcript explicitly unverified. Used only as corroboration, not quotation authority.",
+      "url": "https://americanarchive.org/catalog/cpb-aacip-0a5fdec1466"
+    },
+    {
+      "sourceId": "src-smithsonian-object",
+      "citation": "National Museum of American History, Diploma from Le Cordon Bleu, 1951, object 2001.0253.0024 / nmah_892279.",
+      "locator": "Description first paragraph. Complete catalogue description retrieved through indexed owning-domain search on 2026-09-05; direct page loads returned errors/timeouts. March 1951 receipt claim is an unresolved conflict with the memoir's April exam, not a replacement chronology.",
+      "url": "https://americanhistory.si.edu/collections/object/nmah_892279"
+    },
+    {
+      "sourceId": "src-diploma-photo",
+      "citation": "Daderot, photograph of Julia Child's Le Cordon Bleu diploma displayed at the National Museum of American History, February 13, 2013, DSC06120, Wikimedia Commons (photographer's own work).",
+      "locator": "Full-resolution 4022 x 2668 photograph, lower-center handwritten date line. Visually inspected on 2026-09-09: 15 Mars 1951. A direct photograph of the exhibited artifact, not an owning-museum scan or evidence of the actual exam/receipt date.",
+      "url": "https://commons.wikimedia.org/wiki/File:Cordon_Blue_diploma_for_Julia_Child_-_National_Museum_of_American_History_-_DSC06120.JPG"
+    }
+  ],
+  "review": {}
+}

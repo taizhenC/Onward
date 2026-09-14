@@ -124,7 +124,7 @@
     },
     {
       "factId": "k08",
-      "statement": "She was afraid of the darkness, climbed unlighted stairs, and knocked at the student's door; he admitted her to a study full of books. Books were piled on tables and chairs; a shaky sofa had been cleared for her.",
+      "statement": "She held her breath in fear of the darkness while hurrying up unlighted stairs to the third floor. She knocked at the student's door, which opened immediately; he admitted her to a study full of books. Books were piled on tables and chairs; a shaky sofa had been cleared for her.",
       "sourceRefs": [
         {
           "sourceId": "leffler",
@@ -138,7 +138,7 @@
     },
     {
       "factId": "k09",
-      "statement": "In the study she waited anxiously on a sofa for her father, sometimes rising when she thought someone was coming.",
+      "statement": "In the study she and the student waited for her father, listening intently for quick angry steps in the passage. More than once she rose from the sofa when she thought someone was coming.",
       "sourceRefs": [
         {
           "sourceId": "leffler",
@@ -320,7 +320,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "She was in the room she shared with her sister, before a family dinner. She was eighteen. In her account, their new dresses lay ready to be put on. Their mother was shopping, and their father was at his club. Elsewhere in the house, the governess and a maid were preparing the drawing-room. The sisters were alone. She could not simply go out by herself. She and her sister were required to have someone with them outside the house. For now, the family was busy getting ready to receive its guests. The dresses were waiting.",
+      "canonicalText": "She was in the room she shared with her sister, before a family dinner. She was eighteen. In her account, their new dresses lay ready to be put on. Their mother was shopping, and their father was at his club. Elsewhere in the house, the governess and a maid were preparing the drawing-room. She could not simply go out by herself. She and her sister were required to have someone with them outside the house. The sisters were alone.",
       "requiredFactIds": [
         "k02",
         "k01",
@@ -352,7 +352,6 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "k01",
             "k02"
           ],
           "interpretationIds": [],
@@ -380,7 +379,7 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "k02"
+            "k03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -398,24 +397,6 @@
           "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
-            "k03"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "k02"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
             "k02"
           ],
           "interpretationIds": [],
@@ -425,16 +406,17 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Memory cue covers the remembered dinner scene, not an independently recorded transcript. No exact wedding month is asserted."
+      "sourceNote": "Memory cue covers the remembered dinner scene, not an independently recorded transcript. No exact wedding month is asserted. The next passage jumps openly to the stairs; it does not invent a continuous room-to-room scene."
     },
     {
       "role": "dark_moment",
-      "canonicalText": "Her father had refused to let her marry the young student. The refusal threatened her chance to leave home and continue studying. The arrangement had begun with her sister and a friend. They had approached a student who wanted to study abroad himself. He had agreed to the plan, but wanted the younger sister as his wife. Their father rejected that proposal. Now the family was preparing to return to its country home. The new interests she and her sister had found seemed about to be taken away. She wanted to continue her studies. The dinner clothes lay ready in their room.",
+      "canonicalText": "Later, she was hurrying up an unlit staircase, holding her breath. She was afraid of the dark. She had left the house alone and crossed the streets to reach this building. Her father had refused the proposed marriage. The family was preparing to leave the city. She wanted to leave home and continue studying. The young student had agreed to marry her. Her father had not agreed. The student's door was on the third floor.",
       "requiredFactIds": [
+        "k08",
+        "k07",
         "k05",
         "k06",
-        "k04",
-        "k02"
+        "k04"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -444,7 +426,7 @@
           "sentenceIndex": 0,
           "treatment": "historical_claim",
           "factIds": [
-            "k05"
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -453,8 +435,7 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "k05",
-            "k06"
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -463,7 +444,8 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "k04"
+            "k07",
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -472,7 +454,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "k04"
+            "k05"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -481,7 +463,7 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "k04"
+            "k05"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -490,7 +472,7 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "k05"
+            "k06"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -499,7 +481,7 @@
           "sentenceIndex": 6,
           "treatment": "historical_claim",
           "factIds": [
-            "k05"
+            "k04"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -517,16 +499,7 @@
           "sentenceIndex": 8,
           "treatment": "historical_claim",
           "factIds": [
-            "k06"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "k02"
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -535,13 +508,12 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "CRAFT HOLD: the refusal is recollected background within the dressing-room moment, not a sourced contemporaneous exchange. It is not permissible to invent the father's words or relocate his refusal into this room."
+      "sourceNote": "Located on the staircase, pp. 20-21: held breath, fear and unlit stairs are source particulars. The few prior-refusal facts explain the stakes without inventing what she imagined or what caused her fear. The source names darkness as the fear; no fear of rejection, punishment or discovery is added. An open jump from the preparation scene omits the walk rather than making the dark passage span it."
     },
     {
       "role": "response",
-      "canonicalText": "She slipped out of the house alone while everyone was occupied. Her sister went down with her and kept watch at the gate. She walked quickly along the broad streets, which were nearly empty. It was getting dark. She had pulled her veil down close to her face. In the darkness of the stairs she was afraid. She climbed to the student's door and knocked. He opened it and led her into his study. Books stood in piles on the tables and chairs. There was a cleared space for her on a shaky sofa. She sat and waited.",
+      "canonicalText": "She knocked at the door. It opened at once, and the student led her into his study. Books stood in piles on the tables and chairs. A shaky sofa had been cleared for her. She sat there while they waited for her father. They listened for quick, angry footsteps in the passage. More than once, she rose when she thought someone was coming. She kept listening.",
       "requiredFactIds": [
-        "k07",
         "k08",
         "k09"
       ],
@@ -553,7 +525,7 @@
           "sentenceIndex": 0,
           "treatment": "historical_claim",
           "factIds": [
-            "k07"
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -562,7 +534,7 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "k07"
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -571,7 +543,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "k07"
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -580,7 +552,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "k07"
+            "k08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -589,7 +561,7 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "k07"
+            "k09"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -598,7 +570,7 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "k08"
+            "k09"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -607,40 +579,13 @@
           "sentenceIndex": 6,
           "treatment": "historical_claim",
           "factIds": [
-            "k08"
+            "k09"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
           "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "k08"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "k08"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "k08"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 10,
           "treatment": "historical_claim",
           "factIds": [
             "k09"
@@ -652,7 +597,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "One continuous departure and arrival, reconstructed from pp. 20-21. CRAFT HOLD: the walking action crosses locations, rather than remaining strictly within one place."
+      "sourceNote": "One local doorway-and-study encounter, p. 21. Knocking is her small documented act; the passage stays with admission and waiting, not the route across the city. No claim that angry footsteps actually sounded: they listened for them. The source does not identify who cleared the sofa, so the prose does not assign that action."
     },
     {
       "role": "struggle",
@@ -783,11 +728,10 @@
     },
     {
       "role": "turning_point",
-      "canonicalText": "In the professor's memory, she returned a week later with her solutions. She told him she had solved all the problems. He did not believe her. He asked her to sit beside him, then began examining what she had brought. He read the solutions one at a time. They were correct. They also showed ways of thinking that surprised him. She took off her hat in her eagerness. Her short curls were uncovered, and she blushed as he praised her work. He had expected her to fail the test he had set. Now he was reading the work beside its author. His praise reached her there.",
+      "canonicalText": "In the professor's memory, she returned a week later with her solutions. She told him she had solved all the problems. He did not believe her. He asked her to sit beside him, then began examining what she had brought. He read the solutions one at a time. They were correct. They also showed ways of thinking that surprised him. She took off her hat in her eagerness. Her short curls were uncovered. She blushed at his praise.",
       "requiredFactIds": [
         "k14",
-        "k15",
-        "k13"
+        "k15"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -878,24 +822,6 @@
           "sentenceIndex": 9,
           "treatment": "historical_claim",
           "factIds": [
-            "k13"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 10,
-          "treatment": "historical_claim",
-          "factIds": [
-            "k14"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 11,
-          "treatment": "historical_claim",
-          "factIds": [
             "k15"
           ],
           "interpretationIds": [],
@@ -905,7 +831,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Memory from Weierstrass, reported by Leffler, pp. 34-35; confidence remains probable. Hat, curls and blush are source particulars. No invented dialogue, rereading, change of posture, or instant university admission."
+      "sourceNote": "Memory from Weierstrass, reported by Leffler, pp. 34-35; confidence remains probable. Hat, curls and blush are source particulars. Ends on her documented response to the praise, without restating a moral or inventing dialogue, rereading, a posture change or instant university admission."
     },
     {
       "role": "became",

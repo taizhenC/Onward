@@ -548,7 +548,7 @@
     },
     {
       "role": "response",
-      "canonicalText": "He wrote to his friend about the missing letters. In the same letter, he considered a less painful explanation. The post was slow and uncertain. He did not believe his friend's feelings had changed. He worked through the problem of paying for the letter. Advice about the route made him wary of paying everything in advance. He was sorry that some cost would fall on his friend. Then he asked after his friend's health and sent love to both families. He meant to write to other friends too. He wanted to receive their writing as well.",
+      "canonicalText": "He wrote to his friend about the missing letters. In the same letter, he considered a less painful explanation. The post was slow and uncertain. He did not believe his friend's feelings had changed. He worked through the problem of paying for the letter. Advice about the route made him wary of paying everything in advance. He was sorry about leaving postage costs for his friend. Then he asked after his friend's health and sent love to both families. He meant to write to other friends too. He wanted to receive their writing as well.",
       "requiredFactIds": [
         "post",
         "asks"
@@ -793,7 +793,7 @@
     },
     {
       "role": "turning_point",
-      "canonicalText": "By late winter, he could write a different report to his friend. He still had duties he had not agreed to take on. A promised replacement for the scientist's personal servant had never arrived. But the scientist had tried to keep unwanted tasks away from him. Local servants now dealt with the scientist's wife's requests. Their quarrels had become less difficult. The scientist was away looking for somewhere to stay. The assistant had time to himself. He could visit the city, write his journal, and learn another language. He put the change into his letter: “now I am somewhat comfortable”. There was still a journal to write.",
+      "canonicalText": "By late winter, he could write a different report to his friend. He still had duties he had agreed to take only temporarily. A promised replacement for the scientist's personal servant had never arrived. But the scientist had tried to keep unwanted tasks away from him. Local servants now dealt with the scientist's wife's requests. Their quarrels had become less difficult. The scientist was away looking for somewhere to stay. The assistant had time to himself. He could visit the city, write his journal, and learn another language. He put the change into his letter: “now I am somewhat comfortable”. There was still a journal to write.",
       "requiredFactIds": [
         "free",
         "duties",
@@ -1021,7 +1021,7 @@
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was Michael Faraday. His experiments helped explain how to generate electricity and make electric motors. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to miss what you left behind without having an answer for everything that comes next. You do not have to feel settled yet.",
+      "canonicalText": "His name was Michael Faraday.\n\nHis experiments helped explain how to generate electricity and make electric motors. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to miss what you left behind without having an answer for everything that comes next. You do not have to feel settled yet.",
       "requiredFactIds": [
         "legacy"
       ],

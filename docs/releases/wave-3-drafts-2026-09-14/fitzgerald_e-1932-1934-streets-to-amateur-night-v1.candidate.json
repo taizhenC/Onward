@@ -1,0 +1,1088 @@
+{
+  "storySpecId": "fitzgerald_e:1932-1934-streets-to-amateur-night:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "fitzgerald_e",
+  "stageId": "1932-1934-streets-to-amateur-night",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 17,
+    "ageMax": 18,
+    "startDate": "1934-11",
+    "endDate": "1935",
+    "throughLine": "A teenager freezes during a dance contest, sings instead, and still has to find a band willing to employ her."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Stage fright, public laughter, and uncertainty about being hired."
+  },
+  "facts": [
+    {
+      "factId": "e-age",
+      "statement": "The official biography gives Ella Fitzgerald's birth as April 25, 1917 and places her first Apollo contest in 1934, making her approximately seventeen.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'Humble but happy beginnings', first paragraph; 'What's she going to do?', first paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "e-dance",
+      "statement": "Fitzgerald remembered entering the amateur contest intending to dance, then freezing before the audience.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-loc",
+          "locator": "Paragraphs beginning 'Ironically, her earliest passion' and 'But one day', including excerpts of Fitzgerald's own written account",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-laugh",
+      "statement": "Her written recollection says the audience laughed and the man in charge pressed her to perform something.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-loc",
+          "locator": "Paragraph beginning 'But one day', final quoted sentences",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-mother",
+      "statement": "The official biography says Fitzgerald's mother died in 1932 and that the loss affected her deeply.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'A rough patch', first paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "e-boswell",
+      "statement": "She sang songs she knew through Connee Boswell's records; the official biography says her mother had particularly liked Boswell's singing.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'What's she going to do?', second paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-sang",
+      "statement": "Fitzgerald's recollection says she told the man in charge she wanted to sing instead, and sang a song associated with Connee Boswell.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-loc",
+          "locator": "Paragraph beginning 'But one day', final quoted sentences; next paragraph beginning 'Ella decided to sing'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-won",
+      "statement": "The audience changed from laughing to requesting more, and Fitzgerald won the amateur contest.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-loc",
+          "locator": "Paragraph beginning 'Ella decided to sing', including the first-person prize recollection",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-contests",
+      "statement": "After the Apollo performance she continued entering talent contests and obtained a week's engagement with Tiny Bradshaw's band at the Harlem Opera House in early 1935.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'What's she going to do?', paragraph beginning 'Fueled by enthusiastic supporters'",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "ella-decca-notes",
+          "scope": "bounded",
+          "locator": "Paragraph beginning 'Around the same time', giving a February 16, 1935 engagement; official biography instead gives January"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-reluctant",
+      "statement": "Chick Webb was impressed by her singing but already had a male singer; he offered a trial performance at a college dance.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'What's she going to do?', paragraph beginning 'Fueled by enthusiastic supporters' and following conditional quotation",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-no-girl",
+      "statement": "Norma Miller remembered Webb's reluctance to take a teenage girl on tour with his male musicians.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-miller",
+          "locator": "Opening transcript, exchange beginning 'What happened after she went', through 'And those days you had to stay on the road'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-trial",
+      "statement": "The official biography and Miller's recollection both report a college trial followed by Fitzgerald joining Webb's band, but disagree on the college.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'What's she going to do?', final three paragraphs, college dance, condition and hire",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "ella-miller",
+          "scope": "bounded",
+          "locator": "Opening transcript, paragraph beginning 'So what happened after he had heard', describing the college trial"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-hired",
+      "statement": "She was hired to travel with the band after the trial performance; the official biography gives a weekly wage.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'What's she going to do?', final paragraph beginning 'Despite the tough crowd'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-cards",
+      "statement": "Miller remembered touring with Fitzgerald and Webb's band, waiting between shows in dressing rooms, and playing cards with Fitzgerald.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-miller",
+          "locator": "Opening transcript, paragraphs beginning 'Travelling now' and 'Between shows', through the description of humming over cards",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-shows",
+      "statement": "Miller described the touring company giving several shows a day and spending intervals together backstage.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-miller",
+          "locator": "Opening transcript, paragraph beginning 'Travelling now' through 'Between shows'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-shy",
+      "statement": "The official biography describes Fitzgerald as shy and self-conscious away from familiar people, while more comfortable singing on stage.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'What's she going to do?', paragraph beginning 'Off stage' and following Fitzgerald quotation",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "e-identity",
+      "statement": "Ella Fitzgerald was a jazz singer whose work included singing wordless melodies with her voice.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "Opening biography paragraphs; 'Jazzing things up', paragraphs about scat singing",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "e-later-loss",
+      "statement": "Her friend and bandleader Chick Webb died in 1939; the official biography says she mourned him and took on leading the band.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-official",
+          "locator": "'Coming into her own', first paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "e-backstage",
+      "statement": "Fitzgerald told Leonard Feather that Bardou Ali took her backstage to Webb's dressing room, where she sang the three songs she knew; Webb offered a college trial.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-decca-notes",
+          "locator": "Final two paragraphs, from 'Soon after' through Fitzgerald's account ending 'you've got a job'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "e-manager",
+      "statement": "Trumpeter Taft Jordan separately recalled resistance from manager Moe Gale, who was persuaded after hearing Fitzgerald sing.",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-decca-notes",
+          "locator": "Final paragraph, from 'Trumpeter Taft Jordan recalled' to the end",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 20,
+      "confidence": "probable",
+      "claimKind": "event"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "e-name",
+      "kind": "person",
+      "value": "Ella Fitzgerald",
+      "aliases": [
+        "Fitzgerald"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "quoteId": "e-trial-quote",
+      "text": "if they like you there, you've got a job.",
+      "status": "verbatim",
+      "speaker": "Chick Webb, as remembered by Ella Fitzgerald",
+      "sourceRefs": [
+        {
+          "sourceId": "ella-decca-notes",
+          "scope": "bounded",
+          "locator": "Final paragraph, Fitzgerald's account to Leonard Feather of Webb's condition for the college trial"
+        }
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She stood on the theater stage, facing the people who had come to judge the contest. She was about seventeen. She had entered as a dancer. In her memory, she froze when her turn came. She had wanted to dance. Now she was up there without beginning the act she had come to perform. \n\nThe audience was laughing. The man running the show told her she had to do something. He was still waiting for an act. She was still on the stage.",
+      "requiredFactIds": [
+        "e-dance",
+        "e-age",
+        "e-laugh"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-laugh"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-laugh"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-laugh"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "First-person recollection quoted by the Library of Congress anchors the freeze and laughter. Age is approximate: institutional accounts and the quoted recollection disagree between fifteen and seventeen. No exact date, song order or invented posture."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She was frightened in front of the audience. The dance she had meant to give had not begun. People could see her standing there. They were laughing while the man waited for her to perform. \n\nThis was an amateur contest, and she had come to take her turn. Her plan had been to dance before these people. Instead, she had frozen in front of them. She had an audience and a place in the show. She could not begin her dance.",
+      "requiredFactIds": [
+        "e-dance",
+        "e-laugh"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-laugh"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Moment remains the stage freeze; no invented bodily symptom, audience speech, thought or abandonment. This short dark passage intentionally does not convert poorly located childhood suffering into a new scene."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She told the man she wanted to sing. She turned to a song she knew from a singer's records. Her mother had liked that singer's music. She began to sing in place of the dance. \n\nThe room's response changed. The audience wanted more singing. She gave them more and won the contest. She had arrived with a dance to perform. She left the stage having sung.",
+      "requiredFactIds": [
+        "e-sang",
+        "e-boswell",
+        "e-won",
+        "e-dance"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-sang"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-boswell",
+            "e-sang"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-boswell"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-sang"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-won"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-won"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-won"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-dance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-sang",
+            "e-won"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The choice and singing are documented in her recollection, not invented self-empowerment. Sources disagree about which song was first and the number of encores; both are omitted."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "She kept entering talent shows. A later win brought a week of singing with a band at another theater. She was still looking for a lasting place to sing. Another bandleader already employed a male singer. He did not want to add a girl to the band. \n\nThe work meant traveling with the musicians. He was reluctant to take a teenager on that road. A contest win had not settled whether this band would employ her. A performer who worked with the band brought her backstage to meet him. She had another audition.",
+      "requiredFactIds": [
+        "e-contests",
+        "e-reluctant",
+        "e-no-girl",
+        "e-backstage"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-contests"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-contests"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-contests",
+            "e-reluctant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-reluctant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-no-girl"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-no-girl"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-no-girl"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-reluctant",
+            "e-no-girl"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Advance into early 1935. Official biography gives January for the Opera House week; Decca notes give February 16. No exact month is asserted. The continuing search is supported by the contests and repeated auditions, not by an invented withheld Apollo job."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She sang for the bandleader in his dressing room. The performer who had brought her worked with his band. In her memory, she sang the three songs she knew. They were songs she had heard another woman sing. She was offering him that small group of songs. \n\nThe bandleader still had a male singer. He had not been looking for a girl. But he gave her a way to try out with the band. They had a college engagement coming. She remembered his condition: “if they like you there, you've got a job.” She could come and sing with them.",
+      "requiredFactIds": [
+        "e-backstage",
+        "e-reluctant"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [
+        "e-trial-quote"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-reluctant",
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [
+            "e-trial-quote"
+          ]
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Located dressing-room audition is Fitzgerald's recollection to Leonard Feather as reproduced in Decca liner notes, at probable confidence. Webb's quoted condition is explicitly remembered. The college is withheld amid Yale/Princeton conflict; no present-tense transcript is claimed."
+    },
+    {
+      "role": "became",
+      "canonicalText": "She sang at the college dance and was hired by the band. The job brought a weekly wage. It also brought travel and several shows a day. Other young performers worked on the same shows. They waited between appearances in dressing rooms. They played cards there together. \n\nIn one fellow performer's memory, she hummed while they played. Away from people she knew, she could still be shy. A job singing had not made her outgoing everywhere. There was time with the other performers between shows. They had their cards.",
+      "requiredFactIds": [
+        "e-trial",
+        "e-hired",
+        "e-shows",
+        "e-cards",
+        "e-shy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-trial",
+            "e-hired"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-hired"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-hired",
+            "e-shows"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-cards"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-cards"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-cards"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-cards"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-shy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-shy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-shows",
+            "e-cards"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-cards"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Early touring routine comes from Miller's retrospective oral history, not a dated first touring day. The testimony has transcription errors; only unambiguous details are used. Later Webb loss remains in the fold."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Ella Fitzgerald.\n\nShe became a jazz singer known for making music with words and with wordless melodies. Your life is not theirs. But a piece of this story may still sit beside you. You do not have to feel ready to deserve a place. You are allowed to be uncertain.",
+      "requiredFactIds": [
+        "e-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "No prediction or equivalence. Identity and plain description appear only here."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Only source-located actions; no reconstructed childhood violence or homelessness scene.",
+    "All recollected performance detail remains probable.",
+    "Do not invent songs, audience dialogue, a first paycheck scene or thoughts about belonging."
+  ],
+  "avoidRules": [
+    "No identifying names, cities, institutions or song titles before the bridge.",
+    "Do not collapse the Apollo contest, Harlem Opera House engagement and Webb trial into one night.",
+    "Do not assert an exact college, song order, or encore count amid source conflict.",
+    "No moral that talent or entering a contest guarantees a job."
+  ],
+  "sources": [
+    {
+      "sourceId": "ella-official",
+      "citation": "Ella Fitzgerald official artist biography, Verve/UMG website. First-party institutional biography containing selected Fitzgerald recollections; not a contemporaneous transcript.",
+      "url": "https://www.ellafitzgerald.com/biography/",
+      "locator": "'Humble but happy beginnings'; 'A rough patch'; 'What's she going to do?'; 'Coming into her own'."
+    },
+    {
+      "sourceId": "ella-loc",
+      "citation": "Hannah Wong, 'First Lady of Song', Library of Congress Information Bulletin, August 1997. Includes excerpts attributed to Fitzgerald's own writing, without identifying the original document.",
+      "url": "https://www.loc.gov/loc/lcib/9708/ella.html",
+      "locator": "Paragraphs from 'Ironically, her earliest passion' through 'Ella decided to sing'; audition paragraphs later on the page."
+    },
+    {
+      "sourceId": "ella-miller",
+      "citation": "Norma Miller interview, March 29, 1999, American Masters Digital Archive, WNET/PBS, for Ella Fitzgerald: Something to Live For.",
+      "url": "https://www.pbs.org/wnet/americanmasters/archive/interview/norma-miller/",
+      "locator": "Opening transcript from amateur contests through early touring and cards, before the first later-career questions."
+    },
+    {
+      "sourceId": "ella-decca-notes",
+      "citation": "Will Friedwald, The Decca Years, Vol. One, 1935–1938, liner notes, page 3, preserved by media.org. Includes Fitzgerald's account to Leonard Feather and Taft Jordan's recollection.",
+      "url": "https://museum.media.org/ella/decca/decca_3.html",
+      "locator": "Final two paragraphs: Fitzgerald's backstage audition, conditional college trial, and Jordan's separate manager-audition account."
+    }
+  ],
+  "review": {}
+}

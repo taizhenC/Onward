@@ -357,7 +357,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "He was in a pianist's home, trying to find a tune on his saxophone. He was about thirty. In his remembered scene, the pianist had got out of bed to play. The pianist began one of his tunes and looked at him. He took his horn out and tried to follow. They played the music again, working through what he could not yet find. When a passage gave him too much trouble, the pianist brought out the written music. There was the part he needed to learn.",
+      "canonicalText": "He was in a pianist's home, trying to find a tune on his saxophone. He was about thirty. In his account of their rehearsals, the pianist got out of bed to play. The pianist began one of his tunes and looked at him. He took his horn out and tried to follow. They played the music again, working through what he could not yet find. When a passage gave him too much trouble, the pianist brought out the written music. There was the part he needed to learn.",
       "requiredFactIds": [
         "rehearsal",
         "age",
@@ -545,7 +545,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "HOLD for source/craft gap at the emotional low point: dismissal, replacement and addiction-related unreliability are supported; his immediate feelings, words and physical location at dismissal are not. Do not import shame from a different interview period or recreate a confrontation. Spring bounds the March/April conflict."
+      "sourceNote": "HOLD for source/craft gap at the emotional low point: dismissal, replacement and addiction-related unreliability are supported; his immediate feelings, words and physical location at dismissal are not. Do not import shame from a different interview period or recreate a confrontation. Spring bounds the March/April conflict. The episode startDate 1957-03-01 bounds the disputed March/April dismissal month; it is not an event date."
     },
     {
       "role": "response",
@@ -651,7 +651,7 @@
     },
     {
       "role": "struggle",
-      "canonicalText": "The rehearsals led into a run of club performances. Playing with the pianist could mean playing without him for a while. He left the keyboard during the music. The saxophonist remembered feeling lonesome when that happened. He relied on the bass player to keep his place. But the bass player did not always play the obvious notes. Knowing the tune mattered. He had to follow another musician's choices while making his own. The time spent learning the music had work to do on the bandstand. The pianist's absence was part of that work. There were still bass and drums beside the horn.",
+      "canonicalText": "The rehearsals led into a run of club performances. Playing with the pianist could mean playing without him for a while. He left the keyboard during the music. The saxophonist remembered feeling lonesome when that happened. He relied on the bass player to keep his place. But the bass player did not always play the obvious notes. Knowing the tune mattered. He had to follow another musician's choices while making his own. He knew the tune they were playing. The pianist's absence was part of that work. There were still bass and drums beside the horn.",
       "requiredFactIds": [
         "rehearsal",
         "club",
@@ -990,11 +990,11 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Ends with return to Davis, dated only after Monk because sources differ on December 1957 versus early 1958. Later recollections are explicitly framed; no permanent-cure claim. Brief album comment comes from a 1960 interview quoted by the recording's label."
+      "sourceNote": "Ends with return to Davis, dated only after Monk because sources differ on December 1957 versus early 1958. Later recollections are explicitly framed; no permanent-cure claim. Brief album comment comes from a 1960 interview quoted by the recording's label. The episode endDate 1958-01-31 bounds the December/January return window; it is not an event date."
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was John Coltrane.\n\nHe was a jazz saxophonist who wrote music for his bands.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to be unfinished without making your whole life a verdict.\n\nYou do not have to be beyond help.",
+      "canonicalText": "His name was John Coltrane.\n\nHe was a jazz saxophonist who wrote music for his bands.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to be unfinished without making your whole life a verdict.\n\nYou are allowed to need help.",
       "requiredFactIds": [
         "legacy"
       ],

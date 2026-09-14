@@ -201,6 +201,20 @@
       "claimKind": "context"
     },
     {
+      "factId": "kindness",
+      "statement": "In his 5 January 1815 letter to his former employer Riebau, Faraday thanked him for years of kindness and for letters showing continued goodwill.",
+      "sourceRefs": [
+        {
+          "sourceId": "jan",
+          "locator": "Opening paragraphs beginning 'During the whole' and 'I have received', on kindness and letters during and after his employment.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
       "factId": "duties",
       "statement": "In his 23 February letter Faraday explained that a promised replacement valet had not been found; unwanted duties remained with him.",
       "sourceRefs": [
@@ -917,7 +931,8 @@
       "canonicalText": "In spring, he was on his way home. He sent his mother a letter about the approaching return. He wanted his first moments back to be with her. She could tell some close friends that he was coming. There were others he wanted to tell himself. The former employer who had cared for him was among them. Back at home, he resumed work as a laboratory assistant. The tour had ended; he still held an assistant's position. He had not returned as the head of a laboratory. There was work for him there.",
       "requiredFactIds": [
         "home",
-        "return"
+        "return",
+        "kindness"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -972,7 +987,8 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "home"
+            "home",
+            "kindness"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -1017,7 +1033,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Ends in spring 1815 with the return to assistant work. April letter is reproduced in Thompson; employment is corroborated by the institution that employed him. No restored confidence, lifelong gratitude, or total recovery is asserted."
+      "sourceNote": "Ends in spring 1815 with the return to assistant work. April letter is reproduced in Thompson; employment is corroborated by the institution that employed him. No restored confidence, lifelong gratitude, or total recovery is asserted. The episode endDate 1815-05-31 is a spring/month envelope bound, not an attested event date."
     },
     {
       "role": "bridge",

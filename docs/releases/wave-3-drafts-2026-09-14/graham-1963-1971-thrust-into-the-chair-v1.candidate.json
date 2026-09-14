@@ -1,0 +1,1099 @@
+{
+  "storySpecId": "graham:1963-1971-thrust-into-the-chair:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "graham",
+  "stageId": "1963-1971-thrust-into-the-chair",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 46,
+    "ageMax": 48,
+    "startDate": "1963",
+    "endDate": "1965",
+    "throughLine": "A new newspaper executive rehearses a greeting for her staff, struggles to speak in meetings, and begins shaping her team through a difficult lunch conversation."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief",
+      "suicide_loss"
+    ],
+    "contentNote": "Bereavement and uncertainty in a new role; no details of the death."
+  },
+  "facts": [
+    {
+      "factId": "g-age",
+      "statement": "Katharine Graham was born June 16, 1917; her first year working after her husband's 1963 death places the Christmas rehearsal at age forty-six.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-memoir-opening",
+          "locator": "Memoir excerpt final paragraph: 'And two years after that, on June 16, 1917, I was born.'",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "graham-booknotes",
+          "scope": "bounded",
+          "locator": "Public-speaking exchange: she dates rehearsing before the children to 'the first year I was working at the paper'"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "g-loss",
+      "statement": "Her husband died by suicide in 1963. She went away for a month, returned, and went to work at the newspaper company.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-booknotes",
+          "locator": "Interview exchange beginning 'after your husband ... how long was it before you took over The Post?' and Graham's answer",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-learning",
+      "statement": "She said she initially went to work to learn the issues, not with a sense that she had already taken over; chairman Frederick Beebe and other executives encouraged her.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-booknotes",
+          "locator": "Exchange about how soon she took over, answer beginning 'I went away for a month' through the description of Beebe",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-practice",
+      "statement": "In her first year at the company she was asked to offer a Christmas greeting at a company lunch and rehearsed before her children.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-booknotes",
+          "locator": "Exchange beginning 'You say that when you first got to The Post ... petrified about speaking', complete answer",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-fear",
+      "statement": "Graham described being so frightened of public speaking that even rehearsing before her children was difficult.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-booknotes",
+          "locator": "Same public-speaking exchange, answer beginning 'Couldn't open my mouth' through 'my children lined up in a row'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "g-bedroom",
+      "statement": "Her daughter Lally Weymouth remembered Graham repeatedly rehearsing Christmas greetings in the children's bedrooms.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-pbs",
+          "locator": "Transcript, Weymouth passage beginning 'It was daunting to her', before Graham's recollection of editorial lunches",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-inexperience",
+      "statement": "Graham described lacking knowledge of management, business and complicated editorial issues, and not knowing how to use a secretary.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-pbs",
+          "locator": "Transcript, Graham passage beginning 'It was really hard because I didn't know anything about being in business'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "g-silent",
+      "statement": "Graham remembered remaining silent for about a year and being frightened when she first asked a question at an editorial lunch.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-pbs",
+          "locator": "Transcript, 'I remained totally silent for about a year' through 'I was so scared'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-better-paper",
+      "statement": "She gradually became aware of newsroom discontent and the need to improve the paper, partly through conversations with colleagues.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Question about making Ben Bradlee managing editor; answer from 'Little by little' through 'all this dawned on me gradually'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-invite",
+      "statement": "She invited Ben Bradlee to lunch after hearing good things about his work and noticing he had declined other jobs.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Same answer, from 'And I thought, Well, I better go talk to Ben' through invitation to lunch",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-club",
+      "statement": "Graham remembered taking Bradlee to a club she belonged to because she had never invited a man to lunch and did not want to handle paying the bill.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Same answer, sentences beginning 'And so I asked him to lunch' through 'a club I belonged to'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-question",
+      "statement": "At lunch she asked what Bradlee wanted to do; he said he wanted to be managing editor of The Washington Post.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Same answer, club lunch exchange from 'What is it that you do want to do?' through Bradlee's answer",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-no",
+      "statement": "She was taken aback; the current managing editor was a loyal longtime colleague and personal friend. She said an immediate appointment was not possible.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Same answer, paragraph beginning 'And I was really brought up short' through 'Maybe some day'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-pressure",
+      "statement": "Bradlee kept pressing. Graham initially resented this but then considered whether his energy was what the paper needed.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Same answer, from 'And then Ben began pushing' through 'what we need'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-checking",
+      "statement": "She asked others about Bradlee, received support, and persuaded the editors to bring him into management as an assistant editor rather than a reporter.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Same answer, from 'And so I checked up on him' through 'that began the process of his succeeding the editor'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-staff",
+      "statement": "Graham said the paper's small staff grew in size and quality under Bradlee.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-pbs",
+          "locator": "Transcript, Graham passage beginning 'We had a very, very small staff'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "g-identity",
+      "statement": "Katharine Graham was the publisher of The Washington Post.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Interview introduction and question about becoming publisher; rebroadcast description",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "g-later-discrimination",
+      "statement": "Graham acknowledged that discrimination suits brought by women at Newsweek and The Washington Post were justified and led to progress.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "locator": "Exchange about the women's discrimination suits, ending 'The suits were right' and 'we did make a lot of progress'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "g-date",
+      "statement": "Bradlee joined the paper's management in 1965.",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-donald",
+          "locator": "Opening section, paragraph beginning 'When my mother'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "g-name",
+      "kind": "person",
+      "value": "Katharine Graham",
+      "aliases": [
+        "Graham"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "quoteId": "g-no-quote",
+      "text": "That's not possible right in the near future.",
+      "status": "verbatim",
+      "speaker": "Katharine Graham",
+      "sourceRefs": [
+        {
+          "sourceId": "graham-fresh-air",
+          "scope": "bounded",
+          "locator": "Answer about Bradlee appointment; paragraph beginning 'And I was really brought up short', quoted refusal at lunch"
+        }
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was at home, rehearsing a greeting in front of her children. She was forty-six. There was a company lunch coming, and she had been asked to speak. In her memory, even this small speech needed practice. The audience at home was her own family. The audience at work would be the people employed by the company. \n\nHer husband had died, and she had started working at the newspaper. She was learning a business that had been part of her family's life. Now she had a greeting to give. Her children were listening.",
+      "requiredFactIds": [
+        "g-practice",
+        "g-age",
+        "g-fear",
+        "g-loss",
+        "g-learning"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice",
+            "g-fear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-loss"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The family rehearsal is Graham's first-person memory, corroborated by her daughter's account. It is not a reconstructed first day or a claim that all children were present in a specific room."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She was frightened of speaking in front of people. The words she needed were only a seasonal greeting. Yet she had to practice saying them before her own children. She had come to the company to learn. She did not feel that arriving there meant she already knew how to run it. \n\nBusiness and management were unfamiliar. So were complicated decisions about the newspaper. She did not even know how to work with a secretary. Speaking to the staff was one of them. She still had to say the greeting.",
+      "requiredFactIds": [
+        "g-fear",
+        "g-practice",
+        "g-learning",
+        "g-inexperience"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-fear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice",
+            "g-fear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-inexperience"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-inexperience"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-inexperience"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The rehearsal remains the moment; business inexperience is limited context, not invented catastrophic thinking. Husband's death is described without method, means, duration, location, or note contents."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She practiced in front of her children. She rehearsed welcoming the staff to the party. She rehearsed saying she was glad they had come. Her daughter remembered her going over the greetings in their bedrooms. \n\nShe was saying aloud the kind of words she would need at work. The practice audience was small and familiar. It still counted as speaking in front of people. She was practicing a welcome.",
+      "requiredFactIds": [
+        "g-practice",
+        "g-bedroom"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-bedroom"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-bedroom"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-bedroom"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rehearsal is the small documented response. No claim about the actual party's reception, a new resolve, feedback from the children, or immediate relief is added."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "She went on learning the work with help from experienced colleagues. At editorial lunches, she stayed silent for about a year. The first time she asked a question, she was still scared. A seat at the table had not made speaking easy. \n\nOver time, she also heard that people in the newsroom were unhappy. The paper needed improvement. She learned about an editor who was doing good work at another publication. He had turned down chances to move into other jobs. She wanted to talk with him. She invited him to lunch.",
+      "requiredFactIds": [
+        "g-learning",
+        "g-silent",
+        "g-better-paper",
+        "g-invite"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-silent"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-silent"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-silent"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-better-paper"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-better-paper"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-invite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-invite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-invite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-invite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed early learning and newsroom concerns are attested; the year of silence remains an approximate memory. The invitation introduces the next located scene without claiming that rehearsal caused her hiring judgment."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She took the editor to lunch at a club she belonged to. She had never invited a man to lunch like this before. At the club, she could avoid handling a restaurant bill. She asked what kind of work he wanted. He wanted to be the newspaper's managing editor. His answer took her by surprise. \n\nSomeone already held that job. He was a longtime colleague who had been loyal, and he was her friend. She did not offer his place across the lunch table. In her memory, her answer was “That's not possible right in the near future.” She left open a later possibility. He wanted the job.",
+      "requiredFactIds": [
+        "g-club",
+        "g-question",
+        "g-no"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [
+        "g-no-quote"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-club"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-club"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-club"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-no"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-no"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-no"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-no"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-no"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [
+            "g-no-quote"
+          ]
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-no"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Graham's lunch account is primary testimony from 1997 and remains probable. The turn is a conversation that exposes a possibility, not an instant appointment. No lunch food, clothing, gesture or triumphant insight is invented."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The editor kept asking to talk. At first, his pressure annoyed her. Then she considered whether the paper needed that kind of energy. She asked other people about him. They supported bringing him over. \n\nThe editors first suggested hiring him as a reporter. She wanted him in management. She persuaded them to bring him in as an assistant editor. It was a step toward a different role, not an immediate replacement at that lunch. She was still learning the business with other people. There were colleagues to work with.",
+      "requiredFactIds": [
+        "g-pressure",
+        "g-checking",
+        "g-no",
+        "g-learning"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-pressure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-pressure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-pressure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-checking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-checking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-checking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-checking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-checking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-checking",
+            "g-no"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-learning",
+            "g-checking"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends at the early management appointment, not later staff growth, Pentagon Papers or Watergate. Donald Graham's firsthand Post account corroborates the 1965 management transition. No exact appointment date appears in the prose. Later acknowledged workplace discrimination remains in the fold."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Katharine Graham.\n\nShe became the publisher of a newspaper that reported on the people running the country. Your life is not theirs. But a piece of this story may still sit beside you. You do not have to arrive already knowing how everything works. You are allowed to be new.",
+      "requiredFactIds": [
+        "g-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Name and plain legacy only; no promise about the reader's progress."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Keep all retrospective recollections probable and signal memory in the prose.",
+    "No invented speech, business expertise, successful party reception, hiring epiphany, or hostility from every man.",
+    "Exclude all suicide method, means, duration, location and note details."
+  ],
+  "avoidRules": [
+    "No identifying names, years, places, institutions or events before bridge.",
+    "Do not telescope the 1971 publisher into the age46 first-year beginner.",
+    "Do not call the first day a complete takeover; Beebe and other executives helped her learn.",
+    "Do not erase her later acknowledgment that women faced discrimination within her own company."
+  ],
+  "sources": [
+    {
+      "sourceId": "graham-booknotes",
+      "citation": "Katharine Graham interviewed by Brian Lamb, Booknotes, February 16, 1997, C-SPAN transcript.",
+      "url": "https://booknotes.c-span.org/Watch/78359-1/Katharine-Graham",
+      "locator": "Exchanges on beginning work after her husband's death and fear of public speaking; memoir discussion."
+    },
+    {
+      "sourceId": "graham-fresh-air",
+      "citation": "Katharine Graham interviewed by Terry Gross in 1997; Fresh Air archival rebroadcast transcript, July 18, 2001. Archive cautions that audio is authoritative.",
+      "url": "https://freshairarchive.org/segments/katharine-graham",
+      "locator": "Exchange about choosing Ben Bradlee; later discussion of women's discrimination suits."
+    },
+    {
+      "sourceId": "graham-pbs",
+      "citation": "Becoming Katharine Graham, PBS documentary transcript, public page accessed September 14, 2026; attributed archival Graham testimony and Lally Weymouth's family recollections.",
+      "url": "https://www.pbs.org/video/becoming-katharine-graham-yfyjfn/",
+      "locator": "Sequence from early business inexperience and children's rehearsal through editorial lunch and Bradlee."
+    },
+    {
+      "sourceId": "graham-memoir-opening",
+      "citation": "Katharine Graham, Personal History (1997), authorized opening excerpt, ReadingGroupGuides.",
+      "url": "https://www.readinggroupguides.com/reviews/personal-history/excerpt",
+      "locator": "Final paragraph of excerpt, birth on June 16, 1917."
+    },
+    {
+      "sourceId": "graham-donald",
+      "citation": "Donald Graham, 'Ben Bradlee, a hero to The Post newsroom', The Washington Post, October 21, 2014. Family and company participant account.",
+      "url": "https://www.washingtonpost.com/opinions/ben-bradlee-a-hero-to-the-post-newsroom/2014/10/21/365974c8-5881-11e4-8264-deed989ae9a2_story.html",
+      "locator": "Opening section, paragraph beginning 'When my mother'."
+    }
+  ],
+  "review": {}
+}

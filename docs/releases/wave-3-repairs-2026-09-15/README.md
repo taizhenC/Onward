@@ -20,7 +20,7 @@ invented historical events, thoughts, dialogue or causality.
 | Hurston | A new, chronological Howard-transition story removes the unsupported registration low point. The opening invitation, disclosure, still-insufficient savings/preparation, encouragement and first assembly are tied to the memoir and chronology. | New exact-text reading decision: a sparse 342-word miniature, especially the 20-word response and 32-word turn. Not yet approved or published. |
 | Coleman | Reopened primary testimony supports shock, training and qualification but does not locate a particular resumed lesson or render the examination as a moment. | HOLD: no safe replacement candidate; a habitual walk cannot become the next morning after the pupil's death. |
 | Coltrane | Full primary audio was accessed and locally machine-transcribed. Performance details were located, but the transcript remains unverified and does not repair the dismissal/home-rehearsal episode. | HOLD: no safe replacement candidate. Verify the new timestamps directly before considering a different performance-centered episode. |
-| Jones | An additional primary essay sharpens the refusal and poem submission, but recurring difficulties and the immediate accusation/recital do not establish the needed intervening struggle. | HOLD: no safe replacement candidate; no fabricated failed practice, teacher trick or instant cure. |
+| Jones | An additional primary essay sharpens the refusal and poem submission. Unmet feedback expectations could supply the struggle, but the refusal encounter still lacks an attested inward low point. | HOLD: no safe replacement candidate; habitual shame cannot be assigned to that encounter, and no failed practice, teacher trick or instant cure is fabricated. |
 
 ## New exact text
 

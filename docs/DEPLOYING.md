@@ -272,6 +272,22 @@ files, one registration migration, and every protected binding. Missing or
 reused run/deployment/shadow identity, dirty/unbound input tree, or any other
 proof fails closed.
 
+If `detect-recipe-promotion` fails before the JavaScript detector runs, compare
+the candidate checkout SHA with `HEAD_SHA`, then the trusted checkout SHA with
+`EVENT_BASE_SHA` in that run's logs. The workflow checks out the current protected
+branch and deliberately rejects a mismatch with the event's base. This can
+affect non-promotion PRs too: PR #127's run `34922193490` carried base `5eff085`
+after PR #126 had advanced `main` to `935f6ad`. Its `recipe-promotion-gate`
+failure was a consequence of failed detection, not a second recipe defect.
+
+For that stale-base case, fetch and merge the current `origin/main` into the PR
+branch, preserve any unrelated work, and push the update to trigger a fresh
+`synchronize` event. Verify that the new run binds the new head and current base
+and that both detection and the final gate pass. Rerunning the old event alone
+does not update its recorded base. Do not remove the SHA assertions, skip the
+gate, or execute the PR's attestor to clear it. A real promotion also needs new
+exact-head review and authority bindings after its head changes.
+
 As of July 23, 2026, this repository is private on a GitHub plan for which the
 branch-protection API returns `403` and reports that GitHub Pro (or a public
 repository) is required. Therefore CODEOWNERS, required checks, stale-review

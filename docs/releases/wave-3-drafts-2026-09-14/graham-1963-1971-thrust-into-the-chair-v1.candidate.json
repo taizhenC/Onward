@@ -97,20 +97,6 @@
       "claimKind": "context"
     },
     {
-      "factId": "g-bedroom",
-      "statement": "Her daughter Lally Weymouth remembered Graham repeatedly rehearsing Christmas greetings in the children's bedrooms.",
-      "sourceRefs": [
-        {
-          "sourceId": "graham-pbs",
-          "locator": "Transcript, Weymouth passage beginning 'It was daunting to her', before Graham's recollection of editorial lunches",
-          "scope": "bounded"
-        }
-      ],
-      "eventOrder": 6,
-      "confidence": "probable",
-      "claimKind": "event"
-    },
-    {
       "factId": "g-inexperience",
       "statement": "Graham described lacking knowledge of management, business and complicated editorial issues, and not knowing how to use a secretary.",
       "sourceRefs": [
@@ -321,11 +307,10 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "She was at home, rehearsing a greeting in front of her children. She was forty-six. There was a company lunch coming, and she had been asked to speak. In her memory, even this small speech needed practice. The audience at home was her own family. The audience at work would be the people employed by the company. \n\nHer husband had died, and she had started working at the newspaper. She was learning a business that had been part of her family's life. Now she had a greeting to give. Her children were listening.",
+      "canonicalText": "She was at home, with her children lined up for a practice speech. She was forty-six. In her memory, a company lunch was coming, and she had been asked to give a Christmas greeting. Her husband had died that year. She had gone to work at the newspaper, a business bound up with her family's life. She had come to learn.",
       "requiredFactIds": [
         "g-practice",
         "g-age",
-        "g-fear",
         "g-loss",
         "g-learning"
       ],
@@ -364,62 +349,26 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "g-practice",
-            "g-fear"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-practice"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-practice"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
             "g-loss"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
-          "sentenceIndex": 7,
+          "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
+            "g-loss",
             "g-learning"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
-          "sentenceIndex": 8,
+          "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "g-practice"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-practice"
+            "g-learning"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -428,16 +377,14 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The family rehearsal is Graham's first-person memory, corroborated by her daughter's account. It is not a reconstructed first day or a claim that all children were present in a specific room."
+      "sourceNote": "First-year rehearsal from Graham's own Booknotes memory only. The undated plural bedroom rehearsals recalled by Weymouth are not merged into this occasion. No exact room or audience response is invented. The ending does not claim this was her first-ever employment at the newspaper."
     },
     {
       "role": "dark_moment",
-      "canonicalText": "She was frightened of speaking in front of people. The words she needed were only a seasonal greeting. Yet she had to practice saying them before her own children. She had come to the company to learn. She did not feel that arriving there meant she already knew how to run it. \n\nBusiness and management were unfamiliar. So were complicated decisions about the newspaper. She did not even know how to work with a secretary. Speaking to the staff was one of them. She still had to say the greeting.",
+      "canonicalText": "She remembered being unable to open her mouth. Speaking in public frightened her. Even with her own children before her, this was unfamiliar. The task was a greeting at lunch, not a long speech. She had never addressed people in public. Now she had to speak.",
       "requiredFactIds": [
         "g-fear",
-        "g-practice",
-        "g-learning",
-        "g-inexperience"
+        "g-practice"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -456,7 +403,7 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "g-practice"
+            "g-fear"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -465,7 +412,6 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "g-practice",
             "g-fear"
           ],
           "interpretationIds": [],
@@ -475,7 +421,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "g-learning"
+            "g-practice"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -484,49 +430,13 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "g-learning"
+            "g-fear"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
           "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-inexperience"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-inexperience"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-inexperience"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-practice"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
           "treatment": "historical_claim",
           "factIds": [
             "g-practice"
@@ -538,14 +448,13 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The rehearsal remains the moment; business inexperience is limited context, not invented catastrophic thinking. Husband's death is described without method, means, duration, location, or note contents."
+      "sourceNote": "The attested fear remains inside the family rehearsal. Business inexperience moves to the compression passage. No new physical reaction, catastrophic thought, or reassurance is supplied."
     },
     {
       "role": "response",
-      "canonicalText": "She practiced in front of her children. She rehearsed welcoming the staff to the party. She rehearsed saying she was glad they had come. Her daughter remembered her going over the greetings in their bedrooms. \n\nShe was saying aloud the kind of words she would need at work. The practice audience was small and familiar. It still counted as speaking in front of people. She was practicing a welcome.",
+      "canonicalText": "She practiced saying the Christmas greeting to her children. It was the speech she had been asked to give at the company lunch. Her children were her audience.",
       "requiredFactIds": [
-        "g-practice",
-        "g-bedroom"
+        "g-practice"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -564,58 +473,13 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "g-bedroom"
+            "g-practice"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
           "sentenceIndex": 2,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-bedroom"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-bedroom"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-practice"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-practice"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "g-practice"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
             "g-practice"
@@ -627,12 +491,13 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Rehearsal is the small documented response. No claim about the actual party's reception, a new resolve, feedback from the children, or immediate relief is added."
+      "sourceNote": "One small documented act in the first-year Booknotes memory. Deliberately short: no undated bedroom, repeated welcome speeches, children's feedback, actual party reception or immediate relief is added."
     },
     {
       "role": "struggle",
-      "canonicalText": "She went on learning the work with help from experienced colleagues. At editorial lunches, she stayed silent for about a year. The first time she asked a question, she was still scared. A seat at the table had not made speaking easy. \n\nOver time, she also heard that people in the newsroom were unhappy. The paper needed improvement. She learned about an editor who was doing good work at another publication. He had turned down chances to move into other jobs. She wanted to talk with him. She invited him to lunch.",
+      "canonicalText": "She was learning unfamiliar business and management work. She did not even know how to work with a secretary. She went on learning the work with help from experienced colleagues. At editorial lunches, she stayed silent for about a year. The first time she asked a question, she was still scared. A seat at the table had not made speaking easy. Over time, she also heard that people in the newsroom were unhappy. The paper needed improvement. She learned about an editor who was doing good work at another publication. He had turned down chances to move into other jobs. She wanted to talk with him. She invited him to lunch.",
       "requiredFactIds": [
+        "g-inexperience",
         "g-learning",
         "g-silent",
         "g-better-paper",
@@ -646,7 +511,7 @@
           "sentenceIndex": 0,
           "treatment": "historical_claim",
           "factIds": [
-            "g-learning"
+            "g-inexperience"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -655,7 +520,7 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "g-silent"
+            "g-inexperience"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -664,7 +529,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "g-silent"
+            "g-learning"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -682,7 +547,7 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "g-better-paper"
+            "g-silent"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -691,7 +556,7 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "g-better-paper"
+            "g-silent"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -700,7 +565,7 @@
           "sentenceIndex": 6,
           "treatment": "historical_claim",
           "factIds": [
-            "g-invite"
+            "g-better-paper"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -709,7 +574,7 @@
           "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
-            "g-invite"
+            "g-better-paper"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -731,12 +596,30 @@
           ],
           "interpretationIds": [],
           "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-invite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "g-invite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
         }
       ],
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Compressed early learning and newsroom concerns are attested; the year of silence remains an approximate memory. The invitation introduces the next located scene without claiming that rehearsal caused her hiring judgment."
+      "sourceNote": "Compressed early learning and newsroom concerns are attested; the year of silence remains an approximate memory. The invitation introduces the next located scene without claiming that rehearsal caused her hiring judgment. Management inexperience is compressed here, not relocated into the rehearsal."
     },
     {
       "role": "turning_point",

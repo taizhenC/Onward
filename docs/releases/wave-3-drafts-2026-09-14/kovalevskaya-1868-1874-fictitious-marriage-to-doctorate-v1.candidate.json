@@ -1,0 +1,1051 @@
+{
+  "storySpecId": "kovalevskaya:1868-1874-fictitious-marriage-to-doctorate:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "kovalevskaya",
+  "stageId": "1868-1874-fictitious-marriage-to-doctorate",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 18,
+    "ageMax": 24,
+    "startDate": "1868",
+    "endDate": "1874",
+    "throughLine": "A young woman constrained at home secured a marriage arrangement, sought private teaching when university access failed, and completed mathematical research amid continuing difficulty."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination"
+    ],
+    "contentNote": "Family control, exclusion from university study, and exhaustion; no diagnosis or claim that achievement resolves suffering."
+  },
+  "facts": [
+    {
+      "factId": "k04",
+      "statement": "Sonia's sister and her friend proposed a marriage arrangement to a young student who wanted to study in Germany; he offered to marry Sonia.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 17-18, from 'Aniuta and Inez' through 'Sonia for his wife'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k01",
+      "statement": "Leffler presents the pre-marriage dinner episode as Kovalevskaya's own later account; she was eighteen in 1868.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 19-24, especially p. 24 opening and age at foot",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "context",
+      "subjectAgeMin": 18,
+      "subjectAgeMax": 18,
+      "dateStart": "1868",
+      "dateEnd": "1868"
+    },
+    {
+      "factId": "k05",
+      "statement": "Their father refused the proposed marriage to Sonia, and the family prepared to return to the country estate; the account presents this as loss of access to their new interests.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 18, refusal and proposed return; p. 19 opening",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "k02",
+      "statement": "Before a family dinner the sisters were alone in their room, with new dresses ready; their parents were out and other household members decorated the drawing-room.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 19 final paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k03",
+      "statement": "The sisters were not allowed to leave the house unattended.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 20 opening sentence",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "k06",
+      "statement": "The account says Sonia was determined to leave home and continue her studies.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 19, 'Now her mind was made up' through 'cost what it might'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "k07",
+      "statement": "She left alone amid the preparations, while her sister watched at the gate; she walked quickly through nearly empty streets at dusk. Her veil was pulled down.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 20, first two paragraphs",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k08",
+      "statement": "She held her breath in fear of the darkness while hurrying up unlighted stairs to the third floor. She knocked at the student's door, which opened immediately; he admitted her to a study full of books. Books were piled on tables and chairs; a shaky sofa had been cleared for her.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 20-21, from 'holding her breath' through study description",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k09",
+      "statement": "In the study she and the student waited for her father, listening intently for quick angry steps in the passage. More than once she rose from the sofa when she thought someone was coming.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 21 final paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k10",
+      "statement": "She left a note asking her father not to oppose the marriage; he came to the student's room, then introduced the student as her future husband at dinner.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 22-23, note fetched through final introduction",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k11",
+      "statement": "The marriage took place in 1868; after a stay in St Petersburg the couple went to Heidelberg to study.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 24-26; the memoir gives October for the wedding, which conflicts with modern September dating",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k12",
+      "statement": "After study at Heidelberg she moved to Berlin in autumn 1870; the university was closed to women, so she applied directly to Weierstrass for private teaching.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 33-34, closing paragraph of II and opening paragraphs of III",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "k13",
+      "statement": "Weierstrass distrusted the unfamiliar applicant and gave her problems intended for advanced pupils, expecting she would not solve them.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 34, last paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k14",
+      "statement": "A week later she returned and said she had solved all the problems; he doubted her, seated her beside him, and examined the solutions individually.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 35, 'A week later' through 'one by one'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k15",
+      "statement": "He found the solutions correct and ingenious; she removed her hat in eagerness and blushed at his praise. Leffler identifies Weierstrass himself as her informant. Taking off her hat uncovered short curly hair.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "p. 35, 'as he told me himself' and 'To his great surprise' through 'blushed at his praises'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "sensory"
+    },
+    {
+      "factId": "k16",
+      "statement": "The encounter began a lasting friendship and private instruction: he visited her weekly, and she visited him on Sunday evenings for four years.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 35-36, end of p. 35 and first two paragraphs p. 36",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "k17",
+      "statement": "Her companion describes long hours over papers, hurried suppers followed by work, poor lodging and food, and little rest; she was exhausted on receiving the degree and returning to Russia.",
+      "sourceRefs": [
+        {
+          "sourceId": "leffler",
+          "locator": "pp. 37-39, companion's account",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "k18",
+      "statement": "The University of Göttingen granted her 1874 application for a doctorate in absentia on the strength of the submitted work, including her theory of partial differential equations.",
+      "sourceRefs": [
+        {
+          "sourceId": "gottingen",
+          "locator": "Single biographical paragraph, sentences beginning '1874 stellte' and 'Für ihre'",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "dissertation",
+          "locator": "Catalog title, author, year 1874 and title-page record",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event",
+      "subjectAgeMin": 24,
+      "subjectAgeMax": 24,
+      "dateStart": "1874",
+      "dateEnd": "1874"
+    },
+    {
+      "factId": "k19",
+      "statement": "Sofia Kovalevskaya was a mathematician who developed a theory of partial differential equations, equations involving rates of change in several variables.",
+      "sourceRefs": [
+        {
+          "sourceId": "dissertation",
+          "locator": "Title: Zur Theorie der partiellen Differentialgleichungen; author Sophie Kowalevsky",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "gottingen",
+          "locator": "Biography, doctorate and professorship statements",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Sofia Kovalevskaya",
+      "aliases": [
+        "Sonia Kovalevsky",
+        "Sophie Kowalevsky"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was in the room she shared with her sister, before a family dinner. She was eighteen. In her account, their new dresses lay ready to be put on. Their mother was shopping, and their father was at his club. Elsewhere in the house, the governess and a maid were preparing the drawing-room. She could not simply go out by herself. She and her sister were required to have someone with them outside the house. The sisters were alone.",
+      "requiredFactIds": [
+        "k02",
+        "k01",
+        "k03"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Memory cue covers the remembered dinner scene, not an independently recorded transcript. No exact wedding month is asserted. The next passage jumps openly to the stairs; it does not invent a continuous room-to-room scene."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Later, she was hurrying up an unlit staircase, holding her breath. She was afraid of the dark. She had left the house alone and crossed the streets to reach this building. Her father had refused the proposed marriage. The family was preparing to leave the city. She wanted to leave home and continue studying. The young student had agreed to marry her. Her father had not agreed. The student's door was on the third floor.",
+      "requiredFactIds": [
+        "k08",
+        "k07",
+        "k05",
+        "k06",
+        "k04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k07",
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Located on the staircase, pp. 20-21: held breath, fear and unlit stairs are source particulars. The few prior-refusal facts explain the stakes without inventing what she imagined or what caused her fear. The source names darkness as the fear; no fear of rejection, punishment or discovery is added. An open jump from the preparation scene omits the walk rather than making the dark passage span it."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She knocked at the door. It opened at once, and the student led her into his study. Books stood in piles on the tables and chairs. A shaky sofa had been cleared for her. She sat there while they waited for her father. They listened for quick, angry footsteps in the passage. More than once, she rose when she thought someone was coming. She kept listening.",
+      "requiredFactIds": [
+        "k08",
+        "k09"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One local doorway-and-study encounter, p. 21. Knocking is her small documented act; the passage stays with admission and waiting, not the route across the city. No claim that angry footsteps actually sounded: they listened for them. The source does not identify who cleared the sofa, so the prose does not assign that action."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Her note asked her father to stop opposing the marriage. He came to the room where she was waiting. By the end of dinner, he introduced the student as her future husband. They married, and eventually she was able to study abroad. That did not end the restrictions. After studying in one university town, she moved to another to study with a particular professor. There the university did not admit women. She applied to the professor himself for private lessons. He distrusted this unfamiliar applicant. He gave her problems he had prepared for his advanced students. He expected her to be unable to solve them. She had the problems.",
+      "requiredFactIds": [
+        "k10",
+        "k11",
+        "k12",
+        "k13"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Open compression from 1868 to autumn 1870; no assertion that marriage opened enrollment or that she never obtained permission. Problems were advanced; no invented motive that he deliberately sought to drive her away."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "In the professor's memory, she returned a week later with her solutions. She told him she had solved all the problems. He did not believe her. He asked her to sit beside him, then began examining what she had brought. He read the solutions one at a time. They were correct. They also showed ways of thinking that surprised him. She took off her hat in her eagerness. Her short curls were uncovered. She blushed at his praise.",
+      "requiredFactIds": [
+        "k14",
+        "k15"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Memory from Weierstrass, reported by Leffler, pp. 34-35; confidence remains probable. Hat, curls and blush are source particulars. Ends on her documented response to the praise, without restating a moral or inventing dialogue, rereading, a posture change or instant university admission."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Private lessons followed, and the professor became a lasting friend. He visited her once a week. On Sunday evenings, she came to him. She worked with him for four years. At home she bent over her papers for long stretches, then returned to work after a hurried supper. Her companion described poor food and lodgings, and little rest. The work did not make daily life easy. At twenty-four, she received a doctorate on the strength of the research she had submitted. The award was made without requiring her to be present. She returned home exhausted and was unable to work for a time. She had finished the papers.",
+      "requiredFactIds": [
+        "k16",
+        "k17",
+        "k18"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends at the 1874 doctorate and immediate return, not Stockholm or the later prize. The companion's account supplies difficulty, not a diagnosis. Modern institutional account controls doctorate date; memoir wedding month is unresolved."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Sofia Kovalevskaya.\n\nShe was a mathematician who studied equations describing how several quantities change together. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to want room for something that matters to you. You do not have to feel ready.",
+      "requiredFactIds": [
+        "k19"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k19"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "k19"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Reveal only. No instruction, outcome promise, achievement comparison or claim that hardship produced talent."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Only source-attested action and feeling; no invented dialogue, chronology or motivation.",
+    "Leffler's reports of others' memories remain probable and use a brief prose memory cue.",
+    "Do not adopt Leffler's moral judgments, romantic psychologizing or speculative causes of death."
+  ],
+  "avoidRules": [
+    "Keep names, years, institutions and named places out of passages before the bridge.",
+    "Do not imply a marriage instantly enabled university enrollment.",
+    "Do not turn academic work into a cure for exhaustion or family conflict.",
+    "Maintain the source and craft holds pending independent review."
+  ],
+  "sources": [
+    {
+      "sourceId": "leffler",
+      "citation": "Anne Charlotte Leffler, Memoir, in Sonia Kovalevsky: Biography and Autobiography, trans. Louise von Cossel (Macmillan, 1895).",
+      "locator": "pp. 17-26, 33-39; page images and transcriptions",
+      "url": "https://runeberg.org/kovalevsky/"
+    },
+    {
+      "sourceId": "gottingen",
+      "citation": "Georg-August-Universität Göttingen, Sofja Kowalewskaja (1850 bis 1891). German institutional account; English paraphrases by the candidate author.",
+      "locator": "Single biographical paragraph",
+      "url": "https://www.uni-goettingen.de/de/sofja%20kowalewskaja%20%281850%20bis%201891%29/75260.html"
+    },
+    {
+      "sourceId": "dissertation",
+      "citation": "Sophie Kowalevsky, Zur Theorie der partiellen Differentialgleichungen (Berlin: Reimer, 1874), Göttingen Digitalisierungszentrum.",
+      "locator": "Catalog metadata and title-page record",
+      "url": "https://gdz.sub.uni-goettingen.de/id/PPN511794347"
+    }
+  ],
+  "review": {}
+}

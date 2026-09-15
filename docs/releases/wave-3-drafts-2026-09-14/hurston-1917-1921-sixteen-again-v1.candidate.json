@@ -1,0 +1,954 @@
+{
+  "storySpecId": "hurston:1917-1921-sixteen-again:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "hurston",
+  "stageId": "1917-1921-sixteen-again",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 26,
+    "ageMax": 28,
+    "startDate": "1917",
+    "endDate": "1919",
+    "throughLine": "Returning to school with little money, a woman completed preparatory work while accepting help with employment, clothing and the next stage of study."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Poverty, interrupted education and uncertainty about belonging, with practical support from teachers and classmates."
+  },
+  "facts": [
+    {
+      "factId": "h01",
+      "statement": "Hurston was born January 7, 1891; the estate chronology places Morgan Academy attendance from September 1917 to June 1918, making her twenty-six on entry.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Timeline: January 7, 1891 and September 1917-June 1918",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context",
+      "subjectAgeMin": 26,
+      "subjectAgeMax": 26,
+      "dateStart": "1917-09",
+      "dateEnd": "1917-09"
+    },
+    {
+      "factId": "h02",
+      "statement": "Hurston recalled working as a waitress and trying other things without saving enough to return to school. With her clothes nearly gone, she attended night high school.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX School Again, paragraphs beginning 'Soon, I had another waitress' through 'How then did I get back to school?'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h03",
+      "statement": "In night school Hurston submitted written work and answered questions. Holmes first noticed her particularly on a night he read a poem, repeatedly meeting her eyes above the page; she did not know why and pictured what she heard. He complimented her work after class. She returned to his class twice, then registered at Morgan the following week.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, from 'I turned in written work' through 'went out to Morgan College to register'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h04",
+      "statement": "She arrived expecting to be afraid of the dean; she had no money and no family to refer to, but he talked with her.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, paragraph beginning 'William Pickens, a Negro, was the Dean there'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h05",
+      "statement": "The dean gave her a brief examination, credited her with two years of high-school work, and assigned her to a class.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, same William Pickens paragraph, final two sentences",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h06",
+      "statement": "A few days later the dean's wife told her of a job helping an injured woman dress in the morning and undress at night; it provided a home and two dollars weekly.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, from 'Knowing that I had no money' through 'glad to accept the job'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h07",
+      "statement": "Hurston accepted the job and lived in the household, where she read books from its library.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, 'So I went to live with the Baldwins' and next paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h08",
+      "statement": "At Morgan she had one dress, a change of underwear and one pair of tan shoes; she described herself as plain beside attractive classmates.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, paragraph beginning 'And here I was, with my face'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "h09",
+      "statement": "She neither rushed to make friends nor withdrew. On her second day, a classmate quietly handed her a handkerchief in chapel; she nodded thanks.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, paragraph beginning 'Therefore, I did not rush up to make friends'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h10",
+      "statement": "She studied hard and said she felt behind; she specifically denied that classmates snubbed or pushed her around.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, paragraphs beginning 'It would be dramatic' and 'Nobody shoved me around'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "h11",
+      "statement": "The estate's account says she declared herself sixteen, using a 1901 birth year, to qualify for free public schooling; no registration form or spoken exchange was inspected.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Biography paragraph beginning 'In 1917, she turned up in Baltimore'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "h12",
+      "statement": "After about a week at Morgan, Bernice Hughes watched her during English History with fixed eyes and a frown; Hurston did not know what to think and was doing well in recitation.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, paragraph beginning 'One day, after about a week in school'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h13",
+      "statement": "As the class moved to another room, Hughes joined her, praised her knowledge teasingly, and said she would sit beside her; both laughed.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, from 'When the period was over' through Hughes's next speech and 'So from then on'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h14",
+      "statement": "Classmates offered to lend her clothes for events, approaching her or writing notes, and she accepted the offers in rotation.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, paragraph beginning 'It soon became apparent that my lack of clothes'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h15",
+      "statement": "Friends urged her to continue to Howard; Hughes offered a place in her family's home and help finding paid work; Hurston moved, worked and saved her first quarter's tuition.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, from friends' Howard discussion through 'went up to register'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h16",
+      "statement": "At Howard she lacked money and needed additional preparatory work; Holmes encouraged her when she considered giving up, and she made up the missing hours.",
+      "sourceRefs": [
+        {
+          "sourceId": "dust",
+          "locator": "IX, paragraph beginning 'Lo and behold, there was Dwight Holmes'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h17",
+      "statement": "Hurston completed Morgan Academy's high-school requirements in June 1918, attended Howard Prep in 1918-19, and entered Howard University in 1919.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Timeline: September 1917-June 1918; 1918-1919; 1919-1924",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "context",
+      "subjectAgeMin": 27,
+      "subjectAgeMax": 28
+    },
+    {
+      "factId": "h18",
+      "statement": "Zora Neale Hurston was a writer who wrote the novel Their Eyes Were Watching God.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Biography, paragraph beginning 'By 1935', 1937 publication sentence",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "h19",
+      "statement": "Hurston died in 1960 with too little money for her own funeral; neighbors took up a collection and her grave was initially unmarked.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Biography, death and burial paragraphs before Alice Walker's search",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Zora Neale Hurston",
+      "aliases": []
+    },
+    {
+      "entityId": "novel",
+      "kind": "work",
+      "value": "Their Eyes Were Watching God",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was in an evening classroom, listening to her teacher read a poem. She was about twenty-six. In her memory, he looked at her whenever he lifted his eyes from the page. She had been turning in written work and answering questions. He had not singled her out before that night. She did not know why he kept looking at her. As she listened, she pictured what the poem described. She listened.",
+      "requiredFactIds": [
+        "h03",
+        "h01"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h01",
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A single night-school poem-reading, shortly before the September 1917 Morgan registration. Age is approximate and based on estate birth/enrollment chronology plus the memoir's following-week link, not a guessed new year. The gaze and her visual response are in the memoir; no poem quotation, period-identifying title or teacher motive is invented."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The following week, she was at another school, trying to register. She had come expecting to be afraid of the dean. She had no family to refer him to. And she had no money.",
+      "requiredFactIds": [
+        "h03",
+        "h04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03",
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "CRAFT HOLD remains: this is source-attested anticipated fear and material pressure at registration, not evidence that she actually became afraid, was refused, or faced a hostile official. Kept deliberately brief rather than expanding one source sentence into invented humiliation or imagined consequences. The transition from the poem-reading is the memoir's own following-week sequence."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She took the brief examination the dean gave her. He credited her with two years of high-school work. Then he assigned her to a class.",
+      "requiredFactIds": [
+        "h05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One admission encounter only. The documented examination is her small act; later job arrangements have moved to the compressed struggle. The source gives no exam questions, writing materials, bodily gestures or difficulty level, and none is supplied. Its brevity is a source limit, not a fabricated full-length scene."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Before the night classes, she had tried to save her way back to school. She worked as a waitress, then tried other things. Those attempts had left her without enough money. A few days after registration, the dean's wife told her about a job. A woman with a broken hip needed help dressing in the morning and undressing at night. The job provided a home and a little weekly pay. She accepted and moved into the household. There she read books from the library. At school, she had one dress, a change of underwear and one pair of shoes. She felt plain among her well-dressed classmates. She studied hard, feeling behind. They did not treat her as an outcast. She still had one dress.",
+      "requiredFactIds": [
+        "h02",
+        "h06",
+        "h07",
+        "h08",
+        "h10"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Explicit backward-looking saving failures precede the night classes; the next sentence jumps to days after registration. The paid work and library now belong to this compressed passage, not the response. Material and study pressure remain without inventing peer cruelty, which Hurston denies. The later mathematics difficulty is not moved before the week-one friendship. The estate-supported age declaration remains a qualified fact in the fold; no contemporaneous declaration or clerk exchange was inspected."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "About a week into school, she noticed a girl watching her in history class. The girl's eyes stayed on her, and her lips were drawn into a frown. She did not know what to think. She liked the subject and was doing well when called on to answer. When the class ended, the students moved toward another room. The girl fell into step beside her. She teased her about how much she knew and gave her a nickname for it. Then she said she was going to sit beside her. She joked that there was no need for both of them to study. They laughed together.",
+      "requiredFactIds": [
+        "h12",
+        "h13"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Single transition out of history class, from Hurston's later memory. Dialogue is paraphrased without quotation marks. No inferred hostile motive for the frown, no invented realization, and no claim that one encounter alone enabled all subsequent study."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Her classmates began offering clothes for school events. They came up to her or sent notes, and she took turns accepting their offers. She completed the high-school requirements. Friends wanted her to continue studying and offered practical help. The girl from history class offered a place in her family's home and help finding a job. She moved, worked, and gathered enough money for her first term. But at the next school she was short of money again and needed additional preparatory work. She nearly gave up. Her former night-school teacher was there and encouraged her. She stayed and made up the work. There were more classes ahead.",
+      "requiredFactIds": [
+        "h14",
+        "h17",
+        "h15",
+        "h16"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h16",
+            "h17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends with the 1918-19 preparatory transition, within the released 1917-21 episode; age range truthfully narrows to 26-28. No Barnard, writing fame or legacy list. Memoir's 'two years at Morgan' conflicts with 1917-18 chronology and is not adopted."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Zora Neale Hurston.\n\nShe wrote the novel Their Eyes Were Watching God. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to want something you have wanted for a long time. You do not have to be early.",
+      "requiredFactIds": [
+        "h18"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject",
+        "novel"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Identity and book title only here; the estate supports authorship. Reader lines give no instruction or prediction."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Do not invent a registration clerk, age declaration scene, documents, classroom gestures or quotes.",
+    "Retrospective memoir scenes remain probable; date and age corrections are explicitly identified.",
+    "Do not transform practical assistance into a claim that one person rescued her or made the career possible."
+  ],
+  "avoidRules": [
+    "Keep names, calendar years, cities and institutions anonymous until the bridge.",
+    "Do not repeat the memoir's altered age as actual age.",
+    "Do not assert the exact under-twenty Maryland eligibility rule without a primary legal record.",
+    "Do not depict classmates as cruel or dismissive; Hurston explicitly rejects that version.",
+    "Retain the source and craft qualifications until independent review."
+  ],
+  "sources": [
+    {
+      "sourceId": "dust",
+      "citation": "Zora Neale Hurston, Dust Tracks on a Road (1942), chapter IX, School Again; Project Gutenberg Canada transcription.",
+      "locator": "Chapter IX, paragraphs from 'How then did I get back to school?' through Howard registration and missing hours",
+      "url": "https://gutenberg.ca/ebooks/hurstonzn-dusttracksonaroad/hurstonzn-dusttracksonaroad-00-h.html"
+    },
+    {
+      "sourceId": "estate",
+      "citation": "Valerie Boyd, About Zora Neale Hurston and chronology, Zora Neale Hurston Estate/HarperCollins website.",
+      "locator": "1917 age paragraph; birth and 1917-19 timeline entries; 1937 novel; 1960 death/burial paragraphs",
+      "url": "https://www.zoranealehurston.com/about/"
+    }
+  ],
+  "review": {}
+}

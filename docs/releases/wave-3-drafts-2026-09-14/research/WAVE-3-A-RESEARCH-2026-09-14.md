@@ -1,0 +1,84 @@
+# Wave 3 A research handoff — 14 September 2026
+
+Scope: Bessie Coleman, John Coltrane, Michael Faraday. Research skill used by the delegated research agent; no further delegation because the parent assigned all available slots. All candidates remain `draft`, version 1, `review: {}`. No publication authority is asserted.
+
+## Michael Faraday — complete for independent review
+
+Candidate: `faraday-1812-1815-bottle-washer-and-valet-v1.candidate.json`.
+
+Source verdict: supported by inspected contemporary letters and the employing institution's history, with the limitations below. Craft verdict: a quiet epistolary arc, suitable for independent reading review; 680 words is below the 700-word target. No fictional scene padding was used. The turn is dated evidence of practical relief from duties, not an instantaneous conversion. The four moment passages show him writing at the dates below. All sentence ceilings and ending-length checks pass; candidate validator passes with no warnings.
+
+### Ownership and inspected locators
+
+- [6 September 1814, Faraday to Abbott, Epsilon Faraday0037](https://epsilon.ac.uk/view/faraday/letters/Faraday0037): opening paragraph on little time, unfinished journal, imminent departure; final paragraph beginning “You talk of travelling” on considered return and remaining to learn. Primary author is Faraday; text is the Faraday Project scholarly transcription, not an original manuscript image.
+- [26/30 November 1814, Faraday to Abbott, Epsilon Faraday0040](https://epsilon.ac.uk/view/faraday/letters/Faraday0040): 26 November opening on absent letters, letters left with books, fear and regret; following paragraph on postal delay/cost; greetings and promised letters immediately after. Primary contemporary evidence of his own states; his generalizations about local people are omitted.
+- [29 December 1814, Faraday to Margaret Faraday, Epsilon Faraday0043](https://epsilon.ac.uk/view/faraday/letters/Faraday0043): paragraphs on mixed vocabulary lists, checking meanings, crossing out learned words. This describes a routine, so it belongs only in the compressed struggle.
+- [5 January 1815, Faraday to Riebau, Epsilon Faraday0044](https://epsilon.ac.uk/view/faraday/letters/Faraday0044): paragraphs on ignorance/praise; buying too many books; unsuccessful dictionary searches. Riebau letter survives here through Thompson's printed transcription. The unsuccessful search provides a second practical difficulty.
+- [Thompson, *Michael Faraday: His Life and Work*, chapter I](https://www.gutenberg.org/files/65735/65735-h/65735-h.htm), pp. 26–28: reproduced letter dated 23 February 1815. Inspected the complete quoted text. Local servants, Davy's efforts to reduce disliked tasks, and the reported reduction in quarrels qualify the seeded story of uninterrupted humiliation. The phrase in the candidate is from that contemporary letter. Pages 33–34: reproduced April letter to his mother from Brussels, wanting to see her first and tell some friends himself. This is primary text embedded in a later biography; surrounding biographical interpretation is not adopted. No original manuscript inspected.
+- [Royal Institution biography](https://www.rigb.org/explore-science/explore/person/michael-faraday-1791-1867), Ri positions and first biography paragraph: institution owns the employment history, including resuming laboratory-assistant work in 1815.
+- [Royal Institution research and work](https://www.rigb.org/explore-science/explore/collection/michael-faradays-research-and-work), Early work opening: 22 September 1791 birth date; About Faraday supports the simple bridge on electricity/motors.
+
+### Boundaries and corrections
+
+The active library stage ID is retained, but the episode is narrowed from matching ages 20–24 to 22–23 (September 1814–spring 1815). The released matching metadata is not edited. The story's explicit November transition prevents the correspondence sequence becoming a fabricated continuous afternoon. The return does not establish restored confidence, gratitude for mistreatment, or relief from every future difficulty. The surviving letters support the writer's own perspective; they are not independent adjudication of Lady Davy's character. No carriage-seating or servants' dinner scene was used, and no claim that he became greater than Davy. Source and craft conclusions here are author findings pending independent review, not publication approval.
+
+## Bessie Coleman — complete evidence-limited candidate; HOLD for craft
+
+Candidate: `coleman-1918-1921-no-school-would-take-her-v1.candidate.json`.
+
+Source verdict: the bounded claims are supported; memories are marked probable. Craft verdict: HOLD, not ready for publication. The candidate is deliberately short (482 words), but shortness is not the reason for HOLD. The interview cannot locate an individual next lesson after the student's death, describe the examination as a moment, or carry the full dark passage without repeating facts. The turning passage consequently compresses a supported sequence, contrary to the required single-moment shape. Exact missing evidence: a dated/situated return to training; exam actions observed or described by Coleman; fuller immediate response to the pupil's death. The draft is retained as reviewable work, not dressed up as a completed scene.
+
+### Ownership and inspected locators
+
+- [Smithsonian Community Innovator Conversation Kit](https://womenshistory.si.edu/sites/default/files/documents/bessiecoleman_conversations.pdf), pp. 18–20: reprint/transcription of *Chicago Defender*, 8 October 1921, p. 2, “Aviatrix Must Sign Away Life to Learn Trade.” The original reporter interviewed Coleman at home. Page 19 supports her stated motivation, first French school's refusal, second school, examination/pass, continuing flights and further lessons. Page 20 supports the signed risk contract, witnessed pupil death, shock and continuation, and walk to school. These are her reported retrospective words, not an eyewitness flight report.
+- Same PDF pp. 7–8: quoted excerpts from her sister Elois Coleman Patterson's *Brave Bessie*, supporting American refusals, asking Abbott, language school, help finding a French school. Later family recollection is probable, and the prose frames it as such. Its original publication and manuscript were not inspected.
+- The actual PDF was downloaded read-only, relevant pages rendered with Poppler, and pages 7, 8, 18, 19, 20 visually inspected. Reprint/transcription is readable. Source PDF and working renders are in the local `source-checks-a` directory; they are not candidate or publication artifacts.
+- [FAI centennial account](https://www.fai.org/news/100-years-fai-granted-bessie-colemans-pilot-licence), opening and training paragraphs: the issuing body owns the licence date, 15 June 1921. Later death appears in a fold fact only. The page's broader anecdotes and aircraft assertions are not treated as authoritative evidence for flight choreography.
+- [National Air and Space Museum centennial account](https://airandspace.si.edu/stories/editorial/celebrating-centennial-bessie-coleman), opening licence statement and birth paragraph: licence distinction and 1892 birth. A web fetch failed, but direct live HTML retrieval succeeded and those actual paragraphs were inspected.
+- [Morning Oregonian, 26 September 1921, p. 4](https://oregonnews.uoregon.edu/lccn/sn83025138/1921-09-26/ed-1/seq-4/ocr/), “Negress Now Aviatrix,” dateline New York, Sept. 25: contemporary return announcement; source's offensive headline is only a locator. Its age assertion is not used.
+
+### Conflicts and boundaries
+
+The 1921 interview calls the course ten months and says nine miles daily. The FAI dates the November 1920 crossing and June 1921 licence and describes seven months' training. The museum says ten months abroad before returning. The draft does not harmonize course and trip duration or harden mileage. The newspaper return brief calls her twenty-four; museum history gives 1892, while the teaching packet's introductory page prints 1893. The story uses “about twenty-nine,” based on the museum's 1892 chronology, and exposes this age conflict. Candidate ages 28–29 narrow released matching ages 24–29; matching is untouched. The accident in the school is remembered testimony, not proof she flew the very next day. No later flight-school opening, universal desegregation, or recovered fear is asserted. Validator and sentence metrics pass with no warnings, which does not remove the craft HOLD.
+
+## John Coltrane — complete evidence-limited candidate; HOLD for low-point scene
+
+Candidate: `coltrane-1957-fired-and-clean-v1.candidate.json`.
+
+Source verdict: recording and rehearsal claims are supported at the stated confidence; the low-point gap is explicit. Craft verdict: HOLD. The dismissal and replacement are documented, but no inspected primary account establishes Coltrane's immediate feelings or actions at dismissal. The opening rehearsal is also a remembered pattern of visits, not a dated single session. This is a meaningful improvement on the seeded invented firing dialogue and recovery scene, but it does not yet meet the recipe's single-moment/inside-the-low-point requirements. A source describing his specific reaction to the 1957 dismissal, or an approved change of episode/format, is needed. Do not fix the gap by borrowing shame from another period.
+
+### Ownership and inspected locators
+
+- [August Blume, “An Interview with John Coltrane,” *The Jazz Review*, January 1959, p. 25](https://www.jazzstudiesonline.org/files/jso/resources/pdf/JREVTwo1.pdf): Coltrane's firsthand account. Central column rehearsal answer: going to Monk's home, getting him out of bed, taking the horn out, finding the tune, repeating it, seeing written music for difficult parts. Top right continuation: previously recorded tune, request to learn, invitation. Right column next answer: feeling lonesome when Monk left the piano and relying on the bassist. PDF downloaded read-only and p. 25 rendered/visually inspected. Portions of the PDF are visibly corrupted (not just text extraction); only legible passages were used. Issue metadata on PDF p. 5 was inspected by extraction: volume 2, number 1, January 1959. No lost words or technical explanation were silently reconstructed.
+- [Coltrane with Don DeMicheal, “Coltrane on Coltrane,” *DownBeat*, 29 September 1960](https://downbeat.com/microsites/prestige/trane-interview.html): publisher's archive, complete interview read. Paragraphs starting “In 1955,” “Working with Monk,” and “After leaving Monk” support employment sequence and learning at piano. These remain later recollections marked probable. Later technical struggles in 1958–1960 were not transplanted into 1957.
+- [Miles Davis with Quincy Troupe, *Miles: The Autobiography*, public HTML transcription](https://yanko.lib.ru/books/bio/miles.htm), chapters 10–11: autumn 1956 dismissal paragraph and pp. 214–216 for spring 1957 dismissal/replacement, subsequent visits to Five Spot, perceived improvement and reliable attendance. Davis is a participant, but this is a much later memoir on a third-party mirror, not an inspected original-page edition. Confidence is probable. The account's demeaning language and all recovery-method detail are omitted.
+- [Coltrane official biography](https://www.johncoltrane.com/biography): 1926 birth and paragraph on drug-related unreliability and dismissal. This estate-associated retrospective summary corroborates the broad chronology; it is not an eyewitness scene or authority for every psychological claim in the page.
+- [Blue Note, 2022 *Blue Train* Complete Masters release](https://www.bluenote.com/john-coltrane-blue-train-tone-poet-vinyl/): record owner's session date, living-room studio, personnel, complete master/alternate list, and production credits. This directly owns the recording artifact. The alternate/false-start list supports incomplete attempts, not the invented order in which they happened. The brief quoted approval comes from the label's explicit reproduction of a 1960 Swedish interview; the original audio was not inspected.
+- [Blue Note, “Locomotion,” 2019](https://www.bluenote.com/spotlight/locomotion-john-coltranes-blue-train/): four originals plus a standard; saxophone/trumpet/trombone solo sequence in the title performance. No sound review was claimed; musical sequence is sourced to the label's account.
+- [Monk official biography, Robin D. G. Kelley](https://www.theloniousmonkmusic.com/bio/), paragraph starting “In 1957”: engagement and quartet personnel. This is authored retrospective institutional context, not a primary eyewitness to the rehearsals.
+
+### Conflicts and limits
+
+Davis dates the spring dismissal to March; the label and later biographies often date it April. The story says spring. December 1957 versus early 1958 return chronology is left bounded: after Monk, with the episode ending January 1958; no exact return date is invented. Ages remain 30–31, matching the released range. The stage's old cure-and-triumph framing is not affirmed. The story gives no withdrawal setting, method, quantities or duration, no diagnosis of readers, no spiritual-cure claim, and no permanent abstinence claim. The later death is a fold fact. The scene and response revisit the rehearsal after an explicit flashback to job loss; this needs craft review, not automatic chronological clearance.
+
+## Frozen author checks
+
+All three individual `validate-candidate.ts` runs passed draft and in-memory publication simulation with zero errors/warnings; no simulated review was saved. Sentence checks use `splitCanonicalSentences` and `countWords`: per-passage mean at most 16, maximum at most 28, ending shorter than the passage maximum, bridge ending at most 12. The root owns the final nine-candidate compose/replay run and hash manifest. A preliminary one-candidate batch command correctly rejected the concurrent directory's count of two; that was not a content failure.
+
+Final hashes are sent separately to the root and cross-reviewer so any review is bound to exact candidate bytes. This handoff records author findings and remaining evidence gaps, never historical/tone publication approvals.
+
+## Independent-review correction pass
+
+Faraday's former-employer kindness clause now cites a separate fact from the opening two paragraphs of the 5 January 1815 Riebau letter, alongside the April homecoming letter. This changes evidence mapping, not the story prose. Coleman retains the explicit scene/craft HOLD. Coltrane's opening now identifies an account of rehearsals, not a single remembered scene, and the last permission is the direct “You are allowed to need help.” His low-point and single-moment HOLD remains.
+
+ISO date fields include honest envelope bounds where day precision is absent: Coleman's 1920-11-01 is the first day of the documented November departure month, not an event date; Faraday's 1815-05-31 is an outer spring/month boundary, not his attested return day; Coltrane's 1957-03-01 and 1958-01-31 bound disputed March/April dismissal and December/January return windows. These bounds are also explicit in candidate source notes. They do not alter released matching metadata. Coltrane's abstract bandstand sentence is now the source-supported concrete statement that he knew the tune. His corrected draft is 590 words.
+
+## Final author manifest and independent reading outcome
+
+| Candidate | SHA-256 | Words |
+|---|---|---:|
+| Coleman | f819cc6b7cb22e4ea59f7eddebccfc46abc5d85958e679e6ed9781285f365434 | 482 |
+| Coltrane | 66a2d5d4d91fa29a91b48cf0171022d767446e5bb0f77926caa52233ec45845c | 590 |
+| Faraday | 42d6334dc0b6935e7eeba43ec0371756088958c5065369382778cb765384048c | 680 |
+
+All three corrected hashes passed individual draft/publication simulation and the actual nine-candidate canonical compose/hash/serialized-replay check. No simulated approval was persisted. Independent reviewer C's final-hash addendum is in `WAVE-3-CROSS-REVIEW-A-2026-09-14.md`: no further Faraday factual or load-bearing craft fix; Coleman and Coltrane's substantive craft HOLDs remain. Length and legacy-matching differences are recorded separately. These are editorial findings, not a production or human publication approval.

@@ -1,0 +1,1117 @@
+{
+  "storySpecId": "coltrane:1957-fired-and-clean:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "coltrane",
+  "stageId": "1957-fired-and-clean",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 30,
+    "ageMax": 31,
+    "startDate": "1957-03-01",
+    "endDate": "1958-01-31",
+    "throughLine": "After losing his band job amid heroin use, a saxophonist asks to learn another musician's tune, works through difficulty, and resumes reliable performing and recording."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "addiction"
+    ],
+    "contentNote": "Heroin use and job loss, without drug-use or withdrawal detail."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Coltrane was born in 1926; he was about thirty during the 1957 rehearsals before the Five Spot engagement.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Paragraph beginning 'Certain aspects of Coltrane's humble beginnings'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "hired",
+      "statement": "Coltrane joined Miles Davis on a regular basis in 1955 and worked with him until 1957.",
+      "sourceRefs": [
+        {
+          "sourceId": "self",
+          "locator": "Paragraph beginning 'In 1955, I joined Miles'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "earlier",
+      "statement": "Davis recalled dismissing Coltrane in autumn 1956, followed by Coltrane's return to Philadelphia.",
+      "sourceRefs": [
+        {
+          "sourceId": "davis",
+          "locator": "Chapter 10, paragraph beginning 'After we cut those last sides for Prestige in October 1956' and subsequent paragraph 'I fired Trane that night'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fired",
+      "statement": "Davis dismissed Coltrane again in spring 1957; the memoir says March, while later accounts commonly say April.",
+      "sourceRefs": [
+        {
+          "sourceId": "davis",
+          "locator": "P. 214, paragraph beginning 'By the time we got back to New York'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "replaced",
+      "statement": "Davis recalled replacing Coltrane with Sonny Rollins after that spring dismissal.",
+      "sourceRefs": [
+        {
+          "sourceId": "davis",
+          "locator": "P. 214, same paragraph, 'I replaced Trane with Sonny Rollins again'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "use",
+      "statement": "Heroin use was interfering with Coltrane's reliability and led to his dismissal from Davis's group in 1957.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Paragraph beginning 'Davis provided Coltrane an open-ended' through 1957 dismissal.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "stopped",
+      "statement": "Davis recalled that by his visits to the Five Spot later in 1957, Coltrane had stopped using heroin.",
+      "sourceRefs": [
+        {
+          "sourceId": "davis",
+          "locator": "P. 216, paragraphs beginning 'While I was recording Miles Ahead' and 'And man'. Recovery-method detail not used.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "asked",
+      "statement": "Coltrane recalled recording a tune with Monk, liking it, telling him he wanted to learn it, and being invited to his home.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, top of right column, 'When I met him' through 'invited me around'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "rehearsal",
+      "statement": "Coltrane described going to Monk's house, getting him out of bed, Monk playing a tune, and taking out his own horn to find the music.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, central column, answer to rehearsal question through 'find what he was playing'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "repeat",
+      "statement": "Coltrane recalled repeating a tune with Monk until most was worked out; difficult sections led Monk to show the written music.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, central column, 'We'd go over and over' through 'show me the thing written out'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "piano",
+      "statement": "Coltrane recalled asking Monk about musical problems and learning by watching him play the answers on piano.",
+      "sourceRefs": [
+        {
+          "sourceId": "self",
+          "locator": "Paragraph beginning 'Working with Monk', sentences on talking and watching the answers.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "alone",
+      "statement": "Coltrane recalled feeling lonesome when Monk left the piano during performances; he relied on bassist Wilbur Ware and his knowledge of the tune.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, right column, answer beginning 'I felt sort of lonesome' through 'I knew the changes'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "club",
+      "statement": "Monk's 1957 Five Spot quartet engagement included Coltrane on tenor saxophone, bass and drums.",
+      "sourceRefs": [
+        {
+          "sourceId": "monk",
+          "locator": "Paragraph beginning 'In 1957'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "studio",
+      "statement": "On 15 September 1957 Coltrane recorded Blue Train in Rudy Van Gelder's living-room studio, leading a sextet.",
+      "sourceRefs": [
+        {
+          "sourceId": "masters",
+          "locator": "Opening two paragraphs and original session credits.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "players",
+      "statement": "The sextet included tenor saxophone, trumpet, trombone, piano, bass and drums.",
+      "sourceRefs": [
+        {
+          "sourceId": "masters",
+          "locator": "Opening personnel paragraph and personnel credits.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "tracks",
+      "statement": "The album included four Coltrane originals and one standard, and the title track's saxophone solo precedes trumpet and trombone solos.",
+      "sourceRefs": [
+        {
+          "sourceId": "music",
+          "locator": "Paragraph beginning 'By all measures' and paragraph beginning 'On Blue Train'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "takes",
+      "statement": "The session's surviving material includes alternate performances, a false start and an incomplete take.",
+      "sourceRefs": [
+        {
+          "sourceId": "masters",
+          "locator": "Complete Masters track listing, sides C and D.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "regular",
+      "statement": "Davis recalled Coltrane playing well and appearing reliably at his performances with Monk.",
+      "sourceRefs": [
+        {
+          "sourceId": "davis",
+          "locator": "P. 216, paragraph beginning 'And man'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "back",
+      "statement": "Coltrane returned to playing with Davis after his time with Monk.",
+      "sourceRefs": [
+        {
+          "sourceId": "self",
+          "locator": "Paragraph beginning 'After leaving Monk'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "approval",
+      "statement": "In a 1960 interview Coltrane said he liked Blue Train and called it a good recording.",
+      "sourceRefs": [
+        {
+          "sourceId": "masters",
+          "locator": "Paragraph beginning 'As Kahn recounts', quoted Swedish interview.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 20,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "legacy",
+      "statement": "John Coltrane was a jazz saxophonist and composer.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Opening and paragraph on his work as leader and composer.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 21,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "death",
+      "statement": "Coltrane died in 1967.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Opening statement and closing life chronology.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 22,
+      "confidence": "documented",
+      "claimKind": "event"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person",
+      "kind": "person",
+      "value": "John Coltrane",
+      "aliases": [
+        "Coltrane"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "quoteId": "recording",
+      "text": "It was a good recording.",
+      "status": "verbatim",
+      "speaker": "John Coltrane",
+      "sourceRefs": [
+        {
+          "sourceId": "masters",
+          "locator": "Quoted 1960 Swedish interview, paragraph beginning 'As Kahn recounts'.",
+          "scope": "exact"
+        }
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He was in a pianist's home, trying to find a tune on his saxophone. He was about thirty. In his account of their rehearsals, the pianist got out of bed to play. The pianist began one of his tunes and looked at him. He took his horn out and tried to follow. They played the music again, working through what he could not yet find. When a passage gave him too much trouble, the pianist brought out the written music. There was the part he needed to learn.",
+      "requiredFactIds": [
+        "rehearsal",
+        "age",
+        "repeat"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A remembered rehearsal before the 1957 Five Spot engagement, drawn from Coltrane's near-contemporary interview. His account describes repeated visits rather than identifying one dated session. No room furnishing or invented gesture. The opening frames the later rebuilding; the next passage explicitly moves back to the dismissal."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Earlier that spring, he had lost his place in another band. The bandleader had hired him two years before. Heroin use had made him unreliable at the job. Now the bandleader had dismissed him. In the bandleader's account, it was the second dismissal. He had lost that place the previous autumn too. This time, another saxophone player was brought into the band. The group carried on with someone else playing his part. His job there was gone.",
+      "requiredFactIds": [
+        "fired",
+        "hired",
+        "use",
+        "earlier",
+        "replaced"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fired"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "hired"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "use"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fired"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "earlier",
+            "fired"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "replaced"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "replaced"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fired"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD for source/craft gap at the emotional low point: dismissal, replacement and addiction-related unreliability are supported; his immediate feelings, words and physical location at dismissal are not. Do not import shame from a different interview period or recreate a confrontation. Spring bounds the March/April conflict. The episode startDate 1957-03-01 bounds the disputed March/April dismissal month; it is not an event date."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He told the pianist that he wanted to learn a tune. They had recorded it together, and he liked the music. The pianist invited him over. That request led to the visits with his horn. He asked about the things in the music that troubled him. The pianist answered at the keyboard. He could watch how the answer was played, then work with the sound himself. They went through the tune again until most of it was worked out. The written notes were there for difficult parts.",
+      "requiredFactIds": [
+        "asked",
+        "rehearsal",
+        "piano",
+        "repeat"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asked"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asked"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asked"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asked",
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "piano",
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Returns to the work introduced in the scene. Small response is asking to learn a recorded tune, not treating a patron's invitation as his act. Two self-accounts corroborate learning by ear and by watching. This does not claim the lesson caused abstinence."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The rehearsals led into a run of club performances. Playing with the pianist could mean playing without him for a while. He left the keyboard during the music. The saxophonist remembered feeling lonesome when that happened. He relied on the bass player to keep his place. But the bass player did not always play the obvious notes. Knowing the tune mattered. He had to follow another musician's choices while making his own. He knew the tune they were playing. The pianist's absence was part of that work. There were still bass and drums beside the horn.",
+      "requiredFactIds": [
+        "rehearsal",
+        "club",
+        "alone",
+        "repeat"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rehearsal",
+            "club"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone",
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "club"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Summer/autumn 1957 compression. Musical difficulty is attested rather than invented relapse. The PDF is visually corrupt in some later technical lines; this draft uses only the legible opening of the bass-player answer, not reconstructed harmonic details."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Later that summer, he brought a band into a recording studio in a living room. This time he led the session. Beside his saxophone were a trumpet and a trombone. Piano, bass and drums completed the group. They recorded tunes he had written, along with an older song. On the title piece, his saxophone solo came before the other horns. The trumpet followed him, then the trombone. The recorded music moved from one player to the next. More than the finished album survived the session. There were alternate performances, a false start, and a take left incomplete. A finished recording came from the work in that room. His own tunes were on it.",
+      "requiredFactIds": [
+        "studio",
+        "players",
+        "tracks",
+        "takes"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "studio"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "studio"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "players"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "players"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "tracks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "tracks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "tracks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "tracks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "takes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "takes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "studio"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "tracks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "15 September 1957 session, before his birthday. Label-owned session credits and master listing anchor place, personnel and output. Track order is the audible musical order within a performance, not an invented order of studio takes. No claim that this session alone changed his health or employment."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He also kept playing with the pianist's group. The former bandleader came to hear him. In that man's memory, he was playing well and arriving reliably. The same account says that he had stopped using heroin. After his time with the pianist, he returned to his old bandleader. He was again playing as a member of someone else's group. Looking back at his own album, he said: “It was a good recording.” He liked the band on it.",
+      "requiredFactIds": [
+        "club",
+        "regular",
+        "stopped",
+        "back",
+        "approval"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [
+        "recording"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "club"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "regular"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "regular"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "stopped"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "back"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "back"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "approval"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [
+            "recording"
+          ]
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "approval"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends with return to Davis, dated only after Monk because sources differ on December 1957 versus early 1958. Later recollections are explicitly framed; no permanent-cure claim. Brief album comment comes from a 1960 interview quoted by the recording's label. The episode endDate 1958-01-31 bounds the December/January return window; it is not an event date."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was John Coltrane.\n\nHe was a jazz saxophonist who wrote music for his bands.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to be unfinished without making your whole life a verdict.\n\nYou are allowed to need help.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Reveal and universal permission; no recovery instruction or comparison."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented firing dialogue, shame, confrontation, overnight change, or lesson-as-cure causality.",
+    "No method, means, quantity, duration or location details of drug use or withdrawal.",
+    "HOLD: immediate interior response and located dismissal scene remain unsupported.",
+    "Rehearsals are remembered repeated visits, not an exact dated single session; keep the memory frame."
+  ],
+  "avoidRules": [
+    "Do not say permanent abstinence, instant recovery, or a single cause of improvement.",
+    "No names, dates, cities, song titles or institutions before the bridge.",
+    "Do not equate recording success with recovery or tell the reader to imitate a historical recovery method."
+  ],
+  "sources": [
+    {
+      "sourceId": "blume",
+      "citation": "August Blume, An Interview with John Coltrane, The Jazz Review, January 1959, p. 25; digitized issue JREVTwo1, Jazz Studies Online.",
+      "url": "https://www.jazzstudiesonline.org/files/jso/resources/pdf/JREVTwo1.pdf",
+      "locator": "PDF/printed p. 25, rehearsal question and answer, top-right continuation, and bass-player answer. Rendered and visually inspected; some unrelated text is corrupt."
+    },
+    {
+      "sourceId": "self",
+      "citation": "John Coltrane with Don DeMicheal, Coltrane on Coltrane, DownBeat, 29 September 1960; publisher archive.",
+      "url": "https://downbeat.com/microsites/prestige/trane-interview.html",
+      "locator": "Paragraphs beginning 'In 1955', 'Working with Monk', and 'After leaving Monk'."
+    },
+    {
+      "sourceId": "davis",
+      "citation": "Miles Davis with Quincy Troupe, Miles: The Autobiography (1989; Touchstone 1990), chapters 10–11, including pp. 214–216; inspected public HTML transcription.",
+      "url": "https://yanko.lib.ru/books/bio/miles.htm",
+      "locator": "Chapter 10/11, printed-page markers around dismissal in spring 1957 and visits to Five Spot. Later memoir; not original-page facsimile."
+    },
+    {
+      "sourceId": "estate",
+      "citation": "John Coltrane official website, John Coltrane Biography.",
+      "url": "https://www.johncoltrane.com/biography",
+      "locator": "1926 birth paragraph and paragraphs on Davis hiring/dismissal and 1957 Monk collaboration."
+    },
+    {
+      "sourceId": "masters",
+      "citation": "Blue Note Records, John Coltrane Blue Train due out Sept. 16 in 2 special Tone Poet vinyl editions, 27 July 2022.",
+      "url": "https://www.bluenote.com/john-coltrane-blue-train-tone-poet-vinyl/",
+      "locator": "Opening session and personnel paragraphs; complete master/alternate track list; quoted 1960 interview; original session credits."
+    },
+    {
+      "sourceId": "music",
+      "citation": "Blue Note Records, Locomotion: John Coltrane's First Masterwork Blue Train, 20 May 2019.",
+      "url": "https://www.bluenote.com/spotlight/locomotion-john-coltranes-blue-train/",
+      "locator": "Paragraph on four originals and standard; personnel and sequence of solos in title track."
+    },
+    {
+      "sourceId": "monk",
+      "citation": "Robin D. G. Kelley, Biography, Thelonious Monk official website.",
+      "url": "https://www.theloniousmonkmusic.com/bio/",
+      "locator": "Paragraph beginning 'In 1957' on Five Spot engagement and quartet personnel."
+    }
+  ],
+  "review": {}
+}

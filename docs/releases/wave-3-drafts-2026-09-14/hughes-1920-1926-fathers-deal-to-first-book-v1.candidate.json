@@ -1,0 +1,979 @@
+{
+  "storySpecId": "hughes:1920-1926-fathers-deal-to-first-book:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "hughes",
+  "stageId": "1920-1926-fathers-deal-to-first-book",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 22,
+    "ageMax": 25,
+    "startDate": "1924-11",
+    "endDate": "1926-02",
+    "throughLine": "A young writer earning too little to study helps his family find rooms, asks for school funding, and enters college with a reader's financial help."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Family strain, low wages, and difficulty paying for education."
+  },
+  "facts": [
+    {
+      "factId": "h-age",
+      "statement": "Hughes gives 1902 as his birth year in his memoir. The laundry episode occurs in winter 1924–25, when he was approximately twenty-three; the prose intentionally gives no exact age.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part I, 'Negro', paragraph beginning 'I was born in Joplin'; Part II, 'Washington Society'; Part II, 'Poetry is Practical', Christmas 1925 and mid-year entry",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "h-laundry",
+      "statement": "In Washington Hughes worked at a wet-wash laundry, unloading large bags, sorting clothing and attaching numbered pins.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraphs beginning 'But to be a page boy' and 'I had to help unload'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-reading",
+      "statement": "He kept a borrowed book about religions on the sorting table and read between bundles; he wanted college study to deepen his writing and understanding.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraph beginning 'I wanted to return to college mostly'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-mother",
+      "statement": "His mother came to the laundry crying after her feelings and pride were hurt at the relatives' house; she said she could no longer stay there.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraph beginning 'One day my mother came to the laundry'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-rooms",
+      "statement": "Hughes used his lunch hour to help his mother find lodging; together they found two furnished upstairs rooms near his work.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraphs beginning 'One day my mother' and 'The rooms were furnished'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-heat",
+      "statement": "The rooms had no heat; they bought one secondhand stove and carried it between their rooms because they could not afford two.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraph beginning 'The rooms were furnished'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-money",
+      "statement": "His mother worked in service; their combined wages barely supported them and his younger brother. Hughes could not save a dollar a week for college or buy a heavy coat.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraph beginning 'My little brother, Kit'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-poems",
+      "statement": "He described that winter as unhappy, cold and partly hungry, and wrote many poems while uncertain about his future.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraph beginning 'I felt very bad in Washington that winter'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-no-scholarship",
+      "statement": "His conversations with Howard University figures had not produced a scholarship.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Washington Society', paragraphs beginning 'I spoke with Dean Kelly Miller' and 'But he didn't have any scholarship'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-letter-hours",
+      "statement": "On October 29, 1925 Hughes told Walter White that hotel working hours had prevented him from meeting White the previous Sunday.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-white-letter",
+          "locator": "Typed letter, October 29, 1925, first paragraph, first two sentences; Library of Congress digital ID na0062",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-letter-loan",
+      "statement": "In that letter he sought about $350 annually for three years to attend Lincoln in February, repayable within three years after graduation; he had also written James Weldon Johnson about the Garland Fund.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-white-letter",
+          "locator": "Typed letter, October 29, 1925, first paragraph from 'I am trying' through 'grant me that'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-letter-book",
+      "statement": "The same letter says his first poetry book had gone to press and he was working on a prose autobiography.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-white-letter",
+          "locator": "Typed letter, October 29, 1925, second paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-catalogue",
+      "statement": "A fellow young poet recommended Lincoln as cheaper than Howard and allowing time to read and write; Hughes sent for its course catalogue.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Poetry is Practical', paragraphs beginning 'One day on a street car' and 'Cuney was a student'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-scholarship-talk",
+      "statement": "Hughes told a woman who liked his poetry and had a son in college that he wanted to return to college, and later told her about Lincoln.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Poetry is Practical', paragraph beginning 'One afternoon I had had tea'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-scholarship",
+      "statement": "At Christmas 1925 he received her letter offering a Lincoln scholarship, which he described as his happiest holiday gift.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Poetry is Practical', paragraph beginning 'One afternoon I had had tea', final three sentences",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-college",
+      "statement": "He entered Lincoln at mid-year following the scholarship offer.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "locator": "Part II, 'Poetry is Practical', final paragraph before Part III",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-book",
+      "statement": "The Weary Blues appeared from Alfred A. Knopf in 1926, dedicated to Hughes's mother; the acknowledgments name journals that had already published some poems.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-first-book",
+          "locator": "1926 first edition, title/copyright/dedication/acknowledgment leaves preceding Contents",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "h-identity",
+      "statement": "Langston Hughes wrote poetry about Black life and music.",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-first-book",
+          "locator": "1926 first edition, title page and contents; poems 'The Weary Blues', 'Jazzonia', 'Negro Dancers' and 'I, Too'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "h-name",
+      "kind": "person",
+      "value": "Langston Hughes",
+      "aliases": [
+        "Hughes"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "quoteId": "h-holiday-quote",
+      "text": "the happiest holiday gift I've ever received.",
+      "status": "verbatim",
+      "speaker": "Langston Hughes",
+      "sourceRefs": [
+        {
+          "sourceId": "hughes-big-sea",
+          "scope": "bounded",
+          "locator": "Part II, 'Poetry is Practical', paragraph beginning 'One afternoon I had had tea', final sentence"
+        }
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He sorted clothes at a laundry, with a borrowed book on the table. He was about twenty-three. In his memory, the work began with large bags arriving to be opened. He separated the clothes and fixed numbered pins to them. The numbers kept each bundle together through the wash. Between bundles, he read about religions. \n\nHe wanted to study how people lived and why the world worked as it did. He wanted that learning for his writing. For now, his place for reading was a sorting table. The book lay among the clothes.",
+      "requiredFactIds": [
+        "h-laundry",
+        "h-reading",
+        "h-age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-laundry",
+            "h-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-laundry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-laundry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-laundry"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The memoir supplies the scene and work details; all memoir-derived particulars remain probable. Approximate age explicitly accommodates the disputed 1901/1902 birth year. The laundry opening is a remembered work routine, not a dated shift or a claim that the book was present at his mother's arrival. 'Large' paraphrases the memoir's 'big'; no weight is inferred."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "One day, his mother came into the laundry crying. She said she could no longer stay with their relatives. Someone there had hurt her pride and her feelings. \n\nHe was working among other people's clothes when she brought him this need. She needed somewhere else to live. His wages were already part of the money keeping the family going. His mother worked too, and his younger brother still needed their support. Between them, they barely had enough. Now she was there in tears.",
+      "requiredFactIds": [
+        "h-mother",
+        "h-laundry",
+        "h-money"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-mother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-mother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-mother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-laundry",
+            "h-mother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-mother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-money"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-money"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-money"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-mother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded memoir moment: mother at laundry. No invented quarrel, rejection speech, room furnishings, catastrophe or inner decision. 'One day' preserves the memoir's own transition from routine to the particular arrival."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He took his lunch hour to help her look for rooms. They found two on the upper floor of an old brick house near his work. The rooms came with furniture, but they had no heat. They had found a place to stay.",
+      "requiredFactIds": [
+        "h-rooms",
+        "h-heat"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-rooms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-rooms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-rooms",
+            "h-heat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-rooms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Lunch-hour search is the documented small response. No invented landlord, payment, conversation, return-to-work gesture or larger resolution is added."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "They bought a secondhand stove and carried it between the rooms. They could not afford another. His plan to save a dollar each week for college did not work. Even a heavy coat stayed beyond his earnings. Conversations about scholarships had produced no scholarship. He wrote poems through the cold and uncertainty. Months later, he worked in a hotel. He wrote a friend about a loan for college. He set out the amount, the years of study, and a plan to repay it. His working hours had kept him from seeing that friend the previous Sunday. His poetry book had already gone to press. During that year, he also heard about a less expensive college from a young poet studying there. He sent for its course catalogue. In conversations that year, he told a woman who liked his poems about his college plans. She had a son in college herself. He still needed tuition money.",
+      "requiredFactIds": [
+        "h-heat",
+        "h-money",
+        "h-no-scholarship",
+        "h-poems",
+        "h-letter-hours",
+        "h-letter-loan",
+        "h-letter-book",
+        "h-catalogue",
+        "h-scholarship-talk"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-heat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-heat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-money"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-money"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-no-scholarship"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-poems"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-letter-hours"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-letter-loan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-letter-loan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-letter-hours"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-letter-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-catalogue"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-catalogue"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 15,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-letter-loan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The laundry hardship and October 1925 loan request are separate documented phases. College advice, catalogue and donor conversations are loose context during that year; their exact order relative to the October 29 letter is not claimed. Only the pre-Christmas relation of the conversations to the scholarship offer is established."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "At Christmas, he received a letter offering to pay for his college study. It came from the woman he had told about his plans. Her letter offered a scholarship at the college he had described. He remembered it as “the happiest holiday gift I've ever received.” There was help for his study.",
+      "requiredFactIds": [
+        "h-scholarship",
+        "h-scholarship-talk"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [
+        "h-holiday-quote"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship-talk",
+            "h-scholarship"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [
+            "h-holiday-quote"
+          ]
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The holiday letter and assessment are later memoir recollection, not an original scholarship letter inspected here. Prior college conversations/catalogue are moved to compression. No invented envelope, reading place, facial expression or reply."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He entered college when the next term began. Someone's financial help made that possible. That year, his first poetry collection also appeared. Its acknowledgments named the magazines and newspapers that had already printed his poems. The dedication was to his mother. His book had been at press while he was still asking for tuition. He now had a place at college.",
+      "requiredFactIds": [
+        "h-college",
+        "h-scholarship",
+        "h-book",
+        "h-letter-book",
+        "h-letter-loan"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-college"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship",
+            "h-college"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-letter-book",
+            "h-letter-loan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-college"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Early 1926 entry and book publication; no exact order between them is claimed. The original October letter supports the tuition/book contrast. Removed editorial abstraction about different needs; no claim that the scholarship cured poverty."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Langston Hughes.\n\nHe wrote poems about Black life and the sounds of everyday music. Your life is not theirs. But a piece of this story may still sit beside you. You do not have to be without needs for your work to matter. You are allowed to need help.",
+      "requiredFactIds": [
+        "h-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Identity and plain legacy only. Permission lines make no prediction or equivalence."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented room detail, clothing gestures, dialogue, hunger episode, or motive.",
+    "Memoir scene details remain probable and are introduced as memory.",
+    "Do not convert a scholarship letter into a claim that poetry earnings paid tuition."
+  ],
+  "avoidRules": [
+    "No name, year, city, institution or work title before bridge.",
+    "Do not claim the hotel encounter caused the already accepted first book.",
+    "Do not harden the disputed birth year into an exact age.",
+    "No invented outcome of the October loan request."
+  ],
+  "sources": [
+    {
+      "sourceId": "hughes-big-sea",
+      "citation": "Langston Hughes, The Big Sea (1940), public HTML transcription; retrospective memoir, not a contemporary diary.",
+      "url": "https://gutenberg.ca/ebooks/hughesl-bigsea/hughesl-bigsea-00-h-dir/hughesl-bigsea-00-h.html",
+      "locator": "Part II: 'Washington Society', 'Vachel Lindsay', and 'Poetry is Practical'."
+    },
+    {
+      "sourceId": "hughes-white-letter",
+      "citation": "Langston Hughes to Walter White, October 29, 1925. Typed and signed letter, NAACP Records, Manuscript Division, Library of Congress, item 062.00.00; digital ID na0062.",
+      "url": "https://www.loc.gov/exhibits/naacp/newnegromovement/Assets/na0062_enlarge.jpg",
+      "locator": "Single-page letter, first and second paragraphs. Image visually inspected September 14, 2026."
+    },
+    {
+      "sourceId": "hughes-first-book",
+      "citation": "Langston Hughes, The Weary Blues (Alfred A. Knopf, 1926), first-edition transcription.",
+      "url": "https://en.wikisource.org/wiki/The_Weary_Blues_(collection)",
+      "locator": "Front matter: title page, copyright, dedication and acknowledgments."
+    }
+  ],
+  "review": {}
+}

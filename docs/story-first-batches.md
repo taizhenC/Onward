@@ -4,13 +4,16 @@ Requested by the owner on 2026-09-05: continue the same research-led revision
 process for the remaining historical stories, nine per set. The first nine
 are already published; see [their release record](releases/2026-09-05-story-first-publication.md).
 
-Forty-one historical stages remain. The deterministic figure-key order below
-keeps the scope visible and avoids quietly dropping a difficult episode.
+The table preserves the original forty-one-stage queue. Three stages in set 2
+were published on September 10, leaving thirty-eight: six held rewrites,
+nine stories in the current set, and twenty-three in later sets. These counts
+follow the recorded release receipts, not a fresh production database audit.
+The deterministic figure-key order keeps difficult episodes visible.
 
 | Set | Figures | State |
 |---|---|---|
 | 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
-| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Queued |
+| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Nine drafts researched, revised and independently checked September 14; four explicit craft holds; owner reading decisions pending; none published |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
 | 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
@@ -89,10 +92,45 @@ source/scene gaps in the [new rewrite packet](releases/wave-2-rewritten-2026-09-
 Their changed texts do not inherit approval of the old snapshot.
 
 Matching corrections remain a separate evaluated release, not a silent edit
-to this content-only packet. The next set of nine has not been started;
-thirty-two stages remain queued above.
+to this content-only packet. At the September 10 handoff, the next set had not
+started and thirty-two stages remained queued. Set 3 began on September 14;
+twenty-three later stages remain queued.
 
 The application changes for the separately labeled Chinese fiction mode were
 merged in [PR #122](https://github.com/taizhenC/Onward/pull/122). That PR does
 not publish or approve these historical candidates. Its public fiction route
 is separate from the historical library, Owner Stories and saved progress.
+
+## Set 3 continuation — September 14
+
+The owner requested the next nine stories, parallel research, and many small,
+focused commits. Work starts from `5eff085`, after PR #125 was merged. That
+merge preserved the held set-2 drafts; it did not publish them.
+
+Three independent authoring groups cover Coleman/Coltrane/Faraday,
+Fitzgerald/Graham/Hughes, and Hurston/Jones/Kovalevskaya. Another group checks
+each author's work before final packaging. Existing seeded prose is only a
+research lead, never a source. The seven-passage recipe and source floor remain
+unchanged; missing scenes or uncertain chronology are explicit holds, not
+permission to invent events or pad word counts.
+
+Each story has its own source-grounded candidate commit; individual story
+corrections, source/review reports, reading copy, hash manifest and CI wiring
+are separate focused changes. Commits use only `taizhenC <tzhcheung@gmail.com>`
+with no co-author trailers.
+
+The [tracked set-3 packet](releases/wave-3-drafts-2026-09-14/README.md) contains
+nine drafts and 63 exact passages (4,764 words). Coleman, Coltrane, Hurston and
+Jones retain specific craft holds. The other five have supported local arcs
+for the owner's reading decision, not blanket recipe clearance: notably Ella
+is a short miniature and Hughes retains a routine-opening/indirect-low-point
+qualification. Kovalevskaya's source-supported structural repair cleared its
+original moment/compression hold. Full findings and corrected-hash rechecks
+are linked in the packet; machine validity is not an editorial approval.
+
+All nine remain drafts with empty review metadata. No text inherits approval
+from earlier waves, no production story was published, and no library or
+matching configuration changed. Six candidate age ranges differ from their
+legacy matching bounds; those require a separately evaluated decision before
+promotion. Set 4 is next, with 23 later stages still queued and the six older
+wave-two rewrites still held.

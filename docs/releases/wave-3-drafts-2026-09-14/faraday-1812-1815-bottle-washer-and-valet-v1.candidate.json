@@ -1,0 +1,1153 @@
+{
+  "storySpecId": "faraday:1812-1815-bottle-washer-and-valet:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "faraday",
+  "stageId": "1812-1815-bottle-washer-and-valet",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 22,
+    "ageMax": 23,
+    "startDate": "1814-09-06",
+    "endDate": "1815-05-31",
+    "throughLine": "A young scientific assistant far from home writes through loneliness, keeps studying, gains some relief from unwanted duties, and returns to assistant work."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Homesickness, social hierarchy, and distress about an unwanted work role."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Faraday was born on 22 September 1791; he was twenty-two on 6 September 1814 and twenty-three from 22 September 1814.",
+      "sourceRefs": [
+        {
+          "sourceId": "birth",
+          "locator": "Early work, opening birth-date sentence.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "travel",
+      "statement": "Faraday accompanied Humphry Davy as scientific assistant on the continental tour between his periods as laboratory assistant in 1813 and from 1815.",
+      "sourceRefs": [
+        {
+          "sourceId": "ri",
+          "locator": "Biography, first paragraph, and Ri positions.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "papers",
+      "statement": "On 6 September Faraday was writing to Abbott, had little private time, a journal behind schedule, and papers to arrange before leaving.",
+      "sourceRefs": [
+        {
+          "sourceId": "sep",
+          "locator": "Opening paragraph beginning 'I thank you Dear Ben'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "regret",
+      "statement": "Faraday told Abbott the tour was unlike his expectations; he had repeatedly considered returning and remained for further learning.",
+      "sourceRefs": [
+        {
+          "sourceId": "sep",
+          "locator": "Paragraph beginning 'You talk of travelling', through the wish to improve chemistry and languages.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "missing",
+      "statement": "Writing on 26 November, Faraday had received no letters at Rome and missed friends and family.",
+      "sourceRefs": [
+        {
+          "sourceId": "nov",
+          "locator": "Opening 'What have I done' and following paragraph through 'let me see the work of your hand'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "left",
+      "statement": "He had left earlier family letters with his books in Geneva, regretted their distance and feared not seeing them or home again.",
+      "sourceRefs": [
+        {
+          "sourceId": "nov",
+          "locator": "Opening long paragraph, from 'Through my own imprudence' through 'eternity'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "doubt",
+      "statement": "He questioned whether leaving familiar affection in pursuit of knowledge had been wise.",
+      "sourceRefs": [
+        {
+          "sourceId": "nov",
+          "locator": "Opening paragraph and paragraph beginning 'What a result', ending 'such a pursuit'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "post",
+      "statement": "In the same letter he considered postal delay rather than changed affection; he discussed postage arrangements and regretted the cost to Abbott.",
+      "sourceRefs": [
+        {
+          "sourceId": "nov",
+          "locator": "Paragraph beginning 'What a result', from 'I am so confident' to the end.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "asks",
+      "statement": "He asked Abbott about health, sent greetings to both families and said he would write to other friends.",
+      "sourceRefs": [
+        {
+          "sourceId": "nov",
+          "locator": "Paragraph beginning 'Your health dear Ben', through 'I shall soon read as well as write'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "list",
+      "statement": "On 29 December he described learning French with a mixed list of unfamiliar words and meanings, evening dictionary checks, and crossing out learned words.",
+      "sourceRefs": [
+        {
+          "sourceId": "dec",
+          "locator": "Paragraphs beginning 'When in my grammar', 'This is generally', and 'I thus go over'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "books",
+      "statement": "On 5 January he said buying a book in every large town had increased his stock too fast; he restricted purchases to capital cities.",
+      "sourceRefs": [
+        {
+          "sourceId": "jan",
+          "locator": "Paragraph beginning 'Since I have been abroad', first two sentences.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "search",
+      "statement": "He could not find an English–Italian dictionary in the cities searched and obtained a three-language dictionary instead.",
+      "sourceRefs": [
+        {
+          "sourceId": "jan",
+          "locator": "Paragraph beginning 'In Italy there are many books', from the grammar found at Florence through Rollasetti.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "inferior",
+      "statement": "In January he felt unworthy of praise and painfully aware of ignorance when comparing himself with learned acquaintances.",
+      "sourceRefs": [
+        {
+          "sourceId": "jan",
+          "locator": "Paragraphs beginning 'I beg leave' and 'Since I have left England'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "kindness",
+      "statement": "In his 5 January 1815 letter to his former employer Riebau, Faraday thanked him for years of kindness and for letters showing continued goodwill.",
+      "sourceRefs": [
+        {
+          "sourceId": "jan",
+          "locator": "Opening paragraphs beginning 'During the whole' and 'I have received', on kindness and letters during and after his employment.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "duties",
+      "statement": "In his 23 February letter Faraday explained that a promised replacement valet had not been found; unwanted duties remained with him.",
+      "sourceRefs": [
+        {
+          "sourceId": "letters",
+          "locator": "Chapter I, pp. 26–27, letter dated Rome, February 23, 1815; 'It happened a few days' through 'unavoidable'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "relief",
+      "statement": "The same letter said Davy limited disagreeable tasks, quarrels with Lady Davy had eased, and local servants now handled her needs.",
+      "sourceRefs": [
+        {
+          "sourceId": "letters",
+          "locator": "Chapter I, pp. 27–28, 'These, it is true' through 'somewhat comfortable'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "free",
+      "statement": "On 23 February Davy was away seeking lodging; Faraday reported being free to see Rome, write his journal and learn Italian.",
+      "sourceRefs": [
+        {
+          "sourceId": "letters",
+          "locator": "Chapter I, p. 27, 'indeed, at this moment' through 'learn Italian'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "home",
+      "statement": "Writing to his mother from Brussels in April, he promised to visit her first and wanted to tell some friends of his return himself.",
+      "sourceRefs": [
+        {
+          "sourceId": "letters",
+          "locator": "Chapter I, pp. 33–34, letter excerpt under THE END OF THE TOUR.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "return",
+      "statement": "Faraday resumed employment as a Royal Institution laboratory assistant in 1815.",
+      "sourceRefs": [
+        {
+          "sourceId": "ri",
+          "locator": "Ri positions and Biography, first paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "legacy",
+      "statement": "Faraday's experiments helped establish the science behind generating electricity and electric motors.",
+      "sourceRefs": [
+        {
+          "sourceId": "birth",
+          "locator": "About Faraday, sentences on generating electricity and the electric motor.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person",
+      "kind": "person",
+      "value": "Michael Faraday",
+      "aliases": [
+        "Faraday"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "quoteId": "comfortable",
+      "text": "now I am somewhat comfortable",
+      "status": "verbatim",
+      "speaker": "Michael Faraday",
+      "sourceRefs": [
+        {
+          "sourceId": "letters",
+          "locator": "Chapter I, p. 27, letter of 23 February 1815, sentence following local servants.",
+          "scope": "exact"
+        }
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "Far from home, he was writing to a friend, his journal unfinished. He was twenty-two. Other work left little time for letters or for sorting his papers. A departure was close, and his notes were behind. He had come as a scientist's assistant, travelling far from home.\n\nThere were languages to learn and experiments to see. But the trip had not felt as he had expected. He had already thought seriously about going home. He stayed for the chance to learn more. For now, he had a letter to answer.",
+      "requiredFactIds": [
+        "papers",
+        "age",
+        "travel",
+        "regret"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "papers"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "papers"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "papers"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "travel"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "regret"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "regret"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "regret"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "regret"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "papers"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Geneva, 6 September 1814, writing the surviving letter. No invented room, gesture, or episode of mistreatment. Age narrowed to the actual dated letter."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Later that autumn, he was writing from another city. No letters from home had reached him there. He missed the people who knew him, and the ordinary pleasure of their company. Earlier letters could have given him their words again. But he had left those letters behind with his books. He blamed himself for putting them so far away. He feared that he might never see them again. Then the fear reached beyond the missing pages. He could imagine never getting home. He had left people he loved to gain knowledge. Now he doubted whether that exchange had been wise. The old letters were out of reach.",
+      "requiredFactIds": [
+        "missing",
+        "left",
+        "doubt"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "missing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "missing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "missing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "left"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "left"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "left"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "left"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "left"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "left"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "doubt"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "doubt"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "left"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rome, 26 November 1814, opening of the letter. His severe judgments of unnamed local people are not adopted as factual third-party descriptions. Fear is his contemporaneous attestation, not inferred from travel."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He wrote to his friend about the missing letters. In the same letter, he considered a less painful explanation. The post was slow and uncertain. He did not believe his friend's feelings had changed. He worked through the problem of paying for the letter. Advice about the route made him wary of paying everything in advance. He was sorry about leaving postage costs for his friend. Then he asked after his friend's health and sent love to both families. He meant to write to other friends too. He wanted to receive their writing as well.",
+      "requiredFactIds": [
+        "post",
+        "asks"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "post"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "post"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "post"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "post"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "post"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "post"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "post"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asks"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Continuation of the same 26 November letter, not a claim that mailing healed his distress. The practical postal reasoning and greetings are documented acts."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The winter brought small tasks as well as missing people. He explained his language study in a letter to his younger sister. He wrote unfamiliar words and their meanings on a sheet. The words were mixed together, with no neat separation between the languages. In the evening he checked them against his dictionary. A word he had learned got a line through it. The list shrank, then grew again with new words. Finding books could also fail. He searched several cities for a dictionary in the languages he needed. He ended with a dictionary in three languages instead. Buying books at every stop had made his collection too large. He had to limit the places where he bought them. His letters still contained doubts about how little he knew.",
+      "requiredFactIds": [
+        "list",
+        "missing",
+        "search",
+        "books",
+        "inferior"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "list",
+            "missing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "list"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "list"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "list"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "list"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "list"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "list"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "books"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "books"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "inferior"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Honest compression: the 29 December study routine and 5 January account of book-buying and unsuccessful searches. These are not invented single-day scenes or a cure caused by the November letter."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "By late winter, he could write a different report to his friend. He still had duties he had agreed to take only temporarily. A promised replacement for the scientist's personal servant had never arrived. But the scientist had tried to keep unwanted tasks away from him. Local servants now dealt with the scientist's wife's requests. Their quarrels had become less difficult. The scientist was away looking for somewhere to stay. The assistant had time to himself. He could visit the city, write his journal, and learn another language. He put the change into his letter: “now I am somewhat comfortable”. There was still a journal to write.",
+      "requiredFactIds": [
+        "free",
+        "duties",
+        "relief"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [
+        "comfortable"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "free"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "duties"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "duties"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "relief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "relief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "relief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "free"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "free"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "free"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "relief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [
+            "comfortable"
+          ]
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "free"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rome, 23 February 1815, his letter written during Davy's absence. The turn is practical relief from duties, not a single life-changing encounter or proof of reconciliation. The quoted words describe his current state."
+    },
+    {
+      "role": "became",
+      "canonicalText": "In spring, he was on his way home. He sent his mother a letter about the approaching return. He wanted his first moments back to be with her. She could tell some close friends that he was coming. There were others he wanted to tell himself. The former employer who had cared for him was among them. Back at home, he resumed work as a laboratory assistant. The tour had ended; he still held an assistant's position. He had not returned as the head of a laboratory. There was work for him there.",
+      "requiredFactIds": [
+        "home",
+        "return",
+        "kindness"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "home",
+            "kindness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends in spring 1815 with the return to assistant work. April letter is reproduced in Thompson; employment is corroborated by the institution that employed him. No restored confidence, lifelong gratitude, or total recovery is asserted. The episode endDate 1815-05-31 is a spring/month envelope bound, not an attested event date."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Michael Faraday.\n\nHis experiments helped explain how to generate electricity and make electric motors. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to miss what you left behind without having an answer for everything that comes next. You do not have to feel settled yet.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Reveals the name and keeps the reader's own circumstances unknown."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented room, lighting, gesture, dialogue, servant-table scene, or carriage seating.",
+    "Keep complaints about Lady Davy as Faraday's report; do not portray universal abuse.",
+    "Do not turn homesickness into a diagnosis or claim that study cured it.",
+    "Do not convert practical relief in February into triumph, complete reconciliation, or a recovered identity."
+  ],
+  "avoidRules": [
+    "No names, years, cities or institutions before the bridge.",
+    "Do not say he stayed to become greater than Davy, learned humiliation as tuition, or had no education.",
+    "Do not claim that every domestic duty continued unchanged throughout the tour."
+  ],
+  "sources": [
+    {
+      "sourceId": "sep",
+      "citation": "Michael Faraday to Benjamin Abbott, 6 September 1814; Faraday Project edition on Epsilon.",
+      "url": "https://epsilon.ac.uk/view/faraday/letters/Faraday0037"
+    },
+    {
+      "sourceId": "nov",
+      "citation": "Michael Faraday to Benjamin Abbott, 26 and 30 November 1814; Faraday Project edition on Epsilon.",
+      "url": "https://epsilon.ac.uk/view/faraday/letters/Faraday0040"
+    },
+    {
+      "sourceId": "dec",
+      "citation": "Michael Faraday to Margaret Faraday, 29 December 1814; Faraday Project edition on Epsilon.",
+      "url": "https://epsilon.ac.uk/view/faraday/letters/Faraday0043"
+    },
+    {
+      "sourceId": "jan",
+      "citation": "Michael Faraday to George Riebau, 5 January 1815; Faraday Project edition on Epsilon.",
+      "url": "https://epsilon.ac.uk/view/faraday/letters/Faraday0044"
+    },
+    {
+      "sourceId": "letters",
+      "citation": "Faraday letters of 23 February 1815 and April 1815, reproduced in Silvanus P. Thompson, Michael Faraday: His Life and Work (1898), chapter I, pp. 26–28, 33–34.",
+      "url": "https://www.gutenberg.org/files/65735/65735-h/65735-h.htm"
+    },
+    {
+      "sourceId": "ri",
+      "citation": "Royal Institution, Michael Faraday (1791–1867), Biography and Ri positions; custodial institutional account.",
+      "url": "https://www.rigb.org/explore-science/explore/person/michael-faraday-1791-1867"
+    },
+    {
+      "sourceId": "birth",
+      "citation": "Royal Institution, Michael Faraday's research and work, Early work and About Faraday.",
+      "url": "https://www.rigb.org/explore-science/explore/collection/michael-faradays-research-and-work"
+    }
+  ],
+  "review": {}
+}

@@ -1,6 +1,6 @@
 # Hurston repair investigation — 2026-09-15
 
-**Current disposition: a new Howard-transition candidate is drafted for independent review. The original candidate remains held. Neither is approved for publication by this report.**
+**Current disposition: the new Howard-transition candidate passed a qualified independent source/chronology recheck and awaits the owner's exact-text reading decision. The original candidate remains held. Neither is approved for publication by this report.**
 
 The reviewed baseline is [`hurston-1917-1921-sixteen-again-v1.candidate.json`](../../wave-3-drafts-2026-09-14/hurston-1917-1921-sixteen-again-v1.candidate.json), SHA-256 `32070f91a9ba998a022e4346213b92fecdd3b71565f76c3fd3fc48ed4068a97c`. It remains unchanged, `version: 1`, `status: draft`, `review: {}`. This investigation is not a human approval or permission to publish.
 

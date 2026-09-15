@@ -114,6 +114,11 @@ approval of the five unchanged wave-3 stories does not cover new Jones prose.
 
 ## Independent challenge of the Hurston hold
 
+This section records the initial outline challenge, before the replacement
+was drafted. The completed 342-word candidate and current source/craft verdict
+are now in the [final independent review](HURSTON-INDEPENDENT-REVIEW.md).
+The remaining decision is the owner's exact-text reading, not initial drafting.
+
 I read the separate Hurston repair report and independently reopened
 [chapter IX](https://gutenberg.ca/ebooks/hurstonzn-dusttracksonaroad/hurstonzn-dusttracksonaroad-00-h.html),
 from `When it came time` through the assembly and work passages. A plausible

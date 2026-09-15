@@ -47,7 +47,7 @@ The Jones repair investigator proposed starting **before** the Howard registrati
 
 New file: [`hurston-1917-1921-sixteen-again-v1.candidate.json`](../hurston-1917-1921-sixteen-again-v1.candidate.json).
 
-Final author-handoff SHA-256: `89af9f4fa2e069e1df08cd8fac375ffde031b38eb337423994d792fbec7f9ecd`.
+Initial author-handoff SHA-256: `89af9f4fa2e069e1df08cd8fac375ffde031b38eb337423994d792fbec7f9ecd`.
 
 It remains `version: 1`, `status: draft`, `review: {}`. The previous unpublished identity is retained; the original immutable packet is unchanged. The intermediate hash `b58a6c1cb7baabed38e79e0d926f1388dba28017bf4032b96052db740ba3ec77` had overly narrow opening bounds and is not the handoff artifact.
 
@@ -66,10 +66,24 @@ The revised beat assignments are:
 
 The opening age is approximately twenty-seven. The weekend's exact month is not supplied, so the document conservatively preserves **1917–19 / ages 26–28**, rather than claiming every opening event followed her 1918 birthday. The estate chronology supplies the education/birth envelope, not a contemporaneous date for the conversation. This still differs from installed matching ages 26–30. No matching configuration is changed; the emotional emphasis has changed from the Morgan return to education to the next college transition and must be considered in matching review.
 
-This is a **340-word miniature**, not the recipe's four-to-five-minute length. Passage counts are 56 / 34 / 20 / 96 / 32 / 51 / 51. In particular, the response and turn are as brief as their attested acts. Independent review must decide whether this sparse but chronological telling meets the craft standard; this report does not substitute a mechanical pass for that judgment. No additional dialogue, imagined humiliation, physical scene-setting or medical episode has been used to increase length.
+At author handoff this was a **340-word miniature**, not the recipe's four-to-five-minute length. Passage counts were 56 / 34 / 20 / 96 / 32 / 51 / 51. In particular, the response and turn are as brief as their attested acts. Independent review must decide whether this sparse but chronological telling meets the craft standard; this report does not substitute a mechanical pass for that judgment. No additional dialogue, imagined humiliation, physical scene-setting or medical episode has been used to increase length.
 
 The former defect—anticipated fear installed as the low point—has been removed from the new text. That does not retrospectively clear the old hash, nor does it automatically clear the new candidate. The unchanged bridge does not make the rewritten drama owner-approved. Genuine exact-text human review and the applicable matching decision remain required before publication.
 
 ### Verification
 
 The individual candidate validator passed with zero draft errors/warnings and zero publication-simulation errors/warnings. The actual `scripts/check-story-batch.ts` then passed at the final handoff hash: exact canonical/composer equality, recomputed content hash, serialized replay, mean sentence lengths at most 11.33, longest sentence 14 words, every passage ending shorter than its longest sentence, and the final bridge line at most twelve words. There are no texture sentences or quotations. Simulated approvals existed only in verifier memory; the JSON's `review` remains empty. The original packet's candidate SHA-256 was separately checked and remains unchanged.
+
+### Final independent-review corrections
+
+The independent reviewer requested two bounded corrections: state the documented
+school setting in the opening sentence, and bind the memoir chronology clause
+in `r01` to its own chapter-IX locator. Both were applied without changing the
+episode or inventing scene details. The frozen revised candidate is now
+**342 words**, with passage counts **58 / 34 / 20 / 96 / 32 / 51 / 51**,
+SHA-256 `c29d7856a483ff106cfb0f2ad45f0851c8176b4d08dc020a0931f4f396ade51e`.
+
+The same batch validator passes at this hash. The separate
+[independent recheck](HURSTON-INDEPENDENT-REVIEW.md) records its bounded verdict;
+the [reading copy](../READING-COPY.md) is the exact new text for the owner's
+decision. Neither machine validation nor agent review supplies human approval.

@@ -96,9 +96,9 @@ age bound does not authorize changing production matching.
   opening paragraph and *Playlist* entry. This is a useful primary-record
   lead: the archive identifies the audio, its recording setting, and the
   published excerpt. The [official Coltrane interview index](https://www.johncoltrane.com/interviews)
-  also lists this recording. **The complete audio was not listened to or
-  transcribed in this pass.** The archive description cannot be cited as if
-  it established the contents of the uninspected recording.
+  also lists this recording. The initial pass inspected only this metadata;
+  the later isolated transcription investigation is recorded below. The
+  archive description itself cannot establish the interview's contents.
 
 Targeted searches for Coltrane's immediate reaction to dismissal repeatedly
 led to summaries or later quotations. The much-repeated shame quotation
@@ -119,12 +119,13 @@ page 13; it needs direct inspection before use even for its own period.
 
 Needed for this episode: a contemporaneous or explicitly qualified firsthand
 account locating his own immediate experience of dismissal, plus an actual
-single response occasion. The full Blume audio is a concrete next primary
-source to inspect; no clearance should be inferred before that work. The
+single response occasion. The full Blume audio investigation below found
+more precise leads about performing with Monk, not a verified dismissal
+account or a singular home rehearsal. No clearance follows from ASR. The
 current 30–31 age range is unchanged, but the legacy withdrawal-and-cure
 matching description remains a separate unresolved content decision.
 
-### Follow-through on the complete Blume recording
+### Initial access attempt on the complete Blume recording
 
 The parent requested a concrete access attempt before closing this lead.
 The live archive HTML was retrieved successfully. Its play link resolves to
@@ -137,10 +138,10 @@ The page provides no full transcript or caption track; its transcription
 reference is to the already inspected one-page excerpt. Opening the MP3 and
 the download endpoint with the web reader returned internal errors rather
 than audio or transcript content. Discovery of all enabled tools found no
-audio-understanding or transcription tool. A local runtime check found no
-Whisper implementation, audio decoder, or cached speech model. No transcript
-was invented, and no new packages, model downloads, paid service, or account
-access were introduced for this bounded investigation.
+audio-understanding or transcription tool. The initial local runtime check
+found no Whisper implementation, audio decoder, or cached speech model.
+No transcript was invented. That initial pass installed nothing; the parent
+then authorized the isolated, unpaid ASR attempt documented next.
 
 Searches for a published full transcription led to Chris DeVito's interview
 collection. The [publisher/distributor's book page](https://www.ipgbook.com/coltrane-on-coltrane-products-9781556520044.php)
@@ -151,11 +152,86 @@ not bypassed. No purchase or access-controlled copy was attempted. Secondary
 quotations of the longer Blume conversation were useful locating leads, not
 a replacement for checking the primary words in context.
 
-Result: the full recording still requires actual listening or a reliable
-transcription checked against the audio. Its uninspected portions are not
-declared irrelevant and are not declared evidence that the hold can be
-cleared. Coleman's additional October 1 newspaper lead likewise remained a
-reference to an unobtained original after targeted title searches.
+### Isolated full-recording ASR follow-through
+
+This additional attempt **succeeded technically**, so inability to download
+or decode the recording is not a remaining blocker. The recording was
+downloaded for research transcription, not to work around media display
+restrictions. No account, credential, paid API, global install, repository
+dependency change, or access-control bypass was used.
+
+The pre-existing `uv` executable created a temporary virtual environment
+using the local Python 3.10.10 runtime. That environment installed
+`faster-whisper==1.2.1` with its decoder dependencies. The official
+[faster-whisper instructions](https://github.com/SYSTRAN/faster-whisper)
+and [base.en model page](https://huggingface.co/Systran/faster-whisper-base.en)
+were checked before use. The models and Hugging Face cache were confined to
+the temporary directory, with implicit token use and telemetry disabled.
+Scripts were created with `apply_patch`.
+
+The primary MP3 is 19,305,908 bytes and decodes to 2,790.06 seconds
+(46 minutes 30 seconds, including the archive framing audio). SHA-256:
+`900b486b694f8b29960908a2e4971e3e54c41e004d088bc1d147473aa945acfb`.
+An English `base.en` CPU/int8 pass covered the entire recording; a `small.en`
+CPU/int8 pass rechecked 17:40–28:20 and 39:20–40:50. Both used beam size 5,
+voice-activity detection and no previous-text conditioning. No supplied
+prompt suggested the desired historical answer. Reported transcription
+runtimes were approximately 101 and 88 seconds, excluding initial setup.
+
+**These are unverified machine transcripts, not verified primary quotations.**
+The smaller model garbles names and sometimes changes meaning; the larger
+one still contains errors. Agreement between two related ASR models is not
+independent historical corroboration. The researcher reviewed their text as
+a timestamp-finding aid but did not establish a human-checked listening
+transcript. No ambiguous phrase was quoted into a candidate or added as an
+approved fact.
+
+| Primary recording window | ASR locating lead, not a verified quotation | Editorial consequence |
+|---|---|---|
+| 17:53–19:56 | Home visits and working through a tune repeatedly, sometimes left to practise alone. | Still a recurring practice, not a uniquely located rehearsal. |
+| 20:05–20:57 | Request to learn the previously recorded tune and subsequent invitation. | Adds context, but no secure time/place for the particular request. |
+| 20:57–21:52 | A question about a turning point, a qualified answer and discussion of stopping drinking. | Does not establish the dismissal occasion, withdrawal mechanics, or a lesson-caused cure. |
+| 22:00–23:57 | Playing without Monk at the piano, loneliness and relying on the bass. | Substantially matches the published excerpt; its setting is performance, not dismissal. |
+| 26:00–26:35 | The interviewer distinguishes rehearsals from the job; the answer appears to describe looking around the **first time** Monk left the piano, then becoming accustomed to it. | A genuinely more precise single-occasion lead than the printed excerpt. Verify directly before using; do not expand it into a dated first night, bodily panic, or an invented decision. |
+| 39:25–40:45 | Discussion of a recorded entrance, Monk calling Coltrane, and unfamiliarity with playing together. | Possible lead for a different musical-uncertainty episode. Neither the cause of the missed entrance nor an immediate firing reaction is established here. |
+
+No clear immediate-dismissal account emerged from the full ASR review.
+Because the transcription is imperfect, this is a bounded search result,
+not a claim that the recording contains no such words. The two new
+performance leads deserve direct listening or a checked archival transcript
+if a different episode is pursued. They do not turn the original job-loss
+story into a complete, verified four-moment arc.
+
+The recording discussion also prompted a check for producer Orrin Keepnews's
+liner notes. The old Monk-site page failed in the web reader and its HTTPS
+certificate mismatched during direct retrieval; certificate validation was
+not disabled. A [third-party transcription of the original notes](https://thejazztome.info/thelonious-monk-monks-music/),
+under *The Music: Well, You Needn't*, was readable and gives the solo order,
+not the reason for an entrance problem. It is not the original printed
+artefact. Search references to Keepnews's later 2006 notes offer a further
+locator, not newly verified witness evidence. No substance-use legend or
+reviewer's interpretation was adopted as Coltrane's actual condition.
+
+Temporary research artefacts are retained outside the repository at
+`C:/Users/taich/AppData/Local/Temp/onward-blume-asr-e27cb8cf8eb34f9eacf4cc288debae38/`:
+
+- `blume-1958-primary.mp3` — source recording, hash above.
+- `transcribe_blume.py` — full-pass script.
+- `recheck_blume_windows.py` — targeted second-pass script.
+- `blume-base-en-UNVERIFIED.jsonl` — timestamped full ASR;
+  SHA-256 `94bfa242a6203fd22993c7ef26dce4cb953a920d48a558f9cbba6c1fdeadd7f8`.
+- `blume-small-en-windows-UNVERIFIED.jsonl` — timestamped second-pass ASR;
+  SHA-256 `addc15771a2fa3067b8a376f5632cec50ab837e2e73410fff27a4171855afb3d`.
+- `venv/`, `models/` and the local model cache — isolated runtime assets.
+
+The full machine transcript and source media are not added to the repository
+or represented as publication content. Temporary retention is not a durable
+archive guarantee. Both frozen candidate hashes were recomputed after this
+attempt and remain identical to the input table.
+
+Coleman's additional October 1 newspaper lead remains a reference to an
+unobtained original after targeted title searches. No new Coleman scene was
+established during this follow-through.
 
 ## Handoff
 
@@ -166,7 +242,8 @@ There is consequently no new candidate hash or validation pass to report.
 The original drafts and their empty review objects remain intact. Mechanical
 validity of those drafts is not a reason to publish them.
 
-The safe next step is source acquisition or an explicitly reconsidered
-episode, followed by new exact-text and matching review. Do not include
+The safe next step is targeted audio verification/source acquisition or an
+explicitly reconsidered episode, followed by new exact-text and matching
+review. Do not include
 Coleman or Coltrane in the approved five-story production promotion on the
 basis of this report.

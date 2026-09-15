@@ -59,11 +59,39 @@ read-only audit and receipt files are
 `.codex-recovery/wave-3-audit-2026-09-15.ts` and
 `.codex-recovery/wave-3-production-receipt-2026-09-15.json`.
 
-A production worker refresh after these promotions and a scoped live-reader
-canary are still pending at this receipt's initial commit. Database publication
-is verified; this paragraph is not a claim that every existing worker has
-refreshed its cached stage inventory. A subsequent receipt will record the
-actual deployment and reader result.
+**Production deployment and live reading are verified.**
+[PR #128](https://github.com/taizhenC/Onward/pull/128) merged after its CI,
+recipe gate and preview passed. Its merge commit
+`cb94d5e93666c70dd25aa2821bbe55289c42398b` reached successful GitHub Production
+deployment `6452727940` at `2026-09-15T06:01:03Z`, refreshing workers after the
+database promotions. The five stories were then read through the normal
+[production reader](https://onwardapp.me), including every progress acknowledgement.
+
+| Story | Passages verified | Reader chunks recorded | Recovery steps |
+|---|---:|---:|---:|
+| Faraday | 7 | Not recorded by the initial run | 0 |
+| Fitzgerald | 7 | 12 | 1 clarification |
+| Graham | 7 | 18 | 0 |
+| Hughes | 7 | 17 | 0 |
+| Kovalevskaya | 7 | 17 | 0 |
+
+Final verification completed at `2026-09-15T06:05:00.988Z`. Every complete
+story matched its approved canonical passages after whitespace normalization;
+the check does not claim byte-identical paragraph formatting. The first run
+passed Faraday, then rejected the old Fitzgerald evaluation fixture's age 16.
+The unchanged adult-only intake requires 18–100; a local parser reproduction
+and red/green fixture preflight confirmed this. A second harness expected an
+immediate session and stopped on a normal matching recovery response. The
+final run used age 18 and followed the bounded, server-token-based clarification
+flow, without forcing a figure or bypassing rate limits. The other three
+remaining stories opened directly. No application fix was needed.
+
+Across these bounded tests, three newly created anonymous guests and their
+five test stories were removed through the normal CSRF-protected account
+deletion route. Each cleanup reverified the exact anonymous identity before
+deletion. The operator's account was not used, and no reader identifiers or
+credentials appear in the receipt. Details are saved locally in
+`.codex-recovery/wave-3-reader-canary-receipt-2026-09-15.json`.
 
 To disable a bad current story, use the audited retirement path. Restoring
 older text requires a newly reviewed version, not an overwrite of terminal
@@ -83,4 +111,3 @@ Coleman, Coltrane, Hurston and Jones remain unpublished while their substantive
 source/scene gaps are investigated. The owner's request to repair them does
 not supply missing historical events or make future rewritten text already
 reviewed. No recipe exception has been introduced.
-

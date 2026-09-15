@@ -6,7 +6,7 @@ Scope: Bessie Coleman, John Coltrane, Michael Faraday. Research skill used by th
 
 Candidate: `faraday-1812-1815-bottle-washer-and-valet-v1.candidate.json`.
 
-Source verdict: supported by inspected contemporary letters and the employing institution's history, with the limitations below. Craft verdict: a quiet epistolary arc, suitable for independent reading review; 681 words is below the 700-word target. No fictional scene padding was used. The turn is dated evidence of practical relief from duties, not an instantaneous conversion. The four moment passages show him writing at the dates below. All sentence ceilings and ending-length checks pass; candidate validator passes with no warnings.
+Source verdict: supported by inspected contemporary letters and the employing institution's history, with the limitations below. Craft verdict: a quiet epistolary arc, suitable for independent reading review; 680 words is below the 700-word target. No fictional scene padding was used. The turn is dated evidence of practical relief from duties, not an instantaneous conversion. The four moment passages show him writing at the dates below. All sentence ceilings and ending-length checks pass; candidate validator passes with no warnings.
 
 ### Ownership and inspected locators
 
@@ -26,7 +26,7 @@ The active library stage ID is retained, but the episode is narrowed from matchi
 
 Candidate: `coleman-1918-1921-no-school-would-take-her-v1.candidate.json`.
 
-Source verdict: the bounded claims are supported; memories are marked probable. Craft verdict: HOLD, not ready for publication. The candidate is deliberately short (483 words), but shortness is not the reason for HOLD. The interview cannot locate an individual next lesson after the student's death, describe the examination as a moment, or carry the full dark passage without repeating facts. The turning passage consequently compresses a supported sequence, contrary to the required single-moment shape. Exact missing evidence: a dated/situated return to training; exam actions observed or described by Coleman; fuller immediate response to the pupil's death. The draft is retained as reviewable work, not dressed up as a completed scene.
+Source verdict: the bounded claims are supported; memories are marked probable. Craft verdict: HOLD, not ready for publication. The candidate is deliberately short (482 words), but shortness is not the reason for HOLD. The interview cannot locate an individual next lesson after the student's death, describe the examination as a moment, or carry the full dark passage without repeating facts. The turning passage consequently compresses a supported sequence, contrary to the required single-moment shape. Exact missing evidence: a dated/situated return to training; exam actions observed or described by Coleman; fuller immediate response to the pupil's death. The draft is retained as reviewable work, not dressed up as a completed scene.
 
 ### Ownership and inspected locators
 
@@ -66,3 +66,19 @@ Davis dates the spring dismissal to March; the label and later biographies often
 All three individual `validate-candidate.ts` runs passed draft and in-memory publication simulation with zero errors/warnings; no simulated review was saved. Sentence checks use `splitCanonicalSentences` and `countWords`: per-passage mean at most 16, maximum at most 28, ending shorter than the passage maximum, bridge ending at most 12. The root owns the final nine-candidate compose/replay run and hash manifest. A preliminary one-candidate batch command correctly rejected the concurrent directory's count of two; that was not a content failure.
 
 Final hashes are sent separately to the root and cross-reviewer so any review is bound to exact candidate bytes. This handoff records author findings and remaining evidence gaps, never historical/tone publication approvals.
+
+## Independent-review correction pass
+
+Faraday's former-employer kindness clause now cites a separate fact from the opening two paragraphs of the 5 January 1815 Riebau letter, alongside the April homecoming letter. This changes evidence mapping, not the story prose. Coleman retains the explicit scene/craft HOLD. Coltrane's opening now identifies an account of rehearsals, not a single remembered scene, and the last permission is the direct “You are allowed to need help.” His low-point and single-moment HOLD remains.
+
+ISO date fields include honest envelope bounds where day precision is absent: Coleman's 1920-11-01 is the first day of the documented November departure month, not an event date; Faraday's 1815-05-31 is an outer spring/month boundary, not his attested return day; Coltrane's 1957-03-01 and 1958-01-31 bound disputed March/April dismissal and December/January return windows. These bounds are also explicit in candidate source notes. They do not alter released matching metadata. Coltrane's abstract bandstand sentence is now the source-supported concrete statement that he knew the tune. His corrected draft is 590 words.
+
+## Final author manifest and independent reading outcome
+
+| Candidate | SHA-256 | Words |
+|---|---|---:|
+| Coleman | f819cc6b7cb22e4ea59f7eddebccfc46abc5d85958e679e6ed9781285f365434 | 482 |
+| Coltrane | 66a2d5d4d91fa29a91b48cf0171022d767446e5bb0f77926caa52233ec45845c | 590 |
+| Faraday | 42d6334dc0b6935e7eeba43ec0371756088958c5065369382778cb765384048c | 680 |
+
+All three corrected hashes passed individual draft/publication simulation and the actual nine-candidate canonical compose/hash/serialized-replay check. No simulated approval was persisted. Independent reviewer C's final-hash addendum is in `WAVE-3-CROSS-REVIEW-A-2026-09-14.md`: no further Faraday factual or load-bearing craft fix; Coleman and Coltrane's substantive craft HOLDs remain. Length and legacy-matching differences are recorded separately. These are editorial findings, not a production or human publication approval.

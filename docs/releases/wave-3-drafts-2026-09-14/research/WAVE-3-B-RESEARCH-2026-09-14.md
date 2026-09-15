@@ -4,7 +4,9 @@ Authoring scope: Ella Fitzgerald, Katharine Graham, Langston Hughes only. These 
 
 The research skill was read in full. This agent was itself the delegated background researcher; no additional agent was spawned because all four team slots were occupied. The story recipe, evidence limits, domain context, current CLAUDE updates, StorySpec schema, and installed stage IDs were read. No released matching or library material was changed.
 
-## Frozen candidates and verification
+## Original author handoff and verification
+
+These original hashes are preserved for the independent review trail. The correction appendix below gives the current frozen candidates and supersedes any baseline prose-scope description here.
 
 | Candidate | SHA-256 | Words | Author assessment |
 |---|---|---:|---|
@@ -94,3 +96,21 @@ The memoir gives 1902. [Reporting on Eric McHenry's documentary research](https:
 The rooms search is one documented lunch-hour act. The stove and inability to save come later in compressed struggle. The turned-up scholarship is not used to erase the work of friends, relatives, editors or patrons. First-book publication and school entry answer different practical needs.
 
 Author source assessment: suitable for independent review with the above memory qualifications. Craft assessment: coherent small-response sequence, but the dark moment and turn are compact; no HOLD solely for the word target. Root and independent reviewers control any next decision.
+
+## Correction appendix — independent review response
+
+The independent Coleman/Coltrane/Faraday author reviewed the original three hashes in `WAVE-3-CROSS-REVIEW-B-2026-09-14.md`. I read that full packet and made only source-bounded prose/evidence corrections. Original candidate snapshots belong to the root's focused commit trail. No candidate review approval or synthetic reviewer ID was persisted.
+
+| Current candidate | SHA-256 | Words |
+|---|---|---:|
+| Fitzgerald | `0bad16690950606624abf0d9c8af59d867cdd3be2c186cab9b3da9dd690fee7b` | 365 |
+| Graham | `fcc977a8c65ec59a0eb5b2a4615a837ff410395107ccc77af4c67f2ddd00dbc2` | 496 |
+| Hughes | `4221485861e7c44b2f3347551b0dba26d32a1084d50413f5ce7ea425dea08454` | 539 |
+
+Fitzgerald: stage/age/intended dance belong to scene; remembered freeze/laughter/prompt to dark; asking to sing and singing to response. Contest victory now begins compression. Circular reminders were cut. The [LOC recollection paragraphs](https://www.loc.gov/loc/lcib/9708/ella.html) were reopened for the precise nervous/freeze wording. The [Decca dressing-room account](https://museum.media.org/ella/decca/decca_3.html) remains the turn. The ending now stops at the 1935 college trial, hire, weekly wage and traveling job. Miller's cards, humming and several-shows routine is **not dated specifically to 1935** and has been removed, along with undated shyness from this bounded ending. Those sources were inspected; their unused color is not grounds to broaden the episode. No original Feather interview was inspected. Source conflicts listed above remain.
+
+Graham: first three passages now use only the first-year greeting memory in the [Booknotes public-speaking exchange](https://booknotes.c-span.org/Watch/78359-1/Katharine-Graham), reopened in full. Weymouth's plural bedroom rehearsals and welcome wording do not establish the same occasion and were removed, including the unneeded `g-bedroom` atom. The scene introduces the lined-up children, dark carries her attested inability/fear, response gives the small practice act without invented feedback. Business inexperience moved to struggle. Literal `would` and the broken antecedent were removed. The ending of scene does not claim first-ever employment at the paper: earlier employment existed. The lunch/appointment sequence and later source limits remain unchanged.
+
+Hughes: large bags replaces inferred weight; the opening explicitly remains a recalled routine, not a dated shift or proof that the book was present when his mother arrived. The source's own `One day` transition now introduces her actual visit in prose. Repetitive room-search reminders were removed. Catalogue/advice/conversation context moves into struggle with an explicit loose `During that year` frame; past-perfect wording was removed because it could incorrectly force donor conversations before October 29. The turn centers on the memoir's scholarship letter and remembered assessment, not an original letter inspected. The [October 1925 image](https://www.loc.gov/exhibits/naacp/newnegromovement/Assets/na0062_enlarge.jpg) was genuinely inspected and remains distinct. The editorial sentence assigning book and scholarship different meanings was cut. Publication and college entry are both early 1926, with no exact ordering between them asserted. Birth uncertainty and the lack of an instantaneous inner-state report at his mother's arrival remain explicit qualifications.
+
+All three corrected files passed the individual candidate validator with zero errors/warnings. The actual nine-candidate compose/content-hash/serialized-replay/rhythm check passed with these corrected bytes: all means at most sixteen, sentence maxima at most twenty-eight, last sentences shorter than passage maxima, final bridge sentences at most twelve, and no texture sentences. Status remains draft and review remains empty. These deliberately shorter drafts remove unsupported or repetitive material; no missing words were replaced by invented action. Source and craft disposition must come from the independent hash-bound recheck, not the author.

@@ -13,7 +13,7 @@ The deterministic figure-key order keeps difficult episodes visible.
 | Set | Figures | State |
 |---|---|---|
 | 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
-| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Source research and first story drafts started September 14; not reviewed or published |
+| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Nine drafts researched, revised and independently checked September 14; four explicit craft holds; owner reading decisions pending; none published |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
 | 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
@@ -114,9 +114,23 @@ research lead, never a source. The seven-passage recipe and source floor remain
 unchanged; missing scenes or uncertain chronology are explicit holds, not
 permission to invent events or pad word counts.
 
-Each story will have its own source-grounded candidate commit; independent
-corrections, the review packet and CI wiring remain separate changes. Commits
-use only `taizhenC <tzhcheung@gmail.com>` with no co-author trailers. Candidates
-remain drafts with empty review metadata until the exact text has actually
-been reviewed. This continuation does not authorize automatic publication of
-new, unread texts or changes to earlier waves, matching, or production data.
+Each story has its own source-grounded candidate commit; individual story
+corrections, source/review reports, reading copy, hash manifest and CI wiring
+are separate focused changes. Commits use only `taizhenC <tzhcheung@gmail.com>`
+with no co-author trailers.
+
+The [tracked set-3 packet](releases/wave-3-drafts-2026-09-14/README.md) contains
+nine drafts and 63 exact passages (4,764 words). Coleman, Coltrane, Hurston and
+Jones retain specific craft holds. The other five have supported local arcs
+for the owner's reading decision, not blanket recipe clearance: notably Ella
+is a short miniature and Hughes retains a routine-opening/indirect-low-point
+qualification. Kovalevskaya's source-supported structural repair cleared its
+original moment/compression hold. Full findings and corrected-hash rechecks
+are linked in the packet; machine validity is not an editorial approval.
+
+All nine remain drafts with empty review metadata. No text inherits approval
+from earlier waves, no production story was published, and no library or
+matching configuration changed. Six candidate age ranges differ from their
+legacy matching bounds; those require a separately evaluated decision before
+promotion. Set 4 is next, with 23 later stages still queued and the six older
+wave-two rewrites still held.

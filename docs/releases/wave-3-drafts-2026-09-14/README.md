@@ -58,8 +58,8 @@ The root also spot-checked primary passages and read all final prose.
 Several narratives narrow or change the emphasis of their legacy matching
 stages. In particular, Hughes is not a father's engineering bargain, Graham
 does not reach the 1971 publishing decision, and Coltrane does not affirm a
-withdrawal-and-cure plot. Seven candidates differ from the installed stage's
-age range; Jones and Kovalevskaya retain it. The reports identify exact ranges
+withdrawal-and-cure plot. Six candidates differ from the installed stage's
+age range; Coltrane, Jones and Kovalevskaya retain it. The reports identify exact ranges
 and conflicting dates. Editorial envelope dates are not attested event days.
 
 No library, matching text, recipe, schema, provider configuration, saved

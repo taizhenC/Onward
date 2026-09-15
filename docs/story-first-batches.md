@@ -5,16 +5,16 @@ process for the remaining historical stories, nine per set. The first nine
 are already published; see [their release record](releases/2026-09-05-story-first-publication.md).
 
 The table preserves the original forty-one-stage queue. Three stages in set 2
-were published on September 10 and five in set 3 on September 15, leaving
-thirty-three: six held set-2 rewrites, four unpublished set-3 stories, and
+were published on September 10 and six in set 3 on September 15, leaving
+thirty-two: six held set-2 rewrites, three unpublished set-3 stories, and
 twenty-three in later sets. The September 15 production audit confirmed
-17 valid published historical stories, with zero quarantined.
+18 valid published historical stories, with zero quarantined.
 The deterministic figure-key order keeps difficult episodes visible.
 
 | Set | Figures | State |
 |---|---|---|
 | 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
-| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya live-verified September 15; Hurston reframed for new exact-text reading; Coleman, Coltrane and Jones held for source/scene gaps |
+| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya live-verified September 15; Hurston's reframed version subsequently owner-approved and published; Coleman, Coltrane and Jones held for source/scene gaps |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
 | 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
@@ -147,15 +147,22 @@ passages and progress acknowledgements. Test guests and stories were removed.
 The [production receipt](releases/2026-09-15-wave-3-publication.md) records the
 exact hashes, checks and disclosed short-form/matching qualifications.
 
-The [repair packet](releases/wave-3-repairs-2026-09-15/README.md) contains a
+At the repair handoff, the [packet](releases/wave-3-repairs-2026-09-15/README.md) contained a
 new 342-word Hurston story and exact-hash independent review. It reframes the
 episode around the invitation to Howard and subsequent admission difficulties.
-Its new prose, short response/turn and changed emphasis require the owner's
-reading decision; approval of the old text is not reused. Coleman, Coltrane
+Its new prose, short response/turn and changed emphasis required a new owner
+reading decision; approval of the old text was not reused. Coleman, Coltrane
 and Jones remain held after targeted primary-source work. The full Coltrane
 audio yielded unverified performance leads, not a verified repair of the
 dismissal story. No new text for those three is represented as complete.
 
 Original snapshots, matching content, recipes, schemas and reader artifacts
-remain unchanged. The five production promotions do not approve or publish
-the four held stories, the six older rewrites or any later set.
+remain unchanged. Those five production promotions did not approve or publish
+the four then-held stories, the six older rewrites or any later set.
+
+The owner then confirmed reading Hurston's exact replacement and requested
+publication. The [Hurston receipt](releases/2026-09-15-hurston-publication.md)
+records that distinct approval and snapshot-bound release. Six stories from
+set 3 are now published; Coleman, Coltrane and Jones remain held. The catalog
+contains 18 valid historical stories, with 32 stages still in the original
+queue (six held older rewrites, three set-3 holds and 23 later stages).

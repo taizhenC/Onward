@@ -38,11 +38,11 @@
     },
     {
       "factId": "h02",
-      "statement": "Hurston recalled that after unsuccessful attempts to save enough money and with her clothes nearly gone, she attended night high school.",
+      "statement": "Hurston recalled working as a waitress and trying other things without saving enough to return to school. With her clothes nearly gone, she attended night high school.",
       "sourceRefs": [
         {
           "sourceId": "dust",
-          "locator": "IX School Again, paragraph beginning 'How then did I get back to school?'",
+          "locator": "IX School Again, paragraphs beginning 'Soon, I had another waitress' through 'How then did I get back to school?'",
           "scope": "bounded"
         }
       ],
@@ -52,7 +52,7 @@
     },
     {
       "factId": "h03",
-      "statement": "In night school she submitted written work and answered questions; Holmes read a poem, complimented her work after class, and she went to Morgan to register the following week. She returned to the night class twice after the compliment.",
+      "statement": "In night school Hurston submitted written work and answered questions. Holmes first noticed her particularly on a night he read a poem, repeatedly meeting her eyes above the page; she did not know why and pictured what she heard. He complimented her work after class. She returned to his class twice, then registered at Morgan the following week.",
       "sourceRefs": [
         {
           "sourceId": "dust",
@@ -309,312 +309,9 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "She came to the school to register, with no money to pay her way. She was twenty-six. In her memory, the dean talked with her when she arrived. She had been taking classes at night. There she had submitted written work and answered questions with the other students. An English teacher had stopped her after class to praise her work. She had returned to his class twice after that. Now she had come to enroll in a school where she could finish her education. She was there.",
+      "canonicalText": "She was in an evening classroom, listening to her teacher read a poem. She was about twenty-six. In her memory, he looked at her whenever he lifted his eyes from the page. She had been turning in written work and answering questions. He had not singled her out before that night. She did not know why he kept looking at her. As she listened, she pictured what the poem described. She listened.",
       "requiredFactIds": [
-        "h04",
-        "h01",
-        "h02",
-        "h03"
-      ],
-      "optionalFactIds": [],
-      "entityIds": [],
-      "quoteIds": [],
-      "sentenceEvidence": [
-        {
-          "sentenceIndex": 0,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 1,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h01"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 2,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h02",
-            "h03"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h03"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h03"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h03"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h03"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        }
-      ],
-      "personalizationZones": [
-        "none"
-      ],
-      "sourceNote": "Morgan registration, September 1917; memory cue covers the autobiography's encounter. Age is corrected using estate birth/enrollment dates. No invented office, clerk, registration form, dialogue or physical exchange of documents."
-    },
-    {
-      "role": "dark_moment",
-      "canonicalText": "She had arrived expecting to be frightened of the dean. She had no family she could refer him to. And she had no money. Before returning to school, she had tried to save enough to make it possible. The attempts had not brought her what she needed. Her clothes were almost gone when she finally went to the night classes. She had gone without waiting to gather enough money first. Now the dean had a woman before him who wanted to register and could not pay her way. She had come anyway.",
-      "requiredFactIds": [
-        "h04",
-        "h02",
-        "h03"
-      ],
-      "optionalFactIds": [],
-      "entityIds": [],
-      "quoteIds": [],
-      "sentenceEvidence": [
-        {
-          "sentenceIndex": 0,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 1,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 2,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h02"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h02"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h02"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h02"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h03",
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h04"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        }
-      ],
-      "personalizationZones": [
-        "none"
-      ],
-      "sourceNote": "CRAFT HOLD: material pressure and anticipated fear are recollected context at registration, not a separately attested refusal or crisis in the dean's presence. No invented humiliation, hostile official, deadline or legal-age dialogue."
-    },
-    {
-      "role": "response",
-      "canonicalText": "She took the short examination the dean gave her. He credited her with two years of high-school work and assigned her to a class. A few days later, his wife sent for her. There was paid work that could fit around school. A woman with a broken hip needed help getting dressed in the morning and undressed at night. The job came with a place to live and a little weekly pay. She accepted it and moved into the household. There were books in its library. She began to read them.",
-      "requiredFactIds": [
-        "h05",
-        "h06",
-        "h07"
-      ],
-      "optionalFactIds": [],
-      "entityIds": [],
-      "quoteIds": [],
-      "sentenceEvidence": [
-        {
-          "sentenceIndex": 0,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h05"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 1,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h05"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 2,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h06"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h06"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h06"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h06"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h07"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h07"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h07"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        }
-      ],
-      "personalizationZones": [
-        "none"
-      ],
-      "sourceNote": "CRAFT HOLD: examination is a documented small act, but this passage compresses admission and subsequent job arrangements across several days. The memoir merely infers communication between the dean and his wife; that causal detail is omitted."
-    },
-    {
-      "role": "struggle",
-      "canonicalText": "At school she had one dress, one change of underwear, and one pair of shoes. Around her were classmates she thought pretty and well dressed. She felt plain among them. She did not rush forward to make friends, but she did not draw away either. On her second day, another girl quietly lent her a handkerchief during the school assembly. She nodded her thanks. She studied hard and felt behind. The age she had given for schooling was sixteen. Her actual age was ten years greater. But the pupils did not shove her aside or treat her as an outcast. She had classmates who helped her. She still had one dress.",
-      "requiredFactIds": [
-        "h08",
-        "h09",
-        "h10",
-        "h11",
+        "h03",
         "h01"
       ],
       "optionalFactIds": [],
@@ -625,7 +322,7 @@
           "sentenceIndex": 0,
           "treatment": "historical_claim",
           "factIds": [
-            "h08"
+            "h03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -634,7 +331,8 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "h08"
+            "h01",
+            "h03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -643,7 +341,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "h08"
+            "h03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -652,7 +350,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "h09"
+            "h03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -661,7 +359,7 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "h09"
+            "h03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -670,7 +368,7 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "h09"
+            "h03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -679,7 +377,7 @@
           "sentenceIndex": 6,
           "treatment": "historical_claim",
           "factIds": [
-            "h10"
+            "h03"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -688,7 +386,196 @@
           "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
-            "h11"
+            "h03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A single night-school poem-reading, shortly before the September 1917 Morgan registration. Age is approximate and based on estate birth/enrollment chronology plus the memoir's following-week link, not a guessed new year. The gaze and her visual response are in the memoir; no poem quotation, period-identifying title or teacher motive is invented."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The following week, she was at another school, trying to register. She had come expecting to be afraid of the dean. She had no family to refer him to. And she had no money.",
+      "requiredFactIds": [
+        "h03",
+        "h04"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h03",
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "CRAFT HOLD remains: this is source-attested anticipated fear and material pressure at registration, not evidence that she actually became afraid, was refused, or faced a hostile official. Kept deliberately brief rather than expanding one source sentence into invented humiliation or imagined consequences. The transition from the poem-reading is the memoir's own following-week sequence."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She took the brief examination the dean gave her. He credited her with two years of high-school work. Then he assigned her to a class.",
+      "requiredFactIds": [
+        "h05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One admission encounter only. The documented examination is her small act; later job arrangements have moved to the compressed struggle. The source gives no exam questions, writing materials, bodily gestures or difficulty level, and none is supplied. Its brevity is a source limit, not a fabricated full-length scene."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Before the night classes, she had tried to save her way back to school. She worked as a waitress, then tried other things. Those attempts had left her without enough money. A few days after registration, the dean's wife told her about a job. A woman with a broken hip needed help dressing in the morning and undressing at night. The job provided a home and a little weekly pay. She accepted and moved into the household. There she read books from the library. At school, she had one dress, a change of underwear and one pair of shoes. She felt plain among her well-dressed classmates. She studied hard, feeling behind. They did not treat her as an outcast. She still had one dress.",
+      "requiredFactIds": [
+        "h02",
+        "h06",
+        "h07",
+        "h08",
+        "h10"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h07"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -697,8 +584,7 @@
           "sentenceIndex": 8,
           "treatment": "historical_claim",
           "factIds": [
-            "h01",
-            "h11"
+            "h08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -707,7 +593,7 @@
           "sentenceIndex": 9,
           "treatment": "historical_claim",
           "factIds": [
-            "h10"
+            "h08"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -716,13 +602,22 @@
           "sentenceIndex": 10,
           "treatment": "historical_claim",
           "factIds": [
-            "h09"
+            "h10"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
           "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
           "treatment": "historical_claim",
           "factIds": [
             "h08"
@@ -734,7 +629,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Material difficulty is retained without inventing peer cruelty, which Hurston explicitly denies. The estate supports the age deduction, not a witnessed clerk encounter. SOURCE QUALIFICATION: no contemporaneous age declaration inspected; memoir chronology differs from estate timeline."
+      "sourceNote": "Explicit backward-looking saving failures precede the night classes; the next sentence jumps to days after registration. The paid work and library now belong to this compressed passage, not the response. Material and study pressure remain without inventing peer cruelty, which Hurston denies. The later mathematics difficulty is not moved before the week-one friendship. The estate-supported age declaration remains a qualified fact in the fold; no contemporaneous declaration or clerk exchange was inspected."
     },
     {
       "role": "turning_point",

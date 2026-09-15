@@ -6,7 +6,7 @@ Three candidates, all `version: 1`, `status: draft`, `review: {}`. Research skil
 
 | Candidate | Current SHA-256 | Words | Current content-only status |
 |---|---|---:|---|
-| Hurston | `32070f91a9ba998a022e4346213b92fecdd3b71565f76c3fd3fc48ed4068a97c` | 519 | Source-qualified; dark-moment HOLD remains; B recheck requested |
+| Hurston | `32070f91a9ba998a022e4346213b92fecdd3b71565f76c3fd3fc48ed4068a97c` | 519 | B recheck complete: source-qualified; dark-moment HOLD remains |
 | Jones | `47ff6dacb484de4e83b329b2c32f1dc78b9c45208677bafe19b9ff5031932bda` | 525 | Unchanged, source-qualified with substantive craft HOLD |
 | Kovalevskaya | `0f0c8255664fa5686db983e4e8fe19dbedbf4fc4c259ddc97d7de0ac4230d33d` | 568 | B independently rechecked: source-qualified pass and original R2 HOLD cleared; short-form qualification |
 
@@ -90,4 +90,4 @@ I reread [chapter IX](https://gutenberg.ca/ebooks/hurstonzn-dusttracksonaroad/hu
 
 The substantive dark-moment HOLD remains. A short examination account is not expanded with guessed questions or gestures. Later mathematics trouble cannot be relocated before the week-one friendship; it is retrospective difficulty without a located remedial turn. The hospital account preceding night school has uncertain date precision for the narrowed episode and would change the emphasis; it was not borrowed to manufacture this shape. This cleanup makes the source limits more visible rather than claiming the complete recipe now clears.
 
-The corrected draft passes the individual validator and actual nine-candidate composer/content-hash/replay/rhythm check with zero errors/warnings. Maximum passage mean is 10.60; longest sentence is 17 words. Age bounds remain 26–28 and matching stays untouched. B has the corrected hash for independent recheck. Jones remains frozen at `47ff6dacb484de4e83b329b2c32f1dc78b9c45208677bafe19b9ff5031932bda`, 525 words, with its source/craft limitations unchanged.
+The corrected draft passes the individual validator and actual nine-candidate composer/content-hash/replay/rhythm check with zero errors/warnings. Maximum passage mean is 10.60; longest sentence is 17 words. Age bounds remain 26–28 and matching stays untouched. B completed the independent recheck at this hash: source-qualified pass, with the dark-moment HOLD retained; see the C cross-review's revision addendum. Jones remains frozen at `47ff6dacb484de4e83b329b2c32f1dc78b9c45208677bafe19b9ff5031932bda`, 525 words, with its source/craft limitations unchanged.

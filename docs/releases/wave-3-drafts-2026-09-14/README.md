@@ -91,6 +91,9 @@ sentence means/ceilings, and passage/bridge ending constraints. All nine pass
 with zero errors/warnings. It uses no provider or database. A separate exact
 comparison verified all 63 reading-copy passages and their displayed hashes.
 CI runs the required-hash check without granting publication authority.
+Four reading-copy paragraph endings retain spaces present in the frozen
+canonical text; `git diff --check` reports those whitespace warnings. They
+were not silently trimmed after the exact-copy/hash review.
 
 Local lint, typecheck, all 20 smoke assertions, the production build, native
 image runtime probe, high-severity dependency audit (zero vulnerabilities),

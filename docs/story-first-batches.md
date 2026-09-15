@@ -5,15 +5,16 @@ process for the remaining historical stories, nine per set. The first nine
 are already published; see [their release record](releases/2026-09-05-story-first-publication.md).
 
 The table preserves the original forty-one-stage queue. Three stages in set 2
-were published on September 10, leaving thirty-eight: six held rewrites,
-nine stories in the current set, and twenty-three in later sets. These counts
-follow the recorded release receipts, not a fresh production database audit.
+were published on September 10 and five in set 3 on September 15, leaving
+thirty-three: six held set-2 rewrites, four unpublished set-3 stories, and
+twenty-three in later sets. The September 15 production audit confirmed
+17 valid published historical stories, with zero quarantined.
 The deterministic figure-key order keeps difficult episodes visible.
 
 | Set | Figures | State |
 |---|---|---|
 | 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
-| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Nine drafts researched, revised and independently checked September 14; four explicit craft holds; owner reading decisions pending; none published |
+| 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya live-verified September 15; Hurston reframed for new exact-text reading; Coleman, Coltrane and Jones held for source/scene gaps |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
 | 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
@@ -84,7 +85,7 @@ Butler, Carver and Christie retain format/episode decisions; Charles retains
 a historical-source adjudication hold. Shortness alone does not block release.
 The owner then directed publication for stories meeting the standards and
 rewrites for the others. Andersen, Banting and Child are published and live-verified;
-the catalog now contains 12 valid historical stories, with zero quarantined.
+the September 10 catalog contained 12 valid historical stories, with zero quarantined.
 The [release record](releases/2026-09-10-wave-2-publication.md) records the successful
 worker refresh and complete live reader verification. The other six were
 rewritten and independently checked, but remain unpublished for the specific
@@ -128,9 +129,33 @@ qualification. Kovalevskaya's source-supported structural repair cleared its
 original moment/compression hold. Full findings and corrected-hash rechecks
 are linked in the packet; machine validity is not an editorial approval.
 
-All nine remain drafts with empty review metadata. No text inherits approval
-from earlier waves, no production story was published, and no library or
-matching configuration changed. Six candidate age ranges differ from their
-legacy matching bounds; those require a separately evaluated decision before
-promotion. Set 4 is next, with 23 later stages still queued and the six older
+At the September 14 handoff all nine remained drafts with empty review metadata.
+No text inherited approval from earlier waves, no production story had been
+published, and no library or matching configuration changed. Six candidate age
+ranges differ from their legacy matching bounds; the discrepancies remain
+disclosed, and any matching correction requires a separately evaluated library
+release. Set 4 is next, with 23 later stages still queued and the six older
 wave-two rewrites still held.
+
+## Set 3 publication and repairs — September 15
+
+The owner confirmed reading the reviewed text and requested production release
+and repairs. Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya were promoted
+unchanged through the reviewed StorySpec workflow. A successful deployment
+refreshed the workers, and all five passed the live reader through their seven
+passages and progress acknowledgements. Test guests and stories were removed.
+The [production receipt](releases/2026-09-15-wave-3-publication.md) records the
+exact hashes, checks and disclosed short-form/matching qualifications.
+
+The [repair packet](releases/wave-3-repairs-2026-09-15/README.md) contains a
+new 342-word Hurston story and exact-hash independent review. It reframes the
+episode around the invitation to Howard and subsequent admission difficulties.
+Its new prose, short response/turn and changed emphasis require the owner's
+reading decision; approval of the old text is not reused. Coleman, Coltrane
+and Jones remain held after targeted primary-source work. The full Coltrane
+audio yielded unverified performance leads, not a verified repair of the
+dismissal story. No new text for those three is represented as complete.
+
+Original snapshots, matching content, recipes, schemas and reader artifacts
+remain unchanged. The five production promotions do not approve or publish
+the four held stories, the six older rewrites or any later set.

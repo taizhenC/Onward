@@ -113,9 +113,15 @@ memories. These are not claims that every story reaches the soft duration aim.
 Existing matching ages/hooks remain unchanged, as in the prior story-only
 releases; correcting them requires a separate evaluated library release.
 
-Coleman, Coltrane, Hurston and Jones remain unpublished. The
+At this five-story handoff Coleman, Coltrane, Hurston and Jones remained unpublished. The
 [repair packet](wave-3-repairs-2026-09-15/README.md) contains a newly reframed
 Hurston candidate for exact-text reading; the other three retain source/scene
-holds. The owner's request to repair them does not supply missing historical
+holds. The owner's request to repair them did not supply missing historical
 events or make future rewritten text already reviewed. No recipe exception
 has been introduced.
+
+Subsequently the owner confirmed reading Hurston's exact replacement and
+requested its publication. That separate approval and release are recorded
+in the [Hurston receipt](2026-09-15-hurston-publication.md), which brings the
+catalog to 18 valid historical stories. Coleman, Coltrane and Jones remain
+unpublished. The five-story hashes and results in this receipt are unchanged.

@@ -26,6 +26,11 @@
           "sourceId": "estate",
           "locator": "Timeline: January 7, 1891; September 1917-June 1918; 1918-1919; 1919-1924",
           "scope": "bounded"
+        },
+        {
+          "sourceId": "dust",
+          "locator": "IX School Again, college-choice conversation beginning 'When it came time to consider college' through summer move beginning 'So that summer'",
+          "scope": "bounded"
         }
       ],
       "eventOrder": 1,
@@ -195,7 +200,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "She was with two school friends and their visiting cousin. She was about twenty-seven. In her memory, they had spent a few hours having fun. The cousin had come for the weekend. She planned to stay at her present school for college. But the visitor thought she belonged at another college. She asked her to come.",
+      "canonicalText": "At her school, she was with two friends and their visiting cousin. She was about twenty-seven. In her memory, they had spent a few hours having fun. The cousin had come for the weekend. She planned to stay at her present school for college. But the visitor thought she belonged at another college. She asked her to come.",
       "requiredFactIds": [
         "r02",
         "r01"

@@ -34,7 +34,7 @@
     },
     {
       "factId": "h-laundry",
-      "statement": "In Washington Hughes worked at a wet-wash laundry, unloading bags, sorting clothing and attaching numbered pins.",
+      "statement": "In Washington Hughes worked at a wet-wash laundry, unloading large bags, sorting clothing and attaching numbered pins.",
       "sourceRefs": [
         {
           "sourceId": "hughes-big-sea",
@@ -299,7 +299,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "He sorted clothes at a laundry, with a borrowed book on the table. He was about twenty-three. In his memory, the work began with heavy bags arriving to be opened. He separated the clothes and fixed numbered pins to them. The numbers kept each bundle together through the wash. Between bundles, he read about religions. \n\nHe wanted to study how people lived and why the world worked as it did. He wanted that learning for his writing. For now, his place for reading was a sorting table. The book lay among the clothes.",
+      "canonicalText": "He sorted clothes at a laundry, with a borrowed book on the table. He was about twenty-three. In his memory, the work began with large bags arriving to be opened. He separated the clothes and fixed numbered pins to them. The numbers kept each bundle together through the wash. Between bundles, he read about religions. \n\nHe wanted to study how people lived and why the world worked as it did. He wanted that learning for his writing. For now, his place for reading was a sorting table. The book lay among the clothes.",
       "requiredFactIds": [
         "h-laundry",
         "h-reading",
@@ -404,11 +404,11 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The memoir supplies the scene and work details; all memoir-derived particulars remain probable. Approximate age explicitly accommodates the disputed 1901/1902 birth year."
+      "sourceNote": "The memoir supplies the scene and work details; all memoir-derived particulars remain probable. Approximate age explicitly accommodates the disputed 1901/1902 birth year. The laundry opening is a remembered work routine, not a dated shift or a claim that the book was present at his mother's arrival. 'Large' paraphrases the memoir's 'big'; no weight is inferred."
     },
     {
       "role": "dark_moment",
-      "canonicalText": "His mother came into the laundry crying. She said she could no longer stay with their relatives. Someone there had hurt her pride and her feelings. \n\nHe was working among other people's clothes when she brought him this need. She needed somewhere else to live. His wages were already part of the money keeping the family going. His mother worked too, and his younger brother still needed their support. Between them, they barely had enough. Now she was there in tears.",
+      "canonicalText": "One day, his mother came into the laundry crying. She said she could no longer stay with their relatives. Someone there had hurt her pride and her feelings. \n\nHe was working among other people's clothes when she brought him this need. She needed somewhere else to live. His wages were already part of the money keeping the family going. His mother worked too, and his younger brother still needed their support. Between them, they barely had enough. Now she was there in tears.",
       "requiredFactIds": [
         "h-mother",
         "h-laundry",
@@ -504,16 +504,14 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Bounded memoir moment: mother at laundry. No invented quarrel, rejection speech, room furnishings, catastrophe or inner decision."
+      "sourceNote": "Bounded memoir moment: mother at laundry. No invented quarrel, rejection speech, room furnishings, catastrophe or inner decision. 'One day' preserves the memoir's own transition from routine to the particular arrival."
     },
     {
       "role": "response",
-      "canonicalText": "He took his lunch hour to help her look for rooms. They found two on the upper floor of an old brick house near his work. The rooms came with furniture. They did not have heat. He and his mother had found a place where they could stay. \n\nThe search fitted into a break from sorting clothes. It did not bring money for college or a winter coat. For that lunch hour, they had been looking for somewhere to live. They had found the rooms.",
+      "canonicalText": "He took his lunch hour to help her look for rooms. They found two on the upper floor of an old brick house near his work. The rooms came with furniture, but they had no heat. They had found a place to stay.",
       "requiredFactIds": [
         "h-rooms",
-        "h-heat",
-        "h-laundry",
-        "h-money"
+        "h-heat"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -541,59 +539,14 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "h-rooms"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
+            "h-rooms",
             "h-heat"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-rooms"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-rooms",
-            "h-laundry"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-money"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-rooms"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
+          "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
             "h-rooms"
@@ -605,11 +558,11 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The source documents a lunch-hour search and its result, not dialogue with a landlord, payment, a return route or a triumphant decision. The later stove purchase belongs to struggle."
+      "sourceNote": "Lunch-hour search is the documented small response. No invented landlord, payment, conversation, return-to-work gesture or larger resolution is added."
     },
     {
       "role": "struggle",
-      "canonicalText": "They bought a secondhand stove and carried it between the rooms. They could not afford another. His plan to save a dollar each week for college did not work. Even a heavy coat stayed beyond his earnings. Conversations about scholarships had produced no scholarship. He wrote poems through the cold and uncertainty. \n\nMonths later, he worked in a hotel. He wrote a friend about a loan for college. He set out the amount, the years of study, and a plan to repay it. His working hours had kept him from seeing that friend the previous Sunday. His poetry book had already gone to press. He still needed tuition money.",
+      "canonicalText": "They bought a secondhand stove and carried it between the rooms. They could not afford another. His plan to save a dollar each week for college did not work. Even a heavy coat stayed beyond his earnings. Conversations about scholarships had produced no scholarship. He wrote poems through the cold and uncertainty. Months later, he worked in a hotel. He wrote a friend about a loan for college. He set out the amount, the years of study, and a plan to repay it. His working hours had kept him from seeing that friend the previous Sunday. His poetry book had already gone to press. During that year, he also heard about a less expensive college from a young poet studying there. He sent for its course catalogue. In conversations that year, he told a woman who liked his poems about his college plans. She had a son in college herself. He still needed tuition money.",
       "requiredFactIds": [
         "h-heat",
         "h-money",
@@ -617,7 +570,9 @@
         "h-poems",
         "h-letter-hours",
         "h-letter-loan",
-        "h-letter-book"
+        "h-letter-book",
+        "h-catalogue",
+        "h-scholarship-talk"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -726,6 +681,42 @@
           "sentenceIndex": 11,
           "treatment": "historical_claim",
           "factIds": [
+            "h-catalogue"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-catalogue"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "h-scholarship-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 15,
+          "treatment": "historical_claim",
+          "factIds": [
             "h-letter-loan"
           ],
           "interpretationIds": [],
@@ -735,15 +726,14 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The October 29, 1925 signed letter was visually inspected, including both paragraphs. It independently prevents the false causal claim that December hotel publicity secured his book. No evidence here establishes the requested loan was granted."
+      "sourceNote": "The laundry hardship and October 1925 loan request are separate documented phases. College advice, catalogue and donor conversations are loose context during that year; their exact order relative to the October 29 letter is not claimed. Only the pre-Christmas relation of the conversations to the scholarship offer is established."
     },
     {
       "role": "turning_point",
-      "canonicalText": "At the holiday, he received a letter offering to pay for his college study. The offer came from a woman who liked his poems. She had a son in college herself. He had told her he wanted to return to school. He had also told her about a college he was considering. \n\nA young poet studying there had recommended it. Its fees were lower than those of the school he had first considered. He had sent for the list of courses. Now her letter offered a scholarship there. He remembered it as “the happiest holiday gift I've ever received.” It was an offer for school.",
+      "canonicalText": "At Christmas, he received a letter offering to pay for his college study. It came from the woman he had told about his plans. Her letter offered a scholarship at the college he had described. He remembered it as “the happiest holiday gift I've ever received.” There was help for his study.",
       "requiredFactIds": [
         "h-scholarship",
-        "h-scholarship-talk",
-        "h-catalogue"
+        "h-scholarship-talk"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -774,67 +764,13 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "h-scholarship-talk"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-scholarship-talk"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-scholarship-talk"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-catalogue"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-catalogue"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-catalogue"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
             "h-scholarship"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
-          "sentenceIndex": 9,
+          "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
             "h-scholarship"
@@ -845,7 +781,7 @@
           ]
         },
         {
-          "sentenceIndex": 10,
+          "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
             "h-scholarship"
@@ -857,19 +793,17 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The letter's arrival and Hughes's response are later memory, not a surviving letter inspected here. Brief memory framing is required for the quoted assessment. The recalled earlier conversations and catalogue supply context, not an invented reading posture."
+      "sourceNote": "The holiday letter and assessment are later memoir recollection, not an original scholarship letter inspected here. Prior college conversations/catalogue are moved to compression. No invented envelope, reading place, facial expression or reply."
     },
     {
       "role": "became",
-      "canonicalText": "He entered college when the next term began. The school was the one whose courses he had sent for. Someone's financial help made that possible. His first poetry collection also appeared. Inside, it named the magazines and newspapers that had already printed his poems. The dedication was to his mother. \n\nThe book and the scholarship answered different needs. When his book was already at the printers, he had still been asking for tuition. Writing had not made the hotel wages enough. The move into study included help from somebody else. He had a place at college.",
+      "canonicalText": "He entered college when the next term began. Someone's financial help made that possible. That year, his first poetry collection also appeared. Its acknowledgments named the magazines and newspapers that had already printed his poems. The dedication was to his mother. His book had been at press while he was still asking for tuition. He now had a place at college.",
       "requiredFactIds": [
         "h-college",
-        "h-catalogue",
         "h-scholarship",
         "h-book",
         "h-letter-book",
-        "h-letter-loan",
-        "h-letter-hours"
+        "h-letter-loan"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -888,8 +822,8 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "h-college",
-            "h-catalogue"
+            "h-scholarship",
+            "h-college"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -898,8 +832,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "h-scholarship",
-            "h-college"
+            "h-book"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -926,25 +859,6 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "h-book"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-book",
-            "h-scholarship"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
             "h-letter-book",
             "h-letter-loan"
           ],
@@ -952,27 +866,7 @@
           "quoteIds": []
         },
         {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-letter-hours",
-            "h-letter-loan"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "h-scholarship",
-            "h-college"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 10,
+          "sentenceIndex": 6,
           "treatment": "historical_claim",
           "factIds": [
             "h-college"
@@ -984,7 +878,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "End at early 1926 entry and first-book publication. Do not turn this into a lifetime success montage, a claim the family escaped poverty, or a self-rescue story. Scholarship donor identity is omitted because the memoir leaves her unnamed."
+      "sourceNote": "Early 1926 entry and book publication; no exact order between them is claimed. The original October letter supports the tuition/book contrast. Removed editorial abstraction about different needs; no claim that the scholarship cured poverty."
     },
     {
       "role": "bridge",

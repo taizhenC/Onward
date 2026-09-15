@@ -80,8 +80,9 @@ story matched its approved canonical passages after whitespace normalization;
 the check does not claim byte-identical paragraph formatting. The first run
 passed Faraday, then rejected the old Fitzgerald evaluation fixture's age 16.
 The unchanged adult-only intake requires 18–100; a local parser reproduction
-and red/green fixture preflight confirmed this. A second harness expected an
-immediate session and stopped on a normal matching recovery response. The
+and red/green fixture preflight confirmed this. A second harness stopped when
+the response lacked its expected immediate session; that attempt did not
+record the response variant. The
 final run used age 18 and followed the bounded, server-token-based clarification
 flow, without forcing a figure or bypassing rate limits. The other three
 remaining stories opened directly. No application fix was needed.
@@ -92,6 +93,11 @@ deletion route. Each cleanup reverified the exact anonymous identity before
 deletion. The operator's account was not used, and no reader identifiers or
 credentials appear in the receipt. Details are saved locally in
 `.codex-recovery/wave-3-reader-canary-receipt-2026-09-15.json`.
+
+A final scoped database recheck at `2026-09-15T06:05:36.290Z` confirmed the
+same five exact published texts, all earlier 12 unchanged, 17 valid historical
+stories, zero quarantined and healthy publication schema. It is recorded in
+`.codex-recovery/wave-3-production-post-canary-2026-09-15.json`.
 
 To disable a bad current story, use the audited retirement path. Restoring
 older text requires a newly reviewed version, not an overwrite of terminal
@@ -107,7 +113,9 @@ memories. These are not claims that every story reaches the soft duration aim.
 Existing matching ages/hooks remain unchanged, as in the prior story-only
 releases; correcting them requires a separate evaluated library release.
 
-Coleman, Coltrane, Hurston and Jones remain unpublished while their substantive
-source/scene gaps are investigated. The owner's request to repair them does
-not supply missing historical events or make future rewritten text already
-reviewed. No recipe exception has been introduced.
+Coleman, Coltrane, Hurston and Jones remain unpublished. The
+[repair packet](wave-3-repairs-2026-09-15/README.md) contains a newly reframed
+Hurston candidate for exact-text reading; the other three retain source/scene
+holds. The owner's request to repair them does not supply missing historical
+events or make future rewritten text already reviewed. No recipe exception
+has been introduced.

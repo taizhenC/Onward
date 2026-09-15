@@ -34,7 +34,7 @@
     },
     {
       "factId": "e-dance",
-      "statement": "Fitzgerald remembered entering the amateur contest intending to dance, then freezing before the audience.",
+      "statement": "Fitzgerald remembered entering the amateur contest intending to dance, being nervous, and freezing before the audience.",
       "sourceRefs": [
         {
           "sourceId": "ella-loc",
@@ -197,48 +197,6 @@
       "claimKind": "event"
     },
     {
-      "factId": "e-cards",
-      "statement": "Miller remembered touring with Fitzgerald and Webb's band, waiting between shows in dressing rooms, and playing cards with Fitzgerald.",
-      "sourceRefs": [
-        {
-          "sourceId": "ella-miller",
-          "locator": "Opening transcript, paragraphs beginning 'Travelling now' and 'Between shows', through the description of humming over cards",
-          "scope": "bounded"
-        }
-      ],
-      "eventOrder": 14,
-      "confidence": "probable",
-      "claimKind": "event"
-    },
-    {
-      "factId": "e-shows",
-      "statement": "Miller described the touring company giving several shows a day and spending intervals together backstage.",
-      "sourceRefs": [
-        {
-          "sourceId": "ella-miller",
-          "locator": "Opening transcript, paragraph beginning 'Travelling now' through 'Between shows'",
-          "scope": "bounded"
-        }
-      ],
-      "eventOrder": 15,
-      "confidence": "probable",
-      "claimKind": "event"
-    },
-    {
-      "factId": "e-shy",
-      "statement": "The official biography describes Fitzgerald as shy and self-conscious away from familiar people, while more comfortable singing on stage.",
-      "sourceRefs": [
-        {
-          "sourceId": "ella-official",
-          "locator": "'What's she going to do?', paragraph beginning 'Off stage' and following Fitzgerald quotation",
-          "scope": "bounded"
-        }
-      ],
-      "eventOrder": 16,
-      "confidence": "probable",
-      "claimKind": "context"
-    },
-    {
       "factId": "e-identity",
       "statement": "Ella Fitzgerald was a jazz singer whose work included singing wordless melodies with her voice.",
       "sourceRefs": [
@@ -323,11 +281,10 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "She stood on the theater stage, facing the people who had come to judge the contest. She was about seventeen. She had entered as a dancer. In her memory, she froze when her turn came. She had wanted to dance. Now she was up there without beginning the act she had come to perform. \n\nThe audience was laughing. The man running the show told her she had to do something. He was still waiting for an act. She was still on the stage.",
+      "canonicalText": "She stood on the theater stage, facing an audience for an amateur contest. She was about seventeen. She had entered as a dancer.",
       "requiredFactIds": [
         "e-dance",
-        "e-age",
-        "e-laugh"
+        "e-age"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -359,79 +316,16 @@
           ],
           "interpretationIds": [],
           "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-laugh"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-laugh"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-laugh"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
         }
       ],
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "First-person recollection quoted by the Library of Congress anchors the freeze and laughter. Age is approximate: institutional accounts and the quoted recollection disagree between fifteen and seventeen. No exact date, song order or invented posture."
+      "sourceNote": "The contest's stage, approximate age and intended act only. The next passage's memory cue qualifies the recalled freeze. No invented backstage preparation, costume, applause or sequence of dancers."
     },
     {
       "role": "dark_moment",
-      "canonicalText": "She was frightened in front of the audience. The dance she had meant to give had not begun. People could see her standing there. They were laughing while the man waited for her to perform. \n\nThis was an amateur contest, and she had come to take her turn. Her plan had been to dance before these people. Instead, she had frozen in front of them. She had an audience and a place in the show. She could not begin her dance.",
+      "canonicalText": "In her memory, she was nervous and froze when her turn came. The dance she had meant to give had not begun. The audience was laughing. The man running the show told her she had to do something. She was still on the stage.",
       "requiredFactIds": [
         "e-dance",
         "e-laugh"
@@ -462,7 +356,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "e-dance"
+            "e-laugh"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -480,43 +374,8 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
+            "e-dance",
+            "e-laugh"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -525,16 +384,14 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Moment remains the stage freeze; no invented bodily symptom, audience speech, thought or abandonment. This short dark passage intentionally does not convert poorly located childhood suffering into a new scene."
+      "sourceNote": "The remembered freeze, laughter and pressure are not repeated from the opening. No invented thoughts about rejection or inability beyond her own account."
     },
     {
       "role": "response",
-      "canonicalText": "She told the man she wanted to sing. She turned to a song she knew from a singer's records. Her mother had liked that singer's music. She began to sing in place of the dance. \n\nThe room's response changed. The audience wanted more singing. She gave them more and won the contest. She had arrived with a dance to perform. She left the stage having sung.",
+      "canonicalText": "She told the man she wanted to sing. She turned to a song she knew from a singer's records. Her mother had liked that singer's music. She began to sing in place of the dance.",
       "requiredFactIds": [
         "e-sang",
-        "e-boswell",
-        "e-won",
-        "e-dance"
+        "e-boswell"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -576,63 +433,18 @@
           ],
           "interpretationIds": [],
           "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-won"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-won"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-won"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-dance"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-sang",
-            "e-won"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
         }
       ],
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The choice and singing are documented in her recollection, not invented self-empowerment. Sources disagree about which song was first and the number of encores; both are omitted."
+      "sourceNote": "Singing is the small response; victory moves into compression. Song titles/order differ among accounts and are deliberately not harmonized."
     },
     {
       "role": "struggle",
-      "canonicalText": "She kept entering talent shows. A later win brought a week of singing with a band at another theater. She was still looking for a lasting place to sing. Another bandleader already employed a male singer. He did not want to add a girl to the band. \n\nThe work meant traveling with the musicians. He was reluctant to take a teenager on that road. A contest win had not settled whether this band would employ her. A performer who worked with the band brought her backstage to meet him. She had another audition.",
+      "canonicalText": "The audience asked for more, and she won the contest. She kept entering talent shows. A later win brought a week of singing with a band at another theater. She was still looking for a lasting place to sing. Another bandleader already employed a male singer. He did not want to add a girl to the band. The work meant traveling with the musicians. He was reluctant to take a teenager on that road. A contest win had not settled whether this band would employ her. A performer who worked with the band brought her backstage to meet him. She had another audition.",
       "requiredFactIds": [
+        "e-won",
         "e-contests",
         "e-reluctant",
         "e-no-girl",
@@ -646,7 +458,7 @@
           "sentenceIndex": 0,
           "treatment": "historical_claim",
           "factIds": [
-            "e-contests"
+            "e-won"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -664,8 +476,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "e-contests",
-            "e-reluctant"
+            "e-contests"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -674,6 +485,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
+            "e-contests",
             "e-reluctant"
           ],
           "interpretationIds": [],
@@ -683,7 +495,7 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "e-no-girl"
+            "e-reluctant"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -710,7 +522,6 @@
           "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
-            "e-reluctant",
             "e-no-girl"
           ],
           "interpretationIds": [],
@@ -720,7 +531,8 @@
           "sentenceIndex": 8,
           "treatment": "historical_claim",
           "factIds": [
-            "e-backstage"
+            "e-reluctant",
+            "e-no-girl"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -733,19 +545,29 @@
           ],
           "interpretationIds": [],
           "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "e-backstage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
         }
       ],
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Advance into early 1935. Official biography gives January for the Opera House week; Decca notes give February 16. No exact month is asserted. The continuing search is supported by the contests and repeated auditions, not by an invented withheld Apollo job."
+      "sourceNote": "Advance into early 1935. Official biography gives January for the Opera House week; Decca notes give February 16. No exact month is asserted. The continuing search is supported by the contests and repeated auditions, not by an invented withheld Apollo job. Apollo's result is compressed here, not made the first small response."
     },
     {
       "role": "turning_point",
-      "canonicalText": "She sang for the bandleader in his dressing room. The performer who had brought her worked with his band. In her memory, she sang the three songs she knew. They were songs she had heard another woman sing. She was offering him that small group of songs. \n\nThe bandleader still had a male singer. He had not been looking for a girl. But he gave her a way to try out with the band. They had a college engagement coming. She remembered his condition: “if they like you there, you've got a job.” She could come and sing with them.",
+      "canonicalText": "She sang for the bandleader in his dressing room. In her memory, she sang the three songs she knew. They were songs she had heard another woman sing. The bandleader already had a male singer. He had not been looking for a girl. But he offered her a trial with the band at a college engagement. She remembered his condition: “if they like you there, you've got a job.” She could come and sing with them.",
       "requiredFactIds": [
         "e-backstage",
-        "e-reluctant"
+        "e-reluctant",
+        "e-no-girl"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -784,7 +606,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "e-backstage"
+            "e-reluctant"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -793,7 +615,8 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "e-backstage"
+            "e-reluctant",
+            "e-no-girl"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -802,7 +625,6 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "e-reluctant",
             "e-backstage"
           ],
           "interpretationIds": [],
@@ -815,39 +637,12 @@
             "e-backstage"
           ],
           "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-backstage"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-backstage"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-backstage"
-          ],
-          "interpretationIds": [],
           "quoteIds": [
             "e-trial-quote"
           ]
         },
         {
-          "sentenceIndex": 10,
+          "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
             "e-backstage"
@@ -859,17 +654,14 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Located dressing-room audition is Fitzgerald's recollection to Leonard Feather as reproduced in Decca liner notes, at probable confidence. Webb's quoted condition is explicitly remembered. The college is withheld amid Yale/Princeton conflict; no present-tense transcript is claimed."
+      "sourceNote": "Retrospective Fitzgerald account quoted in Decca notes, not an original Feather interview inspected here. Dressing-room audition and college condition are located. College name omitted because accounts differ."
     },
     {
       "role": "became",
-      "canonicalText": "She sang at the college dance and was hired by the band. The job brought a weekly wage. It also brought travel and several shows a day. Other young performers worked on the same shows. They waited between appearances in dressing rooms. They played cards there together. \n\nIn one fellow performer's memory, she hummed while they played. Away from people she knew, she could still be shy. A job singing had not made her outgoing everywhere. There was time with the other performers between shows. They had their cards.",
+      "canonicalText": "She sang at the college dance and was hired by the band. The job paid her each week and meant traveling with the musicians. The bandleader's trial had become a job.",
       "requiredFactIds": [
         "e-trial",
-        "e-hired",
-        "e-shows",
-        "e-cards",
-        "e-shy"
+        "e-hired"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -898,81 +690,8 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "e-hired",
-            "e-shows"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 3,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-cards"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 4,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-cards"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-cards"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-cards"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-shy"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-shy"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-shows",
-            "e-cards"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 10,
-          "treatment": "historical_claim",
-          "factIds": [
-            "e-cards"
+            "e-trial",
+            "e-hired"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -981,7 +700,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Early touring routine comes from Miller's retrospective oral history, not a dated first touring day. The testimony has transcription errors; only unambiguous details are used. Later Webb loss remains in the fold."
+      "sourceNote": "Stops at the documented 1935 hire and weekly wage. Miller's cards/humming/several-shows routine is not explicitly dated to 1935 and is removed from this bounded ending. No claim that employment eliminated shyness or settled her life. Later Webb loss remains in the fold."
     },
     {
       "role": "bridge",

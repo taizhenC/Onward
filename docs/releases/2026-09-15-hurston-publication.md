@@ -41,7 +41,7 @@ A scoped editorial backup was saved before mutation:
 Its uncompressed SHA-256 is
 `6fc14c6eb2df374086e11bd25597f1acab866613602ec6a854490e8ab433f3dc`.
 It covers the selected editorial rows/stage and prior public editorial
-catalog, not reader accounts, disclosures or saved artifacts.
+catalog, not reader accounts, Disclosures or saved artifacts.
 
 The existing `promote-candidate.ts` helper stored the confirmed owner review.
 The normal `story-spec:status -- publish` command then called

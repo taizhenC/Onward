@@ -29,12 +29,12 @@ was copied from the superseded text, and no prose changed after this review.
 
 ## Promotion and database verification
 
-Preflight confirmed the established production project
-`mbcqkljfekkxlgittzal.supabase.co`, the target's draft state, 17 valid
-published historical stories, zero quarantined, and every publication-schema
-health check. An independent read-only preflight verified the exact candidate
-hash, all seven reading-copy passages and the required-hash batch validator.
-The promotion dry run passed without errors or warnings.
+Preflight matched the established production database identity and
+confirmed the target's draft state, 17 valid published historical stories,
+zero quarantined, and every publication-schema health check. An independent
+read-only preflight verified the exact candidate hash, all seven reading-copy
+passages and the required-hash batch validator. The promotion dry run passed
+without errors or warnings.
 
 A scoped editorial backup was saved before mutation:
 `.codex-recovery/hurston-production-before-2026-09-15.json.gz.b64`.

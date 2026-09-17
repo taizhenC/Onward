@@ -62,6 +62,13 @@ stage-status update or manual retirement was performed.
 
 ## Production deployment and complete reader check
 
+The most recent successful production deployment before the database
+promotion was merge commit `cb94d5e93666c70dd25aa2821bbe55289c42398b`
+(PR #128), GitHub Production deployment `6452727940` at
+`2026-09-15T06:01:03Z`. It already contained the compatible reader, and it
+served the site from then, through the promotion read-back at
+`2026-09-15T06:17:55.245Z`, until the deployment below.
+
 [PR #129](https://github.com/taizhenC/Onward/pull/129) was made ready and merged
 at `2026-09-15T06:18:00Z` after its CI, recipe-promotion checks and preview
 passed. Merge commit `fb1467a9975d17efe21396e3626ce3ccab6cec71` reached

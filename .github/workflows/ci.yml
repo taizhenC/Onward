@@ -68,7 +68,7 @@ jobs:
         run: npm run check-story-batch -- docs/releases/wave-2-rewritten-2026-09-10 6 --require-hashes
       - name: Verify the third-wave editorial draft snapshot
         run: node --import tsx scripts/check-story-batch.ts docs/releases/wave-3-drafts-2026-09-14 9 --require-hashes
-      - name: Verify the held Hurston repair snapshot
+      - name: Verify the published Hurston repair snapshot
         run: node --import tsx scripts/check-story-batch.ts docs/releases/wave-3-repairs-2026-09-15 1 --require-hashes
       - run: npm run check-story-spec-migration
       - run: npm run check-story-artifact

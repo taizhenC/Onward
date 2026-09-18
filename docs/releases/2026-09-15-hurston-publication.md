@@ -29,19 +29,19 @@ was copied from the superseded text, and no prose changed after this review.
 
 ## Promotion and database verification
 
-Preflight confirmed the established production project
-`mbcqkljfekkxlgittzal.supabase.co`, the target's draft state, 17 valid
-published historical stories, zero quarantined, and every publication-schema
-health check. An independent read-only preflight verified the exact candidate
-hash, all seven reading-copy passages and the required-hash batch validator.
-The promotion dry run passed without errors or warnings.
+Preflight matched the established production database identity and
+confirmed the target's draft state, 17 valid published historical stories,
+zero quarantined, and every publication-schema health check. An independent
+read-only preflight verified the exact candidate hash, all seven reading-copy
+passages and the required-hash batch validator. The promotion dry run passed
+without errors or warnings.
 
 A scoped editorial backup was saved before mutation:
 `.codex-recovery/hurston-production-before-2026-09-15.json.gz.b64`.
 Its uncompressed SHA-256 is
 `6fc14c6eb2df374086e11bd25597f1acab866613602ec6a854490e8ab433f3dc`.
 It covers the selected editorial rows/stage and prior public editorial
-catalog, not reader accounts, disclosures or saved artifacts.
+catalog, not reader accounts, Disclosures or saved artifacts.
 
 The existing `promote-candidate.ts` helper stored the confirmed owner review.
 The normal `story-spec:status -- publish` command then called
@@ -61,6 +61,13 @@ No blanket seeding, schema update, recipe selection, library release, direct
 stage-status update or manual retirement was performed.
 
 ## Production deployment and complete reader check
+
+The most recent successful production deployment before the database
+promotion was merge commit `cb94d5e93666c70dd25aa2821bbe55289c42398b`
+(PR #128), GitHub Production deployment `6452727940` at
+`2026-09-15T06:01:03Z`. It already contained the compatible reader, and it
+served the site from then, through the promotion read-back at
+`2026-09-15T06:17:55.245Z`, until the deployment below.
 
 [PR #129](https://github.com/taizhenC/Onward/pull/129) was made ready and merged
 at `2026-09-15T06:18:00Z` after its CI, recipe-promotion checks and preview

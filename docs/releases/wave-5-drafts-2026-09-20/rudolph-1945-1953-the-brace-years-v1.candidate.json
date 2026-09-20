@@ -507,7 +507,7 @@
     },
     {
       "role": "bridge",
-      "canonicalText": "Her name was Wilma Rudolph. She became an Olympic sprint champion. Your life is not theirs.\n\nBut a piece of this story may still sit beside you. You are allowed to need help.",
+      "canonicalText": "Her name was Wilma Rudolph.\n\nShe became an Olympic sprint champion.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need help.",
       "requiredFactIds": [
         "fact-identity"
       ],

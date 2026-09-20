@@ -57,8 +57,8 @@ matching content was changed, and this is not a narrower-inside comparison.
    `scripts/drafts/promote-candidate.ts` moved only these exact candidates to
    review with the owner's review metadata. Full readback equalled the frozen
    candidates except for lifecycle status and actual review metadata.
-4. The complete successful review receipt was persisted before publication at
-   `2026-09-20T23:55:27.380Z`, SHA-256
+4. The complete successful review audit finished at
+   `2026-09-20T23:55:27.380Z`; its receipt was persisted before publication, SHA-256
    `2a46b9b3c12a1bb6fd1cfa4aa8b674393d43eb37a3e983d8e6f95f69eb7f235b`.
    A bounded, independently reviewed local runner pinned that receipt, the
    review index, backup and exact ten identities. It checked every current
@@ -112,7 +112,8 @@ Rudolph, Rustin and Wang. Their original source/matching/episode qualifications
 remain, with Christie's additional integration hold recorded separately.
 
 No reseed, migration, matching rewrite, library/provider configuration change
-or recipe promotion ran. 牛大 and existing saved reader artifacts are unchanged.
+or recipe promotion ran. This release did not modify 牛大 or existing saved
+reader artifacts; the editorial audit does not compare those tables.
 If withdrawal is needed, retire only the exact affected StorySpec ID through
 the audited retirement command. Never overwrite/demote immutable published
 rows or restore draft backups over them; existing reader artifacts keep their

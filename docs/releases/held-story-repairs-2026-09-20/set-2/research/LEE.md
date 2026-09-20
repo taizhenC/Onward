@@ -28,5 +28,4 @@ All sentences have fact mappings. All historical words are paraphrases; no histo
 - Local candidate validator with sentence listing: draft and in-memory publish simulation0errors/0warnings. Simulation is not approval.
 - Installed-library batch composition is expected to reject the deliberately new stage identity; no matching edits were made to conceal that integration issue.
 - Below the700–950word soft aim by design. No padding to imply a full arc.
-- Root will freeze the exact final hash and packet. An independent source/craft review remains appropriate before any owner decision.
-
+- SHA-256 `167fecc91c618f5b25ecf29b2d7231408cea8a0606c7c2b9f25dc7d5b95a92ae`;199 words. An independent source/craft review remains appropriate before any owner decision.

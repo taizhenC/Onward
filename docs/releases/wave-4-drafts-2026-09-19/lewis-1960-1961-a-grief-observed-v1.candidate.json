@@ -370,6 +370,34 @@
       "eventOrder": 25,
       "confidence": "documented",
       "claimKind": "event"
+    },
+    {
+      "factId": "fact-afternoon",
+      "statement": "In Part I he records trying to explain these thoughts to C. that afternoon; C. recalls Christ's sense of abandonment, and Lewis asks whether that makes his distress easier to understand.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, paragraph beginning I tried to put some of these thoughts to C. this afternoon."
+        }
+      ],
+      "eventOrder": 26,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-assurance",
+      "statement": "He records begging for assurance of his wife's continued life, finding no answer, and fearing that even an assurance would now seem induced by his own prayers.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, paragraph beginning After the death of a friend, years ago."
+        }
+      ],
+      "eventOrder": 27,
+      "confidence": "documented",
+      "claimKind": "event"
     }
   ],
   "entities": [
@@ -393,7 +421,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "At his notebook, he kept swallowing. He was sixty-one, and his wife had died. His stomach fluttered, although he did not think he was afraid. He yawned and could not settle. People speaking to him seemed hard to hear through his grief. He wanted them near him. He wanted them to speak to each other. The thought of an empty house frightened him. Even a letter could ask more effort than he could give. His work still ran much as before, but shaving no longer seemed worth the trouble. He kept swallowing.",
+      "canonicalText": "At his notebook, he wrote about a fluttering stomach. He was sixty-one, and his wife had died. His stomach fluttered, although he did not think he was afraid. He described yawning and being unable to settle. People speaking to him seemed hard to hear through his grief. He wanted them near him. He wanted them to speak to each other. The thought of an empty house frightened him. Even a letter could ask more effort than he could give. His work still ran much as before, but shaving no longer seemed worth the trouble. He wrote about swallowing.",
       "requiredFactIds": [
         "fact-body",
         "fact-age",
@@ -509,15 +537,15 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Opening renders the bodily state at the start of Part I alongside the act of writing that document. At his notebook is an editorial localization to the attested writing, not a claim to know his room, chair, or exact hour. The chapter supplies current feelings rather than a later-life memoir. Exact entry dates are not known."
+      "sourceNote": "The scene is the actual writing of Part I's opening observations. Bodily symptoms are explicitly things described in the notebook, not a claim that he swallowed at the instant of writing. No room, chair or exact hour is supplied. The text is a contemporary grief account, not a later-life memoir. Episode dates are a bibliographical envelope from the death in July 1960 through publication in 1961, not dates assigned to the fourth notebook."
     },
     {
       "role": "dark_moment",
-      "canonicalText": "The woman he wanted was dead. The life they had shared could not be brought back by thinking about it. He wanted the small things as much as anything. The talk, the jokes, the arguments, and the touch of her body were gone. He had believed in a God he could turn toward. Now, in urgent need, he felt no answer. The silence frightened him in a particular way. He was not chiefly afraid that his belief might disappear. He feared that the God he believed in might be cruel. His wife had been ill, then seemed to recover. There had been grounds for hope beyond their own wishes. Remembering that hope made prayer harder now. He could still form the questions. He could not hear an answer.",
+      "canonicalText": "He wrote about the silence he met when he prayed. In urgent need, he felt no answer. He had tried to explain these thoughts to someone that afternoon. The other man had recalled the suffering of the central figure in their faith. He questioned whether that made his distress easier to understand. The fear he recorded was not chiefly that his belief would disappear. He feared that the God he believed in might be cruel. He had begged for reassurance that his wife still existed. He described receiving none. Even reassurance might now seem like something his own prayers had made him imagine. He could still form the questions. He could not hear an answer.",
       "requiredFactIds": [
-        "fact-loss",
         "fact-belief",
-        "fact-remission"
+        "fact-afternoon",
+        "fact-assurance"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -527,7 +555,7 @@
           "sentenceIndex": 0,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-loss"
+            "fact-belief"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -536,7 +564,7 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-loss"
+            "fact-belief"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -545,7 +573,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-loss"
+            "fact-afternoon"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -554,7 +582,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-loss"
+            "fact-afternoon"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -563,7 +591,7 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-belief"
+            "fact-afternoon"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -590,7 +618,7 @@
           "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-belief"
+            "fact-assurance"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -599,7 +627,7 @@
           "sentenceIndex": 8,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-belief"
+            "fact-assurance"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -608,7 +636,7 @@
           "sentenceIndex": 9,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-remission"
+            "fact-assurance"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -617,31 +645,13 @@
           "sentenceIndex": 10,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-remission"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 11,
-          "treatment": "historical_claim",
-          "factIds": [
-            "fact-remission"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 12,
-          "treatment": "historical_claim",
-          "factIds": [
             "fact-belief"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
-          "sentenceIndex": 13,
+          "sentenceIndex": 11,
           "treatment": "historical_claim",
           "factIds": [
             "fact-belief"
@@ -653,7 +663,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The shared writing moment continues. The cause is the death, not an invented religious diagnosis. Past illness is the immediate memory explicitly said to obstruct prayer in Part II; the prose does not place the death, remission and this entry in one event."
+      "sourceNote": "Part I's actual written examination anchors this passage. The afternoon conversation and earlier appeals are explicitly past recollections within it, not incidents occurring while he writes. The Part II illness/remission recollection and its distinct writing occasion are removed. No room, time of day for writing, or bodily concurrence is supplied."
     },
     {
       "role": "response",

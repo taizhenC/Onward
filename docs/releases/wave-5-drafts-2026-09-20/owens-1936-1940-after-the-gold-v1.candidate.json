@@ -18,7 +18,7 @@
       "discrimination",
       "other_reviewed_flag"
     ],
-    "contentNote": "Financial insecurity, racial exclusion, and a non-graphic account of unfair treatment of a racehorse. HOLD: central circa-1938 episode rests on a late coauthored reminiscence whose chronology and moral framing require corroboration. Age 24–25 at the opening is derived from its approximate date; installed ages 23–27 are unchanged. Focus shifts within the same installed interval from the 1936 suspension to a later exhibition refusal. Underlength without fabricated scene expansion. Not approved for publication."
+    "contentNote": "Financial insecurity, racial exclusion, and a non-graphic account of unfair treatment of a racehorse. HOLD: central circa-1938 episode rests on a late coauthored reminiscence whose chronology and moral framing require corroboration. A separate Owens/Neimark 1980 account describes a lost race prompting his decision to quit, unlike the Rotarian account used here; this conflict is unresolved. Age 24–25 at the opening is derived from its approximate date; installed ages 23–27 are unchanged. Focus shifts within the same installed interval from the 1936 suspension to a later exhibition refusal. Underlength without fabricated scene expansion. Not approved for publication."
   },
   "facts": [
     {
@@ -149,20 +149,6 @@
         }
       ],
       "eventOrder": 9,
-      "confidence": "documented",
-      "claimKind": "event"
-    },
-    {
-      "factId": "fact-later",
-      "statement": "He later earned money through public relations, appearances and advertising, and worked with charities and youth groups.",
-      "sourceRefs": [
-        {
-          "sourceId": "source-osu",
-          "locator": "Paragraphs beginning 'Owens was much more successful' and 'Meanwhile, Owens spent a lot of time'.",
-          "scope": "bounded"
-        }
-      ],
-      "eventOrder": 10,
       "confidence": "documented",
       "claimKind": "event"
     },
@@ -652,11 +638,10 @@
     },
     {
       "role": "became",
-      "canonicalText": "He returned to playground work. His account presents that return as the next step after leaving the exhibitions. It was not the end of his financial difficulties.\n\nDuring those post-competition years, he also started a dry-cleaning business. The business fell into debt, and he filed for personal bankruptcy. Later, public relations and appearances became important sources of income. He spoke at meetings, worked on promotions, and supported youth organizations. His working life took more than one form.",
+      "canonicalText": "He returned to playground work. His account presents that return as the next step after leaving the exhibitions. It was not the end of his financial difficulties.\n\nDuring those post-competition years, he also started a dry-cleaning business. The business fell into debt, and he filed for personal bankruptcy. Money remained a problem.",
       "requiredFactIds": [
         "fact-return",
-        "fact-business",
-        "fact-later"
+        "fact-business"
       ],
       "optionalFactIds": [],
       "entityIds": [
@@ -713,25 +698,7 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "fact-later"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "fact-later"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "fact-later"
+            "fact-business"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -740,11 +707,11 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Separate compressed chronology, not a claim that this refusal caused eventual success. The archive's1938–39 business dates qualify the memoir's sweeping claim that life improved shortly afterward."
+      "sourceNote": "Separate compressed chronology within 1938–39, not a claim that this refusal caused eventual success. The archive's business dates qualify the memoir's sweeping claim that life improved shortly afterward. Later public-relations and youth work are outside this candidate's endpoint and omitted."
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was Jesse Owens. He won four gold medals at the 1936 Berlin Olympics.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to care about what a job asks of you. You can need money and still have misgivings.",
+      "canonicalText": "His name was Jesse Owens.\n\nHe won four gold medals at the 1936 Berlin Olympics.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to care about what a job asks of you. You can need money and still have misgivings.",
       "requiredFactIds": [
         "fact-legacy"
       ],
@@ -819,7 +786,8 @@
     "Do not call all professional sport closed to every Black athlete; omit the essay's overbroad assertion.",
     "Do not imply he never raced horses again or that refusal immediately repaired his finances.",
     "Do not claim the1936 suspension was a lifelong legal ban without exact authority.",
-    "Do not turn financial hardship into a moral judgment or advice to abandon income."
+    "Do not turn financial hardship into a moral judgment or advice to abandon income.",
+    "Do not silently harmonize the Rotarian refusal sequence with Owens/Neimark's separate My Roots account: that account describes one lost race and a same-night decision to quit."
   ],
   "sources": [
     {
@@ -845,6 +813,12 @@
       "citation": "Ohio State University Archives, Owens_Jesse biographical file, 'Jesse Owens: A Chronology'; institutional chronology.",
       "url": "https://library.osu.edu/documents/university-archives/biographical_files/Owens_Jesse.pdf",
       "locator": "PDF p.2, September12 birth entry and 1936 medal entries; exact medal dates not adopted."
+    },
+    {
+      "sourceId": "source-conflict",
+      "citation": "Jesse Owens with Paul Neimark, My Roots are in Columbus, 1980 clipping in Ohio State biographical file; conflicting retrospective account.",
+      "url": "https://library.osu.edu/documents/university-archives/biographical_files/Owens_Jesse_2.pdf",
+      "locator": "PDF pp.3–4: horse-race paragraph at end of p.3 and first continuation paragraph on p.4. Read as a conflict, not support for the chosen sequence."
     }
   ],
   "review": {}

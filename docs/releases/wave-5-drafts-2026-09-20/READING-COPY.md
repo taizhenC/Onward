@@ -400,13 +400,13 @@ FOR OWNER READING: supported contemporary-letter arc; narrowed 1822–1823 episo
 
 [Evidence-mapped candidate](shelley_m-1818-1823-the-losses-v1.candidate.json) · 705 words · ages 25–26 · episode 1822-09-17–1823-09-09
 
-SHA-256: `17dd1e3465b35d709392014b4f80d8558de52f0bcf42d61fac5479d794b57d4c`
+SHA-256: `fb3e996c03f1a9bed101b22a8bffae515b75e7aeef36343c64dfb21306d2f4c8`
 
 Content note: A young widow describes grief and isolation, worries about supporting her child, and refuses a proposed separation. No death methods or self-harm details are included.
 
 ### 1. Scene
 
-She was alone with her sleeping child, writing to a friend. She had just turned twenty-five. Another friend had left that morning to return home. Her husband was dead, and now this friend was gone too. In the letter, she set out the arrangements she had made. She had rented a house to share with another family. There was money left for the coming months. A journey home could use nearly a year's support. She did not want to reach her father's house needing him to support her. For now, she was staying where she was. Her boy slept.
+She was alone with her sleeping child, writing to a friend. She had just turned twenty-five. Another friend had left that morning to return home. Her husband was dead, and now this friend was gone too. In the letter, she set out the arrangements she had made. She had rented a house to share with another family. There was money left for the coming months. A trip home could use nearly a year's support. She did not want to reach her father's house needing him to support her. For now, she was staying where she was. Her boy slept.
 
 ### 2. Dark moment
 

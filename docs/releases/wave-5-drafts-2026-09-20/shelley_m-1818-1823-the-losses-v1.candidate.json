@@ -434,7 +434,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "She was alone with her sleeping child, writing to a friend. She had just turned twenty-five. Another friend had left that morning to return home. Her husband was dead, and now this friend was gone too. In the letter, she set out the arrangements she had made. She had rented a house to share with another family. There was money left for the coming months. A journey home could use nearly a year's support. She did not want to reach her father's house needing him to support her. For now, she was staying where she was. Her boy slept.",
+      "canonicalText": "She was alone with her sleeping child, writing to a friend. She had just turned twenty-five. Another friend had left that morning to return home. Her husband was dead, and now this friend was gone too. In the letter, she set out the arrangements she had made. She had rented a house to share with another family. There was money left for the coming months. A trip home could use nearly a year's support. She did not want to reach her father's house needing him to support her. For now, she was staying where she was. Her boy slept.",
       "requiredFactIds": [
         "f01",
         "f00",

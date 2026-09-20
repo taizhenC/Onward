@@ -1,5 +1,21 @@
 # Remaining historical stories — owner review index
 
+## Publication update — 20 September 2026
+
+After owner review, the exact eligible Mary Shelley text and new Charlotte
+Brontë repair text were published on 20 September 2026. See the
+[publication receipt](../2026-09-20-remaining-two-publication.md) for the
+approved snapshots and database verification. All 26 other stories remain
+held and unpublished.
+
+Worker refresh and live-reader verification are pending until the receipt is
+updated with their results. The original owner-review handoff below is
+preserved as an authoring-time record; its approval-pending wording is not
+the current publication status of these two texts. Candidate files, the
+review-target index and their hashes remain unchanged.
+
+## Original owner-review handoff (preserved)
+
 20 September 2026 UTC / 19 September local. **Nothing in this handoff is approved
 or published.** It covers all 28 unpublished historical stages. Fourteen later
 stages now have tracked drafts in a set of nine and a final set of five. The

@@ -4,18 +4,19 @@ Requested by the owner on 2026-09-05: continue the same research-led revision
 process for the remaining historical stories, nine per set. The first nine
 are already published; see [their release record](releases/2026-09-05-story-first-publication.md).
 
-The table preserves the original forty-one-stage queue. Three stages in set 2
-were published on September 10 and six in set 3 on September 15, leaving
-thirty-two: six held set-2 rewrites, three unpublished set-3 stories, nine
-set-4 drafts and fourteen later stages. The September 15 production audit confirmed
-18 valid published historical stories, with zero quarantined.
+The table preserves the original forty-one-stage queue. Three stages in set 2,
+six in set 3 and four in set 4 have now been published, leaving twenty-eight:
+six held set-2 rewrites, three held set-3 stories, five held set-4 stories and
+fourteen later stages. The set-4 production release and complete live-reader
+checks confirmed 22 valid published historical stories, zero quarantined.
+See the [set-4 publication record](releases/2026-09-19-wave-4-publication.md).
 The deterministic figure-key order keeps difficult episodes visible.
 
 | Set | Figures | State |
 |---|---|---|
 | 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya live-verified September 15; Hurston's reframed version subsequently owner-approved and published; Coleman, Coltrane and Jones held for source/scene gaps |
-| 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Nine researched and independently checked drafts, September 19; Lewis, Marshall, Nightingale and O'Connor for owner reading with qualifications; five others held; none approved or published |
+| 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | C. S. Lewis, Marshall, Nightingale and O'Connor owner-approved, published and complete-live-reader verified September 19 local / September 20 UTC; five others held |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
 | 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
 
@@ -202,3 +203,28 @@ replay and rhythm checks; each remains a draft with an empty review object.
 All nine age ranges differ from installed matching, as documented in the
 packet. Matching and production remain unchanged. Set 5 is next; this handoff
 does not begin it or clear the nine older held stages.
+
+## Set 4 publication follow-up — September 19–20
+
+The owner confirmed review of the exact C. S. Lewis, Marshall, Nightingale and
+O'Connor stories, including their content notes, length qualifications and
+episode ages, and authorized publication. Database verification confirms all
+four approved versions are published and the historical total is now 22.
+The previous 18 published stories and the five held set-4 candidates remain
+unchanged. Earlier sections above preserve their authoring-handoff checkpoints;
+they do not describe the current publication state.
+
+[PR #133](https://github.com/taizhenC/Onward/pull/133) merged as `001d92a` at
+2026-09-20 02:24:19 UTC. Production deployment succeeded at 02:25:15 UTC.
+One new anonymous canary completed all seven passages of each story at
+02:26:25.600 UTC: 28 passages, 79 chunks, every progress acknowledgement,
+and whitespace-normalized canonical prose verified. All four matched directly.
+The test guest and its four stories were removed through normal account deletion.
+The post-canary audit reconfirmed 22 valid stories and zero quarantined at
+02:26:35.798 UTC, with earlier publications and held drafts unchanged.
+The [publication record](releases/2026-09-19-wave-4-publication.md) records this
+distinct approval and release follow-up.
+
+Twenty-eight stages remain: six set-2 holds, three set-3 holds, five set-4
+holds and fourteen later stages. The held set-4 stories are Lamarr, Frances
+Glessner Lee, Edmonia Lewis, Lindgren and McClintock. Set 5 has not begun.

@@ -363,7 +363,7 @@
     },
     {
       "role": "dark_moment",
-      "canonicalText": "The man brought him to the door. He criticized his reading and his accent, then told him to find work washing dishes. That was work the young man already knew.\n\nOutside, he started toward the transport that would take him to the employment agencies. He remembered stopping in the street. He wondered how the stranger had guessed his occupation. The dismissal had reached beyond one bad reading, at least as he understood it. It seemed to measure everything he could be. He was deeply offended.",
+      "canonicalText": "The man brought him to the door. He criticized his reading and his accent, then told him to find work washing dishes. That was work the young man already knew.\n\nOutside, he started toward the transport that would take him to the employment agencies. He remembered stopping in the street. He wondered how the stranger had guessed his occupation. In his understanding, the dismissal had reached beyond one bad reading. It seemed to measure everything he could be. He was deeply offended.",
       "requiredFactIds": [
         "fact-reading",
         "fact-job",
@@ -871,7 +871,7 @@
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was Sidney Poitier. In 1964, he became the first Black man to win the Academy Award for Best Actor, for Lilies of the Field.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need instruction, time, and other people. One rejection does not have to settle your worth.",
+      "canonicalText": "His name was Sidney Poitier.\n\nIn 1964, he became the first Black man to win the Academy Award for Best Actor, for Lilies of the Field.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need instruction, time, and other people. One rejection does not have to settle your worth.",
       "requiredFactIds": [
         "fact-age",
         "fact-oscar"

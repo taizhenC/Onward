@@ -1,0 +1,452 @@
+{
+  "storySpecId": "owens:1936-1940-after-the-gold:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "owens",
+  "stageId": "1936-1940-after-the-gold",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 22,
+    "ageMax": 26,
+    "startDate": "1936-08",
+    "endDate": "1939",
+    "throughLine": "A contemporary report records an athlete's complaints about exhausting exhibitions and suspension; later work remained financially uncertain. Short source-led account without the disputed horse-race episode."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "other_reviewed_flag"
+    ],
+    "contentNote": "Exhaustion, lost sporting eligibility and later financial difficulty. Ready for owner reading as a short documentary vignette, not a full-recipe pass. Narrows1936–1940 to1936–1939, ages22–26, against installed matching23–27. No imagined trackside humiliation, refusal or single liberating turn."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Born12September1913, Owens was22 in August1936 and25–26 during1939.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-timeline",
+          "scope": "bounded",
+          "locator": "1913birth entry; ages calculated against the dated dispatch and1939entry."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "report",
+      "statement": "A London dispatch printed17August1936 reported his AAU suspension on Sunday after he missed exhibitions in Sweden.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1936",
+          "scope": "bounded",
+          "locator": "Page1, AAU Suspends Owens, Misses An Exhibition; London dispatch first paragraph, OCR463–470."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fatigue",
+      "statement": "The dispatch reports Owens and other athletes saying promoters used them without enough consideration and made them work when exhausted.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1936",
+          "scope": "bounded",
+          "locator": "Same dispatch second paragraph, OCR471–476."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "expenses",
+      "statement": "The dispatch reports their complaint of insufficient funds and being sent to exhibition locations without expense money.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1936",
+          "scope": "bounded",
+          "locator": "Same dispatch second paragraph, OCR476–480."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "contract",
+      "statement": "The owning archive's chronology records a January1937entertainer contract with Consolidated Radio Artists.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-timeline",
+          "scope": "bounded",
+          "locator": "1937January entry."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "business",
+      "statement": "He established a dry-cleaning business in1938; it was in debt after about a year, and he filed for personal bankruptcy in1939.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-osu",
+          "scope": "bounded",
+          "locator": "Business paragraph beginning After a whirlwind, through1939bankruptcy; corroborating timeline1938–1939entries."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "identity",
+      "statement": "Jesse Owens won four gold medals at the1936Olympics.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-timeline",
+          "scope": "bounded",
+          "locator": "1936August entry."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Jesse Owens",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At twenty-two, his absence from an exhibition became a newspaper story. He had missed scheduled appearances in another country.",
+      "requiredFactIds": [
+        "age",
+        "report"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age",
+            "report"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "report"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Contemporary reported event, not a claim that he is shown reading the news or standing at a race."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He and other athletes said that promoters had made them perform when they were exhausted. They said too little consideration had been given to them.",
+      "requiredFactIds": [
+        "fatigue"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fatigue"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fatigue"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Attributed complaint, not invented despair or a single located low scene."
+    },
+    {
+      "role": "response",
+      "canonicalText": "They also complained that they had been sent to appearances without money for expenses. They had said so publicly.",
+      "requiredFactIds": [
+        "expenses"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "expenses"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "expenses"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Their reported complaint is the response container; no exact press encounter, dialogue or earliest act is supplied."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The report described both the missed exhibitions and the complaints about the tour. The athletes said necessary money had been lacking.",
+      "requiredFactIds": [
+        "report",
+        "fatigue",
+        "expenses"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "report",
+            "fatigue",
+            "expenses"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "expenses"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "STRUCTURAL EXCEPTION: reported conditions, not a fabricated failed personal attempt."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The athletic association suspended him after the missed appearances. The decision had gone against him.",
+      "requiredFactIds": [
+        "report"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "report"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "report"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Adverse institutional transition, not an uplifting inner conversion. Does not import an unverified horse-race refusal."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He later signed a contract to work as an entertainer. He also opened a dry-cleaning business. Within about a year, the business was in debt, and he filed for bankruptcy. Paid work remained uncertain.",
+      "requiredFactIds": [
+        "contract",
+        "business"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "contract"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "business"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "business"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "business"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Secondary owning-archive chronology, openly later and bounded through1939; no claim that the dispatch caused these choices."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Jesse Owens.\n\nHe won four gold medals at the Olympics.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to have needs beyond your achievements.",
+      "requiredFactIds": [
+        "identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity only here; no promised financial recovery or moral about being a nice person."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Authorized short contemporary-report-plus-chronology vignette, not a full seven-moment recipe pass.",
+    "No disputed horse-race date, victory, defeat, refusal, earnings, trackside humiliation or resolve; incompatible later reminiscences are not harmonized.",
+    "A contemporary report of complaints is not a transcript of a witnessed encounter or proof of every promoter's conduct.",
+    "Episode1936–1939/22–26 differs from old1938–1940/24–27 and installed matching23–27. Matching unchanged; owner must assess the earlier public-complaint emphasis."
+  ],
+  "avoidRules": [
+    "Anonymous until bridge.",
+    "No claim that Olympic medals guaranteed income or made financial need shameful.",
+    "No direct reader instruction, false equivalence or guaranteed recovery."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-osu",
+      "citation": "Ohio State University Libraries, 'Owens' Legacy: a National Icon'; owning archive's secondary chronology.",
+      "url": "https://library.osu.edu/jesse-owens-a-lasting-legend/owens-legacy-a-national-icon",
+      "locator": "Business paragraph (1938 dry cleaners; 1939 bankruptcy), later PR work and speaking, and Blackthink/discrimination paragraph."
+    },
+    {
+      "sourceId": "source-1936",
+      "citation": "The Denison Press, August 17, 1936, p.1, 'AAU Suspends Owens, Misses An Exhibition'; contemporary newspaper report.",
+      "url": "https://texashistory.unt.edu/ark:/67531/metapth737480/m1/1/",
+      "locator": "Headline and London dispatch, OCR lines463–480."
+    },
+    {
+      "sourceId": "source-timeline",
+      "citation": "Ohio State University Libraries, Jesse Owens timeline. Owning-institution secondary chronology.",
+      "url": "https://library.osu.edu/timeline",
+      "locator": "1913birth entry;1936Olympic medals;1937entertainer contract;1938business and1939bankruptcy entries. Freshly read entire relevant1913–1940range."
+    }
+  ],
+  "review": {}
+}

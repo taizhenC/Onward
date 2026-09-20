@@ -17,8 +17,10 @@ length and matching-age differences. This approval covers only these four.
 
 The [nine-story packet](wave-4-drafts-2026-09-19/README.md),
 [reading copy](wave-4-drafts-2026-09-19/READING-COPY.md) and candidate JSONs
-remain frozen. Their draft status, empty reviews and approval-pending source
-notes preserve the authoring record; they are not current production metadata.
+remain frozen. Their draft status and empty reviews preserve the authoring
+record, not current production status/review metadata. Approval-pending
+wording in source/content notes is retained unchanged as authoring-time
+provenance; the actual approval is recorded in production review fields.
 The publication derivative changes only status and the actual owner's review
 metadata. No prose, source evidence or content note changes after approval.
 No additional human reviewer is invented.

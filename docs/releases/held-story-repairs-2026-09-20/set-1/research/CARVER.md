@@ -14,6 +14,10 @@ This shifts the foreground to **Simpson, 1890–1891**, inside the installed 188
 - [Simpson's owning collection page](https://www.simpson.edu/academics-programs/dunn-library/archives-special-collections/george-washington-carver-collection/): About Carver and 1890/1891 entries for attendance, studies and transfer. Institutional context, not private experience. Its precise birth date and unrelated exposition chronology are not adopted.
 - [Gart's NPS study](https://www.govinfo.gov/content/pkg/GOVPUB-I29-PURL-gpo236603/pdf/GOVPUB-I29-PURL-gpo236603.pdf): executive summary, printed p. vii, freshly checked for approximate birth and career context only. No new original-letter read claimed. The separate NPS people page was checked but its precise birthday is not used to override uncertainty.
 
+## Matching integration decision
+
+**MATCHING-FOCUS integration hold:** retaining earlier exclusion does not make the new college/laundry-support foreground equivalent to the installed sod-house/exclusion mechanism. The sources support this smaller vignette; publication under unchanged matching requires an explicit owner decision and any separately authorized integration work. This is more than an age qualification.
+
 ## Format exception and checks
 
 Under the user's shorter-vignette authorization, scene/low/response/turn can be honest period summaries. The real unsuccessful effort is inadequate early support from laundry work, alongside earlier exclusion; no borrowed shame, exact hungry day, financial cure or invented help request. No advice to the reader.

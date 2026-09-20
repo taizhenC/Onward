@@ -59,6 +59,11 @@
           "sourceId": "source-1989",
           "locator": "pp. 2–3: first-audition account through expulsion.",
           "scope": "bounded"
+        },
+        {
+          "sourceId": "source-1998",
+          "locator": "First-audition answer: he snatched the script out of Poitier's hand, then took him toward the door. This source supplies script removal; the 1989 p.3 account describes shutting his own script.",
+          "scope": "bounded"
         }
       ],
       "eventOrder": 3,

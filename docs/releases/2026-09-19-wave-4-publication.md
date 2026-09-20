@@ -54,6 +54,54 @@ not read or replace Vercel's secret or verify that deployed secret's value.
 The database probes used nonexistent targets or invalid inputs, not reader
 content mutations. No migration or seeding was performed.
 
-Publication, post-promotion worker refresh and complete live-reader checks
-are pending at this preflight checkpoint. This section is not a claim that
-the four stories are already live.
+## Snapshot-bound database publication
+
+The scoped audit matched the established production database identity,
+confirmed all nine wave-four stages were draft, and proved that none of the
+four selected stages had a published predecessor. A backup captured at
+`2026-09-20T02:18:59.539Z` covers all nine scoped editorial rows/stages and the
+entire prior public editorial catalog, not reader accounts, Disclosures or
+saved artifacts. Local backup:
+`.codex-recovery/wave-4-production-before-2026-09-19.json.gz.b64`.
+Uncompressed SHA-256:
+`3d49dcc9ab94d22a527fa3681d5c18956ecd3dc066c561fdf486f9c3cee4da43`.
+The saved backup was decompressed and its hash verified before mutation.
+
+All four dry runs passed without errors or warnings. The existing
+`promote-candidate.ts` helper stored the confirmed owner, `taizhenC`, in the
+research, historical and tone roles with `contentProfileReviewed: true`.
+A separate read-back compared each complete stored review to its frozen
+candidate, excluding only status/review metadata, before any publication.
+
+| Story | Stored review time (UTC) | Publication time (UTC) |
+|---|---|---|
+| C. S. Lewis | `2026-09-20T02:19:15.816Z` | `2026-09-20T02:19:31.286833Z` |
+| Barry Marshall | `2026-09-20T02:19:16.965Z` | `2026-09-20T02:19:32.429149Z` |
+| Florence Nightingale | `2026-09-20T02:19:18.124Z` | `2026-09-20T02:19:33.502706Z` |
+| Flannery O'Connor | `2026-09-20T02:19:19.219Z` | `2026-09-20T02:19:34.547555Z` |
+
+The normal `story-spec:status -- publish` path called `promote_story_spec_v2`
+with each complete expected reviewed snapshot. Each promotion is atomic;
+the four-story batch is not. All four calls succeeded. No manual retirement,
+direct stage-status update, blanket seeding, recipe or schema change occurred.
+
+Read-back at `2026-09-20T02:19:37.539Z` verified:
+
+- Four exact approved StorySpecs and their stages are published.
+- All earlier 18 published records and their stages are unchanged.
+- All five held wave-four stories/stages remain unchanged and unpublished.
+- There are 22 valid published historical stories, zero quarantined, with
+  identical stage/catalog inventories and healthy publication safeguards.
+- Selected matching-stage content is unchanged apart from publication status.
+
+Local audit/receipts are `.codex-recovery/wave-4-audit-2026-09-19.ts`,
+`.codex-recovery/wave-4-reviewed-snapshots-2026-09-19.json` and
+`.codex-recovery/wave-4-production-receipt-2026-09-19.json`.
+
+## Worker refresh and live-reader verification
+
+[PR #133](https://github.com/taizhenC/Onward/pull/133) records this publication.
+Its gated merge will refresh Vercel workers after the database promotions,
+because the editorial catalog is cached once per application process.
+Complete live-reader verification is still pending at this checkpoint;
+database publication alone is not recorded as a successful reader test.

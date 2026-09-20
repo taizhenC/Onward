@@ -124,7 +124,7 @@ HOLD: Russian transcription/translation verification and letter-led moment/faile
 
 [Evidence-mapped candidate](rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json) · 546 words · ages 27–28 · episode 1900-06-27–1901-11
 
-SHA-256: `5b56caa76c91224a0401e1b8975dc30478622e30bacd57e1c120f94a78e8643d`
+SHA-256: `9d30082874819b3de2c2558431b5b67c1658f1421e90b9ad26ae083f6dbac5b0`
 
 Content note: Creative incapacity and distress, without diagnosis, medical advice, treatment instructions, or a miraculous cure. HOLD for Russian transcription/translation review and strict situated-moment craft review. Narrows installed1897–1901 ages23–28 to1900–01 ages27–28; matching unchanged. Scene and dark/response use separate letters written the same day; their exact order or continuous concurrence is not established. Underlength without invented scenes. Owner must assess the letter-led emphasis in place of the installed public-humiliation/Dahl-cure shape.
 
@@ -132,7 +132,7 @@ Content note: Creative incapacity and distress, without diagnosis, medical advic
 
 At twenty-seven, he had finally found paper and ink in the house where he was staying. The move into his room had been confused and disorderly. People were cleaning and moving things around. There was dust and heat.
 
-His room was shut while he wrote to a friend. He regretted making this journey instead of travelling with him. It had also cost more than he expected. A further trip would have to be abandoned. For now, he had a room.
+His room was shut while he wrote to a friend. He regretted making this trip instead of travelling with him. It had also cost more than he expected. A further trip would have to be abandoned. For now, he had a room.
 
 ### 2. Dark moment
 
@@ -148,7 +148,7 @@ He also offered to return the text at once if waiting was impossible. He did not
 
 ### 4. Struggle
 
-The difficulty reached back before this journey. An earlier orchestral work had disappointed him when he heard it rehearsed. He had loved the music he wrote. What he heard did not match that attachment. He considered faults in the performance, but his explanation was not settled.
+The difficulty reached back before this trip. An earlier orchestral work had disappointed him when he heard it rehearsed. He had loved the music he wrote. What he heard did not match that attachment. He considered faults in the performance, but his explanation was not settled.
 
 After the request for more time, he was still writing about trouble working in his lodging. Noise surrounded the room he had to himself. A friend's letter encouraged him, and he wrote back with thanks. He planned to stay and work regularly. The wish to work was still there.
 
@@ -489,4 +489,3 @@ But a piece of this story may still sit beside you.
 You do not have to turn disappointment into gratitude.
 
 You are allowed to miss what you wanted.
-

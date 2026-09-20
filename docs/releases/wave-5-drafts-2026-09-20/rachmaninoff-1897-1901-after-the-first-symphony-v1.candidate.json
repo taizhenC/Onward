@@ -243,7 +243,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "At twenty-seven, he had finally found paper and ink in the house where he was staying. The move into his room had been confused and disorderly. People were cleaning and moving things around. There was dust and heat.\n\nHis room was shut while he wrote to a friend. He regretted making this journey instead of travelling with him. It had also cost more than he expected. A further trip would have to be abandoned. For now, he had a room.",
+      "canonicalText": "At twenty-seven, he had finally found paper and ink in the house where he was staying. The move into his room had been confused and disorderly. People were cleaning and moving things around. There was dust and heat.\n\nHis room was shut while he wrote to a friend. He regretted making this trip instead of travelling with him. It had also cost more than he expected. A further trip would have to be abandoned. For now, he had a room.",
       "requiredFactIds": [
         "fact-age",
         "fact-lodging",
@@ -521,7 +521,7 @@
     },
     {
       "role": "struggle",
-      "canonicalText": "The difficulty reached back before this journey. An earlier orchestral work had disappointed him when he heard it rehearsed. He had loved the music he wrote. What he heard did not match that attachment. He considered faults in the performance, but his explanation was not settled.\n\nAfter the request for more time, he was still writing about trouble working in his lodging. Noise surrounded the room he had to himself. A friend's letter encouraged him, and he wrote back with thanks. He planned to stay and work regularly. The wish to work was still there.",
+      "canonicalText": "The difficulty reached back before this trip. An earlier orchestral work had disappointed him when he heard it rehearsed. He had loved the music he wrote. What he heard did not match that attachment. He considered faults in the performance, but his explanation was not settled.\n\nAfter the request for more time, he was still writing about trouble working in his lodging. Noise surrounded the room he had to himself. A friend's letter encouraged him, and he wrote back with thanks. He planned to stay and work regularly. The wish to work was still there.",
       "requiredFactIds": [
         "fact-earlier",
         "fact-block",

@@ -1,0 +1,1116 @@
+{
+  "storySpecId": "nightingale:1856-1860-spent:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "nightingale",
+  "stageId": "1856-1860-spent",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 37,
+    "ageMax": 37,
+    "startDate": "1857-08",
+    "endDate": "1857-12",
+    "throughLine": "While illness and repeated advice to stop made her feel unheard, she explained her bodily limits by letter and helped turn stalled proposals into draft hospital rules."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness"
+    ],
+    "contentNote": "Historical illness and bodily limits; work continues without a cure. Draft awaiting independent review."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Florence Nightingale was born on 12 May 1820; she was thirty-seven during August–December 1857.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part I, chapter I, p. 4; Part III, chapter III, heading (August–December 1857)."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context",
+      "subjectAgeMin": 37,
+      "subjectAgeMax": 37
+    },
+    {
+      "factId": "fact-room",
+      "statement": "In August and September 1857 Nightingale stayed at Dr. Johnson's establishment in Malvern, attended by her aunt Mai.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, pp. 367–368, paragraph beginning 'All Miss Nightingale’s friends'."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-request",
+      "statement": "At the end of August 1857 Dr. Sutherland sent Nightingale two letters asking her to put work aside; his quoted letter asked her to leave soldiers and colleagues to themselves for a while.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 368, paragraph beginning 'Dr. Sutherland had written two letters' and quoted letter."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-reply",
+      "statement": "In her reply before Sutherland's 7 September answer, Nightingale asked which exertions she could have left unmade and what health saved by losing the report would have profited her.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, pp. 368–369, undated Nightingale-to-Sutherland letter, paragraphs beginning 'And what shall I say' and 'Now in what one respect'."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-limits",
+      "statement": "In that same reply Nightingale reported that a walk or drive left her awake with palpitations; the sight of animal food worsened her sickness; on arrival her doctor had put her on a sofa and told her not to move.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 369, same letter, paragraph beginning 'Well, since we must come'."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-writing",
+      "statement": "During the reply Nightingale reported that writing itself had brought on a palpitation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 369, same letter, sentence beginning 'Now I have written myself'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-distress",
+      "statement": "In the same reply Nightingale described feeling harassed and pecked at, compared herself to her dead pet owl, and said her correspondent's repeated advice never reached the root of the matter.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, pp. 369–370, same letter, final three paragraphs."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-response",
+      "statement": "In the same reply Nightingale directly explained her symptoms and rejected the suggestion that her small appetite reflected fashion or asceticism.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 369, same letter, paragraphs beginning 'Well, since' and 'Now I have written'."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-scheme",
+      "statement": "Nightingale and Sidney Herbert's reform plan called for four subcommissions covering barracks, statistics, a medical school, and revised medical administration and hospital regulations.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, pp. 363–364, paragraphs beginning 'The plan of active reform' and 'These Sub-Commissions'."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-delay",
+      "statement": "In her letter to Sir John McNeill of 10 October 1857, Nightingale said instructions had been approved seven weeks earlier; another promise of immediate issue had still produced nothing a week later.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, pp. 365–366, Nightingale to McNeill, 10 October 1857."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-reminders",
+      "statement": "Nightingale wrote reminders to Lord Panmure, urged Herbert to do likewise, and drafted instructions and schemes for the subcommissions while weeks elapsed before all began.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, pp. 364–365, paragraph beginning 'Mr. Herbert returned to England'."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-dependence",
+      "statement": "In the 10 October letter Nightingale said she could do nothing without Herbert; she described the reform need as continuing and urgent.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 366, Nightingale to McNeill, 10 October 1857, final paragraph."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-permission",
+      "statement": "In her 15 November 1857 letter to McNeill, Nightingale reported that Panmure had granted the regulations subcommission with ample instructions that she had written.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 366, Nightingale to McNeill, 15 November 1857, opening paragraph."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-drafting",
+      "statement": "In the same 15 November letter, Nightingale said the new subcommission gave her the task of assembling draft regulations for Herbert to propose; the regulations had to agree with the report.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 366, Nightingale to McNeill, 15 November 1857, final paragraph."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-glad",
+      "statement": "Nightingale described that drafting task as 'a labour I most gladly undertake'.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 366, Nightingale to McNeill, 15 November 1857, final paragraph."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-proofs",
+      "statement": "On 1 December 1857 Nightingale sent McNeill the first rough proof of regulations chiefly written by herself, asked for severe criticism, especially of the nursing regulations, and stated that her name did not appear.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, p. 366, Nightingale to McNeill, 1 December 1857."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-continued",
+      "statement": "In a letter of 5 December 1857 her sister reported Aunt Mai's accounts of long work meetings, lying down between them, hurried breathing, and limiting other conversation to spare strength.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part III, chapter III, pp. 372–373, Lady Verney to M. Mohl, 5 December 1857. Contemporary family report quoting Aunt Mai; not a direct observation by the editor."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Nightingale helped make nurse training part of an organized profession.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "bounded",
+          "locator": "Part IV, chapter III, pp. 440 and 445–446, editorial account distinguishing predecessors and the trained profession."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Florence Nightingale",
+      "aliases": [
+        "Nightingale"
+      ]
+    }
+  ],
+  "quotes": [
+    {
+      "quoteId": "quote-task",
+      "text": "a labour I most gladly undertake",
+      "status": "verbatim",
+      "speaker": "Florence Nightingale",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cook",
+          "scope": "exact",
+          "locator": "Part III, chapter III, p. 366, Nightingale to Sir John McNeill, 15 November 1857, final paragraph."
+        }
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "In the room where she was staying, a woman answered a doctor's letter. She was thirty-seven. He had asked her to put her work aside. He wanted her to leave the soldiers and her colleagues to themselves for a while. She had been helping prepare changes to the way sick soldiers were cared for. Now she had to answer a question about her own care. She asked what part of her work she could have left undone. The doctor had offered advice about eating and getting away from work. Her answer came back to the body on the sofa.",
+      "requiredFactIds": [
+        "fact-room",
+        "fact-reply",
+        "fact-age",
+        "fact-request",
+        "fact-scheme",
+        "fact-limits"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-room",
+            "fact-reply"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-scheme",
+            "fact-reply"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request",
+            "fact-reply"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reply"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Scene, dark moment, and response share the undated reply to Sutherland, bounded after his late-August letters and before his 7 September reply. The room is the documented Malvern stay; no writing posture or precise day is asserted."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She wrote that a walk or a drive left her awake with her heart pounding. The sight of meat made the sickness stronger. When she arrived, the doctor there had put her on a sofa. He had told her not to move. Even writing this reply had brought on a racing heart. There was no spare strength in the picture she gave him. She felt harassed by the repeated advice. She described herself as being pecked at. The people trying to help kept missing the root of what she was saying. She asked what good preserved health meant if the report was lost. The reply held both the work and the body's limits. Her heart was pounding as she wrote.",
+      "requiredFactIds": [
+        "fact-limits",
+        "fact-writing",
+        "fact-distress",
+        "fact-reply"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-limits",
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-distress"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-distress"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-distress"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reply"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-reply",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Symptoms and distress are her contemporary self-report, not a retrospective diagnosis. The cause of the immediate distress is the repeated advice described in her reply. No cure, prognosis, or recommendation to overwork is implied."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She told the doctor what the suggested outings had done to her. She described the sickness around food. She explained the instructions the doctor at her lodgings had already given. Then she challenged his idea of what was happening. She rejected the suggestion that a small appetite was a matter of fashion. She also rejected the idea that she was deliberately denying herself food. The details in the letter were plain and bodily. She set out the limits in her own words. She was answering him.",
+      "requiredFactIds": [
+        "fact-response",
+        "fact-limits",
+        "fact-reply"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-response",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-response",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-response",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-response"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-response"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-response"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-response",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-response"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reply"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The small response is the documented act of explaining symptoms in the same letter, not an invented decision to accept disability or pace herself. The story does not endorse her refusal of rest."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The plans for reform still met delays. She wrote reminders to the official whose permission was needed. She asked her colleague to write too. The plans covered safer buildings, better records, medical training, and changes to hospital rules. Weeks passed before all the groups could begin. By autumn, she could count seven weeks since the instructions had been approved. Another promise to issue them immediately had followed. A week after that promise, she still had no news. She had drafted instructions, but they were not yet instructions people had to follow. She depended on her colleague to carry the work forward. She sent more letters.",
+      "requiredFactIds": [
+        "fact-delay",
+        "fact-reminders",
+        "fact-scheme",
+        "fact-dependence"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay",
+            "fact-reminders"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reminders"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reminders"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-scheme"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reminders"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reminders",
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-dependence"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reminders"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed September–October 1857. The sustained unsuccessful effort is the repeated attempt to secure implementation, documented in the 10 October letter. Approval in principle is not treated as an executed reform."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Later that autumn, she wrote another letter about the hospital rules. This time, she could report that the new group had been authorized. Its instructions gave it room to revise the existing rules. She had written those instructions herself. The changes covered the duties of the people running the hospitals. Existing rules for buildings and supplies could also be revised. Now there was a specific next piece of work for her. She was to put together draft rules for her colleague. He could propose them to the new group. The rules had to agree with the report they had already prepared. The letter had moved from waiting for permission to the wording on the page. She described the task with pleasure. She called it “a labour I most gladly undertake”. The drafts were hers to prepare.",
+      "requiredFactIds": [
+        "fact-permission",
+        "fact-drafting",
+        "fact-glad"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [
+        "quote-task"
+      ],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission",
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-permission",
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-glad"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-glad"
+          ],
+          "interpretationIds": [],
+          "quoteIds": [
+            "quote-task"
+          ]
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Moment is the 15 November letter, not an invented scene of receiving authorization. The turn is limited to a newly authorized drafting task. It does not claim that authorization cured illness, immediately improved hospitals, or resulted solely from her persistence."
+    },
+    {
+      "role": "became",
+      "canonicalText": "By early winter, she was sending a rough printed proof to another adviser. Much of it was her own work. She asked him to criticize it severely and return it quickly. She singled out the rules for nurses for his attention. Her name did not appear on the document. The work also brought long meetings with colleagues. Between them, she lay down. Her breathing was hurried, and other conversation was limited to save her strength. There were people helping her and people carrying the proposals into meetings. The rules were taking written form. She still needed to lie down.",
+      "requiredFactIds": [
+        "fact-proofs",
+        "fact-continued",
+        "fact-drafting"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proofs"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proofs"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proofs"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proofs"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proofs"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-continued"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-continued"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-continued"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-continued",
+            "fact-drafting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proofs"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-continued"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Stops in December 1857. The 5 December family letter is contemporary but partly reports Aunt Mai's observations; the fold identifies this chain. No claim of sustainable pacing, permanent incapacity, or medical recovery."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Florence Nightingale.\n\nShe helped make training for the care of sick people part of professional nursing. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to have limits that other people do not understand. You do not have to explain everything.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Draft only. Historical, tone, safety, and reading reviews remain unapproved."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Only inert texture grounded in the letter may be added; no invented actions, setting particulars, symptoms, or motives.",
+    "No diagnosis, therapeutic instruction, claim of cure, or praise of overwork.",
+    "Do not stage receipt of an authorization; the documented moment is writing the 15 November letter."
+  ],
+  "avoidRules": [
+    "Do not infer that suffering or working through illness produced greatness.",
+    "Keep names, dates, institutions, wars, and distinctive identifying objects out of passages before the bridge.",
+    "Do not equate this episode with a reader's life or predict the reader's outcome."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-cook",
+      "citation": "Nightingale and contemporaries, letters of 1857, transcribed in Edward Cook, The Life of Florence Nightingale, vol. I (1913), part III, chapter III, pp. 362–374; editorial chronology and nursing context separately identified.",
+      "url": "https://www.gutenberg.org/files/40057/40057-h/40057-h.htm",
+      "locator": "Birth: part I, chapter I, p. 4. Episode: part III, chapter III, pp. 362–374. Professional training: part IV, chapter III, pp. 440 and 445–446."
+    }
+  ],
+  "review": {}
+}

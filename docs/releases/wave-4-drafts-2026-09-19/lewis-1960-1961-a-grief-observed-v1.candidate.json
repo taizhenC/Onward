@@ -261,7 +261,7 @@
     },
     {
       "factId": "fact-setback",
-      "statement": "His plan to remember his wife with gladness fails that night as bitterness, bodily distress and tears return.",
+      "statement": "A later Part III entry reports that his plan to remember his wife with gladness has failed: bitterness, bodily distress and tears have returned that night, not demonstrably the night of the earlier morning recollection.",
       "sourceRefs": [
         {
           "sourceId": "source-lewis-notes",
@@ -1049,7 +1049,7 @@
     },
     {
       "role": "became",
-      "canonicalText": "That was not where the grief ended. He planned to remember her with gladness, but the plan failed that night. The bitterness, the fluttering stomach, and the tears came back. He kept writing until he reached the last nearly empty notebook in the house. Old sums filled some pages at the back. He resolved to let this book set the limit. He would not buy another for these notes. Writing had helped, but it had not made grief stand still. There were gains he was unwilling to call lasting. There were walks that hurt in a new way. The last book still had those old sums.",
+      "canonicalText": "That was not where the grief ended. In a later entry, his plan to remember her with gladness had failed. The bitterness, the fluttering stomach, and the tears came back. He kept writing until he reached the last nearly empty notebook in the house. Old sums filled some pages at the back. He resolved to let this book set the limit. He would not buy another for these notes. Writing had helped, but it had not made grief stand still. There were gains he was unwilling to call lasting. There were walks that hurt in a new way. The last book still had those old sums.",
       "requiredFactIds": [
         "fact-setback",
         "fact-fourth",
@@ -1166,7 +1166,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The later-night return of grief is retained after the temporary morning turn. Part IV's last notebook supplies the episode boundary. No final recovery, publication rationale, or promise is invented."
+      "sourceNote": "The return of grief is in a later Part III entry; intervening wording refers to the other night, so the setback is not placed on the day of the earlier morning turn. Part IV's last notebook supplies the episode boundary. No final recovery, publication rationale, or promise is invented."
     },
     {
       "role": "bridge",

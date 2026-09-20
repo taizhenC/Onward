@@ -93,7 +93,7 @@ Read Parts I–IV of [A Grief Observed](https://www.gutenberg.ca/ebooks/lewiscs-
 - **Response:** Part I “Or are the boys right?” and “I not only live each endless day”: returning to the notebook, doubts about worsening fixation, insufficient distraction from reading, and the author's stated small distance through writing. No publication motive is asserted.
 - **Struggle:** Part II opening reread, “I must think more about H.,” “Yes, that sounds very well,” and the meeting “Today I had to meet a man.” He is distressed by self-centered notes and by the gap between remembered and real people. Part I “I cannot talk to the children” gives an actual failed conversational effort; it is not a narrator-imposed diagnosis of the children.
 - **Turn:** Part III “Something quite unexpected has happened,” “And suddenly at the very moment,” and “Why has no one told me these things?” A particular early morning, better sleep, lighter feeling, sun and breeze, vivid recall, and the subsequent written examination are documented. Physical recovery is tentative. He stops short of calling the experience a meeting.
-- **Became:** Part III “An admirable programme” records the same-night return of bitterness, stomach flutter and tears. Part IV opening describes the fourth and last nearly empty notebook, old arithmetic at its back, a decision not to buy another, and changing grief. “Here, for instance” gives the painful walks; “Still, there are the two enormous gains” refuses to call improvement lasting.
+- **Became:** Part III “An admirable programme” records a later entry's return of bitterness, stomach flutter and tears. Intervening prose refers to “the other night,” so this is not placed on the day of the earlier morning turn. Part IV opening describes the fourth and last nearly empty notebook, old arithmetic at its back, a decision not to buy another, and changing grief. “Here, for instance” gives the painful walks; “Still, there are the two enormous gains” refuses to call improvement lasting.
 
 The [C. S. Lewis Foundation timeline](https://www.cslewis.org/resource/chronocsl/) was read for bounded entries 1898, 1950, 1960 and 1963: birth 29 November 1898, wife's death 13 July 1960, literary identification and later death. It is institutional secondary chronology. The candidate does not adopt its wedding chronology.
 
@@ -103,6 +103,8 @@ Root identified two cross-time constructions in the first version. The corrected
 
 These repairs reduce invented concurrence; they do not prove a single uninterrupted writing session. Independent review should decide whether this bounded writing encounter carries the first roles sufficiently. The actual morning turn is stronger event evidence.
 
+Independent reviewer C then identified an unsupported same-day implication between the morning turn and the later Part III “Tonight” setback. The primary passage was reopened; canonical prose, fact-setback and source note now say a later entry, not that same night. This supersedes the earlier candidate hash and report wording. Sentence validation was rerun with zero errors/warnings; sentence count and word count are unchanged.
+
 Age 61–62 differs from installed 60–62. Grief, solitude and self-doubt remain aligned, but the prose does not claim that all his earlier theology failed or that writing was undertaken to teach others. The morning is temporary relief, not a cure or theological lesson for the reader. No self-harm method or graphic cancer detail from the wider primary text is reproduced.
 
 ## Exact candidate bytes and verification
@@ -111,7 +113,7 @@ Age 61–62 differs from installed 60–62. Grief, solitude and self-doubt remai
 | --- | --- | --- |
 | lamarr-1940-1942-the-shelved-invention-v1.candidate.json | `fde1737f3ddeb9b0924a9ec92f98421942b6ca316dcca8a25ffdb6ae91627ca3` | 488 / 19 |
 | lee-1929-1931-harvard-pivot-v1.candidate.json | `b8326b667b18ac7d14edd2e52e908e9efd32b29a03d4e964540bc3ba79fad977` | 402 / 17 |
-| lewis-1960-1961-a-grief-observed-v1.candidate.json | `b61e2717f1fe5c00b671ce528573cef92da77f8b7a5b40aa6d89292557a65539` | 696 / 27 |
+| lewis-1960-1961-a-grief-observed-v1.candidate.json | `2629432a8fdd4ab5523dc57c295788e51cd2cd6ff64cf35e96d7fa815ca6e871` | 696 / 27 |
 
 Each final candidate ran through `node --import tsx scripts/drafts/validate-candidate.ts <file> --sentences`: draft and in-memory publication simulation valid, zero errors and warnings. Intermediate Lamarr unknown/duplicate fact references were corrected and retested. No simulated approvals were persisted.
 
@@ -120,4 +122,3 @@ A read-only local audit using the batch checker's composition, hashing, serializ
 The first ad-hoc audit used ESM named imports incompatible with the project's module interop and did not run; rerunning with the repository's CommonJS loading completed the checks above. This report records the successful test, not the failed invocation as a pass.
 
 These checks establish mechanical consistency only. No human historical, tone, recipe, or publication approval is claimed.
-

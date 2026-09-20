@@ -1,0 +1,524 @@
+{
+  "storySpecId": "wang:1987-1990-passed-over-to-the-pivot:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "wang",
+  "stageId": "1987-1990-passed-over-to-the-pivot",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 39,
+    "ageMax": 41,
+    "startDate": "1989",
+    "endDate": "1990",
+    "throughLine": "An experienced fashion worker could not find the wedding dress she wanted, commissioned her own, and entered bridal retail; the alleged editor-in-chief rejection is not used."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Professional uncertainty and difficulty finding a wedding dress. SOURCE/CRAFT HOLD: no documented deepest low, failed-return sequence, or situated business turn. Very short provisional draft. Ages 39–41 narrow installed 38–41; exact wedding age is not harmonized. No human approval."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Wang places her marriage at thirty-nine and three quarters in one interview; the wedding was in 1989, shortly before she started the bridal business.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-elle",
+          "locator": "Recollection beginning I got married at the ripe old age.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-bazaar",
+          "locator": "Paragraph beginning In fact, it was her own wedding.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-search",
+      "statement": "She was dissatisfied with the wedding dresses available and commissioned a dressmaker to make her own design.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bazaar",
+          "locator": "1989 wedding, shops and dressmaker paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-career",
+      "statement": "In her 2010 interview Wang said she spent sixteen years at Vogue, then joined Ralph Lauren in 1987 as an accessories design director.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-vogue",
+          "locator": "Answer under She started her career at Vogue.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-design",
+      "statement": "She said that the design role finally let her do work she had wanted to do for years.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-vogue",
+          "locator": "First answer, final sentence.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-gap",
+      "statement": "Wang recalled seeing a gap for simpler modern bridal clothes and thinking other women might want them too.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-vogue",
+          "locator": "Answer under She had a unique concept.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-funding",
+      "statement": "The 2011 Bazaar profile reports paternal funding for the 1990 launch; in 2023 Wang said her father suggested bridal work but would not help her. The accounts' timing and scope have not been reconciled.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bazaar",
+          "locator": "Wedding paragraph, next-year launch with father's funding.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-elle",
+          "locator": "Answer under Everyone marvels over the fact that you started your company at 40, from I got married through but he wouldn't help me.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-shop",
+      "statement": "Wang opened her first flagship bridal store in 1990.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-brand",
+          "locator": "Founding and first flagship store history.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Vera Wang became a bridal and fashion designer.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-brand",
+          "locator": "Brand history.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-vogue",
+          "locator": "Interview introduction and design answers.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "Vera Wang",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was nearly forty when she searched the bridal shops for her own wedding dress. She had worked with clothes for years and knew what she wanted. She had not found it.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-search",
+        "fact-career",
+        "fact-design"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-career",
+            "fact-design",
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: a remembered shopping period, not a documented visit to one particular shop. No mirror scene or sales conversation is invented."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The dresses she was finding did not offer the simpler shape she wanted. An experienced fashion worker still could not find something that suited her own wedding. She remained dissatisfied.",
+      "requiredFactIds": [
+        "fact-search",
+        "fact-gap",
+        "fact-career"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search",
+            "fact-gap"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-career",
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: frustration is documented; a deepest low is not. Do not inflate a shopping problem into unrecorded despair."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She hired a dressmaker to make her own design instead of choosing one of the available gowns. She commissioned the dress.",
+      "requiredFactIds": [
+        "fact-search"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: concrete action is recorded, but the actual consultation and its setting have not been recovered."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Her work had already changed before she began planning a bridal business. After years as an editor, she had spent two years designing accessories for someone else's company. She later said that designing was work she had wanted to do for a long time. Now she saw another possibility in bridal clothes.",
+      "requiredFactIds": [
+        "fact-career",
+        "fact-gap",
+        "fact-design"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-career",
+            "fact-gap"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-career"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-design"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gap"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: context rather than an attested failed attempt and return. No 1987 editor-in-chief rejection or lifelong failure-to-success causal story is asserted."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She opened her first bridal store the following year, after the search for her own wedding dress. The business had a place.",
+      "requiredFactIds": [
+        "fact-search",
+        "fact-shop"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search",
+            "fact-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: opening is verified as a milestone, not a located first-customer scene. Bazaar's report of paternal funding and Wang's later statement that her father would not help remain unreconciled; the canonical text asserts neither version. Do not recast this gap as having no resources or support."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The store made her idea available to brides looking for clothes for their weddings. She had moved from editing fashion and designing for another company to running a bridal business. This was its beginning.",
+      "requiredFactIds": [
+        "fact-shop",
+        "fact-gap",
+        "fact-career"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-shop",
+            "fact-gap"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-career",
+            "fact-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: no verified ordinary early routine or continuing difficulty within 1990. Does not import later celebrity commissions or pretend all early stock was her own design."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Vera Wang.\n\nShe became known for bridal dresses and fashion design.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nA change of direction need not erase your earlier work.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "No late-bloomer guarantee or claim that every setback was necessary."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dismissal meeting, bridal fitting, lease signing, opening-day customer, or overnight success.",
+    "The 2006 forum reprint of a lease-signing recollection remains a research lead, not candidate evidence.",
+    "This is an incomplete held draft; summaries cannot become scenes through passage labels."
+  ],
+  "avoidRules": [
+    "Do not repeat the unsupported 1987 Anna Wintour appointment story.",
+    "Do not resolve the conflicting funding accounts without evidence, or portray entry as having no support or resources.",
+    "Do not conflate first retail opening with later launch of every own-design product.",
+    "Do not assign general later anxiety to a particular 1990 day."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-vogue",
+      "citation": "Vera Wang interviewed by Bandana Tewari, Meet Vera Wang, the Bride Maker, Vogue India, June 5, 2010.",
+      "url": "https://www.vogue.in/content/meet-vera-wang-bride-maker",
+      "locator": "First two answers: editorial career, 1987 design role, and 1990 bridal-market concept."
+    },
+    {
+      "sourceId": "source-bazaar",
+      "citation": "Elisa Lipsky-Karasz, The Vera Wang Interview: Made of Honor, Harper's Bazaar, March 24, 2011.",
+      "url": "https://www.harpersbazaar.com/fashion/designers/a694/vera-wang-interview/",
+      "locator": "Paragraph beginning In fact, it was her own wedding; following business-concept quotation."
+    },
+    {
+      "sourceId": "source-elle",
+      "citation": "Vera Wang interviewed by Claire Stern Milch, Vera Wang Is More Than Just Her Age, Elle, March 16, 2023.",
+      "url": "https://www.elle.com/beauty/makeup-skin-care/a43328070/vera-wang-kohls-aging-interview/",
+      "locator": "Answer on changing from editor to designer; recollection of marrying at thirty-nine and three quarters."
+    },
+    {
+      "sourceId": "source-brand",
+      "citation": "Vera Wang, The Brand, official company history.",
+      "url": "https://www.verawang.com/pages/the-brand",
+      "locator": "Founding/first flagship store account."
+    }
+  ],
+  "review": {}
+}

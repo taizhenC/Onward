@@ -1,6 +1,6 @@
 # Agatha Christie — a difficult book published
 
-20 September 2026. **FOR OWNER READING, not approved.** Candidate `christie-1926-1928-the-year-that-broke-v1.candidate.json`; SHA-256 `93a753e85d346f9ce8475e9f96d49a70ad05d767d5006400ceb31621a24dbcd2`; **160 words**; draft/version 1/empty review.
+20 September 2026. **FOR OWNER READING, not approved.** Candidate `christie-1926-1928-the-year-that-broke-v1.candidate.json`; final SHA-256 `87d2af9609f6e5e5fdf26e5a6ae7989412a798d69781efe574c079a953949852`; **159 words**; draft/version 1/empty review.
 
 ## Specific repair and scope
 
@@ -17,3 +17,9 @@ Publication replaces the requested full completion moment under the user's short
 ## Format and checks
 
 A brief summary across seven roles, not seven scenes; no separately invented failed attempt or internal turning point. The remembered criticism stays memory-framed. Substantial length/readability exception is explicit. No disappearance explanation, diagnosis or emotional cure. Validator passes with zero errors/warnings. Earlier snapshots unchanged. Independent review and exact-text owner approval remain necessary; no publication or operational mutation.
+
+## Reviewer correction receipt
+
+The independent set-one reviewer identified a named opening location contrary to recipe R1 and a stale bereavement flag after that subject was removed from the narrowed narrative. With root's express authorization, the reviewer changed only “in the Canary Islands” to “away from home” in the opening and removed `death_or_grief` plus “Bereavement context” from the content profile. Historical facts and source references are unchanged. The prior160-word hash `93a753e85d346f9ce8475e9f96d49a70ad05d767d5006400ceb31621a24dbcd2` is superseded by the final159-word hash above.
+
+The reviewer reran the sentence validator: draft and in-memory publication simulation both0errors/0warnings. Root separately inspected the exact diff and reported a passing strict set-one hash/composition check. This is a reviewer-made correction followed by root's independent check, not the reviewer claiming independent approval of their own edit; no human reading approval is recorded.

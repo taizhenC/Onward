@@ -45,10 +45,9 @@
   "contentProfile": {
     "intensity": "moderate",
     "flags": [
-      "death_or_grief",
       "pregnancy_or_parenthood"
     ],
-    "contentNote": "Bereavement context, marital separation, financial pressure and difficult writing. FOR OWNER READING as a user-authorized short source-led vignette, not approval. Owning-estate chronology and summary are distinguished from its brief quotations of Christie's memoir. The uncollated non-owning memoir copy is no longer a source for any retained claim. Publication is the summarized turn."
+    "contentNote": "Marital separation, financial pressure and difficult writing. FOR OWNER READING as a user-authorized short source-led vignette, not approval. Owning-estate chronology and summary are distinguished from its brief quotations of Christie's memoir. The uncollated non-owning memoir copy is no longer a source for any retained claim. Publication is the summarized turn."
   },
   "facts": [
     {
@@ -192,7 +191,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "She was thirty-six, working on a novel during a stay in the Canary Islands. Her daughter and secretary had travelled with her.",
+      "canonicalText": "She was thirty-six, working on a novel during a stay away from home. Her daughter and secretary had travelled with her.",
       "requiredFactIds": [
         "a01",
         "a02",

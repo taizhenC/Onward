@@ -1,0 +1,504 @@
+{
+  "storySpecId": "yeats:1889-1893-the-no-and-the-poems:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "yeats",
+  "stageId": "1889-1893-the-no-and-the-poems",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 26,
+    "ageMax": 27,
+    "startDate": "1891",
+    "endDate": "1892",
+    "throughLine": "After a refused proposal, a young writer remained in contact and continued an unfinished play; the surviving account does not establish an emotional recovery or a located later turn."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Unreturned romantic attachment. SOURCE AND CRAFT HOLD: core memoir accessed only in an uncollated third-party transcription; completion is not a situated turning point. Very short evidence-bounded draft, not a complete story or approval. Candidate narrows the installed age range 23–28. The opening is after June 1891; the exact proposal month is not established by the accessed account."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Yeats was born June 13, 1865; the proposal described in the memoir belongs to summer 1891, when he was twenty-six.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "locator": "Born: 13 June 1865.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Section XII, p. 45, July 1891 editorial dating and following return to Dublin.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-proposal",
+      "statement": "Yeats recalled returning to Dublin, entering a room with the intention of proposing, holding Gonne's hand, and speaking.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Section XII, p. 46, return and proposal paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-refusal",
+      "statement": "He recalled his confidence leaving him during a silence; she withdrew her hand, declined marriage, and asked for friendship.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Section XII, p. 46, I ceased to speak paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-walk",
+      "statement": "He recalled walking with her along cliff paths the following day and dining at a cottage.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Section XII, p. 46, We spent the next day paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-read",
+      "statement": "He continued seeing her and read her his unfinished play.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Section XII, pp. 46–47, I saw her day after day and I read her paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-work",
+      "statement": "After Gonne returned to France, Yeats stayed in Ireland to finish The Countess Cathleen; he was uncertain in recollection about his precise location.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Section XII, p. 47, I stayed on in Ireland, probably at Sligo paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-letters",
+      "statement": "Later in the same account, he described lacking money and spending much time writing letters to Gonne instead of earning.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Section XIII, p. 50, I had no money and I had spent paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-book",
+      "statement": "The play and a group of poems were published in The Countess Kathleen and various legends and lyrics in 1892.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-volume",
+          "locator": "Author, title, imprint and physical publication record.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "William Butler Yeats was a poet and playwright awarded the Nobel Prize in Literature in 1923.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "locator": "Prize year and Work section.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "William Butler Yeats",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At twenty-six, he entered the room intending to ask a woman to marry him. He later remembered holding her hand while he spoke. Then he stopped speaking.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-proposal",
+        "fact-refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-proposal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proposal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Retrospective scene; primary-edition collation still required. No hotel furnishings or invented speech."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In the silence, he felt his confidence leave him. She withdrew her hand and said she could not marry him. She wanted his friendship.",
+      "requiredFactIds": [
+        "fact-refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The feeling and withdrawal belong to his account. Her reasons are not supplied or judged."
+    },
+    {
+      "role": "response",
+      "canonicalText": "The following day, they walked along the cliff paths and ate at a cottage. He continued seeing her.",
+      "requiredFactIds": [
+        "fact-walk",
+        "fact-read"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-walk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-read"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: a documented next event, not evidence of a deliberate constructive response or acceptance of her boundary."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He read her the play he had not yet finished. After she went away, he stayed behind and worked on it. His later account also describes time spent writing to her when he needed to earn money. The attachment continued.",
+      "requiredFactIds": [
+        "fact-read",
+        "fact-work",
+        "fact-letters"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-read"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: no securely located failed writing attempt and return. Continued romantic pursuit is not presented as admirable persistence."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The play reached publication alongside a group of poems the following year. The book existed.",
+      "requiredFactIds": [
+        "fact-book"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: publication is an attested fact, not a recovered delivery, acceptance, or reading scene. No claim it healed him."
+    },
+    {
+      "role": "became",
+      "canonicalText": "His work had entered print, but his recollections still describe the pull of the relationship. He had not written a different answer from her.",
+      "requiredFactIds": [
+        "fact-book",
+        "fact-letters",
+        "fact-refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-book",
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal",
+            "fact-letters"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: very limited aftermath. Does not claim artistic work transformed refusal or secured another person's affection."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was William Butler Yeats.\n\nThe poet and playwright received the Nobel Prize in Literature in 1923.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYour worth is not decided by another person's answer.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission concerns the reader's worth, not entitlement to another person's love."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Only the remembered room and actions described in the memoir are rendered; no invented scene detail.",
+    "No lyric is treated as a literal record of a private event.",
+    "This is an incomplete held reading draft; seven labels are not evidence of story completeness."
+  ],
+  "avoidRules": [
+    "Do not frame repeated proposals as a method that earns affection.",
+    "Do not transplant later marriage remarks, 1899 poems, or the 1896–1897 recovery at Coole into 1891.",
+    "Do not replace the 1892 publication with an unverified 1893 standalone Rose collection.",
+    "Do not claim writing cured rejection."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-memoirs",
+      "citation": "W. B. Yeats, Memoirs, edited by Denis Donoghue (1972), Autobiography sections XII–XIII. Retrospective manuscript, accessed in a third-party OCR transcription.",
+      "url": "https://pdfcoffee.com/w-b-yeats-memoirs-autobiography-pdf-free.html",
+      "locator": "Printed pp. 45–47 and 50; OCR has not been collated with an owning-library scan."
+    },
+    {
+      "sourceId": "source-volume",
+      "citation": "The Morgan Library and Museum, catalogue record for The Countess Kathleen and various legends and lyrics, T. Fisher Unwin (1892).",
+      "url": "https://www.themorgan.org/printed-books/112561",
+      "locator": "Title, author, imprint and 1892 date."
+    },
+    {
+      "sourceId": "source-nobel",
+      "citation": "Nobel Foundation, William Butler Yeats: Facts.",
+      "url": "https://www.nobelprize.org/laureate/593",
+      "locator": "Birth date, prize year, and work."
+    }
+  ],
+  "review": {}
+}

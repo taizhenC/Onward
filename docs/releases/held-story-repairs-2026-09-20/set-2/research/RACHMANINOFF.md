@@ -28,7 +28,7 @@ Ages27–28 and1900–1901 remain within the installed broader1897–1901 episod
 
 ## Verification
 
-[Candidate](../rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json):306 words; SHA-256 `06e2728a90f466a5465965ed549b357be5d4935682fdb94375ca547a35fbd23a`.
+[Candidate](../rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json):306 words; SHA-256 `a371de051b717fb362518b4086111ca0e3bad49bf1f5460f535b6a849ccf613e`. Independent review removed the obsolete serious-illness flag: the repaired facts and prose describe creative distress without an illness event or diagnosis.
 
 Metadata recheck: the unfinished-concerto atom now names18February1901 rather than retaining an orphan “next day” reference to an omitted letter. The content note now agrees with the short-vignette verdict and disclosed source-copy qualification. Canonical prose is unchanged; local validator rerun remains0errors/0warnings.
 

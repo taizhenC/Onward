@@ -1,0 +1,541 @@
+{
+  "storySpecId": "charles_r:1945-1948-orphaned-to-the-bus:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "charles_r",
+  "stageId": "1945-1948-orphaned-to-the-bus",
+  "version": 1,
+  "status": "draft",
+  "entities": [
+    {
+      "kind": "person",
+      "value": "Ray Charles",
+      "aliases": [
+        "Charles"
+      ],
+      "entityId": "entity-subject"
+    },
+    {
+      "kind": "date",
+      "value": "1930",
+      "aliases": [],
+      "entityId": "entity-birth-year"
+    },
+    {
+      "kind": "date",
+      "value": "2004",
+      "aliases": [],
+      "entityId": "entity-death-year"
+    }
+  ],
+  "dramatizationLimits": [
+    "No hospital chronology, infusion, first cry, recovery mechanism or physical grief reconstruction.",
+    "No claim that leaving school was immediate or that he never returned.",
+    "Retrospective sources are memory-framed; no invented room, dialogue, meal or audition gesture."
+  ],
+  "avoidRules": [
+    "Do not turn work into a cure for bereavement.",
+    "Do not claim blindness created musical talent or that help negated independence.",
+    "Short summaries are authorized exceptions to full moment and length requirements."
+  ],
+  "episode": {
+    "ageMin": 14,
+    "ageMax": 18,
+    "throughLine": "A short testimony-led account of bereavement, support, precarious musical work and a new engagement; no adjudication of conflicting hospital chronology or claim that employment cured grief."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief"
+    ],
+    "contentNote": "Maternal bereavement and food insecurity. FOR OWNER READING, not approved: user-authorized short source-led form. Remembered practical responses are summarized across 1945–1948, not a single grief-to-recovery sequence. Opening says mid-teens because interview ages vary; range 14–18 retained. Matching unchanged. Hospital, first-cry, infusion and cure claims are removed."
+  },
+  "facts": [
+    {
+      "factId": "c01",
+      "statement": "Charles was born September 23, 1930. HistoryLink places his mother's death before his fifteenth birthday; the narration uses mid-teens, preserving age uncertainty across interviews.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-official",
+          "scope": "bounded",
+          "locator": "The Man, paragraph beginning Born Ray Charles Robinson; birth date only. The next paragraph's 1947 Seattle date is not adopted."
+        },
+        {
+          "sourceId": "src-historylink",
+          "scope": "bounded",
+          "locator": "On His Own: mother died shortly before his fifteenth birthday. Combined with birth September 23, 1930. Rounded age in interviews is not controlling."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "c02",
+      "statement": "Charles recalled a death telegram read at school the next morning.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, Charles's direct answer beginning She was only thirty-one, thirty-two."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c21",
+      "statement": "Charles told Aronowitz that his mother's death was difficult to explain to someone who had not loved their mother as he had.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, direct answer beginning She was only thirty-one, thirty-two; opening sentences about the telegram and difficulty explaining his feelings. Hospital, crying, eating and timing details not adopted."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c17",
+      "statement": "Charles recalled exchanging earnings for accommodation and care.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-balliett-1970",
+          "scope": "bounded",
+          "locator": "Owning text, first-person paragraph 144, beginning I knew some people in Jacksonville. Exact agreement date and room are not given."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c18",
+      "statement": "Charles recalled Florida bands, sparse food, staying on the road, and copying Louis Jordan's group for paid work.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-morrison-1960",
+          "scope": "bounded",
+          "locator": "Paragraphs beginning When his father died (work locations only), There were days (direct recollection), and Playing with small bands (direct Honeydippers recollection). Excludes surrounding family/age claims."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c10",
+      "statement": "Charles preferred a distant, moderately sized city where he might find work.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, complete direct answer beginning I was in Tampa. This supplies size/distance preference; no attributed fear or 1973 transcript dependency remains."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c11",
+      "statement": "Charles recalled taking a bus from Tampa to Seattle.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, answer beginning I was in Tampa. This is his direct recalled journey, without the surrounding narrator's rounded age or savings amount."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c12",
+      "statement": "Charles reached Seattle in March 1948, aged seventeen; the following local working period extends beyond his eighteenth birthday.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-historylink",
+          "scope": "bounded",
+          "locator": "Paragraph beginning R. C. Robinson arrived in Seattle in March 1948; date cross-checked against birth date."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "c16",
+      "statement": "Charles recalled club admission, a successful performance, and work two days afterward.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-balliett-1970",
+          "scope": "bounded",
+          "locator": "Owning text, first-person paragraphs at web-reader lines 155–157: consecutive arrival, performance and subsequent employment passages."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c14",
+      "statement": "Charles imitated Nat Cole to stay in paid work.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-1963",
+          "scope": "bounded",
+          "locator": "Section II, direct answer beginning I was just in my teens."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "c15",
+      "statement": "Ray Charles combined gospel and blues in his music.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-charles-official",
+          "scope": "bounded",
+          "locator": "The Man, paragraph beginning Charles combined blues, gospel. Used only for the brief musical-legacy statement, not its separate disputed travel chronology."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He was in his mid-teens, away at school, when news came that his mother had died. A telegram was read to him.",
+      "requiredFactIds": [
+        "c01",
+        "c02"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c01",
+            "c02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Recalled school news; no exact room or bodily action. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In his memory, the loss was so painful that he struggled to describe it to other people. He had loved her deeply.",
+      "requiredFactIds": [
+        "c21"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c21"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c21"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "His attributed difficulty expressing the loss, without disputed physical chronology. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "response",
+      "canonicalText": "Later, he agreed to share his earnings with family friends who housed and fed him. He accepted their help.",
+      "requiredFactIds": [
+        "c17"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Remembered agreement, not a reconstructed encounter or immediate response at school. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He played with small bands, but some days he had little more than fish and crackers to eat. One group copied a successful bandleader's sound, hoping to earn money. Eventually he chose a distant city where he thought he might have a chance. He travelled there by bus.",
+      "requiredFactIds": [
+        "c18",
+        "c10",
+        "c11"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Clearly compressed Florida period followed by travel, not one meal or one failed audition. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "In the new city, he pleaded for entry to a club and sang successfully. Two days later, he had work.",
+      "requiredFactIds": [
+        "c16"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Retrospective club account, with subsequent result visibly later; no instant cure. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "became",
+      "canonicalText": "For customers, he imitated a popular singer and pianist, hoping the familiar sound would keep him employed. He was still earning through imitation.",
+      "requiredFactIds": [
+        "c14"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Local early employment, not later distinctive voice or a finished recovery. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Ray Charles.\n\nHe became a singer and pianist whose music joined gospel and blues.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to need other people while making a choice of your own.\n\nYou do not have to feel certain about everything.",
+      "requiredFactIds": [
+        "c01",
+        "c15"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "c15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission, not a recommendation to move, leave school or work through grief. User-authorized short source-led format; FOR OWNER READING, not approved."
+    }
+  ],
+  "interpretations": [],
+  "sources": [
+    {
+      "sourceId": "src-charles-1963",
+      "citation": "Ray Charles interviewed by Al Aronowitz in 1963; Aronowitz, The Great Ray Charles Needed No Justifying, revised republication, July 1, 2004.",
+      "locator": "Section II, paragraphs beginning 'Ray was born', 'She was only', 'My mother might pass', 'I was in Tampa', and 'I was just in my teens'. Freshly reopened and bounded relevant passage read 2026-09-20; no original print facsimile newly inspected.",
+      "url": "https://www.blacklistedjournalist.com/column107.html"
+    },
+    {
+      "sourceId": "src-historylink",
+      "citation": "Cassandra Tate, Charles, Ray (1930–2004), HistoryLink, June 17, 2004; corrected subsequently.",
+      "locator": "The Bottom of the Ladder; Sojourn in Seattle. Chronological cross-check only; not treated as a primary account. Freshly reopened and bounded relevant passage read 2026-09-20; no original print facsimile newly inspected.",
+      "url": "https://www.historylink.org/file/5707"
+    },
+    {
+      "sourceId": "src-balliett-1970",
+      "citation": "Whitney Balliett, It's Detestable When You Live It, The New Yorker, March 28, 1970 issue (web dateline March 21, 1970).",
+      "locator": "Owning full web text inspected September 9–10, 2026; paragraph 144 and paragraphs 155–157. Retrospective testimony; print facsimile not inspected. Other chronology and family claims are not adopted. Freshly reopened and bounded relevant passage read 2026-09-20; no original print facsimile newly inspected.",
+      "url": "https://www.newyorker.com/magazine/1970/03/28/its-detestable-when-you-live-it"
+    },
+    {
+      "sourceId": "src-morrison-1960",
+      "citation": "Allan Morrison, Ray Charles interview, reprinted with author and Johnson Publishing Company permission from Ebony in Jazz Journal, December 1960; Jazz Journal authorized web republication, December 24, 2020.",
+      "url": "https://jazzjournal.co.uk/2020/12/24/jj-12-60-ray-charles-interviewed/",
+      "locator": "Owning authorized web reprint inspected September 10, 2026. Paragraphs on school music (beginning You might think), Florida work (When his father died: locations only), sparse food (There were days) and the Honeydippers (Playing with small bands). Not used for the narrator's inaccurate only-child/family/age claims; original magazine scan not inspected. Freshly reopened and bounded relevant passage read 2026-09-20; no original print facsimile newly inspected."
+    },
+    {
+      "sourceId": "src-charles-official",
+      "citation": "The Ray Charles Foundation, official Ray Charles biography, About: The Man.",
+      "url": "https://raycharles.com/about/",
+      "locator": "Paragraphs beginning Charles combined and Born Ray Charles Robinson, inspected September 10, 2026. Musical synthesis and birth date only; page's separate 1947 Seattle chronology is not accepted. Freshly reopened and bounded relevant passage read 2026-09-20; no original print facsimile newly inspected."
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,561 @@
+{
+  "storySpecId": "sullivan_a:1880-1886-almshouse-to-valedictorian:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "sullivan_a",
+  "stageId": "1880-1886-almshouse-to-valedictorian",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 14,
+    "ageMax": 20,
+    "startDate": "1880-10-07",
+    "endDate": "1886-06-01",
+    "throughLine": "A pupil who arrived unable to read learned amid ridicule and support, then addressed her graduating class without knowing what work would follow."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness",
+      "discrimination"
+    ],
+    "contentNote": "Source-led vignette under the owner's explicit short-form exception, not a fully located seven-moment story. Visual impairment, ridicule, threatened expulsion and insecure prospects. Institutional history supplies the school narrative; a contemporary address and later quoted recollections have distinct evidentiary status. Ages14–20 match the installed stage. New text awaits owner reading, not publication."
+  },
+  "facts": [
+    {
+      "factId": "fact-arrival",
+      "statement": "Anne Sullivan entered Perkins on October 7, 1880, aged fourteen after years at Tewksbury Almshouse, unable to read or write her name.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Early challenges, Tewksbury paragraphs; Life-changing moment, final arrival sentence and next paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-ridicule",
+      "statement": "Institutional accounts describe ridicule over Sullivan's lack of schooling and spelling, with humiliation, anger, and shame.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Life-changing moment, peer ridicule; Perkins experience, first paragraph.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-afb",
+          "locator": "Paragraph beginning Sullivan was mortified.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-learning",
+      "statement": "Sullivan learned to read and advanced in her studies; she recalled learning quickly.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, first paragraph.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-afb",
+          "locator": "Quoted recollection beginning The years at Tewksbury.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-class",
+      "statement": "Sullivan later recalled a weekly Shakespeare class as especially absorbing and remembered the lasting importance of poetry.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-afb",
+          "locator": "Quoted recollection beginning She [the teacher] had a regular class.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-help",
+      "statement": "Some staff helped Sullivan; she formed a close relationship with house mother Sophia Hopkins, and improved vision enabled print reading.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, paragraph beginning After the first two years.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-limits",
+      "statement": "The school account reports rule-breaking and threatened expulsion, with staff interventions.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, paragraph beginning Sullivan learned to excel.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-graduation",
+      "statement": "Sullivan delivered her valedictory address on June 1, 1886, aged twenty.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-address",
+          "locator": "Title, date, and complete address.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, June 1886 graduation paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-speech",
+      "statement": "In her address Sullivan thanked the school's supporters and staff, acknowledged friendships, and described education continuing beyond school.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-address",
+          "locator": "Opening paragraph; The search for knowledge paragraph; gratitude and Schoolmates paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-future",
+      "statement": "The school's historical account says her prospects after graduation were unclear and she feared returning to the almshouse.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, paragraph beginning Just what her especial part would be.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Anne Sullivan later became Helen Keller's teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Opportunity of a lifetime and Entering Helen's world.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "Anne Sullivan",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She entered a school for blind children at fourteen, after years in an almshouse. She could not yet read or write her name. She was beginning school.",
+      "requiredFactIds": [
+        "fact-arrival"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-led vignette, not recreated scenes. The 1886 speech is a contemporary document; school feelings and disciplinary history are retrospective accounts. No full-moment or publication approval is asserted."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Other pupils mocked her spelling and the things she had never been taught. The school's history describes her anger and shame. She remembered the humiliation.",
+      "requiredFactIds": [
+        "fact-ridicule"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-led vignette, not recreated scenes. The 1886 speech is a contemporary document; school feelings and disciplinary history are retrospective accounts. No full-moment or publication approval is asserted."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She learned to read and advanced in her studies. Later, she remembered a weekly poetry class as the part of school that absorbed her. The plays stayed with her.",
+      "requiredFactIds": [
+        "fact-learning",
+        "fact-class"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-class"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-class"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-led vignette, not recreated scenes. The 1886 speech is a contemporary document; school feelings and disciplinary history are retrospective accounts. No full-moment or publication approval is asserted."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Doing well in lessons did not end her trouble with the school's rules. She came close to being expelled more than once. Staff who knew her intervened.",
+      "requiredFactIds": [
+        "fact-limits"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-led vignette, not recreated scenes. The 1886 speech is a contemporary document; school feelings and disciplinary history are retrospective accounts. No full-moment or publication approval is asserted."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Nearly six years after arriving, she gave the address at her class's graduation. She thanked the people who had supported their education. She was twenty.",
+      "requiredFactIds": [
+        "fact-arrival",
+        "fact-graduation",
+        "fact-speech"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival",
+            "fact-graduation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-speech"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-graduation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-led vignette, not recreated scenes. The 1886 speech is a contemporary document; school feelings and disciplinary history are retrospective accounts. No full-moment or publication approval is asserted."
+    },
+    {
+      "role": "became",
+      "canonicalText": "In that address, she said the search for knowledge would continue after school. The school's history records a less certain prospect alongside those words. She feared having to return to the almshouse. Her next work was unclear.",
+      "requiredFactIds": [
+        "fact-speech",
+        "fact-future"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-speech"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-future"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-future"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-future"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-led vignette, not recreated scenes. The 1886 speech is a contemporary document; school feelings and disciplinary history are retrospective accounts. No full-moment or publication approval is asserted."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Anne Sullivan.\n\nShe became Helen Keller's teacher.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know what comes after this. You are allowed to need time.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Source-led vignette, not recreated scenes. The 1886 speech is a contemporary document; school feelings and disciplinary history are retrospective accounts. No full-moment or publication approval is asserted."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Seven schema roles retain reader compatibility; this deliberately short source-led vignette does not claim full scene or 700–950-word compliance.",
+    "No invented classroom, first lesson, graduation gesture, direct dialogue or private motive.",
+    "The address is contemporary; remembered school experience and later institutional history cannot establish every private feeling or exact day.",
+    "No implication that neglect or impairment was necessary, or graduation guaranteed work."
+  ],
+  "avoidRules": [
+    "Do not turn institutional neglect into a necessary gift.",
+    "Do not move the 1887 Keller teaching episode into this stage.",
+    "Do not treat partial sight improvement as the sole explanation for learning.",
+    "Do not claim the valedictory address erased anxiety about employment."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-perkins",
+      "citation": "B. L. McGinnity, J. Seymour-Ford and K. J. Andries, Anne Sullivan, Perkins History Museum (2004). Institutional biography.",
+      "url": "https://www.perkins.org/anne-sullivan/",
+      "locator": "Life-changing moment; Perkins experience."
+    },
+    {
+      "sourceId": "source-afb",
+      "citation": "American Foundation for the Blind, Anne's Education. Museum narrative with extracts attributed to Sullivan in Nella Braddy Henney's biography.",
+      "url": "https://www.afb.org/formative-years/education",
+      "locator": "Paragraphs on spelling, retrospective school recollection, Shakespeare class, and eye operations."
+    },
+    {
+      "sourceId": "source-address",
+      "citation": "Anne M. Sullivan, valedictory address, 1 June 1886, transcribed by Perkins School for the Blind.",
+      "url": "https://www.perkins.org/resource/anne-sullivans-valedictory-address/",
+      "locator": "Complete address, especially opening, gratitude, and closing paragraphs."
+    }
+  ],
+  "review": {}
+}

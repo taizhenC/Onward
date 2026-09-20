@@ -1,0 +1,571 @@
+{
+  "storySpecId": "sanders:1956-broke-at-sixty-five:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "sanders",
+  "stageId": "1956-broke-at-sixty-five",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 65,
+    "ageMax": 66,
+    "startDate": "1956",
+    "throughLine": "A restaurant owner remembers discouragement after a sale and returns to paid cooking work through an already existing franchise idea."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [],
+    "contentNote": "Loss of a restaurant and financial uncertainty, told as a short source-led vignette. Later recollection is distinguished from company chronology. Road practices are not dated individual scenes; ages 65–66 narrow installed 62–66. No self-harm content or claim of having no assets."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Harland Sanders was born on 9 September 1890; he was about sixty-five during the 1956 sale and road-work transition.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "Humble Beginnings and 1956 timeline entry."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "earlier",
+      "statement": "The first franchise opened in 1952, before the 1956 restaurant sale.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "1952 and 1956 timeline entries."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "effort",
+      "statement": "Sanders remembered advertising the restaurant on roadside barns and spending long hours building the business.",
+      "sourceRefs": [
+        {
+          "sourceId": "guideposts",
+          "scope": "bounded",
+          "locator": "Paragraph beginning When we started into the restaurant business, through the road-sign explanation."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "sale",
+      "statement": "Sanders remembered falling business after road changes and leaving the motel-restaurant with his wife in 1956.",
+      "sourceRefs": [
+        {
+          "sourceId": "guideposts",
+          "scope": "bounded",
+          "locator": "Then the blow fell through When we walked out of our motel-restaurant for the last time."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "discouraged",
+      "statement": "He recalled that he and his wife felt discouraged, and wondered whether his working life was finished at sixty-five.",
+      "sourceRefs": [
+        {
+          "sourceId": "guideposts",
+          "scope": "bounded",
+          "locator": "Was I finished at age 65? and the following two sentences."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "payment",
+      "statement": "He remembered discussing the next move with his wife when a retirement payment arrived, and judging it insufficient.",
+      "sourceRefs": [
+        {
+          "sourceId": "guideposts",
+          "scope": "bounded",
+          "locator": "All that came to an end in 1956 through That won't go very far."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "load",
+      "statement": "He remembered packing cooking equipment, flour and a blanket into his car for road work.",
+      "sourceRefs": [
+        {
+          "sourceId": "guideposts",
+          "scope": "bounded",
+          "locator": "Cashing the $105 check paragraph; the chronology of first franchising elsewhere in this retrospective article is not adopted."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "road",
+      "statement": "After selling his restaurant in 1956, Sanders went on the road to recruit additional franchisees.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "1956 On the road entry."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "offer",
+      "statement": "He remembered offering restaurant owners cooking demonstrations in exchange for payments on their sales.",
+      "sourceRefs": [
+        {
+          "sourceId": "guideposts",
+          "scope": "bounded",
+          "locator": "My offer to restaurateurs was a simple one paragraph; exact royalty and first-contract chronology omitted."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "conditions",
+      "statement": "He remembered sleeping in his car to save money and receiving meals from restaurant friends during road work.",
+      "sourceRefs": [
+        {
+          "sourceId": "guideposts",
+          "scope": "bounded",
+          "locator": "I drove all over the country paragraph; no exact first-night date established."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "identity",
+      "statement": "Harland Sanders founded the restaurant business known as Kentucky Fried Chicken, now KFC.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "Humble Beginnings and 1952 timeline entry."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "sanders",
+      "kind": "person",
+      "value": "Harland Sanders",
+      "aliases": [
+        "Colonel Sanders"
+      ]
+    },
+    {
+      "entityId": "company",
+      "kind": "organization",
+      "value": "KFC",
+      "aliases": [
+        "Kentucky Fried Chicken"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He remembered leaving the restaurant with his wife after the business had been sold. He was about sixty-five. The restaurant was no longer theirs.",
+      "requiredFactIds": [
+        "sale",
+        "age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "sale"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "sale"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led vignette for owner reading, not a reconstructed sequence of four scenes. Guideposts (August 1969) is Sanders's retrospective account, with probable confidence; its misleading placement of the first franchise after the sale is not adopted. KFC dates the first franchise to 1952. No exact road-call date or immediate emotional cure is asserted."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He remembered both of them feeling discouraged about what came next. He wondered whether his working life was over. A retirement payment seemed too small.",
+      "requiredFactIds": [
+        "discouraged",
+        "payment"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "discouraged"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "discouraged"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "payment"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led vignette for owner reading, not a reconstructed sequence of four scenes. Guideposts (August 1969) is Sanders's retrospective account, with probable confidence; its misleading placement of the first franchise after the sale is not adopted. KFC dates the first franchise to 1952. No exact road-call date or immediate emotional cure is asserted."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He packed cooking equipment and flour into his car for work on the road. He also took a blanket. That was part of his remembered departure.",
+      "requiredFactIds": [
+        "load"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "load"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "load"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "load"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led vignette for owner reading, not a reconstructed sequence of four scenes. Guideposts (August 1969) is Sanders's retrospective account, with probable confidence; its misleading placement of the first franchise after the sale is not adopted. KFC dates the first franchise to 1952. No exact road-call date or immediate emotional cure is asserted."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Before the sale, he had put long hours into the restaurant. He had painted signs on barns to bring travelers to its tables. The road changes still took customers away. The business lost trade.",
+      "requiredFactIds": [
+        "effort",
+        "sale"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "sale"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "sale"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led vignette for owner reading, not a reconstructed sequence of four scenes. Guideposts (August 1969) is Sanders's retrospective account, with probable confidence; its misleading placement of the first franchise after the sale is not adopted. KFC dates the first franchise to 1952. No exact road-call date or immediate emotional cure is asserted."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "After selling, he traveled to find more restaurants willing to serve his food. The idea was not entirely new: other owners had used his recipe before the sale. He was expanding that work.",
+      "requiredFactIds": [
+        "road",
+        "earlier"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "road"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "road",
+            "earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led vignette for owner reading, not a reconstructed sequence of four scenes. Guideposts (August 1969) is Sanders's retrospective account, with probable confidence; its misleading placement of the first franchise after the sale is not adopted. KFC dates the first franchise to 1952. No exact road-call date or immediate emotional cure is asserted."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He remembered offering to teach owners his cooking method in return for payments on their sales. On those trips, he sometimes slept in the car to reduce costs. Restaurant friends also gave him meals. He did not travel without help.",
+      "requiredFactIds": [
+        "offer",
+        "conditions"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "conditions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "conditions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "conditions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led vignette for owner reading, not a reconstructed sequence of four scenes. Guideposts (August 1969) is Sanders's retrospective account, with probable confidence; its misleading placement of the first franchise after the sale is not adopted. KFC dates the first franchise to 1952. No exact road-call date or immediate emotional cure is asserted."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Harland Sanders.\n\nHe founded the restaurant business known as KFC.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to make a beginning look certain. You are allowed to need help.",
+      "requiredFactIds": [
+        "identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "sanders",
+        "company"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Short source-led vignette for owner reading, not a reconstructed sequence of four scenes. Guideposts (August 1969) is Sanders's retrospective account, with probable confidence; its misleading placement of the first franchise after the sale is not adopted. KFC dates the first franchise to 1952. No exact road-call date or immediate emotional cure is asserted."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented auction attendance, bids, kitchen gestures or private despair.",
+    "Do not turn a repeated practice into a specific first visit.",
+    "Do not turn an inquiry into a signed franchise or a financial rescue.",
+    "Seven schema roles retain reader compatibility only; this shorter vignette does not claim full scene-based recipe compliance."
+  ],
+  "avoidRules": [
+    "Do not say franchising began after the 1956 sale; the first franchise was in 1952.",
+    "No suicide myth, 1,009 rejection count, overnight interstate destruction, or conflation of an earlier property offer with a debt.",
+    "Do not move the story to the 1952 Harman meal without explicit review of that material episode substitution.",
+    "Do not reproduce the retrospective article's first-franchise-after-1956 sequence, religious prescription, or claims that work cures illness. No claim that retirement is wrong."
+  ],
+  "sources": [
+    {
+      "sourceId": "company",
+      "citation": "KFC, 'Our History'.",
+      "locator": "Owning-company history: birth paragraph and 1952/1956 timeline entries.",
+      "url": "https://global.kfc.com/our-history"
+    },
+    {
+      "sourceId": "guideposts",
+      "citation": "Harland Sanders, first-person Guideposts article, August 1969, republished as Guideposts Classics: Colonel Harland Sanders on Life After 65.",
+      "url": "https://guideposts.org/articles/cat-tell-us-your-story/celebrity-stories/guideposts-classics-colonel-harland-sanders-on-life-after-65/",
+      "locator": "Road rerouting and departure paragraphs through the road-work offer and car-sleeping paragraph. Publisher HTML read directly via ordinary HTTP after web extraction failed; no original magazine scan inspected."
+    }
+  ],
+  "review": {}
+}

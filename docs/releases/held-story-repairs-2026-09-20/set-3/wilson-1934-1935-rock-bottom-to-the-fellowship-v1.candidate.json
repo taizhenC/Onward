@@ -1,0 +1,555 @@
+{
+  "storySpecId": "wilson:1934-1935-rock-bottom-to-the-fellowship:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "wilson",
+  "stageId": "1934-1935-rock-bottom-to-the-fellowship",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 39,
+    "ageMax": 39,
+    "startDate": "1935-05",
+    "endDate": "1935-09",
+    "throughLine": "After a failed business trip and fear of relapse, a man found another person with the same problem, then continued mutual-help work despite setbacks."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "addiction"
+    ],
+    "contentNote": "Alcohol dependence, financial difficulty and relapse, without procedural detail. Source-led vignette under the owner's short-form exception, not a full seven-moment recovery story or treatment advice. Retrospective founding account checked against the owning AA PDF. May–September1935, age39, narrows installed38–40; September corrects the old August end using AA Archives. New text awaits owner reading; no cure or publication approval."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Bill Wilson was thirty-nine in May1935; this draft follows that same year to September, within the installed1934–1935 stage.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hotel",
+          "locator": "Mother's Day weekend 1935 setting.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "Origins: approaching thirty-nine before December 1934; 1935 gatehouse entry.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-trip",
+      "statement": "The founding account places Wilson in a hotel after a business venture failed, with little money and worry about his hotel bill.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 153–154, journey and hotel-lobby paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-low",
+      "statement": "The same account describes discouragement, loneliness, attraction to the bar's company, and fear of resuming drinking.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "p. 154, paragraphs beginning Bitterly discouraged and One dismal afternoon.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-call",
+      "statement": "He turned to a church directory and telephoned a minister; referrals led to Henrietta Seiberling and an arranged meeting.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 154–155, directory and call.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-hotel",
+          "locator": "Paragraphs beginning A call to a local minister and Henry later orchestrated.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935,A business trip to Akron: church directory aim, telephone referral.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-meet",
+      "statement": "Wilson and Dr. Bob Smith met at Seiberling's gatehouse on May 12, 1935, exchanging their experiences over several hours.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935, The meeting at the gatehouse.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-relapse",
+      "statement": "Smith later drank again; the early partnership did not mean an immediate uninterrupted change for both men.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 155–156, invitation home and subsequent drinking.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935, Men on a mission.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-visit",
+      "statement": "The two men called a hospital and then visited a patient, sharing their own drinking experiences; the patient initially doubted that this could help.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 156–158, hospital call and first bedside conversation.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-group",
+      "statement": "The founding account describes failed efforts to reach others and Wilson's eventual return home. AA Archives places his departure in September1935; he continued mutual-help efforts in New York.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 158–159, several failures and three-month stay.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935, Bill's return to New York.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-markings",
+          "locator": "p.2, By the time Bill left Akron in September paragraph and following1954 chronology excerpt.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Bill Wilson and Robert Smith were co-founders of Alcoholics Anonymous.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "p. 155, explanatory footnote identifying both men.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935–1944, A fellowship like no other.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "Bill Wilson",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At thirty-nine, he was in a hotel after a business venture had failed. He had little money and a hotel bill to pay. He was far from home.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-trip"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-trip"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-trip"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-trip"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led founding vignette. Wilson's continued shared work, not another patient's conversion, supplies the modest change. No claimed cure, last-drink date, religious requirement or clinical recommendation."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The founding account describes his wish for company and the bar nearby. He considered going in, then became afraid he would drink again. He had been sober only months.",
+      "requiredFactIds": [
+        "fact-low"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led founding vignette. Wilson's continued shared work, not another patient's conversion, supplies the modest change. No claimed cure, last-drink date, religious requirement or clinical recommendation."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He turned to a directory of churches and telephoned a minister. The referrals led to a woman who arranged a meeting with another man struggling with alcohol. He had someone to meet.",
+      "requiredFactIds": [
+        "fact-call"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led founding vignette. Wilson's continued shared work, not another patient's conversion, supplies the modest change. No claimed cure, last-drink date, religious requirement or clinical recommendation."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "They talked for hours about their drinking and what they had experienced. The other man was a doctor, and the meeting did not end his difficulty. He later drank again.",
+      "requiredFactIds": [
+        "fact-meet",
+        "fact-relapse"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meet",
+            "fact-relapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-relapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led founding vignette. Wilson's continued shared work, not another patient's conversion, supplies the modest change. No claimed cure, last-drink date, religious requirement or clinical recommendation."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The two men continued together, calling a hospital and visiting a patient. They talked about their own drinking experiences. The patient was doubtful.",
+      "requiredFactIds": [
+        "fact-visit"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led founding vignette. Wilson's continued shared work, not another patient's conversion, supplies the modest change. No claimed cure, last-drink date, religious requirement or clinical recommendation."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Their efforts to reach people included failures as well as the beginnings of a group. When he went home later that year, he continued looking for people he might help. There was more work.",
+      "requiredFactIds": [
+        "fact-group"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Short source-led founding vignette. Wilson's continued shared work, not another patient's conversion, supplies the modest change. No claimed cure, last-drink date, religious requirement or clinical recommendation."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Bill Wilson.\n\nHe co-founded Alcoholics Anonymous with Robert Smith.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need company.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Short source-led founding vignette. Wilson's continued shared work, not another patient's conversion, supplies the modest change. No claimed cure, last-drink date, religious requirement or clinical recommendation."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Short source-led vignette with seven reader-compatible roles, not full700–950-word or seven-scene compliance.",
+    "Retrospective founding narrative is probable; institutional timeline is not independent eyewitness evidence.",
+    "No invented dialogue, sensation, call count, medically established cure or instantaneous resolution.",
+    "September end follows the Archives narrative; do not infer an exact departure day from the memoir's rounded three-month duration."
+  ],
+  "avoidRules": [
+    "Do not promise recovery or give treatment advice.",
+    "Do not present spiritual explanations in historical sources as medical fact or reader requirements.",
+    "Do not claim the celebrated June 10 date settles the disputed chronology.",
+    "Do not expand to later Wilson episodes or change matching metadata."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-bigbook",
+      "citation": "Alcoholics Anonymous, chapter 11, A Vision for You, first published 1939; retrospective founding account.",
+      "url": "https://www.aa.org/sites/default/files/2021-11/en_bigbook_chapt11.pdf",
+      "locator": "Printed153–159; owning AA PDF freshly read with text extraction2026-09-20. Retrospective account first published1939, not a1935 diary."
+    },
+    {
+      "sourceId": "source-timeline",
+      "citation": "Alcoholics Anonymous, A.A. Timeline, organizational history.",
+      "url": "https://www.aa.org/aa-timeline",
+      "locator": "1935 entries: business trip, gatehouse meeting, friendships, mission, man on the bed, return home."
+    },
+    {
+      "sourceId": "source-hotel",
+      "citation": "Dr. Bob's Home, The Mayflower Hotel, historical-site account.",
+      "url": "https://www.drbobshome.org/the-mayflower-hotel/",
+      "locator": "Mother's Day weekend 1935 and referral paragraphs. Later interpretation is not eyewitness testimony."
+    },
+    {
+      "sourceId": "source-markings",
+      "citation": "Alcoholics Anonymous General Service Office Archives, Markings, vol.26 no.1, Spring2006, As Early A.A.s Find Their Way, Enduring Recovery Program Emerges.",
+      "url": "https://www.aa.org/sites/default/files/newsletters/f-151_markings_spring06.pdf",
+      "locator": "pp.1–2:1935 business trip,1954 chronology excerpts, September return and group efforts. Historical narrative distinguished from quoted retrospective primary material."
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,454 @@
+{
+  "storySpecId": "mcclintock:1951-1960s-dismissed-and-right:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "mcclintock",
+  "stageId": "1951-1960s-dismissed-and-right",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 59,
+    "ageMax": 59,
+    "startDate": "1961-09",
+    "endDate": "1961-10",
+    "throughLine": "A geneticist publishes a careful comparison while spelling out limits of the evidence. Short scientific-document vignette, not a rejection-and-vindication narrative."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Ready for owner reading as an authorized short scientific-document vignette, not a full-recipe pass. Only the reproduced opening of her1961paper is used; no unpublished correspondence or private emotional crisis is reconstructed. Age59 differs from installed48–55 matching;1961lies within the broad1951–1960s label. Matching-focus qualification: inquiry and limits replace the seeded dismissal/vindication emphasis."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Born16June1902, McClintock was fifty-nine when the September–October1961 paper appeared.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "scope": "bounded",
+          "locator": "Born field; article date visible in primary facsimile masthead."
+        },
+        {
+          "sourceId": "source-primary",
+          "scope": "bounded",
+          "locator": "PDFp16, September–October1961 masthead."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-paper",
+      "statement": "McClintock published a comparison of gene-control systems in maize and bacteria in the September–October1961 issue of The American Naturalist.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-primary",
+          "scope": "bounded",
+          "locator": "PDFp16, reproduced masthead and title."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-gene",
+      "statement": "The opening states that a gene can be necessary for a trait's expression without being sufficient, and mechanisms may control its action.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-primary",
+          "scope": "bounded",
+          "locator": "PDFp16, first two sentences of the reproduced paper."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-limit",
+      "statement": "She writes that without adequate confirmation of similar systems in other organisms, maize control systems might not represent a general kind of control.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-primary",
+          "scope": "bounded",
+          "locator": "PDFp16, first paragraph from Without adequate confirmation through organisms in general."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-bacteria",
+      "statement": "She reports recently discovered bacterial control systems and proposes that a relationship may exist with those in maize.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-primary",
+          "scope": "bounded",
+          "locator": "PDFp16, first paragraph from Recently, however through maize control systems."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-pair",
+      "statement": "She describes two distinct genetic elements in the bacterial model, then compares two-element maize systems with them.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-primary",
+          "scope": "bounded",
+          "locator": "PDFp16, first paragraph from The bacterial control systems and second paragraph In maize likewise."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-specific",
+      "statement": "She says that in both compared systems an operator responds specifically to the regulator of its own system.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-primary",
+          "scope": "bounded",
+          "locator": "PDFp16, final sentence of each of the first two paragraphs, including the enlarged continuation."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Barbara McClintock discovered mobile genetic elements while studying maize.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "scope": "bounded",
+          "locator": "Prize motivation and Work paragraph."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Barbara McClintock",
+      "aliases": [
+        "McClintock"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "Her paper compared how genes were controlled in corn and in bacteria. She was fifty-nine when it appeared.",
+      "requiredFactIds": [
+        "fact-paper",
+        "fact-age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Document opening, not invented writing-room or conference scene.1961issue date is visible in original facsimile."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Near the beginning, she stated a limit to what the corn studies could show. Without confirmation elsewhere, their findings might not describe a general system.",
+      "requiredFactIds": [
+        "fact-limit"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "STRUCTURAL EXCEPTION: scientific limitation, not an emotional low or proof that everyone rejected her."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She began with a distinction between having a gene and controlling its action. A gene alone might not be enough.",
+      "requiredFactIds": [
+        "fact-gene"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gene"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gene"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A published explanatory move, not an invented earliest private act."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The comparison needed evidence from more than one kind of organism. Corn could not settle that alone.",
+      "requiredFactIds": [
+        "fact-limit"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "STRUCTURAL EXCEPTION: stated evidential limit, not fabricated failed experiments or sustained personal frustration."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She pointed to recently discovered control systems in bacteria. There might be a relationship.",
+      "requiredFactIds": [
+        "fact-bacteria"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-bacteria"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-bacteria"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Possibility remains possibility. No sudden encounter, receipt, Nobel vindication or claim that bacterial findings proved every proposal."
+    },
+    {
+      "role": "became",
+      "canonicalText": "She described two interacting elements in the bacterial system, then compared them with elements in corn. She also set out how each pair was specific to its own system. Her paper offered the comparison.",
+      "requiredFactIds": [
+        "fact-pair",
+        "fact-specific",
+        "fact-paper"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-pair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-specific"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper",
+            "fact-pair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Endpoint is the published argument, not its universal acceptance. Details are presented as her1961account, not current scientific instruction."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Barbara McClintock.\n\nShe discovered that genetic elements can change position within chromosomes.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to leave a question open.",
+      "requiredFactIds": [
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity only, no award as narrative payoff."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Authorized short scientific-document vignette, not a full seven-moment recipe pass.",
+    "Primary-source access is limited to the visible opening paragraphs reproduced on Heard2017PDFp16; no claim to have read allpp265–277.",
+    "No unverified1965Paigen letter, symposium reception, notebook action, private low, failed experiment or thought is narrated.",
+    "Age59 and1961publication replace the earlier58–62/1961–provisional1965 packet range; matching48–55 remains unchanged and requires owner assessment.",
+    "No simplistic universally rejected-then-Nobel-vindicated arc; the paper's possible relationship is not a proof of universal equivalence."
+  ],
+  "avoidRules": [
+    "Anonymous until bridge.",
+    "No present-day scientific or medical advice.",
+    "Do not imply skepticism about one scientific claim erased recognition of all her work."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-primary",
+      "citation": "Barbara McClintock, Some Parallels Between Gene Control Systems in Maize and in Bacteria, The American Naturalist95(884), September–October1961, opening paragraphs onp265. Primary facsimile excerpt reproduced by Edith Heard, Collège de France lecture,6February2017.",
+      "url": "https://www.college-de-france.fr/sites/default/files/documents/en-edith-heard/UPL4955809431944515605_COURS_I_2017_HEARD.compressed.pdf",
+      "locator": "PDFpage16: left image of1961article opening and enlarged right continuation beginning In maize likewise through element of its own system. Entire visible primary excerpt visually read; remainder of paper not accessed."
+    },
+    {
+      "sourceId": "source-nobel",
+      "citation": "Nobel Prize, Barbara McClintock—Facts. Institutional biographical and award record, accessed in search-rendered full substantive text; direct fetch returned403.",
+      "url": "https://www.nobelprize.org/laureate/428",
+      "locator": "Born:16June1902; Work paragraph and prize motivation. Used for calculated age and bridge only."
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,500 @@
+{
+  "storySpecId": "lee:1934-library-dedication:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "lee",
+  "stageId": "1934-library-dedication",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 56,
+    "ageMax": 56,
+    "startDate": "1934-05-24",
+    "endDate": "1934-05-24",
+    "throughLine": "Proposed distinct episode: a donor presents a library while openly describing the larger institution as unfinished. Owner-readable short documentary vignette; EPISODE/INTEGRATION HOLD, not a repair that clears the installed 1929-1931 story or a full-recipe pass."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Non-graphic mention of death investigation in the identity bridge. No bereavement or invented emotional crisis."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Lee was born 25 March 1878 and was fifty-six at the library dedication on 24 May 1934.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "Frances Glessner Lee opening paragraph: birth 25 March 1878."
+        },
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "25 May 1934 article introduction: dedication at four o'clock yesterday."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-gathering",
+      "statement": "The dedication took place at four o'clock on 24 May 1934 at the Harvard Medical School Faculty Club; Conant described an informal gathering and Lee's wish for a simple, brief ceremony.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Introduction and Conant paragraph beginning This is an informal gathering."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-desire",
+      "statement": "In her 1934 dedication speech Lee said she had long hoped to make a contribution of significant value to the community.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "First paragraph of Lee's speech."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-gradual",
+      "statement": "At that dedication she described a larger department as a gradual undertaking, only a small part of which was then under way.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Second paragraph of Lee's speech."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-library",
+      "statement": "Lee presented a thousand-volume legal medicine library in May 1934, named for Magrath, whom she called her old friend.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Introduction, last two paragraphs of Lee's speech."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-collecting",
+      "statement": "Conant thanked Lee for carefully collecting the library's actual books, many rare and valuable.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Conant paragraph beginning We are indebted to you."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-acceptance",
+      "statement": "Conant accepted the library on behalf of the university and called it a step toward a larger department.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Opening and second paragraphs of Conant's speech."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Frances Glessner Lee later made miniature death scenes used to train investigators.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "Frances Glessner Lee paragraph beginning She created a series: models and police-investigation seminars."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Frances Glessner Lee",
+      "aliases": [
+        "Lee"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was fifty-six when she presented the library. A university gathering had been arranged for four in the afternoon. She wanted the ceremony kept simple and brief.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-library",
+        "fact-gathering"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-library"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gathering"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gathering"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Contemporary reported speaking occasion. No invented podium, posture, possessions or sensory details. New 1934 episode proposed openly, not folded into 1929-1931."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In her remarks, she described something she had wanted for many years. She had hoped to do work that would be useful to her community. This was the opportunity she had found.",
+      "requiredFactIds": [
+        "fact-desire"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-desire"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-desire"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-desire"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "STRUCTURAL EXCEPTION: stated aspiration, not a low point. No grief, thwarted ambition, exclusion or causal inheritance claim."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She presented a collection of a thousand books on legal medicine. It bore the name of an old friend whose work she wished to honor. The collection was still beginning.",
+      "requiredFactIds": [
+        "fact-library"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-library"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-library"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-library"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Her presentation is attested in the speech; beginning paraphrases her qualification that the library was in embryonic form."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Her larger aim was a department devoted to the field. She said its growth would have to be gradual. Only a small part was under way.",
+      "requiredFactIds": [
+        "fact-gradual"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gradual"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gradual"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gradual"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "STRUCTURAL EXCEPTION: acknowledged incompleteness, not a failed attempt. No invented rejected offer, negotiation or hardship."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The university's president accepted the collection on its behalf. He described the library as a step toward the larger department. He accepted the gift.",
+      "requiredFactIds": [
+        "fact-acceptance"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-acceptance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-acceptance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-acceptance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Documented institutional acceptance only, not an inferred inward transformation or completion of the department."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He also thanked her for the work of collecting the books themselves. Many were rare and valuable. The larger plan remained unfinished.",
+      "requiredFactIds": [
+        "fact-collecting",
+        "fact-gradual",
+        "fact-acceptance"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-collecting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-collecting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gradual",
+            "fact-acceptance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Episode endpoint stays within the dedication; no 1939 department or later model-making inserted as its immediate result."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Frances Glessner Lee.\n\nShe made miniature death scenes used to train investigators.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to offer something unfinished.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity only here. Reader permission is not a promise of acceptance."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Owner-authorized short source-led vignette, not a full seven-role recipe pass. No low point or failed effort is claimed.",
+    "EPISODE/INTEGRATION HOLD: distinct 24 May 1934 proposal, age56, new stageId absent from installed catalog. It does not clear the installed 1929-1931/age50-53 episode.",
+    "No invented biography-to-gift cause, bereavement, inherited freedom, negotiation, reply, book crate, posture or dialogue.",
+    "Speech descriptions concern ambitions, not an already completed department. No verbatim historical quotation or texture is used."
+  ],
+  "avoidRules": [
+    "Keep the subject anonymous until the bridge.",
+    "Do not equate the 1934 library with a completed Department of Legal Medicine.",
+    "No equivalence, instruction or guaranteed late success for the reader."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-family",
+      "citation": "Glessner House, Glessner Family. Institutional family history, not contemporaneous narrative.",
+      "url": "https://www.glessnerhouse.org/glessner-family",
+      "locator": "Frances Glessner Lee opening paragraph (birth) and paragraph beginning She created a series (miniatures used in police training). Institutional secondary identity anchors only."
+    },
+    {
+      "sourceId": "source-speech",
+      "citation": "The Harvard Crimson, Mrs. Lee and President Conant Are Speakers at Opening of Library, 25 May 1934. Contemporary report reproducing both speeches.",
+      "url": "https://www.thecrimson.com/article/1934/5/25/mrs-lee-and-president-conant-are/",
+      "locator": "Introductory paragraph; Lee's four quoted paragraphs; Conant's acceptance and collecting paragraphs. Read entire article."
+    }
+  ],
+  "review": {}
+}

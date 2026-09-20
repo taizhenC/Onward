@@ -1,0 +1,558 @@
+{
+  "storySpecId": "coleman:1918-1921-no-school-would-take-her:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "coleman",
+  "stageId": "1918-1921-no-school-would-take-her",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 28,
+    "ageMax": 29,
+    "throughLine": "A short source-led account of exclusion, training interrupted by witnessing a pupil's death, continued study and qualification. The next lesson and examination are summarized, not invented scenes."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief",
+      "discrimination"
+    ],
+    "contentNote": "Racial and gender exclusion; brief non-graphic mention of a pupil's death and the shock of witnessing it. FOR OWNER READING, not approved. User-authorized short source-led form: continued training and qualification are summaries, without a located next flight or examination scene. Foreground 1920–1921, about twenty-nine, range 28–29 versus the wider installed interval; matching unchanged. Museum birth-year context is preferred over the conversation kit's conflicting header."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Coleman was born in 1892 and was about twenty-nine during her 1920–1921 training in France.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "Opening biography: born in Atlanta, Texas, in 1892; license date 15 June 1921.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "blocked",
+      "statement": "According to her sister Elois, American aviation schools rejected Coleman because she was Black, and sometimes also because she was a woman.",
+      "sourceRefs": [
+        {
+          "sourceId": "sister",
+          "locator": "Smithsonian packet pp. 7–8, quoted Brave Bessie excerpt beginning 'She was refused'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "refusal",
+      "statement": "Coleman said the first French school she approached would not take women after two women had died; she went to another school.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 19, Not Satisfied Yet, paragraph from 'I first went to Paris' through 'another school'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "contract",
+      "statement": "Coleman said she signed a school contract accepting responsibility and risk to her own life.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 20, Better to Fly High, paragraph beginning 'When you first enter'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "death",
+      "statement": "Coleman said she saw a pupil killed during her training and experienced a shock to her nerves.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 20, Better to Fly High, 'In school I saw a pupil killed instantly' through 'my nerves'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "continued",
+      "statement": "In the same account Coleman said she retained her nerve and continued after the pupil's death.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 20, Better to Fly High, continuation after 'my nerves'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "walk",
+      "statement": "Coleman recalled walking to school each day to finish her course.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 20, Better to Fly High, final paragraph on walking; disputed mileage/duration not adopted.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "exam",
+      "statement": "Coleman said she finished the course, took the examination, passed, and kept flying to improve.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 19, Not Satisfied Yet, 'There I finished my course' through 'perfect myself'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "license",
+      "statement": "The FAI granted Coleman her pilot's licence on 15 June 1921.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "scope": "bounded",
+          "locator": "Opening paragraph and paragraph beginning Coleman enrolled in French lessons: June 15, 1921 licence."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "further",
+      "statement": "Coleman said she later took further lessons at another school near Paris under a pilot she described as an ace.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 19, Not Satisfied Yet, 'Later, I left the school' through lessons under an ace.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "interviewed",
+      "statement": "A Chicago Defender reporter visited Coleman at her home after her return; she spoke about training and offered information to people interested in aviation.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 19 opening and p. 20 closing sentence.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "unfinished",
+      "statement": "At that interview Coleman said she would not be satisfied until other Black people could fly.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "Packet p. 19, Not Satisfied Yet, first sentence.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "legacy",
+      "statement": "Coleman was the first African American woman to receive a pilot's licence.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "Opening paragraph on the 15 June 1921 licence.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person",
+      "kind": "person",
+      "value": "Bessie Coleman",
+      "aliases": [
+        "Coleman"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was about twenty-nine, learning to fly at a school far from home. Another school had already refused her.",
+      "requiredFactIds": [
+        "age",
+        "exam",
+        "refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age",
+            "exam"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Broad training setting, not an invented day. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In her memory, seeing another pupil killed during training had been a severe shock. She had witnessed a death.",
+      "requiredFactIds": [
+        "death"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "death"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "death"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Non-graphic, attested shock; no added symptom or crash detail. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "response",
+      "canonicalText": "In her memory, that shock had not made her abandon the course. She continued her training.",
+      "requiredFactIds": [
+        "continued"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "continued"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "continued"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Honest summary, not a reconstructed next flight or fearlessness. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Before this training, schools at home had rejected her because of her race or gender. Abroad, the first school she approached also refused women. She went to another school and signed its agreement to accept the risks. She walked to her lessons.",
+      "requiredFactIds": [
+        "blocked",
+        "refusal",
+        "contract",
+        "walk"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "blocked"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "refusal",
+            "contract"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "walk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Marked earlier context followed by habitual effort. Sister's later account supplies home refusals; her own interview supplies the French refusal and training. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She completed the course, passed the examination, and received her pilot's licence. She had qualified.",
+      "requiredFactIds": [
+        "exam",
+        "license"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "exam",
+            "license"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "license"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Summarized documented result, no invented examination action. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "became",
+      "canonicalText": "After passing, she kept practising and took more lessons at another school. Back home, she offered information to people interested in aviation. She wanted others to fly.",
+      "requiredFactIds": [
+        "exam",
+        "further",
+        "interviewed",
+        "unfinished"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "exam",
+            "further"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "interviewed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unfinished"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Further learning and October 1921 public offer; no later flight school or cure. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Bessie Coleman.\n\nShe was the first African American woman to earn a pilot's licence.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to want something without knowing the whole way toward it.\n\nYou do not have to feel fearless.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission is not a directive to take risks. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented next morning, flight manoeuvre, immediate response, crash mechanics, dialogue or emotional recovery.",
+    "The 1921 interview is near-contemporary remembered testimony, not a transcript of each event.",
+    "Do not use disputed walking distance or course duration."
+  ],
+  "avoidRules": [
+    "Do not claim licensing ended discrimination, made flying safe, or led to an opened school.",
+    "No name, year, city, institution or aircraft model before bridge.",
+    "Short summarized response and turn are authorized structural exceptions."
+  ],
+  "sources": [
+    {
+      "sourceId": "interview",
+      "citation": "Bessie Coleman interviewed in The Chicago Defender, 'Aviatrix Must Sign Away Life to Learn Trade', 8 October 1921, p. 2; Smithsonian transcription and reprint, Community Innovator Conversation Kit, pp. 18–20.",
+      "url": "https://womenshistory.si.edu/sites/default/files/documents/bessiecoleman_conversations.pdf",
+      "locator": "Smithsonian re-typeset 1921 newspaper article and transcription, printed pp. 18–20; full relevant Not Satisfied Yet and Better to Fly High passages freshly read 2026-09-20. This is an owning institutional transcription/reprint, not a newly inspected original newspaper scan."
+    },
+    {
+      "sourceId": "sister",
+      "citation": "Elois Coleman Patterson, Brave Bessie, quoted in Smithsonian Community Innovator Conversation Kit, pp. 7–8.",
+      "url": "https://womenshistory.si.edu/sites/default/files/documents/bessiecoleman_conversations.pdf",
+      "locator": "Printed pp. 7–8, complete quoted Brave Bessie excerpt freshly read 2026-09-20; later family recollection, not a contemporary rejection record."
+    },
+    {
+      "sourceId": "museum",
+      "citation": "National Air and Space Museum, 'Bessie Coleman's Daring Life as The First Licensed Black Woman Pilot', 2021.",
+      "url": "https://airandspace.si.edu/stories/editorial/celebrating-centennial-bessie-coleman",
+      "locator": "Live HTML retrieved normally and read 2026-09-20: opening licence statement, 1892 birth, and training/licence paragraphs. Institutional historical context. The conversation kit's 1893 header conflicts; approximate opening age follows the museum article, not the packet header."
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,1112 @@
+{
+  "storySpecId": "oconnor:1950-1955-lupus-and-the-farm:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "oconnor",
+  "stageId": "1950-1955-lupus-and-the-farm",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 25,
+    "ageMax": 27,
+    "startDate": "1950-12-23",
+    "endDate": "1952-05",
+    "throughLine": "From a hospital bed, uncertain how much illness would limit her, a young writer asked a friend for sympathy; repeated revisions brought her first novel to publication while life remained restricted."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness"
+    ],
+    "contentNote": "Historical serious illness, uncertainty, physical limits, and continuing restrictions. Bounded uncertainty and publication threshold, not despair or emotional transformation. Owner reading and human approval remain required."
+  },
+  "facts": [
+    {
+      "factId": "fact-birth",
+      "statement": "Flannery O'Connor was born 25 March 1925; she was twenty-five on 23 December 1950.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, 'Up North and Getting Home, 1948–1952', opening editorial headnote, first paragraph."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context",
+      "subjectAgeMin": 25,
+      "subjectAgeMax": 25
+    },
+    {
+      "factId": "fact-bed",
+      "statement": "On 23 December 1950 O'Connor wrote to Betty Boyd Love from Baldwin Memorial Hospital, describing herself as lying in bed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Betty Boyd Love, 23 December 1950, address and opening paragraph."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-card",
+      "statement": "The 23 December letter thanked Love for her card; O'Connor used comic spelling for her illness and the hospital.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Betty Boyd Love, 23 December 1950, opening and second paragraphs."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-limits",
+      "statement": "In the same letter O'Connor described her illness as leaving her willing to sit down, lie down, or lie flatter.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Betty Boyd Love, 23 December 1950, opening paragraph."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-uncertain",
+      "statement": "In that letter she expected to spend several months in Milledgeville waiting to see how much of an invalid she was going to be.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Betty Boyd Love, 23 December 1950, end of opening paragraph."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-belief",
+      "statement": "O'Connor called her illness acute rheumatoid arthritis in that letter; Sally Fitzgerald's editorial headnote says she believed that diagnosis during the ensuing year and a half.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Betty Boyd Love, 23 December 1950, and immediately preceding editorial headnote, paragraph beginning 'For the next year and a half'. The diagnosis is historical belief, not this draft's medical finding."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-reading",
+      "statement": "In the hospital letter she said she had been reading Murder in the Cathedral; the nurses had consequently taken her for a mystery reader.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Betty Boyd Love, 23 December 1950, penultimate paragraph."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-news",
+      "statement": "In the hospital letter she asked about Love's life, said she always wanted to hear, and ended by asking for a letter of sympathy.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Betty Boyd Love, 23 December 1950, last three paragraphs."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-draft",
+      "statement": "In an undated letter assigned by Fitzgerald to probably January 1951, O'Connor told Elizabeth McKee she had completed and sent a first draft to Robert Fitzgerald while in treatment.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Elizabeth McKee, '[undated; probably January 1951]', second paragraph."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-copies",
+      "statement": "In that same hospital letter she was trying to get copies to her agent and publisher; she planned an extra chapter and revisions after returning home.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Elizabeth McKee, '[undated; probably January 1951]', second and third paragraphs."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-march",
+      "statement": "On 10 March 1951 O'Connor sent the manuscript to Robert Giroux, invited suggestions, expressed eagerness to finish, and said autumn publication would suit her.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Robert Giroux, 10 March 1951, first paragraph."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-home",
+      "statement": "In the 10 March letter she said she was up and about but not well enough to return to Connecticut for some time.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Robert Giroux, 10 March 1951, third paragraph."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-last",
+      "statement": "On 10 March 1951 she told McKee she regarded this as her last draft unless a serious problem was pointed out; she had only one corrected copy ready that day.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, letter to Elizabeth McKee, 10 March 1951, first and second paragraphs. Public preview ends during the second paragraph; nothing beyond the cutoff used."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-revision",
+      "statement": "In her letter to McKee of 1 September 1951, quoted by Giroux, O'Connor said she had been working on Giroux's and Caroline Gordon's suggestions and had nearly completed another draft.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-giroux",
+          "scope": "bounded",
+          "locator": "Paragraph quoting the letter dated 1 September 1951, immediately before 'By the end of the year the novel was ready'."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-ready",
+      "statement": "Giroux remembered that by the end of 1951 the novel was ready and publication preparation began.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-giroux",
+          "scope": "bounded",
+          "locator": "Paragraph beginning 'By the end of the year the novel was ready'. Retrospective editor testimony, originally published in 1971."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-photo",
+      "statement": "Giroux remembered asking O'Connor for a book-jacket photograph and receiving a new photograph rather than the pre-illness image he expected.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-giroux",
+          "scope": "bounded",
+          "locator": "Same paragraph, sentences beginning 'When I asked her for a photograph' and 'The new one she sent'."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-appearance",
+      "statement": "Giroux remembered that in the new photograph her hair had not fully grown back and medicine-related puffiness had not fully subsided; he described her gaze as clear-eyed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-giroux",
+          "scope": "bounded",
+          "locator": "Same paragraph, sentence beginning 'The new one she sent'. The appearance and causal medication claim belong to the editor's retrospective report."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-publication",
+      "statement": "Wise Blood was published in May 1952; the jacket photograph was widely reproduced, according to its editor Giroux.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-giroux",
+          "scope": "bounded",
+          "locator": "Paragraph beginning 'The photograph was widely reproduced'."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-farm",
+      "statement": "After her first severe illness, O'Connor lived with her mother at Andalusia; the editorial headnote describes a year and a half of restricted life close to the house.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-habit",
+          "scope": "bounded",
+          "locator": "Part I, headnote immediately before the 23 December 1950 letter, paragraph beginning 'For the next year and a half'. Editorial chronology, not O'Connor's own account of her emotional response."
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-reception",
+      "statement": "Giroux remembered disappointment with the novel's reviews and thought reviewers recognized its force but missed its meaning; this is his judgment, not O'Connor's stated feeling.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-giroux",
+          "scope": "bounded",
+          "locator": "Paragraph beginning 'The photograph was widely reproduced', final sentence."
+        }
+      ],
+      "eventOrder": 20,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-writer",
+      "statement": "Flannery O'Connor wrote novels and short stories.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-giroux",
+          "scope": "bounded",
+          "locator": "Introduction, paragraphs on the novel Wise Blood and the short-story collection A Good Man Is Hard to Find."
+        }
+      ],
+      "eventOrder": 21,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Flannery O'Connor",
+      "aliases": [
+        "O'Connor"
+      ]
+    },
+    {
+      "entityId": "entity-region",
+      "kind": "place",
+      "value": "American South",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A young woman in a hospital bed wrote back to a friend. She was twenty-five. Her friend had sent her a card. She thanked her for it, then began describing the illness that had put her there. On the page, she stretched the name of the illness into comic spelling. She also made a joke of the hospital's name. There was a book in the letter, too. She had been reading a play, and the nurses had mistaken her for a reader of mysteries. She was still in the hospital.",
+      "requiredFactIds": [
+        "fact-bed",
+        "fact-birth",
+        "fact-card",
+        "fact-reading"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-bed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-birth"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-card"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-card",
+            "fact-bed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-card"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-card"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-bed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Moment is the 23 December 1950 hospital letter. No invented bedside visitor, pen gesture, view, or emotional collapse. The title of the play and the holiday are withheld to preserve anonymity."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Her illness left her wanting to sit down, then lie down, then lie flatter. That was how she described her body in the letter. She expected to stay near home for several months. She was waiting to find out how much the illness was going to limit her. The joke on the page did not settle that question. She could name the illness as she understood it then. She could not yet say how much of her life it was going to take over. The hospital bed was a place to lie down. The waiting reached beyond the bed. She described a future measured by how much of an invalid she might become. She did not have that answer.",
+      "requiredFactIds": [
+        "fact-limits",
+        "fact-uncertain",
+        "fact-card",
+        "fact-belief",
+        "fact-bed"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-card",
+            "fact-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-bed",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Reading qualification: the documented low is bodily limitation and uncertainty expressed with humor, not an attested despair or diagnosis revelation. Do not intensify it into terror, a death sentence, or loss of all independence. Independent agent review accepts this bounded low; owner reading remains required."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She asked her friend to send a letter of sympathy. It was the last request on the page. Before it, she had asked about her friend's life. She said she always wanted to hear. She also told her about the play she was reading. She liked it and wanted her friend to know that. A reply could contain ordinary news as well as sympathy. She left the request with the person who had already sent a card. She asked for a letter.",
+      "requiredFactIds": [
+        "fact-news",
+        "fact-reading",
+        "fact-card"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-news"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-news"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-news"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-news"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-news"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-news",
+            "fact-card"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-news"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The small action is the actual closing request to Betty Boyd Love, not a reconstructed decision to keep writing. It is not the first act she took after becoming ill; it is the first small response in this bounded encounter."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "In the following months, the novel still needed work. From the hospital, she reported finishing a first draft and sending it to a friend. She was trying to arrange copies for her agent and publisher. Even then, she planned an extra chapter and changes to others. By spring, she had sent a corrected manuscript to her editor. She hoped the book could appear in the autumn. She thought this was the last draft, unless someone found a serious problem. She was up and about, but not well enough to return to the friends she had lived with. Further suggestions came from her editor and another writer. By the start of autumn, she was nearly through another draft. The pages needed work again.",
+      "requiredFactIds": [
+        "fact-draft",
+        "fact-copies",
+        "fact-revision",
+        "fact-march",
+        "fact-last",
+        "fact-home"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-draft",
+            "fact-copies",
+            "fact-revision"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-draft"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-copies"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-copies"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-march",
+            "fact-last"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-march"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-last"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-revision"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-revision"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-revision"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed early–September 1951. A finished first draft did not finish the work; March's hoped-for final draft was followed by further revision. No invented rejection, daily schedule, or wasted writing attributed to these years."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Her editor remembered asking her for a photograph for the cover of her book. The novel was ready, and they were preparing it for publication. He expected a picture taken before she became ill. She sent him a new one. In his memory, her hair had not fully grown back. The swelling caused by her medicine had not entirely gone. Her gaze in the photograph was direct. The photograph belonged beside the manuscript. It showed the writer as she looked after the illness. The face was there with the work. She had answered his request.",
+      "requiredFactIds": [
+        "fact-photo",
+        "fact-ready",
+        "fact-appearance"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-photo"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ready"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-photo"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-photo"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-appearance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-appearance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-appearance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-photo",
+            "fact-ready"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-photo",
+            "fact-appearance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-photo",
+            "fact-appearance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-photo"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The photo exchange is retrospective testimony by a participant and is explicitly memory-framed; its facts are probable. This is a concrete publication threshold, not an attested emotional transformation. No claim about her motive for sending a current photograph. Independent agent review accepts that bounded turn; owner reading remains required."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The novel appeared in the spring that followed. The photograph circulated with it. Her editor remembered feeling disappointed by the reviews. He thought they had missed the point of the book. Those were his words about its reception. She was living with her mother on a farm. The restrictions that followed her illness remained part of life near the house. The manuscript she had revised was now a published book. There was a book beyond the room, and a life still being lived close to home. She had not left the farm behind.",
+      "requiredFactIds": [
+        "fact-publication",
+        "fact-reception",
+        "fact-farm",
+        "fact-revision"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reception"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reception"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reception"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-farm"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-farm"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-revision",
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-publication",
+            "fact-farm"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-farm"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Stops at May 1952, age twenty-seven. The editor's response to reviews is not assigned to O'Connor. Farm chronology comes from Fitzgerald's editorial headnote. No claim of cure, steady decline, invented inspiration, or lifelong isolation."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Flannery O'Connor.\n\nShe wrote novels and short stories. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to want company without having an answer. You do not have to make this graceful.",
+      "requiredFactIds": [
+        "fact-birth",
+        "fact-writer"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-birth"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Draft only. The original broad 1950–1955 match is narrowed to December 1950–May 1952. Independent agent spot checks do not confer human historical, tone, or publication approval; owner reading remains required."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented fear of imminent death, diagnosis revelation, or illness-produced artistic insight.",
+    "The jacket-photograph exchange stays explicitly a remembered account at probable confidence.",
+    "No morning routine, crutches, or daily writing quantities imported from later years."
+  ],
+  "avoidRules": [
+    "Do not turn continuing work into proof that illness was a gift.",
+    "Do not predict recovery or an outcome for the reader.",
+    "Do not describe her own response to reviews using her editor's feelings."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-habit",
+      "citation": "Flannery O'Connor, The Habit of Being, selected and edited by Sally Fitzgerald (1979; Macmillan ebook edition 1988). Lawful public preview, Part I, editorial headnotes and letters through 10 March 1951.",
+      "url": "https://www.everand.com/book/182507415/The-Habit-of-Being-Letters-of-Flannery-O-Connor/290457046",
+      "locator": "Part I, letters dated 23 December 1950, [probably January 1951], and 10 March 1951. Preview ending mid-letter is an access limit, not access to the whole book."
+    },
+    {
+      "sourceId": "source-giroux",
+      "citation": "Robert Giroux, introduction to The Complete Stories (1971), reproduced by publisher FSG as 'The Supernatural Grace of Flannery O'Connor' (25 March 2015). Participant memoir with quoted original correspondence.",
+      "url": "https://fsgworkinprogress.com/2015/03/25/the-supernatural-grace-of-flannery-oconnor/",
+      "locator": "Middle section: 1 September 1951 letter, novel ready at end of year, jacket-photo exchange, May 1952 publication and reception."
+    },
+    {
+      "sourceId": "source-macmillan",
+      "citation": "Macmillan publisher bibliographic information for The Habit of Being (1988), via Google Books.",
+      "url": "https://books.google.com/books/about/The_Habit_of_Being.html?id=zU9liqlCzmsC",
+      "locator": "About the author; novels and story collections."
+    }
+  ],
+  "review": {}
+}

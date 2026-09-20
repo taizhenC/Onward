@@ -1,0 +1,1112 @@
+{
+  "storySpecId": "marshall:1982-1984-drinking-the-proof:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "marshall",
+  "stageId": "1982-1984-drinking-the-proof",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 30,
+    "ageMax": 33,
+    "startDate": "1982",
+    "endDate": "1984",
+    "throughLine": "After a rejected submission, a young doctor seeks a colleague's help, reaches another audience, and continues research whose questions are not settled by one experiment."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "other_reviewed_flag"
+    ],
+    "contentNote": "Includes professional rejection and a brief, non-procedural account of risky self-experimentation and illness."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Marshall was born 30 September 1951 and was thirty-one when the rejection letter was dated 17 March 1983.",
+      "sourceRefs": [
+        {
+          "sourceId": "nobel",
+          "locator": "Born field, combined with letter date",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "reject",
+      "statement": "The society's letter rejected his research for presentation at its May 1983 annual meeting in Perth.",
+      "sourceRefs": [
+        {
+          "sourceId": "letter",
+          "locator": "Figure 3, date and first paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "selection",
+      "statement": "The letter says 67 abstracts were submitted and 56 accepted; it does not give Marshall's rank.",
+      "sourceRefs": [
+        {
+          "sourceId": "letter",
+          "locator": "Figure 3, second paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "process",
+      "statement": "The letter says a national committee reviewed abstracts without knowing the authors.",
+      "sourceRefs": [
+        {
+          "sourceId": "letter",
+          "locator": "Figure 3, third paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "resubmit",
+      "statement": "The letter thanked him and suggested future resubmission, perhaps after colleagues' critical review.",
+      "sourceRefs": [
+        {
+          "sourceId": "letter",
+          "locator": "Figure 3, fourth paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "worst",
+      "statement": "In 2008 Marshall remembered this rejection as the worst day of the whole dispute; he and Warren had hoped to present locally, avoiding costly air travel.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "A nasty battle won, answer to How did you take it?, paragraph beginning By then",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "visit",
+      "statement": "Marshall remembers going to his hospital boss, microbiologist David McGechie, after the rejection.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "A nasty battle won, paragraph beginning We thought",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "colleague",
+      "statement": "McGechie was also growing the bacteria and could see they were real; he encouraged Marshall and said the work had a future.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "A nasty battle won, paragraph beginning We thought",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "call",
+      "statement": "In that recollection McGechie called a European contact and secured acceptance for an international meeting.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "A nasty battle won, paragraph beginning We thought",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "study-result",
+      "statement": "Their original study reported bacteria in patient tissue samples and a strong association with gastritis and ulcers, proposing a possible causal role.",
+      "sourceRefs": [
+        {
+          "sourceId": "study",
+          "locator": "Abstract, first through final sentences",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "earlier",
+      "statement": "Marshall and Warren initially failed to grow the organism; culture became successful in 1982.",
+      "sourceRefs": [
+        {
+          "sourceId": "interview",
+          "locator": "An absorbing new bacterium, answer to Did you manage to grow the bacterium at that point?",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "duties",
+      "statement": "During 1982 Marshall fitted research around his physician training and patient duties, then took references to a distant hospital posting and wrote up results.",
+      "sourceRefs": [
+        {
+          "sourceId": "autobiography",
+          "locator": "Paragraphs beginning At the end of 1981 and The family moved to Port Hedland",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "support",
+      "statement": "Fremantle Hospital gave him a position and supported his work, with several active colleagues; he later rejected the idea that he had promoted it alone.",
+      "sourceRefs": [
+        {
+          "sourceId": "autobiography",
+          "locator": "Paragraphs beginning Fortune stepped in and They were happy; paragraph beginning In the USA, final sentence",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "europe",
+      "statement": "McGechie supplied Skirrow's contact details; Skirrow arranged a September 1983 European meeting presentation, and a travel grant helped Marshall attend.",
+      "sourceRefs": [
+        {
+          "sourceId": "autobiography",
+          "locator": "Paragraph beginning A great piece of luck in early 1983",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "replication",
+      "statement": "During his September 1983 visit to England, another team isolated the organism from a patient there.",
+      "sourceRefs": [
+        {
+          "sourceId": "autobiography",
+          "locator": "Paragraph beginning In September 1983",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "difficult",
+      "statement": "Marshall describes failed animal work, paper rejection and publication delay in 1984.",
+      "sourceRefs": [
+        {
+          "sourceId": "autobiography",
+          "locator": "Paragraph beginning But 1984 was a difficult year",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "self-experiment",
+      "statement": "Marshall deliberately exposed himself to the organism in 1984 and became ill; his later account says the illness was more severe than he expected.",
+      "sourceRefs": [
+        {
+          "sourceId": "autobiography",
+          "locator": "Paragraph beginning Becoming increasingly frustrated",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "finding",
+      "statement": "The original experiment abstract reports temporary illness and biopsy-confirmed gastritis; progression to chronic infection and ulcers is proposed, not established by that experiment.",
+      "sourceRefs": [
+        {
+          "sourceId": "experiment",
+          "locator": "Abstract, entire paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "trial",
+      "statement": "At the end of 1984 Marshall received funding for a controlled treatment trial and moved back to a hospital with more patients.",
+      "sourceRefs": [
+        {
+          "sourceId": "autobiography",
+          "locator": "Paragraph beginning At the end of 1984",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "legacy",
+      "statement": "Barry Marshall and Robin Warren shared the 2005 Nobel Prize for discovering Helicobacter pylori and its role in gastritis and peptic ulcer disease.",
+      "sourceRefs": [
+        {
+          "sourceId": "nobel",
+          "locator": "Prize motivation and prize share",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 20,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Barry Marshall",
+      "aliases": [
+        "Marshall"
+      ]
+    }
+  ],
+  "quotes": [],
+  "interpretations": [],
+  "sources": [
+    {
+      "sourceId": "letter",
+      "citation": "Gastroenterological Society of Australia, rejection letter to Barry Marshall, 17 March 1983. Facsimile reproduced as figure 3 in Richard A. Robbins, Southwest Journal of Pulmonary and Critical Care 5 (2012), p.15.",
+      "url": "https://static1.1.sqspcdn.com/static/f/654826/19057847/1341247739263/SWJPCC%2B049-12.pdf",
+      "locator": "PDF p.4, printed p.15, figure 3 only. Caption mistakenly says 2003; letter itself clearly says 1983."
+    },
+    {
+      "sourceId": "interview",
+      "citation": "Barry Marshall, interview with Norman Swan, Australian Academy of Science, 2008. First-person retrospective testimony.",
+      "url": "https://science.org.au/our-focus/history-australian-science/conversations-australian-scientists/professor-barry-marshall-gastroenterologist",
+      "locator": "A nasty battle won, answer to How did you take it?; An absorbing new bacterium."
+    },
+    {
+      "sourceId": "autobiography",
+      "citation": "Barry J. Marshall, Nobel autobiography (2005). First-person retrospective testimony.",
+      "url": "https://www.nobelprize.org/prizes/medicine/2005/marshall/biographical/",
+      "locator": "Research section, paragraphs beginning At the end of 1981 through At the end of 1984. Read through ordinary HTML retrieval after web open failed."
+    },
+    {
+      "sourceId": "study",
+      "citation": "B. J. Marshall and J. R. Warren, Unidentified curved bacilli in the stomach of patients with gastritis and peptic ulceration, Lancet 1984;1:1311-1315, DOI 10.1016/S0140-6736(84)91816-6.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/6145023/",
+      "locator": "Abstract only; full article not accessed."
+    },
+    {
+      "sourceId": "experiment",
+      "citation": "B. J. Marshall et al., Attempt to fulfil Koch's postulates for pyloric Campylobacter, Medical Journal of Australia 142 (1985), 436-439, DOI 10.5694/j.1326-5377.1985.tb113443.x.",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/3982345/",
+      "locator": "Abstract only; full article not accessed."
+    },
+    {
+      "sourceId": "nobel",
+      "citation": "Nobel Prize, Barry J. Marshall - Facts. Prize-owning institution's biographical and award record.",
+      "url": "https://www.nobelprize.org/prizes/medicine/2005/marshall/facts/",
+      "locator": "Born field and prize motivation; read by ordinary HTML retrieval."
+    }
+  ],
+  "review": {},
+  "dramatizationLimits": [
+    "No self-experiment method, amounts, culture protocol or medical advice.",
+    "No invented reactions, gestures, dialogue, ridicule or claims that every expert rejected the idea.",
+    "HOLD: turn combines documented steps whose precise timing is not fixed; final reading review required."
+  ],
+  "avoidRules": [
+    "Do not claim the experiment caused or proved an ulcer.",
+    "Do not interpret rejection as evidence of being right.",
+    "Do not erase Warren, McGechie, Skirrow, hospital support or other researchers.",
+    "Do not claim the 1983 letter ranked the paper last or near last."
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A young doctor went to see a colleague at his hospital about a rejection letter. He was thirty-one. He and another doctor had been studying bacteria found in patients' tissue samples. They thought the bacteria might help explain an illness they treated. They had submitted their work to a meeting of specialists. The meeting was being held in their own city. That mattered when travel cost more than they could easily afford. But the letter said their work had not been accepted. He brought the problem to a colleague.",
+      "requiredFactIds": [
+        "visit",
+        "reject",
+        "age",
+        "study-result",
+        "worst"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "visit",
+            "reject"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "reject"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "worst"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "worst"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "reject"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Shared hospital encounter across scene, dark and response, from the 2008 memory. No invented office, hand movement, letter-reading location or dialogue. Age from letter date plus birth date."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He remembered the rejection as the hardest day of the dispute. The letter itself was polite. It thanked him for sending the work. It said that many papers had been submitted and most had been accepted. His was among those left out. It described a committee choosing without knowing who had written each paper. It suggested that he might submit again after colleagues had examined the work. Those were possibilities for another submission. This meeting had turned him down. The page ended with a formal sign-off. There was no place for his talk.",
+      "requiredFactIds": [
+        "worst",
+        "resubmit",
+        "selection",
+        "reject",
+        "process"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "worst"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "resubmit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "resubmit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "selection"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "reject",
+            "selection"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "process"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "resubmit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "resubmit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "reject"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "resubmit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "reject"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Low point is explicitly remembered, not an invented illness scene. Letter wording is paraphrased without asserting hostile motive, rank, or bias. The formal sign-off is visible in figure 3."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He went to the doctor who was supervising him. The man worked with bacteria. He had been growing these bacteria too. He could see that they were there. The young doctor had reached someone with direct experience of the work. In his memory, that was who he approached after the letter arrived. He had gone to another person.",
+      "requiredFactIds": [
+        "visit",
+        "colleague"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "visit",
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "First documented small act is seeking a colleague after rejection. No risky experiment as the reader's model. The wording does not invent an explicit request or a reply beyond the remembered encounter."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Before that letter, the work had included long stretches of failure. They had seen the bacteria in tissue but had struggled to grow them. The early attempts had produced no culture they could study. Eventually, they succeeded. They also collected information from patients undergoing examination. Bacteria appeared alongside inflammation and ulcers in the results. That association was a reason to investigate. It did not, by itself, establish what caused what. Meanwhile, the young doctor still had patients and training duties. He fitted the research around them. He took the references with him when his job moved him far away. There he worked through the results and prepared them to be presented. The rejected submission had come after that work.",
+      "requiredFactIds": [
+        "earlier",
+        "study-result",
+        "duties",
+        "reject"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "earlier",
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "duties"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "duties"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "duties"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "duties"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "duties",
+            "reject"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Explicit backward jump, compressed chronology. First culture in 1982 is retrospective; association is contemporaneous study evidence. No laboratory recipe or procedural quantities. The failed effort receives space without attributing ignorance or malice."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "In his later account, his colleague answered with encouragement. The colleague was growing the bacteria too. He could see that they were real. He thought the work had a future. This was support from someone examining the same problem. It was not proof that every claim was right. He had heard an encouraging answer.",
+      "requiredFactIds": [
+        "colleague",
+        "study-result"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "study-result"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "colleague"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The turn is the encouragement Marshall remembered receiving during the McGechie conversation. It is not a new bodily reaction, guaranteed vindication, or a claim that travel logistics happened in that encounter. Memory remains probable. Subsequent practical arrangements are compressed in became."
+    },
+    {
+      "role": "became",
+      "canonicalText": "His later autobiography describes the arrangements that followed. His colleague supplied a contact. Another researcher arranged a presentation at a European meeting. A travel grant helped make the trip possible. He traveled to the meeting. During that trip, another group also found the bacteria in a patient's sample. More people were working on the question. But the following year still brought rejected papers and experiments that failed. He also carried out a risky experiment on himself and became ill. The result added evidence that the bacteria could inflame the stomach. It did not establish that he had given himself an ulcer. He recovered from the acute illness. By the end of the year, he had funding for a controlled treatment study. He moved hospitals to reach enough patients for it. There was another study to do.",
+      "requiredFactIds": [
+        "europe",
+        "replication",
+        "support",
+        "difficult",
+        "self-experiment",
+        "finding",
+        "trial"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "replication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "replication",
+            "support"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "difficult"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "self-experiment",
+            "finding"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "finding"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "finding"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "finding"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Later arrangements are not staged inside the earlier conversation. The 2008 interview recalls McGechie calling; the autobiography describes supplied contact details. The drama uses the latter account, without asserting both as one instant action. Endpoint end1984. Original 1985 abstract supports illness/gastritis and limits, not dosing or treatment advice. No instant vindication. No quantity, method, protocol or claim of deliberate poisoning. Recovery follows abstract's temporary illness, not seed's simplistic self-cure claim."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Barry Marshall.\n\nHe and a colleague discovered how stomach bacteria contribute to ulcers.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to ask for another perspective.\n\nYou do not have to be certain.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "No claim that rejection proves correctness or that self-experimentation is admirable advice."
+    }
+  ]
+}

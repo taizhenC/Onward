@@ -1,0 +1,803 @@
+{
+  "storySpecId": "mcclintock:1951-1960s-dismissed-and-right:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "mcclintock",
+  "stageId": "1951-1960s-dismissed-and-right",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 58,
+    "ageMax": 62,
+    "startDate": "1961-06-04",
+    "endDate": "1965-05-24",
+    "throughLine": "Research HOLD: a specific remembered scientific misunderstanding, continued explanation, and an invitation to discuss an unresolved comparison; the low, immediate response, and correspondence dates need primary-record review."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "HOLD, not reading-ready: original source access, contemporaneous low and immediate response, sustained failed-effort evidence, and exact correspondence dates remain unresolved."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Barbara McClintock was born 16 June 1902 and was fifty-eight during the 4–12 June 1961 Cold Spring Harbor symposium.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "scope": "bounded",
+          "locator": "Facts: Born; age calculated for the independently dated June 1961 meeting."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context",
+      "subjectAgeMin": 58,
+      "subjectAgeMax": 58
+    },
+    {
+      "factId": "fact-meeting",
+      "statement": "McClintock attended the 4–12 June 1961 Cold Spring Harbor symposium where François Jacob and Jacques Monod presented work on genetic regulation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section 3, paragraph beginning 'François Jacob and Jacques Monod presented'; institutional chronology reconstructed from symposium records."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-paper",
+      "statement": "McClintock's Some Parallels Between Gene Control Systems in Maize and in Bacteria appeared in September 1961, American Naturalist 95(884), pp.265–277.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cshl",
+          "scope": "bounded",
+          "locator": "Repository record title, author, date, volume and pages."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-comparison",
+      "statement": "In her 1961 paper McClintock proposed a relationship between control systems in maize and bacteria and distinguished control from movement of genetic elements.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section 3, excerpts of McClintock's 'Parallels', collected-paper reprint pp.407–408 and418. Excerpts only read here, not original full paper."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-recognition",
+      "statement": "Jacob and Monod's published 1961 papers acknowledged her work, while emphasizing movement of maize elements as a difference from the bacterial systems.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section 3, quoted primary passages from 'On the Regulation of Gene Activity' pp.207–208 and 'General Conclusions' pp.394–395."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-memory",
+      "statement": "In 1978 McClintock corrected Judson's account of the 1961 exchange, saying the problem was a failure to understand the maize data rather than a mere oversight in citation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section 4, paragraph beginning 'This manuscript was sent'; reproduced marginal correction; note17: Horace Freeland Judson Collection, APS, Box2, folder McClintock, file 'Jun.1973...Jul.30,1978...n.d., her comments'. Retrospective testimony."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-columbia",
+      "statement": "Her December 1961 Columbia seminar outline reviewed bacterial control systems and applied the comparison to maize.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section4, paragraph beginning 'In December 1961'; note19: 'Some Aspects of Systems of control of Gene Action in Maize', APS Barbara McClintock Papers, SeriesIII, Box18. Historian's description of manuscript, not directly inspected."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-yale",
+      "statement": "A March 1962 Yale seminar also included the relationship between maize and bacterial control systems.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section4, continuation of December1961 seminar paragraph, sentence beginning 'Three months later'; original manuscript not directly inspected."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-notes",
+      "statement": "McClintock took notes on Jacob and Monod's September 1962 presentation about bacterial regulatory circuits.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section4 note18: APS Barbara McClintock Papers, SeriesIV, Box25, notes on UNESCO Symposium presentation. Original notes not directly inspected."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-question",
+      "statement": "Kenneth Paigen asked McClintock whether a specific result in her work might be conceptually related to bacterial host control.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section5, Paigen letter excerpt; note37 dates it 7 May1965, APS Barbara McClintock Papers, Box5, Paigen folder. Catalog search dates folder1966–1979: unresolved date discrepancy; originals not read."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-answer",
+      "statement": "In her reply McClintock said the possible parallel was not yet clear in her mind, suggested discussion might clarify it, and invited Paigen to talk.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wu",
+          "scope": "bounded",
+          "locator": "Section5, McClintock reply excerpt; note38 dates it 24 May1965, APS Barbara McClintock Papers, SeriesI, Box5, Paigen folder. Date remains provisional because of catalog discrepancy; originals not read."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Barbara McClintock discovered mobile genetic elements while studying maize.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "scope": "bounded",
+          "locator": "Facts, Work paragraph and prize motivation. Used only for the bridge, not as episode resolution."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Barbara McClintock",
+      "aliases": [
+        "McClintock"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A geneticist attended a meeting where two other researchers presented their work. She was fifty-eight. They studied bacteria, while she worked with plants. Her own paper compared the systems they were investigating. She had proposed a relationship between them. The question concerned how genes were controlled. Their published accounts would acknowledge her work. They would also emphasize a difference.",
+      "requiredFactIds": [
+        "fact-meeting",
+        "fact-age",
+        "fact-comparison",
+        "fact-recognition"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-comparison"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-comparison"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-comparison"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-comparison"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recognition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recognition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: the June1961 symposium is documented, but no directly accessed record supports a moment-by-moment scene or her emotional state there. No staged conversation, audience silence, departure, or hostile quotation."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Years later, she remembered the exchange as a problem of understanding. The two researchers had referred to her work. That was not the same as understanding what she thought the evidence showed. They emphasized the movement of genetic elements. She had been describing systems of control. When she corrected a later account, she made that distinction again. In her remembered account, the difficulty was not simply a missing citation. It was the meaning of the data.",
+      "requiredFactIds": [
+        "fact-memory",
+        "fact-recognition",
+        "fact-comparison"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memory"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recognition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memory"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recognition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-comparison"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memory"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memory"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memory"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: retrospective1978 correction is probable and memory-framed. It supports a specific remembered misunderstanding, not an attested emotional low in1961. No claim everyone dismissed her or thought her work worthless."
+    },
+    {
+      "role": "response",
+      "canonicalText": "That winter, she prepared another explanation of the comparison. Her seminar outline began by reviewing control systems in bacteria. It then brought the discussion back to the plants she studied. She used the other researchers' terms to describe relationships in her own material. The comparison remained in the outline. She was still explaining it.",
+      "requiredFactIds": [
+        "fact-columbia"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-columbia"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-columbia"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-columbia"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-columbia"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-columbia"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-columbia"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: December1961 seminar manuscript is known through Wu's description, not inspected directly. It is documented continued explanation, but no evidence makes it her immediate small response to a low. Do not manufacture that causal chain."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The paper appeared, and the effort to explain did not end. The other researchers' published accounts had recognized her work without accepting the comparison as she presented it. A few months later, another seminar returned to the relationship between the two systems. Later that year, she took notes on more work from the same researchers. The published paper was not the last explanation. Neither was the first seminar. The distinction she would later insist on was still control, not movement alone. Her remembered objection remained specific.",
+      "requiredFactIds": [
+        "fact-paper",
+        "fact-columbia",
+        "fact-recognition",
+        "fact-comparison",
+        "fact-yale",
+        "fact-notes",
+        "fact-memory"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper",
+            "fact-columbia"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recognition",
+            "fact-comparison"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-yale"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper",
+            "fact-yale"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-columbia",
+            "fact-yale"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memory",
+            "fact-comparison"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memory"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: chronology supports repeated effort, not an attested sequence of failed personal attempts. Do not claim these seminars failed or that she stopped publishing. Reopen the seminar manuscripts and contemporary correspondence before clearance."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Several years later, another scientist wrote with a question about a particular result. He had noticed a detail in one of her papers. He wanted to know whether it might relate to a problem in bacteria. His question concerned what the result could mean. She replied that the possible connection was not clear in her mind. Talking might make it clearer, she suggested. She invited him to discuss it.",
+      "requiredFactIds": [
+        "fact-question",
+        "fact-answer"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: concrete correspondence opening, not vindication or emotional transformation. Wu dates letters7/24May1965, but APS catalog search dates Paigen folder1966–1979; exact dates require originals. No actual meeting claimed."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Her reply ended with an invitation. It did not announce a solved problem. She had described a possible connection and a way to explore it. The question could remain unsettled while the correspondence continued to offer a conversation. She had not claimed to understand the connection fully. The invitation was there.",
+      "requiredFactIds": [
+        "fact-answer"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-answer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Episode ends at the provisional24May1965 reply. The potential conversation is not represented as an attested later meeting. HOLD: this is a bounded opening, not a demonstrated subsequent change."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Barbara McClintock.\n\nShe discovered that genetic elements can move within chromosomes. Your life is not theirs. But a piece of this story may still sit beside you. You are allowed to leave a question open. You do not have to settle it today.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Research HOLD. No Nobel ending, retrospective universal vindication, or lesson that rejection proves a person right."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented 1951 audience reaction, private despair, or decision to stop publishing.",
+    "No claimed causal link between remembered misunderstanding and a later seminar.",
+    "No actual1965 meeting inferred from the historian's stated possibility.",
+    "The1965 endpoint and age62 are provisional until the archive-date discrepancy is resolved."
+  ],
+  "avoidRules": [
+    "Do not equate lack of agreement with universal rejection.",
+    "Do not use the Nobel Prize as proof every hypothesis was accepted.",
+    "Do not represent validator passage as historical or story-fit approval."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-nobel",
+      "citation": "Nobel Prize, Barbara McClintock—Facts. Institutional biographical and prize record.",
+      "url": "https://www.nobelprize.org/prizes/medicine/1983/mcclintock/facts/",
+      "locator": "Birth date, prize motivation and Work; search-accessed institutional record. Subsequent full-page fetches returned403."
+    },
+    {
+      "sourceId": "source-cshl",
+      "citation": "Cold Spring Harbor Laboratory Scientific Digital Repository, McClintock, Some parallels between gene control systems in maize and in bacteria (September1961).",
+      "url": "https://repository.cshl.edu/id/eprint/34630/",
+      "locator": "Bibliographic record only; full original paper not accessed."
+    },
+    {
+      "sourceId": "source-wu",
+      "citation": "Qinyan Wu, 'Controlling systems and controlling legacies: Barbara McClintock's1961 conversation with two bacterial geneticists', History and Philosophy of the Life Sciences46,31 (2024). Open-access historical study reproducing primary excerpts.",
+      "url": "https://link.springer.com/article/10.1007/s40656-024-00631-9",
+      "locator": "Sections3–5 and notes17–19,37–38. Distinguish reproduced original passages from historian's summaries; no claim to have read archival originals."
+    }
+  ],
+  "review": {}
+}

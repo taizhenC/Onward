@@ -1,0 +1,1031 @@
+{
+  "storySpecId": "lamarr:1940-1942-the-shelved-invention:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "lamarr",
+  "stageId": "1940-1942-the-shelved-invention",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 27,
+    "ageMax": 27,
+    "startDate": "1942-04-13",
+    "endDate": "1942-08-11",
+    "throughLine": "A co-inventor signs and funds the forms needed to preserve a patent application; a signature mismatch requires another execution before the patent issues. Documentary reframe, craft HOLD."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Wartime patent paperwork, nationality-related requirements and a rejected claim. No violence, invented humiliation or graphic material."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Lamarr was twenty-seven on 13 April 1942, based on her birth on 9 November 1914.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-age",
+          "scope": "bounded",
+          "locator": "Opening biographical section."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-warning",
+      "statement": "Her lawyers' 13 April 1942 letter requested immediate attention, warned that delaying the affidavit and payment could mean loss of the patent, and offered execution before their office notary.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-warning",
+          "scope": "bounded",
+          "locator": "Page 2, paragraph beginning We cannot urge you too strongly."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-deadline",
+      "statement": "The 13 April letter stated that the final government fee must be paid before 13 May, and the affidavit must precede payment by twenty days.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-warning",
+          "scope": "bounded",
+          "locator": "Page 1, first through third paragraphs."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-extra",
+      "statement": "Her lawyers said her foreign nationality required a Treasury affidavit and a certified copy of the application before the final fee.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-warning",
+          "scope": "bounded",
+          "locator": "Page 1, paragraphs beginning Under the regulation and It is also necessary."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-execute",
+      "statement": "The 6 June 1941 covering letter says both inventors executed the application on 5 June.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-execution",
+          "scope": "bounded",
+          "locator": "First paragraph."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-partial",
+      "statement": "An October 1941 attorney letter reported six apparatus claims allowed and the seventh, a method claim, rejected on two earlier patents.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-claims",
+          "scope": "bounded",
+          "locator": "Page 1, first paragraph."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-options",
+      "statement": "The attorneys offered either dropping the rejected method claim alone or dropping it and proposing another apparatus claim.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-claims",
+          "scope": "bounded",
+          "locator": "Page 1, paragraphs following the two prior-patent citations."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-allowance",
+      "statement": "A November 1941 notice allowed six claims but required the final fee within six months before grant.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-allowance",
+          "scope": "bounded",
+          "locator": "Notice body and six-claim field."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-sign",
+      "statement": "By 16 April 1942 Lamarr had signed the required affidavit, which her lawyers sent to their Washington associates with a request to obtain the necessary certified copy quickly.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sent",
+          "scope": "bounded",
+          "locator": "Paragraph beginning We enclose TFR Form 172."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-check",
+      "statement": "On 16 April the lawyers acknowledged her thirty-dollar check for the government's final fee.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-check",
+          "scope": "bounded",
+          "locator": "Final paragraph."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-messenger",
+      "statement": "The 16 April letter records that Walton had sent the affidavit by special messenger that day.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-check",
+          "scope": "bounded",
+          "locator": "Paragraph beginning When we receive the TFR Form."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-mismatch",
+      "statement": "An 18 April telegram reported that the signature's name did not match the name in the application and requested another correctly signed form.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-mismatch",
+          "scope": "bounded",
+          "locator": "Telegram body, beginning Certified copy ordered."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-request",
+      "statement": "On 18 April the lawyers sent Walton another affidavit to have signed with the name matching the application.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-correction",
+          "scope": "bounded",
+          "locator": "Image -0000029, first and second paragraphs."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-corrected",
+      "statement": "On 18 April the lawyers told their associates they enclosed a new affidavit properly executed by Hedy Kiesler Markey.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-correction",
+          "scope": "bounded",
+          "locator": "Image -0000028, first paragraph."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-timing",
+      "statement": "Later correspondence corrected the associates' planned fee date by one day to satisfy the twenty-day interval.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-timing",
+          "scope": "bounded",
+          "locator": "27 April letter, first and second paragraphs; 30 April reply, second paragraph."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-delay",
+      "statement": "On 20 April her attorneys instructed their associates to request a ninety-day delay in issuance when the fee was paid.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-delay",
+          "scope": "bounded",
+          "locator": "Entire body."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-grant",
+      "statement": "Patent 2,292,387 was issued to Hedy Kiesler Markey and George Antheil on 11 August 1942 with six claims.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-patent",
+          "scope": "bounded",
+          "locator": "Front matter and claims 1-6."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-purpose",
+      "statement": "The patent describes changing radio frequencies together at transmitter and receiver to make interference harder.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-patent",
+          "scope": "bounded",
+          "locator": "Description, opening object-of-invention paragraphs."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Hedy Lamarr was an actor and co-inventor of the patented radio communication system.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-age",
+          "scope": "bounded",
+          "locator": "Career and patent sections; name cross-check in original patent."
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Hedy Lamarr",
+      "aliases": [
+        "Lamarr",
+        "Hedy Kiesler Markey"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A letter addressed to her warned that delay could cost her the patent. She was twenty-seven. Her lawyers needed a signed form and payment. An earlier notice had allowed six claims in the application. That notice had not yet given her a patent. The final fee still had to be paid within the stated time. Another rule now had to be met before that payment. There was little time.",
+      "requiredFactIds": [
+        "fact-warning",
+        "fact-age",
+        "fact-allowance",
+        "fact-extra",
+        "fact-deadline"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-allowance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-allowance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-allowance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-extra"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning",
+            "fact-deadline"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2: the actual 13 April letter is the scene anchor. Receipt, reading, location, posture, and emotional reaction are not documented. The subject is not placed holding it. This is a source-faithful documentary opening, not a cleared embodied scene. Episode narrows within the original stage to April-August 1942; earlier patent work appears as explicit background."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The fee was due within a month. The new form had to reach the government well before the fee. A certified copy of the application was needed too. Her foreign nationality was the reason her lawyers gave for these extra steps. They asked for her immediate attention. The letter offered a way to have her signature witnessed at their office. It also made the consequence plain. Delay could lose the patent.",
+      "requiredFactIds": [
+        "fact-deadline",
+        "fact-extra",
+        "fact-warning"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-deadline"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-deadline"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-extra"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-extra"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2: documented administrative risk is not evidence of her personal lowest moment. No fear, humiliation, reading encounter, or loss of confidence is invented. The notary option comes from page 2 of the letter; it is not claimed that she used it."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She signed the form. She also supplied the money for the final government fee. Her lawyers acknowledged her check. A letter to the man helping her recorded that he had sent the form by special messenger. The lawyers forwarded the signed form to their associates. They asked for the certified copy to be obtained quickly. These were completed steps, but the application was not yet finished. Her signature needed another check.",
+      "requiredFactIds": [
+        "fact-sign",
+        "fact-check",
+        "fact-messenger",
+        "fact-allowance",
+        "fact-mismatch"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sign"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-check"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-check"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-messenger"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sign"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sign"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sign",
+            "fact-allowance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-mismatch"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Executed form and check are independently attested in 16 April correspondence. No exact hour, room, pen, or decision motive is supplied. HOLD R2: this is a bounded documented act, but its lived physical occasion is unavailable. The last sentence anticipates the documented 18 April signature-name problem, not her foreknowledge."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "A telegram reported a problem with her name. The name she had signed did not match the one on the application. Another form would have to be signed. Her lawyers sent it through the man helping her. This was not the first part of the application that needed changing. Months earlier, one claim had been rejected because of earlier patents. Six other claims had been allowed. Her lawyers had explained two ways to proceed. The rejected claim could be dropped. They could also propose another claim for the apparatus. The first application had needed revision.",
+      "requiredFactIds": [
+        "fact-mismatch",
+        "fact-request",
+        "fact-partial",
+        "fact-options"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-mismatch"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-mismatch"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-mismatch"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-partial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-partial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-partial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-options"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-options"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-options"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-partial",
+            "fact-options"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Honest compression: April signature correction followed by explicitly earlier October 1941 claim review. No assertion that the whole invention or patent application was rejected. The record does not establish her emotional response to either setback."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The new form was signed with the matching name. Her lawyers wrote that they were sending it to their associates. The particular defect in the earlier signature had been corrected. Other timing details still needed attention. Later letters moved the planned fee payment by one day. The earlier proposed date would not leave the full required interval. The papers still had to be handled in the right order. The new signature was in place.",
+      "requiredFactIds": [
+        "fact-corrected",
+        "fact-mismatch",
+        "fact-timing",
+        "fact-deadline"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-corrected"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-corrected"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-corrected",
+            "fact-mismatch"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-timing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-timing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-timing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-deadline",
+            "fact-timing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-corrected"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2: the corrected execution is a real small procedural turn, attested by the 18 April enclosing letter. The source does not show an inner change, bodily reaction, or subsequent choice by Lamarr. This must not be sold as a fully realized emotional turning scene."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The patent was issued later that summer. It carried her name and her collaborator's name. It contained six claims. The system was meant to make interference with radio communication harder. Her lawyers had also asked that issuance be delayed. Their request was for a limited period after payment. The document eventually issued. Both inventors were named.",
+      "requiredFactIds": [
+        "fact-grant",
+        "fact-purpose",
+        "fact-delay"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-grant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-grant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-grant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-grant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-grant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The endpoint is the 11 August 1942 patent, not military adoption or later recognition. The 20 April applicant-side delay request is not a government secrecy order. No Navy-rejection scene, wartime deployment, personal vindication, or direct invention of modern consumer technologies is asserted."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Hedy Lamarr.\n\nShe was an actor who also helped invent a radio communication system.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to explain every part of yourself.\n\nYou are allowed to want your work taken seriously.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Modest identification, not a claim that she invented Wi-Fi, Bluetooth or GPS. Reader permission makes no promise of belated recognition."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "HOLD: the archive supplies actions and administrative setbacks, not an embodied personal low point or emotional turning scene.",
+    "No invented letter receipt, reading, room, gesture, dialogue, feelings or motive.",
+    "Do not equate a partial claim rejection with rejection of the entire invention.",
+    "Do not turn a patent grant into proof of wartime use, practical success, or a direct technological lineage."
+  ],
+  "avoidRules": [
+    "Keep subject anonymous until the bridge.",
+    "Do not invent a Navy rejection meeting or claim beauty explains a documented decision.",
+    "No outcome promise, prescription or equivalence for the reader."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-age",
+      "citation": "National WWII Museum, Erica Lansberg, Hedy Lamarr's WWII Invention Helped Shape Modern Tech (23 April 2025). Institutional secondary biography; used only for birth and identification.",
+      "url": "https://www.nationalww2museum.org/war/articles/hedy-lamarrs-wwii-invention-helped-shape-modern-tech",
+      "locator": "Opening biography: born 9 November 1914; actor and co-inventor."
+    },
+    {
+      "sourceId": "source-warning",
+      "citation": "Lyon & Lyon to Hedy Lamarr, 13 April 1942, two pages. Smithsonian Archives Center, Hedy Lamarr Papers, NMAH.AC.1590, box 1, patent correspondence.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000025-01",
+      "locator": "Images NMAH-AC1590-0000025-01 and -02, both visually read."
+    },
+    {
+      "sourceId": "source-execution",
+      "citation": "Leonard S. Lyon to Commissioner of Patents, 6 June 1941. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000021",
+      "locator": "Image NMAH-AC1590-0000021, complete one-page letter."
+    },
+    {
+      "sourceId": "source-claims",
+      "citation": "Lyon & Lyon to Lamarr and Antheil, 3 October 1941, two pages. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000024-01",
+      "locator": "Images NMAH-AC1590-0000024-01 and -02, both visually read."
+    },
+    {
+      "sourceId": "source-allowance",
+      "citation": "United States Patent Office, Notice of Allowance, 13 November 1941. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000020-01",
+      "locator": "Image NMAH-AC1590-0000020-01, six claims and final-fee condition."
+    },
+    {
+      "sourceId": "source-check",
+      "citation": "Lyon & Lyon to Charles Walton, 16 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000032",
+      "locator": "Image NMAH-AC1590-0000032, full letter."
+    },
+    {
+      "sourceId": "source-sent",
+      "citation": "Lyon & Lyon to Bacon & Thomas, 16 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000026",
+      "locator": "Image NMAH-AC1590-0000026, executed affidavit and required certified copy."
+    },
+    {
+      "sourceId": "source-mismatch",
+      "citation": "Bacon & Thomas to Lyon & Lyon, telegram, 18 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000033-01",
+      "locator": "Image NMAH-AC1590-0000033-01, mismatch and request for correct form."
+    },
+    {
+      "sourceId": "source-correction",
+      "citation": "Lyon & Lyon to Charles Walton and to Bacon & Thomas, 18 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000028",
+      "locator": "Images NMAH-AC1590-0000028 (new properly executed form enclosed) and -0000029 (request to sign matching name)."
+    },
+    {
+      "sourceId": "source-timing",
+      "citation": "Lyon & Lyon to Bacon & Thomas, 27 April 1942; Bacon & Thomas reply, 30 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000023",
+      "locator": "Images NMAH-AC1590-0000023 and -0000027, nineteen-versus-twenty-day timing and revised planned fee date."
+    },
+    {
+      "sourceId": "source-delay",
+      "citation": "Lyon & Lyon to Bacon & Thomas, 20 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000031",
+      "locator": "Image NMAH-AC1590-0000031, request for ninety-day delay of issuance when paying fee."
+    },
+    {
+      "sourceId": "source-patent",
+      "citation": "Hedy Kiesler Markey and George Antheil, United States patent 2,292,387, Secret Communication System, issued 11 August 1942. Original patent reproduced by Google Patents.",
+      "url": "https://patents.google.com/patent/US2292387A/en",
+      "locator": "Front matter (filed 10 June 1941, issued 11 August 1942, inventors); description opening and six numbered claims."
+    }
+  ],
+  "review": {}
+}

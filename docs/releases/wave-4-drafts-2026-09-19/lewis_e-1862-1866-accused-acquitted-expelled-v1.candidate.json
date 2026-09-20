@@ -1,0 +1,1077 @@
+{
+  "storySpecId": "lewis_e:1862-1866-accused-acquitted-expelled:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "lewis_e",
+  "stageId": "1862-1866-accused-acquitted-expelled",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 17,
+    "ageMax": 20,
+    "startDate": "1862",
+    "endDate": "1864",
+    "throughLine": "A student maintains her innocence through accusation and a violent ordeal, is released in the poisoning case, and later seeks exacting help with sculpture."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "abuse_or_violence",
+      "discrimination"
+    ],
+    "contentNote": "Contains racial prejudice, an accusation of poisoning, and a non-graphic assault."
+  },
+  "sources": [
+    {
+      "sourceId": "memoir",
+      "citation": "John Mercer Langston, From the Virginia Plantation to the National Capitol (1894), chapter XIII. Retrospective lawyer's account; client unnamed in text, identification corroborated by Oberlin's museum.",
+      "url": "https://archive.org/download/fromvirginiaplan00langiala/fromvirginiaplan00langiala_djvu.txt",
+      "locator": "Chapter XIII, pp. 172-180; OCR read, not original court record. Date conflict: p.172 says winter1859–60, while institutional chronology dates the case1862. No contemporary court record has resolved this discrepancy."
+    },
+    {
+      "sourceId": "child",
+      "citation": "Lydia Maria Child, Letter from L. Maria Child, The Liberator, 19 February 1864.",
+      "url": "https://fair-use.org/the-liberator/1864/02/19/the-liberator-34-08.pdf",
+      "locator": "Printed p. 31, columns 3-4; Lewis interview paragraphs visually read from scan."
+    },
+    {
+      "sourceId": "museum",
+      "citation": "Allen Memorial Art Museum, Oberlin College, Bust of James Peck Thomas, object 2002.3. Owning institution's later contextual account.",
+      "url": "https://allenartcollection.oberlin.edu/objects/12270/bust-of-james-peck-thomas",
+      "locator": "Artist/Maker and More Information paragraphs 1-5."
+    }
+  ],
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Lewis was born about 1844; she was about seventeen or eighteen in the 1862 poisoning case.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "Artist/Maker and More Information paragraphs 1-2",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "house",
+      "statement": "Langston's retrospective account places the accused student in the same boarding household as the two white women who became ill.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, pp. 172-175",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "accused",
+      "statement": "The women became ill during an outing; one accused the student who had served them a drink of poisoning them.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, pp. 174-175",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "waiting",
+      "statement": "Langston remembers anxious waiting, her and her supporters maintaining innocence, and hoping and praying for the sick women's recovery.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, p. 175, paragraph beginning How two weeks",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "prejudice",
+      "statement": "Langston remembers the community divided about guilt, and prejudice against the accused because of her color.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, p. 177, paragraph beginning No case",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "defense",
+      "statement": "Before her arrest, she and her supporters had arranged counsel and defense in expectation of legal proceedings.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, p. 176, paragraph beginning And now",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "assault",
+      "statement": "Before her arrest she was seized near the back door, assaulted and left in a field; searchers found her.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, pp. 176-177",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "injuries",
+      "statement": "The lawyer describes serious injuries, confinement to her room, later crutches, and friends carrying her into court.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, p. 177, first paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "delay",
+      "statement": "Langston says the arrest came within days of the attack; he obtained a delay because she was injured, pledging she would appear when able.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, p. 177, first paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "case",
+      "statement": "Langston describes a large room used for the hearing and several days of prosecution evidence.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, p. 178",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "analysis",
+      "statement": "The defense found that no samples from the ill women had been preserved and analyzed to establish poisoning.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, p. 175, paragraph beginning One-half",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "motion",
+      "statement": "After the prosecution rested, the defense requested dismissal for insufficient evidence rather than calling its own witnesses.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, pp. 178-179",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "release",
+      "statement": "After argument, Lewis was released; Langston recalls fellow students carrying her from the courtroom to her home.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "locator": "Chapter XIII, pp. 179-180; acquittal described on p. 180",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "verdict",
+      "statement": "The institution's museum states that she was acquitted in the 1862 poisoning case.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "More Information paragraph 2",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "education",
+      "statement": "Lewis attended Oberlin's preparatory department in 1859-1860 and Ladies Literary Course in 1860-1863.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "More Information paragraph 1",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "advice",
+      "statement": "In an 1864 conversation Lewis told Child that her brother brought her to Boston and she sought Brackett's advice.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "19 February 1864, p. 31, column 3, paragraph beginning One of the most interesting; final education exchange",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "critique",
+      "statement": "Child reported Lewis inviting her to see a first bust and requesting criticism of its faults instead of praise for her race.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "19 February 1864, p. 31, column 3, paragraph beginning She wanted me",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "work",
+      "statement": "By 1864 Lewis exhibited sculpture; sales of casts of her Shaw bust enabled her subsequent trip to Rome.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "More Information paragraph 3",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "legacy",
+      "statement": "Edmonia Lewis was a sculptor whose works included marble portraits.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "Artist/Maker, Medium, and More Information paragraphs 3-5",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Edmonia Lewis",
+      "aliases": [
+        "Lewis"
+      ]
+    }
+  ],
+  "quotes": [],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented violence, fear, dialogue, motive, gestures or courtroom behavior.",
+    "Retrospective accounts remain probable and framed as memory.",
+    "HOLD: waiting and denial lack a precisely located moment; do not promote without editorial resolution."
+  ],
+  "avoidRules": [
+    "Do not equate acquittal in the poisoning case with proof resolving other accusations.",
+    "Do not assert expulsion or institutional motive without primary college records.",
+    "Do not promise the reader justice or success."
+  ],
+  "review": {},
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A young student remained in the house where she had been accused of poisoning two fellow students. She was about seventeen. The other women had fallen ill after leaving the house for an outing. One had said that she had been poisoned. The accusation had come back to the place where all three boarded.\n\nHer lawyer remembered the waiting that followed. The sick women had not recovered. She and the people supporting her waited for their condition to change. They hoped they would live.",
+      "requiredFactIds": [
+        "house",
+        "accused",
+        "age",
+        "waiting"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "house",
+            "accused"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "accused"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "accused"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "house",
+            "accused"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Shared household waiting, reconstructed from Langston's 1894 memory. Approximate age uses c.1844; not a known birthday. No invented room furniture or gesture. Chronology HOLD: Langston p.172 dates the event to winter term1859–60, conflicting with the museum's1862 chronology used for episode/age. The retrospective memoir is not the exact-date authority; contemporary records must resolve this."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The accusation remained against her while the two women lay ill. She was a Black student in a household shared with white students. Beyond the house, people were already arguing over whether she was guilty. Her lawyer's memory includes people judging her because of her color. He also remembers supporters who stood by her.\n\nTheir support could not settle the accusation. She had not yet been arrested. But she and her friends expected that the law would come for her. They had arranged for someone to defend her. The case was still coming.",
+      "requiredFactIds": [
+        "accused",
+        "waiting",
+        "house",
+        "prejudice",
+        "defense",
+        "assault"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "accused",
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "house",
+            "prejudice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "prejudice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "prejudice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting",
+            "defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "defense",
+            "assault"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Cause documented as accusation and anticipated proceedings, not invented fear or collective hatred. HOLD: retrospective account supplies an interval, not a discrete low-point scene."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She maintained that she was innocent. That is the response preserved in her lawyer's memory of the waiting. Her supporters maintained it with her. They also hoped and prayed for the two sick women to recover.\n\nHer own defense and their illness occupied the same stretch of waiting. There was no verdict to point to yet. She had counsel, and she had denied the accusation. She was still in the house.",
+      "requiredFactIds": [
+        "waiting",
+        "defense",
+        "house",
+        "assault"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting",
+            "defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "waiting",
+            "defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "house",
+            "assault"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: p.175 records sustained denial, not a located first conversation or a discrete earliest act. This is an honest response passage but does not clear the moment/first-small-act requirement."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Before any arrest, the danger became physical. Unknown people seized her and assaulted her near the house. Searchers found her in a field. The lawyer describes serious injuries and days confined to her room. When she could move about again, she needed crutches. She was arrested within days of the attack. Her lawyer asked for time because she could not yet attend court.\n\nHe obtained a delay, with a promise that she would appear when able. Her friends eventually carried her into the room used for the hearing. The prosecution presented its witnesses. The defense had found a problem with the claim that the women had been poisoned. No samples had been saved and tested. Still, the hearing continued.",
+      "requiredFactIds": [
+        "assault",
+        "injuries",
+        "delay",
+        "case",
+        "analysis"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "assault"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "assault"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "assault"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "injuries"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "injuries"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "delay"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "injuries",
+            "case"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "case"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "analysis"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "analysis"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "case"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Honest compression of the memoir's assault, injury, arrest, delay and hearing. Denial did not prevent harm or proceedings. Non-graphic; no poisoning substance, means or quantities. The memoir does not date first crutch use relative to arrest; no such ordering is claimed."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "In the hearing room, the prosecution finished presenting its evidence. The court invited the defense to call its witnesses. Her lawyer asked for the case to be dismissed instead. He argued that the evidence did not establish the crime needed to hold her. In his account, the lawyers argued that question before the court.\n\nThen the case ended in her release. The same student who had been carried into court was carried out again. This time her fellow students took her home after she had been cleared in the poisoning case. The charge no longer held her there.",
+      "requiredFactIds": [
+        "case",
+        "motion",
+        "analysis",
+        "release",
+        "verdict",
+        "injuries"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "case",
+            "motion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "motion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "motion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "motion",
+            "analysis"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "motion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "release",
+            "verdict"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "injuries",
+            "release"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "release",
+            "verdict"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "release",
+            "verdict"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Documented turn: discharge/acquittal in this specific case, not proof resolving every later allegation. Motion and courtroom movement are retrospective, probable details. No speech invented."
+    },
+    {
+      "role": "became",
+      "canonicalText": "She continued her education after that case. Her time at the college nevertheless ended the following year. The court's decision and the end of her schooling were separate events. Later, in another city, she asked a sculptor for advice. In her account, her brother had helped bring her there to learn. By the next year she had a bust to show a visitor.\n\nShe invited the woman to see it. She asked for its faults to be pointed out. Praise given merely because she was a Black woman was not the criticism she wanted. There was work in front of her that could be improved. She wanted to hear about it.",
+      "requiredFactIds": [
+        "education",
+        "verdict",
+        "advice",
+        "critique"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "education",
+            "verdict"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "education"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "education",
+            "verdict"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "advice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "advice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Endpoint 1864, within retained 1862-1866 stage. Child's contemporary report supplies invitation and critique request; her account of prior move is probable. HOLD: primary college departure records not accessed, so no asserted expulsion, institutional motive, or conflation of later allegations."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Edmonia Lewis.\n\nShe was a sculptor who made portraits in marble.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to want a fair hearing.\n\nYou do not have to feel certain.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity and occupation only; no claim that justice reliably follows persistence."
+    }
+  ]
+}

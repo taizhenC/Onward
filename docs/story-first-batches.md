@@ -6,8 +6,8 @@ are already published; see [their release record](releases/2026-09-05-story-firs
 
 The table preserves the original forty-one-stage queue. Three stages in set 2
 were published on September 10 and six in set 3 on September 15, leaving
-thirty-two: six held set-2 rewrites, three unpublished set-3 stories, and
-twenty-three in later sets. The September 15 production audit confirmed
+thirty-two: six held set-2 rewrites, three unpublished set-3 stories, nine
+set-4 drafts and fourteen later stages. The September 15 production audit confirmed
 18 valid published historical stories, with zero quarantined.
 The deterministic figure-key order keeps difficult episodes visible.
 
@@ -15,7 +15,7 @@ The deterministic figure-key order keeps difficult episodes visible.
 |---|---|---|
 | 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya live-verified September 15; Hurston's reframed version subsequently owner-approved and published; Coleman, Coltrane and Jones held for source/scene gaps |
-| 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
+| 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Nine researched and independently checked drafts, September 19; Lewis, Marshall, Nightingale and O'Connor for owner reading with qualifications; five others held; none approved or published |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
 | 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
 
@@ -34,10 +34,10 @@ The deterministic figure-key order keeps difficult episodes visible.
 5. Obtain the owner's review before recording approval or publishing a set.
    Publication follows the existing snapshot-bound production workflow.
 
-The ignored local editorial directories are
-`docs/research/story-specs/wave-2/` through `wave-6/`. Each holds candidate JSON,
-evidence notes, independent reviews and its reading packet. The earlier
-first-wave artifacts and their publication receipts are preserved unchanged.
+Older local editorial material is in the ignored
+`docs/research/story-specs/wave-2/` through `wave-6/` workspaces. Review packets
+are tracked separately under `docs/releases/`, including the set-4 packet below.
+Earlier artifacts and their publication receipts are preserved unchanged.
 
 This work does not silently rewrite `lib/figures-data.ts`, matching-stage
 content, existing recipe identities or saved reader artifacts. Any mismatch
@@ -166,3 +166,39 @@ records that distinct approval and snapshot-bound release. Six stories from
 set 3 are now published; Coleman, Coltrane and Jones remain held. The catalog
 contains 18 valid historical stories, with 32 stages still in the original
 queue (six held older rewrites, three set-3 holds and 23 later stages).
+
+## Set 4 continuation — September 19
+
+The owner requested the next nine-story wave using the same source-first
+process. Work starts from `ae2e62d`, after the reviewed Hurston release and
+PR #131's receipt/terminology corrections. Earlier source packets, production
+stories and the nine older held stages are outside this editing scope.
+
+Parallel research groups cover Lamarr/Lee/C. S. Lewis,
+Edmonia Lewis/Lindgren/Marshall, and McClintock/Nightingale/O'Connor. Primary
+material is reopened before drafting; seeded prose remains a research lead,
+never evidence. Every new text stays a draft with empty review metadata.
+Independent source and complete-story checks precede the exact-hash reading
+packet. Missing historical moments remain visible holds, not invented scenes.
+
+Each story and correction is kept in a focused commit under
+`taizhenC <tzhcheung@gmail.com>`, without co-author trailers. No recipe,
+matching/library release, production database operation or publication is
+included in this authoring wave. The 32 remaining stages now consist of nine
+older holds, nine stories in this set and fourteen in later sets. The last
+recorded production audit is still the September 15 release, not a new audit.
+
+The [set-4 reading packet](releases/wave-4-drafts-2026-09-19/README.md) now
+contains all nine drafts: 63 exact passages, 4,945 words, source reports,
+independent cross-reviews and a final SHA-256 manifest. C. S. Lewis, Marshall,
+Nightingale and O'Connor have bounded arcs for owner reading, not publication
+approval. Lamarr, Lee, Edmonia Lewis, Lindgren and McClintock retain explicit
+source/scene/chronology holds. No missing event was invented to fill a role.
+
+Focused corrections remove unsupported concurrence and attribution, disclose
+Edmonia's conflicting case dates, and separate Marshall's encouragement from
+later travel logistics. All nine pass mechanical validation, composition,
+replay and rhythm checks; each remains a draft with an empty review object.
+All nine age ranges differ from installed matching, as documented in the
+packet. Matching and production remain unchanged. Set 5 is next; this handoff
+does not begin it or clear the nine older held stages.

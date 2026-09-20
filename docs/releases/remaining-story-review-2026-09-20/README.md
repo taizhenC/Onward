@@ -8,8 +8,9 @@ Brontë repair text were published on 20 September 2026. See the
 approved snapshots and database verification. All 26 other stories remain
 held and unpublished.
 
-Worker refresh and live-reader verification are pending until the receipt is
-updated with their results. The original owner-review handoff below is
+Worker refresh and live-reader verification are complete: both stories passed
+all 14 passages and 35 text chunks on onwardapp.me. Production now has 24 valid
+historical publications and zero quarantines. The original owner-review handoff below is
 preserved as an authoring-time record; its approval-pending wording is not
 the current publication status of these two texts. Candidate files, the
 review-target index and their hashes remain unchanged.

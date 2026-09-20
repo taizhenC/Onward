@@ -352,7 +352,7 @@ HOLD: inaccessible primary pages, undated promotion sequence and missing complet
 
 [Evidence-mapped candidate](sanders-1956-broke-at-sixty-five-v1.candidate.json) · 312 words · ages 65–66 · episode 1956–unresolved
 
-SHA-256: `49a832d632d17e1b445d248a448f23153382ac82e00aee433d8912ea35e3f8f4`
+SHA-256: `6e0e808ee14b64884d17b6410cb52f349c15df777245efb44db6fb0d9ec2adfc`
 
 Content note: Loss of a longstanding business, financial uncertainty and an unsuccessful promotional effort. No self-harm content.
 
@@ -374,7 +374,7 @@ In his memory, printing thousands of leaflets did not bring the response he expe
 
 ### 5. Turning point
 
-In his memory, an inquiry from another country brought excitement and a new money problem. The owner wanted to hear about using his recipe. He did not know how to afford the journey to demonstrate it. An interested customer was not yet a completed agreement. There was still a journey to pay for.
+In his memory, an inquiry from another country brought excitement and a new money problem. The owner wanted to hear about using his recipe. He did not know how to afford the trip to demonstrate it. An interested customer was not yet a completed agreement. There was still a trip to pay for.
 
 ### 6. Became
 

@@ -1,0 +1,621 @@
+{
+  "storySpecId": "sullivan_a:1880-1886-almshouse-to-valedictorian:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "sullivan_a",
+  "stageId": "1880-1886-almshouse-to-valedictorian",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 14,
+    "ageMax": 20,
+    "startDate": "1880-10-07",
+    "endDate": "1886-06-01",
+    "throughLine": "A new pupil who could not yet read encountered ridicule, learned with other people's help, and eventually addressed her graduating class; the early response remains insufficiently located."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness",
+      "discrimination"
+    ],
+    "contentNote": "Visual impairment, educational exclusion, humiliation, and insecure prospects after school. HOLD: arrival, ridicule, and learning are mostly institutional summaries, not enough firsthand detail for the required located low and response. Short provisional reading draft; no approval or publication."
+  },
+  "facts": [
+    {
+      "factId": "fact-arrival",
+      "statement": "Anne Sullivan entered Perkins on October 7, 1880, aged fourteen and unable to read or write her name.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Life-changing moment, arrival and age paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-ridicule",
+      "statement": "Institutional accounts describe ridicule over Sullivan's lack of schooling and spelling, with humiliation, anger, and shame.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Life-changing moment, peer ridicule; Perkins experience, first paragraph.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-afb",
+          "locator": "Paragraph beginning Sullivan was mortified.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-learning",
+      "statement": "Sullivan learned to read and advanced in her studies; she recalled learning quickly.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, first paragraph.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-afb",
+          "locator": "Quoted recollection beginning The years at Tewksbury.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-class",
+      "statement": "Sullivan later recalled a weekly Shakespeare class as especially absorbing and remembered the lasting importance of poetry.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-afb",
+          "locator": "Quoted recollection beginning She [the teacher] had a regular class.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-help",
+      "statement": "Some staff helped Sullivan; she formed a close relationship with house mother Sophia Hopkins, and improved vision enabled print reading.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, paragraph beginning After the first two years.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-limits",
+      "statement": "The school account reports rule-breaking and threatened expulsion, with staff interventions.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, paragraph beginning Sullivan learned to excel.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-graduation",
+      "statement": "Sullivan delivered her valedictory address on June 1, 1886, aged twenty.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-address",
+          "locator": "Title, date, and complete address.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, June 1886 graduation paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-speech",
+      "statement": "In her address Sullivan thanked the school's supporters and staff, acknowledged friendships, and described education continuing beyond school.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-address",
+          "locator": "Opening paragraph; The search for knowledge paragraph; gratitude and Schoolmates paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-future",
+      "statement": "The school's historical account says her prospects after graduation were unclear and she feared returning to the almshouse.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Perkins experience, paragraph beginning Just what her especial part would be.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Anne Sullivan later became Helen Keller's teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-perkins",
+          "locator": "Opportunity of a lifetime and Entering Helen's world.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "Anne Sullivan",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She arrived at the school when she was fourteen, unable to read or write her own name. The other girls had already learned things she had never been taught. She was a new pupil.",
+      "requiredFactIds": [
+        "fact-arrival",
+        "fact-ridicule"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival",
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Arrival is dated, but no transport, greeting, classroom layout, or gesture has been invented."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Other pupils laughed when she could not spell simple words. The school's account describes how keenly she felt these humiliations. Her lack of schooling had become something other people could mock. She felt ashamed.",
+      "requiredFactIds": [
+        "fact-ridicule"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: institutional accounts describe repeated ridicule, not a securely located single episode. Attribution does not turn the summary into eyewitness evidence."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She began learning the skills that the other pupils already had. In her later account, she remembered learning quickly. She learned to read.",
+      "requiredFactIds": [
+        "fact-learning"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: gradual learning is documented, but a small situated first response after the low is missing. This passage is not a completed response scene."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "School did not become easy all at once. She broke rules, and her temper brought her close to being sent away. Staff who knew her intervened. A house mother became especially close to her. As her studies advanced, a weekly class in plays became a source of pleasure. She later remembered the force of those words long after the lessons ended. Reading had become more than a test.",
+      "requiredFactIds": [
+        "fact-ridicule",
+        "fact-limits",
+        "fact-help",
+        "fact-class"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ridicule",
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limits"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-help"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-class"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-class"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-class"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: compressed school history, without a dated failed attempt and return. The final sentence paraphrases her documented pleasure in the class, not a particular unrecorded realization."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Six years after arriving, she delivered the closing address for her graduating class. She thanked the teachers and staff who had helped them. She spoke about friendships made at the school and learning that would continue beyond it. She was twenty now.",
+      "requiredFactIds": [
+        "fact-arrival",
+        "fact-graduation",
+        "fact-speech"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival",
+            "fact-graduation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-speech"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-speech"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-graduation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Contemporary address supports this event; no physical posture is inferred from its figurative opening. Graduation is a public threshold, not evidence that fear disappeared."
+    },
+    {
+      "role": "became",
+      "canonicalText": "In that address, she described school as the beginning of work that would continue through life. The gratitude was hers, spoken to the people who had taught her. Her next place in the world was less certain. The school records her fear that she might have to return to the institution she had left. Graduation had not supplied a job.",
+      "requiredFactIds": [
+        "fact-speech",
+        "fact-future"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-speech"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-speech"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-future"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-future"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-future"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Stops at graduation in 1886, before the 1887 teaching appointment. Future anxiety is institutional narration pending primary collation."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Anne Sullivan.\n\nShe became the teacher whose work with Helen Keller helped transform education for people who are deafblind.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nLearning late does not make your need for it smaller.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "No suggestion that blindness or humiliation is necessary for a meaningful life."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented classroom scene, first lesson, direct dialogue, or sensory detail.",
+    "Retrospective and institutional accounts are not contemporary witnesses to every private feeling.",
+    "Seven labels preserve review structure; this is an incomplete held draft, not a publishable story."
+  ],
+  "avoidRules": [
+    "Do not turn institutional neglect into a necessary gift.",
+    "Do not move the 1887 Keller teaching episode into this stage.",
+    "Do not treat partial sight improvement as the sole explanation for learning.",
+    "Do not claim the valedictory address erased anxiety about employment."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-perkins",
+      "citation": "B. L. McGinnity, J. Seymour-Ford and K. J. Andries, Anne Sullivan, Perkins History Museum (2004). Institutional biography.",
+      "url": "https://www.perkins.org/anne-sullivan/",
+      "locator": "Life-changing moment; Perkins experience."
+    },
+    {
+      "sourceId": "source-afb",
+      "citation": "American Foundation for the Blind, Anne's Education. Museum narrative with extracts attributed to Sullivan in Nella Braddy Henney's biography.",
+      "url": "https://www.afb.org/formative-years/education",
+      "locator": "Paragraphs on spelling, retrospective school recollection, Shakespeare class, and eye operations."
+    },
+    {
+      "sourceId": "source-address",
+      "citation": "Anne M. Sullivan, valedictory address, 1 June 1886, transcribed by Perkins School for the Blind.",
+      "url": "https://www.perkins.org/resource/anne-sullivans-valedictory-address/",
+      "locator": "Complete address, especially opening, gratitude, and closing paragraphs."
+    }
+  ],
+  "review": {}
+}

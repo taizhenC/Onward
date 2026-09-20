@@ -1,0 +1,175 @@
+{
+  "kind": "editorial-review-index-not-promotion-authority",
+  "date": "2026-09-20",
+  "approval": "none",
+  "targets": [
+    {
+      "figureKey": "berlin_i",
+      "path": "docs/releases/wave-2-rewritten-2026-09-10/berlin_i-1901-1907-bowery-to-first-song-v1.candidate.json",
+      "sha256": "4c733e4c4e971a2ed3a5412ee7d6ecf600554c247761321768b74f0ecf0b3898",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "bronte_c",
+      "path": "docs/releases/remaining-story-review-2026-09-20/held-repairs/bronte_c-1846-1847-two-copies-v1.candidate.json",
+      "sha256": "680159c859a3019dd486a5c246956559650447b1a46e1a8380b7d3f6d8cb8b56",
+      "disposition": "for-owner-reading"
+    },
+    {
+      "figureKey": "butler",
+      "path": "docs/releases/wave-2-rewritten-2026-09-10/butler-1974-1975-pre-patternmaster-v1.candidate.json",
+      "sha256": "925b5d1ca44ad0595efe29a80f6f35c7d1a26c088a093fe9e905b3c119e6a36e",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "carver",
+      "path": "docs/releases/wave-2-rewritten-2026-09-10/carver-1885-1891-turned-away-to-the-sod-house-v1.candidate.json",
+      "sha256": "0d48e0817701019845e856457947aba7f1408b4f2e9bafff03241d7020d154a9",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "charles_r",
+      "path": "docs/releases/wave-2-rewritten-2026-09-10/charles_r-1945-1948-orphaned-to-the-bus-v1.candidate.json",
+      "sha256": "41b662b6160575e8e691d624a071793f94004c5433fa1eb52dfd53aab01f822b",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "christie",
+      "path": "docs/releases/wave-2-rewritten-2026-09-10/christie-1926-1928-the-year-that-broke-v1.candidate.json",
+      "sha256": "ae8444b6a80550f4d8a3688faf8644083a1fb316d2b745fa65912d0c8ddd2cbd",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "coleman",
+      "path": "docs/releases/wave-3-drafts-2026-09-14/coleman-1918-1921-no-school-would-take-her-v1.candidate.json",
+      "sha256": "f819cc6b7cb22e4ea59f7eddebccfc46abc5d85958e679e6ed9781285f365434",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "coltrane",
+      "path": "docs/releases/wave-3-drafts-2026-09-14/coltrane-1957-fired-and-clean-v1.candidate.json",
+      "sha256": "66a2d5d4d91fa29a91b48cf0171022d767446e5bb0f77926caa52233ec45845c",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "jones",
+      "path": "docs/releases/wave-3-drafts-2026-09-14/jones-1937-1945-the-silent-years-v1.candidate.json",
+      "sha256": "47ff6dacb484de4e83b329b2c32f1dc78b9c45208677bafe19b9ff5031932bda",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "lamarr",
+      "path": "docs/releases/wave-4-drafts-2026-09-19/lamarr-1940-1942-the-shelved-invention-v1.candidate.json",
+      "sha256": "fde1737f3ddeb9b0924a9ec92f98421942b6ca316dcca8a25ffdb6ae91627ca3",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "lee",
+      "path": "docs/releases/wave-4-drafts-2026-09-19/lee-1929-1931-harvard-pivot-v1.candidate.json",
+      "sha256": "b8326b667b18ac7d14edd2e52e908e9efd32b29a03d4e964540bc3ba79fad977",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "lewis_e",
+      "path": "docs/releases/wave-4-drafts-2026-09-19/lewis_e-1862-1866-accused-acquitted-expelled-v1.candidate.json",
+      "sha256": "fc1355e6be443ec3f082f6e69fc6b94e40d53b0b4cd3b6462cd5343a1ba26f45",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "lindgren",
+      "path": "docs/releases/wave-4-drafts-2026-09-19/lindgren-1926-1929-the-secret-son-v1.candidate.json",
+      "sha256": "bebeef915a4bdd8fa8b642af811e781c843a97dc326e7caa3b7c4c070553333c",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "mcclintock",
+      "path": "docs/releases/wave-4-drafts-2026-09-19/mcclintock-1951-1960s-dismissed-and-right-v1.candidate.json",
+      "sha256": "51ee0d5543da35d4477e9b140ad2b805c044f535e50b7aa063e39cf2a8e69e0e",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "owens",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/owens-1936-1940-after-the-gold-v1.candidate.json",
+      "sha256": "1e1eac978416f1523b3c9dfac46aeaa9214d40665784a372bafd35e7582ae8fb",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "poitier",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/poitier-1943-1945-dishwasher-to-second-audition-v1.candidate.json",
+      "sha256": "62096205be61b2214dfa96e2f982e6cf6b16da229c03bba01b38cf140dc4325e",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "rachmaninoff",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json",
+      "sha256": "9d30082874819b3de2c2558431b5b67c1658f1421e90b9ad26ae083f6dbac5b0",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "rogers",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/rogers-1936-1941-latrobe-childhood-v1.candidate.json",
+      "sha256": "85807e2de8eeb10334e29bb43c257a3cb9784aebdafb8194e6ca7ef5e2b6d785",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "rudolph",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/rudolph-1945-1953-the-brace-years-v1.candidate.json",
+      "sha256": "e40532188e5d1c19c49c042f7d4a12c11a6ab836292238398717c83edd9c8a70",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "rustin",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/rustin-1963-the-man-in-the-back-v1.candidate.json",
+      "sha256": "ef1f0f9ad23008e75658acce03781d0612d9b0afa4d34b78def9be7501ee9275",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "sanders",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/sanders-1956-broke-at-sixty-five-v1.candidate.json",
+      "sha256": "6e0e808ee14b64884d17b6410cb52f349c15df777245efb44db6fb0d9ec2adfc",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "shelley_m",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/shelley_m-1818-1823-the-losses-v1.candidate.json",
+      "sha256": "fb3e996c03f1a9bed101b22a8bffae515b75e7aeef36343c64dfb21306d2f4c8",
+      "disposition": "for-owner-reading"
+    },
+    {
+      "figureKey": "simone",
+      "path": "docs/releases/wave-5-drafts-2026-09-20/simone-1950-1954-curtis-no-to-the-bar-v1.candidate.json",
+      "sha256": "7e0234a51110a636c509b808935b5d54fb43d4b8f61f6c7aeff70b70f3b625ff",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "sullivan_a",
+      "path": "docs/releases/wave-6-drafts-2026-09-20/sullivan_a-1880-1886-almshouse-to-valedictorian-v1.candidate.json",
+      "sha256": "1b9b2bc08a715aec0ec2470f2afbd2e79645d9cac73ae78a78634cbbebb54f9d",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "tallchief",
+      "path": "docs/releases/wave-6-drafts-2026-09-20/tallchief-1942-1947-the-name-stays-v1.candidate.json",
+      "sha256": "e1129f797aba454ba728102c38f5fba75d978fae894acdc2ede121be38d1ad32",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "wang",
+      "path": "docs/releases/wave-6-drafts-2026-09-20/wang-1987-1990-passed-over-to-the-pivot-v1.candidate.json",
+      "sha256": "33efd588627ee81208853823d4fad6fd3570a7dfd77b54b6062eb2c69c6f3618",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "wilson",
+      "path": "docs/releases/wave-6-drafts-2026-09-20/wilson-1934-1935-rock-bottom-to-the-fellowship-v1.candidate.json",
+      "sha256": "230c169ba975008ba9cebe0370bedcb5383814b70f05f96185715d36062a0cc1",
+      "disposition": "hold"
+    },
+    {
+      "figureKey": "yeats",
+      "path": "docs/releases/wave-6-drafts-2026-09-20/yeats-1889-1893-the-no-and-the-poems-v1.candidate.json",
+      "sha256": "c9fef1e4dfe90d00ecca5a03b5981656f948e08607df4fa083ad17e29793c5d9",
+      "disposition": "hold"
+    }
+  ]
+}

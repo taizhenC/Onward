@@ -1,0 +1,532 @@
+{
+  "storySpecId": "tallchief:1942-1947-the-name-stays:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "tallchief",
+  "stageId": "1942-1947-the-name-stays",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 17,
+    "ageMax": 22,
+    "startDate": "1942",
+    "endDate": "1947-08",
+    "throughLine": "A young dancer kept her family name while learning in a touring company; later work abroad and with a new company is documented, but a located low and earned turn remain missing."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination"
+    ],
+    "contentNote": "Pressure to change a family name and an outsider's difficult adjustment in ballet. HOLD: the name-refusal sequence needs direct memoir collation, and later career events do not supply a situated recovery turn. Short incomplete draft. No human approval."
+  },
+  "facts": [
+    {
+      "factId": "fact-start",
+      "statement": "Maria Tallchief, born January 24, 1925, trained in ballet for years, moved to New York at seventeen in 1942 and joined Ballet Russe de Monte Carlo.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-ohs",
+          "locator": "Birth paragraph; paragraphs beginning Known as Betty Marie and Ernest Belcher, covering years of training and apprentice work.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-museum",
+          "locator": "1942 move at seventeen paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-name",
+      "statement": "The institutional biography reports that after the 1942 tour the company wanted a Russian-sounding name; Tallchief refused to replace her surname and accepted Maria as her professional first name.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-ohs",
+          "locator": "Paragraphs beginning Ernest Belcher and Proud of her Osage heritage.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-adjust",
+      "statement": "In her 1987 interview Tallchief recalled being occupied with keeping herself together and learning in the company when she first knew Ruth Page.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cfa",
+          "locator": "Answer to personal-flair question, beginning Well, I would mainly say.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-work",
+      "statement": "Tallchief recalled a small Salvation Army role in Frankie and Johnny in which she sang rather than danced, starting the others despite not considering herself a singer.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cfa",
+          "locator": "Answers to Did you dance in The Bells or in Frankie and Johnny.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-study",
+      "statement": "She remembered watching fellow dancers in class and described continuing class as necessary regardless of rank.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-duffie",
+          "locator": "Class and observation discussion.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-cfa",
+          "locator": "Answer to class for soloists question: class for everybody.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-paris",
+      "statement": "Tallchief recalled five years with the touring company, marriage to Balanchine in 1946, and work with him at the Paris Opera in 1947.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cfa",
+          "locator": "Answer to And then after that you went to the New York City Ballet.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-return",
+      "statement": "She recalled returning from Paris in August 1947 and working with Ballet Society, the precursor to New York City Ballet.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cfa",
+          "locator": "Same career-sequence answer, return in August of 1947 and Ballet Society.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Maria Tallchief was an Osage ballerina and a leading dancer associated with New York City Ballet.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-ohs",
+          "locator": "Birth/heritage and ballet-career paragraphs.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-museum",
+          "locator": "Biography, Osage identity and leading ballet career.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "Maria Tallchief",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She came to the city at seventeen and found work with a touring ballet company. She had trained for years before joining its dancers. Now she was a member.",
+      "requiredFactIds": [
+        "fact-start"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-start"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-start"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-start"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: summary of entry, not an attested arrival encounter. No invented office, audition, or emotional response."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The company wanted her to use a Russian-sounding name instead of her own. The proposed change would replace her family surname. Her own name was in question.",
+      "requiredFactIds": [
+        "fact-name"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: external pressure is supported by institutional history, but place, date and a felt low require direct memoir evidence."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She agreed to change the first name she used professionally, but not to give up her surname. That part stayed.",
+      "requiredFactIds": [
+        "fact-name"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: refusal is recorded in the biography, without enough independently collated detail for a single located response scene."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "In a later interview, she remembered how much attention it took simply to learn in that company. The parts were not all grand ones. In one production, she played a woman who sang rather than danced. She did not consider herself a singer, but her sense of pitch helped start the others. She also remembered watching fellow dancers carefully in class. There was more to learn.",
+      "requiredFactIds": [
+        "fact-adjust",
+        "fact-work",
+        "fact-study"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-adjust"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-study"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-study"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Primary recollections support ordinary work, but not a failed attempt and return within a dated sequence. No childhood taunting transplanted into the company."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Five years after she joined, she worked abroad with the choreographer she had married. They were working with another ballet company. She was twenty-two.",
+      "requiredFactIds": [
+        "fact-paris",
+        "fact-start"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paris"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paris"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-start",
+            "fact-paris"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD: 1947 professional work is a milestone, not a situated scene or evidence that refusal of the name caused a breakthrough."
+    },
+    {
+      "role": "became",
+      "canonicalText": "They returned that summer, and she began another phase of work with a newer company. Her family name remained her own.",
+      "requiredFactIds": [
+        "fact-return",
+        "fact-name",
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name",
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends in 1947; excludes the 1949 Firebird premiere. The oral history is not used to claim Ballet Society was founded only in 1947."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Maria Tallchief.\n\nThe Osage ballerina became a leading dancer with New York City Ballet.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nBelonging need not require giving up everything that names you.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "No claim that she represented every Indigenous experience or that refusing a change guarantees a career."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented backstage confrontation, quoted refusal, audition rejection, or practice schedule.",
+    "Later testimony supplies remembered work, not an exact chronology for every habit.",
+    "No publish recommendation: the low, failed-return sequence and turning point remain incomplete."
+  ],
+  "avoidRules": [
+    "Do not import school taunting from childhood into the 1942–1947 company episode.",
+    "Do not use 1949 Firebird success to complete a stage ending in 1947.",
+    "Do not convert the company's naming convention into an invented explicit threat to fire her.",
+    "Do not conflate Maria's and Marjorie's Paris Opera distinctions."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-ohs",
+      "citation": "Starlynn Raenae Nance, Tallchief, Elizabeth Maria, Oklahoma Historical Society (2010). Institutional biography.",
+      "url": "https://www.okhistory.org/publications/enc/entry?entry=TA006",
+      "locator": "Birth paragraph; 1942 Canadian tour and name-change paragraphs."
+    },
+    {
+      "sourceId": "source-cfa",
+      "citation": "Maria Tallchief oral-history interview, April 28, 1987, Chicago Film Archives, Ruth Page Collection, V.2011-05-0602. Archive interview log.",
+      "url": "https://collections.chicagofilmarchives.org/Detail/objects/8944",
+      "locator": "Answers to Had you known Ruth long before..., And then after that..., and personal flair question."
+    },
+    {
+      "sourceId": "source-duffie",
+      "citation": "Maria Tallchief interviewed by Bruce Duffie, September 1994; interviewer-published transcript.",
+      "url": "https://www.bruceduffie.com/tallchief2.html",
+      "locator": "Opening career discussion and recollection of class and watching other dancers."
+    },
+    {
+      "sourceId": "source-museum",
+      "citation": "National Women's History Museum, Maria Tallchief biography.",
+      "url": "https://www.womenshistory.org/education-resources/biographies/maria-tallchief",
+      "locator": "1942 move at seventeen and later ballet career."
+    }
+  ],
+  "review": {}
+}

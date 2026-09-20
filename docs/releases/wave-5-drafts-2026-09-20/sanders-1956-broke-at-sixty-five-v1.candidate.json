@@ -1,0 +1,686 @@
+{
+  "storySpecId": "sanders:1956-broke-at-sixty-five:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "sanders",
+  "stageId": "1956-broke-at-sixty-five",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 65,
+    "ageMax": 66,
+    "startDate": "1956",
+    "throughLine": "HOLD: a restaurant owner sells, expands an existing franchising effort, and encounters weak promotional response; exact dating and a supported turning moment are unresolved."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [],
+    "contentNote": "Loss of a longstanding business, financial uncertainty and an unsuccessful promotional effort. No self-harm content."
+  },
+  "facts": [
+    {
+      "factId": "f01",
+      "statement": "Harland Sanders was born on 9 September 1890.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "'Humble Beginnings', first paragraph."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f05",
+      "statement": "The first KFC franchise opened in 1952, before Sanders sold his restaurant.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "1952 and 1956 timeline entries."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f02",
+      "statement": "He sold the Corbin restaurant in 1956 after road changes undermined its business.",
+      "sourceRefs": [
+        {
+          "sourceId": "nomination",
+          "scope": "bounded",
+          "locator": "Section 8, printed p. 6 (PDF p. 15), paragraph beginning 'In the mid-1950s'. Retrospective nomination, not the auction record."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f03",
+      "statement": "Sanders and Claudia loaded their car with seasonings and pressure cookers to seek franchisees.",
+      "sourceRefs": [
+        {
+          "sourceId": "nomination",
+          "scope": "bounded",
+          "locator": "Section 8, printed p. 6 (PDF p. 15), same paragraph."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f04",
+      "statement": "Sanders remembered reliance on Social Security while considering work after the sale.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Printed p. 65, chapter 9 opening. Indexed primary text accessed; full PDF access failed."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f06",
+      "statement": "After selling in 1956, he traveled to recruit additional franchisees.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "1956 timeline entry."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f07",
+      "statement": "Sanders approached restaurant owners with offers to demonstrate his cooking.",
+      "sourceRefs": [
+        {
+          "sourceId": "nyer",
+          "scope": "bounded",
+          "locator": "Paragraphs beginning 'He put a couple' and 'If the employees were impressed'. Retrospective profile, not a particular dated first approach."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f08",
+      "statement": "Sanders remembered distributing 3,500 brochures at a convention, with only two or three inquiries.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Printed p. 68, paragraph beginning 'Looking back'. Indexed text only; no exact event date."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f09",
+      "statement": "He recalled buying a magazine advertisement, then receiving some inquiries.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Printed p. 68, paragraph beginning 'Then I put an ad'."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f10",
+      "statement": "He remembered excitement at a Canadian inquiry, but uncertainty about funding the demonstration trip.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Printed p. 68, paragraph beginning 'Every day'. No dated letter was accessed; country withheld in the drama."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f11",
+      "statement": "Harland Sanders founded the business known as Kentucky Fried Chicken, now KFC.",
+      "sourceRefs": [
+        {
+          "sourceId": "company",
+          "scope": "bounded",
+          "locator": "'Humble Beginnings' and 1952, 1956 and 1964 timeline entries."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "sanders",
+      "kind": "person",
+      "value": "Harland Sanders",
+      "aliases": [
+        "Colonel Sanders"
+      ]
+    },
+    {
+      "entityId": "company",
+      "kind": "organization",
+      "value": "KFC",
+      "aliases": [
+        "Kentucky Fried Chicken"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "In the remembered account, he and his wife loaded cooking equipment into a car. He was about sixty-five. The restaurant he had run was no longer his. He had sold it after changes to the roads threatened its trade. They put seasonings in the car too.",
+      "requiredFactIds": [
+        "f03",
+        "f01",
+        "f02"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f01",
+            "f02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD — incomplete recipe-standard draft. This uses the nomination's attested car-loading event, without a time of day, conversation, weather or pose. The nomination is retrospective and its cited memoir page was not directly accessed. 'About sixty-five' does not decide whether the particular road departure was before or after his September birthday. The car-loading detail is probable, mediated through a retrospective nomination citing his memoir, not a directly inspected contemporary record."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In his memory, the sale left him needing another way to earn a living. His monthly retirement payment mattered. He was not beginning without experience or contacts. Other restaurants were already using his cooking method. But he no longer had his own restaurant.",
+      "requiredFactIds": [
+        "f04",
+        "f05",
+        "f02"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2/R5 — the sources do not locate a bodily low moment after the sale. The prose therefore does not invent despair, an empty room, a rejection letter or a suicide scene. The memory framing preserves the primary narrator's status; no claim he had literally no assets or help."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He set out to find more restaurant owners willing to use his recipe. He took the equipment with him. He asked to demonstrate his cooking. The work required going into someone else's kitchen. He offered to cook.",
+      "requiredFactIds": [
+        "f06",
+        "f03",
+        "f07"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2 — the profile describes a repeated sales method, not one securely dated first demonstration. This stays compressed rather than staging a fictitious owner, kitchen or refusal. The broad practice alone is not sufficient for a complete response passage."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "In his memory, printing thousands of leaflets did not bring the response he expected. He distributed them at a restaurant convention. Only a few people asked for more information. Then he bought a magazine advertisement. A small flow of inquiries began. The leaflets had brought very little.",
+      "requiredFactIds": [
+        "f08",
+        "f09"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD chronology/access — a genuine disappointing promotional attempt is remembered, but the accessible indexed memoir passages do not securely date the convention and advertisement relative to the 1956 auction. Their reported order is retained; their calendar placement is not approved. No invented 1,009 rejections."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "In his memory, an inquiry from another country brought excitement and a new money problem. The owner wanted to hear about using his recipe. He did not know how to afford the trip to demonstrate it. An interested customer was not yet a completed agreement. There was still a trip to pay for.",
+      "requiredFactIds": [
+        "f10"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD chronology/R2 — the Canadian inquiry is a remembered event with an attested feeling and practical obstacle, but no date, original letter, location or resulting agreement was verified. It is not presented as a signed franchise or a resolution. A full primary-page check and dated corroboration are required."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He continued the work of finding restaurants to serve his food. His wife worked beside him. This was an expansion of an existing business idea. It had not begun with the sale of his restaurant. They had cooking equipment to carry.",
+      "requiredFactIds": [
+        "f06",
+        "f03",
+        "f05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05",
+            "f06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD — this is a bounded work-state recap, not evidence of later success or recovery. Installed identity and 62–66 matching remain unchanged, but the undated promotional material cannot yet be certified inside that age range. No silent substitution of the well-known 1952 Harman cooking scene for the installed 1956 episode."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Harland Sanders.\n\nHe founded the restaurant business known as KFC.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to make a beginning look certain.\n\nYou are allowed to need help.",
+      "requiredFactIds": [
+        "f11"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "sanders",
+        "company"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Draft only; no publication approval. This candidate is intentionally short and held for direct primary access, chronology, located moments and fuller support. The company biography establishes the name and business. No success promise is offered to the reader."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented auction attendance, bids, kitchen gestures or private despair.",
+    "Do not turn a repeated practice into a specific first visit.",
+    "Do not turn an inquiry into a signed franchise or a financial rescue."
+  ],
+  "avoidRules": [
+    "HOLD: access, chronology, narrative moments, story length and matching fit remain unresolved.",
+    "Do not say franchising began after the 1956 sale; the first franchise was in 1952.",
+    "No suicide myth, 1,009 rejection count, overnight interstate destruction, or conflation of an earlier property offer with a debt.",
+    "Do not move the story to the 1952 Harman meal without explicit review of that material episode substitution."
+  ],
+  "sources": [
+    {
+      "sourceId": "company",
+      "citation": "KFC, 'Our History'.",
+      "locator": "Owning-company history: birth paragraph and 1952/1956 timeline entries.",
+      "url": "https://global.kfc.com/our-history"
+    },
+    {
+      "sourceId": "nomination",
+      "citation": "Harland Sanders Cafe, National Register of Historic Places registration, 1990.",
+      "locator": "Section 8, printed p. 6 (PDF p. 15). Text extraction read; screenshot tool did not return a viewable page in this session. Cites 1974 memoir p. 88.",
+      "url": "https://npgallery.nps.gov/GetAsset/7ce8ab5e-d648-4ca8-b640-bdc4b77c11a6"
+    },
+    {
+      "sourceId": "memoir",
+      "citation": "Harland Sanders, The Autobiography of the Original Celebrity Chef (manuscript written 1966; KFC edition 2012).",
+      "locator": "Chapter 9, printed pp. 65, 67–68. Only search-indexed page text accessed; direct official PDF failed with HTTP 403. This is explicitly an access HOLD.",
+      "url": "https://kfc.ro/documente/Cartea_Colonelului.pdf"
+    },
+    {
+      "sourceId": "nyer",
+      "citation": "William Whitworth, 'Kentucky-Fried', The New Yorker, 14 February 1970.",
+      "locator": "Early franchising paragraphs beginning 'The Colonel was convinced', 'He put a couple', and 'If the employees were impressed'.",
+      "url": "https://www.newyorker.com/magazine/1970/02/14/colonel-sanders-profile-kentucky-fried-chicken"
+    }
+  ],
+  "review": {}
+}

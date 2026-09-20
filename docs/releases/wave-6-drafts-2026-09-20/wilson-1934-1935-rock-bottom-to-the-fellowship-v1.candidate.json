@@ -1,0 +1,740 @@
+{
+  "storySpecId": "wilson:1934-1935-rock-bottom-to-the-fellowship:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "wilson",
+  "stageId": "1934-1935-rock-bottom-to-the-fellowship",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 39,
+    "ageMax": 39,
+    "startDate": "1935-05",
+    "endDate": "1935-08",
+    "throughLine": "After a failed business trip and fear of drinking again, a man sought another person with the same problem; their repeated conversations and hospital visits began a small fellowship."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "addiction"
+    ],
+    "contentNote": "Alcohol dependence, fear of relapse, financial difficulty, and another man's relapse without procedural detail. Historical mutual help, not treatment advice or a recovery guarantee. HOLD for independent source and complete-story review; shorter than the recipe target. No human approval."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Bill Wilson was thirty-nine at the May 1935 meeting; this draft covers May through August, within the installed 1934–1935 stage.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hotel",
+          "locator": "Mother's Day weekend 1935 setting.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "Origins: approaching thirty-nine before December 1934; 1935 gatehouse entry.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-trip",
+      "statement": "The founding account places Wilson in a hotel after a business venture failed, with little money and worry about his hotel bill.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 153–154, journey and hotel-lobby paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-low",
+      "statement": "The same account describes discouragement, loneliness, attraction to the bar's company, and fear of resuming drinking.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "p. 154, paragraphs beginning Bitterly discouraged and One dismal afternoon.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-call",
+      "statement": "He turned to a church directory and telephoned a minister; referrals led to Henrietta Seiberling and an arranged meeting.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 154–155, directory and call.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-hotel",
+          "locator": "Paragraphs beginning A call to a local minister and Henry later orchestrated.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-meet",
+      "statement": "Wilson and Dr. Bob Smith met at Seiberling's gatehouse on May 12, 1935, exchanging their experiences over several hours.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935, The meeting at the gatehouse.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-relapse",
+      "statement": "Smith later drank again; the early partnership did not mean an immediate uninterrupted change for both men.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 155–156, invitation home and subsequent drinking.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935, Men on a mission.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-visit",
+      "statement": "The two men called a hospital and then visited a patient, sharing their own drinking experiences; the patient initially doubted that this could help.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 156–158, hospital call and first bedside conversation.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-return",
+      "statement": "They returned the next day, when the patient was more receptive; a further day's account records his willingness and departure from hospital.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "p. 158, Next day and On the third day paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-home",
+      "statement": "Wilson stayed with the Smith family; the two men attended meetings and continued trying to help other people.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935, Forging friendships in Akron; Men on a mission; The man on the bed.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-group",
+      "statement": "The early group included unsuccessful efforts to reach others; Wilson returned home after roughly three months and continued this work there.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "pp. 158–159, several failures and three-month stay.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935, Bill's return to New York.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Bill Wilson and Robert Smith were co-founders of Alcoholics Anonymous.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-bigbook",
+          "locator": "p. 155, explanatory footnote identifying both men.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-timeline",
+          "locator": "1935–1944, A fellowship like no other.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "Bill Wilson",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At thirty-nine, he paced the lobby of a hotel after the business that brought him there had fallen apart. He had little money left and a bill to pay. A doorway led to the bar, where other people were gathered. Elsewhere in the lobby, a directory listed local churches. He was away from home.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-trip",
+        "fact-low",
+        "fact-call"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-trip"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-trip"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-trip"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Located May 1935 lobby, not an invented hospital scene. The retrospective founding text supplies the setting."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He wanted company, and the people in the bar seemed to offer it. He had been sober only a few months. The account describes him considering whether he could go inside without returning to the drinking that had overwhelmed his life. Then he became afraid. His sobriety no longer felt secure.",
+      "requiredFactIds": [
+        "fact-low"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-low"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Fear belongs to the retrospective account, not invented interior dialogue. No quantities, procedures, or sensory glamorization."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He walked toward the church directory and selected a name to call. He wanted contact with someone else who knew the same trouble with alcohol. The minister's referral began a series of introductions. A woman agreed to arrange a meeting. He had made the call.",
+      "requiredFactIds": [
+        "fact-call"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-call"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "No unsupported count of failed calls, final coin, exact quoted greeting, or instantaneous cure. Response ends with his concrete action."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The meeting took place the next day in the woman's home. He talked with a doctor whose drinking was also damaging his life. They stayed together for hours, each describing what he had been through. The conversation did not settle everything. The doctor stopped drinking for a time and then drank again. The two men continued their work together. They called a hospital and visited a patient who had repeatedly been unable to stay sober. They described their own experiences, but he doubted that their visits could change anything. They returned the next day.",
+      "requiredFactIds": [
+        "fact-meet",
+        "fact-relapse",
+        "fact-home",
+        "fact-visit",
+        "fact-return"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-relapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-relapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compression across May–June, including a setback and a documented return. No precise last-drink date; contemporary convention chronology conflicts with the commemorated date."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Back at the bedside, they found the patient more willing to listen. He had been thinking about what they had said. Their first visit had not ended with his agreement. Now he was considering their account differently. The conversation could continue.",
+      "requiredFactIds": [
+        "fact-return",
+        "fact-visit"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded change in the patient's reception, not access to Wilson's unrecorded thoughts. Needs craft review: third person's response supplies this provisional turn."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He stayed with the doctor's family and joined their regular meetings. More hospital visits and conversations followed. Some efforts to reach other people failed. A small group nevertheless began to meet and share the work. After about three months, he went home and looked again for paid work. He also continued seeking people who wanted help with their drinking. The visits went on.",
+      "requiredFactIds": [
+        "fact-home",
+        "fact-group"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-group"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Episode ends in 1935. No lifetime guarantee, medical efficacy claim, or later worldwide membership totals."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Bill Wilson.\n\nHe co-founded Alcoholics Anonymous with Robert Smith.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nNeeding company does not make your effort less real.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity only here. The permission is not an instruction to enter any program or substitute mutual help for healthcare."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dialogue, gestures, room furnishings, weather, or exact call count.",
+    "Retrospective founding narrative is marked probable; institutional timeline is context, not independent testimony.",
+    "This short provisional narrative requires complete-story and source review; structural validation cannot authorize publication."
+  ],
+  "avoidRules": [
+    "Do not promise recovery or give treatment advice.",
+    "Do not present spiritual explanations in historical sources as medical fact or reader requirements.",
+    "Do not claim the celebrated June 10 date settles the disputed chronology.",
+    "Do not expand to later Wilson episodes or change matching metadata."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-bigbook",
+      "citation": "Alcoholics Anonymous, chapter 11, A Vision for You, first published 1939; retrospective founding account.",
+      "url": "https://aabigbook.app/literature/read/big-book/a-vision-for-you",
+      "locator": "Printed pp. 153–159. Public reading transcription; owning AA PDF access failed on 2026-09-20."
+    },
+    {
+      "sourceId": "source-timeline",
+      "citation": "Alcoholics Anonymous, A.A. Timeline, organizational history.",
+      "url": "https://www.aa.org/aa-timeline",
+      "locator": "1935 entries: business trip, gatehouse meeting, friendships, mission, man on the bed, return home."
+    },
+    {
+      "sourceId": "source-hotel",
+      "citation": "Dr. Bob's Home, The Mayflower Hotel, historical-site account.",
+      "url": "https://www.drbobshome.org/the-mayflower-hotel/",
+      "locator": "Mother's Day weekend 1935 and referral paragraphs. Later interpretation is not eyewitness testimony."
+    },
+    {
+      "sourceId": "source-archive",
+      "citation": "Glenn C., Names and Events in the Big Book, Indiana University South Bend archive.",
+      "url": "https://library.iusb.edu/search-find/archives/gcarchive/docs/ref-bbnames.pdf",
+      "locator": "p. 14, notes on pp. 179–180: first meeting and disputed June chronology."
+    }
+  ],
+  "review": {}
+}

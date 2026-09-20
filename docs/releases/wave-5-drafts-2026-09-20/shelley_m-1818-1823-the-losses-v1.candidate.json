@@ -1,0 +1,1279 @@
+{
+  "storySpecId": "shelley_m:1818-1823-the-losses:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "shelley_m",
+  "stageId": "1818-1823-the-losses",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 25,
+    "ageMax": 26,
+    "startDate": "1822-09-17",
+    "endDate": "1823-09-09",
+    "throughLine": "A grieving young widow writes honestly to a friend, seeks support without surrendering her son, and receives a limited advance while grief continues."
+  },
+  "contentProfile": {
+    "intensity": "direct",
+    "flags": [
+      "death_or_grief",
+      "pregnancy_or_parenthood"
+    ],
+    "contentNote": "A young widow describes grief and isolation, worries about supporting her child, and refuses a proposed separation. No death methods or self-harm details are included."
+  },
+  "facts": [
+    {
+      "factId": "f00",
+      "statement": "Mary Shelley was born on 30 August 1797. She was twenty-five on 17 September 1822 and twenty-six on 9 September 1823.",
+      "sourceRefs": [
+        {
+          "sourceId": "birth",
+          "scope": "bounded",
+          "locator": "Vol. I, p. 4, sentence beginning 'Mary Wollstonecraft Godwin was born'; September 1823 letter, vol. II p. 95, birthday paragraph."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f01",
+      "statement": "In her letter of 17 September 1822, Shelley repeatedly describes herself as alone except for her sleeping child.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "Pp. 32–33, opening paragraph and paragraph beginning 'There are moments when the heart'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f02",
+      "statement": "Jane Williams left for England on the morning of 17 September; Shelley describes the departure in that day's letter.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 32, paragraphs beginning 'I am here alone' and 'Clare is no longer with me'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f03",
+      "statement": "Shelley's September letter mourns the death of her husband and her feeling of being left alone without him.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 32, paragraph beginning 'It is large and neat'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f04",
+      "statement": "Shelley had arranged a large, neat house to share with the Hunt family, but had not moved into it when writing on 17 September.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "Pp. 32 and 34, paragraphs beginning 'When my crowns are gone', 'It is large and neat', and 'As for you'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f05",
+      "statement": "Shelley said her remaining money would support her for many months. She did not want to spend almost a year's support returning to England only to become a burden to her father.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 32, paragraphs beginning 'I have written to him' and 'When my crowns are gone'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f06",
+      "statement": "After expressing hope for financial peace that winter, Shelley immediately withdrew the word hope as inapplicable to her situation.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 32, paragraph beginning 'It is large and neat'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f07",
+      "statement": "Shelley wrote that others did not understand her suffering, seeing her smiling lips without noticing her blank eyes.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 33, paragraph beginning 'Those about me'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f08",
+      "statement": "Writing alone beside her sleeping child, Shelley described acute mental misery, apologized to her correspondent for writing about herself, and asked God for pity. The narrative omits the method-specific suicidal language in this passage.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 33, paragraphs beginning 'Those about me' and 'There are moments when the heart'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f09",
+      "statement": "Shelley wrote goodnight, said she would finish when people were around and her mood was more cheerful, then stated an intention to look at the stars. This is a stated intention, not independent evidence that she went outside.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 33, paragraph beginning 'Good-night'."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f10",
+      "statement": "In the continuation after goodnight, Shelley asked Gisborne to answer promptly. She explained that the earlier silence followed her own request not to write.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "Pp. 33–34, paragraph beginning 'You have not written'."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f11",
+      "statement": "Shelley wanted her husband's executors to request maintenance from Sir Timothy Shelley for herself and her child.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "P. 34, paragraph beginning 'A claim should be made'."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f12",
+      "statement": "By 20 December Shelley was waiting for decisive English news. Hanson had sought an interview with Whitton, who declined and requested a written application. Hanson then wrote; Shelley knew no further result.",
+      "sourceRefs": [
+        {
+          "sourceId": "dec22",
+          "scope": "bounded",
+          "locator": "Pp. 54–55, paragraphs beginning 'I have delayed writing' and describing Lord Byron, Hanson and Whitton."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f13",
+      "statement": "The stove in Shelley's room smoked too much to use. The alternative warm room belonged to the Hunt household and disrupted her study; she worked and read when she could bear her room's cold.",
+      "sourceRefs": [
+        {
+          "sourceId": "dec22",
+          "scope": "bounded",
+          "locator": "P. 55, paragraphs describing 'one fireplace', her new stove, and the Hunts' sitting-room."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f14",
+      "statement": "Sir Timothy's 6 February letter offered limited support for his grandson in England if placed with a person he approved, while declining to intervene in Mary's affairs.",
+      "sourceRefs": [
+        {
+          "sourceId": "feb23",
+          "scope": "bounded",
+          "locator": "Pp. 65–66, Sir Timothy's letter, paragraphs beginning 'Mrs. Shelley was, I have been told' and 'As to the child'."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f15",
+      "statement": "In her undated reply, Mary refused to part with her son, said his delicate health required her care, and rejected a proposal she understood as an assertion that she was unfit to care for him.",
+      "sourceRefs": [
+        {
+          "sourceId": "feb23",
+          "scope": "bounded",
+          "locator": "Pp. 67–68, Mary's reply, paragraphs beginning 'It appears to me' through 'As a matter of feeling, I would never consent'."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f16",
+      "statement": "After returning to England in August 1823, Shelley wrote to Sir Timothy. Whitton invited her to discuss intentions concerning her son. She attended with her father.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "P. 96, paragraph beginning 'On the strength of the drama'."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f17",
+      "statement": "Shelley described Whitton as polite and long-winded. She thought his principal wish was that she stop applying directly to Sir Timothy.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "P. 96, paragraph beginning 'Whitton was very polite'. The wish is Shelley's contemporary assessment, not access to Whitton's private intentions."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f18",
+      "statement": "Whitton advanced Shelley £100 for immediate expenses at their meeting.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "P. 96, paragraph beginning 'Whitton was very polite', sentence beginning 'However, he advanced me'."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f19",
+      "statement": "Whitton could not guarantee continuing support before consulting Sir Timothy. He expected annual money for the child and suggested an allowance for Mary might follow with time.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "P. 96, paragraph beginning 'Whitton was very polite', following the £100 advance."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f20",
+      "statement": "Shelley secured cheap, neat lodgings and moved there the night before her 9 September letter. Her son was in bed as she wrote.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "Pp. 94 and 96, paragraphs beginning 'I am in little neat lodgings' and 'Having secured'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f21",
+      "statement": "Shelley was sitting by a fire while writing; she described the weather as cold with a piercing east wind.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "P. 96, paragraph beginning 'It is so cold'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "sensory"
+    },
+    {
+      "factId": "f22",
+      "statement": "Shelley said the advance and discussion relieved a load of anxieties.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "P. 96, sentence beginning 'This, you see'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "f23",
+      "statement": "Her father's welcome was kind, but Shelley described exerting herself to maintain her spirits while still close to melancholy.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "P. 94, paragraph beginning 'I had a very kind reception'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f24",
+      "statement": "Shelley had time but lacked the spirit to write Hunt until settled. In the letter she described her new lodging and expressed hopes for his health and spirits.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "Pp. 94 and 96–97, opening paragraph and paragraph beginning 'It is so cold'."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "f25",
+      "statement": "The writer of these letters was Mary Wollstonecraft Shelley.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept22",
+          "scope": "bounded",
+          "locator": "Pp. 32–34, named heading and signature; book title expands the name."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f26",
+      "statement": "Shelley was the author of Frankenstein; in September 1823 she described its theatrical adaptation and a new edition of her novel.",
+      "sourceRefs": [
+        {
+          "sourceId": "sept23",
+          "scope": "bounded",
+          "locator": "Pp. 95–96, paragraphs beginning 'But lo and behold!' and 'On the strength of the drama'."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "f27",
+      "statement": "In August 1824 Shelley reported that continued support required suppressing Posthumous Poems and promising not to publish writings bearing her husband's name during Sir Timothy's lifetime.",
+      "sourceRefs": [
+        {
+          "sourceId": "aug24",
+          "scope": "bounded",
+          "locator": "Pp. 120–122, 22 August letter, paragraph describing the stipulation on publication."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "mary",
+      "kind": "person",
+      "value": "Mary Wollstonecraft Shelley",
+      "aliases": [
+        "Mary Shelley"
+      ]
+    },
+    {
+      "entityId": "novel",
+      "kind": "work",
+      "value": "Frankenstein",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was alone with her sleeping child, writing to a friend. She had just turned twenty-five. Another friend had left that morning to return home. Her husband was dead, and now this friend was gone too. In the letter, she set out the arrangements she had made. She had rented a house to share with another family. There was money left for the coming months. A trip home could use nearly a year's support. She did not want to reach her father's house needing him to support her. For now, she was staying where she was. Her boy slept.",
+      "requiredFactIds": [
+        "f01",
+        "f00",
+        "f02",
+        "f03",
+        "f04",
+        "f05"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f00"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f02",
+            "f03"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Contemporary letter, not later memoir. The opening, dark moment and response stay with the same September 1822 act of writing. Its date and birth date establish age twenty-five. No type of room, light, furniture or bodily gesture is invented. The newly rented house is a plan described in the letter, not the current location."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The letter moved from those arrangements to the husband who was no longer there. She had written of hoping for a winter without money worries. Now she took the word hope back. It did not belong to her present life. She felt left alone in a world without him. The people around her did not understand the pain she was in. They could see a smile without seeing anything behind it. She described her eyes as empty. Even her own suffering was something she apologized for putting into the letter. She was alone except for the sleeping boy. There was nobody else with her.",
+      "requiredFactIds": [
+        "f03",
+        "f04",
+        "f05",
+        "f06",
+        "f07",
+        "f08",
+        "f01"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f03",
+            "f04"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f03",
+            "f06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The low point is Shelley's own contemporaneous account, not an inferred diagnosis. Source method-specific suicidal language is omitted entirely; the prose includes grief and mental distress only. Her observation of her smiling lips and blank eyes is conveyed as her description, not a newly staged mirror scene."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She wrote to her friend about the misery she was struggling to contain. She did not keep the letter to the house and the money. She put that pain into words for someone she knew. Her boy was still asleep as she wrote. She apologized to her friend for writing about her own suffering. She asked God for pity. Then she wrote goodnight and said she would finish when other people were around. She wanted to continue in a different mood. She said she would go and look at the stars. She wrote goodnight twice.",
+      "requiredFactIds": [
+        "f08",
+        "f04",
+        "f01",
+        "f09"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f04",
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One bounded writing passage through the first goodnight. Looking at the stars remains an intention. Requests for replies and maintenance come after the stated break and are placed in the compressed struggle, not falsely staged in one continuous sitting."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "In the letter's continuation, she asked her friend to answer. She also wanted her husband's executors to seek support for her and their son. The request passed between lawyers. One asked to meet the other, who refused an interview and required a letter instead. By winter, she was still waiting for an answer. At home, the new stove in her room smoked too much to use. Working meant bearing the cold or sharing another family's sitting room. Then her husband's father offered limited money for the child in someone else's care. She wrote that she would not part with her son. His health needed her care, she said. She refused to accept an arrangement that treated her as unfit to raise him. The offer had not settled their future.",
+      "requiredFactIds": [
+        "f10",
+        "f11",
+        "f12",
+        "f13",
+        "f14",
+        "f15"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f13"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f14"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f14",
+            "f15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Explicit time compression from the continuation of September's letter through December correspondence and the February 1823 conditional support proposal. The failed request for an interview and continued wait are the unsuccessful attempt, not invented rejected manuscript submissions. Mary's reply is undated; no delivery scene or exact reply day is claimed."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Nearly a year after the first letter, she went with her father to meet a lawyer. She was back in her home country. The lawyer represented her husband's father. He had invited her to hear what might be arranged for her boy. He was polite, and he talked at length. He seemed most concerned that she stop applying directly to the child's grandfather. But he advanced money for their immediate expenses. There was still no firm promise of yearly support. He needed another meeting with his client before he could speak with certainty. He suggested that help for her, as well as her son, might follow. For now, the advance was real. She had money for immediate expenses.",
+      "requiredFactIds": [
+        "f16",
+        "f17",
+        "f18",
+        "f19"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f17"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f19"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f19"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f19"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A single meeting with Whitton, described in a contemporary letter days later. No office layout, cash exchange, gesture, or verbatim dialogue is invented. The solicitor's desire to prevent direct applications is Mary's stated impression. The £100 advance is firm; future allowances are not. The story does not claim that refusing the earlier proposal caused this advance."
+    },
+    {
+      "role": "became",
+      "canonicalText": "She found small, neat lodgings and moved there with her son. The next day, he was in bed while she wrote to another friend. She sat by a fire because the weather was cold. The advance had lifted a weight of worry from her. She was twenty-six now, with a place of her own and her child still beside her. Coming home had not ended her sadness. She had been trying to keep her spirits up while staying with her father. Until she was settled, she had lacked the spirit to write this letter. Now she could describe the rooms and ask after the people she missed. Her little boy was in bed.",
+      "requiredFactIds": [
+        "f20",
+        "f21",
+        "f22",
+        "f00",
+        "f23",
+        "f24"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f20"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f20"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f21"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f22"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f00",
+            "f20"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f23"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f23"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f24"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f20",
+            "f21",
+            "f24"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f20"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends with the 9 September 1823 letter, not a later career. Age twenty-six corrects the installed 21–25 upper age while remaining within the installed 1818–1823 period. The installed stage's earlier child deaths are not silently substituted: this draft expressly narrows to widowhood, correspondence and child-maintenance negotiations from September 1822 to September 1823. Owner must review matching/age fit separately; no runtime data has changed."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Mary Wollstonecraft Shelley.\n\nShe wrote the novel Frankenstein.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to call every kind of help a happy ending.\n\nYou are allowed to have mixed feelings.",
+      "requiredFactIds": [
+        "f25",
+        "f26"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "mary",
+        "novel"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f25"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f26"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Name and novel are confined to the reveal. Permission lines make no diagnosis, promise, instruction or equivalence. Draft only; owner review and content-profile approval remain empty. Later 1824 publication restrictions are disclosed as a fold-only fact, not an endpoint extension."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented room, gesture, dialogue, motive or private thought.",
+    "The source's method-specific self-harm language must not be rendered.",
+    "A stated intention is not an event; looking at the stars remains prospective."
+  ],
+  "avoidRules": [
+    "Do not turn the £100 advance into a permanent allowance or a cure for grief.",
+    "Do not say she was penniless, without help, or had no other choice.",
+    "Do not claim the earlier refusal caused the later advance.",
+    "Do not expand the story into deaths of her children without researching and reviewing that different narrative.",
+    "Age fit requires owner review: narrative ages 25–26 versus installed stage 21–25."
+  ],
+  "sources": [
+    {
+      "sourceId": "birth",
+      "citation": "Florence A. Marshall, The Life and Letters of Mary Wollstonecraft Shelley, vol. I (1889).",
+      "locator": "Chapter I, printed p. 4: birth on 30 August 1797.",
+      "url": "https://www.gutenberg.org/cache/epub/37955/pg37955-images.html"
+    },
+    {
+      "sourceId": "sept22",
+      "citation": "Mary Shelley to Maria Gisborne, 17 September 1822, reproduced in Marshall, Life and Letters, vol. II (1889).",
+      "locator": "Printed pp. 32–34; dated heading and complete letter.",
+      "url": "https://www.gutenberg.org/cache/epub/37956/pg37956-images.html"
+    },
+    {
+      "sourceId": "dec22",
+      "citation": "Mary Shelley to Clare Clairmont, 20 December 1822, reproduced in Marshall, Life and Letters, vol. II (1889).",
+      "locator": "Printed pp. 54–56; paragraphs on Hanson, Whitton, and the smoking stove.",
+      "url": "https://www.gutenberg.org/cache/epub/37956/pg37956-images.html"
+    },
+    {
+      "sourceId": "feb23",
+      "citation": "Sir Timothy Shelley to Lord Byron, 6 February 1823, and Mary Shelley's undated reply, reproduced in Marshall, Life and Letters, vol. II (1889).",
+      "locator": "Printed pp. 65–68; maintenance proposal and refusal.",
+      "url": "https://www.gutenberg.org/cache/epub/37956/pg37956-images.html"
+    },
+    {
+      "sourceId": "sept23",
+      "citation": "Mary Shelley to Leigh Hunt, 9 September 1823, reproduced in Marshall, Life and Letters, vol. II (1889).",
+      "locator": "Printed pp. 94–97; arrival, birthday, Whitton interview, and new lodgings.",
+      "url": "https://www.gutenberg.org/cache/epub/37956/pg37956-images.html"
+    },
+    {
+      "sourceId": "aug24",
+      "citation": "Mary Shelley to Leigh Hunt, 22 August 1824, reproduced in Marshall, Life and Letters, vol. II (1889).",
+      "locator": "Printed pp. 120–122; condition to suppress Posthumous Poems. Fold only, outside narrative episode.",
+      "url": "https://www.gutenberg.org/cache/epub/37956/pg37956-images.html"
+    }
+  ],
+  "review": {}
+}

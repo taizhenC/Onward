@@ -1,0 +1,825 @@
+{
+  "storySpecId": "owens:1936-1940-after-the-gold:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "owens",
+  "stageId": "1936-1940-after-the-gold",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 24,
+    "ageMax": 27,
+    "startDate": "1938",
+    "endDate": "1940",
+    "throughLine": "A retrospective account of paid horse exhibitions within the post-Olympic livelihood crisis: accepting an offer, discovering its terms, racing repeatedly, then refusing to continue and returning to playground work. The later career remained financially uneven."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination",
+      "other_reviewed_flag"
+    ],
+    "contentNote": "Financial insecurity, racial exclusion, and a non-graphic account of unfair treatment of a racehorse. HOLD: central circa-1938 episode rests on a late coauthored reminiscence whose chronology and moral framing require corroboration. A separate Owens/Neimark 1980 account describes a lost race prompting his decision to quit, unlike the Rotarian account used here; this conflict is unresolved. Age 24–25 at the opening is derived from its approximate date; installed ages 23–27 are unchanged. Focus shifts within the same installed interval from the 1936 suspension to a later exhibition refusal. Underlength without fabricated scene expansion. Not approved for publication."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Owens was born September12,1913; the late essay places the exhibition episode two years after the1936 Olympics, implying approximately1938 and age24–25.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-dates",
+          "locator": "PDF p.2 birth entry; cross-check source-rotarian printed p.19 'two years after'.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed p.19, 'two years after the Berlin1936 Olympics'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-work",
+      "statement": "He recalled being short of money, supporting a wife and young family, and working as a playground instructor.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed p.19, first-person passage beginning 'It was two years after'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-offer",
+      "statement": "He recalled two baseball promoters visiting his flat and offering about five times his playground earnings; he initially thought the work would be playing baseball.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed p.19, paragraph beginning 'Soon after that'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-terms",
+      "statement": "He recalled learning the night before the first game that they wanted him to draw customers by racing a horse; he objected that he could not beat one.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed p.19, same paragraph and following reported exchange.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-race",
+      "statement": "The promoters described an arrangement that frightened the horse at the start; Owens recalled running ahead and crossing first, with the horse passing shortly afterward.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed p.19, exchange beginning 'You'll beat him' and next paragraph. Mechanism omitted from reader prose.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-repeated",
+      "statement": "He recalled repeated exhibitions over two weeks and feeling sick afterward because he believed he was winning unfairly, not outrunning the horse.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed p.19, paragraph beginning 'I beat that horse'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-refusal",
+      "statement": "At the beginning of the third week, he recalled telling the promoters he would stop and forgo money owed; they asked why and offered doubled pay, which he refused.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed p.19, final three paragraphs, beginning 'The horse had no choice'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-return",
+      "statement": "He recalled returning to playground work after refusing further horse exhibitions.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rotarian",
+          "locator": "Printed pp.19–20, sentence crossing page break 'I went back to the playground'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-business",
+      "statement": "The archive dates his dry-cleaning business to1938 and personal bankruptcy to1939; his post-Olympic livelihood did not become secure all at once.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-osu",
+          "locator": "Paragraphs beginning 'After a whirlwind' and 'That firm was in debt'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Jesse Owens won four gold medals at the1936 Berlin Olympic Games.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-dates",
+          "locator": "PDF p.2, four1936 medal entries.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Jesse Owens",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He was in his mid-twenties when two promoters came to his flat. He remembered the offer as five times what his playground job paid. He had a wife, a small child, and another baby on the way. There was little money.\n\nThe men were promoting baseball. He thought they wanted him to play. It was work connected with sport, and the pay was much greater than his regular wage. He had already been celebrated for what his body could do. That had not provided a secure living. Now these men were offering paid work.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-offer",
+        "fact-work",
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Late coauthored memory, not a contemporary scene report. No invented welcome, room furnishings, gestures, or immediate contract signing."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The night before the first game, the promoters explained what they wanted. He remembered learning that the attraction would be a race between him and a horse. His part was to bring people through the gate. He told them he could not beat a racehorse.\n\nThey said the arrangement would give him an advantage at the start. The horse would be frightened and delayed. He was being offered an exhibition, not the baseball work he had imagined. The terms were different.",
+      "requiredFactIds": [
+        "fact-terms",
+        "fact-race",
+        "fact-offer"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-terms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-terms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-terms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-terms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer",
+            "fact-terms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-terms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The nighttime exchange is reported, but its exact location and date are not supplied. HOLD for situated low-point review; no invented despair, humiliation, or bodily reaction at this encounter."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He ran the race. In his account, the horse was startled and he moved well ahead. He reached the finish first. A little beyond it, the animal passed him.\n\nHe had crossed the line before the horse without being the faster runner. The promised advantage had worked.",
+      "requiredFactIds": [
+        "fact-race"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-race"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A concrete attested first performance in this remembered engagement, not a claim about his first-ever horse race. Methods and precise distances are intentionally omitted."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He kept racing through the next two weeks. The result kept being presented as a victory. But he remembered feeling sick after the races. He said he could not bear to look at the horse. Nor could he face himself in a mirror.\n\nHe believed spectators were seeing athletic superiority where there was an unfair arrangement. The paid engagement was work, but it had not settled his difficulty with what he was doing. Winning the exhibitions did not change that.",
+      "requiredFactIds": [
+        "fact-repeated",
+        "fact-offer"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer",
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repeated"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed repeated experience. Distress is explicitly his retrospective report, not inferred from the spectacle. No invented individual night or audience reaction."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "At the beginning of the third week, he told the promoters he would not continue. In his recollection, he offered to leave even the money they still owed him. He wanted to stop.\n\nThey asked why. He explained. Then they offered twice the pay. He refused that offer too. The extra money did not change his answer.",
+      "requiredFactIds": [
+        "fact-refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A bounded refusal conversation as later remembered. HOLD: no independent contemporary corroboration of its exact sequence or terms located; no promise of later reward."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He returned to playground work. His account presents that return as the next step after leaving the exhibitions. It was not the end of his financial difficulties.\n\nDuring those post-competition years, he also started a dry-cleaning business. The business fell into debt, and he filed for personal bankruptcy. Money remained a problem.",
+      "requiredFactIds": [
+        "fact-return",
+        "fact-business"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-business"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-business"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-business"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-business"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Separate compressed chronology within 1938–39, not a claim that this refusal caused eventual success. The archive's business dates qualify the memoir's sweeping claim that life improved shortly afterward. Later public-relations and youth work are outside this candidate's endpoint and omitted."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Jesse Owens.\n\nHe won four gold medals at the 1936 Berlin Olympics.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to care about what a job asks of you. You can need money and still have misgivings.",
+      "requiredFactIds": [
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission concerns tradeoffs, not an instruction to quit work or a guarantee of another income."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented race-night surroundings, audience behavior, bodily symptoms, or conversations.",
+    "Keep the central episode explicitly framed as late memory and probable.",
+    "Do not render the method used to frighten the horse as practical instructions.",
+    "Do not merge the1936 Havana race with the essay's circa1938 engagement."
+  ],
+  "avoidRules": [
+    "Do not claim Owens graduated from Ohio State; an inspected coauthored article conflicts with the archive chronology.",
+    "Do not call all professional sport closed to every Black athlete; omit the essay's overbroad assertion.",
+    "Do not imply he never raced horses again or that refusal immediately repaired his finances.",
+    "Do not claim the1936 suspension was a lifelong legal ban without exact authority.",
+    "Do not turn financial hardship into a moral judgment or advice to abandon income.",
+    "Do not silently harmonize the Rotarian refusal sequence with Owens/Neimark's separate My Roots account: that account describes one lost race and a same-night decision to quit."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-rotarian",
+      "citation": "Jesse Owens with Paul Neimark, 'Nice Guys Never Finish Last,' The Rotarian, May 1980, pp.18–21; late coauthored first-person reminiscence, held in Ohio State University Archives.",
+      "url": "https://library.osu.edu/documents/university-archives/biographical_files/Owens_Jesse_2.pdf",
+      "locator": "PDF pp.45–47, especially printed pp.19–20. Only these episode pages used; other moral anecdotes not adopted."
+    },
+    {
+      "sourceId": "source-osu",
+      "citation": "Ohio State University Libraries, 'Owens' Legacy: a National Icon'; owning archive's secondary chronology.",
+      "url": "https://library.osu.edu/jesse-owens-a-lasting-legend/owens-legacy-a-national-icon",
+      "locator": "Business paragraph (1938 dry cleaners; 1939 bankruptcy), later PR work and speaking, and Blackthink/discrimination paragraph."
+    },
+    {
+      "sourceId": "source-1936",
+      "citation": "The Denison Press, August 17, 1936, p.1, 'AAU Suspends Owens, Misses An Exhibition'; contemporary newspaper report.",
+      "url": "https://texashistory.unt.edu/ark:/67531/metapth737480/m1/1/",
+      "locator": "Headline and London dispatch, OCR lines463–480."
+    },
+    {
+      "sourceId": "source-dates",
+      "citation": "Ohio State University Archives, Owens_Jesse biographical file, 'Jesse Owens: A Chronology'; institutional chronology.",
+      "url": "https://library.osu.edu/documents/university-archives/biographical_files/Owens_Jesse.pdf",
+      "locator": "PDF p.2, September12 birth entry and 1936 medal entries; exact medal dates not adopted."
+    },
+    {
+      "sourceId": "source-conflict",
+      "citation": "Jesse Owens with Paul Neimark, My Roots are in Columbus, 1980 clipping in Ohio State biographical file; conflicting retrospective account.",
+      "url": "https://library.osu.edu/documents/university-archives/biographical_files/Owens_Jesse_2.pdf",
+      "locator": "PDF pp.3–4: horse-race paragraph at end of p.3 and first continuation paragraph on p.4. Read as a conflict, not support for the chosen sequence."
+    }
+  ],
+  "review": {}
+}

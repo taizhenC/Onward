@@ -1,0 +1,863 @@
+{
+  "storySpecId": "rustin:1963-the-man-in-the-back:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "rustin",
+  "stageId": "1963-the-man-in-the-back",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 51,
+    "ageMax": 51,
+    "startDate": "1963-07",
+    "endDate": "1963-10",
+    "throughLine": "An organizer voices doubt on an empty gathering ground after work and conflict he could not settle alone."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination",
+      "death_or_grief",
+      "abuse_or_violence"
+    ],
+    "contentNote": "Racial and anti-gay discrimination, pressure around collective work, and a brief non-graphic reference to children killed in racist violence."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Born March 17, 1912, Rustin was fifty-one at the August 28, 1963 march.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-chronology",
+          "locator": "Birth-date heading and 1963 march paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-role",
+      "statement": "Rustin arranged march logistics and nonviolent organization with representatives from participating organizations, not alone.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rustin1979",
+          "locator": "WHAT WAS YOUR ROLE IN THE MARCH? through YOU WERE REALLY ... THE MARCH MANAGER",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-attack",
+      "statement": "Rustin recalled Thurmond attacking his homosexuality, former Young Communist League membership and refusal of military service.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rustin1986",
+          "locator": "Paragraph beginning Now this became very clear to me in 1963",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-defense",
+      "statement": "Rustin said he had no basic apprehension about Thurmond's attack, expected the march leaders to defend him, and was defended.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rustin1986",
+          "locator": "When he attacked me paragraph and Randolph's statement to the press",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-meeting",
+      "statement": "Lewis remembered Rustin calling him to a hotel meeting the night before the march about objections to his speech.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis1979",
+          "locator": "Question about changing the speech; Tuesday-night hotel call",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-dispute",
+      "statement": "Lewis remembered an argument at the meeting over his speech and its criticism of a proposed civil-rights bill.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis1979",
+          "locator": "Same answer through explanation of objections about voting rights",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-ground",
+      "statement": "Cox remembered going to the Mall with Rustin early on the march morning and finding no assembled crowd.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cox",
+          "locator": "The morning; Courtland Cox paragraph beginning Bayard and I left together",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-question",
+      "statement": "Cox remembered Rustin asking him whether anybody would come to the march.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cox",
+          "locator": "Same paragraph, question before first group appeared",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-arrival",
+      "statement": "Cox remembered young NAACP marchers appearing just after the question, followed by a steady arrival of more people.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-cox",
+          "locator": "The morning; Courtland Cox's two consecutive paragraphs",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-unfinished",
+      "statement": "Objections to Lewis's speech remained at the Lincoln Memorial; the previous night's meeting had not settled them all.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis1979",
+          "locator": "Paragraph beginning Randolph, really, came to my defense",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-address",
+      "statement": "Recorded march audio introduces Rustin publicly as the organizer; he calls for effective civil-rights legislation without compromise and asks the crowd to respond.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-address",
+          "locator": "Speaker 1 introduction and Bayard's first-demand paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-demands",
+      "statement": "In the recorded address he names public accommodation, decent housing, integrated education, fair employment and voting rights.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-address",
+          "locator": "First-demand paragraph and FEPC expansion",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-aftermath",
+      "statement": "After the Birmingham church bombing killed four children, Rustin wrote that organizers had not adequately prepared the next steps.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-october",
+          "locator": "Opening four paragraphs before numbered section 1",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-coalition",
+      "statement": "In October 1963 Rustin wrote that the march broadened the movement's coalition and brought economic demands into focus.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-october",
+          "locator": "Numbered sections 1–2",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Bayard Rustin helped organize the 1963 March on Washington for Jobs and Freedom.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-chronology",
+          "locator": "Paragraph beginning The year 1963 marked",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Bayard Rustin",
+      "aliases": [
+        "Rustin"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "An organizer walked onto the open gathering ground with a colleague. He was fifty-one. In the colleague's memory, there was no crowd there yet.\n\nHe had arranged the march's practical work with people from the participating organizations. The task involved bringing people together and keeping the gathering nonviolent. Now he stood beside another worker.",
+      "requiredFactIds": [
+        "fact-ground",
+        "fact-age",
+        "fact-role"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ground"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ground"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-role"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-role"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ground"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Cox's retrospective encounter is probable and openly memory-framed. Same encounter supplies scene, uncertainty, question and arrival. Exact clock time is not hardened. Age 51 differs from installed matching 48–54; no matching edit."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The expected people were not in front of him. In this remembered moment, he did not speak as though their arrival were certain. His question was whether anyone would come.\n\nThe march had an organizer and a plan. The crowd was still absent.",
+      "requiredFactIds": [
+        "fact-ground",
+        "fact-question",
+        "fact-role"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ground"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-role"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ground"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "CRAFT HOLD for independent reading: voiced turnout uncertainty is not attested despair or an established personal lowest point. Do not invent panic, shame or fear of renewed rejection. Rustin's 1986 account expressly denies basic apprehension during the earlier public attack."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He asked the colleague beside him whether anybody was coming. The question was spoken between two people standing on the gathering ground. He had not kept the uncertainty entirely to himself.\n\nHe put it into words.",
+      "requiredFactIds": [
+        "fact-question",
+        "fact-ground"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ground",
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-question"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Small documented act is the question, not an invented decision to persevere. Cox's memory is paraphrased, without quotation or a claim that speaking caused the arrival."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The work behind that morning had not been smooth. The previous night, he had called a young speaker to a meeting in their hotel. There were objections to the speech.\n\nThe speaker remembered an argument among representatives of the organizations. They disagreed about supporting a proposed civil-rights law. The young speaker objected that the proposal did not secure Black people's right to vote.\n\nCalling the meeting did not settle every objection. The dispute continued at the place where the speeches would be given. There had also been a public attack on the organizer for being gay.\n\nHis past political membership and refusal of military service were attacked too. In his own account, he expected his fellow leaders to defend him. They did.",
+      "requiredFactIds": [
+        "fact-meeting",
+        "fact-unfinished",
+        "fact-dispute",
+        "fact-attack",
+        "fact-defense"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting",
+            "fact-unfinished"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-dispute"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-dispute"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-dispute"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-unfinished"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-unfinished"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-attack"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-attack"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-defense"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Explicit flashback. Failed effort is the meeting's failure to settle the speech dispute, not failure of the march. Lewis's 1979 account says a call; his 2013 account says a note. The earlier account is identified, not combined into an invented sequence."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Back on the open ground, a group of young marchers appeared. In the colleague's memory, they arrived just after the question. More people followed.\n\nThe empty place was beginning to fill. People kept coming.",
+      "requiredFactIds": [
+        "fact-arrival"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "External turn is Cox's remembered arrival, not an emotional transformation. CRAFT HOLD: no next act by Rustin is attested within this brief encounter. His later public address belongs in became, not a falsely continuous scene."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Later that day, he was introduced to the assembled people as the march's organizer. He addressed them himself. He called for a civil-rights law with no compromise.\n\nHis demands included decent housing, shared schools, fair employment and the right to vote. He asked the crowd for its response. In the weeks afterward, he wrote about the coalition the march had brought together.\n\nHe also wrote about what the organizers had failed to prepare. Racist violence had killed four children in a church. The march had not stopped that violence.\n\nHe said the organizers should have had their next steps ready. There was still work beyond the gathering.",
+      "requiredFactIds": [
+        "fact-address",
+        "fact-demands",
+        "fact-coalition",
+        "fact-aftermath"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-address"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-address"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-address"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-demands"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-address"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-coalition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-aftermath"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-aftermath"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-aftermath"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-aftermath"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-coalition",
+            "fact-aftermath"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends with his October 1963 assessment, not awards or the end of prejudice. Contemporary audio contradicts the seed's claim that he never stood at the front. No fabricated office scene."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Bayard Rustin.\n\nHe helped organize the March on Washington for Jobs and Freedom.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to have uncertainty.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "No approval. Source and craft review plus owner reading remain required; mechanical success cannot clear the holds."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented interior life, dialogue, weather, motives or causal links.",
+    "Retrospective particulars remain probable and memory-framed; no exact clock time is asserted.",
+    "Do not combine the blank-sheet anecdote with Cox's separate encounter.",
+    "CRAFT HOLD: the low is voiced uncertainty, the arrival lacks an immediate next act, and the short moment passages are not padded."
+  ],
+  "avoidRules": [
+    "Do not depict Rustin as sole organizer or erase colleagues and marchers.",
+    "Do not claim his allies universally abandoned him, that he never addressed the crowd, or that he was ashamed of being gay.",
+    "Do not teach that people should accept exclusion or uncredited work.",
+    "Do not echo the reader's disclosure or promise a comparable outcome.",
+    "Installed matching ages 48–54 and production remain unchanged."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-chronology",
+      "citation": "Stanford King Institute, 'Rustin, Bayard'; institutional secondary chronology and identity.",
+      "url": "https://kinginstitute.stanford.edu/rustin-bayard",
+      "locator": "Birth-date heading; paragraph beginning 'The year 1963 marked'."
+    },
+    {
+      "sourceId": "source-cox",
+      "citation": "Courtland Cox, retrospective interview by Michael A. Fletcher, Smithsonian, July 2013.",
+      "url": "https://www.smithsonianmag.com/history/oral-history-march-washington-180953863/",
+      "locator": "The morning of the March on Washington; two consecutive Courtland Cox paragraphs."
+    },
+    {
+      "sourceId": "source-rustin1979",
+      "citation": "Bayard Rustin, 1979 filmed interview for America, They Loved You Madly; Washington University/AAPB.",
+      "url": "https://americanarchive.org/catalog/cpb-aacip_151-rr1pg1jj76",
+      "locator": "Questions about his march role, funding and march management."
+    },
+    {
+      "sourceId": "source-lewis1979",
+      "citation": "John Lewis, 1979 filmed interview for America, They Loved You Madly; Washington University/AAPB.",
+      "url": "https://americanarchive.org/catalog/cpb-aacip_151-hd7np1xb3j",
+      "locator": "Question about changing his march speech; hotel call through unresolved objections at the memorial."
+    },
+    {
+      "sourceId": "source-rustin1986",
+      "citation": "Bayard Rustin interviewed by Peg Byron, February 5, 1986; recording preserved by Walter Naegle and transcribed by Making Gay History.",
+      "url": "https://makinggayhistory.org/podcast/bayard-rustin/",
+      "locator": "Rustin's account of Thurmond's 1963 attack and the leaders' response."
+    },
+    {
+      "sourceId": "source-address",
+      "citation": "Bayard Rustin's recorded address, August 28, 1963; audio transcript supplied by filmmaker Bennett Singer to Journey to Justice.",
+      "url": "https://jtojhumanrights.org.uk/bayard-rustin/",
+      "locator": "Audio transcript: Speaker 1 introduction and Bayard's first demand; not the modern biographical narrative."
+    },
+    {
+      "sourceId": "source-october",
+      "citation": "Bayard Rustin, 'The Meaning of the March on Washington,' Liberation, October 1963; Civil Rights Movement Veterans transcription hosted by Duke.",
+      "url": "https://crmvet.lib.duke.edu/info/mowrust.html",
+      "locator": "Opening four paragraphs and numbered sections 1–2."
+    }
+  ],
+  "review": {}
+}

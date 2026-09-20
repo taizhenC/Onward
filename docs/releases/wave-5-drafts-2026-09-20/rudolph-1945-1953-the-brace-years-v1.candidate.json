@@ -1,0 +1,601 @@
+{
+  "storySpecId": "rudolph:1945-1953-the-brace-years:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "rudolph",
+  "stageId": "1945-1953-the-brace-years",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 5,
+    "ageMax": 13,
+    "startDate": "1945",
+    "endDate": "1953",
+    "throughLine": "A child's remembered family care and exclusion from play; an incomplete primary-source record does not yet establish a publishable recovery arc."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness",
+      "discrimination"
+    ],
+    "contentNote": "Childhood polio, mobility aids, teasing and exclusion. Includes historical removal of braces, not medical advice or a model for readers."
+  },
+  "facts": [
+    {
+      "factId": "fact-illness",
+      "statement": "Rudolph's interview transcript describes childhood illness including polio and use of leg braces.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening childhood answer and closing return to childhood",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-age",
+      "statement": "The interview transcript twice gives about nine as the age until which she wore braces; institutional summaries instead give twelve, so this timing is disputed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening phrase until I was about nine years old and closing I wore braces until I was nine years old",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-archives",
+          "locator": "Black Champions first biographical paragraph gives twelve",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "disputed",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-care",
+      "statement": "The transcript describes siblings accompanying an adult to hospital to learn exercises and care, then helping at home.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening childhood answer, siblings and hospital paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-teasing",
+      "statement": "Rudolph described teasing and exclusion from children's play as difficult aspects of childhood.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening answer about being teased; closing childhood paragraph about not being accepted to play",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-mother",
+      "statement": "Rudolph described her mother and household as positive about her walking.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening childhood section, household and mother answer",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-removal",
+      "statement": "The unverified transcript describes secretly removing braces with siblings' help despite a protective father's reluctance.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening childhood section, father and removing braces paragraph; badly transcribed and requires soundtrack verification",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-school",
+      "statement": "Rudolph recalled missing her first two years of school and having a homebound teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Closing return to childhood, last sentence",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-expectation",
+      "statement": "Rudolph said she had not been taught that she would not walk and was surrounded by positive people.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening paragraph beginning but don't know i never was taught",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-basketball",
+      "statement": "Rudolph remembered discovering girls' sport around thirteen, when her older sister played basketball.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-interview",
+          "locator": "Opening section, immediately after positive people, through first discovery was really basketball",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Wilma Rudolph became an Olympic sprinter and won three gold medals at the 1960 Games.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-archives",
+          "locator": "Black Champions biographical paragraph",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Wilma Rudolph",
+      "aliases": [
+        "Rudolph"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A girl's care involved her brothers and sisters as well as adults. She later remembered wearing leg braces until about nine. Members of her family went to hospital with her to learn how to help.\n\nThe care continued at home.",
+      "requiredFactIds": [
+        "fact-care",
+        "fact-age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-care"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-care"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-care"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: first-person interview is represented by an explicitly unverified and visibly garbled transcript, not a soundtrack audit. This is a recurring care situation, not a located encounter. About nine is memory-framed and disputed, not a settled medical chronology."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She remembered being teased by other children. She also remembered not being accepted into their play. That exclusion was difficult for her.\n\nShe wanted to play.",
+      "requiredFactIds": [
+        "fact-teasing"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teasing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teasing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teasing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teasing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: testimony supports hurt and exclusion, but not a particular playground, child, day, insult or single lowest encounter. No invented scene or private despair."
+    },
+    {
+      "role": "response",
+      "canonicalText": "At home, she took off her braces with help from her siblings. In her account, her father was protective and reluctant to let her remove them. The children helped without telling him.",
+      "requiredFactIds": [
+        "fact-removal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-removal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-removal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-removal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE HOLD: this passage paraphrases a damaged transcript segment and needs soundtrack or authoritative transcript verification before acceptance. No procedural detail is supplied. This is historical conduct, not advice to remove medical equipment or conceal care decisions."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The need for help had affected more than play. She remembered missing her first two years of school. She had a teacher at home.\n\nCare also involved the hospital visits her family shared. At home, they repeated what they had learned. Her mother remained positive about her walking.",
+      "requiredFactIds": [
+        "fact-school",
+        "fact-care",
+        "fact-mother"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-school",
+            "fact-care"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-school"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-school"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-care"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-care"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-mother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: this establishes extended care and interrupted schooling, not a located failed attempt or reversal. No falls, painful practice, failed treatment or exact therapy schedule have been invented."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "In her later account, she eventually stopped wearing the braces. She placed that change at about nine. She no longer wore them.",
+      "requiredFactIds": [
+        "fact-age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: age is disputed and no directly accessed primary account supplies the purported church walk or doctor-office demonstration. This is a remembered change of condition, not an attested single turning day. A real located trigger and next action are still missing."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Around thirteen, she remembered discovering that girls could take part in sports. Her older sister played basketball. Basketball was her own first sport.\n\nHer childhood account also stressed the people who had expected her to walk. She remembered their confidence.",
+      "requiredFactIds": [
+        "fact-basketball",
+        "fact-expectation"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-basketball"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-basketball"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-basketball"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expectation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-expectation"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Childhood endpoint only; no Olympic victory presented as medical repayment. SOURCE/CRAFT HOLD: basketball is a later remembered condition, not an immediate or proven result of removing braces."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Wilma Rudolph. She became an Olympic sprint champion. Your life is not theirs.\n\nBut a piece of this story may still sit beside you. You are allowed to need help.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "No approval. Source verification, complete arc evidence and owner reading remain required. Readers who use mobility aids are not asked to reject them."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "SOURCE HOLD: unverified transcript has substantial recognition errors; no claim that the soundtrack or authoritative transcript was audited.",
+    "CRAFT HOLD: located scene, lowest moment, failed effort and causal turning encounter are missing.",
+    "Do not invent church or clinic walking scenes, falls, sensations, dialogue, therapy instructions or prognosis.",
+    "Dates preserve the installed 1945–1953 stage; ages 5–13 follow the 1940 birth year rather than installed matching ages 8–16. Exact brace chronology remains disputed."
+  ],
+  "avoidRules": [
+    "No miracle cure, medical advice, mind-over-body moral or claim that effort determines disability outcomes.",
+    "No instruction to remove braces, conceal medical decisions or reject professional care.",
+    "Do not use the familiar doctor-versus-mother quotation without its original record; accessed interview gives a more complicated account.",
+    "Do not imply that support is deserved only when it produces exceptional achievement.",
+    "No matching, runtime or production changes; no reader-disclosure echo or outcome promise."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-interview",
+      "citation": "Wilma Rudolph, Black Champions interview, April 11, 1985; William Miles collection, Washington University Film & Media Archive, via AAPB. Accessed unverified computer/third-party transcript, not an audited soundtrack.",
+      "url": "https://americanarchive.org/catalog/cpb-aacip-5ee1487f57d",
+      "locator": "Opening childhood section through discovery of girls' basketball; closing return to childhood beginning I didn't grow ... series of childhood illnesses. Transcript warning explicitly retained."
+    },
+    {
+      "sourceId": "source-archives",
+      "citation": "National Archives, NHPRC News, February 2020, Black Champions. Institutional secondary chronology; not testimony and not used to settle the disputed brace age.",
+      "url": "https://www.archives.gov/nhprc/newsletter/2020/february",
+      "locator": "Black Champions section, biographical paragraphs."
+    },
+    {
+      "sourceId": "source-collection",
+      "citation": "Washington University Libraries, Film & Media Archive Completes Grant-Funded Digitization Project, October 16, 2019. Primary institutional account of preservation and interview provenance, not evidence of childhood events.",
+      "url": "https://library.washu.edu/news/black-champions/",
+      "locator": "Paragraphs about the 32 interviews, missing picture elements, reconstruction and public access."
+    }
+  ],
+  "review": {}
+}

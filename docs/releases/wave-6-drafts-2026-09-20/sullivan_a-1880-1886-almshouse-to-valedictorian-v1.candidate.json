@@ -412,7 +412,7 @@
     },
     {
       "role": "turning_point",
-      "canonicalText": "Six years after arriving, she stood with her graduating class and delivered its closing address. She thanked the teachers and staff who had helped them. She spoke about friendships made at the school and learning that would continue beyond it. She was twenty now.",
+      "canonicalText": "Six years after arriving, she delivered the closing address for her graduating class. She thanked the teachers and staff who had helped them. She spoke about friendships made at the school and learning that would continue beyond it. She was twenty now.",
       "requiredFactIds": [
         "fact-arrival",
         "fact-graduation",
@@ -463,7 +463,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Contemporary address supports this event; standing is the address's own opening collective description. Graduation is a public threshold, not evidence that fear disappeared."
+      "sourceNote": "Contemporary address supports this event; no physical posture is inferred from its figurative opening. Graduation is a public threshold, not evidence that fear disappeared."
     },
     {
       "role": "became",

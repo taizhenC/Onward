@@ -1,0 +1,585 @@
+{
+  "storySpecId": "poitier:1943-1945-dishwasher-to-second-audition:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "poitier",
+  "stageId": "1943-1945-dishwasher-to-second-audition",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 15,
+    "ageMax": 19,
+    "throughLine": "A teenager recalls two failed auditions, a request to exchange cleaning for instruction, and a trial place that remained uncertain. AGE/INTEGRATION HOLD: exact dates remain unresolved;15–19 is a comparison envelope from conflicting recollection and a later documented debut, not newly precise audition dating."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "abuse_or_violence"
+    ],
+    "contentNote": "A remembered rough dismissal and criticism of speech, without graphic violence. Ready for owner reading as a short retrospective account, not a full-recipe pass. AGE/INTEGRATION HOLD against installed1943–1945/16–18: no exact audition dates are asserted; no1946 performance is made the endpoint. An accent is not treated as a measure of worth."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "He was a teenager at the early auditions; the 1989 interview says fifteen, conflicting with the conventional post-Army chronology. His documented Broadway debut was in October 1946, aged nineteen.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1989",
+          "locator": "p. 3: 'I'm just fifteen years old'; source-ibdb birth/debut chronology.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-ibdb",
+          "locator": "Birth date February 20, 1927; Lysistrata opening October 17, 1946.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-audition",
+      "statement": "Poitier recalled following a newspaper acting notice, claiming acting experience, being handed his first script, and reading on a small stage.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1998",
+          "locator": "First-audition account, paragraphs beginning 'I go I go to this place' through 'I figured, oh, I got this.'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-reading",
+      "statement": "He recalled reading in halting syllables; the man interrupted him, removed the script, took him to the door, criticized his speech, and told him to seek dishwashing work.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1989",
+          "locator": "pp. 2–3: first-audition account through expulsion.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-1998",
+          "locator": "First-audition answer: he snatched the script out of Poitier's hand, then took him toward the door. This source supplies script removal; the 1989 p.3 account describes shutting his own script.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-street",
+      "statement": "He recalled stopping on the street while heading toward transport and employment agencies, offended by what he understood as the man's estimate of his worth.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-2009",
+          "locator": "Question 'Didn't he tell you to go be a dishwasher?' and next answer, through 'I was offended deeply.'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-job",
+      "statement": "He said he went downtown that day and obtained another dishwashing job; with early earnings he bought a small radio.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1998",
+          "locator": "Paragraph beginning 'I went downtown, I got a job as a dishwasher'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-practice",
+      "statement": "He recalled listening to radio voices in his room for months, then preparing a magazine passage for another audition instead of a play scene.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1989",
+          "locator": "p. 3, radio account and True Confessions preparation; p. 4, audition.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-failure",
+      "statement": "He recalled rejection after the second audition and distress on receiving the notice.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1989",
+          "locator": "p. 4, from They let me know three days later that I was rejected through Well, it broke my heart.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-offer",
+      "statement": "After that rejection he returned to the theatre, spoke to a woman at a desk, and offered cleaning work in exchange for instruction; she said she would ask.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-2009",
+          "locator": "Question 'How did you overcome that initial rejection?'; paragraphs beginning 'I was crestfallen' and 'She said, You would do that?'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-admission",
+      "statement": "On a later visit the woman fetched a man who asked about the offer and his reasons; Poitier answered that he wanted to learn and was admitted.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-2009",
+          "locator": "Same answer, return 'a couple… three days' later through 'Well, they let me in.'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-work",
+      "statement": "He recalled trial admission followed by dishwashing, classes, and theatre cleaning; at term's end the teachers still did not want him to continue.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-1989",
+          "locator": "p. 4, from We'll take you on a trial basis through I was washing dishes and the first-semester assessment It's not working out.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Sidney Poitier was a film actor whose films included Lilies of the Field.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-2009",
+          "scope": "bounded",
+          "locator": "Biographical photo caption on Anne Bancroft presenting1964Best Actor award for Lilies of the Field."
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 11
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Sidney Poitier",
+      "aliases": [
+        "Poitier"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He remembered being handed a script and sent onto a small stage. He was in his teens. He had followed a newspaper notice while looking for work. He had never seen a script before.",
+      "requiredFactIds": [
+        "fact-audition",
+        "fact-age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-audition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-audition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-audition"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Retrospective framing governs the account; no precise audition date is recovered. No invented stage texture."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "His reading came out slowly, broken into syllables. The man interrupted, took him to the door and told him to find dishwashing work. Walking away, he wondered how the man had known that was already his job. He remembered feeling deeply offended.",
+      "requiredFactIds": [
+        "fact-reading",
+        "fact-street"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-street"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-street"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "His interpretation of the dismissal is his reported memory, not an objective account of the man's motive. No quote or invented bodily response."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He said he found another dishwashing job that day. With money he earned, he bought a small radio. He wanted to change how he spoke.",
+      "requiredFactIds": [
+        "fact-job",
+        "fact-practice"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A recalled concrete purchase, not a claim that speech or intelligence required correction. The factual wish belongs to him."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "For months, he listened to radio voices and practiced. For the next audition, he memorized a passage from a magazine. He still did not get a place.",
+      "requiredFactIds": [
+        "fact-practice",
+        "fact-failure"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-practice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-failure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Remembered preparation and actual repeated rejection, without exact daily duration or fabricated practice scene. Magazine length differs across accounts and is not specified."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "He went back and offered to clean the theatre in exchange for lessons. The woman he spoke to said she would ask. On a later visit, another person questioned him about the offer. He said he wanted to learn.",
+      "requiredFactIds": [
+        "fact-offer",
+        "fact-admission"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-admission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-admission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "2009account supports woman at desk and separate return; not fused into instant acceptance."
+    },
+    {
+      "role": "became",
+      "canonicalText": "They let him attend on trial, and he studied while doing the cleaning. By the end of the first term, his teachers still did not want him to continue. The place was not secure.",
+      "requiredFactIds": [
+        "fact-work"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded endpoint before the later substitute performance and1946professional debut. Admission did not erase difficulty; no promise of success."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Sidney Poitier.\n\nHe acted in films including Lilies of the Field.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to ask for a chance to learn.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Own-line reveal and permission; no command to prove doubters wrong."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Authorized short retrospective form, not a full-recipe pass. All early event details remain probable memories.",
+    "AGE/INTEGRATION HOLD: first audition is fifteen in1989testimony but later institutional biography places it after Army service. Do not silently resolve this conflict or claim exact1943–1945dating.",
+    "No1946professional performance included as a1945endpoint. No invented gestures, scenery, dialogue or private motive.",
+    "Do not portray an accent as a deficiency of intelligence or the dismissing man's judgment as truth."
+  ],
+  "avoidRules": [
+    "Anonymous until bridge.",
+    "Do not prescribe unpaid labor or persistence to the reader.",
+    "Do not combine different audition memories into literal dialogue or exact shared choreography."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-1989",
+      "citation": "Sidney Poitier, Pinewood Dialogue, Museum of the Moving Image, March 1, 1989; retrospective oral history.",
+      "url": "https://movingimage.org/wp-content/uploads/2020/12/63_programs_transcript_pdf_228.pdf",
+      "locator": "Printed pp. 2–5; first and second auditions, trial classes, substitute performance."
+    },
+    {
+      "sourceId": "source-1998",
+      "citation": "Sidney Poitier, interview #2, October 28, 1998, American Masters Digital Archive, PBS; retrospective oral history.",
+      "url": "https://www.pbs.org/wnet/americanmasters/archive/interview/sidney-poitier-interview-2/",
+      "locator": "Transcript passage beginning 'I was washing dishes and I was in between jobs' through first professional job."
+    },
+    {
+      "sourceId": "source-2009",
+      "citation": "Sidney Poitier, Academy of Achievement interview, February 17, 2009; retrospective oral history.",
+      "url": "https://achievement.org/achiever/sidney-poitier/",
+      "locator": "Questions about first audition, overcoming initial rejection, and first Broadway appearance."
+    },
+    {
+      "sourceId": "source-ibdb",
+      "citation": "The Broadway League, IBDB, Sidney Poitier performance record; institutional chronology.",
+      "url": "https://www.ibdb.com/broadway-cast-staff/sidney-poitier-15894",
+      "locator": "Birth date and Lysistrata: October 17–19, 1946."
+    }
+  ],
+  "review": {}
+}

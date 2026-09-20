@@ -21,5 +21,6 @@ This reframing extends beyond the installed1926–1929 label and narrows ages19�
 
 ## Verification
 
-[Candidate](../lindgren-1926-1929-the-secret-son-v1.candidate.json), SHA-256 `2264c7d78f8fe1b4f337926340ded984d35af187203943e491afacfc0ed27a63`. Version1, draft, review{}; no quotes or invented texture. Local sentence validator: draft and in-memory publish simulation both0errors/0warnings. Below700–950words under the authorized short-form exception; no full-recipe clearance.
+[Candidate](../lindgren-1926-1929-the-secret-son-v1.candidate.json), SHA-256 `819e57ba77c05e53c9cb257093177097d31ecbc65b831f4c3d9b9ff84968fe79`; 187 words. Version1, draft, review{}; no quotes or invented texture. Local sentence validator: draft and in-memory publish simulation both0errors/0warnings. Below700–950words under the authorized short-form exception; no full-recipe clearance.
 
+Independent review identified that “a few months later” after the grandmother's suggestion implied an unsupported proposal-to-move interval. The corrected text says only that she took him there. January-to-May co-residence remains documented; the proposal's date is not asserted.

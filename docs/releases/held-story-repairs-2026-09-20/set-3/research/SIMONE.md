@@ -18,3 +18,7 @@ Condensed the audition/aftermath/lessons into an honest account over time. No fu
 ## Qualifications
 
 Seven compatibility roles; deliberately below the 700–950 aim, not a claim of full moment-based recipe compliance. April 1951–1954, ages 18–21, remains within installed 1950–1954 and ages 17–21. No matching change. Racial motive is explicitly her belief and remains contested. Memoir emotion is probable testimony mediated by a reproduced excerpt. The new text needs source/craft cross-review and owner reading; format permission is not text approval.
+
+## Local verification receipt
+
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 216 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.

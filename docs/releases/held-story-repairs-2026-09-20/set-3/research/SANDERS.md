@@ -23,3 +23,7 @@ The focus remains the installed 1956 sale/road transition, not the 1952 Harman m
 ## Verification boundary
 
 Per-sentence fact mappings identify every historical statement. Mechanical gates do not authenticate the testimony, resolve all autobiographical compression, or authorize publication. The owning-source chronology controls the conflicting first-franchise sequence.
+
+## Local verification receipt
+
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 227 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.

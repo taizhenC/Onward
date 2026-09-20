@@ -19,3 +19,7 @@ Fresh TIME reporting includes her own retrospective admission about the top edit
 TIME/Elle give different fractional wedding ages; prose uses only nearly forty. TIME's recalled funding offer and Bazaar's funding account do not align cleanly with Elle's later statement that her father would not help. No source version is silently chosen; the story says nothing about funding or having no resources. No mirror scene, consultation dialogue, opening-day customer, or business result is invented.
 
 The rewrite is a brief vignette, not a700–950-word full-moment sequence. Seven roles preserve compatibility; frustration and a work transition are not inflated into despair or cure. All historical sentences have fact links. Independent review and owner reading remain required.
+
+## Local verification receipt
+
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 213 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.

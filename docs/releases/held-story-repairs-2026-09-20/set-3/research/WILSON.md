@@ -19,3 +19,7 @@ The rewrite removes the old bedside conversion as the protagonist's psychologica
 The previous August end inferred too much from a rounded three-month stay. Markings dates departure to September. This candidate modestly corrects the end to1935-09, retaining May1935 start, age39, same identity and installed1934–1935 stage (matching ages38–40). No exact departure or last-drink day is asserted. The commemorated June10 chronology is not used to settle archival disputes.
 
 The text contains no quantities, treatment procedure, promise, religious requirement or suggestion to replace healthcare. Documentary religious beliefs are not promoted as medical fact. Every historical sentence has bounded fact links. This is a historical account of mutual help with failures, not evidence of efficacy or guaranteed recovery. Owner reading and independent review remain required.
+
+## Local verification receipt
+
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 210 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.

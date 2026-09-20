@@ -21,3 +21,7 @@ July–October 1963, age 51, remains inside installed ages 48–54. The emphasis
 ## Review boundary
 
 New exact prose needs independent review and owner reading. Format permission removes the full-moment/length requirement for this candidate only; it does not authenticate memoir detail or grant release. Mechanical validation is recorded separately and is not source clearance.
+
+## Local verification receipt
+
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 268 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.

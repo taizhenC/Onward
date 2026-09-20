@@ -16,3 +16,7 @@ The old hold conflated a lack of detailed scene evidence with a requirement to s
 ## Bounds and remaining qualifications
 
 The installed identity and dates1942–August1947, ages17–22, remain unchanged. First name and surname are withheld until the bridge. No later Firebird triumph is imported. No claim that Ballet Society was first founded in August1947; it is described only as a new company in her working sequence. Every historical sentence has fact links. A directly collated contemporary naming encounter remains unavailable, but the vignette explicitly uses the narrower institutional account instead of pretending it has such evidence. Owner reading and independent review are still required.
+
+## Local verification receipt
+
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 218 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.

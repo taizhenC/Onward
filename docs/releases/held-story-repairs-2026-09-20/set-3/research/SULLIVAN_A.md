@@ -15,3 +15,7 @@ The old hold required an unsupported located low, response and failed-return sce
 ## Evidence and qualifications
 
 Every historical sentence maps to bounded facts in the candidate. Contemporary address evidence remains distinct from memory and institutional narration. No invented first lesson, body gesture, expulsion hearing, return to the almshouse, or cure. No unsupported claim that graduation removed uncertainty. The format permission resolves the craft/length obstacle, not an archival proof of a fully staged sequence. Owner reading and independent review remain required.
+
+## Local verification receipt
+
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 212 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.

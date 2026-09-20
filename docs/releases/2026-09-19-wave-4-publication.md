@@ -103,7 +103,58 @@ Local audit/receipts are `.codex-recovery/wave-4-audit-2026-09-19.ts`,
 ## Worker refresh and live-reader verification
 
 [PR #133](https://github.com/taizhenC/Onward/pull/133) records this publication.
-Its gated merge will refresh Vercel workers after the database promotions,
-because the editorial catalog is cached once per application process.
-Complete live-reader verification is still pending at this checkpoint;
-database publication alone is not recorded as a successful reader test.
+Its CI, recipe-promotion checks and Vercel preview passed before merge at
+`2026-09-20T02:24:19Z`. Merge commit
+`001d92ab5bc8167f33aabd45a7a2b449d081f6a0` reached successful GitHub Production
+deployment `6548151224` at `2026-09-20T02:25:15Z`. This refreshed Vercel workers
+after the database promotions; the editorial catalog is cached once per
+application process. No required check was bypassed.
+
+At `2026-09-20T02:26:25.600Z`, one fresh anonymous test guest completed all
+four stories through the normal [production reader](https://onwardapp.me).
+All four existing adult evaluation fixtures opened directly, without
+clarification, adjacent acceptance, forced selection or rate-limit bypass.
+Candidate hashes and fixture validity were checked before Auth/provider calls.
+
+| Story | Passages verified | Reader chunks | Recovery steps |
+|---|---:|---:|---:|
+| C. S. Lewis | 7 | 20 | 0 |
+| Barry Marshall | 7 | 20 | 0 |
+| Florence Nightingale | 7 | 21 | 0 |
+| Flannery O'Connor | 7 | 18 | 0 |
+
+All match, reader-page, chunk and acknowledgement requests returned HTTP 200.
+Every progress acknowledgement and the seven-passage ending were checked.
+All 28 complete passages matched their approved canonical text after
+whitespace normalization, not byte-identical paragraph formatting. This API
+canary verifies the reader/progress path, not visual layout or fresh-intake
+Auth bootstrap; deployment identity is evidenced separately above.
+
+The exact new anonymous identity was rechecked before normal CSRF-protected
+account deletion. Its guest account and four test stories were removed;
+the operator's account was never used. No account/session IDs, cookies,
+credentials or intake disclosures are saved in the receipt.
+
+A final scoped database audit at `2026-09-20T02:26:35.798Z` reconfirmed
+22 valid published historical stories, zero quarantined, healthy publication
+safeguards, unchanged earlier 18 publications/stages and five held drafts,
+and unchanged selected matching content. It also reconstructed each exact
+pre-promotion reviewed document and checked its stored hash and review
+metadata against the pinned pre-promotion receipt. That receipt's SHA-256 is
+`6dfc22a0a341031916445b233af4f61febfd4603a15aa5014345d804ffc48bd8`.
+All 22 database readiness gates passed again after publication, using the
+same process-local test-secret approach described above.
+
+Local evidence:
+
+- `.codex-recovery/wave-4-production-snapshot-proof-2026-09-19.json`.
+- `.codex-recovery/wave-4-reader-canary-2026-09-19.ts`.
+- `.codex-recovery/wave-4-reader-canary-receipt-2026-09-19.json`.
+- `.codex-recovery/wave-4-production-post-canary-2026-09-19.json`.
+
+The original authoring packet and earlier releases are unchanged. No runtime,
+matching/library, recipe, schema, saved reader artifact or 牛大 content changed.
+Focused commits use only `taizhenC <tzhcheung@gmail.com>` as author and
+committer, without co-author trailers. If a real content concern requires
+removal, use audited retirement; restoring prose requires a newly reviewed
+version, never an overwrite of a published/retired snapshot or saved artifact.

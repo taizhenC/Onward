@@ -1,0 +1,486 @@
+{
+  "storySpecId": "rudolph:1945-1953-the-brace-years:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "rudolph",
+  "stageId": "1945-1953-the-brace-years",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 5,
+    "ageMax": 16,
+    "throughLine": "From remembered distress about a brace to school basketball, limited playing time and a track invitation. Ages5–16 are a broad editorial childhood-to-pre-Olympic envelope, not precise dating of grades; school-year timing remains an integration qualification."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness"
+    ],
+    "contentNote": "Childhood mobility limits and disappointment in early school sport. Ready for owner reading as a short source-led vignette, not a full-recipe pass. Primary memoir excerpts are mediated by a scholarly publisher; adjacent school chronology is the biographer's narration, not an original memoir inspection. AGE/EPISODE INTEGRATION HOLD: exact seventh/eighth-grade years are not established here against the1945–1953 stage label. AAPB is no longer a candidate source. No treatment or brace-removal instructions."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "The publisher's account says Rudolph had worn a brace for two years when she began school at seven, implying about five at the start. The museum dates her first Olympics to age16;5–16 is an editorial outer envelope, not a claim that school basketball started at a precise age.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Third paragraph, By that time she had been wearing a brace ... for two years. Museum paragraph on age16Olympic qualification.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-museum",
+          "locator": "Birth field and age16firstOlympics paragraph; external upper envelope only.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "impact",
+      "statement": "Rudolph's autobiography, as quoted by the publisher, describes wearing a brace as psychologically devastating.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Third paragraph, quoted sentence beginning Psychologically.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "sister",
+      "statement": "The publisher's school-sport account places her older sister on the school basketball team when Rudolph entered seventh grade.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Paragraph beginning Confined to the house; seventh grade, all-grade team and older sister.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "father",
+      "statement": "In quoted recollection Rudolph describes her father's preference for family togetherness and his instruction that her sister take her to basketball.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Same basketball paragraph, two quoted sentences beginning He had this thing.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "bench",
+      "statement": "The publisher narrates that Rudolph tried out and made the team in seventh grade but spent that year on the bench; she observed rules, rebounding and drawing fouls.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Paragraph beginning Basketball worked well, from She tried out through while shooting.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "limited",
+      "statement": "The publisher narrates that she made the team the following year but played only briefly near the ends of games the team was winning comfortably.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Paragraph beginning Rudolph made the basketball team the following year, through large margins.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "track",
+      "statement": "At the end of that basketball season, the coach invited basketball players to try out for a revived girls' track team; the publisher narrates that she did.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Final paragraph, first three sentences.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "purpose",
+      "statement": "The publisher describes her initial track participation as something to do in spring and a way to stay in shape for basketball, rather than love of track.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-excerpt",
+          "locator": "Final paragraph, sentence beginning Rudolph did.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "identity",
+      "statement": "Wilma Rudolph won three sprint gold medals at the1960Olympics.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-museum",
+          "locator": "1960medal results table and Rome paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Wilma Rudolph",
+      "aliases": [
+        "Rudolph"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She had worn a leg brace from about five. Years later, she joined her older sister's school basketball team. She was a seventh grader.",
+      "requiredFactIds": [
+        "age",
+        "sister",
+        "bench"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "sister",
+            "bench"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "sister"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Source-led summary, not a staged first step. About five is arithmetic from publisher's school-at-seven/two-brace-years statement. No exact school-year date inferred."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In her autobiography, she remembered the brace as deeply distressing. It had marked her childhood.",
+      "requiredFactIds": [
+        "impact"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "impact"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "impact"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Published primary recollection excerpt, paraphrased. Not located inside an invented hospital, playground or basketball scene."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She remembered her father telling her older sister to take her along to basketball. He liked his children doing things together.",
+      "requiredFactIds": [
+        "father"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "father"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "father"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Actual quoted recollection paraphrased; no claim about day, room or her next gesture."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "She made the team, but her first season passed on the bench. She watched and learned the game's rules and ways of playing. The next year brought only brief appearances near the ends of games. She was still mostly watching.",
+      "requiredFactIds": [
+        "bench",
+        "limited"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "bench"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "bench"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "limited"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "limited"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Biographer's account, not falsely labeled original memoir testimony. Real limited playing after selection; no invented practice, exact game or emotional motive."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "At the end of that season, the coach invited the basketball players to try track. She joined the tryout.",
+      "requiredFactIds": [
+        "track"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "track"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "track"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Secondary narrated invitation and action, not invented speech. No instant claim that she recognized a calling."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The published account describes her interest as keeping active and staying fit for basketball. Running was not yet her great love.",
+      "requiredFactIds": [
+        "purpose"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Motive remains explicitly attributed to the published account, not unqualified omniscience. No health cure or Olympic payoff."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Wilma Rudolph.\n\nShe became an Olympic sprinter and won three gold medals.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to begin without knowing what comes next.",
+      "requiredFactIds": [
+        "identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Own-line identity, no cure promise or instruction."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Authorized short source-led vignette, not a full seven-moment recipe pass.",
+    "Primary source access consists of quoted autobiographical recollection embedded in the scholarly publisher's excerpt; school-sport details are the biographer's narration. Full memoir and endnotes not accessed.",
+    "AGE/EPISODE INTEGRATION HOLD:5–16 is an explicit broad comparison envelope, not precise grade dating; seventh/eighth-grade calendar years need reconciliation with the1945–1953 label. Installed matching8–16 unchanged.",
+    "No AAPB dependency, disputed brace-removal age, secret removal, medical regimen, sports-as-cure causality or invented bodily act.",
+    "No retrospective illness-caused-competitive-spirit thesis is adopted."
+  ],
+  "avoidRules": [
+    "Anonymous until bridge.",
+    "Do not equate disability with defeat or cure with worth.",
+    "Do not turn biography's eventual calling into something she knew at the tryout."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-excerpt",
+      "citation": "University of Arkansas Press, Foxes, not oxes: excerpt from A Spectacular Leap,23June2015. Scholarly publisher's chapter excerpt containing quoted Rudolph recollection and biographical narration; full1977autobiography not accessed.",
+      "url": "https://www.uapress.com/2015/06/23/foxes-not-oxes-an-excerpt-from-a-spectacular-leap/",
+      "locator": "Complete substantive excerpt read via ordinary unauthenticated fetch. Third paragraph (school at seven, two years in brace, quoted impact); paragraph beginning Confined to the house through final track-tryout paragraph."
+    },
+    {
+      "sourceId": "source-museum",
+      "citation": "U.S. Olympic & Paralympic Museum, Wilma Rudolph. Institutional identity and competition record only.",
+      "url": "https://usopm.org/wilma-rudolph/",
+      "locator": "Birth field23June1940; first Olympics1956aged16;1960medal results table. Incompatible age-eleven running and clinical narrative not adopted."
+    }
+  ],
+  "review": {}
+}

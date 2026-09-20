@@ -745,7 +745,7 @@
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was Bayard Rustin. He helped organize the March on Washington for Jobs and Freedom. Your life is not theirs.\n\nBut a piece of this story may still sit beside you. You are allowed to have uncertainty.",
+      "canonicalText": "His name was Bayard Rustin.\n\nHe helped organize the March on Washington for Jobs and Freedom.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to have uncertainty.",
       "requiredFactIds": [
         "fact-identity"
       ],

@@ -76,6 +76,8 @@ jobs:
         run: node --import tsx scripts/check-story-batch.ts docs/releases/wave-5-drafts-2026-09-20 9 --require-hashes
       - name: Verify the final-five editorial draft snapshot
         run: node --import tsx scripts/check-story-batch.ts docs/releases/wave-6-drafts-2026-09-20 5 --require-hashes
+      - name: Verify the new Bronte editorial repair snapshot
+        run: node --import tsx scripts/check-story-batch.ts docs/releases/remaining-story-review-2026-09-20/held-repairs 1 --require-hashes
       - run: npm run check-story-spec-migration
       - run: npm run check-story-artifact
       - run: npm run check-derived-output-retention

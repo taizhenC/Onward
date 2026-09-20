@@ -15,7 +15,7 @@ The deterministic figure-key order keeps difficult episodes visible.
 |---|---|---|
 | 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya live-verified September 15; Hurston's reframed version subsequently owner-approved and published; Coleman, Coltrane and Jones held for source/scene gaps |
-| 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Queued |
+| 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | Research and draft revision in progress September 19; new texts require source/craft checks and owner reading before publication |
 | 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
 | 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
 
@@ -166,3 +166,24 @@ records that distinct approval and snapshot-bound release. Six stories from
 set 3 are now published; Coleman, Coltrane and Jones remain held. The catalog
 contains 18 valid historical stories, with 32 stages still in the original
 queue (six held older rewrites, three set-3 holds and 23 later stages).
+
+## Set 4 continuation — September 19
+
+The owner requested the next nine-story wave using the same source-first
+process. Work starts from `ae2e62d`, after the reviewed Hurston release and
+PR #131's receipt/terminology corrections. Earlier source packets, production
+stories and the nine older held stages are outside this editing scope.
+
+Parallel research groups cover Lamarr/Lee/C. S. Lewis,
+Edmonia Lewis/Lindgren/Marshall, and McClintock/Nightingale/O'Connor. Primary
+material is reopened before drafting; seeded prose remains a research lead,
+never evidence. Every new text stays a draft with empty review metadata.
+Independent source and complete-story checks precede the exact-hash reading
+packet. Missing historical moments remain visible holds, not invented scenes.
+
+Each story and correction is kept in a focused commit under
+`taizhenC <tzhcheung@gmail.com>`, without co-author trailers. No recipe,
+matching/library release, production database operation or publication is
+included in this authoring wave. The 32 remaining stages now consist of nine
+older holds, nine stories in this set and fourteen in later sets. The last
+recorded production audit is still the September 15 release, not a new audit.

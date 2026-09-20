@@ -1,0 +1,900 @@
+{
+  "storySpecId": "lee:1929-1931-harvard-pivot:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "lee",
+  "stageId": "1929-1931-harvard-pivot",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 50,
+    "ageMax": 53,
+    "startDate": "1929-01-01",
+    "endDate": "1931-12-31",
+    "throughLine": "A woman's longstanding interest in legal medicine becomes support for teaching after a family loss; the causal link and lived moments remain unestablished. Historical-boundary and craft HOLD."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief"
+    ],
+    "contentNote": "Death of a brother and non-graphic reference to death investigation. No invented grief symptoms or family coercion."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Frances Glessner Lee was born 25 March 1878; her brother George died in January 1929, when she was fifty.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "Frances Glessner Lee opening paragraph; John George Macbeth Glessner final paragraph."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-brother",
+      "statement": "George contracted influenza during a visit to his daughter in Paris in December 1928; after improvement he developed appendicitis and pneumonia, and died in January 1929.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "John George Macbeth Glessner final paragraph."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-education",
+      "statement": "Both siblings were tutored at home; George subsequently attended Harvard.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "John George Macbeth Glessner paragraphs on tutors and graduation; Frances Glessner Lee opening paragraph."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-marriage",
+      "statement": "Lee married on 9 February 1898, before her twentieth birthday; had three children; and divorced in 1914.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "Frances Glessner Lee second and third paragraphs."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-parents",
+      "statement": "Lee's mother died in October 1932 and her father in January 1936, after her brother.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "Frances Macbeth Glessner and John Jacob Glessner final biographical paragraphs."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-friend",
+      "statement": "Lee's longstanding friendship with George Burgess Magrath grew from his friendship with her brother and encouraged her interest in legal medicine.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-tribute",
+          "scope": "bounded",
+          "locator": "Opening two paragraphs; family-journal excerpts evidence contact in 1894, not proof of thirty years of correspondence."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-prior",
+      "statement": "Before pursuing legal medicine, Lee had managed a house for returning soldiers and sailors and later sold antiques.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "Frances Glessner Lee paragraph beginning In 1938."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-gift",
+      "statement": "In her early fifties Lee funded a chair in legal medicine held by Magrath; source accounts differ between 1931 and 1932.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Introduction dates chair1932; Glessner House family biography dates1931. Exact year intentionally not asserted in prose."
+        },
+        {
+          "sourceId": "source-family",
+          "scope": "bounded",
+          "locator": "Frances Glessner Lee paragraph on Magrath and gift1931; conflicts with contemporary1934 report's1932."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-teaching",
+      "statement": "Magrath had taught a voluntary legal medicine course from 1907 and was recently appointed to the new chair by March 1932.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-chair",
+          "scope": "bounded",
+          "locator": "Opening paragraph; Countway retrospective paragraph beginning Teaching of legal medicine for earlier course."
+        },
+        {
+          "sourceId": "source-countway",
+          "scope": "bounded",
+          "locator": "Paragraph beginning Teaching of legal medicine at Harvard Medical School."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-field",
+      "statement": "Legal medicine teaching concerned applying medical expertise to law, including training capable experts; the new chair did not itself complete all the training its advocates sought.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-chair",
+          "scope": "bounded",
+          "locator": "Opening and final paragraphs."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-department",
+      "statement": "Harvard's Department of Legal Medicine was established in 1939 under Alan Moritz, funded by Lee's endowment and the Rockefeller Foundation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-countway",
+          "scope": "bounded",
+          "locator": "Paragraphs 2 and 5."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-desire",
+      "statement": "In her 1934 dedication speech Lee said she had long hoped to make a contribution of significant value to the community.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "First paragraph of Lee's speech."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-gradual",
+      "statement": "At that dedication she described a larger department as a gradual undertaking, only a small part of which was then under way.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Second paragraph of Lee's speech."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-library",
+      "statement": "Lee presented a thousand-volume legal medicine library in May 1934, named for Magrath, whom she called her old friend.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Introduction, last two paragraphs of Lee's speech."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-collecting",
+      "statement": "Conant thanked Lee for carefully collecting the library's actual books, many rare and valuable.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Conant paragraph beginning We are indebted to you."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-acceptance",
+      "statement": "Conant accepted the library on behalf of the university and called it a step toward a larger department.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-speech",
+          "scope": "bounded",
+          "locator": "Opening and second paragraphs of Conant's speech."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Frances Glessner Lee later made miniature scenes of unexplained deaths used as teaching aids for investigators.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-countway",
+          "scope": "bounded",
+          "locator": "Paragraph on Lee and the Nutshell Studies; paragraph on police training."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Frances Glessner Lee",
+      "aliases": [
+        "Lee"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "Her brother died when she was fifty. He had become ill while visiting his daughter. For a time his health had improved. Then other illnesses followed. She and her brother had both been taught at home. He had gone on to college. Through his circle, she had come to know a physician who studied unexplained deaths. That friendship had lasted.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-brother",
+        "fact-education",
+        "fact-friend"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-brother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-brother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-brother"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-education"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-education"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-friend"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-friend"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2: contextual opening only. The brother died in January, not the seed's May; no evidence places Lee at his death, his desk, or in a room with his possessions. No estate amount or inheritance-driven decision is asserted. Metadata retains the requested1929-1931 envelope provisionally, not proof that every early chair event occurred before its end."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She had married before she turned twenty. She had three children, and the marriage had ended years before her brother's death. Her mother and father were still alive. Her earlier work included managing a house for returning servicemen. She had also sold antiques. The physician's work had drawn her interest toward a different field. It concerned the questions that medicine could answer for the law. She was interested in that work.",
+      "requiredFactIds": [
+        "fact-marriage",
+        "fact-age",
+        "fact-parents",
+        "fact-prior",
+        "fact-friend",
+        "fact-field"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-marriage"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-marriage",
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-parents"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-prior"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-prior"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-friend"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-field"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-friend"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2: these are bounded biographical circumstances, not an attested lowest moment. Exclusion from college, an unwanted marriage, paternal confrontation, solitary despair and a brother's inheritance as sudden liberation are not established by sources read. Do not render this contextual passage as a cleared dark scene."
+    },
+    {
+      "role": "response",
+      "canonicalText": "In her early fifties, she gave money to support a medical teaching post. The physician she knew held it. He had already spent years teaching the subject. The new position supported work in a field that connected medicine and law. This was a gift to teaching. It was not yet a complete new department.",
+      "requiredFactIds": [
+        "fact-gift",
+        "fact-teaching",
+        "fact-field",
+        "fact-department"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gift"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gift"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-field",
+            "fact-gift"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gift"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-department"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD historical boundary and R2: donation and appointment are attested, but no source read supplies her letter, visit, signing occasion or initial decision. Contemporary1934Crimson says1932, institutional biography says1931. Omit exact year and amount in prose; the candidate cannot clear its1929-1931 boundary until reconciled. This is not a claim that philanthropy was her first response to bereavement."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The new post was only part of a larger undertaking. The subject had been taught before it existed. Students still needed training in the legal side of medical work. Advocates wanted both basic instruction and further study for doctors. The physician argued for trained expertise. A position had been created. The wider work remained.",
+      "requiredFactIds": [
+        "fact-field",
+        "fact-department",
+        "fact-teaching"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-field",
+            "fact-department"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-field"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-field"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-field"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-field",
+            "fact-department"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R3: this is institutional context, not documented personal struggle or a failed effort. No first rejection, two-year negotiation, four trips, raised donation offer, angry meeting or patient reply has been verified. The March1932 editorial is contemporary evidence of an incompletely developed training program, not proof of Lee's experience during1929-1931."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The physician took up the new teaching position. He was no newcomer to the subject. He had taught it for many years. Her money had helped establish the post he now held. The work was continuing through a university appointment. The post existed.",
+      "requiredFactIds": [
+        "fact-teaching",
+        "fact-gift"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gift"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gift",
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-teaching"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "HOLD R2: appointment is a bounded institutional change, not a source-supported encounter showing Lee's body, perception and next act. No book crate, gloves, empty shelves or arrival scene is supplied. Dates1931/1932 remain unresolved; do not treat this as a cleared turning moment within the retained episode."
+    },
+    {
+      "role": "became",
+      "canonicalText": "A few years later, she presented a library devoted to the same field. She had carefully collected its books. There were a thousand volumes. At the gathering, she said she had long wanted to be useful to the wider community. She spoke of a larger undertaking that would have to grow gradually. Only part of it was under way. The university's president accepted the gift. The library bore her friend's name.",
+      "requiredFactIds": [
+        "fact-library",
+        "fact-collecting",
+        "fact-desire",
+        "fact-gradual",
+        "fact-acceptance"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-library"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-collecting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-library"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-desire"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gradual"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-gradual"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-acceptance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-library"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "This later consequence is the documented24May1934dedication, not an invented1931opening. Both speeches were printed the next day. A real later speaking/presentation moment does not cure missing early scene/low/response/turn. The candidate remains on HOLD; the episode has not silently been recentered on1934."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Frances Glessner Lee.\n\nShe made miniature death scenes used to train investigators.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to turn your whole life into one explanation.\n\nAn interest can still be yours.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Later identification only. No claim she invented all forensic science. Reader permission supplies neither a prescription nor a promise."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "HOLD: seven documentary passages are not a cleared seven-part story. Early physical moments, personal low point, response sequence and failed effort are not established.",
+    "No invented inherited desk, unopened condolence letter, reply, visit, negotiation, offer escalation, book crates, gloves or dialogue.",
+    "Do not equate the early chair with the Department of Legal Medicine, established1939.",
+    "The retained1929-1931episode boundary is provisional because appointment/gift dating differs across sources."
+  ],
+  "avoidRules": [
+    "Keep the subject anonymous until the bridge.",
+    "No inheritance-causes-liberation claim or unverified childhood dream.",
+    "No equivalence, advice or guaranteed late success for the reader."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-family",
+      "citation": "Glessner House, Glessner Family. Institutional family history, not contemporaneous narrative.",
+      "url": "https://www.glessnerhouse.org/glessner-family",
+      "locator": "John George Macbeth Glessner: final paragraph; Frances Glessner Lee: opening five paragraphs; John Jacob and Frances Macbeth death dates."
+    },
+    {
+      "sourceId": "source-speech",
+      "citation": "The Harvard Crimson, Mrs. Lee and President Conant Are Speakers at Opening of Library, 25 May 1934. Contemporary report reproducing both speeches.",
+      "url": "https://www.thecrimson.com/article/1934/5/25/mrs-lee-and-president-conant-are/",
+      "locator": "Introductory paragraph; Lee's four quoted paragraphs; Conant's acceptance and collecting paragraphs. Read entire article."
+    },
+    {
+      "sourceId": "source-chair",
+      "citation": "The Harvard Crimson, Medicine and Law, 2 March 1932. Contemporary editorial reporting Magrath's recent appointment and lectures.",
+      "url": "https://www.thecrimson.com/article/1932/3/2/medicine-and-law-pin-concluding-his/",
+      "locator": "First paragraph and final paragraph. Read entire editorial."
+    },
+    {
+      "sourceId": "source-countway",
+      "citation": "Amber LaFountain, HMS Department of Legal Medicine Records Open to Research!, Countway Library, 6 January 2025. Repository description and retrospective chronology.",
+      "url": "https://countway.harvard.edu/news/hms-department-legal-medicine-records-open-research",
+      "locator": "Paragraphs 2-7: teaching before department, Lee's gifts, 1939 establishment, departmental records."
+    },
+    {
+      "sourceId": "source-tribute",
+      "citation": "Glessner House, George Burgess Magrath: A Tribute, 11 December 2018. Institutional article reproducing family journal, 1894 letter and 1940 memorial excerpts.",
+      "url": "https://glessnerhouse.blogspot.com/2018/12/george-burgess-magrath-tribute.html",
+      "locator": "Opening friendship account; June 1894 journal excerpts; 1940 memorial's appointment list. Original manuscripts and full memorial not independently read."
+    }
+  ],
+  "review": {}
+}

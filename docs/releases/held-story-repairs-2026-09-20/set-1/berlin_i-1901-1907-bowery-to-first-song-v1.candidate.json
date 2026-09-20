@@ -351,7 +351,7 @@
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was Irving Berlin.\n\nHe wrote songs for singers, musical theatre, and films.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to value a beginning that brought little reward.",
+      "canonicalText": "His name was Irving Berlin.\n\nHe wrote songs for singers, musical theatre, and films.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to value a beginning that brought little reward.\n\nYou are allowed to need other people.",
       "requiredFactIds": [
         "fact-legacy"
       ],
@@ -395,6 +395,13 @@
         },
         {
           "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
           "treatment": "reader_permission",
           "factIds": [],
           "interpretationIds": [],

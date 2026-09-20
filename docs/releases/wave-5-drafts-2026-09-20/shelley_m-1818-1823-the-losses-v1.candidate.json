@@ -28,7 +28,7 @@
         {
           "sourceId": "birth",
           "scope": "bounded",
-          "locator": "Vol. I, p. 4, paragraph beginning 'On 30th August 1797'; September 1823 letter, vol. II p. 95, birthday paragraph."
+          "locator": "Vol. I, p. 4, sentence beginning 'Mary Wollstonecraft Godwin was born'; September 1823 letter, vol. II p. 95, birthday paragraph."
         }
       ],
       "eventOrder": 1,
@@ -224,7 +224,7 @@
         {
           "sourceId": "feb23",
           "scope": "bounded",
-          "locator": "Pp. 65–66, Sir Timothy's letter, paragraphs beginning 'A very small part' and 'I have only to repeat'."
+          "locator": "Pp. 65–66, Sir Timothy's letter, paragraphs beginning 'Mrs. Shelley was, I have been told' and 'As to the child'."
         }
       ],
       "eventOrder": 4,
@@ -238,7 +238,7 @@
         {
           "sourceId": "feb23",
           "scope": "bounded",
-          "locator": "Pp. 67–68, Mary's reply, paragraphs beginning 'When I wrote to Sir Timothy' through 'I shall never consent'."
+          "locator": "Pp. 67–68, Mary's reply, paragraphs beginning 'It appears to me' through 'As a matter of feeling, I would never consent'."
         }
       ],
       "eventOrder": 4,
@@ -678,7 +678,7 @@
     },
     {
       "role": "response",
-      "canonicalText": "She wrote to her friend about the misery she was struggling to contain. She did not keep the letter to the house and the money. She let another person read how hard this moment was. Her boy was still asleep as she wrote. The words were not a claim that she could manage everything. She asked for pity. Then she wrote goodnight and said she would finish when other people were around. She wanted to continue in a different mood. She said she would go and look at the stars. She stopped at goodnight.",
+      "canonicalText": "She wrote to her friend about the misery she was struggling to contain. She did not keep the letter to the house and the money. She put that pain into words for someone she knew. Her boy was still asleep as she wrote. She apologized to her friend for writing about her own suffering. She asked God for pity. Then she wrote goodnight and said she would finish when other people were around. She wanted to continue in a different mood. She said she would go and look at the stars. She wrote goodnight twice.",
       "requiredFactIds": [
         "f08",
         "f04",
@@ -1045,7 +1045,7 @@
     },
     {
       "role": "became",
-      "canonicalText": "She found small, neat lodgings and moved there with her son. The next evening, he was in bed while she wrote to another friend. She sat by a fire because the weather was cold. The advance had lifted a weight of worry from her. She was twenty-six now, with a place of her own and her child still beside her. Coming home had not ended her sadness. She had been trying to keep her spirits up while staying with her father. Until she was settled, she had lacked the spirit to write this letter. Now she could describe the rooms and ask after the people she missed. Her little boy was in bed.",
+      "canonicalText": "She found small, neat lodgings and moved there with her son. The next day, he was in bed while she wrote to another friend. She sat by a fire because the weather was cold. The advance had lifted a weight of worry from her. She was twenty-six now, with a place of her own and her child still beside her. Coming home had not ended her sadness. She had been trying to keep her spirits up while staying with her father. Until she was settled, she had lacked the spirit to write this letter. Now she could describe the rooms and ask after the people she missed. Her little boy was in bed.",
       "requiredFactIds": [
         "f20",
         "f21",

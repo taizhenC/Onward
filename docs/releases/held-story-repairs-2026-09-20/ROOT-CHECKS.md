@@ -55,3 +55,27 @@ and `check-source-transparency` suites all passed locally. These are structural
 and safety-contract checks using synthetic/in-memory fixtures, not a provider
 evaluation or production deployment. Final exact-file batch checks are recorded
 separately after all sets and cross-review corrections are complete.
+
+## Later source checks and superseded hashes
+
+The initial table above is a historical check receipt, not the final target
+index. In particular, Rachmaninoff's bytes changed after that check: the orphan
+relative date in a fact became an explicit date, the scope note was clarified,
+and the obsolete serious-illness flag was removed. Use `review-targets.json`
+and the final set reports for current hashes; no earlier approval transfers.
+
+Root read every revised canonical passage and research decision. Independent
+agents then cross-read sets they did not author. Their reports identify the
+actual primary or mediated-primary passages reopened and the limits of access.
+
+- Christie: root read the [estate work record](https://www.agathachristie.com/stories/the-mystery-of-the-blue-train) and the March section of the [2024 reading guide](https://www.agathachristie.com/news/2024/read-christie-2024). The final narrow account excludes the uncollated non-owning memoir copy. Root inspected the later place-neutral opening and obsolete-bereavement metadata correction and reran the nine-story structural batch. The attempted guide-PDF screenshot did not provide a viewable image; no visual PDF inspection is claimed by root.
+- Rudolph: root fetched and read the relevant substantive [publisher excerpt](https://www.uapress.com/2015/06/23/foxes-not-oxes-an-excerpt-from-a-spectacular-leap/), from brace distress through family permission, bench seasons and the track invitation. The author independently read the whole excerpt. Quoted memoir material and scholarly narration remain distinct; the old unreliable transcript dependency is gone. School-grade dates and matching scope remain unresolved.
+- Coleman: root checked the installed identity, which already says 1892–1926. A conflicting 1893 header in the source packet is not an installed-data error. No lifespan mutation was needed or made.
+- Yeats: root read the owning Clemson issue's cover and contents, which establish the article attribution but not its full argument. The source author and cross-reviewer separately inspected bounded memoir excerpts within the scholarly article. Neither the contents page nor the shorter format is represented as full memoir verification.
+
+The major concrete cross-review corrections were Lewis's objection to praise
+(not a claim that her bust was bad), Lindgren's unsupported proposal-to-move
+interval, Poitier's missing source locators, obsolete content flags, Christie's
+opening-place reveal, and Yeats's remembered sequence/direction. The final
+reports, hashes and verification receipt—not this running log—define the
+review packet after corrections.

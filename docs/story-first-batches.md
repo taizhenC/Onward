@@ -6,19 +6,19 @@ are already published; see [their release record](releases/2026-09-05-story-firs
 
 The table preserves the original forty-one-stage queue. Three stages in set 2,
 six in set 3 and four in set 4 have now been published, leaving twenty-eight:
-six held set-2 rewrites, three held set-3 stories, five held set-4 stories and
-fourteen later stages. The set-4 production release and complete live-reader
+six set-2 stages, three held set-3 stories, five held set-4 stories and
+fourteen later stages now drafted for review. The set-4 production release and complete live-reader
 checks confirmed 22 valid published historical stories, zero quarantined.
 See the [set-4 publication record](releases/2026-09-19-wave-4-publication.md).
 The deterministic figure-key order keeps difficult episodes visible.
 
 | Set | Figures | State |
 |---|---|---|
-| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; six others rewritten but held for source/scene completeness |
+| 2 | Andersen, Banting, Irving Berlin, Charlotte Brontë, Octavia Butler, Carver, Ray Charles, Julia Child, Agatha Christie | Andersen, Banting and Child live-verified September 10; new Brontë repair supports owner reading September 20; five others remain held |
 | 3 | Bessie Coleman, Coltrane, Faraday, Ella Fitzgerald, Katharine Graham, Langston Hughes, Hurston, James Earl Jones, Kovalevskaya | Faraday, Fitzgerald, Graham, Hughes and Kovalevskaya live-verified September 15; Hurston's reframed version subsequently owner-approved and published; Coleman, Coltrane and Jones held for source/scene gaps |
 | 4 | Lamarr, Frances Glessner Lee, C. S. Lewis, Edmonia Lewis, Lindgren, Barry Marshall, McClintock, Nightingale, O'Connor | C. S. Lewis, Marshall, Nightingale and O'Connor owner-approved, published and complete-live-reader verified September 19 local / September 20 UTC; five others held |
-| 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Queued |
-| 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Queued — final five |
+| 5 | Owens, Poitier, Rachmaninoff, Fred Rogers, Rudolph, Rustin, Sanders, Mary Shelley, Nina Simone | Nine drafted and independently checked; Shelley has a supported arc for owner reading, eight remain held; none approved or published |
+| 6 | Anne Sullivan, Tallchief, Vera Wang, Bill Wilson, Yeats | Final five drafted and independently checked; all remain incomplete source/craft holds; none approved or published |
 
 ## Per-set handoff
 
@@ -35,9 +35,10 @@ The deterministic figure-key order keeps difficult episodes visible.
 5. Obtain the owner's review before recording approval or publishing a set.
    Publication follows the existing snapshot-bound production workflow.
 
-Older local editorial material is in the ignored
-`docs/research/story-specs/wave-2/` through `wave-6/` workspaces. Review packets
-are tracked separately under `docs/releases/`, including the set-4 packet below.
+Earlier local working material, where present, lives in ignored
+`docs/research/story-specs/` workspaces. Authoritative review packets are tracked
+separately under `docs/releases/`; the new wave-5 and wave-6 packets are linked
+from the [all-remaining review index](releases/remaining-story-review-2026-09-20/README.md).
 Earlier artifacts and their publication receipts are preserved unchanged.
 
 This work does not silently rewrite `lib/figures-data.ts`, matching-stage
@@ -225,6 +226,32 @@ The post-canary audit reconfirmed 22 valid stories and zero quarantined at
 The [publication record](releases/2026-09-19-wave-4-publication.md) records this
 distinct approval and release follow-up.
 
-Twenty-eight stages remain: six set-2 holds, three set-3 holds, five set-4
+At that publication checkpoint, twenty-eight stages remained: six set-2 holds, three set-3 holds, five set-4
 holds and fourteen later stages. The held set-4 stories are Lamarr, Frances
-Glessner Lee, Edmonia Lewis, Lindgren and McClintock. Set 5 has not begun.
+Glessner Lee, Edmonia Lewis, Lindgren and McClintock. Set 5 had not yet begun.
+
+## Remaining-story authoring pass — September 20 UTC
+
+The owner asked to finish the remaining stories for review on returning. The
+[single review index](releases/remaining-story-review-2026-09-20/README.md) covers
+all 28 unpublished stages with exact targets and specific source/craft decisions.
+Sets 5 and 6 now contain fourteen new tracked drafts, 98 passages and 5,303
+words, with source notes, independent checks and hash-bound reading copies.
+Older held stages received fresh bounded primary-source checks rather than
+being silently treated as finished or copied into production.
+
+The evidence does not yet support a finished story for every remaining stage.
+Shelley's letter-led story and a new 461-word Brontë letter-opening repair are
+supported for owner reading, with narrowed episodes, age qualifications and
+Brontë's short-form reading decision disclosed. That leaves 26 substantive
+holds, not 28 completed stories. Dispositions are recorded individually in the
+index. Incomplete candidates remain explicit
+HOLDs; seven labeled passages and clean validator results are not clearance.
+
+No owner approval is recorded for these new texts. No publication, production,
+matching, recipe, schema, earlier snapshot or saved reader artifact changed.
+The current production count remains the last verified 22 historical stories;
+this authoring pass did not perform a new database audit. Commits use only the
+owner's identity, no co-author trailers, and small focused changes. A later
+release must select eligible exact texts after owner review, never the whole
+remaining queue by default.

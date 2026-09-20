@@ -4,7 +4,7 @@ Prepared 2026-09-19. This is an editorial research record, not publication appro
 
 ## Disposition
 
-All three candidates are **HOLD**. Their seven canonical passages are linked sentence by sentence, but the available record does not justify calling all seven passages full recipe-compliant scenes. Lewis is 617 words, Lindgren 362, Marshall 600. These are below the 700–950-word target; no words were added simply to meet a quota. In particular, Lindgren is a short evidence-limited replacement draft, not a completed long-form story. A mechanical pass does not remove the source and craft holds below.
+Lewis and Lindgren remain **HOLD** for the source-and-arc gaps below. Marshall's earlier single-moment HOLD is resolved by narrowing the turn to the encouragement in the remembered McGechie encounter; subsequent travel arrangements are visibly compressed afterward. Its reading quality and final independent review remain unapproved. Their seven canonical passages are linked sentence by sentence. Lewis is 621 words, Lindgren 362, Marshall 596. These are below the 700–950-word target; no words were added simply to meet a quota. In particular, Lindgren is a short evidence-limited replacement draft, not a completed long-form story. A mechanical pass does not remove source and craft limits.
 
 ## Edmonia Lewis
 
@@ -28,6 +28,8 @@ All three candidates are **HOLD**. Their seven canonical passages are linked sen
 | `work`, `legacy` | Museum More Information paragraph 3 and object fields | Sculpture occupation and later sale/travel context. No career trophy list in the drama. |
 
 The primary memoir supports waiting and denial, but not a discrete, precisely located first response. The candidate's scene/dark/response therefore remain HOLD. Its low point is anticipated proceedings; the subsequent attack is compressed in struggle. It does not stage an unrecorded recovery-room decision. Dismissal is a real turn, although it largely occurs through the lawyer's work. The failed effort is that maintaining innocence did not prevent injury or proceedings; a reviewer may still find this less personally active than the recipe requires.
+
+Independent reviewer A identified a chronology conflict which I reopened and verified: Langston p.172 expressly places the events in winter term1859–60. The museum dates the case1862. The draft retains the museum's1862 episode and approximate age, but the memoir is not an exact-date authority. Contemporary college/court records must resolve this conflict before clearance. The source and scene notes now disclose it. Another review correction removed an unestablished order between first use of crutches and arrest: the canonical sentence now dates arrest within days of the assault, without claiming it followed her renewed mobility.
 
 The contemporary college record for the later theft/burglary allegations and departure was not accessed. The candidate therefore does not say she was expelled because the acquittal failed, does not clear every allegation by one verdict, and does not repeat the seeded motive about a college choosing convenience over her. The retained stage ID is a catalog identifier, not endorsement of its “expelled” label. The candidate ends in 1864, age range 17–20, versus installed 17–21 and 1862–1866 label.
 
@@ -88,18 +90,18 @@ Search leads mention surviving letters in biographies and the Astrid Lindgren ar
 | `finding` | Original 1985 abstract | Acute illness and gastritis with subsequent resolution; no demonstrated self-induced ulcer. |
 | `legacy` | Nobel prize motivation | Joint contribution, not lone-genius history. |
 
-The encounter with McGechie supplies an actual small response. The letter is a concrete object and the emotional low point is attributed memory. The struggle explicitly jumps back to earlier research so it does not smuggle that work after the rejection. The turn is real practical help, but contact, acceptance and grant were not all documented as one continuous conversation. **HOLD** for that single-moment requirement and reading quality; the source notes say so. The repeated “talk” ending is intentional but is a reading concern if it feels schematic.
+The encounter with McGechie supplies an actual small response. The letter is a concrete object and the emotional low point is attributed memory. The struggle explicitly jumps back to earlier research so it does not smuggle that work after the rejection. Following root and independent reviewer A's source check, the turn was narrowed to encouragement during the remembered conversation. It does not promise that the research would prove correct. Contact, acceptance and grant are later compressed developments, not one continuous encounter. The 2008 interview's phone-call account and the autobiography's supplied contact details are not fused into a single action. This resolves the previously stated single-moment HOLD; underlength and final reading judgment remain qualifications, not fabricated approval.
 
 The experiment is a short consequence passage, not the response offered as a model. It contains no administration method, amount, culture conditions, timing schedule or treatment prescription. It does not celebrate self-harm, claim that all doubters were fools, promise inevitable vindication, or infer that rejection proves correctness. The episode ends with another controlled study to do, not a prize.
 
 ## Verification and frozen candidate bytes
 
-Each candidate ran `node --import tsx scripts/drafts/validate-candidate.ts <candidate> --sentences`: strict shape, draft validation and in-memory publication simulation passed with zero errors and zero warnings. Simulation does not save reviewer identities. A separate read-only check using the repository's sentence splitter and word counter passed mean ≤16, longest ≤28, last sentence shorter than the maximum in each passage, and final bridge line ≤12 words. Parent batch verification owns composition/replay and the final manifest; these are not independently claimed here.
+Each candidate ran `node --import tsx scripts/drafts/validate-candidate.ts <candidate> --sentences`: strict shape, draft validation and in-memory publication simulation passed with zero errors and zero warnings. Marshall was rerun after its final turn revision. Simulation does not save reviewer identities. A read-only `node --import tsx scripts/check-story-batch.ts docs/releases/wave-4-drafts-2026-09-19 9` pass independently verified canonical composition, serialization/replay, draft and simulated publication validation, and rhythm at these group-B hashes. Mean ≤16, longest ≤28, last sentence shorter than the maximum in each passage, and final bridge line ≤12 words all passed. Parent owns the final batch freeze and manifest.
 
 | File | Words | SHA-256 |
 | --- | ---: | --- |
-| `lewis_e-1862-1866-accused-acquitted-expelled-v1.candidate.json` | 617 | `8cc5cff2c5d3cc50386e770fec9a3569769eb5d04a532e6cfd852f2d8d94039c` |
+| `lewis_e-1862-1866-accused-acquitted-expelled-v1.candidate.json` | 621 | `fc1355e6be443ec3f082f6e69fc6b94e40d53b0b4cd3b6462cd5343a1ba26f45` |
 | `lindgren-1926-1929-the-secret-son-v1.candidate.json` | 362 | `bebeef915a4bdd8fa8b642af811e781c843a97dc326e7caa3b7c4c070553333c` |
-| `marshall-1982-1984-drinking-the-proof-v1.candidate.json` | 600 | `e76f790de3a4f6f06855ffe58be74abcb84138457f1cd322ec5d89666cae85da` |
+| `marshall-1982-1984-drinking-the-proof-v1.candidate.json` | 596 | `db2b95b04e29af652e6ec507b0a55e39e673ba7bc5ca237fae4d2cab3d9966da` |
 
 No primary-source access gap has been counted as a pass. No human historical, tone or content approval is represented. The research skill required a bounded background research pass; the Marshall source agent finished without editing files. The PDF skill was read before original newspaper/letter scan inspection; generated review images remained temporary, and no PDF artifact was authored for delivery.

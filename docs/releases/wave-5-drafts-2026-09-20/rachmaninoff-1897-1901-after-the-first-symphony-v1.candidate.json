@@ -1,0 +1,970 @@
+{
+  "storySpecId": "rachmaninoff:1897-1901-after-the-first-symphony:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "rachmaninoff",
+  "stageId": "1897-1901-after-the-first-symphony",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 27,
+    "ageMax": 28,
+    "startDate": "1900-06-27",
+    "endDate": "1901-11",
+    "throughLine": "During his interrupted return to composition, he asked a librettist for time and received it; later letters show real new music alongside unfinished work and renewed doubts. A limited permission to keep trying, not a claim that one reply or treatment restored him."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness"
+    ],
+    "contentNote": "Creative incapacity and distress, without diagnosis, medical advice, treatment instructions, or a miraculous cure. HOLD for Russian transcription/translation review and strict situated-moment craft review. Narrows installed1897–1901 ages23–28 to1900–01 ages27–28; matching unchanged. Scene and dark/response use separate letters written the same day; their exact order or continuous concurrence is not established. Underlength without invented scenes. Owner must assess the letter-led emphasis in place of the installed public-humiliation/Dahl-cure shape."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Born April1,1873, he was27 in June1900 and28 later in1901.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-loc",
+          "locator": "Biographical Note, birth entry; ages calculated against dated letters.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-earlier",
+      "statement": "In1897 he described disliking his symphony after its first rehearsal despite still loving it; he considered poor performance a possible cause, not a settled verdict, and contemplated revisiting it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-110",
+          "locator": "Paragraphs2–7; no claim that newspaper criticism alone caused his later inability.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-lodging",
+      "statement": "On June14/27,1900, he wrote that he had arrived on the11th, now knew his room and had obtained paper and ink amid household disorder and heat; his room was shut.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-157",
+          "locator": "First paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-cost",
+      "statement": "He regretted this journey and said it had cost more than expected; he would not make a further planned trip.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-157",
+          "locator": "First paragraph's final sentence and second paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-arrival",
+      "statement": "That same day he answered a letter from Modest Tchaikovsky that had been forwarded from Crimea to Italy and received that day.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-158",
+          "locator": "Opening paragraph before 'Since I visited you in Klin'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-block",
+      "statement": "He wrote that in two years he had composed only one song, apparently lost the ability to compose, and was intent on regaining it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-158",
+          "locator": "First paragraph, from 'С тех пор' to paragraph end.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-request",
+      "statement": "He wanted to try writing Francesca again that summer and asked the librettist to defer an answer to another prospective composer until September; if nothing resulted again he would give up the subject.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-158",
+          "locator": "Second paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-fallback",
+      "statement": "If delay was impossible, he offered to return the libretto immediately, unwilling to risk leaving its author without a composer again.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-158",
+          "locator": "Third paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-effort",
+      "statement": "In a subsequent letter he thanked Morozov for encouraging advice but still regretted the journey and found noise around his separate room; he planned to stay and work regularly.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-159",
+          "locator": "Paragraphs1–4, through 'Хочу продолжать аккуратно заниматься'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-permission",
+      "statement": "By July5/18 he had received permission to keep the libretto for the time being; he wrote thanks and repeated his promise to answer in September.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-160",
+          "locator": "Sole substantive paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-suite",
+      "statement": "In February1901 he sent three movements of a new suite for two pianos to Goldenweiser and asked him to rehearse with him; the visit was proposed, not confirmed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-174",
+          "locator": "Sole substantive paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-unfinished",
+      "statement": "The next day he corrected a report that his concerto was complete; he withdrew from a scheduled concert because it would not be ready.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-175",
+          "locator": "Sole substantive paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-review",
+      "statement": "In April1901 he sent two concerto movements to Goldenweiser for review, while doubting the first movement would be finished by Saturday.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-178",
+          "locator": "Both substantive paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-doubt",
+      "statement": "In October1901 he played through the first movement and agreed with Morozov's structural criticism; he reported despair five days before a performance.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-186",
+          "locator": "Both substantive paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Rachmaninoff was a composer and pianist whose works include the Second Piano Concerto.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-loc",
+          "locator": "Collection Summary and Biographical Note, circa1900 entry.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "event"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Sergei Rachmaninoff",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At twenty-seven, he had finally found paper and ink in the house where he was staying. The move into his room had been confused and disorderly. People were cleaning and moving things around. There was dust and heat.\n\nHis room was shut while he wrote to a friend. He regretted making this journey instead of travelling with him. It had also cost more than he expected. A further trip would have to be abandoned. For now, he had a room.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-lodging",
+        "fact-cost"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-lodging"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lodging"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lodging"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lodging"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lodging"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lodging"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Contemporary letter157 supplies shut room, paper, ink, household disturbance and heat. Static state only: no witnessed locking gesture. No piano, posture, lamp, hour, or bodily action invented."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "That day, he also answered a letter that had followed him from an earlier address. Its writer had supplied the words for an opera. The composer had not supplied the music.\n\nHe described two years in which he had written only one song. He thought he had lost the ability to compose. Recovering it occupied his thoughts. He still wanted to try the opera again that summer. He could not promise that it would work.",
+      "requiredFactIds": [
+        "fact-arrival",
+        "fact-request",
+        "fact-block",
+        "fact-fallback"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-block"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-block"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-block"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request",
+            "fact-fallback"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Different same-day letter158, explicitly not fused into letter157's room or continuous writing session. Emotional low is his contemporary self-report, not a retrospectively imposed diagnosis."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He asked the writer for more time. Could the decision about another composer wait until he came home? He offered a deadline later that year. If he failed again, he would relinquish the subject.\n\nHe also offered to return the text at once if waiting was impossible. He did not want its author left without anyone to set it to music. The request left room for refusal.",
+      "requiredFactIds": [
+        "fact-request",
+        "fact-fallback"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fallback"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fallback"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fallback"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The indirect question is a paraphrase, not quoted dialogue. Specific month is kept out of anonymous prose. No claim that he had already finished a new passage or found relief."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The difficulty reached back before this journey. An earlier orchestral work had disappointed him when he heard it rehearsed. He had loved the music he wrote. What he heard did not match that attachment. He considered faults in the performance, but his explanation was not settled.\n\nAfter the request for more time, he was still writing about trouble working in his lodging. Noise surrounded the room he had to himself. A friend's letter encouraged him, and he wrote back with thanks. He planned to stay and work regularly. The wish to work was still there.",
+      "requiredFactIds": [
+        "fact-earlier",
+        "fact-block",
+        "fact-effort"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-earlier",
+            "fact-block"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-earlier"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Honest compression: first paragraph explicitly looks back to1897; second returns to June22/July5,1900 before the permission acknowledgment. Failed work/rehearsal and continuing difficulty are documented, but no new aborted session is invented."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The writer agreed to let him keep the opera text for the time being. He answered with thanks. He repeated his promise to give an answer later that year.\n\nHe had not promised finished music. But the text had not been taken away from him. He had been given more time with it.",
+      "requiredFactIds": [
+        "fact-permission",
+        "fact-request"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request",
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-permission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded practical change documented by July5/18 thanks letter. HOLD for exact situated receipt scene: arrival time, room and immediate bodily response unknown. Permission is not a cure, restored ability, or the cause of later success."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Months later, he sent a friend three movements of new music for two pianos. He asked his friend to play it with him and suggested a time to meet. There was work to share again.\n\nThe following day, he corrected someone who thought another large piece was already finished. It was not. He withdrew from a concert because he could not have it ready in time. Later, he sent two movements to a colleague and asked him to look them over. Another movement still needed work.\n\nEven near a performance, he could be shaken by criticism of what he had written. He played through a passage, agreed there was a problem, and wrote of his despair. New music and uncertainty existed together.",
+      "requiredFactIds": [
+        "fact-suite",
+        "fact-unfinished",
+        "fact-review",
+        "fact-doubt"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-suite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-suite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-suite"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-unfinished"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-unfinished"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-unfinished"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-review"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-review"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-doubt"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-doubt"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-suite",
+            "fact-doubt"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Compressed1901 correspondence. Proposed rehearsal is not narrated as completed. Explicit deadline failure prevents an effortless recovery arc. No claim the1900 opera text became the Second Concerto."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Sergei Rachmaninoff.\n\nHe became a celebrated pianist and composer, known for works including his Second Piano Concerto.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to ask for time without promising a breakthrough. Your uncertainty does not make the request dishonest.",
+      "requiredFactIds": [
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity and work title appear only here; permission does not prescribe treatment or promise a creative recovery."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented piano-room scene, physical collapse, therapy dialogue, or private realization.",
+    "Same-day letters are separate documents; do not assume they were written in one uninterrupted sitting.",
+    "No clinical diagnosis or claim that a particular treatment guarantees restored creativity.",
+    "Do not replace the1873 birth date with an erroneous age in secondary concert notes."
+  ],
+  "avoidRules": [
+    "Do not say he wrote literally nothing for three years; his June1900 letter explicitly excepts a song.",
+    "Do not assign a drunken state to the first-symphony conductor without direct evidence.",
+    "Do not claim the1900 libretto extension caused the later concerto.",
+    "Do not imply the opera and concerto are the same work.",
+    "Do not claim the Senar transcription is a facsimile or that unavailable manuscript originals were inspected."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-157",
+      "citation": "Sergei Rachmaninoff to Nikita Morozov, June14/27,1900, letter157; contemporary Russian correspondence transcribed from Literary Heritage (Moscow,1978).",
+      "url": "https://senar.ru/letters/157",
+      "locator": "First paragraph, arrival and room/paper/ink; second paragraph, cost of journey."
+    },
+    {
+      "sourceId": "source-158",
+      "citation": "Rachmaninoff to Modest Tchaikovsky, June14/27,1900, letter158; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/158",
+      "locator": "Opening through conditional request to retain Francesca libretto until September."
+    },
+    {
+      "sourceId": "source-110",
+      "citation": "Rachmaninoff to Alexander Zatayevich, May6–7,1897 Old Style, letter110; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/110",
+      "locator": "Paragraphs2–7: dissatisfaction at rehearsal, possible poor execution, intention to revisit the symphony."
+    },
+    {
+      "sourceId": "source-159",
+      "citation": "Rachmaninoff to Nikita Morozov, June22/July5,1900, letter159; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/159",
+      "locator": "Paragraphs1–4: encouragement from letter, noisy lodging, intention to continue regular work."
+    },
+    {
+      "sourceId": "source-160",
+      "citation": "Rachmaninoff to Modest Tchaikovsky, July5/18,1900, letter160; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/160",
+      "locator": "Sole substantive paragraph: thanks for permission to retain libretto and promise of September answer."
+    },
+    {
+      "sourceId": "source-174",
+      "citation": "Rachmaninoff to Alexander Goldenweiser, February17,1901 Old Style, letter174; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/174",
+      "locator": "Whole short letter: three suite movements, request to play together, proposed visit, request for reply."
+    },
+    {
+      "sourceId": "source-175",
+      "citation": "Rachmaninoff to Vasily Safonov, February18,1901 Old Style, letter175; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/175",
+      "locator": "Sole substantive paragraph: concerto unfinished and withdrawal from scheduled concert."
+    },
+    {
+      "sourceId": "source-178",
+      "citation": "Rachmaninoff to Alexander Goldenweiser, April19,1901 Old Style, letter178; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/178",
+      "locator": "Both paragraphs: sends two concerto movements for review; first movement unlikely ready by Saturday."
+    },
+    {
+      "sourceId": "source-186",
+      "citation": "Rachmaninoff to Nikita Morozov, October22,1901 Old Style, letter186; contemporary Russian correspondence, Senar transcription.",
+      "url": "https://senar.ru/letters/186",
+      "locator": "Whole short letter: played first movement, agrees with structural criticism, reports despair five days before performance."
+    },
+    {
+      "sourceId": "source-loc",
+      "citation": "Library of Congress, Sergei Rachmaninoff Archive finding aid (2015, revised2024); institutional context.",
+      "url": "https://tile.loc.gov/storage-services/service/gdc/gdcfindingaidpdfs/mu015003/mu015003.pdf",
+      "locator": "Biographical Note: April1,1873 birth; circa1900 ConcertoNo.2 and Dahl dedication; Collection Summary identifies composer/pianist/conductor."
+    }
+  ],
+  "review": {}
+}

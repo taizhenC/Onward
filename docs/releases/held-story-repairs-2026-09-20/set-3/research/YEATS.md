@@ -28,4 +28,6 @@ The source map distinguishes recollection, scholarly narration and library metad
 
 ## Local verification receipt
 
-On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 154 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.
+On 2026-09-20, the candidate validator returned zero errors and zero warnings for this draft and its in-memory publish simulation. The canonical text is 157 words. A separate sentence-length check passed every passage: mean at most 16 words, no sentence over 28, and the final sentence not the longest. These checks do not establish source truth, owner approval, or production eligibility.
+
+Independent review tightened the dark passage's sequence: he has stopped speaking and is sitting in silence when he recognizes his lost confidence; her hand then withdraws. The revised sentence follows the bounded memoir excerpt instead of compressing the loss into the act of stopping speech.

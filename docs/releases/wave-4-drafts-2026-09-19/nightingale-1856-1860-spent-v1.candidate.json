@@ -122,7 +122,7 @@
     },
     {
       "factId": "fact-response",
-      "statement": "In the same reply Nightingale directly explained her symptoms and rejected the suggestion that her small appetite reflected fashion or asceticism.",
+      "statement": "In the same reply Nightingale directly explained her symptoms and said that her small appetite reflected neither fashion nor asceticism.",
       "sourceRefs": [
         {
           "sourceId": "source-cook",
@@ -538,7 +538,7 @@
     },
     {
       "role": "response",
-      "canonicalText": "She told the doctor what the suggested outings had done to her. She described the sickness around food. She explained the instructions the doctor at her lodgings had already given. Then she challenged his idea of what was happening. She rejected the suggestion that a small appetite was a matter of fashion. She also rejected the idea that she was deliberately denying herself food. The details in the letter were plain and bodily. She set out the limits in her own words. She was answering him.",
+      "canonicalText": "She told the doctor what the suggested outings had done to her. She described the sickness around food. She explained the instructions the doctor at her lodgings had already given. Then she ruled out two explanations for eating so little. She said her small appetite was not a matter of fashion. Nor was she deliberately denying herself food. The details in the letter were plain and bodily. She set out the limits in her own words. She was answering him.",
       "requiredFactIds": [
         "fact-response",
         "fact-limits",

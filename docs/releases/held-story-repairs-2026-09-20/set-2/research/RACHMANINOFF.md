@@ -28,6 +28,8 @@ Ages27–28 and1900–1901 remain within the installed broader1897–1901 episod
 
 ## Verification
 
-[Candidate](../rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json):306 words; SHA-256 `220d6776188f6cacf4d570e9bf75821ba822d3a0e9d87af8e99bad48e13f0433`.
+[Candidate](../rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json):306 words; SHA-256 `06e2728a90f466a5465965ed549b357be5d4935682fdb94375ca547a35fbd23a`.
+
+Metadata recheck: the unfinished-concerto atom now names18February1901 rather than retaining an orphan “next day” reference to an omitted letter. The content note now agrees with the short-vignette verdict and disclosed source-copy qualification. Canonical prose is unchanged; local validator rerun remains0errors/0warnings.
 
 Local `validate-candidate.ts --sentences`: draft and in-memory publication simulation valid, zero errors/warnings. Version1, draft, review{} preserved. Old snapshot unchanged.

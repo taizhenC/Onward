@@ -553,7 +553,7 @@
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was Fred Rogers. He made Mister Rogers' Neighborhood for children. Your life is not theirs.\n\nBut a piece of this story may still sit beside you. Your feelings do not have to arrive as words.",
+      "canonicalText": "His name was Fred Rogers.\n\nHe made Mister Rogers' Neighborhood for children.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYour feelings do not have to arrive as words.",
       "requiredFactIds": [
         "fact-identity"
       ],

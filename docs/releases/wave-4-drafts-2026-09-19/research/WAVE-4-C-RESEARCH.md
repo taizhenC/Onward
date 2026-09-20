@@ -6,8 +6,8 @@ Research date: 19 September 2026. Authoring/research agent: wave4_c. These are u
 
 | Candidate | New bounded episode | Installed matching ages | Draft words | Disposition |
 |---|---|---:|---:|---|
-| Nightingale | August–December 1857; age 37 | 36–40 | 699 | Source sequence usable; independent historical and reading review required |
-| O'Connor | 23 December 1950–May 1952; ages 25–27 | 25–33 | 646 | HOLD for emotional-low and publication-turn craft fit |
+| Nightingale | August–December 1857; age 37 | 36–40 | 693 | Independent agent source/craft checks support bounded arc; owner reading and human review required |
+| O'Connor | 23 December 1950–May 1952; ages 25–27 | 25–33 | 646 | Independent agent review accepts bounded uncertainty and publication threshold; owner reading and human review required |
 | McClintock | June 1961–provisional 24 May 1965; ages 58–62 | 48–55 | 441 | Research/story-fit HOLD; not reading-ready |
 
 Nightingale shifts from an asserted permanent physical collapse to an attested letter describing limits and feeling unheard, followed by a specific delayed administrative task. O'Connor replaces the installed death-sentence/complete-control framing with uncertain limits, a request for sympathy, repeated revisions, and publication alongside continued restrictions. McClintock replaces universal dismissal and later vindication with a specific scientific disagreement and correspondence opening; its later age range is a substantial matching mismatch. Root was notified before the narrower McClintock candidate was finished. These changes are disclosed only; no matching edits are authorized here.
@@ -56,7 +56,7 @@ The scene, low, and small response are not three invented events: they unfold in
 
 ### Limits and unused leads
 
-HOLD: the humorous self-report supports uncertainty, not despair. The photo exchange is a publication threshold, not testimony of emotional transformation or a newly chosen identity. Seven texture sentences are disclosed; the independent reader should assess repetition and usefulness, not expand them into additional facts.
+The initial craft HOLD was resolved by independent agent review of the actual letter and editor's account: the humorous self-report supplies bodily uncertainty without requiring despair; the actual request for sympathy is a small response; further revisions supply unfinished effort; the photo exchange is a modest publication threshold. It is not testimony of emotional transformation or a newly chosen identity. Owner reading and human approval remain required. Seven texture sentences are disclosed; the reader should assess repetition and usefulness, not expand them into additional facts. No canonical prose changed when the provisional HOLD notes were replaced with these qualifications.
 
 The draft does not present her initial understanding of the illness as a correct diagnosis, import later crutches or a daily writing schedule, claim artistic inspiration from illness, or turn her editor's disappointment into hers. Later diagnosis-revelation quotations encountered in secondary accounts were not used because their original letter context was not obtained. Google Books bibliographic information and Library of America background were checked but supply no new scene. No trial, purchase, restricted collection, or access bypass was used.
 
@@ -85,11 +85,16 @@ Each passed draft and in-memory publication simulation with zero errors and zero
 
 | Candidate | SHA-256 |
 |---|---|
-| nightingale-1856-1860-spent-v1.candidate.json | `5fc4b20db359156a353bc52dc1e0e9fe14a00dedc49deab668156c9813b1949e` |
-| oconnor-1950-1955-lupus-and-the-farm-v1.candidate.json | `30bc8dbcece49e68407705fd39129cd34aaf92df2df23cde5ba8a91fbd11571f` |
+| nightingale-1856-1860-spent-v1.candidate.json | `eb8bc2c60c4036dbd2ace38a0b8fa5770b16e6086ba7ab70c6ad64d42ecfd732` |
+| oconnor-1950-1955-lupus-and-the-farm-v1.candidate.json | `039a1afc8ea3d4960af0d363a7cfdafc506caac71b45f24d3af8357757fa35b7` |
 | mcclintock-1951-1960s-dismissed-and-right-v1.candidate.json | `51ee0d5543da35d4477e9b140ad2b805c044f535e50b7aa063e39cf2a8e69e0e` |
 
 All passages have mean sentence length at most 16 words, maximum at most 28, and a last sentence shorter than the passage maximum. Bridge endings are 7, 8, and 8 words respectively. Highest actual sentence maxima: Nightingale 15; O'Connor 18; McClintock 17. Complete sentence-evidence mappings are in the candidates.
 
-No claim in this report confers human approval or publication readiness.
+## Independent-review correction record
 
+Nightingale's response previously said she rejected a suggestion about fashionable appetite or asceticism. The doctor's quoted letters do not make those particular assertions; her reply rhetorically rules them out. Fact and prose now attribute those explanations to her own statement, without putting an unrecorded claim in his mouth. The final693-word hash above passed the sentence validator and full batch composition/replay/rhythm check again.
+
+O'Connor's final metadata-only hash above also passed validation and full batch checks; all646 canonical words remain unchanged. Both corrected snapshots were sent to reviewer B for exact-hash recheck. Earlier hashes in root commits remain provenance, not current candidates.
+
+No claim in this report confers human approval or publication readiness.

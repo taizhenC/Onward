@@ -261,7 +261,7 @@
     },
     {
       "role": "struggle",
-      "canonicalText": "He stayed behind to finish the play after she returned to another country. He remembered writing with pity for her.",
+      "canonicalText": "He stayed behind to finish the play after she left for another country. He remembered writing with pity for her.",
       "requiredFactIds": [
         "fact-work"
       ],

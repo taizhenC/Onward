@@ -1,0 +1,495 @@
+{
+  "storySpecId": "christie:1926-1928-the-year-that-broke:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "christie",
+  "stageId": "1926-1928-the-year-that-broke",
+  "version": 1,
+  "status": "draft",
+  "entities": [
+    {
+      "kind": "person",
+      "value": "Agatha Christie",
+      "aliases": [
+        "Christie"
+      ],
+      "entityId": "entity-subject"
+    },
+    {
+      "kind": "date",
+      "value": "1890",
+      "aliases": [],
+      "entityId": "entity-birth-year"
+    },
+    {
+      "kind": "date",
+      "value": "1976",
+      "aliases": [],
+      "entityId": "entity-death-year"
+    }
+  ],
+  "dramatizationLimits": [
+    "No invented dictation sequence, pencil, exact interruption interval, send-away, restart, visualization, final-page or mailing scene.",
+    "No disappearance account, diagnosis, recovery claim or estate psychological-scar wording.",
+    "Owning-estate narration supplies chronology; its attributed memoir quotations supply only retrospective criticism of the book."
+  ],
+  "avoidRules": [
+    "Do not make the daughter the cause of all writing difficulty.",
+    "Do not claim travel, publication or sales cured grief or restored the marriage.",
+    "This short source-led vignette is a user-authorized format exception, not full seven-moment or length compliance."
+  ],
+  "episode": {
+    "ageMin": 36,
+    "ageMax": 38,
+    "throughLine": "A short owning-source vignette of difficult writing during separation, followed by publication and a remembered dislike of the result. No detailed dictation sequence or imagined completion scene."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief",
+      "pregnancy_or_parenthood"
+    ],
+    "contentNote": "Bereavement context, marital separation, financial pressure and difficult writing. FOR OWNER READING as a user-authorized short source-led vignette, not approval. Owning-estate chronology and summary are distinguished from its brief quotations of Christie's memoir. The uncollated non-owning memoir copy is no longer a source for any retained claim. Publication is the summarized turn."
+  },
+  "facts": [
+    {
+      "factId": "a01",
+      "statement": "Agatha Christie was born September 15, 1890; she was thirty-six during the February 1927 Canary Islands writing stay. The novel appeared in 1928, when she was thirty-seven or thirty-eight; no exact publication day is used here.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "The Early Years, birth date September 15, 1890; cross-check February 1927 writing stay against src-estate-2024 and 1928 publication year against src-book."
+        },
+        {
+          "sourceId": "src-estate-2024",
+          "scope": "bounded",
+          "locator": "March selection, February 1927 departure with Rosalind and Carlo."
+        },
+        {
+          "sourceId": "src-book",
+          "scope": "exact",
+          "locator": "Original publication year: 1928. This supports the conservative end-age range, not a specific publication date."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "a02",
+      "statement": "In February 1927 Christie travelled to the Canary Islands with her daughter Rosalind and secretary/governess Carlo Fisher while separated from her husband.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-2024",
+          "scope": "bounded",
+          "locator": "March selection paragraph beginning This book was a challenging one; exact month/year and travelling companions."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a21",
+      "statement": "The estate's work record describes Christie as separated, needing funds, and returning to writing in early 1927; the book was difficult to write.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-book",
+          "scope": "bounded",
+          "locator": "More about this story, first and third paragraphs: separation, need for funds, return to writing and difficulty. Institutional narration, not a direct memoir quotation."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a22",
+      "statement": "The estate's March 2024 reading guide places writing in the hotel garden in Orotava, Tenerife, and describes interruptions by her seven-year-old daughter Rosalind.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-2024",
+          "scope": "bounded",
+          "locator": "March choice / Exploring the 1920s, paragraph beginning Not only was Christie struggling: hotel garden and interruptions only. The guide's psychological explanation is not adopted."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a23",
+      "statement": "The novel drew on Christie's earlier short story The Plymouth Express.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-book",
+          "scope": "bounded",
+          "locator": "More about this story, paragraph beginning The story itself; earlier-story derivation."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a24",
+      "statement": "Christie expressed continuing dislike of the novel in her autobiography and criticized its plot. This is her retrospective evaluation, quoted by her estate, not an independent account of her mental state during composition.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-book",
+          "scope": "bounded",
+          "locator": "More about this story, paragraph beginning The story itself; brief attributed autobiography quotation."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a25",
+      "statement": "Christie's autobiography criticized the novel's plot as uninteresting, as quoted by the estate.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-2024",
+          "scope": "bounded",
+          "locator": "March choice, paragraph beginning Christie was her own harshest critic. Only the attributed evaluation is used, not the estate's superlative."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a18",
+      "statement": "The Mystery of the Blue Train was first published in 1928.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-book",
+          "scope": "exact",
+          "locator": "Work record, Original publication year: 1928."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "a16",
+      "statement": "Agatha Christie became a detective novelist and playwright.",
+      "sourceRefs": [
+        {
+          "sourceId": "src-estate-life",
+          "scope": "bounded",
+          "locator": "Opening career summary: detective novels, short stories and The Mousetrap."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She was thirty-six, working on a novel during a stay in the Canary Islands. Her daughter and secretary had travelled with her.",
+      "requiredFactIds": [
+        "a01",
+        "a02",
+        "a21"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a01",
+            "a02",
+            "a21"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Owning institutional summary of the February 1927 stay, not a reconstructed day. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Separated from her husband and needing money, she had returned to writing. The book was difficult to write.",
+      "requiredFactIds": [
+        "a21"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a21"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a21"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Practical difficulty as described by the estate, without invented private thoughts. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She worked on a novel drawn from a short story she had already written. It was not an entirely new plot.",
+      "requiredFactIds": [
+        "a21",
+        "a23"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a21",
+            "a23"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a23"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Documented writing and adaptation, not a located decision. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "In the hotel garden, her daughter interrupted while she was trying to write. The child was seven.",
+      "requiredFactIds": [
+        "a22"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a22"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a22"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Only the owning guide's summary; no minute-by-minute memoir mechanics. Repeated interruption is not converted into an invented new attempt. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The novel appeared in print the following year, after the difficult stay. It was published.",
+      "requiredFactIds": [
+        "a18",
+        "a01",
+        "a21"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a18",
+            "a01",
+            "a21"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a18"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Publication is a summarized result, not a completion or dispatch scene. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "became",
+      "canonicalText": "In her memory, this was a book she continued to dislike long after writing it. She disliked its plot too.",
+      "requiredFactIds": [
+        "a24",
+        "a25"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a24"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a25"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Paraphrased first-person memoir evaluation quoted by the estate; not a claim that publication caused her feelings. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Agatha Christie.\n\nShe wrote mystery novels and plays.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to have mixed feelings about something you have finished.\n\nYou do not owe it a cheerful ending.",
+      "requiredFactIds": [
+        "a16"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "a16"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission, not an instruction to work through distress. User-authorized short source-led format; FOR OWNER READING, not approved."
+    }
+  ],
+  "interpretations": [],
+  "sources": [
+    {
+      "sourceId": "src-estate-life",
+      "citation": "Agatha Christie Limited / Christie Archive Trust, About Agatha Christie.",
+      "locator": "Early Years birth date; A Difficult Period; The Orient Express and the Middle East. The broad page contains an erroneous 1928 Canary Islands placement and is not used for that date. Reopened and bounded passages read 2026-09-20; no original-edition collation claimed.",
+      "url": "https://www.agathachristie.com/about-christie"
+    },
+    {
+      "sourceId": "src-estate-2024",
+      "citation": "Agatha Christie Limited, Read Christie 2024, March selection: The Mystery of the Blue Train.",
+      "locator": "Our March choice, paragraphs on February 1927 departure and hotel-garden writing; explicitly references Christie's autobiography. Reopened and bounded passages read 2026-09-20; no original-edition collation claimed.",
+      "url": "https://www.agathachristie.com/news/2024/read-christie-2024"
+    },
+    {
+      "sourceId": "src-book",
+      "citation": "Agatha Christie Limited, The Mystery of the Blue Train work record.",
+      "locator": "Original publication year, More about this story, and dedication information. Reopened and bounded passages read 2026-09-20; no original-edition collation claimed.",
+      "url": "https://www.agathachristie.com/stories/the-mystery-of-the-blue-train"
+    }
+  ],
+  "review": {}
+}

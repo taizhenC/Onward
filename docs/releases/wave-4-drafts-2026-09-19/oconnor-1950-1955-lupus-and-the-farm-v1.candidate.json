@@ -17,7 +17,7 @@
     "flags": [
       "serious_illness"
     ],
-    "contentNote": "Historical serious illness, uncertainty, physical limits, and continuing restrictions. Draft; emotional-low and publication-turn fit require independent review."
+    "contentNote": "Historical serious illness, uncertainty, physical limits, and continuing restrictions. Bounded uncertainty and publication threshold, not despair or emotional transformation. Owner reading and human approval remain required."
   },
   "facts": [
     {
@@ -555,7 +555,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "HOLD for independent reading review: the documented low is bodily limitation and uncertainty expressed with humor, not an attested despair or diagnosis revelation. Do not intensify it into terror, a death sentence, or loss of all independence."
+      "sourceNote": "Reading qualification: the documented low is bodily limitation and uncertainty expressed with humor, not an attested despair or diagnosis revelation. Do not intensify it into terror, a death sentence, or loss of all independence. Independent agent review accepts this bounded low; owner reading remains required."
     },
     {
       "role": "response",
@@ -898,7 +898,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "The photo exchange is retrospective testimony by a participant and is explicitly memory-framed; its facts are probable. HOLD for independent craft judgment: this is a concrete publication threshold, not an attested emotional transformation. No claim about her motive for sending a current photograph."
+      "sourceNote": "The photo exchange is retrospective testimony by a participant and is explicitly memory-framed; its facts are probable. This is a concrete publication threshold, not an attested emotional transformation. No claim about her motive for sending a current photograph. Independent agent review accepts that bounded turn; owner reading remains required."
     },
     {
       "role": "became",
@@ -1074,7 +1074,7 @@
       "personalizationZones": [
         "reader_bridge"
       ],
-      "sourceNote": "Draft only. The original broad 1950–1955 match is narrowed to December 1950–May 1952; independent source and reading judgments remain outstanding."
+      "sourceNote": "Draft only. The original broad 1950–1955 match is narrowed to December 1950–May 1952. Independent agent spot checks do not confer human historical, tone, or publication approval; owner reading remains required."
     }
   ],
   "interpretations": [],

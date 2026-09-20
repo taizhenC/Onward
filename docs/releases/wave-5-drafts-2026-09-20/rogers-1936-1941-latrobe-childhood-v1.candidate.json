@@ -1,0 +1,646 @@
+{
+  "storySpecId": "rogers:1936-1941-latrobe-childhood:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "rogers",
+  "stageId": "1936-1941-latrobe-childhood",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 8,
+    "ageMax": 13,
+    "throughLine": "A child's remembered play and music offer ways to express feelings; exact childhood chronology and a complete causal arc remain unestablished."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [
+      "serious_illness"
+    ],
+    "contentNote": "Childhood illness, quarantine and difficulty expressing anger. No medical guidance or claim that creativity cures illness."
+  },
+  "facts": [
+    {
+      "factId": "fact-only",
+      "statement": "Rogers remembered being an only child for eleven years, then having a sister.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-freshair",
+          "locator": "What were you like as a kid? and the answer beginning Yeah. Voices for puppets",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-bed",
+      "statement": "Rogers remembered childhood diseases, quarantines and frequent time in bed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-freshair",
+          "locator": "Answer beginning I had every imaginable childhood disease",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-landscape",
+      "statement": "He remembered raising his knees under a sheet as mountains for little figures on his bed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-freshair",
+          "locator": "Answer beginning And things on the bed",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-voices",
+      "statement": "He remembered moving the figures, making them talk, and inventing stories and puppet voices.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-freshair",
+          "locator": "And things on the bed; answer beginning Yeah. Voices for puppets",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-fear",
+      "statement": "Rogers remembered sometimes being scared to use words and not wanting to tell people he was angry or seem a bad boy.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wqed",
+          "locator": "Music was my first language through I didn't wanna show people that I was angry",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-piano",
+      "statement": "Rogers said childhood piano playing let him express laughter, tears and anger and felt safe and comfortable as an only child.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wqed",
+          "locator": "I could literally laugh or cry through So it was, this was my friend",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-help",
+      "statement": "Rogers said that as a sick child he invented characters that helped him through those times.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rehm",
+          "locator": "11:31:38, first two sentences",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-song",
+      "statement": "Rogers remembered learning a song to please his violin-playing grandfather.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-wqed",
+          "locator": "My grandfather played the violin through I remember learning that to please him",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-accompany",
+      "statement": "Rogers remembered a particularly satisfying time accompanying his grandfather's fiddle on piano; no age or date was given.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-rehm",
+          "locator": "11:48:40–11:49:31, before the distinct adult incident",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-welcome",
+      "statement": "Rogers remembered Sunday visits to his grandfather, walks and being welcomed for being himself.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-freshair",
+          "locator": "Grandfather answer beginning Well, my Grandfather McFeely",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Fred Rogers made Mister Rogers' Neighborhood, a television program for children.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-freshair",
+          "locator": "Introduction to the Fred Rogers interview",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Fred Rogers",
+      "aliases": [
+        "Rogers"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A boy lay in bed during the childhood quarantines he would remember years later. He was an only child until he was eleven. The bed had a sheet and the little figures he used for play.\n\nHe could raise his knees beneath the sheet and make a landscape for them. The raised cloth became mountains.",
+      "requiredFactIds": [
+        "fact-bed",
+        "fact-only",
+        "fact-landscape"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-bed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-only"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-landscape"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-landscape"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-landscape"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: this is an openly retrospective recurring situation, not a located single day. The second sentence supplies a documented age boundary, not the boy's exact age in bed. Installed episode ages 8–13 are retained as an unresolved intended window; the accessed interviews do not prove these particular memories fall inside it."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "At times, he was scared to put his feelings into words. He did not want to seem like a bad boy. In his memory, telling people he was angry was difficult.\n\nHe did not want to tell them.",
+      "requiredFactIds": [
+        "fact-fear"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: genuine first-person emotional testimony, but no located low-point encounter or documented precipitating event. This passage must not be converted into a particular day or attached causally to illness, bullying or the toy scene."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He could put anger into the way he played the piano. He remembered being able to express laughter and tears there too. Playing felt safe to him.",
+      "requiredFactIds": [
+        "fact-piano"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "CRAFT HOLD: a documented repeated small response, not an evidenced one-time action immediately after the prior passage. No invented song, room, playing session or decision."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "His childhood illnesses were not one brief spell in bed. He remembered being quarantined often. During those times, he moved small figures around the bed and supplied their voices.\n\nHe made up stories for them. Years later, he said inventing characters had helped him through being sick. He had to make up much of his own fun.",
+      "requiredFactIds": [
+        "fact-bed",
+        "fact-voices",
+        "fact-help",
+        "fact-only"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-bed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-bed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-voices"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-voices"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-help"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-only"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: recurrent illness and coping are supported, but the accessed testimony does not supply a concrete failed effort or reversal. No invented unsuccessful treatment, rejected friendship, bullying encounter or failed practice has been substituted."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Another childhood memory held his grandfather playing the fiddle. He had learned a song to please him. He played the piano with his grandfather.\n\nHe remembered that accompaniment as one of the most satisfying times of his life. They played together.",
+      "requiredFactIds": [
+        "fact-accompany",
+        "fact-song"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-accompany"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-song"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-accompany"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-accompany"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-accompany"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "SOURCE/CRAFT HOLD: the accompaniment is a particular remembered occasion, but undated; no evidence places it after the previous material or makes it the trigger of a lasting change. Another memory signals juxtaposition, not a reconstructed chronology."
+    },
+    {
+      "role": "became",
+      "canonicalText": "His childhood also included Sunday visits to his grandfather. They walked around the grounds, and his grandfather told him he was welcome as himself. The boy had music he could use when words were difficult.\n\nHe had voices and stories for his small figures. At eleven, he was no longer an only child. His sister had joined the family.",
+      "requiredFactIds": [
+        "fact-welcome",
+        "fact-piano",
+        "fact-voices",
+        "fact-only"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-welcome"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-welcome"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-voices"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-only"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-only"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded to childhood rather than a television-career reveal. SOURCE/CRAFT HOLD: these are remembered conditions, not a supported outcome caused by the accompaniment. No claim that imagination cured illness or solved loneliness."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Fred Rogers. He made Mister Rogers' Neighborhood for children. Your life is not theirs.\n\nBut a piece of this story may still sit beside you. Your feelings do not have to arrive as words.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Draft for owner reading, not approval. Chronology and arc HOLD remain even if mechanical validators pass."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dialogue, exact childhood age, dated scene, sensory detail, intention or causal connection.",
+    "SOURCE/CRAFT HOLD: recurring memories do not establish the required scene, lowest-point event, failed effort and causal turn.",
+    "Episode ages 8–13 preserve the installed intended window, not newly proven dating; no precise dates are asserted.",
+    "No source-backed claim that illness or bullying caused his later career."
+  ],
+  "avoidRules": [
+    "Do not quote the familiar bullying or piano-tears speech without reading its original record.",
+    "Do not depict loneliness as necessary training for kindness or creativity as a medical treatment.",
+    "Do not substitute high school, college or television career for this childhood stage without a separate owner decision.",
+    "No reader disclosure echo, instruction or promised result. Matching and production remain unchanged."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-freshair",
+      "citation": "Fred Rogers interviewed by Barbara Bogaev in 2002; Fresh Air rebroadcast transcript, December 30, 2003. First-person retrospective testimony; transcript carries an accuracy caveat.",
+      "url": "https://freshairarchive.org/segments/tv-host-fred-rogers",
+      "locator": "What were you like as a kid? through the answer about his sister arriving at eleven; next grandfather answer."
+    },
+    {
+      "sourceId": "source-wqed",
+      "citation": "Fred Rogers, on-camera recollections in Rick Sebak's Our Neighbor Fred Rogers, WQED, 1989; PBS caption transcript. Narration is separate secondary chronology.",
+      "url": "https://www.pbs.org/video/our-neighbor-fred-rogers-qmsiqr/",
+      "locator": "Childhood section: Music was my first language through grandfather's violin; preceding birth/adoption narration."
+    },
+    {
+      "sourceId": "source-rehm",
+      "citation": "Fred Rogers interviewed by Diane Rehm, 2002; program transcript rebroadcast December 27, 2016. First-person retrospective testimony.",
+      "url": "https://dianerehm.org/shows/2016-12-27/fred-rogers-on-parenting-rebroadcast/",
+      "locator": "11:31:38 childhood play; 11:48:40–11:49:31 grandfather accompaniment. The later adult stomachache is not childhood evidence."
+    }
+  ],
+  "review": {}
+}

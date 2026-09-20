@@ -827,7 +827,7 @@
     },
     {
       "role": "bridge",
-      "canonicalText": "His name was Sergei Rachmaninoff.\n\nHe became a celebrated pianist and composer, known for works including his Second Piano Concerto.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to ask for time without promising a breakthrough. Your uncertainty does not make the request dishonest.",
+      "canonicalText": "His name was Sergei Rachmaninoff.\n\nHe became a celebrated pianist and composer, known for works including his Second Piano Concerto.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to ask for time without promising a breakthrough. You are allowed to ask without certainty.",
       "requiredFactIds": [
         "fact-legacy"
       ],

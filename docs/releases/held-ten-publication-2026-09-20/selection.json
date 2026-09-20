@@ -1,0 +1,97 @@
+{
+  "kind": "owner-reviewed-publication-selection",
+  "date": "2026-09-20",
+  "reviewedPacketCommit": "2a53dce8f3b9e420c72c69c5a38400b382476da8",
+  "mergedPacketCommit": "d67fc082ecdccf5c48917c25423a90a1e01abc62",
+  "reviewIndexSha256": "0146c5cf609ca78c489513624e5a3455102993f462e6b485e352b4048deb32d9",
+  "owner": "taizhenC",
+  "ownerStatement": "I review it, lets merge those test and publish to the production.",
+  "interpretation": "Owner review of the exact repaired packet, including its authorized shorter form and disclosed source/content qualifications. One owner, not three independent human reviewers. Publication limited to the ten explicit eligible targets; source and matching holds are not waived.",
+  "additionalHold": {
+    "figureKey": "christie",
+    "reason": "Installed rerank facts and selection descriptions omit the difficult-book episode and center bereavement, disappearance and the Orient Express. The reviewed prose remains unchanged and held pending explicit matching integration."
+  },
+  "ageCorrection": {
+    "figureKey": "charles_r",
+    "installedMatching": [
+      14,
+      17
+    ],
+    "candidateEpisode": [
+      14,
+      18
+    ],
+    "note": "The frozen research note incorrectly calls 14–18 installed. The story's broader envelope is retained; this release changes neither episode ages nor matching. It is not described as a narrower-inside comparison."
+  },
+  "targets": [
+    {
+      "figureKey": "butler",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-1/butler-1974-1975-pre-patternmaster-v1.candidate.json",
+      "sha256": "ad3631229782cc43e4384987f729afbbbec1d8f4c60771185ce81d7806ea6fd7"
+    },
+    {
+      "figureKey": "charles_r",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-1/charles_r-1945-1948-orphaned-to-the-bus-v1.candidate.json",
+      "sha256": "8c70d43fb201553b04016010a42c7ea6e063887fc0baf0e36d176f5a06480263"
+    },
+    {
+      "figureKey": "coleman",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-1/coleman-1918-1921-no-school-would-take-her-v1.candidate.json",
+      "sha256": "deb1bc59427ab62c52871521202dee43f0466091ea800d1d311c2f653ad4c099"
+    },
+    {
+      "figureKey": "jones",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-1/jones-1937-1945-the-silent-years-v1.candidate.json",
+      "sha256": "5ae4c427a976e86bdf91b1ab8d00852cbba5e2dce808e3905f4491390a493b0f"
+    },
+    {
+      "figureKey": "sanders",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-3/sanders-1956-broke-at-sixty-five-v1.candidate.json",
+      "sha256": "0977ece676fa704b065a826f829419a215c269ed4bae755f800015024121352b"
+    },
+    {
+      "figureKey": "simone",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-3/simone-1950-1954-curtis-no-to-the-bar-v1.candidate.json",
+      "sha256": "c36c4a057437f2e928fcee153554b9d5683fbe8a75e0c6be6341acb54831cbf3"
+    },
+    {
+      "figureKey": "sullivan_a",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-3/sullivan_a-1880-1886-almshouse-to-valedictorian-v1.candidate.json",
+      "sha256": "221d7cfe805a64884035ea56a272573131104ac937d6b0f2a00c2fa2a1aeba1f"
+    },
+    {
+      "figureKey": "tallchief",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-3/tallchief-1942-1947-the-name-stays-v1.candidate.json",
+      "sha256": "680c3228e1ac494eee0d9dc48e5153eddafd6a6d1ad7bfffd27440eab069481d"
+    },
+    {
+      "figureKey": "wilson",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-3/wilson-1934-1935-rock-bottom-to-the-fellowship-v1.candidate.json",
+      "sha256": "a70fde53a6361d8a43de8c63a69b047b4831ba0997e09d8c8550399968054844"
+    },
+    {
+      "figureKey": "yeats",
+      "path": "docs/releases/held-story-repairs-2026-09-20/set-3/yeats-1889-1893-the-no-and-the-poems-v1.candidate.json",
+      "sha256": "4bae8f16a55804c3469446c95d4e7dc95091e82865254c2fd476c22320f623e0"
+    }
+  ],
+  "heldFigureKeys": [
+    "berlin_i",
+    "carver",
+    "christie",
+    "coltrane",
+    "lamarr",
+    "lee",
+    "lewis_e",
+    "lindgren",
+    "mcclintock",
+    "owens",
+    "poitier",
+    "rachmaninoff",
+    "rogers",
+    "rudolph",
+    "rustin",
+    "wang"
+  ],
+  "databaseWritesRecordedElsewhere": true
+}

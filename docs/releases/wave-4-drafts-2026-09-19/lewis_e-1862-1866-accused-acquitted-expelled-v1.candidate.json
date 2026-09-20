@@ -334,7 +334,7 @@
   "arc": [
     {
       "role": "scene",
-      "canonicalText": "A young student was still living in the house where two other students had accused her. She was about seventeen. The other women had fallen ill after leaving the house for an outing. One had said that she had been poisoned. The accusation had come back to the place where all three boarded. \n\nHer lawyer remembered the waiting that followed. The sick women had not recovered. She and the people supporting her waited for their condition to change. They hoped they would live.",
+      "canonicalText": "A young student remained in the house where she had been accused of poisoning two fellow students. She was about seventeen. The other women had fallen ill after leaving the house for an outing. One had said that she had been poisoned. The accusation had come back to the place where all three boarded.\n\nHer lawyer remembered the waiting that followed. The sick women had not recovered. She and the people supporting her waited for their condition to change. They hoped they would live.",
       "requiredFactIds": [
         "house",
         "accused",
@@ -436,7 +436,7 @@
     },
     {
       "role": "dark_moment",
-      "canonicalText": "The accusation remained against her while the two women lay ill. She was a Black student in a household shared with white students. Beyond the house, people were already arguing over whether she was guilty. Her lawyer's memory includes people judging her because of her color. He also remembers supporters who stood by her. \n\nTheir support could not settle the accusation. She had not yet been arrested. But she and her friends expected that the law would come for her. They had arranged for someone to defend her. The case was still coming.",
+      "canonicalText": "The accusation remained against her while the two women lay ill. She was a Black student in a household shared with white students. Beyond the house, people were already arguing over whether she was guilty. Her lawyer's memory includes people judging her because of her color. He also remembers supporters who stood by her.\n\nTheir support could not settle the accusation. She had not yet been arrested. But she and her friends expected that the law would come for her. They had arranged for someone to defend her. The case was still coming.",
       "requiredFactIds": [
         "accused",
         "waiting",
@@ -551,7 +551,7 @@
     },
     {
       "role": "response",
-      "canonicalText": "She maintained that she was innocent. That is the response preserved in her lawyer's memory of the waiting. Her supporters maintained it with her. They also hoped and prayed for the two sick women to recover. \n\nHer own defense and their illness occupied the same stretch of waiting. There was no verdict to point to yet. She had counsel, and she had denied the accusation. She was still in the house.",
+      "canonicalText": "She maintained that she was innocent. That is the response preserved in her lawyer's memory of the waiting. Her supporters maintained it with her. They also hoped and prayed for the two sick women to recover.\n\nHer own defense and their illness occupied the same stretch of waiting. There was no verdict to point to yet. She had counsel, and she had denied the accusation. She was still in the house.",
       "requiredFactIds": [
         "waiting",
         "defense",
@@ -645,7 +645,7 @@
     },
     {
       "role": "struggle",
-      "canonicalText": "Before any arrest, the danger became physical. Unknown people seized her and assaulted her near the house. Searchers found her in a field. The lawyer describes serious injuries and days confined to her room. When she could move about again, she needed crutches. Then came the arrest. Her lawyer asked for time because she could not yet attend court. \n\nHe obtained a delay, with a promise that she would appear when able. Her friends eventually carried her into the room used for the hearing. The prosecution presented its witnesses. The defense had found a problem with the claim that the women had been poisoned. No samples had been saved and tested. Still, the hearing continued.",
+      "canonicalText": "Before any arrest, the danger became physical. Unknown people seized her and assaulted her near the house. Searchers found her in a field. The lawyer describes serious injuries and days confined to her room. When she could move about again, she needed crutches. Then came the arrest. Her lawyer asked for time because she could not yet attend court.\n\nHe obtained a delay, with a promise that she would appear when able. Her friends eventually carried her into the room used for the hearing. The prosecution presented its witnesses. The defense had found a problem with the claim that the women had been poisoned. No samples had been saved and tested. Still, the hearing continued.",
       "requiredFactIds": [
         "assault",
         "injuries",
@@ -783,7 +783,7 @@
     },
     {
       "role": "turning_point",
-      "canonicalText": "In the hearing room, the prosecution finished presenting its evidence. The court invited the defense to call its witnesses. Her lawyer asked for the case to be dismissed instead. He argued that the evidence did not establish the crime needed to hold her. In his account, the lawyers argued that question before the court. \n\nThen the case ended in her release. The same student who had been carried into court was carried out again. This time her fellow students took her home after she had been cleared in the poisoning case. The charge no longer held her there.",
+      "canonicalText": "In the hearing room, the prosecution finished presenting its evidence. The court invited the defense to call its witnesses. Her lawyer asked for the case to be dismissed instead. He argued that the evidence did not establish the crime needed to hold her. In his account, the lawyers argued that question before the court.\n\nThen the case ended in her release. The same student who had been carried into court was carried out again. This time her fellow students took her home after she had been cleared in the poisoning case. The charge no longer held her there.",
       "requiredFactIds": [
         "case",
         "motion",
@@ -891,7 +891,7 @@
     },
     {
       "role": "became",
-      "canonicalText": "She continued her education after that case. Her time at the college nevertheless ended the following year. The court's decision and the end of her schooling were separate events. Later, in another city, she asked a sculptor for advice. In her account, her brother had helped bring her there to learn. By the next year she had a bust to show a visitor. \n\nShe invited the woman to see it. She asked for its faults to be pointed out. Praise given merely because she was a Black woman was not the criticism she wanted. There was work in front of her that could be improved. She wanted to hear about it.",
+      "canonicalText": "She continued her education after that case. Her time at the college nevertheless ended the following year. The court's decision and the end of her schooling were separate events. Later, in another city, she asked a sculptor for advice. In her account, her brother had helped bring her there to learn. By the next year she had a bust to show a visitor.\n\nShe invited the woman to see it. She asked for its faults to be pointed out. Praise given merely because she was a Black woman was not the criticism she wanted. There was work in front of her that could be improved. She wanted to hear about it.",
       "requiredFactIds": [
         "education",
         "verdict",

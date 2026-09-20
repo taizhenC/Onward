@@ -64,7 +64,8 @@ is `bronte_c:1846-1847-two-copies:v1`; Shelley's is
    registry and deployment checks also passed.
 
 Independent agents checked exact reading-copy equality (14/14 passages),
-candidate hashes, the adapted audit and the bounded reader canary. Audit review
+candidate hashes and the adapted audit, and reviewed the prepared reader-canary
+helper. Audit review
 caught two baseline-binding gaps before publication; the helper now pins the
 backup and exact previous publication identities, rather than trusting a mutable
 sidecar alone.
@@ -75,18 +76,40 @@ included in this release record.
 
 ## Worker refresh and live reader verification
 
-**Pending at this record's initial commit.** The database publication is complete,
-but the matching-stage cache is load-once per worker. A new successful Production
-deployment after promotion must refresh workers, then the bounded guest canary
-must verify both full stories. This document will record observed results, not
-assume that a merge or healthy database proves live reader completion.
+**Complete.** [PR #136](https://github.com/taizhenC/Onward/pull/136) passed all
+applicable CI/recipe checks and merged at
+`bd31f741ca2db33661a1dff896e850e01b4c0bd3` (`2026-09-20T07:49:11Z`).
+GitHub Production deployment `6550471745` for that exact merge reported success
+at `2026-09-20T07:50:14Z`, after both promotions, refreshing the load-once
+matching-stage cache. Its deployment URL is
+[onward-7iljqgqd2](https://onward-7iljqgqd2-taizhencs-projects.vercel.app).
 
-The prepared canary uses the existing evaluation fixtures (Shelley age 24,
+At `2026-09-20T07:50:56.167Z`, the bounded canary completed against
+[onwardapp.me](https://onwardapp.me/):
+
+- Shelley: seven passages, 21 chunks, exact whitespace-normalized canonical prose.
+- Brontë: seven passages, 14 chunks, exact whitespace-normalized canonical prose.
+- Both matched directly, with zero clarification or adjacent-acceptance steps.
+- Both reader pages, all 35 chunk requests and all 35 progress acknowledgements
+  succeeded through the ordinary public routes; seven-passage endings completed.
+- The exact newly created anonymous guest and its stories were deleted through
+  the normal owner-confirmed CSRF route. The operator account was not used.
+
+Canary receipt SHA-256:
+`b7fb7c3288da838194abeabe43812f13b11d5f75f74ce57c52ddeea886afdafa`.
+The fresh post-canary audit at `2026-09-20T07:51:08.087Z` again proved 24 valid
+publications, zero quarantine, all 26 held drafts and all 22 prior published
+rows/stages unchanged, and both exact audited review snapshots preserved.
+Post-canary audit SHA-256:
+`2d53991d391bd796eb9d0bbb2a20fecf065262ac5ca7a5afb953f967425d223c`.
+All 22 database readiness checks passed once more after the canary.
+
+The canary used the existing evaluation fixtures (Shelley age 24,
 Brontë age 30), without changing matching or claiming those ages equal the
-narrowed prose episodes. It permits two initial matches, at most one token-bound
-clarification and one adjacent acceptance per story, checks all seven canonical
-passages and acknowledgements, and deletes its exact new anonymous guest through
-the ordinary owner-confirmed CSRF route. It does not use the operator's account
+narrowed prose episodes. It permitted two initial matches, at most one token-bound
+clarification and one adjacent acceptance per story, checked all seven canonical
+passages and acknowledgements, and deleted its exact new anonymous guest through
+the ordinary owner-confirmed CSRF route. It did not use the operator's account
 or bypass rate limits. Its scope is normal reader/progress and normalized prose,
 not a new visual, fresh-intake Auth-bootstrap or recipe-metadata audit.
 

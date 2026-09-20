@@ -21,5 +21,4 @@ The short form removes padding and a later success endpoint; it does not assert 
 
 ## Verification
 
-[Candidate](../poitier-1943-1945-dishwasher-to-second-audition-v1.candidate.json) retains version1, draft and review{}. Old snapshot unchanged. Local sentence validator passes both draft and in-memory publication simulation with0errors/0warnings; those checks are not approval. Final source-locator corrections were metadata-only; root will freeze the exact packet hash.
-
+[Candidate](../poitier-1943-1945-dishwasher-to-second-audition-v1.candidate.json), SHA-256 `3c54bfdcf0ba0c290910aa94735b04e53158331a8923aa8d67e09d48a61337f2`;241 words. Retains version1, draft and review{}. Old snapshot unchanged. Local sentence validator passes both draft and in-memory publication simulation with0errors/0warnings; those checks are not approval. Independent review prompted explicit2009 source references for the remembered small stage and for the biography's conflicting post-Army chronology. I reopened those exact paragraphs; canonical prose is unchanged.

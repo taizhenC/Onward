@@ -31,6 +31,11 @@
           "sourceId": "source-ibdb",
           "locator": "Birth date February 20, 1927; Lysistrata opening October 17, 1946.",
           "scope": "bounded"
+        },
+        {
+          "sourceId": "source-2009",
+          "locator": "Institutional biography, paragraphs beginning Robbed along the way and Returning to New York: post-Army chronology, not the primary interview's own date assertion.",
+          "scope": "bounded"
         }
       ],
       "eventOrder": 1,
@@ -44,6 +49,11 @@
         {
           "sourceId": "source-1998",
           "locator": "First-audition account, paragraphs beginning 'I go I go to this place' through 'I figured, oh, I got this.'",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-2009",
+          "locator": "Opening interview answer, paragraph beginning I'll read the other part: remembered little stage and approximate dimensions. No dimensions adopted in prose.",
           "scope": "bounded"
         }
       ],

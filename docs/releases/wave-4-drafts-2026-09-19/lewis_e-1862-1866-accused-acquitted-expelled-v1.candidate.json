@@ -25,7 +25,7 @@
       "sourceId": "memoir",
       "citation": "John Mercer Langston, From the Virginia Plantation to the National Capitol (1894), chapter XIII. Retrospective lawyer's account; client unnamed in text, identification corroborated by Oberlin's museum.",
       "url": "https://archive.org/download/fromvirginiaplan00langiala/fromvirginiaplan00langiala_djvu.txt",
-      "locator": "Chapter XIII, pp. 172-180; OCR read, not original court record."
+      "locator": "Chapter XIII, pp. 172-180; OCR read, not original court record. Date conflict: p.172 says winter1859–60, while institutional chronology dates the case1862. No contemporary court record has resolved this discrepancy."
     },
     {
       "sourceId": "child",
@@ -155,7 +155,7 @@
     },
     {
       "factId": "delay",
-      "statement": "After arrest, Langston obtained a delay because she was injured, pledging she would appear when able.",
+      "statement": "Langston says the arrest came within days of the attack; he obtained a delay because she was injured, pledging she would appear when able.",
       "sourceRefs": [
         {
           "sourceId": "memoir",
@@ -432,7 +432,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Shared household waiting, reconstructed from Langston's 1894 memory. Approximate age uses c.1844; not a known birthday. No invented room furniture or gesture."
+      "sourceNote": "Shared household waiting, reconstructed from Langston's 1894 memory. Approximate age uses c.1844; not a known birthday. No invented room furniture or gesture. Chronology HOLD: Langston p.172 dates the event to winter term1859–60, conflicting with the museum's1862 chronology used for episode/age. The retrospective memoir is not the exact-date authority; contemporary records must resolve this."
     },
     {
       "role": "dark_moment",
@@ -645,7 +645,7 @@
     },
     {
       "role": "struggle",
-      "canonicalText": "Before any arrest, the danger became physical. Unknown people seized her and assaulted her near the house. Searchers found her in a field. The lawyer describes serious injuries and days confined to her room. When she could move about again, she needed crutches. Then came the arrest. Her lawyer asked for time because she could not yet attend court.\n\nHe obtained a delay, with a promise that she would appear when able. Her friends eventually carried her into the room used for the hearing. The prosecution presented its witnesses. The defense had found a problem with the claim that the women had been poisoned. No samples had been saved and tested. Still, the hearing continued.",
+      "canonicalText": "Before any arrest, the danger became physical. Unknown people seized her and assaulted her near the house. Searchers found her in a field. The lawyer describes serious injuries and days confined to her room. When she could move about again, she needed crutches. She was arrested within days of the attack. Her lawyer asked for time because she could not yet attend court.\n\nHe obtained a delay, with a promise that she would appear when able. Her friends eventually carried her into the room used for the hearing. The prosecution presented its witnesses. The defense had found a problem with the claim that the women had been poisoned. No samples had been saved and tested. Still, the hearing continued.",
       "requiredFactIds": [
         "assault",
         "injuries",
@@ -779,7 +779,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Honest compression of the memoir's assault, injury, arrest, delay and hearing. Denial did not prevent harm or proceedings. Non-graphic; no poisoning substance, means or quantities."
+      "sourceNote": "Honest compression of the memoir's assault, injury, arrest, delay and hearing. Denial did not prevent harm or proceedings. Non-graphic; no poisoning substance, means or quantities. The memoir does not date first crutch use relative to arrest; no such ordering is claimed."
     },
     {
       "role": "turning_point",

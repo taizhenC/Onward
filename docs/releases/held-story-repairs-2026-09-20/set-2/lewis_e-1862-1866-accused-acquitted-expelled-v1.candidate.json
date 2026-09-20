@@ -111,7 +111,7 @@
     },
     {
       "factId": "critique",
-      "statement": "Lewis told Child she knew her bust was not good, did not want praise because of her race and wanted defects identified so she could learn.",
+      "statement": "Lewis told Child that praise was not good for her, did not want praise because of her race and wanted defects identified so she could learn.",
       "sourceRefs": [
         {
           "sourceId": "child",
@@ -277,7 +277,7 @@
     },
     {
       "role": "struggle",
-      "canonicalText": "She had made a first bust by copying another sculpted head. She told the writer she knew it was not good.",
+      "canonicalText": "She had made a first bust by copying another sculpted head. She said that praise was not good for her.",
       "requiredFactIds": [
         "bust",
         "critique"
@@ -308,7 +308,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "STRUCTURAL EXCEPTION: the maker's assessment of unfinished skill, not an invented failed trial or rejection."
+      "sourceNote": "STRUCTURAL EXCEPTION: her objection to unhelpful praise, not an assessment that the bust was bad or an invented failed trial."
     },
     {
       "role": "turning_point",

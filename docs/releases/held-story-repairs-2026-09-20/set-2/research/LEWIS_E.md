@@ -9,7 +9,7 @@
 Claim mapping:
 - Opening of the first paragraph: meeting at a reception, sculpture, about twenty.
 - Lewis answer beginning “I have a brother”: reported move to learn sculpture, approach to Brackett, his John Brown bust as her stated reason to expect sympathy, and his kindness. Prior events are probable reported recollection, not eyewitness events witnessed by Child.
-- Final paragraph: invitation to her room to inspect the first bust copied from a Voltaire head, her stated dissatisfaction, rejection of racially condescending praise, request for faults that would teach her. The invitation is **not evidence that Child visited, critiqued the work or caused a revision**.
+- Final paragraph: invitation to her room to inspect the first bust copied from a Voltaire head, her objection to praise as unhelpful, rejection of racially condescending praise, request for faults that would teach her. The invitation is **not evidence that Child visited, critiqued the work or caused a revision**. Independent review caught an initial misreading: “not good for me” refers to praise, not the bust's quality. I visually reread the paragraph and corrected the fact, prose and note.
 - [Allen Memorial Art Museum object2002.3](https://allenartcollection.oberlin.edu/objects/12270/bust-of-james-peck-thomas), Artist/Maker and Medium: owning-institution birth1844 and marble-sculpture identity. These are secondary/catalog anchors. Child's approximate twenty is preserved in prose; metadata19–20 is an approximate early1864 range against that birth anchor.
 
 No historical quotation is used. The source writer's racial hierarchy is neither repeated nor endorsed. No new archival or court records were accessed.
@@ -18,13 +18,12 @@ No historical quotation is used. The source writer's racial hierarchy is neither
 
 The621-word old snapshot depended on a much later lawyer's memoir, with winter1859–60 in its own case narrative against the museum's1862 chronology. It also lacked a discrete early action moment. Those claims are removed, not “resolved.” The new vignette uses the contemporary interview already located within the broad1862–1866 interval.
 
-The focus change is material and expressly proposed: early learning/criticism replaces persecution/legal vindication. Root authorized retaining the comparison identity with an integration hold. Installed matching remains untouched. Source-led structure substitutes a reported objection for a low point and the artist's assessment for a failed effort; no hidden crisis, cause, decision or achieved transformation is supplied.
+The focus change is material and expressly proposed: early learning/criticism replaces persecution/legal vindication. Root authorized retaining the comparison identity with an integration hold. Installed matching remains untouched. Source-led structure substitutes reported objections for a low point and failed effort; no hidden crisis, cause, decision or achieved transformation is supplied.
 
 The sculpture invitation remains a modest request, not a new fictional turning scene. The endpoint is her expressed desire to learn. Seven roles remain for schema compatibility, below700–950words by the owner's authorized short-form exception.
 
 ## Checks
 
-[Candidate](../lewis_e-1862-1866-accused-acquitted-expelled-v1.candidate.json): SHA-256 `7bd7fa95fc2e873c8bdf40a646a00429f01c5d084dbbf2c9b326f83e4318342c`.
+[Candidate](../lewis_e-1862-1866-accused-acquitted-expelled-v1.candidate.json): SHA-256 `f10aced5cd02b3aa88d17c20f9c46f24a6cfde2dda2c2bd7e8731b17f88bbb02` after the primary-reading correction; 169 words.
 
 Local sentence validator: draft and in-memory publish simulation valid with0errors/0warnings. Version1, draft, review{}; old packet untouched. No human approval or integration clearance is claimed.
-

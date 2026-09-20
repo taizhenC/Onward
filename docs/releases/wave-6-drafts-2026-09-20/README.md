@@ -64,4 +64,3 @@ of eligible exact texts, resolution of the source/craft and matching decisions,
 and the existing snapshot-bound promotion workflow. Never blanket-seed this
 packet or save simulated reviewer identities. Changed prose needs a new hash and
 new reading review. No merging or publication is requested by this handoff.
-

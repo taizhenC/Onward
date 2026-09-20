@@ -235,4 +235,3 @@ Your life is not theirs.
 But a piece of this story may still sit beside you.
 
 Your worth is not decided by another person's answer.
-

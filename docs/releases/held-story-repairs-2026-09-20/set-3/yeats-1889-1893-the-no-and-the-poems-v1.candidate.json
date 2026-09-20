@@ -1,0 +1,464 @@
+{
+  "storySpecId": "yeats:1889-1893-the-no-and-the-poems:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "yeats",
+  "stageId": "1889-1893-the-no-and-the-poems",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 26,
+    "ageMax": 27,
+    "startDate": "1891",
+    "endDate": "1892",
+    "throughLine": "A remembered refused proposal, continued work on a play, and the following year's publication; no emotional cure or rejection-to-greatness cause is asserted."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Unreturned romantic attachment. Short source-led vignette authorized for owner reading, not a full seven-moment or 700–950-word story. Memoir details are bounded quotations in a scholarly article read at a third-party mirror; the complete Memoirs and a publisher-hosted article copy were not collated. Scholarly narration is identified separately. Candidate covers 1891–1892, ages 26–27, within installed 1889–1893 ages 23–28. Exact proposal month remains unestablished here. Draft and empty review metadata; no approval or publication."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Born June 13, 1865, Yeats was twenty-six in the summer 1891 proposal episode as dated by Schuchard; this candidate does not establish the exact month.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "locator": "Born: 13 June 1865.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-schuchard",
+          "locator": "Printed p. 29, proposal paragraph, dated 1891 after his June birthday. The article's exact day is not independently adopted.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-proposal",
+      "statement": "Yeats remembered sitting, holding Gonne's hand and proposing.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-schuchard",
+          "locator": "Printed p. 29, primary quotation beginning I sat there; note 23 on p. 36 identifies Memoirs (1972), p. 46.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-refusal",
+      "statement": "He remembered losing confidence, her withdrawal of her hand, refusal of marriage and request for friendship.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-schuchard",
+          "locator": "Printed p. 29, primary block quotation following the proposal; Memoirs p. 46, identified in note 23, p. 36.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-read",
+      "statement": "Schuchard narrates continued visits and reading from the unfinished play; this connecting sentence is scholarly narration, not a reproduced primary quotation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-schuchard",
+          "locator": "Printed p. 29, sentence immediately after the Memoirs refusal quotation, beginning Yeats continued.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-work",
+      "statement": "After Gonne left for Paris, he stayed in Ireland finishing the play, which he remembered as an expression of pity for her.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-schuchard",
+          "locator": "Printed pp. 29–30, paragraph ending with the primary finishing/pity excerpt and Mem 47 reference. Departure and remaining in Ireland are scholarly connective narration.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-book",
+      "statement": "The play and a group of poems were published in The Countess Kathleen and various legends and lyrics in 1892.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-volume",
+          "locator": "Author, title, imprint and physical publication record.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-dedication",
+      "statement": "The 1892 volume was dedicated to Maud Gonne.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nli",
+          "locator": "Bibliographic record vtls000257563: title, 1892 imprint and Notes field naming the dedication.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-known",
+      "statement": "William Butler Yeats was a poet and playwright awarded the Nobel Prize in Literature in 1923.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nobel",
+          "locator": "Prize year and Work section.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person-subject",
+      "kind": "person",
+      "value": "William Butler Yeats",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At twenty-six, he sat holding a woman's hand and asked her to marry him. That was how he remembered it.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-proposal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-proposal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proposal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded retrospective proposal excerpt. Memory is explicit; no room, exact day or speech is invented. Short-form exception does not claim a fully located opening scene."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In that memory, his confidence vanished as he stopped speaking. She withdrew her hand and refused to marry him. She wanted friendship.",
+      "requiredFactIds": [
+        "fact-refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Retrospective refusal excerpt, not direct access to Gonne's thoughts or a judgment of her reasons."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He read from the unfinished play while he continued to see her. He was still writing it.",
+      "requiredFactIds": [
+        "fact-read"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-read"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-read"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Scholarly narration immediately following the primary excerpt. It does not establish acceptance of her boundary or recommend continued romantic pursuit."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He stayed behind to finish the play after she returned to another country. He remembered writing with pity for her.",
+      "requiredFactIds": [
+        "fact-work"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Primary finishing/pity excerpt with explicitly identified scholarly connective narration. No separate failed writing attempt is invented to satisfy the full recipe."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The following year, the play was published with a collection of legends and poems. It was a single volume.",
+      "requiredFactIds": [
+        "fact-book"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-book"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Library publication metadata, not an acceptance-letter or delivery scene. This is a bibliographic milestone, not an emotional cure."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He dedicated the published volume to the woman who had refused to marry him. Her name was in the book.",
+      "requiredFactIds": [
+        "fact-dedication",
+        "fact-refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-dedication",
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-dedication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Owning-library dedication metadata. The dedication is not evidence that her answer changed or that he had recovered."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was William Butler Yeats.\n\nHe wrote poetry and plays.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYour worth is not decided by another person's answer.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Plain identification and non-directive permission. No artistic greatness is caused by the refusal."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Short source-led vignette, not a seven fully located moments story and not padded to 700–950 words.",
+    "Use only bounded memoir excerpts actually read through the identified scholarly intermediary; no full-edition collation is claimed.",
+    "No invented room, dialogue, proposal month, failed writing attempt, emotional recovery or rejection-to-greatness cause.",
+    "Continued contact and geographical transitions are identified scholarly narration, not claimed as newly read primary sentences."
+  ],
+  "avoidRules": [
+    "Do not frame repeated proposals or continued contact as a method that earns affection.",
+    "Do not transplant later remarks, poems or another relationship into this episode.",
+    "Do not claim writing cured rejection, that Gonne changed her answer, or that refusal caused artistic greatness.",
+    "Do not restore the cliff walk or letter-writing claims from the uncollated whole-book transcription."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-schuchard",
+      "citation": "Ronald Schuchard, The Countess Cathleen and the Revival of the Bardic Arts, The South Carolina Review 32.1 (Fall 1999), pp. 24–37. Primary memoir excerpts and clearly distinguished scholarly narration; Dolmetsch-hosted article copy, not a complete Memoirs collation.",
+      "url": "https://dolmetsch.com/024_Schuchard.pdf",
+      "locator": "Printed pp. 29–30 and note 23 on p. 36; excerpts attributed to Yeats, Memoirs, ed. Denis Donoghue (1972), pp. 46–47. Visually and textually read."
+    },
+    {
+      "sourceId": "source-volume",
+      "citation": "The Morgan Library and Museum, catalogue record for The Countess Kathleen and various legends and lyrics, T. Fisher Unwin (1892).",
+      "url": "https://www.themorgan.org/printed-books/112561",
+      "locator": "Title, author, imprint and 1892 date."
+    },
+    {
+      "sourceId": "source-nli",
+      "citation": "National Library of Ireland, holding record for The Countess Kathleen and various legends and lyrics (1892), vtls000257563. Owning library's object metadata; read through indexed catalogue text.",
+      "url": "https://catalogue.nli.ie/Record/vtls000257563",
+      "locator": "Title, author, Published / Created and Notes (dedication)."
+    },
+    {
+      "sourceId": "source-nobel",
+      "citation": "Nobel Foundation, William Butler Yeats: Facts.",
+      "url": "https://www.nobelprize.org/prizes/literature/1923/yeats/facts/",
+      "locator": "Born field; Work section identifying poetry and plays."
+    }
+  ],
+  "review": {}
+}

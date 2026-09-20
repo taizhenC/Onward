@@ -1,0 +1,1253 @@
+{
+  "storySpecId": "lewis:1960-1961-a-grief-observed:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "lewis",
+  "stageId": "1960-1961-a-grief-observed",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 61,
+    "ageMax": 62,
+    "startDate": "1960-07-13",
+    "endDate": "1961-12-31",
+    "throughLine": "After his wife's death, a widower records grief that disrupts ordinary life and belief; a clear morning memory gives temporary relief, and the grief returns."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief",
+      "serious_illness"
+    ],
+    "contentNote": "Bereavement after a spouse's cancer, bodily distress, doubt about faith, and recurrent grief. No graphic detail or self-harm content."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Lewis was sixty-one when Joy Davidman died on 13 July 1960.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-timeline",
+          "scope": "bounded",
+          "locator": "Entries 1898 and 1960: birth 29 November 1898; death of Joy 13 July 1960."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-body",
+      "statement": "At the opening of his grief notes Lewis describes repeated swallowing, yawning, restlessness and a fluttering stomach.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, opening paragraph, beginning No one ever told me."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "sensory"
+    },
+    {
+      "factId": "fact-company",
+      "statement": "He finds speech hard to take in, dreads an empty house, and wants company without being addressed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, second paragraph, beginning At other times."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-effort",
+      "statement": "Outside work, which continues much as usual, he finds even reading letters and shaving too much effort.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, paragraph beginning And no one ever told me about the laziness."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-loss",
+      "statement": "His wife has died of cancer; he cannot restore the shared life of talk, jokes, arguments and bodily companionship.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, Cancer, and cancer; Part II, paragraph beginning But I find that this question."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-belief",
+      "statement": "In desperate need he feels prayer meets silence; he fears discovering a cruel God rather than simply losing belief.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, paragraphs Meanwhile, where is God? through Not that I am (I think)."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-writing",
+      "statement": "He repeatedly returns to the notebook and questions whether the notes worsen his fixation on grief.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, paragraphs beginning Or are the boys right? and I not only live."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-purpose",
+      "statement": "Reading does not distract him enough; he believes writing some thoughts down gives him a little distance from grief.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, paragraph beginning I not only live each endless day."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-talk",
+      "statement": "He tries to tell the children about their mother, but finds their embarrassment blocks the conversation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part I, paragraph beginning I cannot talk to the children."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-reread",
+      "statement": "On first rereading the notes he is appalled by their focus on his own loss rather than his wife's.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part II, opening paragraph and I must think more about H."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-memoryfear",
+      "statement": "Less than a month after the death he fears his chosen memories will replace his wife with his own invented image.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part II, paragraphs beginning Yes, that sounds very well through The most precious gift."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-reunion",
+      "statement": "A meeting with a man unseen for ten years reveals how much his remembered image omitted.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part II, paragraphs beginning Today I had to meet a man and I'd forgotten."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-remission",
+      "statement": "He recalls hopes encouraged by diagnoses, medical images, remissions and a temporary recovery; those hopes now obstruct prayer.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part II, paragraph beginning What chokes every prayer and every hope."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-morning",
+      "statement": "One early morning he feels lighter after a tiring but healthy day, better sleep and a change to sunshine and breeze.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part III, paragraph beginning Something quite unexpected has happened."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-tentative",
+      "statement": "He tentatively attributes part of this change to physical recovery from exhaustion, without claiming one sufficient cause.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part III, paragraph beginning Something quite unexpected has happened, For one thing, I suppose."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-recall",
+      "statement": "In that lighter moment he experiences a sudden vivid recollection of his wife; he explicitly stops short of calling it a meeting.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part III, paragraph beginning And suddenly at the very moment."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-reconsider",
+      "statement": "He questions the inference that less grief means forgetting, and starts trying to understand the morning experience.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part III, Why has no one told me these things? through Such was the fact."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-setback",
+      "statement": "His plan to remember his wife with gladness fails that night as bitterness, bodily distress and tears return.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part III, paragraphs beginning But I've no business to judge them and An admirable programme."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-fourth",
+      "statement": "The fourth notebook is the last nearly empty one he can find at home; old arithmetic remains at its end.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part IV, opening paragraph."
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-limit",
+      "statement": "He resolves to stop when that notebook runs out and not buy more; he believes the writing has helped prevent collapse.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part IV, opening paragraph."
+        }
+      ],
+      "eventOrder": 20,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-process",
+      "statement": "He recognizes that grief changes, including partial returns to earlier pain, and cannot be described as one fixed state.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part IV, opening paragraph through Sometimes the surprise is the opposite one."
+        }
+      ],
+      "eventOrder": 21,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-ongoing",
+      "statement": "He takes long walks to tire himself; an old walk's recovered beauty brings fear of returning unchanged to his unmarried life.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part IV, paragraphs beginning Here, for instance through And then it would come."
+        }
+      ],
+      "eventOrder": 22,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-qualified",
+      "statement": "He reports less emptiness in thoughts of God and his wife, refuses to call the gains lasting, and denies a sudden emotional transformation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-notes",
+          "scope": "bounded",
+          "locator": "Part IV, paragraph beginning Still, there are the two enormous gains."
+        }
+      ],
+      "eventOrder": 23,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Clive Staples Lewis, known as C. S. Lewis, wrote The Chronicles of Narnia, children's fantasy books.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-timeline",
+          "scope": "bounded",
+          "locator": "1898 entry gives Clive Staples Lewis; 1950 entry records the first book in The Chronicles of Narnia."
+        }
+      ],
+      "eventOrder": 24,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-later",
+      "statement": "Lewis died on 22 November 1963 after resigning his Cambridge position that summer.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-lewis-timeline",
+          "scope": "bounded",
+          "locator": "1963 entry."
+        }
+      ],
+      "eventOrder": 25,
+      "confidence": "documented",
+      "claimKind": "event"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Clive Staples Lewis",
+      "aliases": [
+        "C. S. Lewis",
+        "Lewis"
+      ]
+    },
+    {
+      "entityId": "entity-narnia",
+      "kind": "work",
+      "value": "The Chronicles of Narnia",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At his notebook, he kept swallowing. He was sixty-one, and his wife had died. His stomach fluttered, although he did not think he was afraid. He yawned and could not settle. People speaking to him seemed hard to hear through his grief. He wanted them near him. He wanted them to speak to each other. The thought of an empty house frightened him. Even a letter could ask more effort than he could give. His work still ran much as before, but shaving no longer seemed worth the trouble. He kept swallowing.",
+      "requiredFactIds": [
+        "fact-body",
+        "fact-age",
+        "fact-loss",
+        "fact-company",
+        "fact-effort"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-body"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-loss"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-body"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-body"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-company"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-company"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-company"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-company"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-effort"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-body"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Opening renders the bodily state at the start of Part I alongside the act of writing that document. At his notebook is an editorial localization to the attested writing, not a claim to know his room, chair, or exact hour. The chapter supplies current feelings rather than a later-life memoir. Exact entry dates are not known."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The woman he wanted was dead. The life they had shared could not be brought back by thinking about it. He wanted the small things as much as anything. The talk, the jokes, the arguments, and the touch of her body were gone. He had believed in a God he could turn toward. Now, in urgent need, he felt no answer. The silence frightened him in a particular way. He was not chiefly afraid that his belief might disappear. He feared that the God he believed in might be cruel. His wife had been ill, then seemed to recover. There had been grounds for hope beyond their own wishes. Remembering that hope made prayer harder now. He could still form the questions. He could not hear an answer.",
+      "requiredFactIds": [
+        "fact-loss",
+        "fact-belief",
+        "fact-remission"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-loss"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-loss"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-loss"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-loss"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-remission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-remission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-remission"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-belief"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The shared writing moment continues. The cause is the death, not an invented religious diagnosis. Past illness is the immediate memory explicitly said to obstruct prayer in Part II; the prose does not place the death, remission and this entry in one event."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He put a thought into the notebook. Then he put down another part of what he was living through. He could not record all of it. He thought the writing gave him a little room outside the pain. Reading had not given him enough of that distance. He questioned the writing even as he returned to it. Perhaps it only kept his mind circling the same loss. The grief was there, and the thought of being in grief was there too. He set down that doubt along with the rest. The notebook held both.",
+      "requiredFactIds": [
+        "fact-writing",
+        "fact-purpose"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing",
+            "fact-purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-writing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The first action used in this narrative is writing, not a claim that this was literally his first act after bereavement. No publication motive is supplied. Questions recorded in Part I remain his doubts, not the narrator's verdict on writing."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "When he first read the notes back, he disliked what he found. They made his wife's death seem chiefly a loss to him. He tried to think more about her. That did not settle things. His mind chose which words and looks to remember. He feared that his wife was becoming someone made by those choices. She could no longer interrupt him and be herself. He met a man he had not seen in years. The real man's presence exposed the gaps in his remembered version. The meeting sharpened his fear about remembering his wife. He had also tried to talk to the children about her. Their embarrassment stopped the talk.",
+      "requiredFactIds": [
+        "fact-reread",
+        "fact-memoryfear",
+        "fact-reunion",
+        "fact-talk"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reread"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reread"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reread"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memoryfear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memoryfear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memoryfear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memoryfear"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reunion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reunion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-memoryfear",
+            "fact-reunion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Honest compression of Parts I-II. Rereading and attempts at conversation fail to settle grief. The meeting provides his own documented check on memory; it is not presented as a cure."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "One early morning, he felt lighter. The sun was out after dull, damp weather. There was a small breeze. He had slept more soundly after a tiring, healthy day. He thought his body might be recovering from exhaustion. He did not make that the whole explanation. In that less painful moment, his wife came clearly to mind. The sudden impression was so vivid that ordinary memory seemed a poor name for it. Yet he stopped short of calling it a meeting. He wrote about what had happened. He could see how easily he might have misread another grieving person. Less visible sorrow could have looked like forgetting. His experience that morning had been different. For that moment, he remembered her clearly.",
+      "requiredFactIds": [
+        "fact-morning",
+        "fact-tentative",
+        "fact-recall",
+        "fact-reconsider"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-morning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-morning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-morning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-morning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-tentative"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-tentative"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reconsider"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reconsider"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reconsider"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recall",
+            "fact-reconsider"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-recall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One particular early morning recorded in Part III. Multiple contributing conditions remain tentative. The vivid memory is a subjective experience, not an apparition claim or proof that his grief ended. The subsequent action is his written examination of this same event."
+    },
+    {
+      "role": "became",
+      "canonicalText": "That was not where the grief ended. He planned to remember her with gladness, but the plan failed that night. The bitterness, the fluttering stomach, and the tears came back. He kept writing until he reached the last nearly empty notebook in the house. Old sums filled some pages at the back. He resolved to let this book set the limit. He would not buy another for these notes. Writing had helped, but it had not made grief stand still. There were gains he was unwilling to call lasting. There were walks that hurt in a new way. The last book still had those old sums.",
+      "requiredFactIds": [
+        "fact-setback",
+        "fact-fourth",
+        "fact-limit",
+        "fact-process",
+        "fact-qualified",
+        "fact-ongoing"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-setback"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-setback"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-setback"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fourth"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fourth"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-limit",
+            "fact-process"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-qualified"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-ongoing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-fourth"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The later-night return of grief is retained after the temporary morning turn. Part IV's last notebook supplies the episode boundary. No final recovery, publication rationale, or promise is invented."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Clive Staples Lewis.\n\nHe wrote the children's fantasy books called The Chronicles of Narnia.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to make every part of an experience agree.\n\nYou are allowed to be unfinished.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject",
+        "entity-narnia"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "The full name avoids splitting initials into sentences. Literary identification only; no lifetime achievement list. Reader copy follows the fixed distance pair."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented room, gesture, dialogue, motive, or sequence.",
+    "Current observations in A Grief Observed are presented as the writer's experience, not general truths about bereavement.",
+    "The morning recollection is subjective and temporary; no supernatural event or recovery is asserted."
+  ],
+  "avoidRules": [
+    "Keep the subject anonymous until the bridge.",
+    "No equivalence, diagnosis, advice, or outcome promise for the reader.",
+    "Do not turn the writer's theological arguments into universal explanations of suffering."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-lewis-notes",
+      "citation": "C. S. Lewis, A Grief Observed (first published 1961), text of the 1964 Faber & Faber edition; Project Gutenberg Canada ebook 1311.",
+      "url": "https://www.gutenberg.ca/ebooks/lewiscs-agriefobserved/lewiscs-agriefobserved-00-h.html",
+      "locator": "Parts I-IV; bounded paragraph incipits are given with each fact."
+    },
+    {
+      "sourceId": "source-lewis-timeline",
+      "citation": "C. S. Lewis Foundation, The Life of C. S. Lewis Timeline. Institutional retrospective chronology, not a contemporaneous record.",
+      "url": "https://www.cslewis.org/resource/chronocsl/",
+      "locator": "Entries 1898, 1950, 1960 and 1963."
+    }
+  ],
+  "review": {}
+}

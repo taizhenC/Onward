@@ -1,5 +1,7 @@
 # Wave five group C — independent source and craft review
 
+Final-byte addendum: the Sanders and Shelley hashes below record this earlier review, not their later register-only revisions. The [final register check](WAVE-5-FINAL-REGISTER-CHECK.md) independently verifies the new hashes and unchanged source/craft verdicts. The original table is preserved.
+
 20 September 2026 UTC. Read the complete candidates, author research note, recipe, evidence companion, schema and local checker. Reopened the sources below rather than treating the author's report or seed as evidence. No C candidate was edited by this reviewer. The author made the requested corrections. This is agent review for later owner reading, not approval or publication authority.
 
 ## Exact reviewed snapshots

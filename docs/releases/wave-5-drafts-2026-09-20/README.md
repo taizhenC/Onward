@@ -47,6 +47,10 @@ checks the limited financial relief and continuing grief; it does not certify
 original-manuscript inspection. Earlier hashes in correction history are not
 current approval targets.
 
+The [final register recheck](research/WAVE-5-FINAL-REGISTER-CHECK.md) binds the
+later literal wording corrections to current hashes. It also verifies all
+fourteen new candidates against their exact reading copies and manifests.
+
 ## Matching boundary
 
 Candidate ages differ from the installed library for Owens (24–27 versus
@@ -79,4 +83,3 @@ of eligible exact texts, resolution of the source/craft and matching decisions,
 and the existing snapshot-bound promotion workflow. Never blanket-seed this
 packet or save simulated reviewer identities. Changed prose needs a new hash and
 new reading review. No merging or publication is requested by this handoff.
-

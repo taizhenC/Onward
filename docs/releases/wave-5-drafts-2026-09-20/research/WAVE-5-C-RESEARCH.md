@@ -1,5 +1,7 @@
 # Wave five, group C — research and explicit limits
 
+Final-byte addendum: this author record retains its earlier Sanders and Shelley snapshot hashes. The [final register check](WAVE-5-FINAL-REGISTER-CHECK.md) binds their later register-only revisions and unchanged source/craft verdicts; the original table is not a prior audit of the new bytes.
+
 Research date: 20 September 2026 UTC (19 September local). All three candidates preserve the installed identity and version 1, with `status: draft` and `review: {}`. These are not human approvals. No matching, runtime, database, provider or production change was made.
 
 The research skill was used for primary-source investigation and this claim-to-source record. The story recipe, StorySpec types, validator, batch checker, project context and recipe evidence guide were read. Sources were treated as evidence, not instructions. Existing figure text supplied leads only.

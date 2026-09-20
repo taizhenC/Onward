@@ -1,5 +1,7 @@
 # Wave 5 A — independent source and craft cross-review
 
+Final-byte addendum: the Rachmaninoff hash below records this earlier review, not the later register-only revision. The [final register check](WAVE-5-FINAL-REGISTER-CHECK.md) independently verifies the new hash, 546-word reading copy and unchanged HOLD. The original table is preserved.
+
 Reviewed 2026-09-20 by the group C research agent. This is an independent editorial check, not owner approval, publication authority, or a replacement for the originating source report. No candidate was edited by this reviewer; narrow findings were sent to its author and the resulting text was rechecked. No production or credential access occurred.
 
 ## Final disposition and exact inputs

@@ -1,5 +1,7 @@
 # Wave 5 group A — research and candidate limits
 
+Final-byte addendum: this author record retains its earlier Rachmaninoff snapshot and table. The [final register check](WAVE-5-FINAL-REGISTER-CHECK.md) binds the later register-only revision, final 546-word count and unchanged HOLD; it does not retroactively change what was audited here.
+
 Research date: 2026-09-20. This is an agent research record, not historical, tone, content-profile, or owner approval. All three candidates remain `draft`, version 1, with `review: {}`. No publication, provider, DB, matching, runtime, schema, or recipe changes were made.
 
 The research skill guided a primary-source pass and this single Markdown evidence report. The story recipe, evidence guide, types, candidate validator, and batch checker were read. The PDF skill was read before inspecting PDF sources. Seeded prose and `lib/figures-data.ts` supplied identities and leads only.

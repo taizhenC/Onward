@@ -1,0 +1,717 @@
+{
+  "storySpecId": "jones:1937-1945-the-silent-years:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "jones",
+  "stageId": "1937-1945-the-silent-years",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 6,
+    "ageMax": 14,
+    "throughLine": "A teenager's own poem is challenged; he agrees to recite it, speaks without stuttering on that occasion, and continues using poetry without a claim of cure."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "other_reviewed_flag"
+    ],
+    "contentNote": "Childhood stuttering, embarrassment and laughter from other children. Short source-led vignette authorized for owner reading, not publication. A remembered classroom encounter is interleaved with an explicitly earlier summary; no invented failed attempt or cure. Ages six to about fourteen remain approximate; matching is unchanged."
+  },
+  "facts": [
+    {
+      "factId": "j01",
+      "statement": "Jones recalled that from about age ten a teacher accepted written reports and written examinations instead of spoken answers.",
+      "sourceRefs": [
+        {
+          "sourceId": "academy",
+          "locator": "1996 interview answer beginning 'I'm still a stutterer', through 'I became a writer'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "event",
+      "subjectAgeMin": 9,
+      "subjectAgeMax": 11
+    },
+    {
+      "factId": "j02",
+      "statement": "Jones described childhood speech as embarrassing and difficult; other children laughed at his stutter in Sunday school, and he wanted to stop attending.",
+      "sourceRefs": [
+        {
+          "sourceId": "fresh",
+          "scope": "bounded",
+          "locator": "Jones segment, questions about physical inability/embarrassment and adults coaxing him to talk; answers ending with family accepting his wish to stop Sunday school."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "j05",
+      "statement": "Jones remembered enjoying quiet when people respected him, left him alone and did not probe him.",
+      "sourceRefs": [
+        {
+          "sourceId": "academy",
+          "locator": "1996 answer beginning 'Oral examinations?' and following sentence beginning 'As long as people respected'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "j06",
+      "statement": "Jones recalled writing poetry privately in high school; Donald Crouch discovered it and encouraged him to speak the words aloud.",
+      "sourceRefs": [
+        {
+          "sourceId": "time",
+          "locator": "Finding My Voice, paragraphs beginning 'Professor Crouch discovered' and 'The poem was called'",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "academy",
+          "scope": "bounded",
+          "locator": "1996 answer to 'How did that change? Was there a teacher who helped?', on encouragement to speak his written poems."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j07",
+      "statement": "Crouch read a poem and challenged Jones to prove he had written it by reciting it to the class from memory.",
+      "sourceRefs": [
+        {
+          "sourceId": "time",
+          "locator": "Finding My Voice, paragraph beginning 'Professor Crouch discovered'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j08",
+      "statement": "Jones recalled the allegation of copying as a shock; he recognized the poem's resemblance to Longfellow but said he had not stolen it.",
+      "sourceRefs": [
+        {
+          "sourceId": "fresh",
+          "locator": "Answer describing Crouch, beginning 'He one day discovered that I wrote poetry' through 'not certainly stolen'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "j09",
+      "statement": "Jones said he accepted the challenge and recited the poem because he wanted to prove he was not a plagiarist.",
+      "sourceRefs": [
+        {
+          "sourceId": "time",
+          "locator": "Finding My Voice, paragraph beginning 'Professor Crouch discovered', final two sentences",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "j10",
+      "statement": "Jones recalled standing up, reciting his poem and not stuttering.",
+      "sourceRefs": [
+        {
+          "sourceId": "academy",
+          "locator": "1996 question 'What was the poem he finally got you to read aloud?' and answer ending 'Nice surprise'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "j11",
+      "statement": "Asked what he felt at the recital, Jones declined to call it happy or pleasurable; he described shock and feeling in trouble.",
+      "sourceRefs": [
+        {
+          "sourceId": "academy",
+          "locator": "1996 question 'What came over you at that moment?' and complete answer",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "j12",
+      "statement": "Jones said that reading his poems aloud helped him speak and deal with his stutter; he did not know whether Crouch's challenge was a trick.",
+      "sourceRefs": [
+        {
+          "sourceId": "time",
+          "locator": "Finding My Voice, paragraph beginning 'The poem was called', final three sentences",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "j13",
+      "statement": "Jones described his period of rarely speaking as lasting until fourteen, without giving the recital an exact calendar date. The Fresh Air program introduction describes the period of minimal speech as ages six to fourteen; individual Sunday-school events are undated.",
+      "sourceRefs": [
+        {
+          "sourceId": "time",
+          "locator": "Finding My Voice, opening sentence and high-school poem account",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "fresh",
+          "locator": "Jones segment introduction ending 'ages of 6 and 14 when he barely spoke at all'",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event",
+      "subjectAgeMin": 6,
+      "subjectAgeMax": 14
+    },
+    {
+      "factId": "j14",
+      "statement": "Jones stated in his 2005 first-person essay that he still stuttered after a long acting career.",
+      "sourceRefs": [
+        {
+          "sourceId": "time",
+          "scope": "bounded",
+          "locator": "Opening paragraph, first two sentences: rare childhood speech and continued stuttering during his adult acting career."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "j15",
+      "statement": "James Earl Jones was an actor whose film voice roles include Darth Vader in Star Wars.",
+      "sourceRefs": [
+        {
+          "sourceId": "oscars",
+          "locator": "James Earl Jones, 2011 Governors Awards tribute, screen career and voice-role paragraphs",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "James Earl Jones",
+      "aliases": []
+    },
+    {
+      "entityId": "vader",
+      "kind": "person",
+      "value": "Darth Vader",
+      "aliases": []
+    },
+    {
+      "entityId": "film",
+      "kind": "work",
+      "value": "Star Wars",
+      "aliases": []
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He was about fourteen when his teacher challenged a poem he had written. In his memory, the teacher said it was too good to be his. He was asked to prove otherwise by reciting it before the class. The words were his own.",
+      "requiredFactIds": [
+        "j13",
+        "j07",
+        "j08"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j13",
+            "j07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One retrospective encounter; approximate age, no invented classroom furnishings or date. FOR OWNER READING — user-authorized short source-led vignette, 2026-09-20; not approval. Seven schema roles remain, but the struggle is a marked flashback, not a failed attempt invented between the challenge and recital. Exact recital date is unknown; about fourteen follows Jones's retrospective endpoint, not a dated school record. No matching data changed."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The suggestion that he had copied the poem shocked him. He recognized another poet's rhythm in it, but he had not stolen the words. His teacher was asking for a spoken answer. Speaking had been difficult and embarrassing for him.",
+      "requiredFactIds": [
+        "j08",
+        "j07",
+        "j02"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j08"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j07"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Attested shock at the accusation; prior speech difficulty is context, not an invented peak of despair. FOR OWNER READING — user-authorized short source-led vignette, 2026-09-20; not approval. Seven schema roles remain, but the struggle is a marked flashback, not a failed attempt invented between the challenge and recital. Exact recital date is unknown; about fourteen follows Jones's retrospective endpoint, not a dated school record. No matching data changed."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He accepted the challenge. He wanted to show that he had written the poem himself. He stood up before the class. He was going to speak from memory.",
+      "requiredFactIds": [
+        "j09",
+        "j10",
+        "j07"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j07",
+            "j09"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Acceptance and standing are the start of the recital, not a separate invented preparation session. FOR OWNER READING — user-authorized short source-led vignette, 2026-09-20; not approval. Seven schema roles remain, but the struggle is a marked flashback, not a failed attempt invented between the challenge and recital. Exact recital date is unknown; about fourteen follows Jones's retrospective endpoint, not a dated school record. No matching data changed."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Before this classroom encounter, speaking had not been his only way to answer. From about ten, he had been allowed to give school reports and examination answers in writing. Other children had laughed at his stutter in religious classes. He had wanted to stop attending them. Quiet was not always painful. When people respected it and left him alone, he could enjoy it. By high school, he was writing poems privately. His teacher had encouraged him to say the words aloud.",
+      "requiredFactIds": [
+        "j01",
+        "j02",
+        "j05",
+        "j06"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j01"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j02"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j05"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j06"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Explicit flashback; recurring difficulty and accommodation, not a newly fabricated unsuccessful attempt. Vignette exception to full struggle shape. FOR OWNER READING — user-authorized short source-led vignette, 2026-09-20; not approval. Seven schema roles remain, but the struggle is a marked flashback, not a failed attempt invented between the challenge and recital. Exact recital date is unknown; about fourteen follows Jones's retrospective endpoint, not a dated school record. No matching data changed."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Now he recited his poem to the class. He spoke without stuttering on that occasion. In his memory, that did not mean a simple rush of happiness. He felt shocked and in trouble. He had spoken.",
+      "requiredFactIds": [
+        "j09",
+        "j10",
+        "j11"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j09",
+            "j10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j11"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j10"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Returns to the same encounter after the marked flashback. No applause, teacher motive or emotional cure. FOR OWNER READING — user-authorized short source-led vignette, 2026-09-20; not approval. Seven schema roles remain, but the struggle is a marked flashback, not a failed attempt invented between the challenge and recital. Exact recital date is unknown; about fourteen follows Jones's retrospective endpoint, not a dated school record. No matching data changed."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He continued reading his poems aloud and found that it helped him speak. The page and the spoken words had become part of the same practice. He did not know whether his teacher's accusation had been a trick. That question stayed open.",
+      "requiredFactIds": [
+        "j12"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j12"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Bounded immediate practice summary, not a dated routine or a lifetime triumph. Continued adult stuttering remains in the fold. FOR OWNER READING — user-authorized short source-led vignette, 2026-09-20; not approval. Seven schema roles remain, but the struggle is a marked flashback, not a failed attempt invented between the challenge and recital. Exact recital date is unknown; about fourteen follows Jones's retrospective endpoint, not a dated school record. No matching data changed."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was James Earl Jones.\n\nHe was an actor who gave Darth Vader his voice in the Star Wars films.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to make every part of yourself easy for other people.\n\nYou are allowed to be quiet.",
+      "requiredFactIds": [
+        "j15"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject",
+        "vader",
+        "film"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "j15"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Own-line identity, one known-for sentence and fixed distance pair. No advice to perform or overcome a disability. FOR OWNER READING — user-authorized short source-led vignette, 2026-09-20; not approval. Seven schema roles remain, but the struggle is a marked flashback, not a failed attempt invented between the challenge and recital. Exact recital date is unknown; about fourteen follows Jones's retrospective endpoint, not a dated school record. No matching data changed."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented episode, audience reaction, emotion, room detail, medical explanation, or dialogue.",
+    "All childhood recollections remain probable; the brief memory cues identify the nature of the telling.",
+    "Quiet and writing are forms of communication, not failures requiring a triumphant speaking outcome."
+  ],
+  "avoidRules": [
+    "Do not claim he stopped all speech or spoke only to animals.",
+    "Do not claim the poem cured stuttering or that the recital felt uncomplicatedly happy.",
+    "Do not say Crouch knowingly pretended to doubt authorship; Jones said he did not know.",
+    "Do not reclassify this authorized short vignette as compliance with the full moment/length recipe; exact text still needs independent and owner review."
+  ],
+  "sources": [
+    {
+      "sourceId": "academy",
+      "citation": "James Earl Jones, Academy of Achievement interview, June 29, 1996.",
+      "locator": "Jones's own answers from school writing through recital; not the site's biographical summary Freshly reopened and bounded passages read 2026-09-20; web transcripts/text, no new audio or manuscript inspection.",
+      "url": "https://achievement.org/achiever/james-earl-jones/"
+    },
+    {
+      "sourceId": "fresh",
+      "citation": "James Earl Jones interviewed by Terry Gross, 1993; Fresh Air archive rebroadcast August 23, 2002.",
+      "locator": "Jones segment only, beginning 'I did the basics' through poetry and continued stutter; rush transcript Freshly reopened and bounded passages read 2026-09-20; web transcripts/text, no new audio or manuscript inspection.",
+      "url": "https://freshairarchive.org/segments/actor-james-earl-jones"
+    },
+    {
+      "sourceId": "time",
+      "citation": "James Earl Jones, Finding My Voice, TIME, June 12, 2005.",
+      "locator": "Opening five paragraphs Freshly reopened and bounded passages read 2026-09-20; web transcripts/text, no new audio or manuscript inspection.",
+      "url": "https://content.time.com/time/subscriber/article/0,33009,1071262,00.html"
+    },
+    {
+      "sourceId": "oscars",
+      "citation": "Academy of Motion Picture Arts and Sciences, James Earl Jones, 2011 Governors Awards.",
+      "locator": "Career tribute Freshly reopened and bounded passages read 2026-09-20; web transcripts/text, no new audio or manuscript inspection.",
+      "url": "https://www.oscars.org/governors-awards/2011/james-earl-jones"
+    }
+  ],
+  "review": {}
+}

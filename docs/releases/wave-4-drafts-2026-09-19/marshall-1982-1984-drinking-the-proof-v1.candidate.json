@@ -120,7 +120,7 @@
     },
     {
       "factId": "colleague",
-      "statement": "McGechie was also growing the bacteria and could see they were real; he encouraged Marshall.",
+      "statement": "McGechie was also growing the bacteria and could see they were real; he encouraged Marshall and said the work had a future.",
       "sourceRefs": [
         {
           "sourceId": "interview",
@@ -807,12 +807,10 @@
     },
     {
       "role": "turning_point",
-      "canonicalText": "In the conversation about the letter, his colleague offered encouragement. He also contacted someone who could help arrange a place at a different meeting. The young doctor's work was accepted there. His own later account gives the practical steps behind that new opening. One colleague supplied a contact. Another arranged for him to present. A travel grant helped make the trip possible. The paper rejected at home now had somewhere to be heard. He could take his work to that meeting. There was a place for the talk.",
+      "canonicalText": "In his later account, his colleague answered with encouragement. The colleague was growing the bacteria too. He could see that they were real. He thought the work had a future. This was support from someone examining the same problem. It was not proof that every claim was right. He had heard an encouraging answer.",
       "requiredFactIds": [
         "colleague",
-        "call",
-        "europe",
-        "reject"
+        "study-result"
       ],
       "optionalFactIds": [],
       "entityIds": [],
@@ -831,7 +829,7 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "call"
+            "colleague"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -840,7 +838,7 @@
           "sentenceIndex": 2,
           "treatment": "historical_claim",
           "factIds": [
-            "call"
+            "colleague"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -849,7 +847,7 @@
           "sentenceIndex": 3,
           "treatment": "historical_claim",
           "factIds": [
-            "europe"
+            "colleague"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -858,7 +856,7 @@
           "sentenceIndex": 4,
           "treatment": "historical_claim",
           "factIds": [
-            "europe"
+            "colleague"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -867,7 +865,7 @@
           "sentenceIndex": 5,
           "treatment": "historical_claim",
           "factIds": [
-            "europe"
+            "study-result"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -876,35 +874,7 @@
           "sentenceIndex": 6,
           "treatment": "historical_claim",
           "factIds": [
-            "europe"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "reject",
-            "call"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "europe"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 9,
-          "treatment": "historical_claim",
-          "factIds": [
-            "call"
+            "colleague"
           ],
           "interpretationIds": [],
           "quoteIds": []
@@ -913,11 +883,11 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Documented turn is practical acceptance enabled by McGechie/Skirrow and travel support. HOLD: the call, acceptance and grant were not established as one uninterrupted encounter; do not imply instantaneous logistics. Later recollections remain probable."
+      "sourceNote": "The turn is the encouragement Marshall remembered receiving during the McGechie conversation. It is not a new bodily reaction, guaranteed vindication, or a claim that travel logistics happened in that encounter. Memory remains probable. Subsequent practical arrangements are compressed in became."
     },
     {
       "role": "became",
-      "canonicalText": "He traveled to the meeting. During that trip, another group also found the bacteria in a patient's sample. More people were working on the question. But the following year still brought rejected papers and experiments that failed. He also carried out a risky experiment on himself and became ill. The result added evidence that the bacteria could inflame the stomach. It did not establish that he had given himself an ulcer. He recovered from the acute illness. By the end of the year, he had funding for a controlled treatment study. He moved hospitals to reach enough patients for it. There was another study to do.",
+      "canonicalText": "His later autobiography describes the arrangements that followed. His colleague supplied a contact. Another researcher arranged a presentation at a European meeting. A travel grant helped make the trip possible. He traveled to the meeting. During that trip, another group also found the bacteria in a patient's sample. More people were working on the question. But the following year still brought rejected papers and experiments that failed. He also carried out a risky experiment on himself and became ill. The result added evidence that the bacteria could inflame the stomach. It did not establish that he had given himself an ulcer. He recovered from the acute illness. By the end of the year, he had funding for a controlled treatment study. He moved hospitals to reach enough patients for it. There was another study to do.",
       "requiredFactIds": [
         "europe",
         "replication",
@@ -944,13 +914,49 @@
           "sentenceIndex": 1,
           "treatment": "historical_claim",
           "factIds": [
-            "replication"
+            "europe"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
           "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "europe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "replication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
           "treatment": "historical_claim",
           "factIds": [
             "replication",
@@ -960,7 +966,7 @@
           "quoteIds": []
         },
         {
-          "sentenceIndex": 3,
+          "sentenceIndex": 7,
           "treatment": "historical_claim",
           "factIds": [
             "difficult"
@@ -969,7 +975,7 @@
           "quoteIds": []
         },
         {
-          "sentenceIndex": 4,
+          "sentenceIndex": 8,
           "treatment": "historical_claim",
           "factIds": [
             "self-experiment",
@@ -979,52 +985,52 @@
           "quoteIds": []
         },
         {
-          "sentenceIndex": 5,
-          "treatment": "historical_claim",
-          "factIds": [
-            "finding"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 6,
-          "treatment": "historical_claim",
-          "factIds": [
-            "finding"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 7,
-          "treatment": "historical_claim",
-          "factIds": [
-            "finding"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
-          "sentenceIndex": 8,
-          "treatment": "historical_claim",
-          "factIds": [
-            "trial"
-          ],
-          "interpretationIds": [],
-          "quoteIds": []
-        },
-        {
           "sentenceIndex": 9,
           "treatment": "historical_claim",
           "factIds": [
-            "trial"
+            "finding"
           ],
           "interpretationIds": [],
           "quoteIds": []
         },
         {
           "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "finding"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "finding"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
           "treatment": "historical_claim",
           "factIds": [
             "trial"
@@ -1036,7 +1042,7 @@
       "personalizationZones": [
         "none"
       ],
-      "sourceNote": "Endpoint end1984. Original 1985 abstract supports illness/gastritis and limits, not dosing or treatment advice. No instant vindication. No quantity, method, protocol or claim of deliberate poisoning. Recovery follows abstract's temporary illness, not seed's simplistic self-cure claim."
+      "sourceNote": "Later arrangements are not staged inside the earlier conversation. The 2008 interview recalls McGechie calling; the autobiography describes supplied contact details. The drama uses the latter account, without asserting both as one instant action. Endpoint end1984. Original 1985 abstract supports illness/gastritis and limits, not dosing or treatment advice. No instant vindication. No quantity, method, protocol or claim of deliberate poisoning. Recovery follows abstract's temporary illness, not seed's simplistic self-cure claim."
     },
     {
       "role": "bridge",

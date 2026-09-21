@@ -1,0 +1,77 @@
+{
+  "figureKey": "owens",
+  "displayName": "Jesse Owens",
+  "birthYear": 1913,
+  "deathYear": 1980,
+  "stageId": "1936-1939-after-the-exhibitions",
+  "stageLabel": "The exhibition complaints, suspension, and uncertain work",
+  "ageMin": 22,
+  "ageMax": 26,
+  "themes": [
+    "burnout",
+    "dispossession",
+    "public_failure"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "An accomplished athlete faced suspension after missed exhibitions; he and fellow athletes also complained publicly of exhaustion and missing expenses.",
+    "Recognition did not remove his need for workable conditions and reliable income.",
+    "He took later paid work and opened a business, but the business ended in debt and personal bankruptcy."
+  ],
+  "facets": {
+    "emotionalCore": "Achievement coexisted with reported exhaustion, inadequate expenses, and subsequent financial difficulty.",
+    "decisionShape": "He voiced complaints about the tour and later undertook paid work and a business, without a documented single liberating decision.",
+    "triggerEvent": "After missed exhibition appearances, the sporting association suspended him; a contemporary dispatch also reported the athletes' complaints.",
+    "agencyState": "He could report the conditions and seek paid work, but could not control the association's ruling or make later business income secure."
+  },
+  "biographicalFacts": "Jesse Owens, born September 12, 1913, was twenty-two in August 1936. A London dispatch printed in The Denison Press on August 17 reported his AAU suspension after missed exhibitions in Sweden. It attributed complaints to Owens and other athletes about exhausting appearances, insufficient consideration, and missing expense money. These are reported complaints, not a transcript proving each promoter's conduct. Ohio State University Libraries records an entertainer contract in January 1937, a dry-cleaning business in 1938, and personal bankruptcy in 1939 after that business entered debt. This episode runs from August 1936 through 1939, ages twenty-two to twenty-six. It concerns conditions, lost eligibility and uncertain income, not an established permanent prohibition on all racing. His four Olympic gold medals identify him but did not guarantee economic security. The story claims neither a particular horse race nor a later financial recovery.",
+  "sources": [
+    "Ohio State University Libraries, 'Owens' Legacy: a National Icon'; owning archive's secondary chronology. https://library.osu.edu/jesse-owens-a-lasting-legend/owens-legacy-a-national-icon (Business paragraph (1938 dry cleaners; 1939 bankruptcy), later PR work and speaking, and Blackthink/discrimination paragraph.)",
+    "The Denison Press, August 17, 1936, p.1, 'AAU Suspends Owens, Misses An Exhibition'; contemporary newspaper report. https://texashistory.unt.edu/ark:/67531/metapth737480/m1/1/ (Headline and London dispatch, OCR lines463–480.)",
+    "Ohio State University Libraries, Jesse Owens timeline. Owning-institution secondary chronology. https://library.osu.edu/timeline (1913birth entry;1936Olympic medals;1937entertainer contract;1938business and1939bankruptcy entries. Freshly read entire relevant1913–1940range.)"
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "sourceNotes": "Contemporary reported event, not a claim that he is shown reading the news or standing at a race.",
+      "text": "At twenty-two, his absence from an exhibition became a newspaper story. He had missed scheduled appearances in another country."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "sourceNotes": "Attributed complaint, not invented despair or a single located low scene.",
+      "text": "He and other athletes said that promoters had made them perform when they were exhausted. They said too little consideration had been given to them."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "sourceNotes": "Their reported complaint is the response container; no exact press encounter, dialogue or earliest act is supplied.",
+      "text": "They also complained that they had been sent to appearances without money for expenses. They had said so publicly."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "sourceNotes": "STRUCTURAL EXCEPTION: reported conditions, not a fabricated failed personal attempt.",
+      "text": "The report described both the missed exhibitions and the complaints about the tour. The athletes said necessary money had been lacking."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "sourceNotes": "Adverse institutional transition, not an uplifting inner conversion. Does not import an unverified horse-race refusal.",
+      "text": "The athletic association suspended him after the missed appearances. The decision had gone against him."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "sourceNotes": "Secondary owning-archive chronology, openly later and bounded through1939; no claim that the dispatch caused these choices.",
+      "text": "He later signed a contract to work as an entertainer. He also opened a dry-cleaning business. Within about a year, the business was in debt, and he filed for bankruptcy. Paid work remained uncertain."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "sourceNotes": "Identity only here; no promised financial recovery or moral about being a nice person.",
+      "text": "His name was Jesse Owens.\n\nHe won four gold medals at the Olympics.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to have needs beyond your achievements."
+    }
+  ]
+}

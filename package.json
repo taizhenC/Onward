@@ -37,6 +37,7 @@
     "check-entry-telemetry": "tsx scripts/check-entry-telemetry.ts",
     "check-intake-experience": "tsx scripts/check-intake-experience.ts",
     "check-fiction-special": "tsx scripts/check-fiction-special.ts",
+    "check-retellings": "tsx scripts/check-retellings.tsx",
     "check-story-batch": "tsx scripts/check-story-batch.ts",
     "check-core-accessibility": "tsx scripts/check-core-accessibility.ts",
     "check-auth-telemetry": "tsx scripts/check-auth-telemetry.ts",

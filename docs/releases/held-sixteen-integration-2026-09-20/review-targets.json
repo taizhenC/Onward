@@ -1,0 +1,302 @@
+{
+  "kind": "held-sixteen-integration-review-v1",
+  "status": "draft-review-only",
+  "humanApproval": null,
+  "servingChanges": false,
+  "preparedDate": "2026-09-20",
+  "setSizes": [
+    9,
+    7
+  ],
+  "qualification": "Source-grounded editorial proposals, not installed matching, production publication, or evidence that existing release gates pass. Poitier and Rudolph have coarse comparison envelopes, not precise episode dates.",
+  "targets": [
+    {
+      "figureKey": "berlin_i",
+      "name": "Irving Berlin",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/berlin_i-1907-the-first-song-v1.candidate.json",
+      "sha256": "b906f514a0b6584f911734b558b30fd42bcb20b3c8d4c99e0f60190232960fd4",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/berlin_i.stage-proposal.json",
+      "proposalSha256": "0a469e886c4149b90632c2f1630598317e4d181fbe602b167126e91c3015f78f",
+      "storySpecId": "berlin_i:1907-the-first-song:v1",
+      "ageRange": [
+        18,
+        19
+      ],
+      "words": 172,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-1/berlin_i-1901-1907-bowery-to-first-song-v1.candidate.json",
+      "priorCandidateSha256": "ff6485e927508dde0c500d52a24771160fb0a712e27670f11da22a902486c764"
+    },
+    {
+      "figureKey": "carver",
+      "name": "George Washington Carver",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/carver-1890-1891-laundry-and-college-v1.candidate.json",
+      "sha256": "03716d035b9228da8c891a2de1cc48a7345f75de7a75da4b0ad6b1912ed5ec0d",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/carver.stage-proposal.json",
+      "proposalSha256": "68eadf05b8b6592c8f67fd682d0326f922ce14bda4b1b84211a09702dd6b4599",
+      "storySpecId": "carver:1890-1891-laundry-and-college:v1",
+      "ageRange": [
+        24,
+        27
+      ],
+      "words": 269,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-1/carver-1885-1891-turned-away-to-the-sod-house-v1.candidate.json",
+      "priorCandidateSha256": "9abb888ac9c7e60aa88da18902957a4abcea919fd207aa25402a6c5ed4dbd328"
+    },
+    {
+      "figureKey": "christie",
+      "name": "Agatha Christie",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/christie-1927-1928-the-difficult-book-v1.candidate.json",
+      "sha256": "adeffa913e0b57f0dcba1edbe847ee1fbcd4da5487a29c72e48192f781ed7aa5",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/christie.stage-proposal.json",
+      "proposalSha256": "22fd27d5291aae5428a6b7c18d8ca4ddff98b625e232fc971833bd9973aa0877",
+      "storySpecId": "christie:1927-1928-the-difficult-book:v1",
+      "ageRange": [
+        36,
+        38
+      ],
+      "words": 159,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-1/christie-1926-1928-the-year-that-broke-v1.candidate.json",
+      "priorCandidateSha256": "87d2af9609f6e5e5fdf26e5a6ae7989412a798d69781efe574c079a953949852"
+    },
+    {
+      "figureKey": "coltrane",
+      "name": "John Coltrane",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/coltrane-1957-learning-with-monk-v1.candidate.json",
+      "sha256": "cc1b2e23cb1bc150f719b667718bc9e01b425ecb016b43a75a6dd2c5e232f4c1",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/coltrane.stage-proposal.json",
+      "proposalSha256": "0ca1d92f849a485f513893064b8fcf200ddc8ab7b172eb001bbcd803327bd275",
+      "storySpecId": "coltrane:1957-learning-with-monk:v1",
+      "ageRange": [
+        30,
+        31
+      ],
+      "words": 198,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-1/coltrane-1957-fired-and-clean-v1.candidate.json",
+      "priorCandidateSha256": "bf0122b7ddf9fc1c167e753fde5cf9d0a6ddb96867a198d1f555abd790bca241"
+    },
+    {
+      "figureKey": "lamarr",
+      "name": "Hedy Lamarr",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lamarr-1942-the-patent-paperwork-v1.candidate.json",
+      "sha256": "f3a69510988e8d15df2c745272c11574487e9bc30b4302335bd6cf9a45cbdeb5",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lamarr.stage-proposal.json",
+      "proposalSha256": "2603048a1df34abf86a794ca82e544edc00bd8a886755e398cb0321d89bb9615",
+      "storySpecId": "lamarr:1942-the-patent-paperwork:v1",
+      "ageRange": [
+        27,
+        27
+      ],
+      "words": 182,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-1/lamarr-1940-1942-the-shelved-invention-v1.candidate.json",
+      "priorCandidateSha256": "adbd1220583e46526ca9c376a2aa7a6189478048db9ffbee7464f839bb69301c"
+    },
+    {
+      "figureKey": "lee",
+      "name": "Frances Glessner Lee",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lee-1934-library-dedication-v1.candidate.json",
+      "sha256": "a0d3738d7a7ff5a2acfa460da73c23fb5d23866a560ac568263680ee2fe37dba",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lee.stage-proposal.json",
+      "proposalSha256": "2ea8fd068dcc5e079d6628246da70b1eabd38c2559fedaba984ecdfca3768785",
+      "storySpecId": "lee:1934-library-dedication:v1",
+      "ageRange": [
+        56,
+        56
+      ],
+      "words": 199,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/lee-1934-library-dedication-v1.candidate.json",
+      "priorCandidateSha256": "167fecc91c618f5b25ecf29b2d7231408cea8a0606c7c2b9f25dc7d5b95a92ae"
+    },
+    {
+      "figureKey": "lewis_e",
+      "name": "Edmonia Lewis",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lewis_e-1864-requesting-useful-criticism-v1.candidate.json",
+      "sha256": "dd4d96567a72738f21d9f112e036620bae9a2527b2fe653319399bf36659fb38",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lewis_e.stage-proposal.json",
+      "proposalSha256": "fff7a31ee166352209486901c909d382edfed181db92c7e15c327185ae49b3a9",
+      "storySpecId": "lewis_e:1864-requesting-useful-criticism:v1",
+      "ageRange": [
+        19,
+        20
+      ],
+      "words": 169,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/lewis_e-1862-1866-accused-acquitted-expelled-v1.candidate.json",
+      "priorCandidateSha256": "f10aced5cd02b3aa88d17c20f9c46f24a6cfde2dda2c2bd7e8731b17f88bbb02"
+    },
+    {
+      "figureKey": "lindgren",
+      "name": "Astrid Lindgren",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lindgren-1929-1930-sharing-her-sons-care-v1.candidate.json",
+      "sha256": "be4202e97347ec28c73e10e638029d4ff2fbd68c71abb45ecac6b81c294344ea",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lindgren.stage-proposal.json",
+      "proposalSha256": "28e6edbcd98ee8907cc0181a349ed3483e512813fd0f6427fe5c28310b4bf796",
+      "storySpecId": "lindgren:1929-1930-sharing-her-sons-care:v1",
+      "ageRange": [
+        22,
+        22
+      ],
+      "words": 187,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/lindgren-1926-1929-the-secret-son-v1.candidate.json",
+      "priorCandidateSha256": "819e57ba77c05e53c9cb257093177097d31ecbc65b831f4c3d9b9ff84968fe79"
+    },
+    {
+      "figureKey": "mcclintock",
+      "name": "Barbara McClintock",
+      "set": 1,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-1/mcclintock-1961-comparison-with-open-questions-v1.candidate.json",
+      "sha256": "d6b91589849b6e30e94970f3daa08f81ebb877ac0ed9d7a2ce1846f1ecc1f445",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/mcclintock.stage-proposal.json",
+      "proposalSha256": "e7b65a304a9a11eae7c490f73c3f138a414322b9532030d16e904cbc54cf9510",
+      "storySpecId": "mcclintock:1961-comparison-with-open-questions:v1",
+      "ageRange": [
+        59,
+        59
+      ],
+      "words": 167,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/mcclintock-1951-1960s-dismissed-and-right-v1.candidate.json",
+      "priorCandidateSha256": "fc3367efdb497b623de208716b2c788b619849979a362252afacf56c4aa217b9"
+    },
+    {
+      "figureKey": "owens",
+      "name": "Jesse Owens",
+      "set": 2,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-2/owens-1936-1939-after-the-exhibitions-v1.candidate.json",
+      "sha256": "428060c545b9351f424385ab8cdd45f41875aefa77d59a30c7798f011cf53a60",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/owens.stage-proposal.json",
+      "proposalSha256": "a81a870d6ada805036a5b99ba2d43df6da5e42612f5c825da751ac5fd7647bab",
+      "storySpecId": "owens:1936-1939-after-the-exhibitions:v1",
+      "ageRange": [
+        22,
+        26
+      ],
+      "words": 171,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/owens-1936-1940-after-the-gold-v1.candidate.json",
+      "priorCandidateSha256": "f57ddbcd2469dd3333cfbcc457eb79f748a44957b86d95b14f1f3943a00be455"
+    },
+    {
+      "figureKey": "poitier",
+      "name": "Sidney Poitier",
+      "set": 2,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-2/poitier-early-auditions-and-trial-training-v1.candidate.json",
+      "sha256": "03d0eae3b03deaa271e389ba82657ce21e5edc1806f3ae6f541861e3e1274093",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/poitier.stage-proposal.json",
+      "proposalSha256": "1a59ed77f61b77828736e9e15a8db395a7fde2f85b06d631e97744c25c803446",
+      "storySpecId": "poitier:early-auditions-and-trial-training:v1",
+      "ageRange": [
+        15,
+        19
+      ],
+      "words": 241,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/poitier-1943-1945-dishwasher-to-second-audition-v1.candidate.json",
+      "priorCandidateSha256": "3c54bfdcf0ba0c290910aa94735b04e53158331a8923aa8d67e09d48a61337f2"
+    },
+    {
+      "figureKey": "rachmaninoff",
+      "name": "Sergei Rachmaninoff",
+      "set": 2,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rachmaninoff-1900-1901-letters-and-unfinished-work-v1.candidate.json",
+      "sha256": "6b738cfdc6cf2a11a8a8191a13d5ab48b2f63852d2a004c2965b402cbeca083f",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rachmaninoff.stage-proposal.json",
+      "proposalSha256": "e4a58e62e5d4cfe5c246279a041b476a94b4154faebe83d9dc7c5213a3af72a1",
+      "storySpecId": "rachmaninoff:1900-1901-letters-and-unfinished-work:v1",
+      "ageRange": [
+        27,
+        28
+      ],
+      "words": 306,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json",
+      "priorCandidateSha256": "a371de051b717fb362518b4086111ca0e3bad49bf1f5460f535b6a849ccf613e"
+    },
+    {
+      "figureKey": "rogers",
+      "name": "Fred Rogers",
+      "set": 2,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rogers-1969-speaking-for-childrens-television-v1.candidate.json",
+      "sha256": "46f0d7fdb5896f478d08d49d598ae06c2426301b1f6e5118e6dcbb8c5d47bfdb",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rogers.stage-proposal.json",
+      "proposalSha256": "b85312a8b74969c196923b98a3318d7e87525740ac49be7557f6989adcde0d78",
+      "storySpecId": "rogers:1969-speaking-for-childrens-television:v1",
+      "ageRange": [
+        41,
+        41
+      ],
+      "words": 200,
+      "canonicalTextChanged": true,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/rogers-1936-1941-latrobe-childhood-v1.candidate.json",
+      "priorCandidateSha256": "d358b949cfdecb3bfe442c585ead4c48ab4c2d3a4f03f3700fea23a53702e252"
+    },
+    {
+      "figureKey": "rudolph",
+      "name": "Wilma Rudolph",
+      "set": 2,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rudolph-childhood-basketball-to-track-v1.candidate.json",
+      "sha256": "aa4eafe1c1e6745d571d28a2f11545b952e416c361cee4992213c5062705aa54",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rudolph.stage-proposal.json",
+      "proposalSha256": "ff0a58bfd732e05886d42014087f39144dd8b039e8c795efd6b1d981f036e047",
+      "storySpecId": "rudolph:childhood-basketball-to-track:v1",
+      "ageRange": [
+        5,
+        16
+      ],
+      "words": 181,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-2/rudolph-1945-1953-the-brace-years-v1.candidate.json",
+      "priorCandidateSha256": "568a212edf004166befc2c906082a12e15710def864babd4951fce1a846480e5"
+    },
+    {
+      "figureKey": "rustin",
+      "name": "Bayard Rustin",
+      "set": 2,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rustin-1963-organizing-the-march-v1.candidate.json",
+      "sha256": "88da687db5bbcccdf85458060d38fe1229c98ae929f85775e4363f90d904e1eb",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rustin.stage-proposal.json",
+      "proposalSha256": "f8c35ce406cbed0bc684940e65f01603caac88dee92e16545608b99e4521db36",
+      "storySpecId": "rustin:1963-organizing-the-march:v1",
+      "ageRange": [
+        51,
+        51
+      ],
+      "words": 268,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-3/rustin-1963-the-man-in-the-back-v1.candidate.json",
+      "priorCandidateSha256": "90fea5d3d5b618f27628cfb29b47cc0e2e2943de9debbb7a5e6e5ca9ebf110f6"
+    },
+    {
+      "figureKey": "wang",
+      "name": "Vera Wang",
+      "set": 2,
+      "path": "docs/releases/held-sixteen-integration-2026-09-20/set-2/wang-1989-1990-the-bridal-store-v1.candidate.json",
+      "sha256": "c54f6b4282246bcb06babff2a175174182f6f65dae57d8b2b2c4202efdeab4a2",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/wang.stage-proposal.json",
+      "proposalSha256": "bab9b30fb3ef2a0d259c876a7f71962d14bb182cf5acc9d5eefaab86b8c9b133",
+      "storySpecId": "wang:1989-1990-the-bridal-store:v1",
+      "ageRange": [
+        39,
+        41
+      ],
+      "words": 213,
+      "canonicalTextChanged": false,
+      "priorCandidatePath": "docs/releases/held-story-repairs-2026-09-20/set-3/wang-1987-1990-passed-over-to-the-pivot-v1.candidate.json",
+      "priorCandidateSha256": "f107eb042c83cf33a892d7a2ee1b45fdbcd0c1717da999a8f4d97022f6dda166"
+    }
+  ]
+}

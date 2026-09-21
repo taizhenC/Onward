@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { RETELLING_DISCLOSURE, RETELLING_LABEL, type Retelling } from "@/lib/retelling-types";
 

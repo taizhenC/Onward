@@ -2,6 +2,8 @@
   "kind": "keyword-route-proposal-v1",
   "status": "review-only-not-installed",
   "additions": {
-    "young child": ["new_parent_fear"]
+    "young child": ["new_parent_fear"],
+    "useful criticism": ["finding_voice"],
+    "constructive criticism": ["finding_voice"]
   }
 }

@@ -97,12 +97,51 @@ disclosures or account/session identifiers are committed.
 
 ## Worker refresh and live reader verification
 
-**Pending at this commit.** Database publication is complete. A normal release
-PR merge and successful Production deployment after the ten publication times
-must refresh the load-once matching-stage cache. The bounded canary will then
-sample Butler, Coleman, Sanders and Yeats using existing, unmodified adult
-evaluation fixtures and ordinary reader/progress routes. Ten-of-ten database
-verification must not be described as ten-of-ten public matching verification.
+**Complete.** [PR #139](https://github.com/taizhenC/Onward/pull/139) passed all
+current applicable checks and merged at
+`95782012827c4a3759d076cab0bb7b9a541a8d16` (`2026-09-21T00:02:18Z`).
+Production deployment `6559256036` for that exact merge succeeded at
+`2026-09-21T00:03:17Z`, after all ten publications, refreshing the load-once
+matching-stage cache. Deployment URL:
+[onward-pyw7j9b60](https://onward-pyw7j9b60-taizhencs-projects.vercel.app).
+
+At `2026-09-21T00:04:19.604Z`, the bounded canary completed against
+[onwardapp.me](https://onwardapp.me/), using four existing, unmodified adult
+evaluation fixtures through ordinary public routes:
+
+| Story | Complete passages | Chunks and successful acknowledgements | Signed recovery steps |
+|---|---|---|---|
+| Butler | 7 | 9 | 1 |
+| Coleman | 7 | 9 | 0 |
+| Sanders | 7 | 7 | 0 |
+| Yeats | 7 | 7 | 0 |
+
+All four reader pages returned HTTP 200. All 28 passages, 32 chunks and
+32 progress acknowledgements passed, including complete endings and exact
+whitespace-normalized canonical prose. The run used exactly one new anonymous
+guest, four initial matches and one signed recovery continuation: five total
+match requests, within its fixed budget. It used no retries, identity/IP
+rotation, forced matching, direct session insertion or operator account.
+The exact temporary guest and its four stories were deleted through the normal
+owner-confirmed CSRF account-deletion route; cleanup was confirmed.
+
+The saved sanitized canary receipt SHA-256 is
+`7fce84b9e8b2a8035842fe8b971727808444d37b9d2b92fbf11c648888a19954`.
+The fresh post-canary database audit at `2026-09-21T00:04:39.334Z` again proved
+**34 valid historical publications, zero quarantine**, all ten complete
+reviewed publication snapshots intact, all sixteen held rows/stages unchanged,
+and all 24 prior publications/stages unchanged. Its SHA-256 is
+`858695a37c907bdc83302de6b04495a47f56a520d2c9b8d5c5de918d01a81e64`.
+All 22 readiness checks passed again with the same disclosed process-local
+probe-only telemetry-key qualification above.
+
+Coverage is **10/10 database publication verification and 4/10 sampled public
+reader/progress verification**, not ten-of-ten live matching. Charles, Jones
+and Sullivan have under-18 evaluation fixtures; those ages were not changed
+and the adult-only intake boundary was not bypassed. The live sample does not
+claim fresh-intake Auth bootstrap, visual layout, youth intake, full matching
+evaluation, or recipe/deployment metadata validation through reader responses.
+Deployment identity was independently checked through GitHub deployment status.
 
 ## Remaining holds and rollback
 

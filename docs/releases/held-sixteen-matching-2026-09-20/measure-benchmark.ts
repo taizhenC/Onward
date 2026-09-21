@@ -17,7 +17,9 @@ const hash = (path: string) => createHash("sha256").update(readFileSync(path)).d
 const mode = process.argv[2];
 assert(process.argv.length === 3 && ["legacy-current", "legacy-overlay", "draft-baseline", "draft-proposal"].includes(mode!),
   "Usage: measure-benchmark.ts legacy-current|legacy-overlay|draft-baseline|draft-proposal");
-const freeze = json(resolve(here, "label-freeze.json"));
+const freezePath = resolve(here, "label-freeze.json");
+assert.equal(hash(freezePath), "7c89510d4c45b759e018977c2469677e5698d95b01933c283fb1044edd2be08d");
+const freeze = json(freezePath);
 assert.equal(freeze.kind, "review-only-matching-label-freeze-v1");
 assert.equal(freeze.humanApproved, false);
 for (const [file, expectedHash] of Object.entries(freeze.files)) {

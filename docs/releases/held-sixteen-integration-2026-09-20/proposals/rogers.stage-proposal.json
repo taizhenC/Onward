@@ -1,0 +1,75 @@
+{
+  "figureKey": "rogers",
+  "displayName": "Fred Rogers",
+  "birthYear": 1928,
+  "deathYear": 2003,
+  "stageId": "1969-speaking-for-childrens-television",
+  "stageLabel": "Explaining children's television at the 1969 Senate hearing",
+  "ageMin": 41,
+  "ageMax": 41,
+  "shapeSentences": [
+    "A person explains why quiet, caring work deserves attention from a decision-maker.",
+    "Concrete examples and an account of the work receive a favorable response, without guaranteeing the final decision."
+  ],
+  "facets": {
+    "emotionalCore": "The value of caring work has to be explained in a funding decision.",
+    "decisionShape": "Describe ordinary human needs and the work that serves them.",
+    "triggerEvent": "A public hearing asks what the program does and why it merits support.",
+    "agencyState": "Able to explain the work; unable to decide the appropriation alone."
+  },
+  "biographicalFacts": "At a Senate communications hearing in spring 1969, forty-one-year-old Fred Rogers described his daily children's program. The archive labels May 1 as broadcast date but describes hearings April 29–30; no exact event day is asserted. He recalled earlier funding running out and support from people in several cities. He explained the value of ordinary childhood feelings as television material, and said he hosted, performed puppets, and wrote music and scripts. Senator Pastore responded favorably; Rogers offered a children's song about choices when angry. This account does not establish the final appropriation or claim one witness alone secured it. It does not describe childhood bullying, private stage fright, a failed career, or treatment.",
+  "themes": [
+    "finding_voice",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "sources": [
+    "https://americanarchive.org/catalog/cpb-aacip-516-t72794201n",
+    "https://www.misterrogers.org/videos/pastore/",
+    "https://www.pbs.org/video/our-neighbor-fred-rogers-qmsiqr/"
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "At forty-one, a television host explained his daily program to a senator at a public hearing. The senator asked how long it lasted. Half an hour, every day.",
+      "sourceNotes": "Dated public exchange, not an invented room or private reaction."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "He recalled making a hundred programs before the money ran out. People in several cities had helped the work continue. He described that support.",
+      "sourceNotes": "An earlier funding limit, explicitly recollected during the hearing; not a personal rock bottom."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He described children's ordinary feelings as material worthy of attention on television. Anger between family members could become a story. Violence was not required.",
+      "sourceNotes": "Paraphrase of his stated argument; no present-day clinical claim."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "The senator asked whether he narrated the program, and he explained his several jobs. He hosted, performed the puppets, and wrote the music and scripts. He described the work itself.",
+      "sourceNotes": "The slot records explanation, not an invented failed attempt or working condition."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The senator said the testimony had given him goosebumps, though he described himself as tough. The host thanked him for taking an interest in this kind of communication. The reply was favorable.",
+      "sourceNotes": "A reported verbal response, not proof of an internal transformation."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "He offered a children's song about having choices when anger came. The senator praised it and spoke favorably about the funding. That was the senator's response.",
+      "sourceNotes": "No song lyrics. A favorable statement is not an appropriation or proof this witness alone secured one."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Fred Rogers.\n\nHe hosted a daily television program for children.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYour quiet work is allowed to matter.",
+      "sourceNotes": "Own-line identity; permission does not promise a receptive decision-maker."
+    }
+  ]
+}

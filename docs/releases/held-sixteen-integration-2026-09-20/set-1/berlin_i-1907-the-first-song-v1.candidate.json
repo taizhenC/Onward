@@ -1,0 +1,449 @@
+{
+  "schemaVersion": "story-spec-v1-2026-07",
+  "storySpecId": "berlin_i:1907-the-first-song:v1",
+  "figureKey": "berlin_i",
+  "stageId": "1907-the-first-song",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 18,
+    "ageMax": 19,
+    "throughLine": "A short source-led first-publication vignette: remembered café competition prompted a collaboration; the published song brought unexpectedly little money. No invented personal low, helper chain or recovery."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "FOR OWNER REVIEW, not approved. User-authorized short source-led vignette. The replacement stage covers first-song collaboration and small return in 1907 at 18–19; the matcher proposal uses the same episode and range. Competitive pressure is not a documented inner crisis, and no separate failed intermediate attempt is invented. The old childhood-abandonment stage must not serve this candidate."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Irving Berlin was born May 11, 1888. His first published song appeared in 1907, when he was eighteen or nineteen. The candidate uses approximately nineteen, without claiming an exact composition or publication month.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-official",
+          "locator": "Concise Biography, paragraphs beginning 'Irving Berlin was born' and 'In 1907'.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-sheet",
+          "locator": "1907 copyright on first music page (image 077-181-001); cover credits I. Berlin.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 1
+    },
+    {
+      "factId": "fact-cafe",
+      "statement": "In his attributed 1934 interview answer, Berlin said he wrote his first song in collaboration with the piano player at the café where he was a singing waiter.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-radio-stars",
+          "locator": "Printed pp. 32–33, PDF p. 27: Berlin's attributed first-song answer starts in the final paragraph of p. 33 left column and continues at the top of p. 33 right column.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 2
+    },
+    {
+      "factId": "fact-rival",
+      "statement": "Berlin's attributed 1934 answer says competition prompted the collaboration: the singing waiter and pianist at the café across the street had written a hit.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-radio-stars",
+          "locator": "Printed pp. 32–33, PDF p. 27: Berlin's attributed first-song answer starts in the final paragraph of p. 33 left column and continues at the top of p. 33 right column.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 3
+    },
+    {
+      "factId": "fact-publication",
+      "statement": "Marie from Sunny Italy was published in 1907 by Jos. W. Stern & Co.; the original cover and music page credit I. Berlin with words and M. Nicholson with music. The score is for piano and voice. The official biography identifies it as his first published song.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sheet",
+          "locator": "JHU Levy Collection Box 077, Item 181: original cover 077-181-000, first music page 077-181-001; catalog date, instrumentation and plate number 5682-3.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-official",
+          "locator": "Concise Biography, paragraph beginning 'In 1907'.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 9
+    },
+    {
+      "factId": "fact-proceeds",
+      "statement": "Berlin's attributed 1934 answer says the first song was not a hit, brought a profit of thirty-odd cents, and surprised him by this poor return. This recollected joint-profit figure is not equated with other accounts of individual royalties.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-radio-stars",
+          "locator": "Printed pp. 32–33, PDF p. 27: Berlin's attributed first-song answer starts in the final paragraph of p. 33 left column and continues at the top of p. 33 right column.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 10
+    },
+    {
+      "factId": "fact-legacy",
+      "statement": "Berlin wrote songs for performers, musical theatre and films.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-official",
+          "locator": "Concise Biography, paragraphs beginning 'Over the next five decades', 'He was equally at home' and 'Among the Hollywood movie musical classics'.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 13
+    }
+  ],
+  "quotes": [],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Irving Berlin",
+      "aliases": [
+        "Berlin",
+        "Israel Beilin",
+        "Israel Baline"
+      ]
+    },
+    {
+      "entityId": "entity-nicholson",
+      "kind": "person",
+      "value": "Mike Nicholson",
+      "aliases": [
+        "Nicholson"
+      ]
+    },
+    {
+      "entityId": "entity-stern",
+      "kind": "person",
+      "value": "Joseph Stern",
+      "aliases": [
+        "Stern"
+      ]
+    }
+  ],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He was a singing waiter, about nineteen, when he worked on his first published song. The café's pianist worked with him.",
+      "requiredFactIds": [
+        "fact-age",
+        "fact-cafe"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age",
+            "fact-cafe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cafe"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Summary, not a located composition day. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In his memory, competition between the cafés pushed him toward writing a song of his own. A rival song was already a hit.",
+      "requiredFactIds": [
+        "fact-rival"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-rival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-rival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Competitive impetus, not a documented emotional low; explicit structural exception. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He and the pianist made a song together, with words by one and music by the other. He supplied the words.",
+      "requiredFactIds": [
+        "fact-cafe",
+        "fact-publication"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cafe",
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Actual collaboration, summarized without invented mechanics. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The result was a collaboration, not a song he had made entirely alone. His partner supplied the music.",
+      "requiredFactIds": [
+        "fact-publication"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "No separate failed intermediate effort is documented in the retained primary account; this role is a brief division-of-work summary. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Their song was published, with both men's contributions credited on the sheet music. It was his first publication.",
+      "requiredFactIds": [
+        "fact-publication"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-publication"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Documented publication, not an invented acceptance encounter. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The song did not become a hit, and he remembered being surprised by its small return. The profit was less than a dollar.",
+      "requiredFactIds": [
+        "fact-proceeds"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proceeds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-proceeds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Remembered result, no claim of continued employment or a cure. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Irving Berlin.\n\nHe wrote songs for singers, musical theatre, and films.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to value a beginning that brought little reward.\n\nYou are allowed to need other people.",
+      "requiredFactIds": [
+        "fact-legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission, not advice or a promised reward. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented notation problem, helper request, rejection, publisher meeting, physical fear or private loneliness.",
+    "The remembered profit is under a dollar; do not equate differing accounts of joint profit and individual royalties.",
+    "The contemporaneous score/catalog supports publication and credits, not the detailed composition scene."
+  ],
+  "avoidRules": [
+    "Do not invent a second attempt to fill the struggle role.",
+    "Do not make publication a living wage, emotional cure or instant fame.",
+    "User-authorized short source-led format exception; seven roles do not imply seven attested moments."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-sheet",
+      "citation": "Marie from Sunny Italy. Words I. Berlin, music M. Nicholson. Jos. W. Stern & Co., 1907. Johns Hopkins University, Lester S. Levy Sheet Music Collection, Box 077, Item 181.",
+      "url": "https://levysheetmusic.mse.jhu.edu/collection/077/181",
+      "locator": "Catalog reopened 2026-09-20: date 1907; Words I. Berlin / Music M. Nicholson; publisher. Original cover/music images had been inspected in the earlier packet; this repair freshly checks the owning catalog, not a new image rendering."
+    },
+    {
+      "sourceId": "source-official",
+      "citation": "Irving Berlin official website, Concise Biography.",
+      "url": "https://www.irvingberlin.com/biography",
+      "locator": "Concise Biography, birth May 11, 1888; 1907 first song; Broadway and film-writing paragraphs. Reopened and read 2026-09-20. Owning institutional context, not a contemporaneous scene record."
+    },
+    {
+      "sourceId": "source-radio-stars",
+      "citation": "Bland Mulholland, Love Songs for Sale, Radio Stars, vol. 4 no. 5, August 1934, pp. 32–33 (continued p. 90).",
+      "url": "https://www.worldradiohistory.com/Archive-Radio-Stars/Radio-Stars-1934-08.pdf",
+      "locator": "Printed p. 33, PDF p. 27, attributed answer beginning at foot of left column and continuing atop right column, from first-song collaboration through poor profit. Preservation scan, visually re-read 2026-09-20 from the previously downloaded original PDF render. Fresh web fetch returned 403; no new interview notes/audio inspected. Surrounding reporter psychology is excluded."
+    }
+  ],
+  "review": {}
+}

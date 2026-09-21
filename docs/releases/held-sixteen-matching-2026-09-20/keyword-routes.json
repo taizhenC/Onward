@@ -6,7 +6,9 @@
     "useful criticism": ["finding_voice"],
     "constructive criticism": ["finding_voice"],
     "barely compose": ["self_doubt"],
-    "struggling to compose": ["self_doubt"]
+    "struggling to compose": ["self_doubt"],
+    "another activity": ["keep_going"],
+    "different sport": ["keep_going"]
   },
   "extensions": {
     "audition": ["creative_dismissal"]

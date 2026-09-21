@@ -113,3 +113,11 @@ to be interpreted for emotional similarity. Mentioning or rejecting a name is
 not, by itself, a Fiction Request.
 
 Avoid: `high-confidence match`. Requesting a title establishes no emotional fit.
+
+## Fictionalized Retelling
+
+An authored work of fiction using a real historical person's name, with invented
+scenes or events openly distinguished from documented background. It is not a
+historical match or an account of what that person actually experienced.
+
+Avoid: `true story`, `documented episode`, or `historical match`.

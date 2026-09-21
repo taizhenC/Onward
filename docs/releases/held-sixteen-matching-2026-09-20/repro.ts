@@ -46,6 +46,8 @@ const overlay = FIGURE_STAGES.map(stage => proposalMap.get(stage.figureKey) ?? s
 assert.equal(overlay.length, 50);
 const config = requireFromHere("../../../lib/match-config") as typeof import("../../../lib/match-config");
 const originalRoutes = structuredClone(config.STUB_KEYWORD_MAP);
+const configPath = resolve(root, "lib/match-config.ts");
+const originalConfigHash = hash(configPath);
 // Refuse order-dependent results: the real parser must not already be compiled.
 assert(!requireFromHere.cache[requireFromHere.resolve("../../../lib/keyword-match")]);
 if (routeMode === "proposal") {
@@ -56,6 +58,11 @@ if (routeMode === "proposal") {
     assert(!Object.hasOwn(originalRoutes, phrase), "Addition would overwrite existing route: " + phrase);
     assert(Array.isArray(themes) && themes.length > 0 && themes.every(t => typeof t === "string"));
     config.STUB_KEYWORD_MAP[phrase] = [...themes];
+  }
+  for (const [phrase, themes] of Object.entries(routes.extensions ?? {})) {
+    assert(Object.hasOwn(originalRoutes, phrase), "Extension needs an existing route: " + phrase);
+    assert(Array.isArray(themes) && themes.length > 0 && themes.every(t => typeof t === "string" && !originalRoutes[phrase]!.includes(t)));
+    config.STUB_KEYWORD_MAP[phrase] = [...originalRoutes[phrase]!, ...themes];
   }
 }
 const { selectRerankPool } = requireFromHere("../../../lib/matching") as typeof import("../../../lib/matching");
@@ -79,6 +86,7 @@ const results = selectedProbes.map((probe: { caseId: string; age: number; input:
   };
 });
 const failures = results.filter((result: { survives: boolean }) => !result.survives);
+assert.equal(hash(configPath), originalConfigHash, "Diagnostic must not modify the runtime route file");
 console.log(JSON.stringify({
   kind: "synthetic-retrieval-development-check", routeMode, cases: results.length,
   failures: failures.map((r: { target: string }) => r.target), results,

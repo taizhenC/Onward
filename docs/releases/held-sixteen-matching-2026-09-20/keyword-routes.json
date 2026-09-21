@@ -2,13 +2,10 @@
   "kind": "keyword-route-proposal-v1",
   "status": "review-only-not-installed",
   "additions": {
-    "young child": ["new_parent_fear"],
     "useful criticism": ["finding_voice"],
     "constructive criticism": ["finding_voice"],
     "barely compose": ["self_doubt"],
-    "struggling to compose": ["self_doubt"],
-    "another activity": ["keep_going"],
-    "different sport": ["keep_going"]
+    "struggling to compose": ["self_doubt"]
   },
   "extensions": {
     "audition": ["creative_dismissal"]

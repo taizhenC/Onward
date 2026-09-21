@@ -1,0 +1,75 @@
+{
+  "figureKey": "lewis_e",
+  "displayName": "Edmonia Lewis",
+  "birthYear": 1844,
+  "deathYear": 1907,
+  "stageId": "1864-requesting-useful-criticism",
+  "stageLabel": "A young sculptor asks for useful criticism, not racial condescension",
+  "ageMin": 19,
+  "ageMax": 20,
+  "shapeSentences": [
+    "A young artist asked for criticism that could help her learn instead of praise based on her race.",
+    "She had sought advice from an established sculptor and described his kindness.",
+    "She invited a writer to look at her first bust and point out its faults, without a claim that the visit occurred."
+  ],
+  "facets": {
+    "emotionalCore": "Wanting to be treated as a learner whose work deserved useful criticism, not racial condescension.",
+    "decisionShape": "Asking for faults to be identified rather than accepting praise she said would not help her learn.",
+    "triggerEvent": "A writer's conversation with her at a reception about her sculpture.",
+    "agencyState": "She could seek advice and invite scrutiny of her work; the record does not establish whether the requested critique took place."
+  },
+  "biographicalFacts": "In a letter published in The Liberator on 19 February 1864, Lydia Maria Child reported meeting Edmonia Lewis, whom she described as about twenty, at a reception. Lewis told Child that her brother had brought her to Boston to learn sculpture and that she sought Edward Brackett's advice because his bust of John Brown led her to expect sympathy. She described him as kind. Child reported that Lewis invited her to see her first bust, copied from a head of Voltaire. Lewis objected to praise based on her race and asked for the work's faults to be identified so that she could learn. The letter records this invitation and request, not an accomplished studio visit, resulting revision, acquittal, expulsion, or later vindication. The Allen Memorial Art Museum gives her birth year as 1844; ages 19–20 are approximate and consistent with Child's description.",
+  "themes": [
+    "social_constraint",
+    "finding_voice"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "A writer met her at a reception and asked about her sculpture. She was about twenty.",
+      "sourceNotes": "A contemporary reported conversation, not a reconstructed studio visit. Child supplied approximate age; metadata19–20 reflects the museum1844 anchor, not an exact known birthday."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "She told the writer that some people praised her because she was Black. That was not the kind of praise she wanted.",
+      "sourceNotes": "STRUCTURAL EXCEPTION: expressed objection in the same conversation, not a fabricated low or humiliation scene. Child's own condescending framing is not adopted as truth."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She described how she had gone to an established sculptor for advice. He had made a bust of an abolitionist. She thought he might be a friend to her people.",
+      "sourceNotes": "An explicitly recounted earlier action, not a claim that this followed the reception or an invented cause from the poisoning case. Names withheld until identity bridge."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "She had made a first bust by copying another sculpted head. She said that praise was not good for her.",
+      "sourceNotes": "STRUCTURAL EXCEPTION: her objection to unhelpful praise, not an assessment that the bust was bad or an invented failed trial."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "She invited the writer to visit her room and look at the bust. She asked her to point out its faults.",
+      "sourceNotes": "The invitation and request are reported; no completed visit, supplied criticism or resulting revision is asserted."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "She said that hearing about the faults would teach her something. She had also spoken of the sculptor's kindness. She wanted useful criticism.",
+      "sourceNotes": "Limited endpoint is her stated wish in the conversation, not proof of improvement, later success or emotional transformation."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Edmonia Lewis.\n\nShe was a sculptor who made portraits in marble.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to want useful feedback.",
+      "sourceNotes": "Own-line identity reveal and non-prescriptive permission."
+    }
+  ],
+  "sources": [
+    "Lydia Maria Child, Letter from L. Maria Child, The Liberator, 19 February 1864. https://fair-use.org/the-liberator/1864/02/19/the-liberator-34-08.pdf Printed page 31, column 3, from One of the most interesting individuals through She wanted me: Child's reception conversation, Lewis's account of Brackett and invitation to inspect her bust. Freshly downloaded public scan and visually reread the complete conversation column; no manuscript inspected.",
+    "Allen Memorial Art Museum, Oberlin College, Bust of James Peck Thomas, object 2002.3. Owning institution's later contextual account. https://allenartcollection.oberlin.edu/objects/12270/bust-of-james-peck-thomas Artist/Maker and More Information paragraphs 1-5."
+  ]
+}

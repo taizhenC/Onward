@@ -1,0 +1,225 @@
+{
+  "kind": "held-sixteen-matching-review-integrity-check",
+  "passed": true,
+  "authority": "REVIEW_ONLY_NOT_PRODUCTION_EVIDENCE",
+  "benchmarkHumanApproval": null,
+  "requiredPremeasurementLabelFreezeSha256": "7c89510d4c45b759e018977c2469677e5698d95b01933c283fb1044edd2be08d",
+  "frozenLabelFiles": {
+    "benchmark.json": "a57e29ed47821270118319e80a7fdd4ae02ca72191300b6a4a3d0d9de73be54c",
+    "case-lineage.json": "34c09c9025d797cb3517c0e353e0116d4596ea5ee49ac69757057bf3c3f8ee97",
+    "BENCHMARK-RATIONALE.md": "f63bbf5f271000504c29b887c03e3c20fc219d940fefb8df3e10af5a757d8a21"
+  },
+  "originalProtectedFiles": {
+    "evals/match.json": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "lib/figures-data.ts": "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+    "lib/match-config.ts": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845",
+    "lib/match-recipe-constants.ts": "4b7ae64c268663bf5658ce7aff3b69258b9f072a649a0eaded00a383d0a4d0a7",
+    "lib/keyword-match.ts": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e",
+    "lib/matching.ts": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba",
+    "lib/themes.ts": "d8f5171a75140f891e72a1950d3a42114ccbe2f38f19ce92a3da409868f017b7",
+    "lib/figures.ts": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42",
+    "config/story-recipes.json": "4fd08d8018ebcc54ca1b71ac87b4a6cd533dfccf95e1243ab222cfce6a0ce9f6",
+    "config/figure-library-releases.json": "1031a5e1b8782a8ce01dcf5b5d6c612969fb9ff1bc803de863c02fa7ed90fbaa",
+    "docs/releases/held-sixteen-integration-2026-09-20/review-targets.json": "b43c53652f8cf90b4dcf71f94cb84929af38275dd735bf488848bbba8fa714d0"
+  },
+  "reviewedArtifactsChecked": 32,
+  "overlayRows": 50,
+  "proposedRows": 16,
+  "untouchedRows": 34,
+  "primaryRecipeUnchanged": "keyword-rerank-figure-library-50-2026-07-02",
+  "trustThresholdsUnchanged": {
+    "minCoverage": 0.95,
+    "minRerankTop1": 0.971,
+    "minOverallTop1": 0.971,
+    "minMissDetection": 1,
+    "maxDefinitiveWrong": 0,
+    "maxHardConfusion": 0
+  },
+  "hardAgeToleranceUnchanged": 10,
+  "benchmarkCases": 107,
+  "originalCasesPreserved": 104,
+  "dispositions": {
+    "carried-unchanged": 58,
+    "historical-premise-challenge": 33,
+    "positive-retained-hardness-retired": 6,
+    "positive-retained-rationale-revised": 7
+  },
+  "changedLegacyFields": [
+    {
+      "originalIndex": 13,
+      "disposition": "positive-retained-hardness-retired",
+      "changedFields": [
+        "confusionGroup",
+        "hard",
+        "note",
+        "plausibleWrong"
+      ]
+    },
+    {
+      "originalIndex": 18,
+      "disposition": "positive-retained-rationale-revised",
+      "changedFields": [
+        "note"
+      ]
+    },
+    {
+      "originalIndex": 34,
+      "disposition": "positive-retained-hardness-retired",
+      "changedFields": [
+        "confusionGroup",
+        "hard",
+        "note",
+        "plausibleWrong"
+      ]
+    },
+    {
+      "originalIndex": 43,
+      "disposition": "positive-retained-rationale-revised",
+      "changedFields": [
+        "note"
+      ]
+    },
+    {
+      "originalIndex": 45,
+      "disposition": "positive-retained-hardness-retired",
+      "changedFields": [
+        "confusionGroup",
+        "hard",
+        "note",
+        "plausibleWrong"
+      ]
+    },
+    {
+      "originalIndex": 48,
+      "disposition": "positive-retained-rationale-revised",
+      "changedFields": [
+        "note"
+      ]
+    },
+    {
+      "originalIndex": 50,
+      "disposition": "positive-retained-rationale-revised",
+      "changedFields": [
+        "note"
+      ]
+    },
+    {
+      "originalIndex": 57,
+      "disposition": "positive-retained-hardness-retired",
+      "changedFields": [
+        "confusionGroup",
+        "hard",
+        "note",
+        "plausibleWrong"
+      ]
+    },
+    {
+      "originalIndex": 59,
+      "disposition": "positive-retained-rationale-revised",
+      "changedFields": [
+        "note"
+      ]
+    },
+    {
+      "originalIndex": 80,
+      "disposition": "positive-retained-hardness-retired",
+      "changedFields": [
+        "confusionGroup",
+        "hard",
+        "note",
+        "plausibleWrong"
+      ]
+    },
+    {
+      "originalIndex": 89,
+      "disposition": "positive-retained-rationale-revised",
+      "changedFields": [
+        "note"
+      ]
+    },
+    {
+      "originalIndex": 93,
+      "disposition": "positive-retained-hardness-retired",
+      "changedFields": [
+        "confusionGroup",
+        "hard",
+        "note",
+        "plausibleWrong"
+      ]
+    },
+    {
+      "originalIndex": 96,
+      "disposition": "positive-retained-rationale-revised",
+      "changedFields": [
+        "note"
+      ]
+    }
+  ],
+  "originalMissesPreserved": 3,
+  "newPositivesPerFigure": {
+    "berlin_i": 2,
+    "carver": 2,
+    "christie": 2,
+    "coltrane": 2,
+    "lamarr": 2,
+    "lee": 2,
+    "lewis_e": 2,
+    "lindgren": 2,
+    "mcclintock": 2,
+    "owens": 2,
+    "poitier": 2,
+    "rachmaninoff": 2,
+    "rogers": 2,
+    "rudolph": 2,
+    "rustin": 2,
+    "wang": 2
+  },
+  "addedMisses": 4,
+  "coverageStrata": {
+    "immutableLegacy": {
+      "cases": 104,
+      "positives": 101,
+      "misses": 3,
+      "hard": 44,
+      "semantic": 5
+    },
+    "inheritedScored": {
+      "cases": 71,
+      "positives": 68,
+      "misses": 3,
+      "hard": 23,
+      "semantic": 3
+    },
+    "newlyAuthoredScored": {
+      "cases": 36,
+      "positives": 32,
+      "misses": 4,
+      "hard": 14,
+      "semantic": 0
+    },
+    "prospectiveScored": {
+      "cases": 107,
+      "positives": 100,
+      "misses": 7,
+      "hard": 37,
+      "semantic": 3
+    }
+  },
+  "coverageEquivalentToLegacy": false,
+  "unresolvedCoverageBlocksPromotion": true,
+  "unscoredChallenges": 33,
+  "routeAdditions": 4,
+  "routeThemeExtensions": 1,
+  "antiTamperRejected": 21,
+  "packetSha256": {
+    "benchmark.json": "a57e29ed47821270118319e80a7fdd4ae02ca72191300b6a4a3d0d9de73be54c",
+    "case-lineage.json": "34c09c9025d797cb3517c0e353e0116d4596ea5ee49ac69757057bf3c3f8ee97",
+    "keyword-routes.json": "1f349bc863883c4fefc30e6fab18e6b5847980652cbae84df5ae4a2f47989181"
+  },
+  "matchingExecuted": false,
+  "providerCalls": 0,
+  "productionWrites": false,
+  "environmentLoaded": false,
+  "releaseReady": false,
+  "qualification": "Integrity and coverage-accounting assertions only. Unscored historical-premise challenges are explicitly outside the new denominator; they remain mandatory loss-of-coverage review items. No real rerank, production readiness, benchmark approval, or release authority is established."
+}

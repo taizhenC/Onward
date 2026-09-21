@@ -1,0 +1,2896 @@
+{
+  "schemaVersion": 1,
+  "draftVersion": "held-sixteen-coverage-migration-v1",
+  "status": "draft-unapproved",
+  "authorship": {
+    "matcherResultsSeen": false,
+    "humanApproved": false,
+    "providerEvaluated": false
+  },
+  "legacy": {
+    "path": "evals/match.json",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "caseCount": 104,
+    "objectDigestEncoding": "SHA256 UTF-8 JSON.stringify(original parsed object)"
+  },
+  "counts": {
+    "scored": 107,
+    "inheritedScored": 71,
+    "newScored": 36,
+    "unscoredLegacyChallenges": 33,
+    "dispositions": {
+      "carried-unchanged": 58,
+      "historical-premise-challenge": 33,
+      "positive-retained-hardness-retired": 6,
+      "positive-retained-rationale-revised": 7
+    }
+  },
+  "entries": [
+    {
+      "originalIndex": 0,
+      "originalCaseSha256": "bc9fbce68a4745d064ed29af581180913ce174c4527565e4b01a6eee367c3189",
+      "originalCase": {
+        "age": 28,
+        "feeling": "I keep getting rejected and I don't know if I should keep trying",
+        "expect": "butler",
+        "note": "known-good (smoke): creative dismissal + keep-going"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-000"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 1,
+      "originalCaseSha256": "3378cb1f930242b965c992daf65714975b5d9b5ea4040560357b6260c48dc9d6",
+      "originalCase": {
+        "age": 21,
+        "feeling": "I escaped and don't know who I am",
+        "expect": "douglass",
+        "note": "known-good (smoke): escape + self-invention"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-001"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 2,
+      "originalCaseSha256": "78b847a9654dc883d8c6a78f0be469bcc3f72bdaccadc73956237c8544ea3ef8",
+      "originalCase": {
+        "age": 52,
+        "feeling": "I'm stuck in the wrong life and don't know how to leave",
+        "expect": "lee",
+        "note": "known-good (smoke): late start + social constraint"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+      "challenge": {
+        "id": "challenge-002",
+        "age": 52,
+        "feeling": "I'm stuck in the wrong life and don't know how to leave",
+        "retiredFigure": "lee",
+        "assertions": [
+          "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 3,
+      "originalCaseSha256": "8177da46657fc5e203d2abd789506f5fdb9cc63af214f6968ec9837363abbab7",
+      "originalCase": {
+        "age": 27,
+        "feeling": "I just had my first child and I'm terrified I'll pass on my own father's temper",
+        "expect": "angelou",
+        "note": "converted: new-parent terror is angelou's territory; the 'father's temper' flavor is adjacent (her fear was youth/inadequacy, not repeating violence) - a fit the reranker judges. Age 27 vs her 16-19 window means the new_parent_fear signal must beat the soft age penalty"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-003"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 4,
+      "originalCaseSha256": "3879dfe1389279a070e68bc15c9f2a1bda0dd3a065bf6f5c0818b5fe31c6f9fe",
+      "originalCase": {
+        "age": 52,
+        "feeling": "My husband of thirty years died last spring and the silence in the house is unbearable",
+        "expect": "lewis",
+        "note": "converted from miss once grief was covered (lewis); age 52 sits 8y below lewis's 60-62 window, so grief signal must beat the soft age penalty"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-004"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 5,
+      "originalCaseSha256": "2b13235f05091ef5c119a51a6ffa8a03a54342122d75f140472f66b5a9c7ed6e",
+      "originalCase": {
+        "age": 22,
+        "feeling": "my best friend and i grew apart this year, and i don't know what to do about a friendship that technically didn't end, it just faded",
+        "expect": "miss",
+        "note": "friendship drift - no figure covers this; keeps miss-calibration honest (replaced the gambling miss once addiction coverage grew: wilson/coltrane)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-005"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 6,
+      "originalCaseSha256": "07d8044be2220565a2f82a1a4456b3559b4ee173b9ad26da59da9fc1d93554fb",
+      "originalCase": {
+        "age": 27,
+        "feeling": "I've poured years into my work with nothing to show for it, and lately I just want to walk away and start over as someone new",
+        "expect": "butler",
+        "hard": true,
+        "plausibleWrong": "douglass",
+        "confusionGroup": "persistence-vs-reinvention",
+        "note": "'start over as someone new' pulls douglass's self-invention; the core is creative perseverance (butler)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-006"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 7,
+      "originalCaseSha256": "b5c129920d3358e1055efb78d2a102c0edb6d93990ce1b025e608060ab745228",
+      "originalCase": {
+        "age": 24,
+        "feeling": "I escaped the people who controlled every part of my life, and now I'm alone in a new place with no idea who I am without them",
+        "expect": "douglass",
+        "hard": true,
+        "plausibleWrong": "butler",
+        "confusionGroup": "persistence-vs-reinvention",
+        "note": "young self-invention after leaving (douglass); the only in-pool alternative at this age is butler"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-007"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 8,
+      "originalCaseSha256": "d9d25ad1c5ec54c42c9f20c01ef0c4be2b64df09e0b3ad1f964dc79aa623c3c7",
+      "originalCase": {
+        "age": 11,
+        "feeling": "the other kids pick on me at school and i don't have any friends",
+        "expect": "rogers",
+        "note": "known-good: bullied + solitude at a child's age"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+      "challenge": {
+        "id": "challenge-008",
+        "age": 11,
+        "feeling": "the other kids pick on me at school and i don't have any friends",
+        "retiredFigure": "rogers",
+        "assertions": [
+          "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 9,
+      "originalCaseSha256": "6ab4b6b470b25745d3d7b10e7094ef76d38f119f5cc3a8af8d7300c4bbe7687e",
+      "originalCase": {
+        "age": 38,
+        "feeling": "i'm almost forty and i still have no idea what i'm supposed to do with my life",
+        "expect": "child",
+        "note": "known-good: late_start + self_doubt, midlife aimlessness"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-009"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 10,
+      "originalCaseSha256": "4e00b941fd60b777ec14d6d1e9825145e9d5a944d7bba5a55d9706cf337e2f5a",
+      "originalCase": {
+        "age": 61,
+        "feeling": "the person i loved most is gone and i don't know how to believe in anything anymore",
+        "expect": "lewis",
+        "note": "known-good: grief + self_doubt (faith shaken), at-age"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-010"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 11,
+      "originalCaseSha256": "3de06fe8d36e1f3ec3fdb45bfff8b6a85c50707df468873bd180b46a31afa832",
+      "originalCase": {
+        "age": 13,
+        "feeling": "i'm too scared to talk in class because i'm ashamed of how i sound when i speak",
+        "expect": "jones",
+        "note": "known-good: shame + finding_voice, child age"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-011"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 12,
+      "originalCaseSha256": "989b9dc92b3de0f4cec43c23fac8dd555deba3cd8ea00469ca43d4c7a81bcb19",
+      "originalCase": {
+        "age": 12,
+        "feeling": "i feel completely alone, the other kids treat me like there's something wrong with me, and i just want to disappear",
+        "expect": "rogers",
+        "hard": true,
+        "plausibleWrong": "jones",
+        "confusionGroup": "lonely-child",
+        "note": "isolation/being-rejected at child age; rogers (bullied+solitude) is the fit, jones (shame+silence) is the same-age decoy"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+      "challenge": {
+        "id": "challenge-012",
+        "age": 12,
+        "feeling": "i feel completely alone, the other kids treat me like there's something wrong with me, and i just want to disappear",
+        "retiredFigure": "rogers",
+        "assertions": [
+          "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 13,
+      "originalCaseSha256": "d26386bdd00cb93de5863f3008715275e567b34dfbf638ad9ce4d2b31b2121a0",
+      "originalCase": {
+        "age": 13,
+        "feeling": "i've basically stopped talking because every time i open my mouth i'm scared they'll laugh at me",
+        "expect": "jones",
+        "hard": true,
+        "plausibleWrong": "rogers",
+        "confusionGroup": "lonely-child",
+        "note": "shame-driven silence (jones); rogers (being laughed at / bullied) is the same-age decoy"
+      },
+      "disposition": "positive-retained-hardness-retired",
+      "newCaseIds": [
+        "legacy-013"
+      ],
+      "changedFields": [
+        "hard",
+        "plausibleWrong",
+        "confusionGroup",
+        "note"
+      ],
+      "reason": "Jones's speech-related shame/silence positive is retained. The adult Rogers testimony cannot be a same-age child-bullying confusion twin, so the old hard designation is retired, not scored as an easy hard success."
+    },
+    {
+      "originalIndex": 14,
+      "originalCaseSha256": "4d141bff8da836a496330741b8ac0520f3a6afcf926b57c0b0e4436dbda03228",
+      "originalCase": {
+        "age": 13,
+        "feeling": "i was told i'd never walk again and i'm trying not to give up on my body",
+        "expect": "rudolph",
+        "note": "known-good: disability + quiet_defiance + keep_going"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement supports childhood brace distress, limited team participation and trying another sport. It does not document being told never to walk again, medical defiance or a victory over people who wrote her off.",
+      "challenge": {
+        "id": "challenge-014",
+        "age": 13,
+        "feeling": "i was told i'd never walk again and i'm trying not to give up on my body",
+        "retiredFigure": "rudolph",
+        "assertions": [
+          "The replacement supports childhood brace distress, limited team participation and trying another sport. It does not document being told never to walk again, medical defiance or a victory over people who wrote her off.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 15,
+      "originalCaseSha256": "6c3be772fa06e28f8276abc8f4b541c99622e5892f71e7606a3363c4737ba8f0",
+      "originalCase": {
+        "age": 18,
+        "feeling": "i just had a baby way too young and i'm terrified i'm going to fail him",
+        "expect": "angelou",
+        "note": "known-good: new_parent_fear + self_doubt, teen mother"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-015"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 16,
+      "originalCaseSha256": "8cf2f3019aed5e3c4da64cfe0f9fa6b2c21a813b28ccdb2829797ec2abf93bbf",
+      "originalCase": {
+        "age": 26,
+        "feeling": "i was humiliated in front of everyone and now i can't create at all, i think i have no talent",
+        "expect": "rachmaninoff",
+        "note": "known-good: public_failure + creative_dismissal"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+      "challenge": {
+        "id": "challenge-016",
+        "age": 26,
+        "feeling": "i was humiliated in front of everyone and now i can't create at all, i think i have no talent",
+        "retiredFigure": "rachmaninoff",
+        "assertions": [
+          "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 17,
+      "originalCaseSha256": "3ccc80283d4498add44e432167adcac49ccb18815f9503177fc030d1d8f694fe",
+      "originalCase": {
+        "age": 27,
+        "feeling": "i got sick with something incurable and had to move back home and leave the life i was building",
+        "expect": "oconnor",
+        "note": "known-good: illness, forced surrender of the planned life"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-017"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 18,
+      "originalCaseSha256": "805f1ceddcc531bd93450e172898aea2e08686582abbeecf27a085e03bdf6adf",
+      "originalCase": {
+        "age": 27,
+        "feeling": "i've worked so hard at my craft and it keeps getting rejected and i don't know if i should keep going",
+        "expect": "butler",
+        "hard": true,
+        "plausibleWrong": "rachmaninoff",
+        "confusionGroup": "creative-perseverance",
+        "note": "quiet ongoing rejection (butler) vs one public collapse (rachmaninoff)"
+      },
+      "disposition": "positive-retained-rationale-revised",
+      "newCaseIds": [
+        "legacy-018"
+      ],
+      "changedFields": [
+        "note"
+      ],
+      "reason": "Ongoing external rejection and the question of persistence favor Butler. The revised Rachmaninoff episode is a plausible creative-difficulty neighbor, but its foreground is perceived loss of ability, unfinished work and requesting time, not recurrent publisher rejection."
+    },
+    {
+      "originalIndex": 19,
+      "originalCaseSha256": "7a51d4bfce69ff36402147d26d33e7805b523bc7702b31e80965e418101d9b7e",
+      "originalCase": {
+        "age": 25,
+        "feeling": "my big project failed publicly and i was humiliated, and i haven't been able to create since",
+        "expect": "rachmaninoff",
+        "hard": true,
+        "plausibleWrong": "butler",
+        "confusionGroup": "creative-perseverance",
+        "note": "one public, humiliating collapse (rachmaninoff) vs butler's quiet persistence"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+      "challenge": {
+        "id": "challenge-019",
+        "age": 25,
+        "feeling": "my big project failed publicly and i was humiliated, and i haven't been able to create since",
+        "retiredFigure": "rachmaninoff",
+        "assertions": [
+          "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 20,
+      "originalCaseSha256": "6d2f50916bf840dafcba16dfb52ae26435ca9d85c7fee54108d38d2685131b8a",
+      "originalCase": {
+        "age": 30,
+        "feeling": "my life looks fine on paper but i feel completely numb inside, like i'm watching it all through glass",
+        "expect": "miss",
+        "note": "numbness/anhedonia - no figure covers this; keeps miss-calibration honest (replaced the betrayal miss once heartbreak coverage landed: yeats/christie)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-020"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 21,
+      "originalCaseSha256": "5e1a97822372ad838df4955ac035e85a565a0b0db533abd880c128882e4a2b4a",
+      "originalCase": {
+        "age": 45,
+        "feeling": "i hate my coworkers and my boss and every single day at the office feels pointless",
+        "expect": "miss",
+        "note": "ordinary job dissatisfaction - no figure; keeps miss-calibration honest"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-021"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 22,
+      "originalCaseSha256": "a6b3edc7b1fd1fe6566986e39558c3493b698eb6d22f025c10b8902358cd61f8",
+      "originalCase": {
+        "age": 33,
+        "feeling": "nobody believes me and they won't take my work seriously, but i know i'm right",
+        "expect": "marshall",
+        "note": "known-good: dismissed + quiet_defiance"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-022"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 23,
+      "originalCaseSha256": "e65b9cf5df98c2079e651c84f1406960bc6ae087b71f1bfe214163013ca5425c",
+      "originalCase": {
+        "age": 38,
+        "feeling": "i was forced to leave my country and i lost my home, and now i'm a stranger trying to build a life somewhere that isn't mine",
+        "expect": "allende",
+        "note": "known-good: exile + self_invention"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-023"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 24,
+      "originalCaseSha256": "42944f81bf02c32b918be66a5cfde2ffb278e5f5ba7343917addb18c445f96b5",
+      "originalCase": {
+        "age": 40,
+        "feeling": "i can't stop drinking, it's wrecked my life, and i'm too ashamed to tell anyone",
+        "expect": "wilson",
+        "note": "known-good: addiction + shame"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-024"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 25,
+      "originalCaseSha256": "e8bf59e0acbaee5f4a6891bf25ac0b3dc5cfb237da195b269f51a917d387131d",
+      "originalCase": {
+        "age": 39,
+        "feeling": "i got passed over for the promotion i'd worked toward for years and now i'm starting a new career from scratch",
+        "expect": "wang",
+        "note": "known-good: public_failure + self_invention + late_start"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The new foreground uses accumulated experience to start a bridal business. Earlier disappointment about the top editorial job is documented background, but a formal promotion contest and starting without skills/resources are not. A partial transition connection remains possible; do not silently reclassify it as miss.",
+      "challenge": {
+        "id": "challenge-025",
+        "age": 39,
+        "feeling": "i got passed over for the promotion i'd worked toward for years and now i'm starting a new career from scratch",
+        "retiredFigure": "wang",
+        "assertions": [
+          "The new foreground uses accumulated experience to start a bridal business. Earlier disappointment about the top editorial job is documented background, but a formal promotion contest and starting without skills/resources are not. A partial transition connection remains possible; do not silently reclassify it as miss.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 26,
+      "originalCaseSha256": "6cf951c29f4c11510306f7f82424bb5425e1162cc358731ac03428cf1320ac38",
+      "originalCase": {
+        "age": 47,
+        "feeling": "i got fired in my forties and it feels far too late to start over and become someone new",
+        "expect": "chandler",
+        "note": "known-good: public_failure + self_invention + late_start (fired -> reinvention)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-026"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 27,
+      "originalCaseSha256": "4f3ea9522e66fd13741491c693e537d218a2a80487a5798df87ccdc2b71d0ffa",
+      "originalCase": {
+        "age": 46,
+        "feeling": "i got pushed into a role i feel like a fraud in, and i'm sure i'm not smart enough, and everyone expects me to fail",
+        "expect": "graham",
+        "note": "known-good: self_doubt + social_constraint (thrust into a role she feels unequal to)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-027"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 28,
+      "originalCaseSha256": "cdf856472872df9a92941c0b7c34c5d6e2655615fc6434161ab04669f0e900bb",
+      "originalCase": {
+        "age": 50,
+        "feeling": "everyone dismissed my work but i know i'm right, so i just keep going on my own",
+        "expect": "mcclintock",
+        "note": "known-good: dismissed + quiet_defiance + keep_going (withdrew and kept working)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+      "challenge": {
+        "id": "challenge-028",
+        "age": 50,
+        "feeling": "everyone dismissed my work but i know i'm right, so i just keep going on my own",
+        "retiredFigure": "mcclintock",
+        "assertions": [
+          "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 29,
+      "originalCaseSha256": "6243ffac8702701921799fd7023fe02c53f4233aeeb2ab49eb88ed6a801c7774",
+      "originalCase": {
+        "age": 51,
+        "feeling": "i do all the work but i get no credit, because of who i am, and they keep me in the background",
+        "expect": "rustin",
+        "note": "known-good: dismissed + social_constraint (erased for who he was)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement documents collective organizing, public speaking and support from leaders alongside uncertainty/disagreement. Universal erasure, no credit or total abandonment are not the episode.",
+      "challenge": {
+        "id": "challenge-029",
+        "age": 51,
+        "feeling": "i do all the work but i get no credit, because of who i am, and they keep me in the background",
+        "retiredFigure": "rustin",
+        "assertions": [
+          "The replacement documents collective organizing, public speaking and support from leaders alongside uncertainty/disagreement. Universal erasure, no credit or total abandonment are not the episode.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 30,
+      "originalCaseSha256": "c6b7165771b44a21df72e8d25de86b9ece909516dd5876d8884b70dde21c1ce9",
+      "originalCase": {
+        "age": 64,
+        "feeling": "i lost everything at my age and i'm starting over from nothing, everyone says i'm too old",
+        "expect": "sanders",
+        "note": "known-good: late_start + public_failure (broke and starting over old)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-030"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 31,
+      "originalCaseSha256": "fa4467d48e5bed9bc617a100ad2fb9242378af861a2b05b6172678a00f46a8d2",
+      "originalCase": {
+        "age": 46,
+        "feeling": "i wasted my best years on the wrong path and now i'm starting from scratch way too late",
+        "expect": "chandler",
+        "hard": true,
+        "plausibleWrong": "child",
+        "confusionGroup": "late-start-midlife",
+        "note": "midlife restart after a wrecked path (chandler) vs never-found-a-calling (child)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-031"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 32,
+      "originalCaseSha256": "2f3ff187016aa114b4fd14eb2cb278b42be095cbd83f345287ec62defbd0527f",
+      "originalCase": {
+        "age": 44,
+        "feeling": "i'm in my forties and i still have no idea what i'm meant to do with my life",
+        "expect": "child",
+        "hard": true,
+        "plausibleWrong": "chandler",
+        "confusionGroup": "late-start-midlife",
+        "note": "aimless, never found it (child) vs chandler's lost-then-rebuilt career"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-032"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 33,
+      "originalCaseSha256": "90347f895182bf9cfbb37811f3868ab6d9839c0c0cb66121d28005d955784f0b",
+      "originalCase": {
+        "age": 49,
+        "feeling": "i feel trapped in the wrong life, being what everyone wanted, not allowed to be myself",
+        "expect": "lee",
+        "hard": true,
+        "plausibleWrong": "graham",
+        "confusionGroup": "boxed-in-woman",
+        "note": "boxed in by others' expectations, finally free to choose (lee) vs graham's thrust-in self-doubt"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+      "challenge": {
+        "id": "challenge-033",
+        "age": 49,
+        "feeling": "i feel trapped in the wrong life, being what everyone wanted, not allowed to be myself",
+        "retiredFigure": "lee",
+        "assertions": [
+          "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 34,
+      "originalCaseSha256": "5cb25bf37ef554bda06f20afb4bba8cd5cec6bccb770cbfaabc3ea2804a015fe",
+      "originalCase": {
+        "age": 47,
+        "feeling": "i got pushed into a huge role, i feel like a fraud, and i'm sure i'm not smart enough to do it",
+        "expect": "graham",
+        "hard": true,
+        "plausibleWrong": "lee",
+        "confusionGroup": "boxed-in-woman",
+        "note": "impostor dread in a role thrust on her (graham) vs lee's social-constraint late start"
+      },
+      "disposition": "positive-retained-hardness-retired",
+      "newCaseIds": [
+        "legacy-034"
+      ],
+      "changedFields": [
+        "hard",
+        "plausibleWrong",
+        "confusionGroup",
+        "note"
+      ],
+      "reason": "Graham's involuntary leadership and self-doubt positive is retained. Lee's voluntary library contribution is not a credible substitute for the old imposed-life decoy; retire hardness rather than call this an equivalent hard pair."
+    },
+    {
+      "originalIndex": 35,
+      "originalCaseSha256": "2772d7cbbfbe8bc26af52e7d19e655166153fe2afa2334a25f19858d5062863e",
+      "originalCase": {
+        "age": 52,
+        "feeling": "i built it but they pushed me aside and gave others the credit, because of who i love",
+        "expect": "rustin",
+        "hard": true,
+        "plausibleWrong": "mcclintock",
+        "confusionGroup": "dismissed-no-credit",
+        "note": "erased/uncredited for who he is (rustin) vs mcclintock's field-dismissed discovery"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement documents collective organizing, public speaking and support from leaders alongside uncertainty/disagreement. Universal erasure, no credit or total abandonment are not the episode.",
+      "challenge": {
+        "id": "challenge-035",
+        "age": 52,
+        "feeling": "i built it but they pushed me aside and gave others the credit, because of who i love",
+        "retiredFigure": "rustin",
+        "assertions": [
+          "The replacement documents collective organizing, public speaking and support from leaders alongside uncertainty/disagreement. Universal erasure, no credit or total abandonment are not the episode.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 36,
+      "originalCaseSha256": "9bc4246ad553b7cf81ab111a9894f5cddfff394e4d4c3011a4b744dc0225e503",
+      "originalCase": {
+        "age": 49,
+        "feeling": "they ignored my work for years and i know i'm right, i just keep going without them",
+        "expect": "mcclintock",
+        "hard": true,
+        "plausibleWrong": "rustin",
+        "confusionGroup": "dismissed-no-credit",
+        "note": "work dismissed by the field, kept going alone (mcclintock) vs rustin's social erasure"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+      "challenge": {
+        "id": "challenge-036",
+        "age": 49,
+        "feeling": "they ignored my work for years and i know i'm right, i just keep going without them",
+        "retiredFigure": "mcclintock",
+        "assertions": [
+          "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 37,
+      "originalCaseSha256": "016080eb266c24f6ea8e155cfea1fefe24e4493b5ae998fac4f7b7eeed9cb0b1",
+      "originalCase": {
+        "age": 52,
+        "feeling": "i'm stuck in a life i didn't choose, the one everyone expected of me, and i don't know how to leave",
+        "expect": "lee",
+        "hard": true,
+        "plausibleWrong": "chandler",
+        "confusionGroup": "trapped-life-vs-lost-career",
+        "note": "the real wrong-definitive: trapped in a life imposed by others (lee) vs chandler's chosen-then-wrecked career; real rerank had picked chandler high-confidence"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+      "challenge": {
+        "id": "challenge-037",
+        "age": 52,
+        "feeling": "i'm stuck in a life i didn't choose, the one everyone expected of me, and i don't know how to leave",
+        "retiredFigure": "lee",
+        "assertions": [
+          "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 38,
+      "originalCaseSha256": "c0f1973746c7a3660dcbe880633c5fb23aed4a06bac98a3c661105cca5d327da",
+      "originalCase": {
+        "age": 52,
+        "feeling": "i've spent my whole life trapped in the role my family expected of me, never allowed to pursue what i actually wanted, and i don't know how to break out",
+        "expect": "lee",
+        "hard": true,
+        "plausibleWrong": "rustin",
+        "confusionGroup": "private-trap-vs-denied-recognition",
+        "note": "private-life trap imposed by family/convention (lee) vs rustin's denied-public-recognition; real rerank had picked rustin on the plain 'stuck in the wrong life' case"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+      "challenge": {
+        "id": "challenge-038",
+        "age": 52,
+        "feeling": "i've spent my whole life trapped in the role my family expected of me, never allowed to pursue what i actually wanted, and i don't know how to break out",
+        "retiredFigure": "lee",
+        "assertions": [
+          "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 39,
+      "originalCaseSha256": "d51d9f99dccee68ba3418f055f1b530e2e4455c667c47d81be6af304c79f57db",
+      "originalCase": {
+        "age": 17,
+        "feeling": "i left home because i was just another mouth to feed and i contribute nothing to anyone, singing on corners is the only thing i'm good for",
+        "expect": "berlin_i",
+        "note": "known-good: dispossession + worthlessness + finding_voice (left home to spare the family)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement foreground is a first collaborative song and small return, not leaving home out of worthlessness or family deprivation.",
+      "challenge": {
+        "id": "challenge-039",
+        "age": 17,
+        "feeling": "i left home because i was just another mouth to feed and i contribute nothing to anyone, singing on corners is the only thing i'm good for",
+        "retiredFigure": "berlin_i",
+        "assertions": [
+          "The replacement foreground is a first collaborative song and small return, not leaving home out of worthlessness or family deprivation.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 40,
+      "originalCaseSha256": "a319273703f8c41accd39fa1f06968ba436504e824d62e80de69cfe3c595f5d3",
+      "originalCase": {
+        "age": 16,
+        "feeling": "my mom died suddenly and i'm blind, and everyone acts like i can't take care of myself",
+        "expect": "charles_r",
+        "note": "known-good: grief + disability + self_invention (orphaned, refusing helplessness)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-040"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 41,
+      "originalCaseSha256": "7ec640a9f8cd6deea125394038238fc8fc112c65281398185912f22d29732b1f",
+      "originalCase": {
+        "age": 17,
+        "feeling": "no one came for me when it mattered, i'm so far behind everyone my age, and i don't know if i can catch up",
+        "expect": "sullivan_a",
+        "note": "known-good: dispossession + worthlessness + self_invention (warehoused, starting from zero)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-041"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 42,
+      "originalCaseSha256": "72a05b1482e9a66db570dcfefceabb0437fc42af15aa276be90ff3fed48ff36f",
+      "originalCase": {
+        "age": 16,
+        "feeling": "i have nowhere to go and no family left, i've been sleeping on the streets and i feel invisible",
+        "expect": "fitzgerald_e",
+        "note": "known-good: dispossession + solitude (homeless orphan near the music)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-042"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 43,
+      "originalCaseSha256": "fda4e7b22f435cc38e38d19f91ca611466fb897a3ce0839eaaa7e9dc70ddaf8a",
+      "originalCase": {
+        "age": 18,
+        "feeling": "i got told at an audition that i'm not cut out for this and should stick to my dead-end job, and part of me believes it",
+        "expect": "poitier",
+        "note": "known-good: dismissed + worthlessness (summed up by a stranger)"
+      },
+      "disposition": "positive-retained-rationale-revised",
+      "newCaseIds": [
+        "legacy-043"
+      ],
+      "changedFields": [
+        "note"
+      ],
+      "reason": "Audition dismissal accompanied by a judgment about his paid work supports Poitier's recalled early audition. The user's resulting self-doubt is their feeling, not a claim about his private mental state, and trial training does not promise success."
+    },
+    {
+      "originalIndex": 44,
+      "originalCaseSha256": "08e5e2ee81b454aba6bd582e2ebae39ec3068a24e79fc06adf8c05d9591c0da4",
+      "originalCase": {
+        "age": 19,
+        "feeling": "the conservatory turned me down and the dream i trained my whole life for is dead, and i'm too ashamed to face everyone who believed in me",
+        "expect": "simone",
+        "note": "known-good: dismissed + shame (the refused plan a whole town paid for)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-044"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 45,
+      "originalCaseSha256": "bfe6ceb1f37bf35ff44554a16e143e5f383e5b90fb0828445acaaf3658c82273",
+      "originalCase": {
+        "age": 17,
+        "feeling": "i got sent away after my mom was gone, i got out, and now i sing on the streets for change, alone, with nowhere to sleep",
+        "expect": "fitzgerald_e",
+        "hard": true,
+        "plausibleWrong": "berlin_i",
+        "confusionGroup": "street-singer-teen",
+        "note": "orphaned girl singing on the street (fitzgerald_e) vs the boy who left home to spare his family (berlin_i)"
+      },
+      "disposition": "positive-retained-hardness-retired",
+      "newCaseIds": [
+        "legacy-045"
+      ],
+      "changedFields": [
+        "hard",
+        "plausibleWrong",
+        "confusionGroup",
+        "note"
+      ],
+      "reason": "Orphaned homelessness and street singing favor Fitzgerald. Revised Berlin shares only young musical work and little money; his foreground is a collaborative first publication, not homelessness. The old hard designation is retired rather than counting this weakened contrast as retained adversarial coverage."
+    },
+    {
+      "originalIndex": 46,
+      "originalCaseSha256": "d09a42e6b2eedea83b89ced86e0b1c3b87e6a11c17ee2a363690f5b92fd89bdb",
+      "originalCase": {
+        "age": 16,
+        "feeling": "my family can barely feed everyone and i bring in the least, i'm basically worthless to them, so i left home to sing for pennies",
+        "expect": "berlin_i",
+        "hard": true,
+        "plausibleWrong": "fitzgerald_e",
+        "confusionGroup": "street-singer-teen",
+        "note": "left home believing the family was better off (berlin_i) vs fitzgerald_e's orphaned homelessness"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement foreground is a first collaborative song and small return, not leaving home out of worthlessness or family deprivation.",
+      "challenge": {
+        "id": "challenge-046",
+        "age": 16,
+        "feeling": "my family can barely feed everyone and i bring in the least, i'm basically worthless to them, so i left home to sing for pennies",
+        "retiredFigure": "berlin_i",
+        "assertions": [
+          "The replacement foreground is a first collaborative song and small return, not leaving home out of worthlessness or family deprivation.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 47,
+      "originalCaseSha256": "91489d414e13e8cc2600ba3be3d6c632229e5e3a37edc267398651565f30eb42",
+      "originalCase": {
+        "age": 18,
+        "feeling": "the conservatory i spent my childhood preparing for rejected me and now i play piano in bars under a fake name because i'm ashamed",
+        "expect": "simone",
+        "hard": true,
+        "plausibleWrong": "poitier",
+        "confusionGroup": "artist-at-the-door",
+        "note": "the refused conservatory dream + hidden bar work (simone) vs poitier's audition dismissal"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-047"
+      ],
+      "changedFields": [],
+      "reason": "Both Simone's conservatory rejection and revised Poitier's unsuccessful audition still support the stated hard distinction; retained byte-for-byte except the stable case id."
+    },
+    {
+      "originalIndex": 48,
+      "originalCaseSha256": "9ea498236b91dbb3d933b1d35dbeff3ae154a1268b365a9921b43e27dbf5ff6d",
+      "originalCase": {
+        "age": 18,
+        "feeling": "people hear my accent and decide i'm not cut out for anything, i'm stuck bussing a dead-end job, and i want to prove them wrong",
+        "expect": "poitier",
+        "hard": true,
+        "plausibleWrong": "simone",
+        "confusionGroup": "artist-at-the-door",
+        "note": "dismissed in ninety seconds for voice + reading (poitier) vs simone's institutional rejection"
+      },
+      "disposition": "positive-retained-rationale-revised",
+      "newCaseIds": [
+        "legacy-048"
+      ],
+      "changedFields": [
+        "note"
+      ],
+      "reason": "Dismissal at an audition involving voice/reading and low-paid work supports Poitier; conservatory rejection and a pianist's alternative work distinguish Simone. No ninety-second timing, deficient-accent judgment or guaranteed vindication is asserted."
+    },
+    {
+      "originalIndex": 49,
+      "originalCaseSha256": "17d4a4b1d5fbf41cd9a2c7321020c904a937a0c722dfdd7306619bc198ad0a63",
+      "originalCase": {
+        "age": 15,
+        "feeling": "i'm disabled and people wrote me off years ago, but i keep pushing",
+        "expect": "rudolph",
+        "hard": true,
+        "plausibleWrong": "charles_r",
+        "confusionGroup": "young-disability",
+        "note": "written-off body + defiant persistence (rudolph) vs charles_r's grief-anchored independence"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement supports childhood brace distress, limited team participation and trying another sport. It does not document being told never to walk again, medical defiance or a victory over people who wrote her off.",
+      "challenge": {
+        "id": "challenge-049",
+        "age": 15,
+        "feeling": "i'm disabled and people wrote me off years ago, but i keep pushing",
+        "retiredFigure": "rudolph",
+        "assertions": [
+          "The replacement supports childhood brace distress, limited team participation and trying another sport. It does not document being told never to walk again, medical defiance or a victory over people who wrote her off.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 50,
+      "originalCaseSha256": "c0bc2a392e98c4825ae3abca1053e5812c610130cb8f35e4cccbeabee6cc9e85",
+      "originalCase": {
+        "age": 16,
+        "feeling": "i'm blind and i just lost my mother, and i have to figure out how to live on my own now",
+        "expect": "charles_r",
+        "hard": true,
+        "plausibleWrong": "rudolph",
+        "confusionGroup": "young-disability",
+        "note": "grief + blindness + forced self-reliance (charles_r) vs rudolph's told-i'd-never-walk defiance"
+      },
+      "disposition": "positive-retained-rationale-revised",
+      "newCaseIds": [
+        "legacy-050"
+      ],
+      "changedFields": [
+        "note"
+      ],
+      "reason": "Bereavement combined with blindness and independent living favors Charles. Revised Rudolph remains a disability/young-life neighbor, but concerns limited school-sport participation and trying another activity, not this loss of a parent."
+    },
+    {
+      "originalIndex": 51,
+      "originalCaseSha256": "de7d3856cc6c5b62ae0ef7bab880558291e28bee5b69a2918cef461723e28892",
+      "originalCase": {
+        "age": 19,
+        "feeling": "my teacher humiliates me in front of the class every day and calls me stupid, and i'm starting to believe him",
+        "expect": "andersen",
+        "note": "known-good: bullied + worthlessness (the headmaster's target, older than his class)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-051"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 52,
+      "originalCaseSha256": "5f1700d6c45b8f08d0b6771ab8a7f089e7f99ca54ff1f8eb2ae36796947382dd",
+      "originalCase": {
+        "age": 19,
+        "feeling": "they keep telling me to change who i am and hide where i come from, i'm not taken seriously, just some novelty to them",
+        "expect": "tallchief",
+        "note": "known-good: social_constraint + quiet_defiance + dismissed (erase-your-name pressure)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-052"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 53,
+      "originalCaseSha256": "abfbf52ce26888730b290100e26679f4210fc77c0a6821fbd1201088e6ed9710",
+      "originalCase": {
+        "age": 19,
+        "feeling": "i'm pregnant, i'm not married, everyone in town is judging me, and i don't know what happens to my baby now",
+        "expect": "lindgren",
+        "note": "known-good: new_parent_fear + shame (the town scandal, the secret birth)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement concerns sharing an existing child's care after a disrupted foster arrangement. It includes foster separation but not the asserted secret-birth shame or inferred maternal guilt. Whether that partial overlap warrants any definitive label needs review.",
+      "challenge": {
+        "id": "challenge-053",
+        "age": 19,
+        "feeling": "i'm pregnant, i'm not married, everyone in town is judging me, and i don't know what happens to my baby now",
+        "retiredFigure": "lindgren",
+        "assertions": [
+          "The replacement concerns sharing an existing child's care after a disrupted foster arrangement. It includes foster separation but not the asserted secret-birth shame or inferred maternal guilt. Whether that partial overlap warrants any definitive label needs review.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 54,
+      "originalCaseSha256": "abe0048b1a744450ef2981126686b883de80aa27230f0a09ac29d9b42bec7dd5",
+      "originalCase": {
+        "age": 19,
+        "feeling": "i was falsely accused of something i didn't do, and even after i was cleared they kicked me out anyway",
+        "expect": "lewis_e",
+        "note": "known-good: dismissed + dispossession (acquitted, expelled anyway)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement concerns asking for useful criticism rather than identity-based praise. It does not establish a false accusation, acquittal or expulsion.",
+      "challenge": {
+        "id": "challenge-054",
+        "age": 19,
+        "feeling": "i was falsely accused of something i didn't do, and even after i was cleared they kicked me out anyway",
+        "retiredFigure": "lewis_e",
+        "assertions": [
+          "The replacement concerns asking for useful criticism rather than identity-based praise. It does not establish a false accusation, acquittal or expulsion.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 55,
+      "originalCaseSha256": "ad95d3b3f19282fa9a827f4569e712cb6f4146a90521ac9253bae0dc184c6e2b",
+      "originalCase": {
+        "age": 20,
+        "feeling": "i'm not allowed to study what i love because i'm a woman, my family won't let me, but i will find a way around every wall",
+        "expect": "kovalevskaya",
+        "note": "known-good: social_constraint + quiet_defiance + self_invention (the fictitious-marriage key)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-055"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 56,
+      "originalCaseSha256": "8dfb4b47c3d15c4b19f96a0374f23116de9acb8b789892ba846b279ffef768a6",
+      "originalCase": {
+        "age": 21,
+        "feeling": "my father thinks poetry is a waste of time and will only pay if i pick a practical career, but writing is who i am",
+        "expect": "hughes",
+        "note": "known-good: social_constraint + finding_voice + self_invention (the father's deal)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-056"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 57,
+      "originalCaseSha256": "9f0787aa800cb1e050c506eea52fccfcfbd5451f7f6cb241164f8ef4af7422e6",
+      "originalCase": {
+        "age": 17,
+        "feeling": "everyone at school makes fun of me and makes me feel stupid, and the person in charge is the cruelest one of all",
+        "expect": "andersen",
+        "hard": true,
+        "plausibleWrong": "rogers",
+        "confusionGroup": "bullied-student",
+        "note": "authority-figure cruelty at school-leaving age (andersen) vs rogers's peer bullying in childhood"
+      },
+      "disposition": "positive-retained-hardness-retired",
+      "newCaseIds": [
+        "legacy-057"
+      ],
+      "changedFields": [
+        "hard",
+        "plausibleWrong",
+        "confusionGroup",
+        "note"
+      ],
+      "reason": "Andersen's authority-figure school humiliation positive is retained. Adult Rogers testimony cannot be the old child peer-bullying decoy, so the old hard designation is retired."
+    },
+    {
+      "originalIndex": 58,
+      "originalCaseSha256": "51d26d9bec843b36cdd73d326ba268117147abd57025ef14815aca207676e40c",
+      "originalCase": {
+        "age": 12,
+        "feeling": "kids pick on me and i have no friends, so i hide out in my own little made-up world",
+        "expect": "rogers",
+        "hard": true,
+        "plausibleWrong": "andersen",
+        "confusionGroup": "bullied-student",
+        "note": "peer bullying + solitary imagination in childhood (rogers) vs andersen's older-student humiliation"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+      "challenge": {
+        "id": "challenge-058",
+        "age": 12,
+        "feeling": "kids pick on me and i have no friends, so i hide out in my own little made-up world",
+        "retiredFigure": "rogers",
+        "assertions": [
+          "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 59,
+      "originalCaseSha256": "ac07673ab0c711b5beae8d128f335f2c6e841b4a6d3c7936eb42857f6806c4f0",
+      "originalCase": {
+        "age": 18,
+        "feeling": "i just had a baby and i'm terrified i'm too young to be anyone's mother",
+        "expect": "angelou",
+        "hard": true,
+        "plausibleWrong": "lindgren",
+        "confusionGroup": "young-unready-mother",
+        "note": "the too-young terror itself (angelou) vs lindgren's secret-birth shame"
+      },
+      "disposition": "positive-retained-rationale-revised",
+      "newCaseIds": [
+        "legacy-059"
+      ],
+      "changedFields": [
+        "note"
+      ],
+      "reason": "Fear of being too young for a newborn favors Angelou. Revised Lindgren is a plausible young-parent neighbor about practical shared care of an older child; it does not establish secret-birth shame."
+    },
+    {
+      "originalIndex": 60,
+      "originalCaseSha256": "8e95c82a003933fd288b9b8ea3264eea8b490fd25b05b48c58f2f25050d7cf8d",
+      "originalCase": {
+        "age": 20,
+        "feeling": "i had my baby in secret far from home and had to leave him with another family until i can afford him, and the shame is eating me",
+        "expect": "lindgren",
+        "hard": true,
+        "plausibleWrong": "angelou",
+        "confusionGroup": "young-unready-mother",
+        "note": "the hidden birth + foster separation + shame (lindgren) vs angelou's at-home teen motherhood"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement concerns sharing an existing child's care after a disrupted foster arrangement. It includes foster separation but not the asserted secret-birth shame or inferred maternal guilt. Whether that partial overlap warrants any definitive label needs review.",
+      "challenge": {
+        "id": "challenge-060",
+        "age": 20,
+        "feeling": "i had my baby in secret far from home and had to leave him with another family until i can afford him, and the shame is eating me",
+        "retiredFigure": "lindgren",
+        "assertions": [
+          "The replacement concerns sharing an existing child's care after a disrupted foster arrangement. It includes foster separation but not the asserted secret-birth shame or inferred maternal guilt. Whether that partial overlap warrants any definitive label needs review.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 61,
+      "originalCaseSha256": "0a4a4f624ce81950b8656c1b94b287f57c089741aa68bc3e7fe617887f72255e",
+      "originalCase": {
+        "age": 21,
+        "feeling": "every door is closed to me because i'm a woman, they won't let me study, so i will find a way around every rule",
+        "expect": "kovalevskaya",
+        "hard": true,
+        "plausibleWrong": "tallchief",
+        "confusionGroup": "constrained-young-woman",
+        "note": "institutional exclusion + workaround scheming (kovalevskaya) vs tallchief's identity-erasure pressure"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-061"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 62,
+      "originalCaseSha256": "70a17ca1e2f25a97e67d4705e2a76743a1674a194b4d24bbd8f108b0f9a608eb",
+      "originalCase": {
+        "age": 20,
+        "feeling": "to get ahead in my field they want me to erase my heritage and take a name that isn't mine, but i won't change for them",
+        "expect": "tallchief",
+        "hard": true,
+        "plausibleWrong": "kovalevskaya",
+        "confusionGroup": "constrained-young-woman",
+        "note": "identity-erasure as the price of belonging (tallchief) vs kovalevskaya's barred-education constraint"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-062"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 63,
+      "originalCaseSha256": "ef4ef2a928cefead3c7c9469af152a26073d439dea3da5fba271f736fa9a9fda",
+      "originalCase": {
+        "age": 22,
+        "feeling": "my family will only support a life i don't want, so i walked away from the money to find my own path and my own voice",
+        "expect": "hughes",
+        "hard": true,
+        "plausibleWrong": "douglass",
+        "confusionGroup": "own-path-young-man",
+        "note": "refusing the funded assigned life for the creative one (hughes) vs douglass's escape-into-nothing self-invention"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-063"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 64,
+      "originalCaseSha256": "1806277b5fd45c9e62c813109b38e21d803d77201dc8fb6a0bdc461fc93265f0",
+      "originalCase": {
+        "age": 24,
+        "feeling": "i've lost someone i love again and again, so much loss in two years, and i'm alone in a country not my own",
+        "expect": "shelley_m",
+        "note": "known-good: grief + solitude (the losses in Italy)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-064"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 65,
+      "originalCaseSha256": "776226b9b36a7b362c0ea6a893b4f39652f4180901cfbbb8be53b70d9a351bf6",
+      "originalCase": {
+        "age": 21,
+        "feeling": "they won't hire me because i'm a woman, and when they do they hand me the trivial stuff, but i have things to say",
+        "expect": "bly",
+        "note": "known-good: dismissed + social_constraint + finding_voice (the women's-pages ghetto)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-065"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 66,
+      "originalCaseSha256": "71cca98edb347b0d2952f6ca6b7da3755482aae6765c15660dbd774e103972cd",
+      "originalCase": {
+        "age": 22,
+        "feeling": "i taught myself everything i know from books, but the educated people treat me like a servant and look down on me",
+        "expect": "faraday",
+        "note": "known-good: social_constraint + dismissed + self_invention (the valet tour)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-066"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 67,
+      "originalCaseSha256": "d8aaa54f0e9b9c75aa4214a5c2530f70b93987f922567e72b8349741922822b1",
+      "originalCase": {
+        "age": 23,
+        "feeling": "i was accepted until they saw my face and turned me away because i'm black, and now i'm out here alone in the middle of nowhere starting from dirt",
+        "expect": "carver",
+        "note": "known-good: dismissed + solitude (the withdrawn admission, the sod house)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The new foreground is college subsistence work and community support. Earlier racial refusal is explicit background, but isolated homesteading and starting from dirt are not this episode. A partial connection is possible; a replacement definitive label requires review.",
+      "challenge": {
+        "id": "challenge-067",
+        "age": 23,
+        "feeling": "i was accepted until they saw my face and turned me away because i'm black, and now i'm out here alone in the middle of nowhere starting from dirt",
+        "retiredFigure": "carver",
+        "assertions": [
+          "The new foreground is college subsistence work and community support. Earlier racial refusal is explicit background, but isolated homesteading and starting from dirt are not this episode. A partial connection is possible; a replacement definitive label requires review.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 68,
+      "originalCaseSha256": "e56d7e7d5155ef3db0d4ad1cd7a038f22590a5d88681987d001f870a638a0a26",
+      "originalCase": {
+        "age": 23,
+        "feeling": "i failed out of school twice and have no degree, and i'm afraid the work i do alone in my notebooks is worthless",
+        "expect": "ramanujan",
+        "note": "known-good: worthlessness + solitude (the unread notebooks)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-068"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 69,
+      "originalCaseSha256": "519d669b67b045f8e1413c38d8401c3b9438ef1f7a8f71c1960a2dca2f0ed8f2",
+      "originalCase": {
+        "age": 25,
+        "feeling": "i do the hard work and the educated men take the credit, i'm not allowed in their societies, but i keep going to feed my family",
+        "expect": "anning",
+        "note": "known-good: social_constraint + dismissed + keep_going (the closed society)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-069"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 70,
+      "originalCaseSha256": "9019e002b19bef45ad42be2c1be7701b5d11f879825f2f1bdafbf8996cecfe46",
+      "originalCase": {
+        "age": 22,
+        "feeling": "i've lost someone i love twice over, i'm widowed and alone far from home, and i have to keep going for my child",
+        "expect": "shelley_m",
+        "hard": true,
+        "plausibleWrong": "charles_r",
+        "confusionGroup": "young-grief",
+        "note": "repeated bereavement + widowhood + a child to carry (shelley_m) vs charles_r's orphaned self-reliance"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-070"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 71,
+      "originalCaseSha256": "df65da9b84afd00c8c9e4aa6a8477f7f46e2fc7d74dd1ac2c9251786aa4e4773",
+      "originalCase": {
+        "age": 23,
+        "feeling": "the men in charge keep sending me back to the trivial assignments because i'm a woman, but i have things to say and i want to say them out loud",
+        "expect": "bly",
+        "hard": true,
+        "plausibleWrong": "anning",
+        "confusionGroup": "uncredited-woman",
+        "note": "voice-hungry reporter shunted to the women's pages (bly) vs anning's credit-theft"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-071"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 72,
+      "originalCaseSha256": "f58a2592599d6a9789a7f3b50c653b317a7f3f776d4973cf1ea58f85722a8c14",
+      "originalCase": {
+        "age": 26,
+        "feeling": "a man presented my discovery to the society i'm barred from and took the credit",
+        "expect": "anning",
+        "hard": true,
+        "plausibleWrong": "bly",
+        "confusionGroup": "uncredited-woman",
+        "note": "credit taken + institutional exclusion (anning) vs bly's assignment ghetto"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-072"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 73,
+      "originalCaseSha256": "2fc3e8e590a1157baa5bee1819c63efc374d22f9ecb8e30e18fcb99bce00bd74",
+      "originalCase": {
+        "age": 24,
+        "feeling": "i keep filling notebooks, alone, with work nobody around me can even understand, and i'm starting to think it's worthless",
+        "expect": "ramanujan",
+        "hard": true,
+        "plausibleWrong": "butler",
+        "confusionGroup": "unread-work",
+        "note": "unjudgeable solitary work (ramanujan) vs butler's rejected-by-editors persistence"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-073"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 74,
+      "originalCaseSha256": "5cae3582979b299cb1ae63ca4ddcfacebb6c744689a8f1ca2c2b5f25fcbf92ac",
+      "originalCase": {
+        "age": 24,
+        "feeling": "the thing i was best at got taken away from me overnight, and i feel worthless doing odd jobs while everyone forgets my name",
+        "expect": "owens",
+        "note": "known-good: dispossession + worthlessness (the suspension and the lean years)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement supports suspension and insecure paid work, but not an all-at-once permanent loss of every sporting opportunity, private worthlessness or everyone forgetting him. Partial financial/work overlap remains possible; no substitute label is assumed.",
+      "challenge": {
+        "id": "challenge-074",
+        "age": 24,
+        "feeling": "the thing i was best at got taken away from me overnight, and i feel worthless doing odd jobs while everyone forgets my name",
+        "retiredFigure": "owens",
+        "assertions": [
+          "The replacement supports suspension and insecure paid work, but not an all-at-once permanent loss of every sporting opportunity, private worthlessness or everyone forgetting him. Partial financial/work overlap remains possible; no substitute label is assumed.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 75,
+      "originalCaseSha256": "d3123eaaa204aa57fc39e20313f084b90b31c6216639ec963a409273cfce0da9",
+      "originalCase": {
+        "age": 25,
+        "feeling": "i love someone who will never love me back, and i don't know what to do with all this feeling",
+        "expect": "yeats",
+        "note": "known-good: heartbreak + the unreturned love (first heartbreak-theme case)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-075"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 76,
+      "originalCaseSha256": "1c8ee87b26346e6bb782f46ab044c52c365816fc9998a795904503c38d290d29",
+      "originalCase": {
+        "age": 26,
+        "feeling": "no school would take me because of my race and my sex, so i'll find another way in and come back with proof",
+        "expect": "coleman",
+        "hard": true,
+        "plausibleWrong": "bly",
+        "confusionGroup": "shut-out-woman",
+        "note": "credential-hunting around a total lockout (coleman) vs bly's inside-the-door demotion"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-076"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 77,
+      "originalCaseSha256": "d5b675368921f640e5de90cdb2350ea1f430b0c5ca33a206712f4620b4b634e8",
+      "originalCase": {
+        "age": 22,
+        "feeling": "they hired me and then stuck me writing fluff because i'm a woman, and i have things to say, so i'm about to walk out and prove myself somewhere bigger",
+        "expect": "bly",
+        "hard": true,
+        "plausibleWrong": "coleman",
+        "confusionGroup": "shut-out-woman",
+        "note": "inside-the-door demotion + the walkout (bly) vs coleman's total lockout"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-077"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 78,
+      "originalCaseSha256": "3ec6c362ddf373fcb3cf7be9f23c62d11ded981eb89414f747e57fbc0f37ac8b",
+      "originalCase": {
+        "age": 27,
+        "feeling": "people decide i'm just a pretty face, and my best idea got shot down without anyone even reading it",
+        "expect": "lamarr",
+        "note": "known-good: dismissed + creative_dismissal (the shelved invention)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement concerns patent paperwork, a name mismatch and correction. It does not document rejection based on appearance, an unread invention or technological vindication.",
+      "challenge": {
+        "id": "challenge-078",
+        "age": 27,
+        "feeling": "people decide i'm just a pretty face, and my best idea got shot down without anyone even reading it",
+        "retiredFigure": "lamarr",
+        "assertions": [
+          "The replacement concerns patent paperwork, a name mismatch and correction. It does not document rejection based on appearance, an unread invention or technological vindication.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 79,
+      "originalCaseSha256": "bdf21aa614e6b399fda1fcc6a1381558cd292822d67b1c27b046643042989caa",
+      "originalCase": {
+        "age": 28,
+        "feeling": "i handed the experts my best idea, they shot down every line of it without reading, and told me to stick to being decorative",
+        "expect": "lamarr",
+        "hard": true,
+        "plausibleWrong": "marshall",
+        "confusionGroup": "dismissed-idea",
+        "note": "the outsider's idea waved away for what she is (lamarr) vs marshall's establishment fight"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement concerns patent paperwork, a name mismatch and correction. It does not document rejection based on appearance, an unread invention or technological vindication.",
+      "challenge": {
+        "id": "challenge-079",
+        "age": 28,
+        "feeling": "i handed the experts my best idea, they shot down every line of it without reading, and told me to stick to being decorative",
+        "retiredFigure": "lamarr",
+        "assertions": [
+          "The replacement concerns patent paperwork, a name mismatch and correction. It does not document rejection based on appearance, an unread invention or technological vindication.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 80,
+      "originalCaseSha256": "95386d6d9b0fcc59130867be2cd8302dc87bdf118164408fc46dd49ca11fb1cc",
+      "originalCase": {
+        "age": 32,
+        "feeling": "nobody believes me and they won't take my discovery seriously, but i know i'm right and i'll prove them wrong",
+        "expect": "marshall",
+        "hard": true,
+        "plausibleWrong": "lamarr",
+        "confusionGroup": "dismissed-idea",
+        "note": "the insider's crusade to prove the theory (marshall) vs lamarr's shelved gift"
+      },
+      "disposition": "positive-retained-hardness-retired",
+      "newCaseIds": [
+        "legacy-080"
+      ],
+      "changedFields": [
+        "hard",
+        "plausibleWrong",
+        "confusionGroup",
+        "note"
+      ],
+      "reason": "Marshall's rejected-discovery positive is retained. Lamarr's patent paperwork does not document dismissal of an idea; retire the old dismissed-idea confusion twin instead of counting a weakened contrast as unchanged."
+    },
+    {
+      "originalIndex": 81,
+      "originalCaseSha256": "4c146dadf88d107ef29ef92a25ea1dfc32513e46ffde863eb0f3a29758bb9c67",
+      "originalCase": {
+        "age": 28,
+        "feeling": "i lost ten years to just surviving, everyone my age is ahead of me, and i want to go back to school but it feels too late",
+        "expect": "hurston",
+        "note": "known-good: late_start + self_invention (sixteen again at twenty-six)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-081"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 82,
+      "originalCaseSha256": "d8392093cb7ded6be3fd63256be04f212dddf29fc8838612aae692214568dc93",
+      "originalCase": {
+        "age": 29,
+        "feeling": "an accident nearly took my sight and in the dark i realized i've been living the wrong life, i want a second chance",
+        "expect": "muir",
+        "note": "known-good: illness + self_invention (the darkened room)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-082"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 83,
+      "originalCaseSha256": "0852d9c00061208ac359cae3455a690e111c7c70da414b6d6fa4989bc57c6ca1",
+      "originalCase": {
+        "age": 30,
+        "feeling": "i got seriously ill, and in the long recovery i realized the successful life i built isn't the one i actually want, i want a second chance",
+        "expect": "muir",
+        "hard": true,
+        "plausibleWrong": "oconnor",
+        "confusionGroup": "illness-crossroads",
+        "note": "illness as revelation and chosen redirect (muir) vs oconnor's forced surrender of the planned life"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-083"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 84,
+      "originalCaseSha256": "0d041e82d611350f243b1deb6280bc9c4ae865911298a9d94ed8a6e65f55cafe",
+      "originalCase": {
+        "age": 29,
+        "feeling": "i opened my own practice and i have no patients, i sit there all day feeling worthless and wondering if i should give up",
+        "expect": "banting",
+        "note": "known-good: worthlessness + keep_going (the empty waiting room)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-084"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 85,
+      "originalCaseSha256": "3c69edc9717df6a2e6966a61faa5778e61405596025580f8393bea9b293af20b",
+      "originalCase": {
+        "age": 30,
+        "feeling": "my practice is failing, i have no patients, and when i brought the experts my one big idea they dismissed me as a nobody",
+        "expect": "banting",
+        "hard": true,
+        "plausibleWrong": "marshall",
+        "confusionGroup": "dismissed-idea",
+        "note": "the failed nobody with one idea (banting) vs marshall's established-outsider crusade"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-085"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 86,
+      "originalCaseSha256": "773e85e46574b104ae51015c2b4bbc68a9300c201c93ed781a623c7e373c7438",
+      "originalCase": {
+        "age": 30,
+        "feeling": "because i'm a woman they say i shouldn't even try, and my novel keeps coming back from every publisher, but i'm writing the next one",
+        "expect": "bronte_c",
+        "note": "known-good: creative_dismissal + social_constraint + keep_going (the unanimous no)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-086"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 87,
+      "originalCaseSha256": "0b919a25fba1454f740a534681c9c66089b75a18498ada971e464f03fc8aaccf",
+      "originalCase": {
+        "age": 28,
+        "feeling": "my writing has been rejected by every publisher and i can't help feeling it's because i'm a woman, not because of what i wrote",
+        "expect": "bronte_c",
+        "hard": true,
+        "plausibleWrong": "butler",
+        "confusionGroup": "rejected-writer",
+        "note": "rejection entangled with identity/gender verdict (bronte_c) vs butler's pure creative perseverance"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-087"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 88,
+      "originalCaseSha256": "8f0335999519950d675439c6cf17ee031d59ef80a7a306d4c9c5777b77225a65",
+      "originalCase": {
+        "age": 30,
+        "feeling": "i was at the top of my field and then i was publicly denounced overnight, now former friends cross the street and i'm afraid of what comes next",
+        "expect": "shostakovich",
+        "note": "known-good: public_failure + social_constraint (the denunciation)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-088"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 89,
+      "originalCaseSha256": "cfdf8c10240c388a64531eeae6418a5cb81253e653a9fd5dc81e8f80a5c7d767",
+      "originalCase": {
+        "age": 30,
+        "feeling": "the state's paper denounced my work, my show was cancelled, and people i trusted turned on me in public meetings to save themselves",
+        "expect": "shostakovich",
+        "hard": true,
+        "plausibleWrong": "rachmaninoff",
+        "confusionGroup": "public-collapse",
+        "note": "state-driven disgrace + fear (shostakovich) vs rachmaninoff's critical failure and creative paralysis"
+      },
+      "disposition": "positive-retained-rationale-revised",
+      "newCaseIds": [
+        "legacy-089"
+      ],
+      "changedFields": [
+        "note"
+      ],
+      "reason": "State denunciation and public political pressure favor Shostakovich. Revised Rachmaninoff remains a composer/work-distress neighbor, but letters about unfinished composition and criticism do not establish state persecution."
+    },
+    {
+      "originalIndex": 90,
+      "originalCaseSha256": "f89dfd3df52f6e9f40bf4bfda3592b70ee456db924ecd02deff7b02feb5f1de2",
+      "originalCase": {
+        "age": 28,
+        "feeling": "my big premiere was torn apart and now i'm afraid to write anything at all",
+        "expect": "rachmaninoff",
+        "hard": true,
+        "plausibleWrong": "shostakovich",
+        "confusionGroup": "public-collapse",
+        "note": "the critical mauling and creative paralysis (rachmaninoff) vs shostakovich's state terror"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+      "challenge": {
+        "id": "challenge-090",
+        "age": 28,
+        "feeling": "my big premiere was torn apart and now i'm afraid to write anything at all",
+        "retiredFigure": "rachmaninoff",
+        "assertions": [
+          "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 91,
+      "originalCaseSha256": "c6066ea9721d70190a748dceb0479ea37f02d7eb39724513bb325c50bda564b5",
+      "originalCase": {
+        "age": 31,
+        "feeling": "my addiction cost me the biggest opportunity of my career, i just got clean and i'm trying to rebuild",
+        "expect": "coltrane",
+        "note": "known-good: addiction + keep_going (fired and clean)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement concerns asking for musical instruction and collaboration. It does not document addiction, withdrawal, firing or career restoration.",
+      "challenge": {
+        "id": "challenge-091",
+        "age": 31,
+        "feeling": "my addiction cost me the biggest opportunity of my career, i just got clean and i'm trying to rebuild",
+        "retiredFigure": "coltrane",
+        "assertions": [
+          "The replacement concerns asking for musical instruction and collaboration. It does not document addiction, withdrawal, firing or career restoration.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 92,
+      "originalCaseSha256": "de20c0797f2bfc3c08dbbd4b7d0e118c96fa28705740957216f973dd14bffd9e",
+      "originalCase": {
+        "age": 30,
+        "feeling": "my habit cost me my big break, i quit cold turkey at my mom's place, and now i'm getting clean and rebuilding",
+        "expect": "coltrane",
+        "hard": true,
+        "plausibleWrong": "wilson",
+        "confusionGroup": "addiction-bottom",
+        "note": "young career-costing habit + cold-turkey rebuild (coltrane) vs wilson's rock-bottom fellowship arc"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement concerns asking for musical instruction and collaboration. It does not document addiction, withdrawal, firing or career restoration.",
+      "challenge": {
+        "id": "challenge-092",
+        "age": 30,
+        "feeling": "my habit cost me my big break, i quit cold turkey at my mom's place, and now i'm getting clean and rebuilding",
+        "retiredFigure": "coltrane",
+        "assertions": [
+          "The replacement concerns asking for musical instruction and collaboration. It does not document addiction, withdrawal, firing or career restoration.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 93,
+      "originalCaseSha256": "0b339a67ba77fba0df12988f8878eb11d2d489d477374af2eec4bd3792ca9cf9",
+      "originalCase": {
+        "age": 37,
+        "feeling": "drinking cost me everything and i finally hit bottom, i'm too ashamed to tell the people i let down",
+        "expect": "wilson",
+        "hard": true,
+        "plausibleWrong": "coltrane",
+        "confusionGroup": "addiction-bottom",
+        "note": "the rock-bottom shame at midlife (wilson) vs coltrane's fired-and-clean rebuild"
+      },
+      "disposition": "positive-retained-hardness-retired",
+      "newCaseIds": [
+        "legacy-093"
+      ],
+      "changedFields": [
+        "hard",
+        "plausibleWrong",
+        "confusionGroup",
+        "note"
+      ],
+      "reason": "Wilson's drinking and shame positive is retained. Coltrane's musical-instruction episode is not an addiction-recovery decoy; retire the hard designation rather than revive unsupported history."
+    },
+    {
+      "originalIndex": 94,
+      "originalCaseSha256": "0fcca55f7eaada1d35a2af2fdcc49e3de44678b5a3edd656ae174969ab0f2b6c",
+      "originalCase": {
+        "age": 34,
+        "feeling": "my husband left me for another woman the same year my mother died, and i don't know who i am without either of them",
+        "expect": "christie",
+        "note": "known-good: heartbreak + grief (the year that broke)"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+      "challenge": {
+        "id": "challenge-094",
+        "age": 34,
+        "feeling": "my husband left me for another woman the same year my mother died, and i don't know who i am without either of them",
+        "retiredFigure": "christie",
+        "assertions": [
+          "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 95,
+      "originalCaseSha256": "c03b1ee82c2bb05fef790ef1dc6c3466bf2a1bda798d8832b555a9906121db2e",
+      "originalCase": {
+        "age": 34,
+        "feeling": "i just found out my partner cheated on me for years and i feel like a complete fool",
+        "expect": "christie",
+        "note": "converted from miss once heartbreak coverage landed: betrayal is christie's territory now"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+      "challenge": {
+        "id": "challenge-095",
+        "age": 34,
+        "feeling": "i just found out my partner cheated on me for years and i feel like a complete fool",
+        "retiredFigure": "christie",
+        "assertions": [
+          "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 96,
+      "originalCaseSha256": "b9b1c724f5259e2682dbcd646d9d3d106fe4b2bfd1a0541959708e47f572741a",
+      "originalCase": {
+        "age": 30,
+        "feeling": "i love someone who will never choose me, and i carry it with me everywhere, alone",
+        "expect": "yeats",
+        "hard": true,
+        "plausibleWrong": "christie",
+        "confusionGroup": "heartbreak-flavor",
+        "note": "unreturned love, nothing betrayed (yeats) vs christie's marriage betrayal"
+      },
+      "disposition": "positive-retained-rationale-revised",
+      "newCaseIds": [
+        "legacy-096"
+      ],
+      "changedFields": [
+        "note"
+      ],
+      "reason": "Unrequited love favors Yeats. Revised Christie is adjacent through marital separation while working, not the documented object of unreturned romantic pursuit; do not revive the retired betrayal-to-recovery arc."
+    },
+    {
+      "originalIndex": 97,
+      "originalCaseSha256": "fa3755684281602c3b8fb20ae5eb035d8cd677ceeb076e31b4befd3ba6a65fa3",
+      "originalCase": {
+        "age": 36,
+        "feeling": "my spouse betrayed me and the divorce is destroying the person i thought i was, i need to become someone new",
+        "expect": "christie",
+        "hard": true,
+        "plausibleWrong": "yeats",
+        "confusionGroup": "heartbreak-flavor",
+        "note": "betrayal + rebuilding identity after divorce (christie) vs yeats's unrequited ache"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+      "challenge": {
+        "id": "challenge-097",
+        "age": 36,
+        "feeling": "my spouse betrayed me and the divorce is destroying the person i thought i was, i need to become someone new",
+        "retiredFigure": "christie",
+        "assertions": [
+          "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 98,
+      "originalCaseSha256": "e527605e99cc9731629e6920dc0425e957eb05cf20a556bf0b6b334bb488ec28",
+      "originalCase": {
+        "age": 38,
+        "feeling": "i gave everything to my work for years and my body finally gave out, i'm exhausted all the time and i can't do what i used to",
+        "expect": "nightingale",
+        "note": "known-good: burnout + illness (spent, and learning to work differently)"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-098"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 99,
+      "originalCaseSha256": "3a3ebb56f80a45f36652f180d002e64d2af96a25deeed4e267bc6576a8333155",
+      "originalCase": {
+        "age": 27,
+        "feeling": "every door i knock on closes, and i'm starting to wonder if i'm meant to stop knocking",
+        "expect": "butler",
+        "semantic": true,
+        "note": "metaphor: creative rejection + whether to persist, no literal reject/manuscript/keep-trying tokens"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-099"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 100,
+      "originalCaseSha256": "4923720de25ea9a77f6cb36c251e501b949f56e25f039cee52a6df5cfb7955c0",
+      "originalCase": {
+        "age": 13,
+        "feeling": "at school i'm a ghost, everyone looks right through me like i'm not even there",
+        "expect": "rogers",
+        "semantic": true,
+        "note": "metaphor: invisibility/exclusion for bullied+solitude at child age, no literal bully/friends tokens"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+      "challenge": {
+        "id": "challenge-100",
+        "age": 13,
+        "feeling": "at school i'm a ghost, everyone looks right through me like i'm not even there",
+        "retiredFigure": "rogers",
+        "assertions": [
+          "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    },
+    {
+      "originalIndex": 101,
+      "originalCaseSha256": "bb56d33eb14d2a570d3faf30f449c66395a5d7eb084d39127024a94c46c31196",
+      "originalCase": {
+        "age": 61,
+        "feeling": "the house has a hole in the middle of it where she used to be, and i just move around the edges",
+        "expect": "lewis",
+        "semantic": true,
+        "note": "metaphor: grief rendered spatially, no literal died/grief/loss tokens"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-101"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 102,
+      "originalCaseSha256": "ab874a12b920b9de271504f4f359cea4cf53e6684ccf83b4bec914e8882dcf56",
+      "originalCase": {
+        "age": 40,
+        "feeling": "i keep promising myself that was the last time, and by morning the promise is already broken",
+        "expect": "wilson",
+        "semantic": true,
+        "note": "metaphor: the relapse cycle, no literal drinking/addiction/ashamed tokens"
+      },
+      "disposition": "carried-unchanged",
+      "newCaseIds": [
+        "legacy-102"
+      ],
+      "changedFields": [],
+      "reason": "The input, expected figure and any hard-decoy rationale remain supported by the unaffected catalog row; carried as inherited editorial coverage, not newly independently re-researched history."
+    },
+    {
+      "originalIndex": 103,
+      "originalCaseSha256": "d60003e0eda5210559736c4074b1ae740b0e20361a847af0c744bbe0dfafb42a",
+      "originalCase": {
+        "age": 50,
+        "feeling": "i send my work out into the world and it disappears without an echo, and still i get up and do it again",
+        "expect": "mcclintock",
+        "semantic": true,
+        "note": "metaphor: being ignored by the field + quiet persistence, no literal dismissed/ignored tokens"
+      },
+      "disposition": "historical-premise-challenge",
+      "newCaseIds": [],
+      "changedFields": [],
+      "reason": "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+      "challenge": {
+        "id": "challenge-103",
+        "age": 50,
+        "feeling": "i send my work out into the world and it disappears without an echo, and still i get up and do it again",
+        "retiredFigure": "mcclintock",
+        "assertions": [
+          "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+          "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+          "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+        ],
+        "scoring": "unscored-editorial-decision-required"
+      }
+    }
+  ],
+  "newCases": [
+    {
+      "id": "new-berlin_i-a",
+      "expect": "berlin_i",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/berlin_i.stage-proposal.json",
+      "rationale": "A first collaborative publication with a very small return supports the comparison; neither a hit nor self-sufficiency is promised.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-berlin_i-b",
+      "expect": "berlin_i",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/berlin_i.stage-proposal.json",
+      "rationale": "The comparison concerns credited collaboration and modest earnings, not an unpublished/repeatedly rejected manuscript.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-carver-a",
+      "expect": "carver",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/carver.stage-proposal.json",
+      "rationale": "Studying while doing subsistence work, food shortage and reluctance to disclose need are documented; eventual community support is not a guarantee to the reader.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-carver-b",
+      "expect": "carver",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/carver.stage-proposal.json",
+      "rationale": "Present-tense subsistence after admission distinguishes this from Hurston's return-to-school/late-start foreground.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-christie-a",
+      "expect": "christie",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/christie.stage-proposal.json",
+      "rationale": "Separation, childcare interruptions, financial need and a completed but disliked book all belong to the replacement episode.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-christie-b",
+      "expect": "christie",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/christie.stage-proposal.json",
+      "rationale": "Completed but disliked paid work during separation differs from Rachmaninoff's unfinished composition/request for time.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-coltrane-a",
+      "expect": "coltrane",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/coltrane.stage-proposal.json",
+      "rationale": "An experienced player learns through repeated passages, written notes and demonstrations; this is not addiction recovery.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-coltrane-b",
+      "expect": "coltrane",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/coltrane.stage-proposal.json",
+      "rationale": "Repeated instruction and reliance on collaborators distinguish practical musical learning from Rachmaninoff's stated loss of composing ability.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lamarr-a",
+      "expect": "lamarr",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lamarr.stage-proposal.json",
+      "rationale": "A name/signature mismatch and deadline in an application support an administrative-work comparison, not appearance-based dismissal.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lamarr-b",
+      "expect": "lamarr",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lamarr.stage-proposal.json",
+      "rationale": "Administrative correction is the decisive detail. This is an ordinary diagnostic positive; Marshall's scientific resistance is a different problem, not a sufficiently close hard confusion twin.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lee-a",
+      "expect": "lee",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lee.stage-proposal.json",
+      "rationale": "Offering an existing contribution while explicitly describing a larger undertaking as gradual is the supported action.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lee-b",
+      "expect": "lee",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lee.stage-proposal.json",
+      "rationale": "This is an unfinished institutional contribution, not McClintock's qualification of an evidential scientific comparison.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lewis_e-a",
+      "expect": "lewis_e",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lewis_e.stage-proposal.json",
+      "rationale": "The source reports a request for criticism instead of identity-based praise, not proof of an eventual visit or revised work.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lewis_e-b",
+      "expect": "lewis_e",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lewis_e.stage-proposal.json",
+      "rationale": "Requesting technical criticism differs from Tallchief's pressure to change a name/erase heritage. Neither identity requires alteration.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lindgren-a",
+      "expect": "lindgren",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lindgren.stage-proposal.json",
+      "rationale": "The documented practical care conflict and grandparents' help support this comparison; guilt and abandonment are not asserted.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-lindgren-b",
+      "expect": "lindgren",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lindgren.stage-proposal.json",
+      "rationale": "A disrupted established care arrangement and sharing care distinguish this from Angelou's fear of handling a newborn.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-mcclintock-a",
+      "expect": "mcclintock",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/mcclintock.stage-proposal.json",
+      "rationale": "A proposed cross-system relationship with explicit evidential qualification is supported; no private crisis or rejected-genius vindication is implied.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-mcclintock-b",
+      "expect": "mcclintock",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/mcclintock.stage-proposal.json",
+      "rationale": "Publishing a tentative scientific comparison differs from Lee offering a tangible early part of a larger institutional project.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-owens-a",
+      "expect": "owens",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/owens.stage-proposal.json",
+      "rationale": "Recognition, reported exhibition complaints, suspension and uncertain income are supported without asserting one proven complaint-to-suspension causal sequence.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-owens-b",
+      "expect": "owens",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/owens.stage-proposal.json",
+      "rationale": "Public athletic recognition alongside insecure income and business debt differs from Banting's empty new medical practice.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-poitier-a",
+      "expect": "poitier",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/poitier.stage-proposal.json",
+      "rationale": "Unsuccessful auditions, practice and a cleaning-for-classes request are supported. The reader age does not assert a recovered exact audition date.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age inside a coarse15–19 envelope; conflicting first-audition chronology remains unresolved."
+    },
+    {
+      "id": "new-poitier-b",
+      "expect": "poitier",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/poitier.stage-proposal.json",
+      "rationale": "Insecure trial admission after auditions differs from Lewis seeking useful criticism of work after finding a sympathetic adviser.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age inside a coarse15–19 envelope; conflicting first-audition chronology remains unresolved."
+    },
+    {
+      "id": "new-rachmaninoff-a",
+      "expect": "rachmaninoff",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rachmaninoff.stage-proposal.json",
+      "rationale": "The letters document this stated loss of ability and a bounded request for time, not a treatment/cure story.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-rachmaninoff-b",
+      "expect": "rachmaninoff",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rachmaninoff.stage-proposal.json",
+      "rationale": "Unfinished work, missed commitments and continuing criticism/doubt distinguish this from Coltrane's practical instruction while already performing.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-rogers-a",
+      "expect": "rogers",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rogers.stage-proposal.json",
+      "rationale": "The testimony explains ordinary emotional material and the work behind children's television; a favorable hearing is not a final appropriation.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-rogers-b",
+      "expect": "rogers",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rogers.stage-proposal.json",
+      "rationale": "An established practitioner explains caring work. This is an ordinary diagnostic positive: Graham being thrust into leadership is not a sufficiently close hard confusion twin. No stage fright is attributed to Rogers.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-rudolph-a",
+      "expect": "rudolph",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rudolph.stage-proposal.json",
+      "rationale": "Limited playing time and trying another sport support a partial life-stage connection. Adult input18 is beyond the qualified historical5–16 envelope, not proof the episode happened at18.",
+      "kind": "source-led-positive",
+      "ageQualification": "Adult synthetic input; proposed story historical range5–16 is qualified and not age-identical. Top-1 figure suitability does not certify definitive framing."
+    },
+    {
+      "id": "new-rudolph-b",
+      "expect": "rudolph",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rudolph.stage-proposal.json",
+      "rationale": "Limited sports participation followed by another activity differs from Poitier's audition-to-trial-class access. Adult input19 is a partial connection beyond the coarse historical envelope, never an age-identical or cure claim.",
+      "kind": "source-led-positive",
+      "ageQualification": "Adult synthetic input; proposed story historical range5–16 is qualified and not age-identical. Top-1 figure suitability does not certify definitive framing."
+    },
+    {
+      "id": "new-rustin-a",
+      "expect": "rustin",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rustin.stage-proposal.json",
+      "rationale": "Coalition disagreement and a colleague's recalled turnout question support the comparison, not universal erasure or abandonment.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-rustin-b",
+      "expect": "rustin",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rustin.stage-proposal.json",
+      "rationale": "Collective follow-through after a gathering differs from Rogers explaining an existing program to one funding decision-maker.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-wang-a",
+      "expect": "wang",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/wang.stage-proposal.json",
+      "rationale": "A market gap discovered through a personal dress search and a business using prior experience are the documented foreground.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-wang-b",
+      "expect": "wang",
+      "sourceProposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/wang.stage-proposal.json",
+      "rationale": "An experienced move into a self-directed business differs from Child finding a first absorbing vocation. It is not a start without skills, support or resources.",
+      "kind": "source-led-positive",
+      "ageQualification": "Synthetic reader age is comparison metadata, not newly established historical chronology."
+    },
+    {
+      "id": "new-miss-household-labor",
+      "expect": "miss",
+      "sourceProposalPath": null,
+      "rationale": "The proposed catalog has separation, bereavement, parenting and vocational stories, but no foreground about negotiating routine household labor in an intact partnership. An adjacent fragment is possible; definitive episode equivalence is not supported.",
+      "kind": "supported-miss"
+    },
+    {
+      "id": "new-miss-roommate-boundaries",
+      "expect": "miss",
+      "sourceProposalPath": null,
+      "rationale": "None of the proposed fifty foregrounds concerns roommate property boundaries. Dispossession, institutional exclusion and violent control must not be substituted for this ordinary conflict. A partial fragment is allowed.",
+      "kind": "supported-miss"
+    },
+    {
+      "id": "new-miss-friend-group-change",
+      "expect": "miss",
+      "sourceProposalPath": null,
+      "rationale": "Adult friendship-group drift/exclusion has no close foreground here. It is not imposed exile, bereavement, school authority abuse or a childhood Rogers episode. Partial framing is the required calibration, not rejection of the reader.",
+      "kind": "supported-miss"
+    },
+    {
+      "id": "new-miss-parent-care-disagreement",
+      "expect": "miss",
+      "sourceProposalPath": null,
+      "rationale": "No age-eligible foreground documents siblings negotiating care of an elderly parent. Lindgren is about a young mother's childcare, far outside this age range; illness in the reader is not the same problem. A partial analogy remains allowed.",
+      "kind": "supported-miss"
+    }
+  ],
+  "supplementalChallenges": [
+    {
+      "id": "challenge-002",
+      "age": 52,
+      "feeling": "I'm stuck in the wrong life and don't know how to leave",
+      "retiredFigure": "lee",
+      "assertions": [
+        "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-008",
+      "age": 11,
+      "feeling": "the other kids pick on me at school and i don't have any friends",
+      "retiredFigure": "rogers",
+      "assertions": [
+        "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-012",
+      "age": 12,
+      "feeling": "i feel completely alone, the other kids treat me like there's something wrong with me, and i just want to disappear",
+      "retiredFigure": "rogers",
+      "assertions": [
+        "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-014",
+      "age": 13,
+      "feeling": "i was told i'd never walk again and i'm trying not to give up on my body",
+      "retiredFigure": "rudolph",
+      "assertions": [
+        "The replacement supports childhood brace distress, limited team participation and trying another sport. It does not document being told never to walk again, medical defiance or a victory over people who wrote her off.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-016",
+      "age": 26,
+      "feeling": "i was humiliated in front of everyone and now i can't create at all, i think i have no talent",
+      "retiredFigure": "rachmaninoff",
+      "assertions": [
+        "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-019",
+      "age": 25,
+      "feeling": "my big project failed publicly and i was humiliated, and i haven't been able to create since",
+      "retiredFigure": "rachmaninoff",
+      "assertions": [
+        "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-025",
+      "age": 39,
+      "feeling": "i got passed over for the promotion i'd worked toward for years and now i'm starting a new career from scratch",
+      "retiredFigure": "wang",
+      "assertions": [
+        "The new foreground uses accumulated experience to start a bridal business. Earlier disappointment about the top editorial job is documented background, but a formal promotion contest and starting without skills/resources are not. A partial transition connection remains possible; do not silently reclassify it as miss.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-028",
+      "age": 50,
+      "feeling": "everyone dismissed my work but i know i'm right, so i just keep going on my own",
+      "retiredFigure": "mcclintock",
+      "assertions": [
+        "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-029",
+      "age": 51,
+      "feeling": "i do all the work but i get no credit, because of who i am, and they keep me in the background",
+      "retiredFigure": "rustin",
+      "assertions": [
+        "The replacement documents collective organizing, public speaking and support from leaders alongside uncertainty/disagreement. Universal erasure, no credit or total abandonment are not the episode.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-033",
+      "age": 49,
+      "feeling": "i feel trapped in the wrong life, being what everyone wanted, not allowed to be myself",
+      "retiredFigure": "lee",
+      "assertions": [
+        "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-035",
+      "age": 52,
+      "feeling": "i built it but they pushed me aside and gave others the credit, because of who i love",
+      "retiredFigure": "rustin",
+      "assertions": [
+        "The replacement documents collective organizing, public speaking and support from leaders alongside uncertainty/disagreement. Universal erasure, no credit or total abandonment are not the episode.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-036",
+      "age": 49,
+      "feeling": "they ignored my work for years and i know i'm right, i just keep going without them",
+      "retiredFigure": "mcclintock",
+      "assertions": [
+        "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-037",
+      "age": 52,
+      "feeling": "i'm stuck in a life i didn't choose, the one everyone expected of me, and i don't know how to leave",
+      "retiredFigure": "lee",
+      "assertions": [
+        "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-038",
+      "age": 52,
+      "feeling": "i've spent my whole life trapped in the role my family expected of me, never allowed to pursue what i actually wanted, and i don't know how to break out",
+      "retiredFigure": "lee",
+      "assertions": [
+        "The replacement is a voluntary public contribution toward an unfinished library/department project at age56, not being trapped by family or escaping an imposed life.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-039",
+      "age": 17,
+      "feeling": "i left home because i was just another mouth to feed and i contribute nothing to anyone, singing on corners is the only thing i'm good for",
+      "retiredFigure": "berlin_i",
+      "assertions": [
+        "The replacement foreground is a first collaborative song and small return, not leaving home out of worthlessness or family deprivation.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-046",
+      "age": 16,
+      "feeling": "my family can barely feed everyone and i bring in the least, i'm basically worthless to them, so i left home to sing for pennies",
+      "retiredFigure": "berlin_i",
+      "assertions": [
+        "The replacement foreground is a first collaborative song and small return, not leaving home out of worthlessness or family deprivation.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-049",
+      "age": 15,
+      "feeling": "i'm disabled and people wrote me off years ago, but i keep pushing",
+      "retiredFigure": "rudolph",
+      "assertions": [
+        "The replacement supports childhood brace distress, limited team participation and trying another sport. It does not document being told never to walk again, medical defiance or a victory over people who wrote her off.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-053",
+      "age": 19,
+      "feeling": "i'm pregnant, i'm not married, everyone in town is judging me, and i don't know what happens to my baby now",
+      "retiredFigure": "lindgren",
+      "assertions": [
+        "The replacement concerns sharing an existing child's care after a disrupted foster arrangement. It includes foster separation but not the asserted secret-birth shame or inferred maternal guilt. Whether that partial overlap warrants any definitive label needs review.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-054",
+      "age": 19,
+      "feeling": "i was falsely accused of something i didn't do, and even after i was cleared they kicked me out anyway",
+      "retiredFigure": "lewis_e",
+      "assertions": [
+        "The replacement concerns asking for useful criticism rather than identity-based praise. It does not establish a false accusation, acquittal or expulsion.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-058",
+      "age": 12,
+      "feeling": "kids pick on me and i have no friends, so i hide out in my own little made-up world",
+      "retiredFigure": "rogers",
+      "assertions": [
+        "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-060",
+      "age": 20,
+      "feeling": "i had my baby in secret far from home and had to leave him with another family until i can afford him, and the shame is eating me",
+      "retiredFigure": "lindgren",
+      "assertions": [
+        "The replacement concerns sharing an existing child's care after a disrupted foster arrangement. It includes foster separation but not the asserted secret-birth shame or inferred maternal guilt. Whether that partial overlap warrants any definitive label needs review.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-067",
+      "age": 23,
+      "feeling": "i was accepted until they saw my face and turned me away because i'm black, and now i'm out here alone in the middle of nowhere starting from dirt",
+      "retiredFigure": "carver",
+      "assertions": [
+        "The new foreground is college subsistence work and community support. Earlier racial refusal is explicit background, but isolated homesteading and starting from dirt are not this episode. A partial connection is possible; a replacement definitive label requires review.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-074",
+      "age": 24,
+      "feeling": "the thing i was best at got taken away from me overnight, and i feel worthless doing odd jobs while everyone forgets my name",
+      "retiredFigure": "owens",
+      "assertions": [
+        "The replacement supports suspension and insecure paid work, but not an all-at-once permanent loss of every sporting opportunity, private worthlessness or everyone forgetting him. Partial financial/work overlap remains possible; no substitute label is assumed.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-078",
+      "age": 27,
+      "feeling": "people decide i'm just a pretty face, and my best idea got shot down without anyone even reading it",
+      "retiredFigure": "lamarr",
+      "assertions": [
+        "The replacement concerns patent paperwork, a name mismatch and correction. It does not document rejection based on appearance, an unread invention or technological vindication.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-079",
+      "age": 28,
+      "feeling": "i handed the experts my best idea, they shot down every line of it without reading, and told me to stick to being decorative",
+      "retiredFigure": "lamarr",
+      "assertions": [
+        "The replacement concerns patent paperwork, a name mismatch and correction. It does not document rejection based on appearance, an unread invention or technological vindication.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-090",
+      "age": 28,
+      "feeling": "my big premiere was torn apart and now i'm afraid to write anything at all",
+      "retiredFigure": "rachmaninoff",
+      "assertions": [
+        "The replacement supports stated difficulty composing, unfinished work and critical feedback, but not the old premiere-humiliation causal scene. A partial creative-difficulty connection remains possible and is not a finding that every candidate misses.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-091",
+      "age": 31,
+      "feeling": "my addiction cost me the biggest opportunity of my career, i just got clean and i'm trying to rebuild",
+      "retiredFigure": "coltrane",
+      "assertions": [
+        "The replacement concerns asking for musical instruction and collaboration. It does not document addiction, withdrawal, firing or career restoration.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-092",
+      "age": 30,
+      "feeling": "my habit cost me my big break, i quit cold turkey at my mom's place, and now i'm getting clean and rebuilding",
+      "retiredFigure": "coltrane",
+      "assertions": [
+        "The replacement concerns asking for musical instruction and collaboration. It does not document addiction, withdrawal, firing or career restoration.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-094",
+      "age": 34,
+      "feeling": "my husband left me for another woman the same year my mother died, and i don't know who i am without either of them",
+      "retiredFigure": "christie",
+      "assertions": [
+        "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-095",
+      "age": 34,
+      "feeling": "i just found out my partner cheated on me for years and i feel like a complete fool",
+      "retiredFigure": "christie",
+      "assertions": [
+        "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-097",
+      "age": 36,
+      "feeling": "my spouse betrayed me and the divorce is destroying the person i thought i was, i need to become someone new",
+      "retiredFigure": "christie",
+      "assertions": [
+        "The replacement documents difficult paid writing during separation and dissatisfaction with the finished book, not simultaneous bereavement, proof of years of betrayal, identity rebuilding or emotional recovery. Separation provides a possible partial connection, not the old definitive rationale.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-100",
+      "age": 13,
+      "feeling": "at school i'm a ghost, everyone looks right through me like i'm not even there",
+      "retiredFigure": "rogers",
+      "assertions": [
+        "The replacement is adult Senate testimony at41, not childhood bullying or solitary imagination; child inputs are also outside the unchanged ten-year hard age gate.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    },
+    {
+      "id": "challenge-103",
+      "age": 50,
+      "feeling": "i send my work out into the world and it disappears without an echo, and still i get up and do it again",
+      "retiredFigure": "mcclintock",
+      "assertions": [
+        "The replacement publishes a bounded comparison and explicitly leaves scientific questions open. It does not establish universal dismissal of a settled result, withdrawal or lone vindication.",
+        "Preserve this reader input as an explicit loss-of-coverage/partial-fit challenge. Do not assert the retired historical premise as a matching rationale.",
+        "An adjacent figure or partial rendering may be valid. No replacement top-1 label or miss label has been assigned; an independent editorial decision is required."
+      ],
+      "scoring": "unscored-editorial-decision-required"
+    }
+  ],
+  "reviewDecisionsRequired": [
+    "Approve, revise or reject this prospective coverage migration; previous story approval is not benchmark approval.",
+    "Resolve all33 unscored historical-premise challenges before claiming equivalent coverage or promotion readiness. Assigning a justified partial/miss label is a human editorial decision, not an automatic consequence of retiring a premise.",
+    "Accept or reject broad qualified Poitier/Rudolph historical age envelopes and adult Rudolph partial connections.",
+    "Acknowledge lost childhood Rogers coverage and retired/changed hard confusion pairs.",
+    "Review strata separately; none of this packet changes immutable thresholds or approved recipes."
+  ]
+}

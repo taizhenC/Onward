@@ -1,0 +1,13 @@
+{
+  "kind": "keyword-route-proposal-v1",
+  "status": "review-only-not-installed",
+  "additions": {
+    "useful criticism": ["finding_voice"],
+    "constructive criticism": ["finding_voice"],
+    "barely compose": ["self_doubt"],
+    "struggling to compose": ["self_doubt"]
+  },
+  "extensions": {
+    "audition": ["creative_dismissal"]
+  }
+}

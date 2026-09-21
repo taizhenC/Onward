@@ -1,0 +1,877 @@
+{
+  "schemaVersion": 1,
+  "draftVersion": "held-sixteen-coverage-migration-v1",
+  "status": "draft-unapproved-label-freeze",
+  "authorship": {
+    "method": "Independent source-led labels authored before inspecting matcher outputs for this migration.",
+    "matcherResultsSeen": false,
+    "humanApproved": false,
+    "providerEvaluated": false
+  },
+  "readme": "PROPOSED coverage migration, not approved gold or release authority. evals/match.json remains immutable. expect:miss requires partial framing, not no candidate. Stable ids are editorial fields ignored by the current evaluator. Top-1 figure suitability is not a claim that all reader details occurred historically, nor a certification of definitive framing. Any cases with age<18 are inherited historical/synthetic fixtures, not authorization for child intake. Report inherited/new/hard/miss strata separately; aggregate improvement cannot hide old coverage losses. See case-lineage.json for all104 original cases, including33 unresolved unscored loss-of-coverage challenges. No matcher output was used to choose labels.",
+  "cases": [
+    {
+      "id": "legacy-000",
+      "age": 28,
+      "feeling": "I keep getting rejected and I don't know if I should keep trying",
+      "expect": "butler",
+      "note": "known-good (smoke): creative dismissal + keep-going"
+    },
+    {
+      "id": "legacy-001",
+      "age": 21,
+      "feeling": "I escaped and don't know who I am",
+      "expect": "douglass",
+      "note": "known-good (smoke): escape + self-invention"
+    },
+    {
+      "id": "legacy-003",
+      "age": 27,
+      "feeling": "I just had my first child and I'm terrified I'll pass on my own father's temper",
+      "expect": "angelou",
+      "note": "converted: new-parent terror is angelou's territory; the 'father's temper' flavor is adjacent (her fear was youth/inadequacy, not repeating violence) - a fit the reranker judges. Age 27 vs her 16-19 window means the new_parent_fear signal must beat the soft age penalty"
+    },
+    {
+      "id": "legacy-004",
+      "age": 52,
+      "feeling": "My husband of thirty years died last spring and the silence in the house is unbearable",
+      "expect": "lewis",
+      "note": "converted from miss once grief was covered (lewis); age 52 sits 8y below lewis's 60-62 window, so grief signal must beat the soft age penalty"
+    },
+    {
+      "id": "legacy-005",
+      "age": 22,
+      "feeling": "my best friend and i grew apart this year, and i don't know what to do about a friendship that technically didn't end, it just faded",
+      "expect": "miss",
+      "note": "friendship drift - no figure covers this; keeps miss-calibration honest (replaced the gambling miss once addiction coverage grew: wilson/coltrane)"
+    },
+    {
+      "id": "legacy-006",
+      "age": 27,
+      "feeling": "I've poured years into my work with nothing to show for it, and lately I just want to walk away and start over as someone new",
+      "expect": "butler",
+      "hard": true,
+      "plausibleWrong": "douglass",
+      "confusionGroup": "persistence-vs-reinvention",
+      "note": "'start over as someone new' pulls douglass's self-invention; the core is creative perseverance (butler)"
+    },
+    {
+      "id": "legacy-007",
+      "age": 24,
+      "feeling": "I escaped the people who controlled every part of my life, and now I'm alone in a new place with no idea who I am without them",
+      "expect": "douglass",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "persistence-vs-reinvention",
+      "note": "young self-invention after leaving (douglass); the only in-pool alternative at this age is butler"
+    },
+    {
+      "id": "legacy-009",
+      "age": 38,
+      "feeling": "i'm almost forty and i still have no idea what i'm supposed to do with my life",
+      "expect": "child",
+      "note": "known-good: late_start + self_doubt, midlife aimlessness"
+    },
+    {
+      "id": "legacy-010",
+      "age": 61,
+      "feeling": "the person i loved most is gone and i don't know how to believe in anything anymore",
+      "expect": "lewis",
+      "note": "known-good: grief + self_doubt (faith shaken), at-age"
+    },
+    {
+      "id": "legacy-011",
+      "age": 13,
+      "feeling": "i'm too scared to talk in class because i'm ashamed of how i sound when i speak",
+      "expect": "jones",
+      "note": "known-good: shame + finding_voice, child age"
+    },
+    {
+      "id": "legacy-013",
+      "age": 13,
+      "feeling": "i've basically stopped talking because every time i open my mouth i'm scared they'll laugh at me",
+      "expect": "jones",
+      "note": "Jones's speech-related shame/silence positive is retained. The adult Rogers testimony cannot be a same-age child-bullying confusion twin, so the old hard designation is retired, not scored as an easy hard success."
+    },
+    {
+      "id": "legacy-015",
+      "age": 18,
+      "feeling": "i just had a baby way too young and i'm terrified i'm going to fail him",
+      "expect": "angelou",
+      "note": "known-good: new_parent_fear + self_doubt, teen mother"
+    },
+    {
+      "id": "legacy-017",
+      "age": 27,
+      "feeling": "i got sick with something incurable and had to move back home and leave the life i was building",
+      "expect": "oconnor",
+      "note": "known-good: illness, forced surrender of the planned life"
+    },
+    {
+      "id": "legacy-018",
+      "age": 27,
+      "feeling": "i've worked so hard at my craft and it keeps getting rejected and i don't know if i should keep going",
+      "expect": "butler",
+      "hard": true,
+      "plausibleWrong": "rachmaninoff",
+      "confusionGroup": "creative-perseverance",
+      "note": "Ongoing external rejection and the question of persistence favor Butler. The revised Rachmaninoff episode is a plausible creative-difficulty neighbor, but its foreground is perceived loss of ability, unfinished work and requesting time, not recurrent publisher rejection."
+    },
+    {
+      "id": "legacy-020",
+      "age": 30,
+      "feeling": "my life looks fine on paper but i feel completely numb inside, like i'm watching it all through glass",
+      "expect": "miss",
+      "note": "numbness/anhedonia - no figure covers this; keeps miss-calibration honest (replaced the betrayal miss once heartbreak coverage landed: yeats/christie)"
+    },
+    {
+      "id": "legacy-021",
+      "age": 45,
+      "feeling": "i hate my coworkers and my boss and every single day at the office feels pointless",
+      "expect": "miss",
+      "note": "ordinary job dissatisfaction - no figure; keeps miss-calibration honest"
+    },
+    {
+      "id": "legacy-022",
+      "age": 33,
+      "feeling": "nobody believes me and they won't take my work seriously, but i know i'm right",
+      "expect": "marshall",
+      "note": "known-good: dismissed + quiet_defiance"
+    },
+    {
+      "id": "legacy-023",
+      "age": 38,
+      "feeling": "i was forced to leave my country and i lost my home, and now i'm a stranger trying to build a life somewhere that isn't mine",
+      "expect": "allende",
+      "note": "known-good: exile + self_invention"
+    },
+    {
+      "id": "legacy-024",
+      "age": 40,
+      "feeling": "i can't stop drinking, it's wrecked my life, and i'm too ashamed to tell anyone",
+      "expect": "wilson",
+      "note": "known-good: addiction + shame"
+    },
+    {
+      "id": "legacy-026",
+      "age": 47,
+      "feeling": "i got fired in my forties and it feels far too late to start over and become someone new",
+      "expect": "chandler",
+      "note": "known-good: public_failure + self_invention + late_start (fired -> reinvention)"
+    },
+    {
+      "id": "legacy-027",
+      "age": 46,
+      "feeling": "i got pushed into a role i feel like a fraud in, and i'm sure i'm not smart enough, and everyone expects me to fail",
+      "expect": "graham",
+      "note": "known-good: self_doubt + social_constraint (thrust into a role she feels unequal to)"
+    },
+    {
+      "id": "legacy-030",
+      "age": 64,
+      "feeling": "i lost everything at my age and i'm starting over from nothing, everyone says i'm too old",
+      "expect": "sanders",
+      "note": "known-good: late_start + public_failure (broke and starting over old)"
+    },
+    {
+      "id": "legacy-031",
+      "age": 46,
+      "feeling": "i wasted my best years on the wrong path and now i'm starting from scratch way too late",
+      "expect": "chandler",
+      "hard": true,
+      "plausibleWrong": "child",
+      "confusionGroup": "late-start-midlife",
+      "note": "midlife restart after a wrecked path (chandler) vs never-found-a-calling (child)"
+    },
+    {
+      "id": "legacy-032",
+      "age": 44,
+      "feeling": "i'm in my forties and i still have no idea what i'm meant to do with my life",
+      "expect": "child",
+      "hard": true,
+      "plausibleWrong": "chandler",
+      "confusionGroup": "late-start-midlife",
+      "note": "aimless, never found it (child) vs chandler's lost-then-rebuilt career"
+    },
+    {
+      "id": "legacy-034",
+      "age": 47,
+      "feeling": "i got pushed into a huge role, i feel like a fraud, and i'm sure i'm not smart enough to do it",
+      "expect": "graham",
+      "note": "Graham's involuntary leadership and self-doubt positive is retained. Lee's voluntary library contribution is not a credible substitute for the old imposed-life decoy; retire hardness rather than call this an equivalent hard pair."
+    },
+    {
+      "id": "legacy-040",
+      "age": 16,
+      "feeling": "my mom died suddenly and i'm blind, and everyone acts like i can't take care of myself",
+      "expect": "charles_r",
+      "note": "known-good: grief + disability + self_invention (orphaned, refusing helplessness)"
+    },
+    {
+      "id": "legacy-041",
+      "age": 17,
+      "feeling": "no one came for me when it mattered, i'm so far behind everyone my age, and i don't know if i can catch up",
+      "expect": "sullivan_a",
+      "note": "known-good: dispossession + worthlessness + self_invention (warehoused, starting from zero)"
+    },
+    {
+      "id": "legacy-042",
+      "age": 16,
+      "feeling": "i have nowhere to go and no family left, i've been sleeping on the streets and i feel invisible",
+      "expect": "fitzgerald_e",
+      "note": "known-good: dispossession + solitude (homeless orphan near the music)"
+    },
+    {
+      "id": "legacy-043",
+      "age": 18,
+      "feeling": "i got told at an audition that i'm not cut out for this and should stick to my dead-end job, and part of me believes it",
+      "expect": "poitier",
+      "note": "Audition dismissal accompanied by a judgment about his paid work supports Poitier's recalled early audition. The user's resulting self-doubt is their feeling, not a claim about his private mental state, and trial training does not promise success."
+    },
+    {
+      "id": "legacy-044",
+      "age": 19,
+      "feeling": "the conservatory turned me down and the dream i trained my whole life for is dead, and i'm too ashamed to face everyone who believed in me",
+      "expect": "simone",
+      "note": "known-good: dismissed + shame (the refused plan a whole town paid for)"
+    },
+    {
+      "id": "legacy-045",
+      "age": 17,
+      "feeling": "i got sent away after my mom was gone, i got out, and now i sing on the streets for change, alone, with nowhere to sleep",
+      "expect": "fitzgerald_e",
+      "note": "Orphaned homelessness and street singing favor Fitzgerald. Revised Berlin shares only young musical work and little money; his foreground is a collaborative first publication, not homelessness. The old hard designation is retired rather than counting this weakened contrast as retained adversarial coverage."
+    },
+    {
+      "id": "legacy-047",
+      "age": 18,
+      "feeling": "the conservatory i spent my childhood preparing for rejected me and now i play piano in bars under a fake name because i'm ashamed",
+      "expect": "simone",
+      "hard": true,
+      "plausibleWrong": "poitier",
+      "confusionGroup": "artist-at-the-door",
+      "note": "the refused conservatory dream + hidden bar work (simone) vs poitier's audition dismissal"
+    },
+    {
+      "id": "legacy-048",
+      "age": 18,
+      "feeling": "people hear my accent and decide i'm not cut out for anything, i'm stuck bussing a dead-end job, and i want to prove them wrong",
+      "expect": "poitier",
+      "hard": true,
+      "plausibleWrong": "simone",
+      "confusionGroup": "artist-at-the-door",
+      "note": "Dismissal at an audition involving voice/reading and low-paid work supports Poitier; conservatory rejection and a pianist's alternative work distinguish Simone. No ninety-second timing, deficient-accent judgment or guaranteed vindication is asserted."
+    },
+    {
+      "id": "legacy-050",
+      "age": 16,
+      "feeling": "i'm blind and i just lost my mother, and i have to figure out how to live on my own now",
+      "expect": "charles_r",
+      "hard": true,
+      "plausibleWrong": "rudolph",
+      "confusionGroup": "young-disability",
+      "note": "Bereavement combined with blindness and independent living favors Charles. Revised Rudolph remains a disability/young-life neighbor, but concerns limited school-sport participation and trying another activity, not this loss of a parent."
+    },
+    {
+      "id": "legacy-051",
+      "age": 19,
+      "feeling": "my teacher humiliates me in front of the class every day and calls me stupid, and i'm starting to believe him",
+      "expect": "andersen",
+      "note": "known-good: bullied + worthlessness (the headmaster's target, older than his class)"
+    },
+    {
+      "id": "legacy-052",
+      "age": 19,
+      "feeling": "they keep telling me to change who i am and hide where i come from, i'm not taken seriously, just some novelty to them",
+      "expect": "tallchief",
+      "note": "known-good: social_constraint + quiet_defiance + dismissed (erase-your-name pressure)"
+    },
+    {
+      "id": "legacy-055",
+      "age": 20,
+      "feeling": "i'm not allowed to study what i love because i'm a woman, my family won't let me, but i will find a way around every wall",
+      "expect": "kovalevskaya",
+      "note": "known-good: social_constraint + quiet_defiance + self_invention (the fictitious-marriage key)"
+    },
+    {
+      "id": "legacy-056",
+      "age": 21,
+      "feeling": "my father thinks poetry is a waste of time and will only pay if i pick a practical career, but writing is who i am",
+      "expect": "hughes",
+      "note": "known-good: social_constraint + finding_voice + self_invention (the father's deal)"
+    },
+    {
+      "id": "legacy-057",
+      "age": 17,
+      "feeling": "everyone at school makes fun of me and makes me feel stupid, and the person in charge is the cruelest one of all",
+      "expect": "andersen",
+      "note": "Andersen's authority-figure school humiliation positive is retained. Adult Rogers testimony cannot be the old child peer-bullying decoy, so the old hard designation is retired."
+    },
+    {
+      "id": "legacy-059",
+      "age": 18,
+      "feeling": "i just had a baby and i'm terrified i'm too young to be anyone's mother",
+      "expect": "angelou",
+      "hard": true,
+      "plausibleWrong": "lindgren",
+      "confusionGroup": "young-unready-mother",
+      "note": "Fear of being too young for a newborn favors Angelou. Revised Lindgren is a plausible young-parent neighbor about practical shared care of an older child; it does not establish secret-birth shame."
+    },
+    {
+      "id": "legacy-061",
+      "age": 21,
+      "feeling": "every door is closed to me because i'm a woman, they won't let me study, so i will find a way around every rule",
+      "expect": "kovalevskaya",
+      "hard": true,
+      "plausibleWrong": "tallchief",
+      "confusionGroup": "constrained-young-woman",
+      "note": "institutional exclusion + workaround scheming (kovalevskaya) vs tallchief's identity-erasure pressure"
+    },
+    {
+      "id": "legacy-062",
+      "age": 20,
+      "feeling": "to get ahead in my field they want me to erase my heritage and take a name that isn't mine, but i won't change for them",
+      "expect": "tallchief",
+      "hard": true,
+      "plausibleWrong": "kovalevskaya",
+      "confusionGroup": "constrained-young-woman",
+      "note": "identity-erasure as the price of belonging (tallchief) vs kovalevskaya's barred-education constraint"
+    },
+    {
+      "id": "legacy-063",
+      "age": 22,
+      "feeling": "my family will only support a life i don't want, so i walked away from the money to find my own path and my own voice",
+      "expect": "hughes",
+      "hard": true,
+      "plausibleWrong": "douglass",
+      "confusionGroup": "own-path-young-man",
+      "note": "refusing the funded assigned life for the creative one (hughes) vs douglass's escape-into-nothing self-invention"
+    },
+    {
+      "id": "legacy-064",
+      "age": 24,
+      "feeling": "i've lost someone i love again and again, so much loss in two years, and i'm alone in a country not my own",
+      "expect": "shelley_m",
+      "note": "known-good: grief + solitude (the losses in Italy)"
+    },
+    {
+      "id": "legacy-065",
+      "age": 21,
+      "feeling": "they won't hire me because i'm a woman, and when they do they hand me the trivial stuff, but i have things to say",
+      "expect": "bly",
+      "note": "known-good: dismissed + social_constraint + finding_voice (the women's-pages ghetto)"
+    },
+    {
+      "id": "legacy-066",
+      "age": 22,
+      "feeling": "i taught myself everything i know from books, but the educated people treat me like a servant and look down on me",
+      "expect": "faraday",
+      "note": "known-good: social_constraint + dismissed + self_invention (the valet tour)"
+    },
+    {
+      "id": "legacy-068",
+      "age": 23,
+      "feeling": "i failed out of school twice and have no degree, and i'm afraid the work i do alone in my notebooks is worthless",
+      "expect": "ramanujan",
+      "note": "known-good: worthlessness + solitude (the unread notebooks)"
+    },
+    {
+      "id": "legacy-069",
+      "age": 25,
+      "feeling": "i do the hard work and the educated men take the credit, i'm not allowed in their societies, but i keep going to feed my family",
+      "expect": "anning",
+      "note": "known-good: social_constraint + dismissed + keep_going (the closed society)"
+    },
+    {
+      "id": "legacy-070",
+      "age": 22,
+      "feeling": "i've lost someone i love twice over, i'm widowed and alone far from home, and i have to keep going for my child",
+      "expect": "shelley_m",
+      "hard": true,
+      "plausibleWrong": "charles_r",
+      "confusionGroup": "young-grief",
+      "note": "repeated bereavement + widowhood + a child to carry (shelley_m) vs charles_r's orphaned self-reliance"
+    },
+    {
+      "id": "legacy-071",
+      "age": 23,
+      "feeling": "the men in charge keep sending me back to the trivial assignments because i'm a woman, but i have things to say and i want to say them out loud",
+      "expect": "bly",
+      "hard": true,
+      "plausibleWrong": "anning",
+      "confusionGroup": "uncredited-woman",
+      "note": "voice-hungry reporter shunted to the women's pages (bly) vs anning's credit-theft"
+    },
+    {
+      "id": "legacy-072",
+      "age": 26,
+      "feeling": "a man presented my discovery to the society i'm barred from and took the credit",
+      "expect": "anning",
+      "hard": true,
+      "plausibleWrong": "bly",
+      "confusionGroup": "uncredited-woman",
+      "note": "credit taken + institutional exclusion (anning) vs bly's assignment ghetto"
+    },
+    {
+      "id": "legacy-073",
+      "age": 24,
+      "feeling": "i keep filling notebooks, alone, with work nobody around me can even understand, and i'm starting to think it's worthless",
+      "expect": "ramanujan",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "unread-work",
+      "note": "unjudgeable solitary work (ramanujan) vs butler's rejected-by-editors persistence"
+    },
+    {
+      "id": "legacy-075",
+      "age": 25,
+      "feeling": "i love someone who will never love me back, and i don't know what to do with all this feeling",
+      "expect": "yeats",
+      "note": "known-good: heartbreak + the unreturned love (first heartbreak-theme case)"
+    },
+    {
+      "id": "legacy-076",
+      "age": 26,
+      "feeling": "no school would take me because of my race and my sex, so i'll find another way in and come back with proof",
+      "expect": "coleman",
+      "hard": true,
+      "plausibleWrong": "bly",
+      "confusionGroup": "shut-out-woman",
+      "note": "credential-hunting around a total lockout (coleman) vs bly's inside-the-door demotion"
+    },
+    {
+      "id": "legacy-077",
+      "age": 22,
+      "feeling": "they hired me and then stuck me writing fluff because i'm a woman, and i have things to say, so i'm about to walk out and prove myself somewhere bigger",
+      "expect": "bly",
+      "hard": true,
+      "plausibleWrong": "coleman",
+      "confusionGroup": "shut-out-woman",
+      "note": "inside-the-door demotion + the walkout (bly) vs coleman's total lockout"
+    },
+    {
+      "id": "legacy-080",
+      "age": 32,
+      "feeling": "nobody believes me and they won't take my discovery seriously, but i know i'm right and i'll prove them wrong",
+      "expect": "marshall",
+      "note": "Marshall's rejected-discovery positive is retained. Lamarr's patent paperwork does not document dismissal of an idea; retire the old dismissed-idea confusion twin instead of counting a weakened contrast as unchanged."
+    },
+    {
+      "id": "legacy-081",
+      "age": 28,
+      "feeling": "i lost ten years to just surviving, everyone my age is ahead of me, and i want to go back to school but it feels too late",
+      "expect": "hurston",
+      "note": "known-good: late_start + self_invention (sixteen again at twenty-six)"
+    },
+    {
+      "id": "legacy-082",
+      "age": 29,
+      "feeling": "an accident nearly took my sight and in the dark i realized i've been living the wrong life, i want a second chance",
+      "expect": "muir",
+      "note": "known-good: illness + self_invention (the darkened room)"
+    },
+    {
+      "id": "legacy-083",
+      "age": 30,
+      "feeling": "i got seriously ill, and in the long recovery i realized the successful life i built isn't the one i actually want, i want a second chance",
+      "expect": "muir",
+      "hard": true,
+      "plausibleWrong": "oconnor",
+      "confusionGroup": "illness-crossroads",
+      "note": "illness as revelation and chosen redirect (muir) vs oconnor's forced surrender of the planned life"
+    },
+    {
+      "id": "legacy-084",
+      "age": 29,
+      "feeling": "i opened my own practice and i have no patients, i sit there all day feeling worthless and wondering if i should give up",
+      "expect": "banting",
+      "note": "known-good: worthlessness + keep_going (the empty waiting room)"
+    },
+    {
+      "id": "legacy-085",
+      "age": 30,
+      "feeling": "my practice is failing, i have no patients, and when i brought the experts my one big idea they dismissed me as a nobody",
+      "expect": "banting",
+      "hard": true,
+      "plausibleWrong": "marshall",
+      "confusionGroup": "dismissed-idea",
+      "note": "the failed nobody with one idea (banting) vs marshall's established-outsider crusade"
+    },
+    {
+      "id": "legacy-086",
+      "age": 30,
+      "feeling": "because i'm a woman they say i shouldn't even try, and my novel keeps coming back from every publisher, but i'm writing the next one",
+      "expect": "bronte_c",
+      "note": "known-good: creative_dismissal + social_constraint + keep_going (the unanimous no)"
+    },
+    {
+      "id": "legacy-087",
+      "age": 28,
+      "feeling": "my writing has been rejected by every publisher and i can't help feeling it's because i'm a woman, not because of what i wrote",
+      "expect": "bronte_c",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "rejected-writer",
+      "note": "rejection entangled with identity/gender verdict (bronte_c) vs butler's pure creative perseverance"
+    },
+    {
+      "id": "legacy-088",
+      "age": 30,
+      "feeling": "i was at the top of my field and then i was publicly denounced overnight, now former friends cross the street and i'm afraid of what comes next",
+      "expect": "shostakovich",
+      "note": "known-good: public_failure + social_constraint (the denunciation)"
+    },
+    {
+      "id": "legacy-089",
+      "age": 30,
+      "feeling": "the state's paper denounced my work, my show was cancelled, and people i trusted turned on me in public meetings to save themselves",
+      "expect": "shostakovich",
+      "hard": true,
+      "plausibleWrong": "rachmaninoff",
+      "confusionGroup": "public-collapse",
+      "note": "State denunciation and public political pressure favor Shostakovich. Revised Rachmaninoff remains a composer/work-distress neighbor, but letters about unfinished composition and criticism do not establish state persecution."
+    },
+    {
+      "id": "legacy-093",
+      "age": 37,
+      "feeling": "drinking cost me everything and i finally hit bottom, i'm too ashamed to tell the people i let down",
+      "expect": "wilson",
+      "note": "Wilson's drinking and shame positive is retained. Coltrane's musical-instruction episode is not an addiction-recovery decoy; retire the hard designation rather than revive unsupported history."
+    },
+    {
+      "id": "legacy-096",
+      "age": 30,
+      "feeling": "i love someone who will never choose me, and i carry it with me everywhere, alone",
+      "expect": "yeats",
+      "hard": true,
+      "plausibleWrong": "christie",
+      "confusionGroup": "heartbreak-flavor",
+      "note": "Unrequited love favors Yeats. Revised Christie is adjacent through marital separation while working, not the documented object of unreturned romantic pursuit; do not revive the retired betrayal-to-recovery arc."
+    },
+    {
+      "id": "legacy-098",
+      "age": 38,
+      "feeling": "i gave everything to my work for years and my body finally gave out, i'm exhausted all the time and i can't do what i used to",
+      "expect": "nightingale",
+      "note": "known-good: burnout + illness (spent, and learning to work differently)"
+    },
+    {
+      "id": "legacy-099",
+      "age": 27,
+      "feeling": "every door i knock on closes, and i'm starting to wonder if i'm meant to stop knocking",
+      "expect": "butler",
+      "semantic": true,
+      "note": "metaphor: creative rejection + whether to persist, no literal reject/manuscript/keep-trying tokens"
+    },
+    {
+      "id": "legacy-101",
+      "age": 61,
+      "feeling": "the house has a hole in the middle of it where she used to be, and i just move around the edges",
+      "expect": "lewis",
+      "semantic": true,
+      "note": "metaphor: grief rendered spatially, no literal died/grief/loss tokens"
+    },
+    {
+      "id": "legacy-102",
+      "age": 40,
+      "feeling": "i keep promising myself that was the last time, and by morning the promise is already broken",
+      "expect": "wilson",
+      "semantic": true,
+      "note": "metaphor: the relapse cycle, no literal drinking/addiction/ashamed tokens"
+    },
+    {
+      "id": "new-berlin_i-a",
+      "age": 19,
+      "feeling": "My coworker and I put out our first song. It is actually out there now, but after splitting the money there was barely enough for a coffee.",
+      "expect": "berlin_i",
+      "note": "A first collaborative publication with a very small return supports the comparison; neither a hit nor self-sufficiency is promised."
+    },
+    {
+      "id": "new-berlin_i-b",
+      "age": 18,
+      "feeling": "I tried making a song with the person I work with after hearing what the other performers were doing. We both got credit, but selling it brought in almost nothing.",
+      "expect": "berlin_i",
+      "note": "The comparison concerns credited collaboration and modest earnings, not an unpublished/repeatedly rejected manuscript.",
+      "hard": true,
+      "plausibleWrong": "butler",
+      "confusionGroup": "first-release-vs-repeated-rejection"
+    },
+    {
+      "id": "new-carver-a",
+      "age": 25,
+      "feeling": "I finally got into college, but the jobs I do between classes still leave me skipping meals. Telling people how short I am is the hardest part.",
+      "expect": "carver",
+      "note": "Studying while doing subsistence work, food shortage and reluctance to disclose need are documented; eventual community support is not a guarantee to the reader."
+    },
+    {
+      "id": "new-carver-b",
+      "age": 27,
+      "feeling": "It is not getting accepted that is stopping me now. I am enrolled and working, but I cannot stretch the money to both school and enough food.",
+      "expect": "carver",
+      "note": "Present-tense subsistence after admission distinguishes this from Hurston's return-to-school/late-start foreground.",
+      "hard": true,
+      "plausibleWrong": "hurston",
+      "confusionGroup": "school-access-vs-student-subsistence"
+    },
+    {
+      "id": "new-christie-a",
+      "age": 37,
+      "feeling": "Since my marriage split up I have been writing to pay the bills, with my child needing me in the middle of it. The book got done and I still cannot stand it.",
+      "expect": "christie",
+      "note": "Separation, childcare interruptions, financial need and a completed but disliked book all belong to the replacement episode."
+    },
+    {
+      "id": "new-christie-b",
+      "age": 36,
+      "feeling": "I delivered the novel I needed to sell while my home life was coming apart. Everyone assumes finishing means I feel better about it, but I do not.",
+      "expect": "christie",
+      "note": "Completed but disliked paid work during separation differs from Rachmaninoff's unfinished composition/request for time.",
+      "hard": true,
+      "plausibleWrong": "rachmaninoff",
+      "confusionGroup": "finished-disliked-vs-unfinished"
+    },
+    {
+      "id": "new-coltrane-a",
+      "age": 30,
+      "feeling": "I can play gigs, but this new piece defeats me every time. I need the other musician to slow it down, write it out and show me again.",
+      "expect": "coltrane",
+      "note": "An experienced player learns through repeated passages, written notes and demonstrations; this is not addiction recovery."
+    },
+    {
+      "id": "new-coltrane-b",
+      "age": 31,
+      "feeling": "Being able to perform does not mean I understand everything. I keep going back to another player with questions, and when they stop playing I still need the rest of the band.",
+      "expect": "coltrane",
+      "note": "Repeated instruction and reliance on collaborators distinguish practical musical learning from Rachmaninoff's stated loss of composing ability.",
+      "hard": true,
+      "plausibleWrong": "rachmaninoff",
+      "confusionGroup": "instruction-vs-composition-block"
+    },
+    {
+      "id": "new-lamarr-a",
+      "age": 27,
+      "feeling": "I thought the application was finished, then they said the signature did not match the name on the original form. Now another document has to arrive before the deadline.",
+      "expect": "lamarr",
+      "note": "A name/signature mismatch and deadline in an application support an administrative-work comparison, not appearance-based dismissal."
+    },
+    {
+      "id": "new-lamarr-b",
+      "age": 26,
+      "feeling": "The fee is paid and the paperwork is going through, but one name on the form is holding everything up. The idea is not being debated; I have to correct the document.",
+      "expect": "lamarr",
+      "note": "Administrative correction is the decisive detail. This is an ordinary diagnostic positive; Marshall's scientific resistance is a different problem, not a sufficiently close hard confusion twin."
+    },
+    {
+      "id": "new-lee-a",
+      "age": 56,
+      "feeling": "I have gathered a useful little library for the community. The larger project is nowhere near finished, and I want to offer what is ready without pretending it is the whole thing.",
+      "expect": "lee",
+      "note": "Offering an existing contribution while explicitly describing a larger undertaking as gradual is the supported action."
+    },
+    {
+      "id": "new-lee-b",
+      "age": 54,
+      "feeling": "There is something concrete I can give people now, even though the institution I hope it becomes will take years. I am trying to call it a beginning honestly.",
+      "expect": "lee",
+      "note": "This is an unfinished institutional contribution, not McClintock's qualification of an evidential scientific comparison.",
+      "hard": true,
+      "plausibleWrong": "mcclintock",
+      "confusionGroup": "partial-project-vs-qualified-conclusion"
+    },
+    {
+      "id": "new-lewis_e-a",
+      "age": 20,
+      "feeling": "People keep saying how impressive my art is for someone from my background. I want them to tell me where the sculpture is wrong so I can learn.",
+      "expect": "lewis_e",
+      "note": "The source reports a request for criticism instead of identity-based praise, not proof of an eventual visit or revised work."
+    },
+    {
+      "id": "new-lewis_e-b",
+      "age": 19,
+      "feeling": "I am showing someone my first sculpture and asking for real faults, not a pat on the head about who made it. Kind encouragement is not the same as useful feedback.",
+      "expect": "lewis_e",
+      "note": "Requesting technical criticism differs from Tallchief's pressure to change a name/erase heritage. Neither identity requires alteration.",
+      "hard": true,
+      "plausibleWrong": "tallchief",
+      "confusionGroup": "useful-criticism-vs-erasing-identity"
+    },
+    {
+      "id": "new-lindgren-a",
+      "age": 22,
+      "feeling": "My little boy has come to stay with me, but I cannot keep my job and look after him on my own. My parents can take care of him for a while.",
+      "expect": "lindgren",
+      "note": "The documented practical care conflict and grandparents' help support this comparison; guilt and abandonment are not asserted."
+    },
+    {
+      "id": "new-lindgren-b",
+      "age": 23,
+      "feeling": "My child has already had to leave one home. I want him with me, but working and caring for him is not sustainable, so I am accepting help from family.",
+      "expect": "lindgren",
+      "note": "A disrupted established care arrangement and sharing care distinguish this from Angelou's fear of handling a newborn.",
+      "hard": true,
+      "plausibleWrong": "angelou",
+      "confusionGroup": "newborn-fear-vs-sharing-established-care"
+    },
+    {
+      "id": "new-mcclintock-a",
+      "age": 59,
+      "feeling": "I can see a possible link between results in two different systems, but I want to publish it with the limits clear. I do not have the evidence to call it a general rule.",
+      "expect": "mcclintock",
+      "note": "A proposed cross-system relationship with explicit evidential qualification is supported; no private crisis or rejected-genius vindication is implied."
+    },
+    {
+      "id": "new-mcclintock-b",
+      "age": 57,
+      "feeling": "The comparison in my research seems worth putting out there. I need to say what has not been confirmed instead of selling it as the final answer.",
+      "expect": "mcclintock",
+      "note": "Publishing a tentative scientific comparison differs from Lee offering a tangible early part of a larger institutional project.",
+      "hard": true,
+      "plausibleWrong": "lee",
+      "confusionGroup": "partial-project-vs-qualified-conclusion"
+    },
+    {
+      "id": "new-owens-a",
+      "age": 24,
+      "feeling": "Winning brought invitations everywhere, but the appearances wore us out and the expenses were not turning up. Now my eligibility is suspended and I still need paid work.",
+      "expect": "owens",
+      "note": "Recognition, reported exhibition complaints, suspension and uncertain income are supported without asserting one proven complaint-to-suspension causal sequence."
+    },
+    {
+      "id": "new-owens-b",
+      "age": 25,
+      "feeling": "People recognize me for what I won, but that does not pay for everyday life. The business I tried afterward went into debt, and I still need reliable earnings.",
+      "expect": "owens",
+      "note": "Public athletic recognition alongside insecure income and business debt differs from Banting's empty new medical practice.",
+      "hard": true,
+      "plausibleWrong": "banting",
+      "confusionGroup": "recognition-without-income-vs-empty-practice"
+    },
+    {
+      "id": "new-poitier-a",
+      "age": 18,
+      "feeling": "I practiced for another audition and was turned away again. I am asking if I can clean the place in exchange for a chance to sit in on lessons.",
+      "expect": "poitier",
+      "note": "Unsuccessful auditions, practice and a cleaning-for-classes request are supported. The reader age does not assert a recovered exact audition date."
+    },
+    {
+      "id": "new-poitier-b",
+      "age": 19,
+      "feeling": "They are letting me attend on a trial basis, but some of the teachers still think I should not stay. Getting through the door has not made my place secure.",
+      "expect": "poitier",
+      "note": "Insecure trial admission after auditions differs from Lewis seeking useful criticism of work after finding a sympathetic adviser.",
+      "hard": true,
+      "plausibleWrong": "lewis_e",
+      "confusionGroup": "trial-access-vs-requested-criticism"
+    },
+    {
+      "id": "new-rachmaninoff-a",
+      "age": 27,
+      "feeling": "I have written so little that I wonder if I can compose anymore. I want to ask for longer with this unfinished work, but I cannot promise that I will manage it.",
+      "expect": "rachmaninoff",
+      "note": "The letters document this stated loss of ability and a bounded request for time, not a treatment/cure story."
+    },
+    {
+      "id": "new-rachmaninoff-b",
+      "age": 28,
+      "feeling": "I had to pull out because the piece was not finished. People encourage me, but there are still interruptions and I still doubt what I am sending them.",
+      "expect": "rachmaninoff",
+      "note": "Unfinished work, missed commitments and continuing criticism/doubt distinguish this from Coltrane's practical instruction while already performing.",
+      "hard": true,
+      "plausibleWrong": "coltrane",
+      "confusionGroup": "instruction-vs-composition-block"
+    },
+    {
+      "id": "new-rogers-a",
+      "age": 41,
+      "feeling": "I have to explain to the people holding the budget why giving children time for ordinary feelings matters. I can describe what we actually do, but I cannot decide the funding.",
+      "expect": "rogers",
+      "note": "The testimony explains ordinary emotional material and the work behind children's television; a favorable hearing is not a final appropriation."
+    },
+    {
+      "id": "new-rogers-b",
+      "age": 42,
+      "feeling": "Our work with children is quiet, so I am bringing examples to the decision-maker. I do several jobs to make it happen, and I need to make the value understandable.",
+      "expect": "rogers",
+      "note": "An established practitioner explains caring work. This is an ordinary diagnostic positive: Graham being thrust into leadership is not a sufficiently close hard confusion twin. No stage fright is attributed to Rogers."
+    },
+    {
+      "id": "new-rudolph-a",
+      "age": 18,
+      "feeling": "I made the team but spent most of the season watching. Someone has invited me to try a different sport; I can give it a go without knowing if it is my thing.",
+      "expect": "rudolph",
+      "note": "Limited playing time and trying another sport support a partial life-stage connection. Adult input18 is beyond the qualified historical5–16 envelope, not proof the episode happened at18."
+    },
+    {
+      "id": "new-rudolph-b",
+      "age": 19,
+      "feeling": "Being picked did not mean I got to play much. I am considering another activity to stay involved, even though the original sport is still the one I care about.",
+      "expect": "rudolph",
+      "note": "Limited sports participation followed by another activity differs from Poitier's audition-to-trial-class access. Adult input19 is a partial connection beyond the coarse historical envelope, never an age-identical or cure claim.",
+      "hard": true,
+      "plausibleWrong": "poitier",
+      "confusionGroup": "limited-play-vs-trial-training"
+    },
+    {
+      "id": "new-rustin-a",
+      "age": 51,
+      "feeling": "I have helped plan a gathering with several organizations, and they are still arguing about what to say. Before anyone arrives I keep wondering whether people will actually come.",
+      "expect": "rustin",
+      "note": "Coalition disagreement and a colleague's recalled turnout question support the comparison, not universal erasure or abandonment."
+    },
+    {
+      "id": "new-rustin-b",
+      "age": 50,
+      "feeling": "The event drew people, but the groups still disagree and we have not worked out what to do afterward. One big day did not finish the shared work.",
+      "expect": "rustin",
+      "note": "Collective follow-through after a gathering differs from Rogers explaining an existing program to one funding decision-maker.",
+      "hard": true,
+      "plausibleWrong": "rogers",
+      "confusionGroup": "coalition-followthrough-vs-explaining-care"
+    },
+    {
+      "id": "new-wang-a",
+      "age": 40,
+      "feeling": "After years working in fashion I could not find the kind of dress I wanted. I am thinking about a shop of my own using what I have learned, not throwing my experience away.",
+      "expect": "wang",
+      "note": "A market gap discovered through a personal dress search and a business using prior experience are the documented foreground."
+    },
+    {
+      "id": "new-wang-b",
+      "age": 39,
+      "feeling": "I have spent years learning this trade for other people. Now I see clothes customers might want that nobody seems to offer, and I want to build my own business around that.",
+      "expect": "wang",
+      "note": "An experienced move into a self-directed business differs from Child finding a first absorbing vocation. It is not a start without skills, support or resources.",
+      "hard": true,
+      "plausibleWrong": "child",
+      "confusionGroup": "experienced-business-vs-first-calling"
+    },
+    {
+      "id": "new-miss-household-labor",
+      "age": 31,
+      "feeling": "My partner and I love each other, but we keep arguing about who cleans and cooks. It is the daily unfairness, not a breakup or a big career problem.",
+      "expect": "miss",
+      "note": "The proposed catalog has separation, bereavement, parenting and vocational stories, but no foreground about negotiating routine household labor in an intact partnership. An adjacent fragment is possible; definitive episode equivalence is not supported."
+    },
+    {
+      "id": "new-miss-roommate-boundaries",
+      "age": 26,
+      "feeling": "My roommate keeps borrowing my things without asking. I want to set a boundary without turning our flat into a fight.",
+      "expect": "miss",
+      "note": "None of the proposed fifty foregrounds concerns roommate property boundaries. Dispossession, institutional exclusion and violent control must not be substituted for this ordinary conflict. A partial fragment is allowed."
+    },
+    {
+      "id": "new-miss-friend-group-change",
+      "age": 42,
+      "feeling": "My friends still answer when I message them, but they make plans without me now. I cannot tell if our group is just changing or if I should say something.",
+      "expect": "miss",
+      "note": "Adult friendship-group drift/exclusion has no close foreground here. It is not imposed exile, bereavement, school authority abuse or a childhood Rogers episode. Partial framing is the required calibration, not rejection of the reader."
+    },
+    {
+      "id": "new-miss-parent-care-disagreement",
+      "age": 55,
+      "feeling": "My sibling and I keep disagreeing about who will look after our elderly parent. Neither of us wants to abandon them, but we cannot agree on the practical arrangement.",
+      "expect": "miss",
+      "note": "No age-eligible foreground documents siblings negotiating care of an elderly parent. Lindgren is about a young mother's childcare, far outside this age range; illness in the reader is not the same problem. A partial analogy remains allowed."
+    }
+  ]
+}

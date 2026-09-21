@@ -4,6 +4,8 @@
   "additions": {
     "young child": ["new_parent_fear"],
     "useful criticism": ["finding_voice"],
-    "constructive criticism": ["finding_voice"]
+    "constructive criticism": ["finding_voice"],
+    "barely compose": ["self_doubt"],
+    "struggling to compose": ["self_doubt"]
   }
 }

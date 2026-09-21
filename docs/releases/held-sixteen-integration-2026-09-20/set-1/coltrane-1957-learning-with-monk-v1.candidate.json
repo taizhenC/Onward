@@ -1,0 +1,478 @@
+{
+  "storySpecId": "coltrane:1957-learning-with-monk:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "coltrane",
+  "stageId": "1957-learning-with-monk",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 30,
+    "ageMax": 31,
+    "throughLine": "A source-led 1957 learning vignette: a saxophonist sought help with another musician's work, used repetition and written music, and still faced uncertainty while performing."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "FOR OWNER REVIEW, not approved. The replacement 1957 stage and candidate both concern musical learning at ages 30–31. User-authorized short source-led form; practical difficulty is not asserted to be his deepest crisis. The previous job-loss/addiction episode is not a matching premise. Retrospective rehearsal accounts are not combined into an invented single day."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Coltrane was born in 1926; he was about thirty during the 1957 rehearsals before the Five Spot engagement.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Paragraph beginning 'Certain aspects of Coltrane's humble beginnings'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "asked",
+      "statement": "Coltrane asked to learn a tune; Monk invited him over.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, top of right column, 'When I met him' through 'invited me around'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "rehearsal",
+      "statement": "Coltrane described repeated home rehearsals with Monk.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, central column, answer to rehearsal question through 'find what he was playing'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "repeat",
+      "statement": "Repeated playing and written music helped him learn.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, central column, 'We'd go over and over' through 'show me the thing written out'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "piano",
+      "statement": "Coltrane recalled asking Monk about musical problems and learning by watching him play the answers on piano.",
+      "sourceRefs": [
+        {
+          "sourceId": "self",
+          "locator": "Paragraph beginning 'Working with Monk', sentences on talking and watching the answers.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "alone",
+      "statement": "Coltrane remembered loneliness without Monk's piano and relying on Ware.",
+      "sourceRefs": [
+        {
+          "sourceId": "blume",
+          "locator": "P. 25, right column, answer beginning 'I felt sort of lonesome' through 'I knew the changes'.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "club",
+      "statement": "Coltrane worked with Monk in the latter part of 1957.",
+      "sourceRefs": [
+        {
+          "sourceId": "self",
+          "scope": "bounded",
+          "locator": "In 1955 paragraph, final sentence: remainder of 1957 with Monk."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "legacy",
+      "statement": "John Coltrane was a jazz saxophonist and composer.",
+      "sourceRefs": [
+        {
+          "sourceId": "estate",
+          "locator": "Opening and paragraph on his work as leader and composer.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 21,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "person",
+      "kind": "person",
+      "value": "John Coltrane",
+      "aliases": [
+        "Coltrane"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He was about thirty, visiting a pianist's home to work on music with his saxophone. These were repeated visits.",
+      "requiredFactIds": [
+        "age",
+        "rehearsal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age",
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rehearsal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Rehearsal-period summary; no single invented date. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In his memory, some passages remained difficult even after they played through the tune repeatedly. He still needed help.",
+      "requiredFactIds": [
+        "repeat"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Learning difficulty, not an invented inner crisis. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "role": "response",
+      "canonicalText": "Earlier, he had liked a tune they recorded and asked to learn it. The pianist invited him over.",
+      "requiredFactIds": [
+        "asked"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asked"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "asked"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Marked backward request, not presented as occurring after the later rehearsals. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "At the rehearsals, he listened to the piano and tried to find the music on his horn. They played passages again and again.",
+      "requiredFactIds": [
+        "rehearsal",
+        "repeat"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rehearsal",
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Repeated effort, no invented failed take. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "When he struggled with a passage, the pianist showed him the music written down. He could also watch answers played at the keyboard. There were other ways to learn.",
+      "requiredFactIds": [
+        "repeat",
+        "piano"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "repeat",
+            "piano"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Habitual practical help is the summarized turn, not a one-day transformation. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "role": "became",
+      "canonicalText": "Playing together did not mean the pianist stayed at the keyboard throughout every performance. When the piano fell silent, the saxophonist remembered feeling alone. He relied on the bassist and his knowledge of the tune. He was still listening.",
+      "requiredFactIds": [
+        "alone"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "alone"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Continued performance difficulty, not recovered addiction or finished mastery. Listening is implied by documented reliance on the bassist, not invented sensory texture. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was John Coltrane.\n\nHe was a jazz saxophonist who wrote music for his bands.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to be unfinished without making your whole life a verdict.\n\nYou are allowed to need help.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "person"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission, not treatment advice. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Keep habitual rehearsal grammar; do not combine repeated visits into one exact day.",
+    "No shame, drug-use, withdrawal, cure or inferred causal link from learning to recovery.",
+    "No third-party delayed memoir dependency, manufactured failed audition or new technical detail."
+  ],
+  "avoidRules": [
+    "No exact sequence between separate interviews beyond supported period order.",
+    "No band job loss or recovery claim in this proposed narrow vignette.",
+    "User-authorized short form; new matching stage and exact-text review remain separate from publication approval."
+  ],
+  "sources": [
+    {
+      "sourceId": "blume",
+      "citation": "August Blume, An Interview with John Coltrane, The Jazz Review, January 1959, p. 25; digitized issue JREVTwo1, Jazz Studies Online.",
+      "url": "https://www.jazzstudiesonline.org/files/jso/resources/pdf/JREVTwo1.pdf",
+      "locator": "Printed p. 25, rehearsal question/answer in the central column; continuation beginning When I met him and answer beginning I felt sort of lonesome in the right column. Bounded text and preserved source image at docs/research/story-specs/wave-3/source-checks-a/coltrane-page-25.png freshly read for the integration repair on 2026-09-20. The image contains corrupt technical text; only legible passages are used."
+    },
+    {
+      "sourceId": "self",
+      "citation": "John Coltrane with Don DeMicheal, Coltrane on Coltrane, DownBeat, 29 September 1960; publisher archive.",
+      "url": "https://downbeat.com/microsites/prestige/trane-interview.html",
+      "locator": "Publisher-owned full essay freshly read 2026-09-20; In 1955 and Working with Monk paragraphs. First-person retrospective essay with Don DeMicheal, not a contemporaneous rehearsal transcript. Post-Monk technical problems are not moved into 1957."
+    },
+    {
+      "sourceId": "estate",
+      "citation": "John Coltrane official website, John Coltrane Biography.",
+      "url": "https://www.johncoltrane.com/biography",
+      "locator": "Official biography freshly read 2026-09-20: 1926 birth paragraph and saxophonist/composer identification. Only context, not source of a private moment."
+    }
+  ],
+  "review": {}
+}

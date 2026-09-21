@@ -1,0 +1,77 @@
+{
+  "figureKey": "poitier",
+  "displayName": "Sidney Poitier",
+  "birthYear": 1927,
+  "deathYear": 2022,
+  "stageId": "early-auditions-and-trial-training",
+  "stageLabel": "Remembered early auditions and an uncertain trial place",
+  "ageMin": 15,
+  "ageMax": 19,
+  "shapeSentences": [
+    "After two unsuccessful auditions, he asked for an opportunity to learn rather than treating admission as already secured.",
+    "He remembered practicing between paid jobs and then offering theatre cleaning in exchange for classes.",
+    "Even after trial admission, his teachers remained doubtful; the account does not turn a chance to study into a promised success."
+  ],
+  "facets": {
+    "emotionalCore": "He recalled feeling deeply offended by an audition dismissal and distressed by a second rejection while still wanting a chance to learn.",
+    "decisionShape": "Returning to ask whether cleaning work could be exchanged for instruction after an unsuccessful audition.",
+    "triggerEvent": "Two unsuccessful auditions preceded his request for access to the theatre's classes.",
+    "agencyState": "He could practice and ask for instruction, but admission and continuation remained in other people's hands."
+  },
+  "biographicalFacts": "Sidney Poitier retrospectively described two unsuccessful early auditions, radio practice while working as a dishwasher, and an offer to clean a theatre in exchange for classes. In his 1989 Museum of the Moving Image interview he calls himself fifteen during the first audition; the Academy of Achievement's 2009 institutional biography instead places it after Army service. These accounts do not establish one exact audition year. His 2009 interview recalls a woman saying she would ask about his cleaning offer, followed by a separate visit and admission. The 1989 testimony describes trial attendance, classes, cleaning, and teachers who still did not want him to continue after the first term. The story stops there. IBDB records his birth on 20 February 1927 and the opening of Lysistrata on 17 October 1946; the later professional debut, at nineteen, is an external upper bound only. Ages 15–19 are a conservative comparison envelope, not a claim that all its years were occupied by these events. His accent is not treated as deficient or as a measure of worth.",
+  "themes": [
+    "creative_dismissal",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He remembered being handed a script and sent onto a small stage. He was in his teens. He had followed a newspaper notice while looking for work. He had never seen a script before.",
+      "sourceNotes": "Retrospective framing governs the account; no precise audition date is recovered. No invented stage texture."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "His reading came out slowly, broken into syllables. The man interrupted, took him to the door and told him to find dishwashing work. Walking away, he wondered how the man had known that was already his job. He remembered feeling deeply offended.",
+      "sourceNotes": "His interpretation of the dismissal is his reported memory, not an objective account of the man's motive. No quote or invented bodily response."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He said he found another dishwashing job that day. With money he earned, he bought a small radio. He wanted to change how he spoke.",
+      "sourceNotes": "A recalled concrete purchase, not a claim that speech or intelligence required correction. The factual wish belongs to him."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "For months, he listened to radio voices and practiced. For the next audition, he memorized a passage from a magazine. He still did not get a place.",
+      "sourceNotes": "Remembered preparation and actual repeated rejection, without exact daily duration or fabricated practice scene. Magazine length differs across accounts and is not specified."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "He went back and offered to clean the theatre in exchange for lessons. The woman he spoke to said she would ask. On a later visit, another person questioned him about the offer. He said he wanted to learn.",
+      "sourceNotes": "2009account supports woman at desk and separate return; not fused into instant acceptance."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "They let him attend on trial, and he studied while doing the cleaning. By the end of the first term, his teachers still did not want him to continue. The place was not secure.",
+      "sourceNotes": "Bounded endpoint before the later substitute performance and1946professional debut. Admission did not erase difficulty; no promise of success."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Sidney Poitier.\n\nHe acted in films including Lilies of the Field.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to ask for a chance to learn.",
+      "sourceNotes": "Own-line reveal and permission; no command to prove doubters wrong."
+    }
+  ],
+  "sources": [
+    "Sidney Poitier, Pinewood Dialogue, Museum of the Moving Image, March 1, 1989; retrospective oral history. https://movingimage.org/wp-content/uploads/2020/12/63_programs_transcript_pdf_228.pdf Printed pp. 2–5; first and second auditions, trial classes, substitute performance.",
+    "Sidney Poitier, interview #2, October 28, 1998, American Masters Digital Archive, PBS; retrospective oral history. https://www.pbs.org/wnet/americanmasters/archive/interview/sidney-poitier-interview-2/ Transcript passage beginning 'I was washing dishes and I was in between jobs' through first professional job.",
+    "Sidney Poitier, Academy of Achievement interview, February 17, 2009; retrospective oral history. https://achievement.org/achiever/sidney-poitier/ Questions about first audition, overcoming initial rejection, and first Broadway appearance.",
+    "The Broadway League, IBDB, Sidney Poitier performance record; institutional chronology. https://www.ibdb.com/broadway-cast-staff/sidney-poitier-15894 Birth date and Lysistrata: October 17–19, 1946."
+  ]
+}

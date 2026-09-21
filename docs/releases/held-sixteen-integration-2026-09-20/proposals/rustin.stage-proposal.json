@@ -1,0 +1,81 @@
+{
+  "figureKey": "rustin",
+  "displayName": "Bayard Rustin",
+  "birthYear": 1912,
+  "deathYear": 1987,
+  "stageId": "1963-organizing-the-march",
+  "stageLabel": "Organizing together amid turnout uncertainty and disagreement",
+  "ageMin": 51,
+  "ageMax": 51,
+  "themes": [
+    "self_doubt",
+    "social_constraint",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "An organizer coordinating a large gathering asked whether people would come, while disagreements among the participating groups still needed attention.",
+    "The crowd arrived, but a successful gathering did not settle the coalition's disputes or finish its work.",
+    "He spoke publicly for shared demands and later wrote that the organizers should have prepared their next steps."
+  ],
+  "facets": {
+    "emotionalCore": "His remembered question expresses uncertainty about turnout amid the demands of coordinating collective work.",
+    "decisionShape": "He helped convene discussion of a disputed speech and continued organizing with colleagues despite unresolved disagreement.",
+    "triggerEvent": "On the early morning of a planned gathering, a colleague remembered the grounds still empty and the organizer asking whether people would come.",
+    "agencyState": "He could coordinate logistics, bring people together and speak for shared demands, but turnout, coalition agreement and later change depended on many people."
+  },
+  "biographicalFacts": "Bayard Rustin was fifty-one during the 1963 March on Washington for Jobs and Freedom. In a 1979 interview he described arranging logistics and nonviolence with representatives of participating organizations. Courtland Cox later remembered accompanying him to the empty Mall early on August 28, hearing his question about whether anyone would come, and then seeing marchers arrive. John Lewis's 1979 interview remembered Rustin calling him to a hotel meeting about disputed speech wording the previous night; objections continued at the memorial. These are attributed retrospective memories, not evidence of private despair. A transcript of contemporary march audio records Rustin's public introduction and his demands for civil-rights legislation, housing, education, employment and voting rights. In October he wrote that the coalition's next steps had been inadequately prepared after racist violence killed four children. His 1986 recollection of the earlier political attack says that movement leaders defended him. This is collective organization with uncertainty and unfinished work, not a story of universal abandonment or exclusion from speaking.",
+  "sources": [
+    "Stanford King Institute, 'Rustin, Bayard'; institutional secondary chronology and identity. https://kinginstitute.stanford.edu/rustin-bayard (Birth-date heading and paragraph beginning In 1963 Randolph began organizing.)",
+    "Courtland Cox, retrospective interview by Michael A. Fletcher, Smithsonian, July 2013. https://www.smithsonianmag.com/history/oral-history-march-washington-180953863/ (The morning of the March on Washington; two consecutive Courtland Cox paragraphs.)",
+    "Bayard Rustin, 1979 filmed interview for America, They Loved You Madly; Washington University/AAPB. https://americanarchive.org/catalog/cpb-aacip_151-rr1pg1jj76 (Questions about his march role, funding and march management.)",
+    "John Lewis, 1979 filmed interview for America, They Loved You Madly; Washington University/AAPB. https://americanarchive.org/catalog/cpb-aacip_151-hd7np1xb3j (Question about changing his march speech; hotel call through unresolved objections at the memorial.)",
+    "Bayard Rustin interviewed by Peg Byron, February 5, 1986; recording preserved by Walter Naegle and transcribed by Making Gay History. https://makinggayhistory.org/podcast/bayard-rustin/ (Rustin's account of Thurmond's 1963 attack and the leaders' response.)",
+    "Bayard Rustin's recorded address, August 28, 1963; audio transcript supplied by filmmaker Bennett Singer to Journey to Justice. https://jtojhumanrights.org.uk/bayard-rustin/ (Audio transcript: Speaker 1 introduction and Bayard's first demand; not the modern biographical narrative.)",
+    "Bayard Rustin, 'The Meaning of the March on Washington,' Liberation, October 1963; Civil Rights Movement Veterans transcription hosted by Duke. https://crmvet.lib.duke.edu/info/mowrust.html (Opening four paragraphs and numbered sections 1–2.)"
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "sourceNotes": "Source-led vignette under the owner's approved shorter format, not a claim of four fully located dramatic moments. Cox's remembered encounter remains probable. Turnout uncertainty is not claimed as a deepest low or cure; arrival does not prove an immediate emotional change.",
+      "text": "A fifty-one-year-old organizer went onto the gathering ground with a colleague. The colleague remembered finding no crowd there. They had arrived early."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "sourceNotes": "Source-led vignette under the owner's approved shorter format, not a claim of four fully located dramatic moments. Cox's remembered encounter remains probable. Turnout uncertainty is not claimed as a deepest low or cure; arrival does not prove an immediate emotional change.",
+      "text": "He had planned a nonviolent gathering with workers from several organizations. But the expected people were not yet in front of him. The ground was empty."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "sourceNotes": "Source-led vignette under the owner's approved shorter format, not a claim of four fully located dramatic moments. Cox's remembered encounter remains probable. Turnout uncertainty is not claimed as a deepest low or cure; arrival does not prove an immediate emotional change.",
+      "text": "He asked his colleague whether anybody was coming to the march. That is the question the colleague remembered. He said it aloud."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "sourceNotes": "Source-led vignette; explicit flashback to Lewis's 1979 account. It reports a call rather than the note in his later account. No invented conversation or private response.",
+      "text": "The previous night had brought a different problem. He had called a young speaker to a hotel meeting about objections to the speech. Representatives of the organizations argued about it. They disagreed over support for a proposed civil-rights law.\n\nThe meeting did not settle every objection. Disagreement continued the next day where the speeches were to be given. There was still a speech to agree on."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "sourceNotes": "Source-led vignette under the owner's approved shorter format, not a claim of four fully located dramatic moments. Cox's remembered encounter remains probable. Turnout uncertainty is not claimed as a deepest low or cure; arrival does not prove an immediate emotional change.",
+      "text": "On the gathering ground, young marchers appeared just after his question. In his colleague's memory, more people followed in a steady flow. The crowd was arriving."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "sourceNotes": "Source-led vignette under the owner's approved shorter format, not a claim of four fully located dramatic moments. Cox's remembered encounter remains probable. Turnout uncertainty is not claimed as a deepest low or cure; arrival does not prove an immediate emotional change.",
+      "text": "Later that day, he addressed the crowd himself. He called for a civil-rights law and asked the people to respond. He named housing, schools, employment and voting rights.\n\nWeeks later, he wrote about what the march had achieved and what remained undone. Racist violence had killed four children in a church. He said the organizers should have prepared their next steps. The gathering had not ended their work."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "sourceNotes": "New source-led vignette for owner reading only; no approval or publication.",
+      "text": "His name was Bayard Rustin.\n\nHe helped organize the March on Washington for Jobs and Freedom.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to have uncertainty."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "figureKey": "rachmaninoff",
+  "displayName": "Sergei Rachmaninoff",
+  "birthYear": 1873,
+  "deathYear": 1943,
+  "stageId": "1900-1901-letters-and-unfinished-work",
+  "stageLabel": "Asking for time while the work remained uncertain",
+  "ageMin": 27,
+  "ageMax": 28,
+  "themes": [
+    "self_doubt",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "A composer who thought he had lost his ability asked for more time to try an unfinished project without promising that he could finish it.",
+    "A friend's encouragement and permission to keep working did not remove disruption, missed deadlines, or later doubt.",
+    "He continued sending work for examination while admitting uncertainty about what he was making."
+  ],
+  "facets": {
+    "emotionalCore": "His letters describe the apparent loss of his composing ability, alongside a desire to regain it and later doubts about new work.",
+    "decisionShape": "He asked to keep an opera text until a later answer, while offering to return it immediately if the writer could not wait.",
+    "triggerEvent": "Correspondence about retaining an opera text reached him when he had produced very little music and could not promise completion.",
+    "agencyState": "He could ask, state limits, plan regular work and send music for review, but neither permission nor encouragement guaranteed completion or confidence."
+  },
+  "biographicalFacts": "Sergei Rachmaninoff's letters from June 1900 to October 1901 Old Style form this episode, ages twenty-seven to twenty-eight. In a June 14/27 letter to Nikita Morozov he described disrupted lodging and obtaining paper and ink. In a separate letter that day to Modest Tchaikovsky, he said he had written only one song in two years and apparently lost his composing ability. He asked to retain the Francesca libretto until September for another attempt, offered to return it if waiting was impossible, and later thanked Tchaikovsky for permission. A subsequent letter to Morozov recorded encouragement, continuing noise and an intention to work regularly. In February 1901 he withdrew from a concert because his Second Piano Concerto was unfinished. In April he sent two movements for examination, and in October he reported despair after playing through the first movement and agreeing with criticism. These are separate contemporary letters preserved in a later Russian transcription, not one continuous scene or a clinical record. Permission concerning the opera is not claimed to cause the concerto. The episode does not establish a medical cure or a period of absolutely no composition.",
+  "sources": [
+    "Sergei Rachmaninoff to Nikita Morozov, June14/27,1900, letter157; contemporary Russian correspondence transcribed from Literary Heritage (Moscow,1978). https://senar.ru/letters/157 (First paragraph, arrival and room/paper/ink; second paragraph, cost of journey.)",
+    "Rachmaninoff to Modest Tchaikovsky, June14/27,1900, letter158; contemporary Russian correspondence, Senar transcription. https://senar.ru/letters/158 (Opening through conditional request to retain Francesca libretto until September.)",
+    "Rachmaninoff to Nikita Morozov, June22/July5,1900, letter159; contemporary Russian correspondence, Senar transcription. https://senar.ru/letters/159 (Paragraphs1–4: encouragement from letter, noisy lodging, intention to continue regular work.)",
+    "Rachmaninoff to Modest Tchaikovsky, July5/18,1900, letter160; contemporary Russian correspondence, Senar transcription. https://senar.ru/letters/160 (Sole substantive paragraph: thanks for permission to retain libretto and promise of September answer.)",
+    "Rachmaninoff to Vasily Safonov, February18,1901 Old Style, letter175; contemporary Russian correspondence, Senar transcription. https://senar.ru/letters/175 (Sole substantive paragraph: concerto unfinished and withdrawal from scheduled concert.)",
+    "Rachmaninoff to Alexander Goldenweiser, April19,1901 Old Style, letter178; contemporary Russian correspondence, Senar transcription. https://senar.ru/letters/178 (Both paragraphs: sends two concerto movements for review; first movement unlikely ready by Saturday.)",
+    "Rachmaninoff to Nikita Morozov, October22,1901 Old Style, letter186; contemporary Russian correspondence, Senar transcription. https://senar.ru/letters/186 (Whole short letter: played first movement, agrees with structural criticism, reports despair five days before performance.)",
+    "Library of Congress, Sergei Rachmaninoff Archive finding aid (2015, revised2024); institutional context. https://tile.loc.gov/storage-services/service/gdc/gdcfindingaidpdfs/mu015003/mu015003.pdf (Biographical Note: April1,1873 birth; circa1900 ConcertoNo.2 and Dahl dedication; Collection Summary identifies composer/pianist/conductor.)"
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "sourceNotes": "Source-led correspondence vignette. Letter157 itself supplies the place, writing materials and shut room. No invented locking action, pose or same-day concurrence with letter158.",
+      "text": "At twenty-seven, he wrote to a friend from the house where he was staying. He had obtained paper and ink amid cleaning, moving things, dust and heat. His room was shut."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "sourceNotes": "Separate dated letter158, not a single sitting fused with letter157. 'It seemed' preserves по-видимому: his self-assessment, not a clinical conclusion.",
+      "text": "In a separate letter that day, he described how little music he had written. Over two years, he said, he had composed only one song. It seemed to him that his ability to compose had gone. He wanted it back."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "sourceNotes": "Conditional request in letter158, paragraphs2–3. No quote, promise of completion or first successful composing session. Opera text and concerto remain different works.",
+      "text": "He asked the writer of an opera text to let him keep it longer. He hoped to try again that summer. If he failed, he promised to give up the subject later that year. If waiting was impossible, he offered to send the text back immediately. The writer could refuse."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "sourceNotes": "AUTHORIZED STRUCTURAL EXCEPTION: correspondence records recurring difficulty and intention; it does not document a particular failed session. Letter159 follows the request and precedes the thanks.",
+      "text": "A later letter to his friend still described trouble in the lodging. Noise sometimes surrounded his separate room. The friend's advice had encouraged him, and he wrote with thanks. He intended to remain and work regularly. He still regretted the trip."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "sourceNotes": "AUTHORIZED STRUCTURAL EXCEPTION: letter160 proves permission and his written thanks, not its arrival time, location or an emotional transformation. No invented receipt scene.",
+      "text": "In another letter, he thanked the opera's writer for permission to keep the text. He repeated his promise to give a definite answer later that year. For now, he could keep it."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "sourceNotes": "Explicit compressed aftermath, letters175/178/186 in order. Continued work does not erase a missed deadline or criticism. No promised visit is converted into an actual meeting.",
+      "text": "The following year, a concert deadline went unmet. He corrected a report that his new concerto was finished. He could not complete it in time and withdrew from the performance. Later, he sent two movements to a colleague to examine. The first movement was still unfinished. Months afterward, he played that movement and agreed with a friend's criticism. In his letter, he described despair near the performance. There was music, and doubt."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "sourceNotes": "Source-led correspondence vignette; the new stage and matching proposal require review and verified integration. No approval or publication is recorded.",
+      "text": "His name was Sergei Rachmaninoff.\n\nHe was a pianist and composer known for his Second Piano Concerto.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to ask without certainty."
+    }
+  ]
+}

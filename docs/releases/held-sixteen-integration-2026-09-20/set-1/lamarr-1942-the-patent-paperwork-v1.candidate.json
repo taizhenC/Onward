@@ -1,0 +1,540 @@
+{
+  "storySpecId": "lamarr:1942-the-patent-paperwork:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "lamarr",
+  "stageId": "1942-the-patent-paperwork",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 27,
+    "ageMax": 27,
+    "startDate": "1942-04-13",
+    "endDate": "1942-08-11",
+    "throughLine": "A short documentary vignette of an urgent patent deadline, completed paperwork that needed correction, and eventual grant. No reconstruction of private fear, rejection for beauty or a personal awakening."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "FOR OWNER REVIEW, not approved. The replacement stage covers April 13–August 11, 1942 at age 27, exactly matching the candidate's paperwork episode. User-authorized short documentary form; the correction is her attorneys' report, not a separately inspected replacement affidavit. No appearance-based dismissal, military adoption, later wireless lineage or invented personal awakening is claimed."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Lamarr was twenty-seven on 13 April 1942, based on her birth on 9 November 1914.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-age",
+          "scope": "bounded",
+          "locator": "Opening biographical section."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-warning",
+      "statement": "Her lawyers' 13 April 1942 letter requested immediate attention, warned that delaying the affidavit and payment could mean loss of the patent, and offered execution before their office notary.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-warning",
+          "scope": "bounded",
+          "locator": "Page 2, paragraph beginning We cannot urge you too strongly."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-deadline",
+      "statement": "The 13 April letter stated that the final government fee must be paid before 13 May, and the affidavit must precede payment by twenty days.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-warning",
+          "scope": "bounded",
+          "locator": "Page 1, first through third paragraphs."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-sign",
+      "statement": "By 16 April 1942 Lamarr had signed the required affidavit, which her lawyers sent to their Washington associates with a request to obtain the necessary certified copy quickly.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-sent",
+          "scope": "bounded",
+          "locator": "Paragraph beginning We enclose TFR Form 172."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-check",
+      "statement": "On 16 April the lawyers acknowledged her thirty-dollar check for the government's final fee.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-check",
+          "scope": "bounded",
+          "locator": "Final paragraph."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-mismatch",
+      "statement": "An 18 April telegram reported that the signature's name did not match the name in the application and requested another correctly signed form.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-mismatch",
+          "scope": "bounded",
+          "locator": "Telegram body, beginning Certified copy ordered."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-request",
+      "statement": "On 18 April the lawyers sent Walton another affidavit to have signed with the name matching the application.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-correction",
+          "scope": "bounded",
+          "locator": "Image -0000029, first and second paragraphs."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-corrected",
+      "statement": "On 18 April the lawyers told their associates they enclosed a new affidavit properly executed by Hedy Kiesler Markey.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-correction",
+          "scope": "bounded",
+          "locator": "Image -0000028, first paragraph."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-grant",
+      "statement": "Patent 2,292,387 was issued to Hedy Kiesler Markey and George Antheil on 11 August 1942 with six claims.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-patent",
+          "scope": "bounded",
+          "locator": "Front matter and claims 1-6."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-purpose",
+      "statement": "The patent describes changing radio frequencies together at transmitter and receiver to make interference harder.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-patent",
+          "scope": "bounded",
+          "locator": "Description, opening object-of-invention paragraphs."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-identity",
+      "statement": "Hedy Lamarr was an actor and co-inventor of the patented radio communication system.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-age",
+          "scope": "bounded",
+          "locator": "Career and patent sections; name cross-check in original patent."
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Hedy Lamarr",
+      "aliases": [
+        "Lamarr",
+        "Hedy Kiesler Markey"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A letter addressed to her warned that delay could cost her the patent. She was twenty-seven.",
+      "requiredFactIds": [
+        "fact-warning",
+        "fact-age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Document itself is the opening; no asserted reading moment. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Her lawyers needed a signed affidavit before they could arrange the final government payment. The deadline was approaching.",
+      "requiredFactIds": [
+        "fact-deadline",
+        "fact-warning"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-deadline",
+            "fact-warning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-deadline"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Documented practical threat, not an invented emotion. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She signed the form and supplied a check for the final fee. Her lawyers sent the paperwork onward.",
+      "requiredFactIds": [
+        "fact-sign",
+        "fact-check"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sign",
+            "fact-check"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sign"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Attested acts summarized, without a signing scene. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "A telegram then reported that her signature did not match the name on the application. Her lawyers requested another signed form. The first one needed correcting.",
+      "requiredFactIds": [
+        "fact-mismatch",
+        "fact-request"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-mismatch"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-mismatch",
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Specific unsuccessful paperwork step; no personal shame inferred. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Her lawyers reported that a replacement form had been correctly signed and was being sent onward. They had addressed the mismatch.",
+      "requiredFactIds": [
+        "fact-corrected"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-corrected"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-corrected"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Attributed contemporaneous report, not independent inspection of a replacement affidavit. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The patent was granted later that summer, naming her and her collaborator as the inventors. Their proposed system aimed to make radio communication harder to interfere with. Both inventors were credited.",
+      "requiredFactIds": [
+        "fact-grant",
+        "fact-purpose"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-grant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-purpose"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-grant"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Grant, not proof of adoption or successful deployment. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Hedy Lamarr.\n\nShe was an actor who also helped invent a radio communication system.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to explain every part of yourself.\n\nYou are allowed to want your work taken seriously.",
+      "requiredFactIds": [
+        "fact-identity"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Permission without claiming the administrative episode proves dismissal based on appearance. User-authorized short source-led format; FOR OWNER READING, not approved."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Do not invent reading a letter, distress, embarrassment, a room, a pen or a conversation.",
+    "Keep the attorneys' report distinct from witnessing a signature.",
+    "No claims of wartime adoption, later wireless ancestry, or recognition repairing personal pain."
+  ],
+  "avoidRules": [
+    "Administrative risk is not evidence of her deepest personal low.",
+    "Do not transform the nationality-related form into an invented refusal based on appearance.",
+    "Short source-led form is an authorized structural exception; exact-text owner approval still required."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-age",
+      "citation": "National WWII Museum, Erica Lansberg, Hedy Lamarr's WWII Invention Helped Shape Modern Tech (23 April 2025). Institutional secondary biography; used only for birth and identification.",
+      "url": "https://www.nationalww2museum.org/war/articles/hedy-lamarrs-wwii-invention-helped-shape-modern-tech",
+      "locator": "Opening biography: born 9 November 1914; actor and co-inventor. Freshly reopened and relevant text read 2026-09-20."
+    },
+    {
+      "sourceId": "source-warning",
+      "citation": "Lyon & Lyon to Hedy Lamarr, 13 April 1942, two pages. Smithsonian Archives Center, Hedy Lamarr Papers, NMAH.AC.1590, box 1, patent correspondence.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000025-01",
+      "locator": "Images NMAH-AC1590-0000025-01 and -02, both visually read. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date."
+    },
+    {
+      "sourceId": "source-check",
+      "citation": "Lyon & Lyon to Charles Walton, 16 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000032",
+      "locator": "Image NMAH-AC1590-0000032, full letter. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date."
+    },
+    {
+      "sourceId": "source-sent",
+      "citation": "Lyon & Lyon to Bacon & Thomas, 16 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000026",
+      "locator": "Image NMAH-AC1590-0000026, executed affidavit and required certified copy. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date."
+    },
+    {
+      "sourceId": "source-mismatch",
+      "citation": "Bacon & Thomas to Lyon & Lyon, telegram, 18 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000033-01",
+      "locator": "Image NMAH-AC1590-0000033-01, mismatch and request for correct form. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date."
+    },
+    {
+      "sourceId": "source-correction",
+      "citation": "Lyon & Lyon to Charles Walton and to Bacon & Thomas, 18 April 1942. Smithsonian, NMAH.AC.1590.",
+      "url": "https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000028",
+      "locator": "Images NMAH-AC1590-0000028 (new properly executed form enclosed) and -0000029 (request to sign matching name). Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date. The retained claim is the attorneys' dated report of proper execution; no separate original replacement affidavit was inspected. Handwritten note says form and letter sent to Walton to mail."
+    },
+    {
+      "sourceId": "source-patent",
+      "citation": "Hedy Kiesler Markey and George Antheil, United States patent 2,292,387, Secret Communication System, issued 11 August 1942. Original patent reproduced by Google Patents.",
+      "url": "https://patents.google.com/patent/US2292387A/en",
+      "locator": "Front matter (filed 10 June 1941, issued 11 August 1942, inventors); description opening and six numbered claims. Freshly reopened and relevant text read 2026-09-20."
+    }
+  ],
+  "review": {}
+}

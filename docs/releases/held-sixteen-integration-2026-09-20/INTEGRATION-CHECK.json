@@ -1,0 +1,1370 @@
+{
+  "kind": "held-sixteen-proposal-integration-check",
+  "catalogState": "PROPOSAL_NOT_INSTALLED",
+  "structuralChecksPassed": true,
+  "expectedKeys": [
+    "berlin_i",
+    "carver",
+    "christie",
+    "coltrane",
+    "lamarr",
+    "lee",
+    "lewis_e",
+    "lindgren",
+    "mcclintock",
+    "owens",
+    "poitier",
+    "rachmaninoff",
+    "rogers",
+    "rudolph",
+    "rustin",
+    "wang"
+  ],
+  "setSizes": [
+    9,
+    7
+  ],
+  "candidatesChecked": 16,
+  "overlayRows": 50,
+  "unchangedOtherRows": 34,
+  "originalSourceCatalogSha256": "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+  "frozenReviewIndexSha256": "0146c5cf609ca78c489513624e5a3455102993f462e6b485e352b4048deb32d9",
+  "frozenCandidatesChecked": 26,
+  "canonicalTextsPreservedFromPrior": 15,
+  "canonicalRewriteExceptions": [
+    "rogers"
+  ],
+  "readingCopyTargetsChecked": 16,
+  "readingCopyHashes": {
+    "docs/releases/held-sixteen-integration-2026-09-20/set-1/READING-COPY.md": "fbfa2099a71eee73dc342c8a7c8fe89c3b8f1ff357ae3ed6f996d76c024fe91a",
+    "docs/releases/held-sixteen-integration-2026-09-20/set-2/READING-COPY.md": "972379b52e82259cac71923a031916edd1b93c915ca2a6c83d16fd76165bc133"
+  },
+  "immutableOldGoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+  "oldGoldCases": 104,
+  "manifestState": "PINNED_PROPOSAL_NOT_INSTALLED",
+  "manifestSha256": "b43c53652f8cf90b4dcf71f94cb84929af38275dd735bf488848bbba8fa714d0",
+  "sentenceRhythmPolicy": {
+    "maximumMean": 16,
+    "maximumSentence": 28,
+    "finalSentenceMustBeStrictlyShorterThanMaximum": true
+  },
+  "ageMigrationBlockers": [
+    {
+      "caseIndex": 8,
+      "expectedFigure": "rogers",
+      "age": 11,
+      "proposedRanges": [
+        [
+          41,
+          41
+        ]
+      ],
+      "distanceYears": 30,
+      "hardToleranceYears": 10,
+      "classification": "DETERMINISTIC_MIGRATION_BLOCKER_NOT_PROVIDER_EVIDENCE"
+    },
+    {
+      "caseIndex": 12,
+      "expectedFigure": "rogers",
+      "age": 12,
+      "proposedRanges": [
+        [
+          41,
+          41
+        ]
+      ],
+      "distanceYears": 29,
+      "hardToleranceYears": 10,
+      "classification": "DETERMINISTIC_MIGRATION_BLOCKER_NOT_PROVIDER_EVIDENCE"
+    },
+    {
+      "caseIndex": 58,
+      "expectedFigure": "rogers",
+      "age": 12,
+      "proposedRanges": [
+        [
+          41,
+          41
+        ]
+      ],
+      "distanceYears": 29,
+      "hardToleranceYears": 10,
+      "classification": "DETERMINISTIC_MIGRATION_BLOCKER_NOT_PROVIDER_EVIDENCE"
+    },
+    {
+      "caseIndex": 100,
+      "expectedFigure": "rogers",
+      "age": 13,
+      "proposedRanges": [
+        [
+          41,
+          41
+        ]
+      ],
+      "distanceYears": 28,
+      "hardToleranceYears": 10,
+      "classification": "DETERMINISTIC_MIGRATION_BLOCKER_NOT_PROVIDER_EVIDENCE"
+    }
+  ],
+  "migrationBlocked": true,
+  "releaseReady": false,
+  "approval": "none",
+  "productionWrites": false,
+  "databaseAccess": false,
+  "environmentLoaded": false,
+  "providerCalls": 0,
+  "realRerankEvidence": false,
+  "oldStagePolicy": "Old held stages must remain non-serving; preserve all foreign keys and session references; no deletion or rekey.",
+  "qualification": "Pure composition/replay checks use each proposed stage and a synthetic test recipe, not installed matching or production. No old gold was changed. A clean result is not publication authority.",
+  "candidates": [
+    {
+      "figureKey": "berlin_i",
+      "storySpecId": "berlin_i:1907-the-first-song:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/berlin_i-1907-the-first-song-v1.candidate.json",
+      "candidateSha256": "b906f514a0b6584f911734b558b30fd42bcb20b3c8d4c99e0f60190232960fd4",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/berlin_i.stage-proposal.json",
+      "proposalSha256": "0a469e886c4149b90632c2f1630598317e4d181fbe602b167126e91c3015f78f",
+      "words": 172,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        18,
+        19
+      ],
+      "installedSourceAges": [
+        13,
+        19
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1901-1907-bowery-to-first-song",
+      "proposedStageId": "1907-the-first-song",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 10.5,
+          "maximumWords": 15,
+          "finalWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 11.5,
+          "maximumWords": 16,
+          "finalWords": 7
+        },
+        {
+          "role": "response",
+          "meanWords": 10.5,
+          "maximumWords": 17,
+          "finalWords": 4
+        },
+        {
+          "role": "struggle",
+          "meanWords": 9,
+          "maximumWords": 13,
+          "finalWords": 5
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 9,
+          "maximumWords": 13,
+          "finalWords": 5
+        },
+        {
+          "role": "became",
+          "meanWords": 11.5,
+          "maximumWords": 16,
+          "finalWords": 7
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8,
+          "maximumWords": 11,
+          "finalWords": 7
+        }
+      ]
+    },
+    {
+      "figureKey": "carver",
+      "storySpecId": "carver:1890-1891-laundry-and-college:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/carver-1890-1891-laundry-and-college-v1.candidate.json",
+      "candidateSha256": "03716d035b9228da8c891a2de1cc48a7345f75de7a75da4b0ad6b1912ed5ec0d",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/carver.stage-proposal.json",
+      "proposalSha256": "68eadf05b8b6592c8f67fd682d0326f922ce14bda4b1b84211a09702dd6b4599",
+      "words": 269,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        24,
+        27
+      ],
+      "installedSourceAges": [
+        20,
+        26
+      ],
+      "identityDateChanges": {
+        "birthYear": true,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1885-1891-turned-away-to-the-sod-house",
+      "proposedStageId": "1890-1891-laundry-and-college",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 9,
+          "maximumWords": 13,
+          "finalWords": 9
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 10.25,
+          "maximumWords": 17,
+          "finalWords": 5
+        },
+        {
+          "role": "response",
+          "meanWords": 7.666666666666667,
+          "maximumWords": 10,
+          "finalWords": 3
+        },
+        {
+          "role": "struggle",
+          "meanWords": 9.8,
+          "maximumWords": 17,
+          "finalWords": 6
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 10,
+          "finalWords": 6
+        },
+        {
+          "role": "became",
+          "meanWords": 11,
+          "maximumWords": 14,
+          "finalWords": 6
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8.333333333333334,
+          "maximumWords": 12,
+          "finalWords": 6
+        }
+      ]
+    },
+    {
+      "figureKey": "christie",
+      "storySpecId": "christie:1927-1928-the-difficult-book:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/christie-1927-1928-the-difficult-book-v1.candidate.json",
+      "candidateSha256": "adeffa913e0b57f0dcba1edbe847ee1fbcd4da5487a29c72e48192f781ed7aa5",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/christie.stage-proposal.json",
+      "proposalSha256": "22fd27d5291aae5428a6b7c18d8ca4ddff98b625e232fc971833bd9973aa0877",
+      "words": 159,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        36,
+        38
+      ],
+      "installedSourceAges": [
+        35,
+        38
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1926-1928-the-year-that-broke",
+      "proposedStageId": "1927-1928-the-difficult-book",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 10.5,
+          "maximumWords": 13,
+          "finalWords": 8
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 9,
+          "maximumWords": 12,
+          "finalWords": 6
+        },
+        {
+          "role": "response",
+          "meanWords": 10.5,
+          "maximumWords": 14,
+          "finalWords": 7
+        },
+        {
+          "role": "struggle",
+          "meanWords": 8.5,
+          "maximumWords": 13,
+          "finalWords": 4
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 7.5,
+          "maximumWords": 12,
+          "finalWords": 3
+        },
+        {
+          "role": "became",
+          "meanWords": 10,
+          "maximumWords": 15,
+          "finalWords": 5
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.833333333333333,
+          "maximumWords": 12,
+          "finalWords": 8
+        }
+      ]
+    },
+    {
+      "figureKey": "coltrane",
+      "storySpecId": "coltrane:1957-learning-with-monk:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/coltrane-1957-learning-with-monk-v1.candidate.json",
+      "candidateSha256": "cc1b2e23cb1bc150f719b667718bc9e01b425ecb016b43a75a6dd2c5e232f4c1",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/coltrane.stage-proposal.json",
+      "proposalSha256": "0ca1d92f849a485f513893064b8fcf200ddc8ab7b172eb001bbcd803327bd275",
+      "words": 198,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        30,
+        31
+      ],
+      "installedSourceAges": [
+        30,
+        31
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1957-fired-and-clean",
+      "proposedStageId": "1957-learning-with-monk",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 9.5,
+          "maximumWords": 15,
+          "finalWords": 4
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 9.5,
+          "maximumWords": 15,
+          "finalWords": 4
+        },
+        {
+          "role": "response",
+          "meanWords": 9,
+          "maximumWords": 13,
+          "finalWords": 5
+        },
+        {
+          "role": "struggle",
+          "meanWords": 11.5,
+          "maximumWords": 17,
+          "finalWords": 6
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 9.666666666666666,
+          "maximumWords": 14,
+          "finalWords": 6
+        },
+        {
+          "role": "became",
+          "meanWords": 9.75,
+          "maximumWords": 14,
+          "finalWords": 4
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8.5,
+          "maximumWords": 13,
+          "finalWords": 6
+        }
+      ]
+    },
+    {
+      "figureKey": "lamarr",
+      "storySpecId": "lamarr:1942-the-patent-paperwork:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lamarr-1942-the-patent-paperwork-v1.candidate.json",
+      "candidateSha256": "f3a69510988e8d15df2c745272c11574487e9bc30b4302335bd6cf9a45cbdeb5",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lamarr.stage-proposal.json",
+      "proposalSha256": "2603048a1df34abf86a794ca82e544edc00bd8a886755e398cb0321d89bb9615",
+      "words": 182,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        27,
+        27
+      ],
+      "installedSourceAges": [
+        25,
+        28
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1940-1942-the-shelved-invention",
+      "proposedStageId": "1942-the-patent-paperwork",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 8,
+          "maximumWords": 13,
+          "finalWords": 3
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 9,
+          "maximumWords": 14,
+          "finalWords": 4
+        },
+        {
+          "role": "response",
+          "meanWords": 9,
+          "maximumWords": 12,
+          "finalWords": 6
+        },
+        {
+          "role": "struggle",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 15,
+          "finalWords": 5
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 10.5,
+          "maximumWords": 16,
+          "finalWords": 5
+        },
+        {
+          "role": "became",
+          "meanWords": 10.333333333333334,
+          "maximumWords": 15,
+          "finalWords": 4
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 12,
+          "finalWords": 9
+        }
+      ]
+    },
+    {
+      "figureKey": "lee",
+      "storySpecId": "lee:1934-library-dedication:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lee-1934-library-dedication-v1.candidate.json",
+      "candidateSha256": "a0d3738d7a7ff5a2acfa460da73c23fb5d23866a560ac568263680ee2fe37dba",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lee.stage-proposal.json",
+      "proposalSha256": "2ea8fd068dcc5e079d6628246da70b1eabd38c2559fedaba984ecdfca3768785",
+      "words": 199,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        56,
+        56
+      ],
+      "installedSourceAges": [
+        50,
+        54
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1929-1931-harvard-pivot",
+      "proposedStageId": "1934-library-dedication",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 9,
+          "maximumWords": 11,
+          "finalWords": 8
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 10.666666666666666,
+          "maximumWords": 13,
+          "finalWords": 7
+        },
+        {
+          "role": "response",
+          "meanWords": 10,
+          "maximumWords": 14,
+          "finalWords": 5
+        },
+        {
+          "role": "struggle",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 10,
+          "finalWords": 7
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 8,
+          "maximumWords": 11,
+          "finalWords": 4
+        },
+        {
+          "role": "became",
+          "meanWords": 7.333333333333333,
+          "maximumWords": 12,
+          "finalWords": 5
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.6,
+          "maximumWords": 11,
+          "finalWords": 7
+        }
+      ]
+    },
+    {
+      "figureKey": "lewis_e",
+      "storySpecId": "lewis_e:1864-requesting-useful-criticism:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lewis_e-1864-requesting-useful-criticism-v1.candidate.json",
+      "candidateSha256": "dd4d96567a72738f21d9f112e036620bae9a2527b2fe653319399bf36659fb38",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lewis_e.stage-proposal.json",
+      "proposalSha256": "fff7a31ee166352209486901c909d382edfed181db92c7e15c327185ae49b3a9",
+      "words": 169,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        19,
+        20
+      ],
+      "installedSourceAges": [
+        17,
+        21
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1862-1866-accused-acquitted-expelled",
+      "proposedStageId": "1864-requesting-useful-criticism",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 8,
+          "maximumWords": 12,
+          "finalWords": 4
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 11,
+          "maximumWords": 13,
+          "finalWords": 9
+        },
+        {
+          "role": "response",
+          "meanWords": 10,
+          "maximumWords": 12,
+          "finalWords": 10
+        },
+        {
+          "role": "struggle",
+          "meanWords": 10,
+          "maximumWords": 11,
+          "finalWords": 9
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 10.5,
+          "maximumWords": 13,
+          "finalWords": 8
+        },
+        {
+          "role": "became",
+          "meanWords": 7.666666666666667,
+          "maximumWords": 11,
+          "finalWords": 4
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.4,
+          "maximumWords": 11,
+          "finalWords": 7
+        }
+      ]
+    },
+    {
+      "figureKey": "lindgren",
+      "storySpecId": "lindgren:1929-1930-sharing-her-sons-care:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/lindgren-1929-1930-sharing-her-sons-care-v1.candidate.json",
+      "candidateSha256": "be4202e97347ec28c73e10e638029d4ff2fbd68c71abb45ecac6b81c294344ea",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/lindgren.stage-proposal.json",
+      "proposalSha256": "28e6edbcd98ee8907cc0181a349ed3483e512813fd0f6427fe5c28310b4bf796",
+      "words": 187,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        22,
+        22
+      ],
+      "installedSourceAges": [
+        18,
+        22
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1926-1929-the-secret-son",
+      "proposedStageId": "1929-1930-sharing-her-sons-care",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 8.75,
+          "maximumWords": 15,
+          "finalWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 10,
+          "maximumWords": 12,
+          "finalWords": 8
+        },
+        {
+          "role": "response",
+          "meanWords": 8.5,
+          "maximumWords": 9,
+          "finalWords": 8
+        },
+        {
+          "role": "struggle",
+          "meanWords": 9.666666666666666,
+          "maximumWords": 13,
+          "finalWords": 7
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 8.5,
+          "maximumWords": 13,
+          "finalWords": 4
+        },
+        {
+          "role": "became",
+          "meanWords": 9.333333333333334,
+          "maximumWords": 13,
+          "finalWords": 5
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8.2,
+          "maximumWords": 11,
+          "finalWords": 10
+        }
+      ]
+    },
+    {
+      "figureKey": "mcclintock",
+      "storySpecId": "mcclintock:1961-comparison-with-open-questions:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-1/mcclintock-1961-comparison-with-open-questions-v1.candidate.json",
+      "candidateSha256": "d6b91589849b6e30e94970f3daa08f81ebb877ac0ed9d7a2ce1846f1ecc1f445",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/mcclintock.stage-proposal.json",
+      "proposalSha256": "e7b65a304a9a11eae7c490f73c3f138a414322b9532030d16e904cbc54cf9510",
+      "words": 167,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        59,
+        59
+      ],
+      "installedSourceAges": [
+        48,
+        55
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1951-1960s-dismissed-and-right",
+      "proposedStageId": "1961-comparison-with-open-questions",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 9,
+          "maximumWords": 12,
+          "finalWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 12.5,
+          "maximumWords": 14,
+          "finalWords": 11
+        },
+        {
+          "role": "response",
+          "meanWords": 10,
+          "maximumWords": 13,
+          "finalWords": 7
+        },
+        {
+          "role": "struggle",
+          "meanWords": 8.5,
+          "maximumWords": 11,
+          "finalWords": 6
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 7,
+          "maximumWords": 9,
+          "finalWords": 5
+        },
+        {
+          "role": "became",
+          "meanWords": 11.333333333333334,
+          "maximumWords": 16,
+          "finalWords": 5
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.8,
+          "maximumWords": 11,
+          "finalWords": 8
+        }
+      ]
+    },
+    {
+      "figureKey": "owens",
+      "storySpecId": "owens:1936-1939-after-the-exhibitions:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-2/owens-1936-1939-after-the-exhibitions-v1.candidate.json",
+      "candidateSha256": "428060c545b9351f424385ab8cdd45f41875aefa77d59a30c7798f011cf53a60",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/owens.stage-proposal.json",
+      "proposalSha256": "a81a870d6ada805036a5b99ba2d43df6da5e42612f5c825da751ac5fd7647bab",
+      "words": 171,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        22,
+        26
+      ],
+      "installedSourceAges": [
+        23,
+        27
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1936-1940-after-the-gold",
+      "proposedStageId": "1936-1939-after-the-exhibitions",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 9.5,
+          "maximumWords": 11,
+          "finalWords": 8
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 12.5,
+          "maximumWords": 15,
+          "finalWords": 10
+        },
+        {
+          "role": "response",
+          "meanWords": 9.5,
+          "maximumWords": 14,
+          "finalWords": 5
+        },
+        {
+          "role": "struggle",
+          "meanWords": 10.5,
+          "maximumWords": 13,
+          "finalWords": 8
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 7.5,
+          "maximumWords": 9,
+          "finalWords": 6
+        },
+        {
+          "role": "became",
+          "meanWords": 8.5,
+          "maximumWords": 14,
+          "finalWords": 4
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.6,
+          "maximumWords": 11,
+          "finalWords": 9
+        }
+      ]
+    },
+    {
+      "figureKey": "poitier",
+      "storySpecId": "poitier:early-auditions-and-trial-training:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-2/poitier-early-auditions-and-trial-training-v1.candidate.json",
+      "candidateSha256": "03d0eae3b03deaa271e389ba82657ce21e5edc1806f3ae6f541861e3e1274093",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/poitier.stage-proposal.json",
+      "proposalSha256": "1a59ed77f61b77828736e9e15a8db395a7fde2f85b06d631e97744c25c803446",
+      "words": 241,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        15,
+        19
+      ],
+      "installedSourceAges": [
+        16,
+        18
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1943-1945-dishwasher-to-second-audition",
+      "proposedStageId": "early-auditions-and-trial-training",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": true,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 8.5,
+          "maximumWords": 12,
+          "finalWords": 7
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 10.5,
+          "maximumWords": 15,
+          "finalWords": 5
+        },
+        {
+          "role": "response",
+          "meanWords": 8.333333333333334,
+          "maximumWords": 9,
+          "finalWords": 7
+        },
+        {
+          "role": "struggle",
+          "meanWords": 9,
+          "maximumWords": 11,
+          "finalWords": 7
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 9.75,
+          "maximumWords": 13,
+          "finalWords": 6
+        },
+        {
+          "role": "became",
+          "meanWords": 11.333333333333334,
+          "maximumWords": 16,
+          "finalWords": 5
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8,
+          "maximumWords": 11,
+          "finalWords": 10
+        }
+      ]
+    },
+    {
+      "figureKey": "rachmaninoff",
+      "storySpecId": "rachmaninoff:1900-1901-letters-and-unfinished-work:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rachmaninoff-1900-1901-letters-and-unfinished-work-v1.candidate.json",
+      "candidateSha256": "6b738cfdc6cf2a11a8a8191a13d5ab48b2f63852d2a004c2965b402cbeca083f",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rachmaninoff.stage-proposal.json",
+      "proposalSha256": "e4a58e62e5d4cfe5c246279a041b476a94b4154faebe83d9dc7c5213a3af72a1",
+      "words": 306,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        27,
+        28
+      ],
+      "installedSourceAges": [
+        23,
+        28
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1897-1901-after-the-first-symphony",
+      "proposedStageId": "1900-1901-letters-and-unfinished-work",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 10.333333333333334,
+          "maximumWords": 14,
+          "finalWords": 4
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 10,
+          "maximumWords": 14,
+          "finalWords": 4
+        },
+        {
+          "role": "response",
+          "meanWords": 10,
+          "maximumWords": 14,
+          "finalWords": 4
+        },
+        {
+          "role": "struggle",
+          "meanWords": 8.2,
+          "maximumWords": 12,
+          "finalWords": 5
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 10.666666666666666,
+          "maximumWords": 14,
+          "finalWords": 6
+        },
+        {
+          "role": "became",
+          "meanWords": 9,
+          "maximumWords": 12,
+          "finalWords": 5
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8,
+          "maximumWords": 12,
+          "finalWords": 7
+        }
+      ]
+    },
+    {
+      "figureKey": "rogers",
+      "storySpecId": "rogers:1969-speaking-for-childrens-television:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rogers-1969-speaking-for-childrens-television-v1.candidate.json",
+      "candidateSha256": "46f0d7fdb5896f478d08d49d598ae06c2426301b1f6e5118e6dcbb8c5d47bfdb",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rogers.stage-proposal.json",
+      "proposalSha256": "b85312a8b74969c196923b98a3318d7e87525740ac49be7557f6989adcde0d78",
+      "words": 200,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        41,
+        41
+      ],
+      "installedSourceAges": [
+        8,
+        13
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1936-1941-latrobe-childhood",
+      "proposedStageId": "1969-speaking-for-childrens-television",
+      "canonicalPreservedFromFrozenReview": false,
+      "canonicalRewriteException": "New Senate-testimony story requires fresh owner review",
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 9.333333333333334,
+          "maximumWords": 16,
+          "finalWords": 5
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 8,
+          "maximumWords": 11,
+          "finalWords": 4
+        },
+        {
+          "role": "response",
+          "meanWords": 8,
+          "maximumWords": 12,
+          "finalWords": 4
+        },
+        {
+          "role": "struggle",
+          "meanWords": 10,
+          "maximumWords": 14,
+          "finalWords": 5
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 10.666666666666666,
+          "maximumWords": 15,
+          "finalWords": 4
+        },
+        {
+          "role": "became",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 11,
+          "finalWords": 5
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.2,
+          "maximumWords": 11,
+          "finalWords": 7
+        }
+      ]
+    },
+    {
+      "figureKey": "rudolph",
+      "storySpecId": "rudolph:childhood-basketball-to-track:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rudolph-childhood-basketball-to-track-v1.candidate.json",
+      "candidateSha256": "aa4eafe1c1e6745d571d28a2f11545b952e416c361cee4992213c5062705aa54",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rudolph.stage-proposal.json",
+      "proposalSha256": "ff0a58bfd732e05886d42014087f39144dd8b039e8c795efd6b1d981f036e047",
+      "words": 181,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        5,
+        16
+      ],
+      "installedSourceAges": [
+        8,
+        16
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1945-1953-the-brace-years",
+      "proposedStageId": "childhood-basketball-to-track",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": true,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 8,
+          "maximumWords": 10,
+          "finalWords": 5
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 7.5,
+          "maximumWords": 10,
+          "finalWords": 5
+        },
+        {
+          "role": "response",
+          "meanWords": 10.5,
+          "maximumWords": 14,
+          "finalWords": 7
+        },
+        {
+          "role": "struggle",
+          "meanWords": 10,
+          "maximumWords": 12,
+          "finalWords": 5
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 9.5,
+          "maximumWords": 15,
+          "finalWords": 4
+        },
+        {
+          "role": "became",
+          "meanWords": 10.5,
+          "maximumWords": 14,
+          "finalWords": 7
+        },
+        {
+          "role": "bridge",
+          "meanWords": 8.2,
+          "maximumWords": 11,
+          "finalWords": 10
+        }
+      ]
+    },
+    {
+      "figureKey": "rustin",
+      "storySpecId": "rustin:1963-organizing-the-march:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-2/rustin-1963-organizing-the-march-v1.candidate.json",
+      "candidateSha256": "88da687db5bbcccdf85458060d38fe1229c98ae929f85775e4363f90d904e1eb",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/rustin.stage-proposal.json",
+      "proposalSha256": "f8c35ce406cbed0bc684940e65f01603caac88dee92e16545608b99e4521db36",
+      "words": 268,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        51,
+        51
+      ],
+      "installedSourceAges": [
+        48,
+        54
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1963-the-man-in-the-back",
+      "proposedStageId": "1963-organizing-the-march",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 7.333333333333333,
+          "maximumWords": 11,
+          "finalWords": 4
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 11,
+          "finalWords": 4
+        },
+        {
+          "role": "response",
+          "meanWords": 7.333333333333333,
+          "maximumWords": 11,
+          "finalWords": 4
+        },
+        {
+          "role": "struggle",
+          "meanWords": 9.428571428571429,
+          "maximumWords": 15,
+          "finalWords": 8
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 11,
+          "finalWords": 4
+        },
+        {
+          "role": "became",
+          "meanWords": 9.714285714285714,
+          "maximumWords": 14,
+          "finalWords": 7
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.6,
+          "maximumWords": 11,
+          "finalWords": 6
+        }
+      ]
+    },
+    {
+      "figureKey": "wang",
+      "storySpecId": "wang:1989-1990-the-bridal-store:v1",
+      "candidatePath": "docs/releases/held-sixteen-integration-2026-09-20/set-2/wang-1989-1990-the-bridal-store-v1.candidate.json",
+      "candidateSha256": "c54f6b4282246bcb06babff2a175174182f6f65dae57d8b2b2c4202efdeab4a2",
+      "proposalPath": "docs/releases/held-sixteen-integration-2026-09-20/proposals/wang.stage-proposal.json",
+      "proposalSha256": "bab9b30fb3ef2a0d259c876a7f71962d14bb182cf5acc9d5eefaab86b8c9b133",
+      "words": 213,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationSimulationErrors": 0,
+      "publicationSimulationWarnings": 0,
+      "proposedAges": [
+        39,
+        41
+      ],
+      "installedSourceAges": [
+        38,
+        41
+      ],
+      "identityDateChanges": {
+        "birthYear": false,
+        "deathYear": false,
+        "qualification": "Optional date omission/correction requires source review, not inference from the old seed."
+      },
+      "oldStageId": "1987-1990-passed-over-to-the-pivot",
+      "proposedStageId": "1989-1990-the-bridal-store",
+      "canonicalPreservedFromFrozenReview": true,
+      "canonicalRewriteException": null,
+      "coarseChronologyQualified": false,
+      "canonicalBeatsEqual": true,
+      "serializedReplay": true,
+      "tamperedReplayRejected": true,
+      "rhythm": [
+        {
+          "role": "scene",
+          "meanWords": 11.333333333333334,
+          "maximumWords": 15,
+          "finalWords": 5
+        },
+        {
+          "role": "dark_moment",
+          "meanWords": 11.333333333333334,
+          "maximumWords": 14,
+          "finalWords": 6
+        },
+        {
+          "role": "response",
+          "meanWords": 10,
+          "maximumWords": 14,
+          "finalWords": 3
+        },
+        {
+          "role": "struggle",
+          "meanWords": 8.333333333333334,
+          "maximumWords": 13,
+          "finalWords": 4
+        },
+        {
+          "role": "turning_point",
+          "meanWords": 8.333333333333334,
+          "maximumWords": 12,
+          "finalWords": 4
+        },
+        {
+          "role": "became",
+          "meanWords": 8.666666666666666,
+          "maximumWords": 16,
+          "finalWords": 4
+        },
+        {
+          "role": "bridge",
+          "meanWords": 7.8,
+          "maximumWords": 11,
+          "finalWords": 9
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

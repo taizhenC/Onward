@@ -1,0 +1,79 @@
+{
+  "figureKey": "lamarr",
+  "displayName": "Hedy Lamarr",
+  "birthYear": 1914,
+  "deathYear": 2000,
+  "stageId": "1942-the-patent-paperwork",
+  "stageLabel": "The patent paperwork: a deadline and a corrected name",
+  "ageMin": 27,
+  "ageMax": 27,
+  "shapeSentences": [
+    "An inventor facing a patent deadline completed paperwork, learned that the name on a form did not match the application and worked through a correction.",
+    "Finishing a form was not the end: a small administrative mismatch required another signed document.",
+    "Attorneys reported the correction, and the patent was granted later that summer; the record does not describe her private feelings."
+  ],
+  "facets": {
+    "emotionalCore": "Practical pressure from a deadline and a paperwork mismatch, without an invented account of panic or humiliation.",
+    "decisionShape": "Supplying the required affidavit and payment, then completing replacement paperwork after a name mismatch was reported.",
+    "triggerEvent": "Her attorneys warned that delay in the final paperwork could cost the patent; a later telegram identified a mismatched name.",
+    "agencyState": "She could sign forms and provide payment, while her attorneys arranged the certified copy, filing and correction."
+  },
+  "biographicalFacts": "Hedy Lamarr was twenty-seven during April–August 1942. On April 13 her attorneys warned that prompt attention to an affidavit and payment was needed to preserve her pending patent application. Their letter said the final government fee was due before May 13 and the affidavit had to precede payment by twenty days. On April 16 they forwarded an executed affidavit and acknowledged her check for the final fee. An April 18 telegram said the signature name differed from Hedy Kiesler Markey, the name on the application. A same-date request asked Charles Walton to obtain a new signature, and a covering letter reported enclosure of a properly executed form. That typed report is not a separately inspected replacement affidavit or proof of a known signing time. On August 11 Patent 2,292,387 was granted to Hedy Kiesler Markey and George Antheil. Its proposed system changed transmitter and receiver radio frequencies together to impede interference. The documented outcome is the grant of a patent.",
+  "themes": [
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "A letter addressed to her warned that delay could cost her the patent. She was twenty-seven.",
+      "sourceNotes": "Document itself is the opening; no asserted reading moment. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "Her lawyers needed a signed affidavit before they could arrange the final government payment. The deadline was approaching.",
+      "sourceNotes": "Documented practical threat, not an invented emotion. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She signed the form and supplied a check for the final fee. Her lawyers sent the paperwork onward.",
+      "sourceNotes": "Attested acts summarized, without a signing scene. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "A telegram then reported that her signature did not match the name on the application. Her lawyers requested another signed form. The first one needed correcting.",
+      "sourceNotes": "Specific unsuccessful paperwork step; no personal shame inferred. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "Her lawyers reported that a replacement form had been correctly signed and was being sent onward. They had addressed the mismatch.",
+      "sourceNotes": "Attributed contemporaneous report, not independent inspection of a replacement affidavit. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The patent was granted later that summer, naming her and her collaborator as the inventors. Their proposed system aimed to make radio communication harder to interfere with. Both inventors were credited.",
+      "sourceNotes": "Grant, not proof of adoption or successful deployment. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Hedy Lamarr.\n\nShe was an actor who also helped invent a radio communication system.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou do not have to explain every part of yourself.\n\nYou are allowed to want your work taken seriously.",
+      "sourceNotes": "Permission without claiming the administrative episode proves dismissal based on appearance. User-authorized short source-led format; FOR OWNER READING, not approved."
+    }
+  ],
+  "sources": [
+    "National WWII Museum, Erica Lansberg, Hedy Lamarr's WWII Invention Helped Shape Modern Tech (23 April 2025). Institutional secondary biography; used only for birth and identification. https://www.nationalww2museum.org/war/articles/hedy-lamarrs-wwii-invention-helped-shape-modern-tech Opening biography: born 9 November 1914; actor and co-inventor. Freshly reopened and relevant text read 2026-09-20.",
+    "Lyon & Lyon to Hedy Lamarr, 13 April 1942, two pages. Smithsonian Archives Center, Hedy Lamarr Papers, NMAH.AC.1590, box 1, patent correspondence. https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000025-01 Images NMAH-AC1590-0000025-01 and -02, both visually read. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date.",
+    "Lyon & Lyon to Charles Walton, 16 April 1942. Smithsonian, NMAH.AC.1590. https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000032 Image NMAH-AC1590-0000032, full letter. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date.",
+    "Lyon & Lyon to Bacon & Thomas, 16 April 1942. Smithsonian, NMAH.AC.1590. https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000026 Image NMAH-AC1590-0000026, executed affidavit and required certified copy. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date.",
+    "Bacon & Thomas to Lyon & Lyon, telegram, 18 April 1942. Smithsonian, NMAH.AC.1590. https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000033-01 Image NMAH-AC1590-0000033-01, mismatch and request for correct form. Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date.",
+    "Lyon & Lyon to Charles Walton and to Bacon & Thomas, 18 April 1942. Smithsonian, NMAH.AC.1590. https://ids.si.edu/ids/deliveryService?max_w=1400&id=NMAH-AC1590-0000028 Images NMAH-AC1590-0000028 (new properly executed form enclosed) and -0000029 (request to sign matching name). Source images freshly visually re-read 2026-09-20 from the prior packet's downloaded Smithsonian originals; no inference that Lamarr read a particular letter on its writing date. The retained claim is the attorneys' dated report of proper execution; no separate original replacement affidavit was inspected. Handwritten note says form and letter sent to Walton to mail.",
+    "Hedy Kiesler Markey and George Antheil, United States patent 2,292,387, Secret Communication System, issued 11 August 1942. Original patent reproduced by Google Patents. https://patents.google.com/patent/US2292387A/en Front matter (filed 10 June 1941, issued 11 August 1942, inventors); description opening and six numbered claims. Freshly reopened and relevant text read 2026-09-20."
+  ]
+}

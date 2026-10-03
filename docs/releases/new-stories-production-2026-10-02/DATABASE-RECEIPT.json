@@ -1,0 +1,116 @@
+{
+  "completedAt": "2026-10-03T01:51:42.036Z",
+  "ok": true,
+  "mode": "published-ten-by-owner-exception",
+  "projectHost": "mbcqkljfekkxlgittzal.supabase.co",
+  "ownerAuthorizationSha256": "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8",
+  "releaseChecks": {
+    "realProviderTrustGate": false,
+    "ownerException": true,
+    "recipeGovernance": true,
+    "unchangedRecipeSelection": true
+  },
+  "actualFailedEvidenceIds": [
+    "ev_6f9f15f110e062a26799e08df3b71ddf2de73be13d1f230a44b3262576a6ba1d"
+  ],
+  "selectionSha256": "a655e258e9e966ed94bb24d58e71cc827f9afacbec6a11fa5de77f1381f00d43",
+  "baselineSha256": "b66362151ec6fdd196cb68fb0e50c98be95274c953a6bd8657c596ea56ec7a12",
+  "ownerReleaseSha256": "4d8ea478a834b0e318452bfaf2191f9c5a30248f6cee4b5b4a288a0df916fc96",
+  "totalValidPublications": 44,
+  "quarantinedRows": 0,
+  "previous34PublicationsPreserved": true,
+  "unrelatedCatalogPreserved": true,
+  "exactReadback": true,
+  "targets": [
+    {
+      "figureKey": "addams",
+      "storySpecId": "addams:1888-1889-telling-the-plan:v1",
+      "candidateSha256": "7f58b64e1d3c48be8a057e1b30435a4ffc6be37ca2eefae77ffdf1c4c5249e20",
+      "stageSha256": "19f0c4891bfd948c1cac9f08feedb02fe657ed15a723de56405a61acd4dcbbf9",
+      "productionStageSha256": "88b9f38e502427b62f5a9fbd1f4b627570e43b611695b1bcdf58c4b5a9378f5c",
+      "reviewedReceiptSha256": "546cd8f0f208ed06ad67dcf298548d2aef2d2c4a9d81b6f7ca0353b7cb2c16fe",
+      "publishedReceiptSha256": "f266b92be4143d0aefecb076eb7af88b52429c1d1b6fc20af016c81bde1f153f"
+    },
+    {
+      "figureKey": "blackwell_e",
+      "storySpecId": "blackwell_e:1847-1849-a-place-to-study:v1",
+      "candidateSha256": "61dac9480f73dd6834c8651b689ebe0434cc2d36779710053073e200aee5bdd2",
+      "stageSha256": "250e8d2849b39f8752ad31a11b2048c43da12ce5fc26d3ae431e045f45911efd",
+      "productionStageSha256": "1e4ffa9de5a7ded0bbc197a7bfb697aaa7979a5106bbc3f3d393bae988fff233",
+      "reviewedReceiptSha256": "79654d107ae6ad5bd4dd16e230eea4a5d76f2df970bd6c00accd91819bfda725",
+      "publishedReceiptSha256": "0db324ecdf4bfd31bf56ee344e033ba125e65ec48d35fb4c288df4e707b7ba9c"
+    },
+    {
+      "figureKey": "darwin",
+      "storySpecId": "darwin:1831-the-refusal-and-the-letter:v1",
+      "candidateSha256": "26707c4dbde4c4f9dcb18cfdfbe3f3ce0aa3730049cc2b4b8e91271f85cf24f4",
+      "stageSha256": "0b9866aed70e86a86ce038a88b050f0aeb3b848e6530ee39c838ecbf1f210dc0",
+      "productionStageSha256": "ae02bc2cdb464181e3dc491f22ec1790acb38b13e18e2a779fc42df17623e986",
+      "reviewedReceiptSha256": "5fc15c81acb704ae243075d51053fd36ad94ac0538c285cdd64d08e9a9553245",
+      "publishedReceiptSha256": "426b07b03107496e9999a02c62835f729576270a7bb91831ec8f6eb6e9c0720e"
+    },
+    {
+      "figureKey": "equiano",
+      "storySpecId": "equiano:1766-the-money-and-the-release:v1",
+      "candidateSha256": "f2d63a7dd33de0a889c60f2e87ba4137812ffac4c80b53d447561400338b329c",
+      "stageSha256": "2c5800b61b6d2ce134f0bed8165ee9e2cf72ce0c3a11faf357c9b2c26f5f2144",
+      "productionStageSha256": "71a9b20926b1d79e7dcf89d6d8e8cd0bd491a6ec9114d14733d2687e75fe80d5",
+      "reviewedReceiptSha256": "d80edee7ede467d8c2f53934aa0b6ab54acc5885c29e13141dec00c137841a27",
+      "publishedReceiptSha256": "cb0ef4d7f5357a70412ae7aa3ab49c80408ae276e576bf50a2a6ab30c09dd5b9"
+    },
+    {
+      "figureKey": "grant",
+      "storySpecId": "grant:1858-1861-a-place-in-the-shop:v1",
+      "candidateSha256": "9243aab98e701af974666d4d962aabdc0b19cf4b346935b5c4cf633b704fa758",
+      "stageSha256": "3d7dfe032176623a7cce00b730b56c8f9a4b9d612e4fdf7687bdf861474c8a34",
+      "productionStageSha256": "62f823659ae9ba9852645b3f0a87cd095b1bb9bf5c4ec2121495e07f0d228da4",
+      "reviewedReceiptSha256": "fccef46ad23c168910e8b7610258bae33b81d62eed79cbb5d20cb09e0c74920b",
+      "publishedReceiptSha256": "d07deb7d526ea6e97df862f11cc8fcbb082e47fafacfe7b6fb212970c13e94ed"
+    },
+    {
+      "figureKey": "jacobs",
+      "storySpecId": "jacobs:1835-1842-concealment-to-escape:v1",
+      "candidateSha256": "515a62f30d6c8d6dac0fe7c02f6a112065f353d24c0fcc69f71b847305fd87ed",
+      "stageSha256": "a8cc1d0240c8a1f78ab0e69b6374a2d9e77eb1d2517b97ddcdbde58c6898940d",
+      "productionStageSha256": "1e742185296306e1002dd43be85485cda013eeb874a0206537bbd68b3ffeb9d8",
+      "reviewedReceiptSha256": "7b717a0af0afcb2f2f81ef5943d7dc8b27f088d49dc295ace0b123750e5ff3a3",
+      "publishedReceiptSha256": "759e4293c60bff5f5648a1b2247233af8d431d84b18895e8eaa59e5d03fed83d"
+    },
+    {
+      "figureKey": "keller",
+      "storySpecId": "keller:1887-learning-that-things-have-names:v1",
+      "candidateSha256": "d0103c4b4447cfa5c1d1c8dc9e3e74be8146ec0a40399e7cb2f8b91e5054a94a",
+      "stageSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "productionStageSha256": "a52a2553641b684f809ed4e7c5bbb921ca2b376769cddf4252ee6a2b8fe140ac",
+      "reviewedReceiptSha256": "249647ae62bb39302fa1e2bbb0b0e08ddccf540ad27ba72c421b2e221209cd3b",
+      "publishedReceiptSha256": "ee0e69426b9498ceb676a64877501a33d3399dc3a5c0cbe4450d553a55fd7cc8"
+    },
+    {
+      "figureKey": "riis",
+      "storySpecId": "riis:1873-unpaid-work-to-reporting:v1",
+      "candidateSha256": "aa17b49862bdf3bbf994ee02af41c5175c4506584f0e165070759613d38a28b2",
+      "stageSha256": "652ce7834f17917babbc28d135b08630b5c07e98642bbb411f0e449032730ab9",
+      "productionStageSha256": "8f16ac5cd2cd5f60ab56542e6cc178b6708db1aa78d7a2fb5c88133ba9d17b44",
+      "reviewedReceiptSha256": "81c30938d2e73e17ace82ab4bc70fa8d2f8ec1a0416de8d502419cda477ea31f",
+      "publishedReceiptSha256": "74b34fe5b08d475e847fc5303a1fd9bebbc2390fc51a989752fd7be9deb1ed82"
+    },
+    {
+      "figureKey": "seacole",
+      "storySpecId": "seacole:1854-1855-refusal-to-sick-wharf:v1",
+      "candidateSha256": "6775e85d7a9682cc241ffaaaed5e2f5e5c5051c9fdc3f5758f1ec1c0a777b75a",
+      "stageSha256": "a85ff657cd70e8d1f7b33488334238f003600f3ddbdb6631b6573e9277fac5fb",
+      "productionStageSha256": "0fd509e00f40915730c5b9eeefad2e91bea1331ccc1b44d9e2b1578d42aeb248",
+      "reviewedReceiptSha256": "f118336c16d6bf940333b546b89a1d5c6b8edd0e37a6aeb6923926e73f5dbd56",
+      "publishedReceiptSha256": "3305553d1e1cfb172dab43e6fe3da1e11cd36c29e2515377734b465f70edf276"
+    },
+    {
+      "figureKey": "washington_b",
+      "storySpecId": "washington_b:1872-reaching-the-classroom:v1",
+      "candidateSha256": "d13fce353183245f5cd8d0feff765c9d2dd2301921011437113e9273f20a2044",
+      "stageSha256": "113c6b0e9519697a5c49c8fb428c2227789b6ec77e9bc5d45d13fefd95e073b0",
+      "productionStageSha256": "42c2c501b720c9bb1cfa504eee1b3b61cda0f89668fdff042a1bec79d9264677",
+      "reviewedReceiptSha256": "14c0c51be9fa04f8f6613af4bafdd432f01fae936fd2f0d73a3a779529bb3929",
+      "publishedReceiptSha256": "56fdce465e6e0c7004461a99c888818f3fd7ed48262645128ada710ce1371b4d"
+    }
+  ]
+}

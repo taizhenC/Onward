@@ -1,0 +1,1114 @@
+{
+  "storySpecId": "addams:1888-1889-telling-the-plan:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "addams",
+  "stageId": "1888-1889-telling-the-plan",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 27,
+    "ageMax": 29,
+    "startDate": "1888-04",
+    "endDate": "1889-10",
+    "throughLine": "After years of uncertain purpose, she told a friend her still vague plan, searched for a house, and began living and working beside neighbors."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "other_reviewed_flag"
+    ],
+    "contentNote": "Uncertainty, shame after an animal spectacle, and criticism of a proposed shared home. No graphic description. This is a draft based largely on a retrospective memoir."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Jane Addams was born September 6, 1860; she was twenty-seven in April 1888 and twenty-nine on September 18, 1889.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hull-history",
+          "locator": "Jane Addams Biography: birth September 6, 1860 and opening September 18, 1889.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV: I do not remember to have mentioned this plan to anyone until we reached Madrid in April, 1888; Chapter V: On the 18th of September, 1889.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 1
+    },
+    {
+      "factId": "fact-arena",
+      "statement": "In April 1888, Addams attended a bullfight in Madrid and stayed longer than the other travelers, carried by historical associations.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraphs beginning I do not remember to have mentioned this plan and We had been to see a bull fight.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 2
+    },
+    {
+      "factId": "fact-foyer",
+      "statement": "She met the others in the foyer; they were pale, disapproving, and affected by the spectacle. She had paid little attention to the bloodshed.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraph beginning I finally met them in the foyer.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 3
+    },
+    {
+      "factId": "fact-chagrin",
+      "statement": "That evening she felt deep chagrin and condemned by both the spectacle and the wider moral situation.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraph beginning I finally met them in the foyer, evening reaction clause.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 4
+    },
+    {
+      "factId": "fact-paper",
+      "statement": "She judged that her proposed reform had served as an excuse to continue studying and traveling without carrying it out.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraph beginning It was suddenly made quite clear to me.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "causal",
+      "eventOrder": 5
+    },
+    {
+      "factId": "fact-plan",
+      "statement": "Her gradually forming plan was to rent a city house among people with unmet needs, where young women could connect study with active life; she could not date its beginning.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraphs beginning It is hard to tell just when and It may have been even before.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 6
+    },
+    {
+      "factId": "fact-talk",
+      "statement": "She resolved to start by talking, then explained the plan to her old school friend Ellen Gates Starr with stumbling, uncertainty, and fear it might collapse when spoken.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraphs beginning I had made up my mind and I even dared to hope.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 7
+    },
+    {
+      "factId": "fact-companion",
+      "statement": "Starr brought comfort, vigor and enthusiasm; the plan gained substance but remained hazy in detail.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraph beginning But gradually the comfort of Miss Starr.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 8
+    },
+    {
+      "factId": "fact-visit",
+      "statement": "In June 1888 Addams visited Toynbee Hall with an introduction, seeking suggestions and firsthand activity.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter IV, paragraph beginning A month later we parted in Paris, June visit and expectations clauses.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 9
+    },
+    {
+      "factId": "fact-search",
+      "statement": "In January 1889 Addams and Starr searched Chicago neighborhoods and described the plan; they intended to begin with their own resources.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraph beginning The next January found Miss Starr and myself.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 10
+    },
+    {
+      "factId": "fact-critic",
+      "statement": "Thomas Davidson criticized their plan, arguing that communal life could distract residents from the wider neighborhood; their reply did not convince him.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraphs beginning From the very first the plan and It was in vain we asserted.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 11
+    },
+    {
+      "factId": "fact-lost-house",
+      "statement": "She saw an appealing old house from a carriage, searched for it on several days, and eventually gave up.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraph beginning Another Sunday afternoon in the early spring.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 12
+    },
+    {
+      "factId": "fact-found-house",
+      "statement": "Three weeks later, while searching in the advised neighborhood, she rediscovered the house and felt surprised and overjoyed; some rooms could eventually be sublet.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraph beginning Three weeks later, with the advice.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 13
+    },
+    {
+      "factId": "fact-repair",
+      "statement": "The repaired house had a wide hall and open fireplace; they furnished it with travel photographs, family furniture and durable new pieces suited to its character, taking great pleasure in the work.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraphs beginning The fine old house responded and We furnished the house.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 14
+    },
+    {
+      "factId": "fact-move",
+      "statement": "On September 18, 1889, Addams and Starr moved in with Mary Keyser, who performed housework and became important to household and neighborhood.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraph beginning On the 18th of September, 1889.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 15
+    },
+    {
+      "factId": "fact-door",
+      "statement": "On the first night they forgot to close or lock a side door and found no theft the next morning, which pleased them.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraph beginning In our enthusiasm over settling.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 16
+    },
+    {
+      "factId": "fact-reading",
+      "statement": "In the first weeks Starr began weekly reading in the upstairs dining room; two members ate with them, helped wash dishes, then cleared the table for photographs.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraph beginning In the very first weeks of our residence.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 17
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Jane Addams co-founded Hull House, a Chicago home offering education and community activities for neighbors.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hull-history",
+          "locator": "Hull House History: opened in 1889 by Jane Addams and Ellen Gates Starr; education and community programs.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 18
+    },
+    {
+      "factId": "fact-neighborhood",
+      "statement": "Addams’s early descriptions reported dirty streets, inadequate schools, poor lighting, inadequate sanitation and homes divided among multiple families; many homes had only a backyard water faucet.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraph beginning To these excellent people I always find it difficult to describe, explicitly early addresses; paragraphs beginning The streets are inexpressibly dirty and The houses of the ward.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "context",
+      "eventOrder": 19
+    },
+    {
+      "factId": "fact-guest",
+      "statement": "The first guest was a young woman from a neighboring tenement; her widowed mother helped support their family by scrubbing a downtown theater every night, and the guest stayed a month.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Chapter V, paragraphs beginning Our first guest was an interesting young woman and Our guest has long since married, month clause.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 20
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Jane Addams",
+      "aliases": [
+        "Addams"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She stayed to watch a public spectacle after her traveling companions had left. She was twenty-seven. Animals were being killed in front of her. She watched with little reaction to their deaths. The spectacle brought earlier public contests and old stories to her mind.\n\nShe saw the riders through those associations with figures from the past. That history absorbed her attention while the killing continued. The rest of the party had reached the limit of what they could bear. She remained longer than any of them.",
+      "requiredFactIds": [
+        "fact-arena",
+        "fact-age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One stretch of watching the spectacle in April 1888. Age comes from birth and memoir dating. Historical associations and comparative indifference are attested, without identifying historical names or a named arena."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "That evening, she felt deep shame over what had happened. She had met her pale companions in the foyer, with little defense for staying to watch. Her hands were still. She felt condemned by more than the spectacle. She had been planning a house among people whose daily needs went unmet. Young women could live there and connect their studies with useful activity.\n\nThe plan had formed gradually, without a beginning she could clearly date. She had continued studying and traveling while that useful life remained ahead of her. Now she judged the plan itself part of her excuse for staying idle. She had gone on preparing instead of starting the work. She had treated study and travel as necessities for the great things expected of her. She had not yet told anyone about the house.",
+      "requiredFactIds": [
+        "fact-chagrin",
+        "fact-foyer",
+        "fact-arena",
+        "fact-plan",
+        "fact-paper"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-chagrin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-foyer",
+            "fact-arena"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "dramatized_texture",
+          "factIds": [
+            "fact-chagrin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-chagrin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-paper"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One attested evening of chagrin and self-judgment. The foyer encounter is past context, not the location of the evening reaction. Exact room is unrecorded. Invented inert texture, disclosed verbatim: Her hands were still. It renders attested shame only and adds no cause, decision or event; all moral judgment is sourced historical_claim."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She began explaining the plan to an old school friend in the traveling party. She stumbled as she tried to put it into words. The uncertainty that had surrounded the plan came into the explanation. She hoped her friend might join her in carrying it out. At the same time, she feared what speaking about it might reveal.\n\nA plan cherished privately might show itself empty once she said it aloud. She set it before someone who knew her from school. Its practical details were still hazy. The unfinished explanation was now shared.",
+      "requiredFactIds": [
+        "fact-talk",
+        "fact-companion"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-companion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One later conversation with a school friend. Stumbling, uncertainty and fear of emptiness are attested. Exact day and location within the trip are unrecorded; the intended next-day action is not dated as accomplished next day."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Companionship gradually gave the plan more substance, though its details remained uncertain. She visited an existing community house to see its daily activities firsthand. Months later, the two women searched neighborhoods for a home they could afford. They meant to begin with their own limited resources. One critic questioned whether living together might draw them away from the neighbors. They answered that shared living was not essential to the work.\n\nHis objection remained; their explanation had not convinced him. In spring, she noticed an appealing old house while passing through a neighborhood. Several days of searching failed to find it again, and she gave up. Three weeks later, she searched a neighborhood recommended to her. On the first day there, she found the house again. She was surprised and overjoyed.",
+      "requiredFactIds": [
+        "fact-companion",
+        "fact-visit",
+        "fact-search",
+        "fact-critic",
+        "fact-lost-house",
+        "fact-found-house"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-companion"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-visit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-critic"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-critic"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-critic"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lost-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lost-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-found-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-found-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-found-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The single permitted long interval: visit, search, skeptical conversation, lost house and rediscovery. The critic’s stated objection and their unsuccessful answer remain visible. Names, dates and locations stay in evidence."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She moved into the house with her school friend and a third woman. The third resident began the housework. Some rooms had been secured by subletting them from the people already using the building. The old house had responded well to repair. A wide hall and an open fireplace were part of the rooms they entered. They had furnished the place with family furniture and photographs brought home from their travels.\n\nNew pieces had been chosen with the character of the house in mind. Preparing those rooms had given them great pleasure. They had begun the house with their own resources. Now they lived there, with housework beginning alongside the plan. The work had a place and three residents.",
+      "requiredFactIds": [
+        "fact-move",
+        "fact-found-house",
+        "fact-repair",
+        "fact-search"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-move"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-move"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-found-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-repair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-search"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-move"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-move"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "September 18 move-in day. The already repaired and furnished rooms are the documented immediate surroundings. The three residents and housework are attested; no invented arrival gesture, conversation or same-day furnishing sequence."
+    },
+    {
+      "role": "became",
+      "canonicalText": "On their first night, they forgot to close and lock a side door. Nothing had been taken by morning, and they were pleased by their neighbors’ honesty. In the first weeks, her friend began a weekly reading group upstairs. Two members ate dinner with them before the reading. They helped wash the dishes and clear the dining table for photographs. Their first guest came from a neighboring apartment and stayed a month.\n\nThe guest’s widowed mother helped support the family by cleaning a theater every night. Their new home stood among dirty streets with poor lighting. Schools and sanitation were inadequate. Houses built for one family had been divided among several. Many households drew their water from a faucet in the backyard. The reading group met above those streets.",
+      "requiredFactIds": [
+        "fact-door",
+        "fact-reading",
+        "fact-guest",
+        "fact-neighborhood"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-guest"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-guest"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-neighborhood"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-neighborhood"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-neighborhood"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-neighborhood"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reading",
+            "fact-neighborhood"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "First night and first weeks, plus the early-address account of neighborhood conditions. Reading, meals, dishes, photographs and the first guest are actual activities and people. No claim that sharing a home solved poverty or that all conditions were first observed that day."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Jane Addams.\n\nShe helped establish a house offering education and community activities for its neighbors.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to speak about a plan before its details are clear. You do not have to begin alone.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Name, one plain known-for sentence, exact two-sentence distance, and two bounded permissions in four paragraphs."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dialogue, places, weather, chronology, causes, decisions or inner states.",
+    "The only invented rendering is the disclosed inert posture Her hands were still, grounded in attested evening chagrin; deleting it changes no event or cause.",
+    "No other unrecorded gesture or physical action is permitted.",
+    "The retrospective memoir does not establish clinical recovery."
+  ],
+  "avoidRules": [
+    "Do not turn family help into solitary achievement.",
+    "Do not compare the reader with the subject or promise an outcome.",
+    "Do not extend the became passage into a lifetime achievement list.",
+    "Do not depict instant transformation, solitary success, or a guaranteed outcome."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-memoir",
+      "citation": "Jane Addams, Twenty Years at Hull-House with Autobiographical Notes (1910; accessed Gutenberg transcription of 1912 edition).",
+      "locator": "Chapters IV, The Snare of Preparation, and V, First Days at Hull-House.",
+      "url": "https://www.gutenberg.org/cache/epub/1325/pg1325-images.html"
+    },
+    {
+      "sourceId": "source-hull-history",
+      "citation": "Jane Addams Hull House / Metropolitan Family Services, History.",
+      "locator": "Jane Addams Biography, birth and rented house paragraphs.",
+      "url": "https://janeaddamshullhouse.org/history/"
+    }
+  ],
+  "review": {}
+}

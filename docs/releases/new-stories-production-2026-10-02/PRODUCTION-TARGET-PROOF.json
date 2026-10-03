@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "production-target-public-bundle-proof-v1",
+  "ok": true,
+  "startedAt": "2026-10-03T00:36:30.970Z",
+  "completedAt": "2026-10-03T00:36:31.443Z",
+  "productionOrigin": "https://onwardapp.me",
+  "home": {
+    "url": "https://onwardapp.me/",
+    "status": 200,
+    "sha256": "ef59f836217584ff65c55ae50458d79efb80c893ba7fd39955c75dc6e721b123",
+    "linksToSignin": true
+  },
+  "signin": {
+    "url": "https://onwardapp.me/signin",
+    "status": 200,
+    "sha256": "d432de59fa9313e916b81d71eac82f52470114d6f42e2d80ddbd5b26521624de"
+  },
+  "inspectedScriptCount": 12,
+  "scriptAssets": [
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "status": 200,
+      "sha256": "2c752a401191671d5bbbe7514f5828bbb0a7cc50bfbe77ddaf1b1ccba4412ed2",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/255-37e0f0325134c4d7.js",
+      "status": 200,
+      "sha256": "0e25d0f71231e99267806b8aabf7a7810982bccb561d1ec7df7e6eaa60e4e530",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/main-app-f9b5d20365cb8be2.js",
+      "status": 200,
+      "sha256": "2e7f54a461dcd0e6291339c749f9048e5dcf98fbd2658bb4fd437d485f3bb385",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/app/layout-cdee1edf6f052fb4.js",
+      "status": 200,
+      "sha256": "8bd1c406b79c4dbc03fc73537cec57e003859c6e75506c2a3720e9d2dc49bff7",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/app/error-70207268190fc51a.js",
+      "status": 200,
+      "sha256": "02546d0a00520153211fe1dee7bc7306f8da21b16f4518dfd05482fb3a30defc",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/44530001-61eba8602745b10c.js",
+      "status": 200,
+      "sha256": "7fb3d53ddb8d2c123cb9581087d2a9cdd6c971434866083d1a8684afc05b9437",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/619-ba102abea3e3d0e4.js",
+      "status": 200,
+      "sha256": "9541ff3dd96091ca8bebc305fb72eca68e6015a177e1d3b4aa72859dc52fbdd7",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/21-a2fa564e2ed2040a.js",
+      "status": 200,
+      "sha256": "a7720951049867d3ce1bd02ef1f1c9973401711b0b979b817fffc73806100d99",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/696-6c4c50080f6b9ca9.js",
+      "status": 200,
+      "sha256": "7ce8762c23d8bae6766a97ba1939c0c026b207aad016c7dfcc12d3ae972df2a5",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/app/signin/page-d28be3cd5d91556b.js",
+      "status": 200,
+      "sha256": "cb27c444087690c30d0d4c131e04ca4f0019e1582be7e4a45d8f2919fb262bd8",
+      "supabaseHostnames": [
+        "mbcqkljfekkxlgittzal.supabase.co"
+      ]
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "status": 200,
+      "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/webpack-b75f25cdd7080aea.js",
+      "status": 200,
+      "sha256": "9c9334398f91c09b246720cd9a01c4ecbf20c91d168e7a6a8bbf16fa0fa3b4f8",
+      "supabaseHostnames": []
+    }
+  ],
+  "publicSupabaseHostname": "mbcqkljfekkxlgittzal.supabase.co",
+  "localSupabaseHostname": "mbcqkljfekkxlgittzal.supabase.co",
+  "localTargetMatchesCurrentProductionBundle": true,
+  "method": "GET current public home and its linked sign-in HTML; GET each same-origin Next.js script referenced by sign-in; extract only https Supabase hostnames; compare with locally loaded URL hostname.",
+  "limits": "Proves the browser Auth project and local target share one hostname. Does not verify service-role privileges, private Vercel environment values, database schema, publication state or deployed telemetry configuration.",
+  "privacy": "No login, Auth operation, database mutation or deployment. Full HTML/JS remains in memory. No anon/service key values, environment dump or reader data saved or printed."
+}

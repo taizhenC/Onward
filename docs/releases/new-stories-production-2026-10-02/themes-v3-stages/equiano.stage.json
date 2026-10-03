@@ -1,0 +1,75 @@
+{
+  "figureKey": "equiano",
+  "displayName": "Olaudah Equiano",
+  "birthYear": 1745,
+  "deathYear": 1797,
+  "stageId": "1766-the-money-and-the-release",
+  "stageLabel": "Savings, a refused promise, and a signed release",
+  "ageMin": 20,
+  "ageMax": 21,
+  "shapeSentences": [
+    "An enslaved sailor’s route is changed and an expected reward fails; after selling his own goods he asks how to present the price for freedom, faces the owner backing away, and obtains a release with the captain’s intervention.",
+    "Money permits him to ask for an earlier promise to be kept, but the owner still controls the decision and document, and legal freedom does not end racial coercion."
+  ],
+  "facets": {
+    "emotionalCore": "Expected payment fails, and later the owner’s resistance makes his heart sink despite having the agreed price.",
+    "decisionShape": "After selling his goods he asks the captain how to present the money, then requests the promised freedom and explains his earnings.",
+    "triggerEvent": "The owner changes the voyage and later resists honoring a freedom promise even when the purchase price is available.",
+    "agencyState": "He can trade, save and ask, but depends on the owner’s agreement, the captain’s intervention and a formal signed release; racial coercion continues."
+  },
+  "biographicalFacts": "In 1766, Olaudah Equiano was about twenty to twenty-one, based on his memoir's reported birth year. While enslaved, he traded goods while working aboard vessels that also carried enslaved people. Owner-directed port changes disrupted his trading plans. A promised bonus proved disappointing when a dead man's trunks contained little value; he already had nearly enough money to buy his freedom. After returning and selling goods, he approached the owner with the agreed purchase price. The owner questioned his earnings and regretted making the promise when he saved so quickly. A captain confirmed his honest earnings and urged the owner to keep his word. The owner accepted payment and signed a written release in July. Equiano remained with the vessel as a paid sailor. On a subsequent voyage he beat a man who had struck him, then faced the other man's owner's threat of public flogging and hid at a friend's house.",
+  "themes": [
+    "dispossession",
+    "social_constraint",
+    "quiet_defiance",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He was back in port when the owner came aboard the loaded vessel. He was about twenty-one. He had been selling goods during the voyage. He hoped selling his goods here could leave him enough to purchase his freedom. The man giving the orders owned him as well as the vessel.\n\nThe owner ordered them to unload at another port, then sail on again. He was disappointed. He could not choose where the vessel went. His goods were still on board.",
+      "sourceNotes": "Chapter VII owner boarding and route order. One loaded vessel in port. Age is approximate from the self-reported birth year. No exact cargo, port name, period identifier, or unrecorded instruction is added."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "In the house, he and the captain opened the smallest trunk. There were papers inside. They thought the papers were valuable notes. They had taken the trunks out of one another, expecting to find money. The man they had been caring for was dead. He had promised the captain a large amount of money. The captain had promised him extra pay for helping attend the man.\n\nThe captain had clapped his hands when they first saw the papers. They examined what they had found. The whole set of trunks held only a little money. All the man’s possessions could not even pay for his coffin. The payment he had expected was gone. Now he and the captain were bitterly disappointed. They went away from the trunks.",
+      "sourceNotes": "Chapter VII, trunk examination after the silversmith’s death. One encounter in the house. Expected notes prove to be little money; reported mortification supplies the feeling. He already had nearly enough savings, so this failure is not portrayed as destroying every prospect."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He asked the captain how to offer the owner the money for his freedom. They had returned to the port, unloaded the vessel, and he had sold his goods. He now had more than the price the owner had named. His trading had taken place aboard a vessel that also carried people held in slavery.\n\nThe owner’s earlier offer was to free him once he could pay. The captain told him to come one morning when he and the owner were having breakfast together. He could make the request then.",
+      "sourceNotes": "Chapter VII, We set sail once more: after selling goods he consults the captain about offering the money. One conversation; exact room and gestures are unspecified and not invented. Past earnings and the completed voyage’s coerced shipping context are brief background; no unrecorded moral realization is assigned."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "That morning, he entered with the money in his hand. He was afraid. He bowed and asked the owner to keep the promise. The owner drew back from the request. He felt discouraged. The owner asked whether he had the whole amount, and where it had come from. He answered honestly about how he had earned it.\n\nThe captain confirmed that he had earned it through work and careful trading. The owner said he had gained money faster than he had himself. He said he would never have promised freedom if he had expected such quick payment. The money was in the room. The owner was still questioning the release.",
+      "sourceNotes": "Chapter VII, Accordingly, on that morning through got money so soon. Breakfast request, questioning, his truthful answer, and the owner’s stated regret. This follows the consultation chronologically and contains no voyage flashback."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The captain clapped the owner on the back and pressed him to accept the money. He argued that the owner had already profited from the young man’s work. Now the price he had paid for him was being returned. He also said the young man could remain with the vessels and save him money. The captain asked him to keep the freedom promise.\n\nThe owner agreed to keep the promise. He took the money and told him to have a written release prepared. His fear turned to joy. He bowed, with tears flowing before he could express all he felt. The captain congratulated them both. After the first strong feelings of joy passed, he thanked the two men. Then he rose and left the room to have his release prepared.",
+      "sourceNotes": "Chapter VII, Come, come through left the room. One breakfast encounter: back-clap, economic pressure, acceptance, tears, thanks and leaving for paperwork. Captain help does not erase owner control or the economics of enslavement."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "An official prepared the release for a fee. He paid and took it back for the owner to sign. The document was signed that day and registered the next. He had legal freedom now. He wanted to go elsewhere, but agreed to remain with the vessel. From that day he worked as a sailor for wages.\n\nOn the next voyage, another man struck him, and he struck back. That man’s owner threatened to have him beaten in public. He refused to come ashore. After repeated advice, he hid at a friend’s house. Friends insisted that the warrant be withdrawn before he returned. He had to pay the expenses. Then he went back aboard to work.",
+      "sourceNotes": "Chapter VII document, paid sailor entry, and August altercation, concealment, warrant and return. Legal signing and registration retain separate dates in the used fold fact. Both the assault against him and his retaliation are stated; no graphic detail is added."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Olaudah Equiano.\n\nHe wrote an account of his life in slavery and freedom that became part of the argument against slavery.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to feel uncertain about what comes next.",
+      "sourceNotes": "Primary title page and abolition petition supply the plain legacy. Name, one known-for sentence, fixed distance pair, and two authored permissions. No invented texture or promise."
+    }
+  ],
+  "sources": [
+    "Olaudah Equiano, The Interesting Narrative (1789), chapters I and VII, including the reproduced manumission. https://www.gutenberg.org/cache/epub/15399/pg15399-images.html"
+  ]
+}

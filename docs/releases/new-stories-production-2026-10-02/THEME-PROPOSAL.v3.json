@@ -1,0 +1,186 @@
+{
+  "schemaVersion": "new-ten-primary-theme-proposal-v3",
+  "createdAt": "2026-10-03T00:59:33.017Z",
+  "status": "Optional narrower primary-episode theme proposal; not installed, approved for release, evaluated with a provider, or published.",
+  "scope": "Only Jacobs and Grant self_invention omission from exact facts-v2 stages. All other fields and all original50, gold, keyword routes, recipe and prior proposal/review/evidence inputs remain immutable.",
+  "editorialCriterion": "Positive tags should describe a principal documented emotional or decision through-line in the bounded episode. This is a proposed narrower editorial criterion, not an existing repository requirement; supported secondary themes are not historical errors.",
+  "inputFactsProposalSha256": "9427e7e099252b91d7f23b3873fa0a32b9f770a93aa0dcfacc2a47c44e7883ac",
+  "outputDirectory": "themes-v3-stages",
+  "changes": [
+    {
+      "figureKey": "jacobs",
+      "remove": "self_invention",
+      "reason": "Concealment near children, bodily cost, assisted escape and continued legal enslavement are the central documented episode. Beginning another northern life is an adjacent reasonable inference; the bounded episode does not develop a new vocation or an identity-building project.",
+      "candidateFactIds": [
+        "age",
+        "space",
+        "children",
+        "years",
+        "departure",
+        "distrust",
+        "arrival",
+        "legal",
+        "rail"
+      ]
+    },
+    {
+      "figureKey": "grant",
+      "remove": "self_invention",
+      "reason": "Illness, income pressure, employment setbacks, family-supported salary and accepting help dominate the episode. Wishing for eventual independent business is documented, but the turn uses prior army experience and another clerk rather than a clearly adopted new calling.",
+      "candidateFactIds": [
+        "fact-family-illness",
+        "fact-behind",
+        "fact-father-offer",
+        "fact-income-preference",
+        "fact-agency",
+        "fact-salary",
+        "fact-office",
+        "fact-forms",
+        "fact-clerk-help"
+      ]
+    }
+  ],
+  "retainedQuestionedTag": {
+    "figureKey": "seacole",
+    "theme": "social_constraint",
+    "reason": "Official nursing placement and funded-passage barriers are documented central institutional constraints; neither proven racial motive nor a claim of life-long social exclusion is required.",
+    "candidateFactIds": [
+      "f-hall",
+      "f-full",
+      "f-final",
+      "f-morrow",
+      "f-capital"
+    ]
+  },
+  "diagnosticQualifications": [
+    "Removing Jacobs tag drops extension case11 from rank2 to11 in installed60; never relabel this case or count its new retrieval miss as correct.",
+    "This proposal leaves current wrong original3,21,99 shortlists unchanged and cannot establish a content-only remedy for the failed gate.",
+    "All eight removal combinations are offline diagnostics, not provider score forecasts or approval of unsupported Seacole removal."
+  ],
+  "stages": [
+    {
+      "figureKey": "addams",
+      "stageId": "1888-1889-telling-the-plan",
+      "file": "addams-1888-1889-telling-the-plan-v1.stage.json",
+      "originalSha256": "88b9f38e502427b62f5a9fbd1f4b627570e43b611695b1bcdf58c4b5a9378f5c",
+      "proposedSha256": "88b9f38e502427b62f5a9fbd1f4b627570e43b611695b1bcdf58c4b5a9378f5c",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    },
+    {
+      "figureKey": "blackwell_e",
+      "stageId": "1847-1849-a-place-to-study",
+      "file": "blackwell_e-1847-1849-a-place-to-study-v1.stage.json",
+      "originalSha256": "1e4ffa9de5a7ded0bbc197a7bfb697aaa7979a5106bbc3f3d393bae988fff233",
+      "proposedSha256": "1e4ffa9de5a7ded0bbc197a7bfb697aaa7979a5106bbc3f3d393bae988fff233",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    },
+    {
+      "figureKey": "darwin",
+      "stageId": "1831-the-refusal-and-the-letter",
+      "file": "darwin-1831-the-refusal-and-the-letter-v1.stage.json",
+      "originalSha256": "ae02bc2cdb464181e3dc491f22ec1790acb38b13e18e2a779fc42df17623e986",
+      "proposedSha256": "ae02bc2cdb464181e3dc491f22ec1790acb38b13e18e2a779fc42df17623e986",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    },
+    {
+      "figureKey": "equiano",
+      "stageId": "1766-the-money-and-the-release",
+      "file": "equiano.stage.json",
+      "originalSha256": "71a9b20926b1d79e7dcf89d6d8e8cd0bd491a6ec9114d14733d2687e75fe80d5",
+      "proposedSha256": "71a9b20926b1d79e7dcf89d6d8e8cd0bd491a6ec9114d14733d2687e75fe80d5",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    },
+    {
+      "figureKey": "grant",
+      "stageId": "1858-1861-a-place-in-the-shop",
+      "file": "grant-1858-1861-a-place-in-the-shop-v1.stage.json",
+      "originalSha256": "62f823659ae9ba9852645b3f0a87cd095b1bb9bf5c4ec2121495e07f0d228da4",
+      "proposedSha256": "c35dcbcab2ec9cf69fbb43318e2cbf9ebf9a8c57aaa0c710e46780c6c2a21737",
+      "changedFields": [
+        "themes"
+      ],
+      "exactFieldDiffs": [
+        {
+          "path": "themes",
+          "before": [
+            "illness",
+            "self_invention",
+            "keep_going"
+          ],
+          "after": [
+            "illness",
+            "keep_going"
+          ]
+        }
+      ]
+    },
+    {
+      "figureKey": "jacobs",
+      "stageId": "1835-1842-concealment-to-escape",
+      "file": "jacobs.stage.json",
+      "originalSha256": "1e742185296306e1002dd43be85485cda013eeb874a0206537bbd68b3ffeb9d8",
+      "proposedSha256": "7ce355d370e5c1d4625fd9b6493f4f40cbd49c52d823c0f0089b61530da9dafe",
+      "changedFields": [
+        "themes"
+      ],
+      "exactFieldDiffs": [
+        {
+          "path": "themes",
+          "before": [
+            "dispossession",
+            "social_constraint",
+            "quiet_defiance",
+            "solitude",
+            "self_invention"
+          ],
+          "after": [
+            "dispossession",
+            "social_constraint",
+            "quiet_defiance",
+            "solitude"
+          ]
+        }
+      ]
+    },
+    {
+      "figureKey": "keller",
+      "stageId": "1887-learning-that-things-have-names",
+      "file": "keller-1887-learning-that-things-have-names-v1.stage.json",
+      "originalSha256": "a52a2553641b684f809ed4e7c5bbb921ca2b376769cddf4252ee6a2b8fe140ac",
+      "proposedSha256": "a52a2553641b684f809ed4e7c5bbb921ca2b376769cddf4252ee6a2b8fe140ac",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    },
+    {
+      "figureKey": "riis",
+      "stageId": "1873-unpaid-work-to-reporting",
+      "file": "riis.stage.json",
+      "originalSha256": "8f16ac5cd2cd5f60ab56542e6cc178b6708db1aa78d7a2fb5c88133ba9d17b44",
+      "proposedSha256": "8f16ac5cd2cd5f60ab56542e6cc178b6708db1aa78d7a2fb5c88133ba9d17b44",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    },
+    {
+      "figureKey": "seacole",
+      "stageId": "1854-1855-refusal-to-sick-wharf",
+      "file": "seacole.stage.json",
+      "originalSha256": "0fd509e00f40915730c5b9eeefad2e91bea1331ccc1b44d9e2b1578d42aeb248",
+      "proposedSha256": "0fd509e00f40915730c5b9eeefad2e91bea1331ccc1b44d9e2b1578d42aeb248",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    },
+    {
+      "figureKey": "washington_b",
+      "stageId": "1872-reaching-the-classroom",
+      "file": "washington_b-1872-reaching-the-classroom-v1.stage.json",
+      "originalSha256": "42c2c501b720c9bb1cfa504eee1b3b61cda0f89668fdff042a1bec79d9264677",
+      "proposedSha256": "42c2c501b720c9bb1cfa504eee1b3b61cda0f89668fdff042a1bec79d9264677",
+      "changedFields": [],
+      "exactFieldDiffs": []
+    }
+  ]
+}

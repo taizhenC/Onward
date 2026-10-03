@@ -1,0 +1,60 @@
+{
+  "completedAt": "2026-10-03T01:50:54.513Z",
+  "ok": true,
+  "updatedStages": 10,
+  "selectionSha256": "0c6a9708beed99846c1d2eeeae865ddb046fd2758bd1976d21a31cb30abba6ab",
+  "baselineSha256": "9e0d4e52524d012d9573d8de648e94c1b034dd334f3728255fb72ed18e432a4f",
+  "ownerReleaseSha256": "4d8ea478a834b0e318452bfaf2191f9c5a30248f6cee4b5b4a288a0df916fc96",
+  "afterSha256": "3335bcb7bf9adbd56297d210f2100a20c4f896c6bebaecbecca51a30d56174e1",
+  "writtenColumns": [
+    "biographical_facts",
+    "themes"
+  ],
+  "factualSummaries": 10,
+  "themeAdditions": 2,
+  "allStorySpecsAndTimestampsPreserved": true,
+  "original34PublicationsPreserved": true,
+  "unrelatedCatalogPreserved": true,
+  "targets": [
+    {
+      "figureKey": "addams",
+      "receiptSha256": "97da829c9c34481652a61a3a13c99d82a5dd4c411e0dc517b27c70b012604cf1"
+    },
+    {
+      "figureKey": "blackwell_e",
+      "receiptSha256": "0b1b8e52561c31f4f474b8b369045d8560835de4e49c250dfe8f37ad7b1665e7"
+    },
+    {
+      "figureKey": "darwin",
+      "receiptSha256": "ae6a67ac8715964f10440858007d783de9690caa5a2d2e403b8bddbca769cefc"
+    },
+    {
+      "figureKey": "equiano",
+      "receiptSha256": "128a6c6360957dd4d6e1fe4470106c78affe576241a2674bd7d8afed60ef3148"
+    },
+    {
+      "figureKey": "grant",
+      "receiptSha256": "51e3510b959b7b575a2efdc2d3eec557624d14d541bdbe4098ea0a1a29ca24fa"
+    },
+    {
+      "figureKey": "jacobs",
+      "receiptSha256": "f7b80319f4a49251747bf1c39afa9c79853ab5f520f4d937502fbf557eb2a690"
+    },
+    {
+      "figureKey": "keller",
+      "receiptSha256": "327faa116bd4ca2101c59b65a96c7e95e51bd066b1b7be71cd3cb0939ec97ef5"
+    },
+    {
+      "figureKey": "riis",
+      "receiptSha256": "31b8a1fc5a94531a0e4c1201116e54bf409896df2948dd9314a5c53a5a265e35"
+    },
+    {
+      "figureKey": "seacole",
+      "receiptSha256": "3349e0a3338acdbb3e8fd060b3f529d94a78dd4dc2544f4aeeec15027511c7e8"
+    },
+    {
+      "figureKey": "washington_b",
+      "receiptSha256": "a98fe73ebc6dfc1f627a4b82932ec1c96c6919690f5a991b5e89d23594f7793e"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Full live editorial baselines/selections/rows stay local to the operator.
+OWNER-STAGE-V2-UPDATE-SELECTION.json
+OWNER-STAGE-V2-UPDATE-BASELINE.json
+OWNER-STAGE-V2-UPDATE-AFTER.json
+OWNER-STAGE-V2-UPDATED-*.json
+OWNER-PUBLICATION-SELECTION.json
+OWNER-PUBLICATION-BASELINE.json
+REVIEWED-*.json
+PUBLISHED-*.json

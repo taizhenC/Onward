@@ -1,0 +1,1120 @@
+{
+  "storySpecId": "riis:1873-unpaid-work-to-reporting:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "riis",
+  "stageId": "1873-unpaid-work-to-reporting",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 23,
+    "ageMax": 24,
+    "startDate": "1873",
+    "endDate": "1874",
+    "throughLine": "An immigrant whose first reporting job never pays goes hungry selling books, follows a teacher to obtain an introduction, and earns a reporting job after a trial."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "abuse_or_violence"
+    ],
+    "contentNote": "Hunger, homelessness, discouragement, and a collapse, without graphic detail. A washerwoman strikes the editor with a basket while seeking unpaid wages. An employer fails to pay; receiving work does not instantly restore his health."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Riis was born May 3, 1849 and began newspaper work in 1873. This episode covers the first reporting work and winter 1873–74 before the memoir’s May 20, 1874 spring move, making him approximately 23–24. The endpoint 1874 is an inferred year-precision boundary, not a known final work day.",
+      "sourceRefs": [
+        {
+          "sourceId": "loc",
+          "scope": "bounded",
+          "locator": "Opening biography: birth 1849 and newspaper work 1873."
+        },
+        {
+          "sourceId": "loc-finding-aid",
+          "scope": "bounded",
+          "locator": "Biographical Note: 1849, May 3, Born, Ribe, Denmark."
+        },
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Chapter VI opening reporting winter and Along in the spring: May 20, 1874 next job."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "first-job",
+      "statement": "He answered an advertised city-editor vacancy and was hired to fill a local weekly column.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: One day, while I was so occupied, through fill the local column."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "unpaid",
+      "statement": "He stayed two weeks at the weekly, was not paid, and met the editor on outside stairs being pursued by an unpaid washerwoman.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: When, on my second deferred pay-day through two weeks pay."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "leave",
+      "statement": "He left owing two weeks pay, carrying experience of finding local items and a large dog given to him.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: I did not let grass grow through Except for a Newfoundland pup."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "canvass",
+      "statement": "He tried selling books with the dog beside him, but a day of canvassing yielded no money.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: It was not only breakfast we lacked through with never a cent."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "steps",
+      "statement": "Hungry, he sat on steps below a lit clock; his dog lay at his feet, having been fed by a cook during their rounds.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: Faint with hunger through no breakfast."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "despair",
+      "statement": "On the steps he felt three years had been wasted, had no money and no hope or purpose, and drummed on his book.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: How long was this to last through Wasted! Yes."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "teacher",
+      "statement": "The principal of his former telegraph school recognized him, asked about his selling, and offered an introduction to a news agency seeking a trainee.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: A voice hailed me through bright young fellow."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "letter",
+      "statement": "He followed the principal across the street to the school office and obtained the letter.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: As in a dream, I walked across the street through got the letter."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "dog-home",
+      "statement": "The principal offered the dog a better home; Riis agreed to bring it next day and spent their final night walking with it.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: Bob went along through thinking it over."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "morning",
+      "statement": "At sunrise he washed his face and hands in a dog drinking trough, straightened his clothes, took the dog to its new home, and delivered the letter.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: Not yet. When the sun rose through delivered my letter."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "trial",
+      "statement": "The desk editor looked doubtful, allowed a trial, and sent him to wait at a desk for an assignment.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: He looked me over a little doubtfully through morning book of assignments."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "meal",
+      "statement": "His first assignment was a public lunch; he saw and smelled the food but did not ask for any.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: The assignment that fell to my lot through I did not ask for any."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "accepted",
+      "statement": "After reading his report the editor accepted him and gave him a desk and a regular morning reporting time.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: But it may be through report at ten every morning."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "collapse",
+      "statement": "After work he went to a family boarding house, now able to pay, collapsed on the stairs, and was carried inside.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "ch V: That night, when I was dismissed through My strength had at last given out."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "workload",
+      "statement": "During his first reporting winter, 1873–74, the job had low pay, six or seven assignments in an evening, and days beginning at ten in the morning and ending at one or two the next morning. The agency supplied both morning and evening papers; three reporters covered general news outside the regular department channels. Long rides left his feet painfully cold; he now had enough to eat.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Chapter VI opening: Good had reference to the quantity; Our office sold news; The long rides; However, I had at least enough to eat; followed by Along in the spring, May 20, 1874 next job."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "legacy",
+      "statement": "Riis wrote books documenting the lives and housing conditions of poor city residents.",
+      "sourceRefs": [
+        {
+          "sourceId": "loc",
+          "scope": "bounded",
+          "locator": "Opening biography and Making it as an American, reporting, How the Other Half Lives and housing reform."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Jacob August Riis",
+      "aliases": [
+        "Jacob Riis"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He met his editor on the stairs outside the newspaper office. He was about twenty-four. A woman followed the editor down, striking his head with her basket. She called to the people outside to witness what he had done. He had failed to pay for washing his shirts. The young man was waiting for his pay, too.\n\nHis second pay day had come and brought no wages. He had answered an advertisement and taken the job filling the local column. He had searched for news and made notes when he found it. Now he left with his work unpaid. He took his experience and a large dog someone had given him.",
+      "requiredFactIds": [
+        "unpaid",
+        "age",
+        "first-job",
+        "leave"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unpaid"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unpaid"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unpaid"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unpaid"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unpaid"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unpaid"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "first-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "leave"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "unpaid"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "leave"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter V, second deferred pay-day and outside stairs. One encounter with the editor and washerwoman; brief basket violence disclosed. Approximate age uses LOC chronology. No invented detail."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He sat on steps beneath a clock with its face lit. He was faint with hunger. His dog stretched out at his feet. The dog had persuaded a cook to feed it during their last rounds. He had watched from a corner, wanting some of that food. There was no supper for him. He held the book he had spent the day trying to sell.\n\nNo one had bought it. He expected another day of going hungry tomorrow. He thought of leaving these same steps hungry three years earlier. Then he had carried a little money. Now he had none. He felt those years had been wasted. He could find no hope or purpose in them. Nothing had gone right, and he could not imagine anything going right. He no longer cared. He drummed on the book in his hands.",
+      "requiredFactIds": [
+        "steps",
+        "canvass",
+        "despair"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "steps"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "steps"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "steps"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "steps"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "steps"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "steps"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "canvass",
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "canvass"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "steps",
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 15,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 16,
+          "treatment": "historical_claim",
+          "factIds": [
+            "despair"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter V, Faint with hunger and How long was this to last. One seated low point; the earlier departure is his attested memory. No relief or invented diagnosis."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He walked across the street to his former teacher’s office. The dog came with him. The teacher had recognized him on the steps and asked about his work. He had explained that he was trying to sell books. Now he collected a letter introducing him to a news agency. Its manager was looking for someone to train.\n\nBefore he left the office, the teacher offered his dog a home. It was a better home than he could provide. He agreed to bring the dog the next day. He left with the letter.",
+      "requiredFactIds": [
+        "letter",
+        "dog-home",
+        "teacher"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "letter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "dog-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "teacher"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "teacher"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "letter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "teacher"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "dog-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "dog-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "dog-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "letter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter V, As in a dream and Bob went along. The present action is obtaining the letter in the school office; the earlier conversation explains the introduction. Dog-home agreement occurs before departure from that office."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He spent that last night walking with the dog. At sunrise he washed his face and hands at a drinking trough. He straightened his clothes and took the dog to its new home. Then he delivered the letter to the news office. The desk editor looked him over doubtfully and allowed a trial. He waited at a desk while the editor prepared the assignments.\n\nHis assignment took him to a public lunch. Food was spread out where he could see and smell it. He had arrived hungry after failing to earn money selling books. Now the food was close, but he did not ask for any. He had reached a point where he no longer felt his hunger. He watched the gathering and wrote his report.",
+      "requiredFactIds": [
+        "dog-home",
+        "morning",
+        "trial",
+        "meal",
+        "canvass",
+        "accepted"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "dog-home"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "morning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "morning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "morning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "meal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "meal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "canvass",
+            "meal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "meal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "meal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "meal",
+            "accepted"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter V, last night, sunrise, letter delivery, and first public lunch. This passage openly moves through the next morning and assignment. Failure to obtain food remains documented after the introduction."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The editor read his report. This was the work of the trial he had been allowed that morning. The editor had looked doubtful when he arrived with the letter. Now he accepted him for the job. He gave him the desk and a time to report each morning. There was another day of work to return for.",
+      "requiredFactIds": [
+        "accepted",
+        "trial"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "accepted"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial",
+            "accepted"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "trial"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "accepted"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "accepted"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "accepted"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter V, But it may be that a touch of it all crept into my report. One editor-report encounter; previous assignment and letter are background. No invented speech or editor gesture."
+    },
+    {
+      "role": "became",
+      "canonicalText": "After work that evening, he went to a family boarding house. With work and wages, he could pay to stay. On the stairs his strength gave out. He collapsed and lay there until someone stumbled over him in the dark. They carried him inside.\n\nThe reporting work that winter was hard and poorly paid. The office supplied news to papers printed in the morning and evening. He and two other reporters covered news outside the usual department reports. An evening could bring several assignments spread across the city. His working day began in the morning and ran into the next early morning. Long rides left his feet so cold that he lost feeling in them. He had enough to eat now. He still had to get himself to the next assignment.",
+      "requiredFactIds": [
+        "collapse",
+        "workload"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "collapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "collapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "collapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "collapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "collapse"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "workload"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter V collapse and chapter VI first winter, inferred as 1873–74 from the following May 20, 1874 spring move. Enough food coexists with low pay, long hours and painful cold rides. Year-precision endDate 1874 bounds this winter, not the entire year. No later editor job, marriage, fame, or reform enters the outcome."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Jacob August Riis.\n\nHe wrote books about the lives of people crowded into poor city housing and the conditions around them.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need food, rest, and help.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Plain legacy from the owning archive biography. Name, legacy, exact distance pair, then authored permission. No texture or forecast."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented events, dates, dialogue, motives, or causal links.",
+    "Interior states and sensory particulars only where the memoir explicitly reports them.",
+    "This draft uses no quotation and no invented texture."
+  ],
+  "avoidRules": [
+    "Do not imply perseverance alone supplied the job; the teacher provided a concrete introduction.",
+    "Do not portray the unpaid first paper as the news agency that accepted his trial.",
+    "Do not invent the occasion of the lunch; Riis says he forgot it.",
+    "Do not turn later fame or marriage into the outcome of this episode.",
+    "Treat detailed dialogue and emotions as later recollection; this draft carries no quoted speech.",
+    "Do not diagnose despair or add self-harm methods."
+  ],
+  "sources": [
+    {
+      "sourceId": "memoir",
+      "citation": "Jacob A. Riis, The Making of an American (1901), chapter V and opening of chapter VI.",
+      "url": "https://www.gutenberg.org/cache/epub/6125/pg6125-images.html",
+      "locator": "Chapter V, from One day, while I was so occupied through So began my life as a newspaper man; chapter VI opening through working day."
+    },
+    {
+      "sourceId": "loc",
+      "citation": "Library of Congress, Jacob Riis exhibition, Biography.",
+      "url": "https://www.loc.gov/exhibits/jacob-riis/biography.html",
+      "locator": "Opening biography gives 1849 birth and 1873 newspaper work; Pocket Diary and Telegram distinguishes surviving contemporary diaries from 1901 autobiography."
+    },
+    {
+      "sourceId": "loc-finding-aid",
+      "citation": "Library of Congress, Jacob A. Riis Papers finding aid, Biographical Note.",
+      "url": "https://tile.loc.gov/storage-services/service/gdc/gdcfindingaidpdfs/ms010258/ms010258.pdf",
+      "locator": "Page 3, Biographical Note: 1849, May 3, Born, Ribe, Denmark. Used only to bound age in the first reporting winter."
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,17 @@
+{
+  "selectionSha256": "a655e258e9e966ed94bb24d58e71cc827f9afacbec6a11fa5de77f1381f00d43",
+  "baselineSha256": "b66362151ec6fdd196cb68fb0e50c98be95274c953a6bd8657c596ea56ec7a12",
+  "ownerReleaseSha256": "4d8ea478a834b0e318452bfaf2191f9c5a30248f6cee4b5b4a288a0df916fc96",
+  "projectHost": "mbcqkljfekkxlgittzal.supabase.co",
+  "ownerAuthorizationSha256": "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8",
+  "releaseChecks": {
+    "realProviderTrustGate": false,
+    "ownerException": true,
+    "recipeGovernance": true,
+    "unchangedRecipeSelection": true
+  },
+  "librarySha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+  "evidenceIds": [
+    "ev_6f9f15f110e062a26799e08df3b71ddf2de73be13d1f230a44b3262576a6ba1d"
+  ]
+}

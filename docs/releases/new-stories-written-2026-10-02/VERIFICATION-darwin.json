@@ -1,0 +1,106 @@
+{
+  "completedAt": "2026-10-03T00:03:24.049Z",
+  "storyCount": 1,
+  "approval": "None; mechanical checks and agent reviews do not approve publication",
+  "candidates": [
+    {
+      "figureKey": "darwin",
+      "storySpecId": "darwin:1831-the-refusal-and-the-letter:v1",
+      "candidateSha256": "e4bee8e87b256ced6c8e5813face01be4225ec5059410a46d500a313bc877f62",
+      "stageSha256": "87f5755b8322f7d4fb18bbbcd2651558be9c490cbcf3f4b14a6ac0d441cb4a87",
+      "words": 718,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 88,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.78,
+          "longestSentence": 16,
+          "endingWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "words": 109,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10.9,
+          "longestSentence": 15,
+          "endingWords": 11
+        },
+        {
+          "role": "response",
+          "words": 100,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10,
+          "longestSentence": 16,
+          "endingWords": 8
+        },
+        {
+          "role": "struggle",
+          "words": 130,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 11.82,
+          "longestSentence": 17,
+          "endingWords": 7
+        },
+        {
+          "role": "turning_point",
+          "words": 128,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10.67,
+          "longestSentence": 16,
+          "endingWords": 5
+        },
+        {
+          "role": "became",
+          "words": 115,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.45,
+          "longestSentence": 14,
+          "endingWords": 9
+        },
+        {
+          "role": "bridge",
+          "words": 48,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 8,
+          "longestSentence": 11,
+          "endingWords": 8
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true
+    }
+  ]
+}

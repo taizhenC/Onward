@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "new-ten-postpublication-checker-preparation-v1",
+  "observedAt": "2026-10-03T01:53:04.835Z",
+  "checkerSha256": "6b56a7f8a2ded08f6f8cecd8e4990313e135a20c3c7d178abf098889dad949a9",
+  "mode": "preparation-only",
+  "checks": {
+    "offlinePositiveCase": true,
+    "offlineNegativeCases": 10,
+    "offlineFetchForbidden": true,
+    "scopedEslintPassed": true,
+    "fullTypeScriptPassed": true
+  },
+  "liveInputs": [
+    "OWNER-PUBLICATION-SELECTION.json",
+    "OWNER-PUBLICATION-BASELINE.json",
+    "DATABASE-RECEIPT.json"
+  ],
+  "liveInputsRequireExternallyPinnedSha256": true,
+  "expectedCounts": {
+    "figures": 60,
+    "stages": 60,
+    "specs": 61,
+    "publishedSpecs": 44,
+    "publishedStages": 44,
+    "quarantinedPublishedSpecs": 0,
+    "newVerifiedPublications": 10
+  },
+  "bounds": {
+    "curatedGetTables": [
+      "figures",
+      "figure_stages",
+      "story_specs"
+    ],
+    "queryCount": 3,
+    "fullResponseDeadlineMs": 15000,
+    "maxResponseBytes": 4194304,
+    "maxRows": 100,
+    "retries": 0
+  },
+  "observedLivePublication": false,
+  "liveQueries": 0,
+  "databaseMutations": 0,
+  "authOrReaderOrProviderAccess": 0
+}

@@ -239,6 +239,10 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-[var(--color-rule)]">
         <div className="mx-auto max-w-[1080px] px-8 pb-[60px] pt-[30px]">
+          <div className="mb-6 space-y-2 text-sm text-[var(--color-ink-soft)]">
+            <Link href="/retellings" prefetch={false} className="inline-flex min-h-11 items-center underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-accent)]">Explore fictionalized retellings</Link>
+            <p>A separate creative collection: real names, openly invented scenes. Not historical matches.</p>
+          </div>
           <p className="mb-[22px] max-w-[40rem] font-ui text-[12.5px] leading-[1.7] text-[var(--color-ink-faint)]">
             In crisis right now? Please reach for people who can help —{" "}
             {CRISIS_RESOURCES.map((resource, index) => (

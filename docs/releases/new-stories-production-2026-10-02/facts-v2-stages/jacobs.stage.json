@@ -1,0 +1,77 @@
+{
+  "figureKey": "jacobs",
+  "displayName": "Harriet Ann Jacobs",
+  "birthYear": 1813,
+  "deathYear": 1897,
+  "stageId": "1835-1842-concealment-to-escape",
+  "stageLabel": "Concealment near her children and an escape north",
+  "ageMin": 20,
+  "ageMax": 29,
+  "shapeSentences": [
+    "A mother escaping enslavement hides close enough to hear her children but cannot speak to them, makes a small opening to see them, and eventually leaves with help.",
+    "Confinement protects her from capture while injuring her body and separating her from the people she can hear below."
+  ],
+  "facets": {
+    "emotionalCore": "She longs to speak to her children while confinement, fear of capture, and growing bodily pain wear her down.",
+    "decisionShape": "She makes an opening to see her children and later accepts a dangerous departure arranged by a trusted friend.",
+    "triggerEvent": "Enslavement and pursuit force her into concealment in a small space near her children.",
+    "agencyState": "She has small acts within confinement but depends on relatives, a trusted friend, and a vessel captain to leave."
+  },
+  "biographicalFacts": "In 1835–1842, Harriet Jacobs, an enslaved mother, spent nearly seven years hidden beneath the roof of her grandmother's house. Her age range of twenty to twenty-nine reflects uncertain birth chronology. Relatives brought food through concealed access. She could not stand upright; the unlit, poorly ventilated space left her cramped and in physical pain. She heard her children below, cried and wanted to see or speak to them. Using a boring tool, she made an opening for air and watched her children through it. Rain later drenched her clothes and bedding, and fear of discovery complicated repairs. She gave up the first arranged escape when her family feared danger after a fugitive killing, then left with relatives' and a friend's assistance. The vessel's captain warned her and another escaping woman to stay below when other ships were visible. Near departure, she feared being returned. They reached a northern city, but Jacobs had left loved ones behind and remained legally enslaved. After landing, racial discrimination barred her from first-class rail cars. Her legal freedom was obtained in 1852.",
+  "themes": [
+    "dispossession",
+    "social_constraint",
+    "quiet_defiance",
+    "solitude",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She lay on a bed beneath a low, sloping roof. She was in her early twenties. She had been hidden in a space at her grandmother’s house. Boards separated it from the room below. Her uncle had made a concealed door connecting the two spaces. The bed had been spread on the floor.\n\nShe could lie on one side without hitting the roof. When she turned, her body struck it. There was not enough room to stand. No light or air came through. Rats and mice ran across the bed. She was weary. She lay down and slept beneath the roof.",
+      "sourceNotes": "Chapter XXI, entry and first sleep. One bed beneath the roof. Concealed door is static background. Approximate early-twenties age uses both marker chronology and Preface; no specific conveyance actor is named."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "Morning came, and she heard her children below. Their voices made her cry. Their voices brought joy and sadness together. She wanted to speak to them. She wanted to look at their faces. She could find no opening in the boards. Not even a crack gave her a glimpse outside.\n\nThe sounds were the only way she knew the night had ended. The space was still dark. She could sit or lie down, but her body stayed cramped. She suffered for air. She found the darkness hard to bear. The roof kept her out of sight of the people pursuing her. It also kept her out of sight of her children. She listened to them from above, unable to see their faces.",
+      "sourceNotes": "Chapter XXI, first morning, child voices, longing, tears and no crack. One morning in the concealed space. No imagined thought, diagnosis, or graphic violence."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "One evening, she used a small tool to bore holes through the wood. She had found it while crawling for exercise. Her head had struck it where her uncle had left it. She had felt around for the side facing the street. She waited for darkness, afraid that daytime work could attract attention. Now she bored holes in rows, one above another.\n\nThen she bored out the wood between the holes. The separate spaces became one small opening. She sat beside it late into the night. A little air floated in. She could sit there and breathe it. The opening faced the street where her children passed.",
+      "sourceNotes": "Chapter XXI, evening boring work through sitting late into the night. The tool is found one day, at an unspecified interval from entry; she waits for that evening. One evening avoids assigning the work to the first morning’s date. Next-morning sightings are excluded from this located response and refer to the morning after the boring work in struggle."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "The next morning, she watched through the opening. First she saw the man pursuing her, and shuddered. Later she heard laughter and saw her children looking up. Years passed with her beneath the roof. The covering began to fail. Her uncle feared repairs could expose her. Rain soaked her clothes and bedding and made her stiff limbs ache.\n\nA trusted friend arranged a passage out. Then news came of another fugitive being killed. Her grandmother begged her to stay. She gave up the passage and offered it to another woman in hiding. Later, a visitor entered while she was downstairs speaking with her grandmother. She crouched behind a barrel, afraid she had been seen. Her family urged her to leave, and her friend arranged another departure.",
+      "sourceNotes": "Chapter XXI first view and chapter XXIX years, roof failure, canceled passage, feared discovery and renewed plan. All compression occurs here. Exact seven-year duration stays in the mapped record rather than becoming a distinctive identifier in prose."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The captain showed her into a small cabin on the vessel. Inside sat the woman who had taken the earlier passage. Her friend stared at her in astonishment. They held each other, and she began to sob. The captain heard her and came to the cabin. He reminded them that noise could put all of them in danger. He told them to stay below whenever another sail was in sight. At other times, they could go on deck.\n\nThey thanked him and promised to follow his directions. Then the women talked quietly by themselves. Her companion described hiding in her mother’s house and fearing discovery. All her companion’s children had been taken from her at an auction. Her companion feared she might never hear from them again. She replied with the story of her own years beneath the roof. The woman listening could scarcely believe it.",
+      "sourceNotes": "Chapter XXX, cabin reunion through quiet exchange about children and concealment. One cabin encounter, with captain precautions and both women’s reported histories. No deck movement or voyage summary enters the turn."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The vessel moved away slowly, with the wind against it. She feared being taken back while the town remained in sight. She also wondered whether the captain might surrender them for money. Her companion said the crew had treated her kindly. The captain’s respectful manner helped reassure her. She went onto the deck and sat in the fresh air. Sunlight and open air were hers to enjoy again.\n\nAs they approached the northern city, the women watched dawn from the deck. Both had tears in their eyes. They thought they were safe, but had left people they loved behind. After landing, a minister and his wife offered food and a place to rest. Travel onward brought racial exclusion and a crowded, unpleasant ride. She had escaped, but had not been legally freed. Her children were not beside her.",
+      "sourceNotes": "Chapter XXX voyage and dawn, XXXI arrival and racial exclusion. Legal-status sentence maps the 1852 context fact so the fold discloses the difference between escape and manumission. The later legal-freedom scene is not dramatized."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Harriet Ann Jacobs.\n\nShe wrote a book about her own life in slavery and the long effort to reach freedom.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need more time to feel ready.",
+      "sourceNotes": "Name and one plain book legacy, exact distance pair, then two authored permissions. No quoted dialogue, invented texture, comparison, or promise."
+    }
+  ],
+  "sources": [
+    "Harriet A. Jacobs, Incidents in the Life of a Slave Girl (1861), preface and chapters XXI, XXIX–XXXI. https://www.gutenberg.org/cache/epub/11030/pg11030-images.html",
+    "North Carolina Department of Natural and Cultural Resources, Harriet Jacobs c.1813–1897 (A-72). https://www.dncr.nc.gov/blog/2023/12/04/harriet-jacobs-c-1813-1897-72"
+  ]
+}

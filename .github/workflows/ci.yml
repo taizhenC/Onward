@@ -32,6 +32,8 @@ jobs:
         run: npm run audit:high
       - name: Verify the native image runtime
         run: npm run check-sharp-runtime
+      - name: Verify Next lint directory glob compatibility
+        run: npm run check-next-lint-glob
       - name: Protect immutable recipe evidence
         if: github.event_name == 'pull_request'
         shell: bash
@@ -96,6 +98,7 @@ jobs:
       - run: npm run check-entry-telemetry
       - run: npm run check-intake-experience
       - run: npm run check-fiction-special
+      - run: npm run check-retellings
       - run: npm run check-core-accessibility
       - run: npm run check-auth-telemetry
       - run: npm run check-flow-failure-telemetry

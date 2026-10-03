@@ -1,0 +1,1093 @@
+{
+  "completedAt": "2026-10-03T00:20:21.501Z",
+  "mode": "existing-draft-update",
+  "verifiedStoryCount": 10,
+  "databaseReadbackMatchesInputs": true,
+  "figureMetadataUnchanged": true,
+  "unrelatedCatalogUnchanged": true,
+  "beforeCounts": {
+    "figures": 60,
+    "stages": 60,
+    "specs": 61
+  },
+  "afterCounts": {
+    "figures": 60,
+    "stages": 60,
+    "specs": 61
+  },
+  "publishedStoriesBefore": 34,
+  "publishedStoriesAfter": 34,
+  "approval": "None; all ten remain draft with empty review metadata",
+  "targets": [
+    {
+      "figureKey": "addams",
+      "storySpecId": "addams:1888-1889-telling-the-plan:v1",
+      "candidateSha256": "7f58b64e1d3c48be8a057e1b30435a4ffc6be37ca2eefae77ffdf1c4c5249e20",
+      "stageSha256": "19f0c4891bfd948c1cac9f08feedb02fe657ed15a723de56405a61acd4dcbbf9",
+      "words": 747,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 86,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.56,
+          "longestSentence": 14,
+          "endingWords": 7
+        },
+        {
+          "role": "dark_moment",
+          "words": 136,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 11.33,
+          "longestSentence": 16,
+          "endingWords": 9
+        },
+        {
+          "role": "response",
+          "words": 93,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.33,
+          "longestSentence": 14,
+          "endingWords": 6
+        },
+        {
+          "role": "struggle",
+          "words": 130,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.83,
+          "longestSentence": 13,
+          "endingWords": 5
+        },
+        {
+          "role": "turning_point",
+          "words": 119,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10.82,
+          "longestSentence": 15,
+          "endingWords": 8
+        },
+        {
+          "role": "became",
+          "words": 129,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.75,
+          "longestSentence": 14,
+          "endingWords": 7
+        },
+        {
+          "role": "bridge",
+          "words": 54,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "endingWords": 7
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "blackwell_e",
+      "storySpecId": "blackwell_e:1847-1849-a-place-to-study:v1",
+      "candidateSha256": "61dac9480f73dd6834c8651b689ebe0434cc2d36779710053073e200aee5bdd2",
+      "stageSha256": "250e8d2849b39f8752ad31a11b2048c43da12ce5fc26d3ae431e045f45911efd",
+      "words": 709,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 109,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.08,
+          "longestSentence": 13,
+          "endingWords": 4
+        },
+        {
+          "role": "dark_moment",
+          "words": 95,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 8.64,
+          "longestSentence": 13,
+          "endingWords": 5
+        },
+        {
+          "role": "response",
+          "words": 84,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.33,
+          "longestSentence": 12,
+          "endingWords": 6
+        },
+        {
+          "role": "struggle",
+          "words": 118,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.83,
+          "longestSentence": 16,
+          "endingWords": 9
+        },
+        {
+          "role": "turning_point",
+          "words": 115,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.58,
+          "longestSentence": 14,
+          "endingWords": 7
+        },
+        {
+          "role": "became",
+          "words": 128,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.67,
+          "longestSentence": 15,
+          "endingWords": 5
+        },
+        {
+          "role": "bridge",
+          "words": 60,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10,
+          "longestSentence": 20,
+          "endingWords": 7
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "darwin",
+      "storySpecId": "darwin:1831-the-refusal-and-the-letter:v1",
+      "candidateSha256": "26707c4dbde4c4f9dcb18cfdfbe3f3ce0aa3730049cc2b4b8e91271f85cf24f4",
+      "stageSha256": "0b9866aed70e86a86ce038a88b050f0aeb3b848e6530ee39c838ecbf1f210dc0",
+      "words": 726,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 88,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.78,
+          "longestSentence": 16,
+          "endingWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "words": 120,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.91,
+          "longestSentence": 15,
+          "endingWords": 11
+        },
+        {
+          "role": "response",
+          "words": 100,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10,
+          "longestSentence": 16,
+          "endingWords": 8
+        },
+        {
+          "role": "struggle",
+          "words": 127,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 11.55,
+          "longestSentence": 17,
+          "endingWords": 7
+        },
+        {
+          "role": "turning_point",
+          "words": 128,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10.67,
+          "longestSentence": 16,
+          "endingWords": 5
+        },
+        {
+          "role": "became",
+          "words": 115,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.45,
+          "longestSentence": 14,
+          "endingWords": 9
+        },
+        {
+          "role": "bridge",
+          "words": 48,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 8,
+          "longestSentence": 11,
+          "endingWords": 8
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "equiano",
+      "storySpecId": "equiano:1766-the-money-and-the-release:v1",
+      "candidateSha256": "f2d63a7dd33de0a889c60f2e87ba4137812ffac4c80b53d447561400338b329c",
+      "stageSha256": "2c5800b61b6d2ce134f0bed8165ee9e2cf72ce0c3a11faf357c9b2c26f5f2144",
+      "words": 714,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 81,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9,
+          "longestSentence": 14,
+          "endingWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "words": 126,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "endingWords": 6
+        },
+        {
+          "role": "response",
+          "words": 90,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 12.86,
+          "longestSentence": 17,
+          "endingWords": 6
+        },
+        {
+          "role": "struggle",
+          "words": 110,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.17,
+          "longestSentence": 15,
+          "endingWords": 7
+        },
+        {
+          "role": "turning_point",
+          "words": 130,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.83,
+          "longestSentence": 15,
+          "endingWords": 12
+        },
+        {
+          "role": "became",
+          "words": 115,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.85,
+          "longestSentence": 12,
+          "endingWords": 7
+        },
+        {
+          "role": "bridge",
+          "words": 62,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.33,
+          "longestSentence": 19,
+          "endingWords": 10
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "grant",
+      "storySpecId": "grant:1858-1861-a-place-in-the-shop:v1",
+      "candidateSha256": "9243aab98e701af974666d4d962aabdc0b19cf4b346935b5c4cf633b704fa758",
+      "stageSha256": "3d7dfe032176623a7cce00b730b56c8f9a4b9d612e4fdf7687bdf861474c8a34",
+      "words": 704,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 87,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 8.7,
+          "longestSentence": 13,
+          "endingWords": 9
+        },
+        {
+          "role": "dark_moment",
+          "words": 112,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 11.2,
+          "longestSentence": 16,
+          "endingWords": 14
+        },
+        {
+          "role": "response",
+          "words": 92,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 11.5,
+          "longestSentence": 15,
+          "endingWords": 10
+        },
+        {
+          "role": "struggle",
+          "words": 123,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 11.18,
+          "longestSentence": 16,
+          "endingWords": 6
+        },
+        {
+          "role": "turning_point",
+          "words": 120,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10,
+          "longestSentence": 16,
+          "endingWords": 8
+        },
+        {
+          "role": "became",
+          "words": 121,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 11,
+          "longestSentence": 15,
+          "endingWords": 10
+        },
+        {
+          "role": "bridge",
+          "words": 49,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 7,
+          "longestSentence": 11,
+          "endingWords": 8
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "jacobs",
+      "storySpecId": "jacobs:1835-1842-concealment-to-escape:v1",
+      "candidateSha256": "515a62f30d6c8d6dac0fe7c02f6a112065f353d24c0fcc69f71b847305fd87ed",
+      "stageSha256": "a8cc1d0240c8a1f78ab0e69b6374a2d9e77eb1d2517b97ddcdbde58c6898940d",
+      "words": 801,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 101,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 7.77,
+          "longestSentence": 11,
+          "endingWords": 8
+        },
+        {
+          "role": "dark_moment",
+          "words": 122,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.13,
+          "longestSentence": 12,
+          "endingWords": 11
+        },
+        {
+          "role": "response",
+          "words": 107,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.92,
+          "longestSentence": 13,
+          "endingWords": 9
+        },
+        {
+          "role": "struggle",
+          "words": 126,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "endingWords": 12
+        },
+        {
+          "role": "turning_point",
+          "words": 146,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.73,
+          "longestSentence": 12,
+          "endingWords": 7
+        },
+        {
+          "role": "became",
+          "words": 138,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.86,
+          "longestSentence": 14,
+          "endingWords": 6
+        },
+        {
+          "role": "bridge",
+          "words": 61,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.17,
+          "longestSentence": 17,
+          "endingWords": 10
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "keller",
+      "storySpecId": "keller:1887-learning-that-things-have-names:v1",
+      "candidateSha256": "d0103c4b4447cfa5c1d1c8dc9e3e74be8146ec0a40399e7cb2f8b91e5054a94a",
+      "stageSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "words": 725,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 92,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.36,
+          "longestSentence": 12,
+          "endingWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "words": 100,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10,
+          "longestSentence": 15,
+          "endingWords": 8
+        },
+        {
+          "role": "response",
+          "words": 107,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.73,
+          "longestSentence": 15,
+          "endingWords": 5
+        },
+        {
+          "role": "struggle",
+          "words": 125,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.62,
+          "longestSentence": 15,
+          "endingWords": 9
+        },
+        {
+          "role": "turning_point",
+          "words": 125,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10.42,
+          "longestSentence": 14,
+          "endingWords": 5
+        },
+        {
+          "role": "became",
+          "words": 120,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.91,
+          "longestSentence": 14,
+          "endingWords": 7
+        },
+        {
+          "role": "bridge",
+          "words": 56,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.33,
+          "longestSentence": 15,
+          "endingWords": 7
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "riis",
+      "storySpecId": "riis:1873-unpaid-work-to-reporting:v1",
+      "candidateSha256": "aa17b49862bdf3bbf994ee02af41c5175c4506584f0e165070759613d38a28b2",
+      "stageSha256": "652ce7834f17917babbc28d135b08630b5c07e98642bbb411f0e449032730ab9",
+      "words": 718,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 111,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.09,
+          "longestSentence": 13,
+          "endingWords": 12
+        },
+        {
+          "role": "dark_moment",
+          "words": 140,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.24,
+          "longestSentence": 13,
+          "endingWords": 8
+        },
+        {
+          "role": "response",
+          "words": 92,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.2,
+          "longestSentence": 13,
+          "endingWords": 5
+        },
+        {
+          "role": "struggle",
+          "words": 126,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.5,
+          "longestSentence": 12,
+          "endingWords": 8
+        },
+        {
+          "role": "turning_point",
+          "words": 57,
+          "paragraphs": 1,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.5,
+          "longestSentence": 13,
+          "endingWords": 9
+        },
+        {
+          "role": "became",
+          "words": 131,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.08,
+          "longestSentence": 14,
+          "endingWords": 10
+        },
+        {
+          "role": "bridge",
+          "words": 61,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.17,
+          "longestSentence": 18,
+          "endingWords": 9
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "seacole",
+      "storySpecId": "seacole:1854-1855-refusal-to-sick-wharf:v1",
+      "candidateSha256": "6775e85d7a9682cc241ffaaaed5e2f5e5c5051c9fdc3f5758f1ec1c0a777b75a",
+      "stageSha256": "a85ff657cd70e8d1f7b33488334238f003600f3ddbdb6631b6573e9277fac5fb",
+      "words": 748,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 95,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.64,
+          "longestSentence": 13,
+          "endingWords": 11
+        },
+        {
+          "role": "dark_moment",
+          "words": 115,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.58,
+          "longestSentence": 15,
+          "endingWords": 4
+        },
+        {
+          "role": "response",
+          "words": 90,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9,
+          "longestSentence": 12,
+          "endingWords": 8
+        },
+        {
+          "role": "struggle",
+          "words": 130,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.67,
+          "longestSentence": 14,
+          "endingWords": 5
+        },
+        {
+          "role": "turning_point",
+          "words": 135,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.44,
+          "longestSentence": 15,
+          "endingWords": 6
+        },
+        {
+          "role": "became",
+          "words": 123,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.25,
+          "longestSentence": 15,
+          "endingWords": 8
+        },
+        {
+          "role": "bridge",
+          "words": 60,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10,
+          "longestSentence": 17,
+          "endingWords": 7
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    },
+    {
+      "figureKey": "washington_b",
+      "storySpecId": "washington_b:1872-reaching-the-classroom:v1",
+      "candidateSha256": "d13fce353183245f5cd8d0feff765c9d2dd2301921011437113e9273f20a2044",
+      "stageSha256": "113c6b0e9519697a5c49c8fb428c2227789b6ec77e9bc5d45d13fefd95e073b0",
+      "words": 710,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 102,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.27,
+          "longestSentence": 15,
+          "endingWords": 5
+        },
+        {
+          "role": "dark_moment",
+          "words": 93,
+          "paragraphs": 2,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.3,
+          "longestSentence": 14,
+          "endingWords": 8
+        },
+        {
+          "role": "response",
+          "words": 99,
+          "paragraphs": 2,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.9,
+          "longestSentence": 14,
+          "endingWords": 6
+        },
+        {
+          "role": "struggle",
+          "words": 115,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.58,
+          "longestSentence": 16,
+          "endingWords": 5
+        },
+        {
+          "role": "turning_point",
+          "words": 127,
+          "paragraphs": 2,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.07,
+          "longestSentence": 13,
+          "endingWords": 4
+        },
+        {
+          "role": "became",
+          "words": 123,
+          "paragraphs": 2,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.25,
+          "longestSentence": 14,
+          "endingWords": 7
+        },
+        {
+          "role": "bridge",
+          "words": 51,
+          "paragraphs": 4,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 8.5,
+          "longestSentence": 12,
+          "endingWords": 6
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "status": "draft"
+    }
+  ]
+}

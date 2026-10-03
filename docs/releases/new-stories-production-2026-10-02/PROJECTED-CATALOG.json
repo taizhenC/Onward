@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "new-ten-projected-catalog-v1",
+  "qualification": "Frozen editorial membership from the writing baseline; not a fresh live production audit.",
+  "capturedAt": "2026-10-02T23:56:14.593Z",
+  "baselineSha256": "ddde4006195c1237236e4ff3ab568f0a6d3c9df484ebdf27978850fed41f5d32",
+  "publishedAtBaseline": [
+    {
+      "figureKey": "allende",
+      "stageId": "1975-1981-exile-to-the-letter"
+    },
+    {
+      "figureKey": "andersen",
+      "stageId": "1822-1827-the-headmasters-school"
+    },
+    {
+      "figureKey": "angelou",
+      "stageId": "1944-1945-teen-mother"
+    },
+    {
+      "figureKey": "anning",
+      "stageId": "1823-1828-the-doubted-sea-dragon"
+    },
+    {
+      "figureKey": "banting",
+      "stageId": "1920-1922-empty-waiting-room"
+    },
+    {
+      "figureKey": "bly",
+      "stageId": "1885-1887-orphan-girl-to-madhouse"
+    },
+    {
+      "figureKey": "bronte_c",
+      "stageId": "1846-1847-two-copies"
+    },
+    {
+      "figureKey": "butler",
+      "stageId": "1974-1975-pre-patternmaster"
+    },
+    {
+      "figureKey": "chandler",
+      "stageId": "1932-1939-fired-to-the-first-novel"
+    },
+    {
+      "figureKey": "charles_r",
+      "stageId": "1945-1948-orphaned-to-the-bus"
+    },
+    {
+      "figureKey": "child",
+      "stageId": "1946-1961-aimless-to-the-book"
+    },
+    {
+      "figureKey": "coleman",
+      "stageId": "1918-1921-no-school-would-take-her"
+    },
+    {
+      "figureKey": "douglass",
+      "stageId": "1838-1841-nyc-to-nantucket"
+    },
+    {
+      "figureKey": "faraday",
+      "stageId": "1812-1815-bottle-washer-and-valet"
+    },
+    {
+      "figureKey": "fitzgerald_e",
+      "stageId": "1932-1934-streets-to-amateur-night"
+    },
+    {
+      "figureKey": "graham",
+      "stageId": "1963-1971-thrust-into-the-chair"
+    },
+    {
+      "figureKey": "hughes",
+      "stageId": "1920-1926-fathers-deal-to-first-book"
+    },
+    {
+      "figureKey": "hurston",
+      "stageId": "1917-1921-sixteen-again"
+    },
+    {
+      "figureKey": "jones",
+      "stageId": "1937-1945-the-silent-years"
+    },
+    {
+      "figureKey": "kovalevskaya",
+      "stageId": "1868-1874-fictitious-marriage-to-doctorate"
+    },
+    {
+      "figureKey": "lewis",
+      "stageId": "1960-1961-a-grief-observed"
+    },
+    {
+      "figureKey": "marshall",
+      "stageId": "1982-1984-drinking-the-proof"
+    },
+    {
+      "figureKey": "muir",
+      "stageId": "1867-1868-the-darkened-room"
+    },
+    {
+      "figureKey": "nightingale",
+      "stageId": "1856-1860-spent"
+    },
+    {
+      "figureKey": "oconnor",
+      "stageId": "1950-1955-lupus-and-the-farm"
+    },
+    {
+      "figureKey": "ramanujan",
+      "stageId": "1908-1913-notebooks-to-the-letter"
+    },
+    {
+      "figureKey": "sanders",
+      "stageId": "1956-broke-at-sixty-five"
+    },
+    {
+      "figureKey": "shelley_m",
+      "stageId": "1818-1823-the-losses"
+    },
+    {
+      "figureKey": "shostakovich",
+      "stageId": "1936-1937-muddle-to-the-fifth"
+    },
+    {
+      "figureKey": "simone",
+      "stageId": "1950-1954-curtis-no-to-the-bar"
+    },
+    {
+      "figureKey": "sullivan_a",
+      "stageId": "1880-1886-almshouse-to-valedictorian"
+    },
+    {
+      "figureKey": "tallchief",
+      "stageId": "1942-1947-the-name-stays"
+    },
+    {
+      "figureKey": "wilson",
+      "stageId": "1934-1935-rock-bottom-to-the-fellowship"
+    },
+    {
+      "figureKey": "yeats",
+      "stageId": "1889-1893-the-no-and-the-poems"
+    }
+  ]
+}

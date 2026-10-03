@@ -1,0 +1,106 @@
+{
+  "completedAt": "2026-10-03T00:14:20.981Z",
+  "storyCount": 1,
+  "approval": "None; mechanical checks and agent reviews do not approve publication",
+  "candidates": [
+    {
+      "figureKey": "seacole",
+      "storySpecId": "seacole:1854-1855-refusal-to-sick-wharf:v1",
+      "candidateSha256": "271479f0cd0ccc7fd9e50ca493d182a9602729f953f106708e3762d6d15beab9",
+      "stageSha256": "c3ad2b2b961cb441f349dd213654da2ea480568fced6a7e7156030353bc903aa",
+      "words": 748,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 95,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.64,
+          "longestSentence": 13,
+          "endingWords": 11
+        },
+        {
+          "role": "dark_moment",
+          "words": 115,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.58,
+          "longestSentence": 15,
+          "endingWords": 4
+        },
+        {
+          "role": "response",
+          "words": 90,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9,
+          "longestSentence": 12,
+          "endingWords": 8
+        },
+        {
+          "role": "struggle",
+          "words": 130,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.67,
+          "longestSentence": 14,
+          "endingWords": 5
+        },
+        {
+          "role": "turning_point",
+          "words": 135,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.44,
+          "longestSentence": 15,
+          "endingWords": 6
+        },
+        {
+          "role": "became",
+          "words": 123,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.25,
+          "longestSentence": 15,
+          "endingWords": 8
+        },
+        {
+          "role": "bridge",
+          "words": 60,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10,
+          "longestSentence": 17,
+          "endingWords": 7
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Final security audit qualification
+
+The final `npm run audit:high` failed on October 2 local time (October 3 UTC). It reports `GHSA-vfj7-8cjw-p6xm` against `braces@3.0.3`, with five high-severity entries along this installed development dependency chain: `eslint-config-next@15.5.25` → `@next/eslint-plugin-next@15.5.25` → `fast-glob@3.3.1` → `micromatch@4.0.8` → `braces@3.0.3`. The exact command result and times are preserved in [VALIDATION.json](VALIDATION.json).
+
+GitHub's [reviewed advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm), updated October 2, identifies versions through 3.0.3 as affected and lists no patched version. The [upstream issue](https://github.com/micromatch/braces/issues/70) describes recursive syntax-tree walkers without a nesting-depth guard. `npm view braces version` and `versions` independently confirmed that 3.0.3 remains the latest published release at this checkpoint. These observations do not establish that Onward exposes user-controlled patterns to this development dependency.
+
+An earlier local audit reported zero vulnerabilities after the two compatible transitive `brace-expansion` patches. The later result is authoritative for this checkpoint; it is recorded as a failure without rewriting that earlier observation. The packages `brace-expansion` and `braces` are distinct. The current lockfile only changes the two previously reviewed compatible `brace-expansion` versions; no unreviewed major dependency change was applied.
+
+The suggested `npm audit fix --force` would downgrade `eslint-config-next` to 14.2.35 while this app uses Next.js 15.5.25. That breaking proposal is not a reviewed release fix. The production release is already held by mandatory matching failures; the security gate adds another unresolved dependency before a future merge. No audit-level change, advisory suppression, incompatible force update or production dependency deployment occurred.

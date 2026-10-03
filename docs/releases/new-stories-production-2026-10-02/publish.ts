@@ -19,13 +19,14 @@ const packet = resolve("docs/releases/new-stories-production-2026-10-02");
 const inputs = resolve("docs/research/new-stories-2026-10-02");
 const writing = resolve("docs/releases/new-stories-written-2026-10-02");
 const writingDatabaseBaselinePath = resolve(inputs, "WRITING-DB-BEFORE-UPDATE.json");
+const approvedProposalHash = "5998bcf03e3e9ae672bd4721e1262e2c6dd992618ac6a9486a53f0b3578d838b";
 // Bound in earlier local publication audits and independently rechecked against
 // the live site's browser bundle in PRODUCTION-TARGET-PROOF.json. Never derive
 // production-target authorization solely from the currently loaded env.
 const projectHost = "mbcqkljfekkxlgittzal.supabase.co";
 const owner = "taizhenC";
 const ownerStatement = "lets push all those story into the production.";
-const specColumns = "story_spec_id,figure_key,stage_id,version,schema_version,status,spec";
+const specColumns = "story_spec_id,figure_key,stage_id,version,schema_version,status,spec,created_at,published_at,retired_at";
 const stageColumns = "figure_key,stage_id,stage_label,age_min,age_max,shape_sentences,facets,biographical_facts,themes,anti_themes,beats,sources,status";
 const sha = (value: string | Buffer) => createHash("sha256").update(value).digest("hex");
 function stable(value: unknown): string {
@@ -49,7 +50,8 @@ function observedAt(path: string): string {
   return existsSync(path) ? readJson<{observedAt: string}>(path).observedAt : new Date().toISOString();
 }
 type SpecRow = { story_spec_id: string; figure_key: string; stage_id: string;
-  version: number; schema_version: string; status: string; spec: StorySpec };
+  version: number; schema_version: string; status: string; spec: StorySpec;
+  created_at?: string; published_at?: string | null; retired_at?: string | null };
 type StageRow = { figure_key: string; stage_id: string; status: string;
   stage_label: string; age_min: number; age_max: number; shape_sentences: string[];
   facets: FigureStageRow["facets"]; biographical_facts: string; themes: string[];
@@ -75,6 +77,10 @@ function draftRow(spec: StorySpec): SpecRow {
   return {story_spec_id: spec.storySpecId, figure_key: spec.figureKey, stage_id: spec.stageId,
     version: spec.version, schema_version: spec.schemaVersion, status: spec.status, spec};
 }
+function coreRow(row: SpecRow): SpecRow {
+  return {story_spec_id: row.story_spec_id, figure_key: row.figure_key, stage_id: row.stage_id,
+    version: row.version, schema_version: row.schema_version, status: row.status, spec: row.spec};
+}
 function stageRow(stage: FigureStageRow, status: string): StageRow {
   return {figure_key: stage.figureKey, stage_id: stage.stageId, stage_label: stage.stageLabel,
     age_min: stage.ageMin, age_max: stage.ageMax, shape_sentences: stage.shapeSentences,
@@ -93,7 +99,7 @@ async function catalog(): Promise<Catalog> {
 }
 function publicationHealth(current: Catalog, expectedCount: number) {
   const published = current.specs.filter(row => row.status === "published");
-  const inspection = inspectPublishedStorySpecRows(published);
+  const inspection = inspectPublishedStorySpecRows(published.map(coreRow));
   assert.equal(inspection.quarantinedRowCount, 0, "Published catalog contains quarantined rows");
   assert.equal(inspection.catalog.size, expectedCount, "Unexpected valid publication count");
   const publishedKeys = new Set(published.map(row => `${row.figure_key}:${row.stage_id}`));
@@ -108,7 +114,11 @@ function allowedState(current: Catalog, target: Target): "draft" | "review" | "p
   assert(["draft", "review", "published"].includes(row.status), `${target.figureKey}: unexpected lifecycle`);
   const status = row.status as "draft" | "review" | "published";
   const expected = status === "draft" ? target.draft : {...target.reviewed, status};
-  same(row, draftRow(expected), `${target.figureKey}: row differs from the frozen authorization`);
+  same(coreRow(row), draftRow(expected), `${target.figureKey}: row differs from the frozen authorization`);
+  assert(typeof row.created_at === "string" && Number.isFinite(Date.parse(row.created_at)), "Missing creation timestamp");
+  assert.equal(row.retired_at, null, "Target carries an unexpected retirement timestamp");
+  if (status === "published") assert(typeof row.published_at === "string" && Number.isFinite(Date.parse(row.published_at)), "Publication timestamp missing");
+  else assert.equal(row.published_at, null, "Unpublished target carries a publication timestamp");
   same(stage, stageRow(target.stage, status === "published" ? "published" : "draft"), `${target.figureKey}: matching content or lifecycle changed`);
   return status;
 }
@@ -121,10 +131,22 @@ function preserve(current: Catalog, baseline: Baseline, targets: Target[]) {
   same(current.stages.filter(row => !stageKeys.has(`${row.figure_key}:${row.stage_id}`)),
     baseline.catalog.stages.filter(row => !stageKeys.has(`${row.figure_key}:${row.stage_id}`)), "An unrelated stage changed since baseline");
   const states = targets.map(target => allowedState(current, target));
+  for (const target of targets) {
+    const original = baseline.catalog.specs.find(row => row.story_spec_id === target.storySpecId)!;
+    const actual = current.specs.find(row => row.story_spec_id === target.storySpecId)!;
+    assert.equal(actual.created_at, original.created_at, "A target creation timestamp changed");
+    if (actual.status === "published") assert(Date.parse(actual.published_at!) >= Date.parse(baseline.capturedAt), "Target was published before the release baseline");
+  }
   publicationHealth(current, baseline.initialPublishedStoryCount + states.filter(state => state === "published").length);
   return states;
 }
 function loadInputs(reviewedAt: string, productionStageDirectory: string): Target[] {
+  const proposalBytes = readFileSync(resolve(packet, "THEME-PROPOSAL.json"));
+  assert.equal(sha(proposalBytes), approvedProposalHash, "The independently reviewed theme proposal changed");
+  const proposal = JSON.parse(proposalBytes.toString("utf8")) as {stages: Array<{figureKey: string; file: string; originalSha256: string; proposedSha256: string}>};
+  assert.equal(proposal.stages.length, 10);
+  const themeReview = readFileSync(resolve(packet, "THEME-REVIEW.md"), "utf8");
+  assert(themeReview.includes(approvedProposalHash), "Theme source review does not pin this proposal");
   const receiptPath = resolve(writing, "DATABASE-RECEIPT.json");
   const receipt = readJson<{verifiedStoryCount: number; targets: Array<{figureKey: string;
     storySpecId: string; candidateSha256: string; stageSha256: string}>}>(receiptPath);
@@ -146,6 +168,10 @@ function loadInputs(reviewedAt: string, productionStageDirectory: string): Targe
       stage.themes.every(theme => THEME_VOCABULARY.includes(theme)), "Invalid or uncontrolled production themes");
     const productionStageSha256 = sha(productionStageBytes);
     const candidateSha256 = sha(bytes); const stageSha256 = sha(stageBytes);
+    const approvedStage = proposal.stages.find(item => item.figureKey === draft.figureKey);
+    assert(approvedStage && approvedStage.file === candidateFile.replace(".candidate.json", ".stage.json") &&
+      approvedStage.originalSha256 === stageSha256 && approvedStage.proposedSha256 === productionStageSha256,
+      `${candidateFile}: production themes differ from the exact independently reviewed proposal`);
     const pin = receipt.targets.find(item => item.figureKey === draft.figureKey);
     assert(pin && pin.storySpecId === draft.storySpecId && pin.candidateSha256 === candidateSha256 && pin.stageSha256 === stageSha256,
       `${candidateFile}: differs from the completed writing receipt`);
@@ -220,7 +246,7 @@ async function main() {
     assert(mode === "--preflight", "Create the read-only preflight first");
     const capturedAt = new Date().toISOString();
     const installedRepository = installedArg ? resolve(installedArg.slice("--installed-repository=".length)) : resolve(".");
-    const productionStageDirectory = stageDirectoryArg ? resolve(stageDirectoryArg.slice("--production-stage-directory=".length)) : inputs;
+    const productionStageDirectory = stageDirectoryArg ? resolve(stageDirectoryArg.slice("--production-stage-directory=".length)) : resolve(packet, "proposed-stages");
     selection = {schemaVersion: "new-ten-owner-publication-v1", capturedAt, projectHost, ownerId: owner,
       ownerStatement, authorizationScope: "Owner publication decision for the exact ten finished stories; one owner occupies the three required schema roles. No independent human review or prior reading assertion is invented.",
       writingReceiptSha256: sha(readFileSync(resolve(writing, "DATABASE-RECEIPT.json"))),
@@ -238,7 +264,7 @@ async function main() {
     const writingBaseline = readJson<Catalog>(writingDatabaseBaselinePath);
     const priorPublications = writingBaseline.specs.filter(row => row.status === "published");
     assert.equal(priorPublications.length, 34, "The writing baseline must identify the original 34 publications");
-    same(before.specs.filter(row => row.status === "published"), priorPublications, "Original 34 publications changed before publication preflight");
+    same(before.specs.filter(row => row.status === "published").map(coreRow), priorPublications.map(coreRow), "Original 34 publications changed before publication preflight");
     const priorStageKeys = new Set(priorPublications.map(row => `${row.figure_key}:${row.stage_id}`));
     same(before.stages.filter(row => priorStageKeys.has(`${row.figure_key}:${row.stage_id}`)),
       writingBaseline.stages.filter(row => priorStageKeys.has(`${row.figure_key}:${row.stage_id}`)), "An original published stage changed before preflight");
@@ -267,7 +293,8 @@ async function main() {
     const current = await catalog(); preserve(current, baseline, selection.targets);
     let state = allowedState(current, target);
     if (state === "draft") {
-      const before = await readTarget(target); same(before, draftRow(target.draft), `${target.figureKey}: concurrent draft change`);
+      const before = await readTarget(target); same(coreRow(before), draftRow(target.draft), `${target.figureKey}: concurrent draft change`);
+      same(before, current.specs.find(row => row.story_spec_id === target.storySpecId), `${target.figureKey}: concurrent lifecycle-metadata change`);
       // The established authoring transition is serialized by the operator's
       // editorial window, with exact immediate pre/post readbacks. The compact
       // predicates also guard empty review and every canonical passage. This is
@@ -284,12 +311,14 @@ async function main() {
     const reviewedRow = draftRow(target.reviewed);
     const reviewedReceiptPath = resolve(packet, `REVIEWED-${target.figureKey}.json`);
     if (state === "review") {
-      const actual = await readTarget(target); same(actual, reviewedRow, `${target.figureKey}: review read-back differs`);
-      assert(parseStorySpecRow(actual, "review"), "Review-state integrity failed");
+      const actual = await readTarget(target); same(coreRow(actual), reviewedRow, `${target.figureKey}: review read-back differs`);
+      const original = baseline.catalog.specs.find(row => row.story_spec_id === target.storySpecId)!;
+      same({...actual, status: original.status, spec: original.spec}, original, "Review transition changed lifecycle timestamps");
+      assert(parseStorySpecRow(coreRow(actual), "review"), "Review-state integrity failed");
       saveOnce(reviewedReceiptPath, {observedAt: observedAt(reviewedReceiptPath), selectionSha256, baselineSha256, gateSha256, row: actual});
       const receipt = readJson<{selectionSha256: string; baselineSha256: string; gateSha256: string; row: SpecRow}>(reviewedReceiptPath);
       assert.equal(receipt.selectionSha256, selectionSha256); assert.equal(receipt.baselineSha256, baselineSha256); assert.equal(receipt.gateSha256, gateSha256);
-      same(receipt.row, reviewedRow, "Receipt-bound reviewed document changed");
+      same(coreRow(receipt.row), reviewedRow, "Receipt-bound reviewed document changed");
       same(await readTarget(target), receipt.row, `${target.figureKey}: review changed before publication`);
       const result = await getSupabase().rpc("promote_story_spec_v2", {p_story_spec_id: target.storySpecId, p_expected_review_spec: receipt.row.spec});
       if (result.error) throw new Error(`Publication failed for ${target.figureKey} (${result.error.code}); rerun only the same pinned inputs after audit`);
@@ -297,11 +326,11 @@ async function main() {
       assert(existsSync(reviewedReceiptPath), `${target.figureKey}: published row has no archived review receipt`);
       const receipt = readJson<{selectionSha256: string; baselineSha256: string; gateSha256: string; row: SpecRow}>(reviewedReceiptPath);
       assert.equal(receipt.selectionSha256, selectionSha256); assert.equal(receipt.baselineSha256, baselineSha256); assert.equal(receipt.gateSha256, gateSha256);
-      same(receipt.row, reviewedRow, "Archived review document differs");
+      same(coreRow(receipt.row), reviewedRow, "Archived review document differs");
     }
     const after = await catalog(); preserve(after, baseline, selection.targets); assert.equal(allowedState(after, target), "published");
     const actual = after.specs.find(row => row.story_spec_id === target.storySpecId)!;
-    assert(parseStorySpecRow(actual, "published"), "Published read-back integrity failed");
+    assert(parseStorySpecRow(coreRow(actual), "published"), "Published read-back integrity failed");
     const publishedReceiptPath = resolve(packet, `PUBLISHED-${target.figureKey}.json`);
     saveOnce(publishedReceiptPath, {observedAt: observedAt(publishedReceiptPath), selectionSha256, baselineSha256, gateSha256,
       reviewedReceiptSha256: sha(readFileSync(reviewedReceiptPath)), row: actual,

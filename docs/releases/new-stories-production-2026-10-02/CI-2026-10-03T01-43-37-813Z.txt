@@ -1,0 +1,4120 @@
+Local mirror of the production main CI workflow; hermetic stub providers.
+
+audit:high
+
+> onward@0.1.0 audit:high
+> npm audit --audit-level=high
+
+# npm audit report
+
+braces  *
+Severity: high
+braces vulnerable to stack-exhaustion denial of service through deeply nested patterns - https://github.com/advisories/GHSA-vfj7-8cjw-p6xm
+fix available via `npm audit fix --force`
+Will install eslint-config-next@14.2.35, which is a breaking change
+node_modules/braces
+  micromatch  >=0.2.0
+  Depends on vulnerable versions of braces
+  node_modules/micromatch
+    fast-glob  *
+    Depends on vulnerable versions of micromatch
+    node_modules/fast-glob
+      @next/eslint-plugin-next  >=14.3.0-canary.0
+      Depends on vulnerable versions of fast-glob
+      node_modules/@next/eslint-plugin-next
+        eslint-config-next  >=14.3.0-canary.0
+        Depends on vulnerable versions of @next/eslint-plugin-next
+        node_modules/eslint-config-next
+
+5 high severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+check-sharp-runtime
+
+> onward@0.1.0 check-sharp-runtime
+> node scripts/check-sharp-runtime.mjs
+
+PASS sharp runtime probe (sharp 0.35.4, libvips 8.18.6)
+
+lint
+
+> onward@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+typecheck
+
+> onward@0.1.0 typecheck
+> tsc --noEmit
+
+
+check-facet-signal
+
+> onward@0.1.0 check-facet-signal
+> tsx scripts/check-facet-signal.ts
+
+Onward FacetSignal contract
+===========================
+PASS 865 deterministic assertions
+PASS strict signal rejection and lane-local projection fallback
+PASS byte-preserving raw-query fallback and deep freezing
+PASS sensitive invalid output remains silent
+
+check-facet-weighting
+
+> onward@0.1.0 check-facet-weighting
+> tsx scripts/check-facet-weighting.ts
+
+Onward facet-weighting invariants
+=================================
+PASS bounds are feasible and BASE_WEIGHTS is a fixed point
+PASS normalization lands in-bounds with sum exactly 1 for arbitrary input
+PASS blending is deterministic, passive at λ=0/uniform, and λ-bounded per lane
+
+check-recipe-manifest-v2
+
+> onward@0.1.0 check-recipe-manifest-v2
+> tsx scripts/check-recipe-manifest-v2.ts
+
+Story recipe manifest v2 contract: PASS
+  historical v1 hashes remain exact; exports mirror live selection
+  strict closed-template v2 parsing and deep freezing are locked
+  exact tagger plans are derivable without provider authority
+  runtime and eval reject v2 until execution support is installed
+
+check-facet-tagger-provider
+
+> onward@0.1.0 check-facet-tagger-provider
+> tsx scripts/check-facet-tagger-provider.ts
+
+Onward facet-tagger provider boundary
+=====================================
+PASS exact reviewed prompt and IDs-only provider surface
+PASS one-shot 3s timeout with bounded response allocation
+PASS provider and validation failures collapse silently to null
+PASS production matching remains disconnected from the facade
+
+check-recipe-governance
+
+> onward@0.1.0 check-recipe-governance
+> tsx scripts/check-recipe-governance.ts
+
+  owner exception tamper checks: PASS (9 negative cases; ordinary passing-evidence rule preserved)
+Recipe governance: PASS
+  primary=keyword-rerank-figure-library-50-2026-07-02 rollback=keyword-rerank-figure-library-50-2026-07-02
+  evidence=7 shadow=1 decisions=1 selected=retain_baseline
+  figure-library releases=2 installed=bb27964f0d53
+  synthetic/legacy evidence is retained for audit but cannot authorize promotion
+  owner-authorized content exception: recorded real matching trust gate FAIL; recorded development dependency audit FAIL
+
+check-prompt-releases
+
+> onward@0.1.0 check-prompt-releases
+> tsx scripts/check-prompt-releases.ts
+
+Prompt release check passed (rerank=rerank-prompt-v1-2026-07; story=opening-copy-prompt-v1-2026-07; executableStoryReleases=2; facetTagger=facet-tagger-prompt-v1-2026-07).
+
+check-opening-copy-policy
+
+> onward@0.1.0 check-opening-copy-policy
+> tsx scripts/check-opening-copy-policy.ts
+
+Opening-copy policy check passed (prompt=opening-copy-prompt-v1-2026-07).
+
+check-personalized-preface
+
+> onward@0.1.0 check-personalized-preface
+> tsx scripts/check-personalized-preface.ts
+
+Personalized preface check passed (27 pressure/distance cells, 216 server-owned combinations; bounded provider and artifact fallbacks verified).
+
+check-recipe-registry
+
+> onward@0.1.0 check-recipe-registry
+> tsx scripts/check-recipe-registry.ts
+
+PASS story recipe registry seed matches canonical manifest hash
+PASS registry is append-only, default-deny, and promotion-guarded
+PASS sessions require immutable exact promoted recipe identities
+PASS telemetry/recovery/rollup recipe IDs use the registry allowlist
+PASS initial and alternate wrappers preserve non-recipe semantics
+PASS static negative tamper matrix rejects recipe drift and extras
+
+check-recipe-registry-v2
+
+> onward@0.1.0 check-recipe-registry-v2
+> tsx scripts/check-recipe-registry-v2.ts
+
+Story recipe registry v2 identity: PASS
+  v1 rows remain null/null; v2 rows require the exact nested identity
+  insert-only v2 registration is migration-owner-only and replay-safe
+  persisted recipes accept v2 identity while promotion execution stays blocked
+
+check-recipe-deployment
+
+> onward@0.1.0 check-recipe-deployment
+> tsx scripts/check-recipe-deployment.ts
+
+Recipe deployment check passed (keyword-rerank-figure-library-50-2026-07-02; compatible rollback is one selector change).
+
+check-recipe-failure-boundary
+
+> onward@0.1.0 check-recipe-failure-boundary
+> node --conditions=react-server --import tsx scripts/check-recipe-failure-boundary.ts
+
+Recipe failure boundary: PASS
+
+check-figure
+
+> onward@0.1.0 check-figure
+> tsx scripts/check-figure.ts
+
+Onward figure validator
+=======================
+
+[1/60] OK    douglass / 1838-1841-nyc-to-nantucket
+[2/60] OK    butler / 1974-1975-pre-patternmaster
+[3/60] OK    lee / 1929-1931-harvard-pivot
+[4/60] OK    rogers / 1936-1941-latrobe-childhood
+[5/60] OK    child / 1946-1961-aimless-to-the-book
+[6/60] OK    lewis / 1960-1961-a-grief-observed
+[7/60] OK    jones / 1937-1945-the-silent-years
+[8/60] OK    rudolph / 1945-1953-the-brace-years
+[9/60] OK    angelou / 1944-1945-teen-mother
+[10/60] OK    rachmaninoff / 1897-1901-after-the-first-symphony
+[11/60] OK    oconnor / 1950-1955-lupus-and-the-farm
+[12/60] OK    marshall / 1982-1984-drinking-the-proof
+[13/60] OK    allende / 1975-1981-exile-to-the-letter
+[14/60] OK    wilson / 1934-1935-rock-bottom-to-the-fellowship
+[15/60] OK    wang / 1987-1990-passed-over-to-the-pivot
+[16/60] OK    chandler / 1932-1939-fired-to-the-first-novel
+[17/60] OK    graham / 1963-1971-thrust-into-the-chair
+[18/60] OK    mcclintock / 1951-1960s-dismissed-and-right
+[19/60] OK    rustin / 1963-the-man-in-the-back
+[20/60] OK    sanders / 1956-broke-at-sixty-five
+[21/60] OK    berlin_i / 1901-1907-bowery-to-first-song
+[22/60] OK    charles_r / 1945-1948-orphaned-to-the-bus
+[23/60] OK    sullivan_a / 1880-1886-almshouse-to-valedictorian
+[24/60] OK    fitzgerald_e / 1932-1934-streets-to-amateur-night
+[25/60] OK    poitier / 1943-1945-dishwasher-to-second-audition
+[26/60] OK    simone / 1950-1954-curtis-no-to-the-bar
+[27/60] OK    andersen / 1822-1827-the-headmasters-school
+[28/60] OK    tallchief / 1942-1947-the-name-stays
+[29/60] OK    lindgren / 1926-1929-the-secret-son
+[30/60] OK    lewis_e / 1862-1866-accused-acquitted-expelled
+[31/60] OK    kovalevskaya / 1868-1874-fictitious-marriage-to-doctorate
+[32/60] OK    hughes / 1920-1926-fathers-deal-to-first-book
+[33/60] OK    shelley_m / 1818-1823-the-losses
+[34/60] OK    bly / 1885-1887-orphan-girl-to-madhouse
+[35/60] OK    faraday / 1812-1815-bottle-washer-and-valet
+[36/60] OK    carver / 1885-1891-turned-away-to-the-sod-house
+[37/60] OK    ramanujan / 1908-1913-notebooks-to-the-letter
+[38/60] OK    anning / 1823-1828-the-doubted-sea-dragon
+[39/60] OK    owens / 1936-1940-after-the-gold
+[40/60] OK    yeats / 1889-1893-the-no-and-the-poems
+[41/60] OK    coleman / 1918-1921-no-school-would-take-her
+[42/60] OK    lamarr / 1940-1942-the-shelved-invention
+[43/60] OK    hurston / 1917-1921-sixteen-again
+[44/60] OK    muir / 1867-1868-the-darkened-room
+[45/60] OK    banting / 1920-1922-empty-waiting-room
+[46/60] OK    bronte_c / 1846-1847-two-copies
+[47/60] OK    shostakovich / 1936-1937-muddle-to-the-fifth
+[48/60] OK    coltrane / 1957-fired-and-clean
+[49/60] OK    christie / 1926-1928-the-year-that-broke
+[50/60] OK    nightingale / 1856-1860-spent
+[51/60] OK    addams / 1888-1889-telling-the-plan
+[52/60] OK    blackwell_e / 1847-1849-a-place-to-study
+[53/60] OK    darwin / 1831-the-refusal-and-the-letter
+[54/60] OK    equiano / 1766-the-money-and-the-release
+[55/60] OK    grant / 1858-1861-a-place-in-the-shop
+[56/60] OK    jacobs / 1835-1842-concealment-to-escape
+[57/60] OK    keller / 1887-learning-that-things-have-names
+[58/60] OK    riis / 1873-unpaid-work-to-reporting
+[59/60] OK    seacole / 1854-1855-refusal-to-sick-wharf
+[60/60] OK    washington_b / 1872-reaching-the-classroom
+
+All 60 figure(s) passed.
+
+check-story-spec
+
+> onward@0.1.0 check-story-spec
+> tsx scripts/check-story-spec.ts
+
+Onward StorySpec validator
+==========================
+PASS 60/60 structurally valid draft specs
+PASS 60/60 unreviewed publish attempts rejected
+PASS negative gates: evidence closure, entity, quote, chronology, locator, and sentence mapping
+PASS untrusted documents require exact nested StorySpec shapes
+PASS immutable publication and compare-and-set authority are migration-gated
+PASS dramatized texture stays grounded, quote-free, entity-free, and off the bridge; reader permission stays bounded
+
+check-wave-2-reviewed
+
+> onward@0.1.0 check-wave-2-reviewed
+> tsx scripts/check-wave-2-reviewed.ts
+
+{
+  "ok": true,
+  "directory": "C:\\Users\\taich\\.codex\\worktrees\\ten-story-production\\Onward\\docs\\releases\\wave-2-reviewed-2026-09-10\\",
+  "checked": 9,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "notice": "Mechanics are not editorial approval. Soft word targets and matching differences are reported, not cleared.",
+  "candidates": [
+    {
+      "file": "andersen-1822-1827-the-headmasters-school-v1.candidate.json",
+      "sha256": "051bf21bc75e38b313d7418a6a3f6bd3f595776373a2c975fe20d5a378d0bb07",
+      "words": 653,
+      "withinSoftTotalTarget": false,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 97,
+          "mean": 8.08,
+          "longest": 13,
+          "last": 5,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "dark_moment",
+          "words": 60,
+          "mean": 7.5,
+          "longest": 11,
+          "last": 8,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 129,
+          "mean": 9.21,
+          "longest": 12,
+          "last": 8,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "struggle",
+          "words": 106,
+          "mean": 9.64,
+          "longest": 14,
+          "last": 9,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "turning_point",
+          "words": 71,
+          "mean": 7.89,
+          "longest": 12,
+          "last": 4,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 128,
+          "mean": 9.85,
+          "longest": 12,
+          "last": 7,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "bridge",
+          "words": 62,
+          "mean": 10.33,
+          "longest": 19,
+          "last": 6,
+          "withinSoftWordTarget": true
+        }
+      ]
+    },
+    {
+      "file": "banting-1920-1922-empty-waiting-room-v1.candidate.json",
+      "sha256": "259cfe33e88bc95464d1867ac0813ffb1cd31ed54ef6702f099b9c6aff72b52a",
+      "words": 700,
+      "withinSoftTotalTarget": true,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": false,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 90,
+          "mean": 11.25,
+          "longest": 16,
+          "last": 10,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "dark_moment",
+          "words": 100,
+          "mean": 9.09,
+          "longest": 12,
+          "last": 11,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 102,
+          "mean": 11.33,
+          "longest": 18,
+          "last": 10,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "struggle",
+          "words": 131,
+          "mean": 9.36,
+          "longest": 16,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "turning_point",
+          "words": 96,
+          "mean": 9.6,
+          "longest": 15,
+          "last": 7,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 120,
+          "mean": 9.23,
+          "longest": 16,
+          "last": 5,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "bridge",
+          "words": 61,
+          "mean": 10.17,
+          "longest": 18,
+          "last": 6,
+          "withinSoftWordTarget": true
+        }
+      ]
+    },
+    {
+      "file": "berlin_i-1901-1907-bowery-to-first-song-v1.candidate.json",
+      "sha256": "35a6bc5924c934c544f0eb3028aa6aa7585152f2aed3cce53c8b01d7bc3ba48f",
+      "words": 451,
+      "withinSoftTotalTarget": false,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 79,
+          "mean": 8.78,
+          "longest": 13,
+          "last": 12,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "dark_moment",
+          "words": 71,
+          "mean": 8.88,
+          "longest": 14,
+          "last": 8,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 51,
+          "mean": 8.5,
+          "longest": 11,
+          "last": 6,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "struggle",
+          "words": 77,
+          "mean": 9.63,
+          "longest": 13,
+          "last": 11,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "turning_point",
+          "words": 51,
+          "mean": 7.29,
+          "longest": 11,
+          "last": 7,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 68,
+          "mean": 9.71,
+          "longest": 14,
+          "last": 5,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "bridge",
+          "words": 54,
+          "mean": 9,
+          "longest": 18,
+          "last": 7,
+          "withinSoftWordTarget": false
+        }
+      ]
+    },
+    {
+      "file": "bronte_c-1846-1847-two-copies-v1.candidate.json",
+      "sha256": "8993d886438a706386a3754ef6391fe12b7eec1e55b6d5e4a69160b425679e1f",
+      "words": 704,
+      "withinSoftTotalTarget": true,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 125,
+          "mean": 8.93,
+          "longest": 12,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "dark_moment",
+          "words": 101,
+          "mean": 8.42,
+          "longest": 12,
+          "last": 11,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 96,
+          "mean": 8.73,
+          "longest": 12,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "struggle",
+          "words": 153,
+          "mean": 9,
+          "longest": 12,
+          "last": 8,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "turning_point",
+          "words": 74,
+          "mean": 7.4,
+          "longest": 13,
+          "last": 10,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 109,
+          "mean": 9.08,
+          "longest": 14,
+          "last": 5,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "bridge",
+          "words": 46,
+          "mean": 7.67,
+          "longest": 13,
+          "last": 8,
+          "withinSoftWordTarget": false
+        }
+      ]
+    },
+    {
+      "file": "butler-1974-1975-pre-patternmaster-v1.candidate.json",
+      "sha256": "ef22c914d9ae0ea928fb4b6382eb7c55d0abaaf09fbde4c669e8cd23ee8b0f51",
+      "words": 502,
+      "withinSoftTotalTarget": false,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 61,
+          "mean": 7.63,
+          "longest": 17,
+          "last": 5,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "dark_moment",
+          "words": 69,
+          "mean": 9.86,
+          "longest": 16,
+          "last": 6,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 80,
+          "mean": 8.89,
+          "longest": 14,
+          "last": 4,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "struggle",
+          "words": 104,
+          "mean": 8.67,
+          "longest": 14,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "turning_point",
+          "words": 50,
+          "mean": 8.33,
+          "longest": 11,
+          "last": 6,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 97,
+          "mean": 8.08,
+          "longest": 12,
+          "last": 6,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "bridge",
+          "words": 41,
+          "mean": 6.83,
+          "longest": 11,
+          "last": 5,
+          "withinSoftWordTarget": false
+        }
+      ]
+    },
+    {
+      "file": "carver-1885-1891-turned-away-to-the-sod-house-v1.candidate.json",
+      "sha256": "69336be7fd6630f4680264012caf2224be95779628200230bb0a1ddbea27943c",
+      "words": 527,
+      "withinSoftTotalTarget": false,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 68,
+          "mean": 7.56,
+          "longest": 12,
+          "last": 7,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "dark_moment",
+          "words": 76,
+          "mean": 9.5,
+          "longest": 15,
+          "last": 3,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 29,
+          "mean": 7.25,
+          "longest": 11,
+          "last": 5,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "struggle",
+          "words": 144,
+          "mean": 9,
+          "longest": 13,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "turning_point",
+          "words": 42,
+          "mean": 7,
+          "longest": 12,
+          "last": 8,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 118,
+          "mean": 9.83,
+          "longest": 13,
+          "last": 7,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "bridge",
+          "words": 50,
+          "mean": 8.33,
+          "longest": 12,
+          "last": 6,
+          "withinSoftWordTarget": false
+        }
+      ]
+    },
+    {
+      "file": "charles_r-1945-1948-orphaned-to-the-bus-v1.candidate.json",
+      "sha256": "dcad2fe377e3c6df2e6abbc0468b654eb3378ffbb01f66d6db4683a8785349e2",
+      "words": 683,
+      "withinSoftTotalTarget": false,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 104,
+          "mean": 8.67,
+          "longest": 15,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "dark_moment",
+          "words": 106,
+          "mean": 9.64,
+          "longest": 13,
+          "last": 4,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 98,
+          "mean": 9.8,
+          "longest": 16,
+          "last": 8,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "struggle",
+          "words": 111,
+          "mean": 10.09,
+          "longest": 15,
+          "last": 8,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "turning_point",
+          "words": 84,
+          "mean": 7.64,
+          "longest": 11,
+          "last": 6,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 119,
+          "mean": 10.82,
+          "longest": 19,
+          "last": 9,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "bridge",
+          "words": 61,
+          "mean": 10.17,
+          "longest": 16,
+          "last": 9,
+          "withinSoftWordTarget": true
+        }
+      ]
+    },
+    {
+      "file": "child-1946-1961-aimless-to-the-book-v1.candidate.json",
+      "sha256": "10838ea0cb64e1ab679d74d571ce69bb0ed90c87f9ae5a20b9ccc871625b205c",
+      "words": 771,
+      "withinSoftTotalTarget": true,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 98,
+          "mean": 8.91,
+          "longest": 15,
+          "last": 7,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "dark_moment",
+          "words": 122,
+          "mean": 10.17,
+          "longest": 17,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "response",
+          "words": 103,
+          "mean": 10.3,
+          "longest": 16,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "struggle",
+          "words": 113,
+          "mean": 10.27,
+          "longest": 23,
+          "last": 5,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "turning_point",
+          "words": 134,
+          "mean": 9.57,
+          "longest": 18,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "became",
+          "words": 140,
+          "mean": 10.77,
+          "longest": 15,
+          "last": 11,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "bridge",
+          "words": 61,
+          "mean": 10.17,
+          "longest": 17,
+          "last": 7,
+          "withinSoftWordTarget": true
+        }
+      ]
+    },
+    {
+      "file": "christie-1926-1928-the-year-that-broke-v1.candidate.json",
+      "sha256": "18630b8f127981d334582819dccf55b9b698199cb63100e75660075c6086a1b4",
+      "words": 668,
+      "withinSoftTotalTarget": false,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 87,
+          "mean": 8.7,
+          "longest": 15,
+          "last": 4,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "dark_moment",
+          "words": 83,
+          "mean": 9.22,
+          "longest": 14,
+          "last": 5,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "response",
+          "words": 92,
+          "mean": 8.36,
+          "longest": 12,
+          "last": 5,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "struggle",
+          "words": 108,
+          "mean": 9.82,
+          "longest": 19,
+          "last": 8,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "turning_point",
+          "words": 101,
+          "mean": 10.1,
+          "longest": 17,
+          "last": 9,
+          "withinSoftWordTarget": false
+        },
+        {
+          "role": "became",
+          "words": 137,
+          "mean": 9.79,
+          "longest": 17,
+          "last": 6,
+          "withinSoftWordTarget": true
+        },
+        {
+          "role": "bridge",
+          "words": 60,
+          "mean": 10,
+          "longest": 17,
+          "last": 8,
+          "withinSoftWordTarget": true
+        }
+      ]
+    }
+  ]
+}
+
+check-story-spec-migration
+
+> onward@0.1.0 check-story-spec-migration
+> tsx scripts/check-story-spec-migration.ts
+
+Onward StorySpec migration
+==========================
+PASS exact-snapshot promotion, stale rejection, and retirement
+PASS pre-cutover v5 replay markers are one-way and read-only
+PASS inheritance and partition publication planes fail closed
+PASS table rewrite hooks fail closed before and after cutover
+PASS generated-column publication hooks fail closed
+PASS exact publication columns, constraints, and indexes fail closed
+PASS direct service-role publication and retirement are blocked
+PASS hostile table, column, and every lifecycle-function ACL is removed
+PASS figure-stage trigger inheritance is closed before and after cutover
+PASS database-owner and service-role membership graphs stay fail-closed
+PASS identity, owner, overload, trigger, full-index, and ACL drift fail closed
+PASS missing or forged stage identity rolls terminal writes back
+PASS cutover and live health keep stage visibility aligned
+PASS legacy publication and unsafe schema cutovers roll back atomically
+
+check-story-artifact
+
+> onward@0.1.0 check-story-artifact
+> tsx scripts/check-story-artifact.ts
+
+Onward StoryArtifact validator
+==============================
+PASS 60/60 complete artifacts validated
+PASS 60/60 disclosure-exclusion checks
+PASS 60/60 tamper attempts rejected
+PASS generated opening privacy and tone rejections use closed reason enums
+PASS static migration shape includes RPC-only immutable/bound persistence
+PASS owned legacy playback remains readable outside the public draft catalog
+
+check-derived-output-retention
+
+> onward@0.1.0 check-derived-output-retention
+> tsx scripts/check-derived-output-retention.ts
+
+Onward derived-output retention contract
+========================================
+PASS 7 closed classes and 21 classified surfaces
+PASS 6 provider exchanges have registered surfaces, bound endpoints, and fixed call owners
+PASS 23 application-owned tables are exhaustively classified
+PASS 35 sensitive-table columns match migration history and live catalog proof
+PASS durable labels have a session-first rollout, current-only inserts, immutability, and a closed live schema gate
+PASS 5 opaque output kinds reject forged tokens and use AST-enumerated literal consumers
+PASS every production fetch call, alias, and property reference is enumerated
+PASS raw provider transport errors are reduced without a cause
+PASS story prose and private errors are marked no-store
+PASS save and privacy copy state both derived-output lifecycles
+
+check-story-quality-benchmark
+
+> onward@0.1.0 check-story-quality-benchmark
+> tsx scripts/check-story-quality-benchmark.ts
+
+Story-quality benchmark contract: PASS (79 assertions)
+
+check-story-quality-immutability-self-test
+
+> onward@0.1.0 check-story-quality-immutability-self-test
+> tsx scripts/check-story-quality-immutability.ts --self-test
+
+Story-quality immutability contract self-test passed.
+
+check-source-transparency
+
+> onward@0.1.0 check-source-transparency
+> tsx scripts/check-source-transparency.ts
+
+Onward source transparency validator
+====================================
+PASS published rationale, StorySpec identity, evidence, sources, and quote traceability
+PASS 9/9 controlled rationales exclude disclosure data
+PASS strict v5, one-way marked mixed-v5, and immutable v1-v4 replay boundaries
+PASS owner-scoped bounded reports, including marked legacy facts, are private and idempotent
+PASS migration, API, and accessible end-of-story surface contracts
+PASS dramatized texture is projected sentence-by-sentence, labeled, rendered, and tamper-checked
+
+check-resonance-feedback
+
+> onward@0.1.0 check-resonance-feedback
+> tsx scripts/check-resonance-feedback.ts
+
+Onward resonance feedback validator
+===================================
+PASS closed parser covers 7/7 miss reasons
+PASS account-free memory owner and durable completion gates
+PASS concurrent retries are idempotent and conflicting answers do not double-count
+PASS bounded feedback stores no disclosure, story prose, or historical fact report
+PASS default-deny retention migration and accessible end-state UI contracts
+
+check-try-another
+
+> onward@0.1.0 check-try-another
+> tsx scripts/check-try-another.ts
+
+Onward one-use alternate story validator
+========================================
+PASS exact capability request contains no disclosure or controls
+PASS original context is reused once without resetting retention
+PASS exact prior stage and original boundaries remain hard exclusions
+PASS concurrent clicks converge on one partial alternate artifact
+PASS empty/low coverage stops honestly; operational failures retry twice
+PASS live second leases hydrate before exhaustion; claim TTL is start-by
+PASS no public rate unit, alternate chain, or sensitive flow payload
+PASS internal alternate cleanup preserves root telemetry; owner deletion is separately gated
+
+check-telemetry
+
+> onward@0.1.0 check-telemetry
+> tsx scripts/check-telemetry.ts
+
+Telemetry contract OK: 22 exact product events, closed operational attempts, forbidden-field rejection, reduction, retention, retry/rotation, metric-unit, and SQL registry/privacy checks
+
+check-telemetry-lifecycle
+
+> onward@0.1.0 check-telemetry-lifecycle
+> tsx scripts/check-telemetry-lifecycle.ts
+
+Telemetry lifecycle OK: signed root ownership, semantic idempotency, typed outbox leases, privacy cascades, and crisis-first routing
+
+check-telemetry-producers
+
+> onward@0.1.0 check-telemetry-producers
+> tsx scripts/check-telemetry-producers.ts
+
+Telemetry producers OK: closed mappings, singleton intake/match/clarification/artifact milestones, unlinkable limiter denial, and privacy-safe rows
+
+check-story-progress-telemetry
+
+> onward@0.1.0 check-story-progress-telemetry
+> tsx scripts/check-story-progress-telemetry.ts
+
+Onward story-progress telemetry validator
+===========================================
+PASS every persisted initial passage maps to one zero-based ordinal
+PASS alternate passages share the root flow with alternate story role
+PASS completion is emitted only with the final acknowledged passage
+PASS immediate retries are singleton and restore missing outbox pointers
+PASS expiry-edge captures defer flow activity to the domain transaction
+PASS stale, foreign, and missing progress writes reveal no position oracle
+PASS route, stores, migration 0013, and event payloads keep disclosure private
+
+check-feedback-telemetry
+
+> onward@0.1.0 check-feedback-telemetry
+> tsx scripts/check-feedback-telemetry.ts
+
+Onward resonance-feedback telemetry validator
+================================================
+PASS active-flow feedback and event writes are all-or-nothing
+PASS identical replay restores only missing outbox work
+PASS delivered events stay delivered and divergent answers conflict first
+PASS concurrent feedback converges on one persisted verdict and event
+PASS null, revoked, and incident-disabled flows fabricate no telemetry
+PASS initial and alternate feedback share one root flow with distinct roles
+PASS migration 0014 derives bounded dimensions and preserves feedback privacy
+
+check-alternate-request-telemetry
+
+> onward@0.1.0 check-alternate-request-telemetry
+> tsx scripts/check-alternate-request-telemetry.ts
+
+Onward alternate-request telemetry validator
+=============================================
+PASS capability issue and hydration remain measurement-free
+PASS first durable claim captures one retry-stable request event
+PASS replay restores missing outbox work without requeueing delivery
+PASS capture and semantic conflicts roll back a new claim
+PASS concurrent claims converge on one lease transition and event
+PASS null, revoked, and incident-disabled flows fabricate no event
+PASS never-claimed expiry is not counted as recovery demand
+PASS migration 0015 preserves the closed privacy-safe event shape
+
+check-alternate-resolution-telemetry
+
+> onward@0.1.0 check-alternate-resolution-telemetry
+> tsx scripts/check-alternate-resolution-telemetry.ts
+
+Onward alternate-resolution telemetry validator
+================================================
+PASS ready commits alternate artifact and terminal telemetry atomically
+PASS artifact semantic collision rolls back the new alternate session
+PASS unavailable replay restores one terminal event and outbox pointer
+PASS final operational failure is first-write-wins over later exhaustion
+PASS abandoned final lease resolves as exhausted on the next claim
+PASS post-claim retention expiry commits the expired terminal outcome
+PASS null, revoked, and incident-disabled flows fabricate no terminal row
+PASS alternate eligible/no-eligible match calibration is root-linked
+PASS migration 0016 derives all terminal/artifact dimensions privately
+
+check-entry-telemetry
+
+> onward@0.1.0 check-entry-telemetry
+> tsx scripts/check-entry-telemetry.ts
+
+Onward entry telemetry validator
+================================
+PASS landing click creates one opaque, short-lived /begin handoff
+PASS first intake change captures one first-write-wins viewport bucket
+PASS cross-origin, malformed, forged, and incident-disabled requests stay silent
+PASS routes and UI expose only fixed/closed telemetry dimensions
+
+check-intake-experience
+
+> onward@0.1.0 check-intake-experience
+> tsx scripts/check-intake-experience.ts
+
+Onward guided-intake experience validator
+==========================================
+PASS guidance asks for useful context without adding diagnostic inputs
+PASS exact age and disclosure boundaries produce focused inline errors
+PASS story limits project to one exact optional request shape
+PASS submission copy describes only observable client transitions
+PASS response-loss uncertainty survives later retries and confirmations
+PASS the intake form wires descriptions, errors, focus, and a polite live status
+PASS guidance stays outside request, telemetry, and browser persistence
+PASS the guided-intake contract is required by the pull-request CI gate
+
+check-fiction-special
+
+> onward@0.1.0 check-fiction-special
+> tsx scripts/check-fiction-special.ts
+
+Fiction special: PASS (explicit request, labeled Chinese story, safety, age/content/recovery guards, no Owner Story/provider writes)
+
+check-retellings
+
+> onward@0.1.0 check-retellings
+> tsx scripts/check-retellings.tsx
+
+Retellings: PASS (16 complete stories, prominent disclosures, source links, opt-in, incident pause, unknown-story 404, 9 negative fixtures; no network). Historical matching evidence is unchanged, not newly passed.
+
+check-core-accessibility
+
+> onward@0.1.0 check-core-accessibility
+> tsx scripts/check-core-accessibility.ts
+
+Onward core accessibility validator
+=====================================
+PASS quiet text meets WCAG AA contrast
+PASS landing has stable content and navigable heading landmarks
+PASS reader honors reduced motion without stealing Space scrolling
+
+check-auth-telemetry
+
+> onward@0.1.0 check-auth-telemetry
+> tsx scripts/check-auth-telemetry.ts
+
+Onward story-flow auth telemetry validator
+============================================
+PASS signed HttpOnly challenge is short-lived and flow-bound
+PASS fresh verified anonymous auth captures one event/outbox unit
+PASS replay, concurrency, invalid proof, and owner conflicts stay safe
+PASS crisis, incident switches, and standalone auth surfaces stay silent
+
+check-flow-failure-telemetry
+
+> onward@0.1.0 check-flow-failure-telemetry
+> tsx scripts/check-flow-failure-telemetry.ts
+
+Onward initial composition failure telemetry validator
+========================================================
+PASS one eligible initial preparation failure owns one closed event
+PASS occurrence replay is idempotent and restores its outbox pointer
+PASS raw errors, crisis, expected states, and successful artifacts stay silent
+PASS capture failure preserves the existing temporary-unavailable response
+
+check-telemetry-dispatcher
+
+> onward@0.1.0 check-telemetry-dispatcher
+> tsx scripts/check-telemetry-dispatcher.ts
+
+Telemetry dispatcher OK: default-off ID-only dispatch, atomic first-party daily rollups, private k-suppressed reporting candidate, bounded retry, and closed schema health
+Staging-only proof remains required for real Postgres concurrency, lease recovery, deletion races, RLS grants, and cron execution
+
+check-story-deletion
+
+> onward@0.1.0 check-story-deletion
+> tsx scripts/check-story-deletion.ts
+
+Onward story deletion validator
+================================
+PASS owner-scoped root/alternate content cascades and consumed tombstones
+PASS story deletion preserves account-level Owner Story Save State
+PASS shared raw telemetry retirement, revocation, and unlinkable SLA events
+PASS exact same-origin form, signed CSRF binding, replay, and auth behavior
+PASS bounded enrichment, complete pagination, SQL locks, and grants
+
+check-account-deletion
+
+> onward@0.1.0 check-account-deletion
+> tsx scripts/check-account-deletion.ts
+
+Onward account deletion validator
+=================================
+PASS purpose-bound confirmation, reauth proof, and exact native POST
+PASS account graph, Save State, unbound-flow, recovery, rate-key, and auth cleanup
+PASS availability-first unlinkable account deletion telemetry
+PASS SQL lock order, FK race closure, guest parity, grants, and residual copy
+
+check-owner-story-save
+
+> onward@0.1.0 check-owner-story-save
+> tsx scripts/check-owner-story-save.ts
+
+Onward durable Owner Story Save validator
+=========================================
+PASS exact immutable Save State parser and first-evidence-wins memory seam
+PASS temporary/saved/legacy/integrity-failure presentation matrix
+PASS Auth-bound atomic SQL, legacy honesty, default-deny, and health proof
+PASS account-wide deletion boundary and story-deletion independence
+PASS returning-only sign-in and server-authoritative Save UI
+PASS save/reopen telemetry remains a non-producing contract reservation
+
+check-story-beat-resilience
+
+> onward@0.1.0 check-story-beat-resilience
+> tsx scripts/check-story-beat-resilience.ts
+
+Story beat resilience checks passed.
+
+check-reader-visibility-telemetry
+
+> onward@0.1.0 check-reader-visibility-telemetry
+> tsx scripts/check-reader-visibility-telemetry.ts
+
+Onward reader-visibility telemetry validator
+=============================================
+PASS first content is one first-write-wins flow/role measurement
+PASS passage latency uses the server-derived persisted ordinal
+PASS source opening is singleton across retries and reloads
+PASS missing and foreign stories expose no position oracle
+PASS initial and alternate stories derive role from owned sessions
+PASS null, revoked, and incident-disabled stories remain fully readable
+PASS ephemeral timing and event rows contain no reader or story content
+
+check-story-boundaries
+
+> onward@0.1.0 check-story-boundaries
+> tsx scripts/check-story-boundaries.ts
+
+Onward story-boundary validator
+=================================
+PASS strict optional boundary parsing and closed enums
+PASS reusable native boundary editor and independent radio groups
+PASS intensity/topic eligibility matrix
+PASS prohibited stages cannot re-enter retrieval or composition
+PASS no-eligible and invalid-input paths persist nothing
+PASS crisis resources precede malformed optional boundaries
+
+check-resonance-brief
+
+> onward@0.1.0 check-resonance-brief
+> tsx scripts/check-resonance-brief.ts
+
+Onward ResonanceBrief validator
+================================
+PASS 9/9 closed primary-pressure projections
+PASS strict, deeply frozen sensitive-derived contract
+PASS HMAC echo and named-detail guard without raw-text retention
+PASS prose provider receives only the bounded prompt projection
+
+check-story-composer
+
+> onward@0.1.0 check-story-composer
+> tsx scripts/check-story-composer.ts
+
+Onward hybrid Story Composer validator
+======================================
+PASS first-pass hybrid artifact is complete, exact, and replayable
+PASS invalid plans receive one structured retry and no more
+PASS provider, output, and validator failures return canonical artifacts
+PASS opening, boundary, privacy, and feature-flag preflight
+PASS composition provider receives only closed reduced fields
+PASS draft preview cannot relax a published StorySpec
+
+check-match-recovery
+
+> onward@0.1.0 check-match-recovery
+> tsx scripts/check-match-recovery.ts
+
+Onward match-recovery validator
+===============================
+PASS closed clarification and deterministic disposition matrix
+PASS weak initial and unresolved matches persist nothing
+PASS one closed clarification improves retrieval without storing its search phrase
+PASS accepted adjacent story is explicitly partial and replayable
+PASS recovery credits are single-use, owner-bound, and rate-limit safe
+PASS reader preface exposes the partial-parallel limitation
+
+eval-crisis
+
+> onward@0.1.0 eval-crisis
+> tsx scripts/eval-crisis.ts
+
+Onward crisis safety regression
+================================
+corpus=crisis-v3-2026-09-zh-initial
+regex=v3-2026-09-zh-initial
+critical=49/49
+context/negative triggers=7
+review-only ids=negated-kill,negated-suicidal,past-friend,future-denial,overdose-news,zh-negated-suicide,zh-worried-friend
+resources=6
+Safety gate passed: zero critical false negatives.
+
+smoke
+
+> onward@0.1.0 smoke
+> tsx scripts/smoke.ts
+
+Onward Phase 0 smoke check
+==========================
+
+[1/20] OK    match: rejection feeling at 28 → Butler
+         sessionId=e066083b…
+[2/20] OK    match: escape feeling at 21 → Douglass
+         sessionId=a58c15e8…
+[3/20] OK    match: stuck-in-wrong-life at 52 → Lee
+         sessionId=814e3873…
+[4/20] OK    crisis: no session created
+         resources=6, sessions=3
+[5/20] OK    ownership: foreign/absent user cannot read a session
+         owner reads; foreign and absent users get null
+[6/20] OK    artifact: immutable, private, atomic replay payload
+         artifact=ddf149b2…; tamper/foreign/mutation rejected
+[7/20] OK    playback: pre-artifact session compatibility is explicit
+         missing pointer normalized to null; legacy prose sanitized
+[8/20] OK    progress: explicit acknowledgement is atomic and owner-scoped
+         advanced once; retry idempotent; stale/foreign writes rejected
+[9/20] OK    progress coordinates: unsafe integers are rejected
+         valid=accepted, unsafe beat/chunk=rejected
+[10/20] OK    safety: story kill switch preserves crisis support and persists nothing
+         new story blocked; crisis resources still returned; no session created
+[11/20] OK    recipe: production retrieval is explicit and approved
+         keyword-rerank-figure-library-50-2026-07-02; production behavior is selector-owned
+[12/20] OK    matching: publication eligibility survives age fallback
+         only eligible stage selected through fallback; empty catalog failed closed
+[13/20] OK    toClientOutline strips server-only fields
+         60 outline(s) audited
+[14/20] OK    anti-echo: toRerankCandidate excludes embedded surfaces
+         60 candidate(s) audited
+[15/20] OK    opening copy: eyebrow guard yields one reviewed line or the neutral fallback
+         10 guard case(s) audited
+[16/20] OK    arc shape: 7 linear beats per figure
+         60 figure(s), all 7-beat linear arcs
+[17/20] OK    story privacy: canonical and legacy paths never echo disclosure
+         60 stages clean; legacy placeholder sanitized
+[18/20] OK    chunking: beat text preserved under limit
+         420 beat(s), 1922 chunk(s)
+[19/20] OK    chunking: groups short paragraphs and wraps long ones
+         short=1 chunk, long=3 chunks
+[20/20] OK    rate limit: intake 6 of the hour is refused
+         limit holds, no session created, crisis still bypasses
+
+Crisis regex over-trigger map (informational, not asserted):
+  The Phase 0 regex is intentionally pessimistic. False positives are
+  acceptable; false negatives are not. This is the surface to inspect.
+
+  [FIRES   ] "I don't want to kill myself"
+  [FIRES   ] "I'm not suicidal"
+  [FIRES   ] "my friend was suicidal years ago"
+  [FIRES   ] "I won't hurt myself"
+  [passes  ] "this isn't a crisis"
+  [passes  ] "I want to kill the bug in my code"
+  [passes  ] "I almost died laughing"
+
+All 20 assertion(s) passed.
+
+build
+
+> onward@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.25
+   - Experiments (use with caution):
+     · cpus: 1
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 6.9s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/24) ...
+   Generating static pages (6/24) 
+   Generating static pages (12/24) 
+   Generating static pages (18/24) 
+ ✓ Generating static pages (24/24)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                      Size  First Load JS
+┌ ○ /                                         3.76 kB         149 kB
+├ ○ /_not-found                                 178 B         103 kB
+├ ƒ /account                                  1.58 kB         177 kB
+├ ƒ /account-deleted                            451 B         106 kB
+├ ƒ /account/delete                             451 B         106 kB
+├ ƒ /api/account-delete                         178 B         103 kB
+├ ƒ /api/account-delete/reauth                  178 B         103 kB
+├ ƒ /api/beat                                   178 B         103 kB
+├ ƒ /api/beat/ack                               178 B         103 kB
+├ ƒ /api/historical-concern                     178 B         103 kB
+├ ƒ /api/match                                  178 B         103 kB
+├ ƒ /api/story-delete                           178 B         103 kB
+├ ƒ /api/story-feedback                         178 B         103 kB
+├ ƒ /api/story-feedback/alternate               178 B         103 kB
+├ ƒ /api/story-feedback/alternate/capability    178 B         103 kB
+├ ƒ /api/telemetry/first-content                178 B         103 kB
+├ ƒ /api/telemetry/intake-started               178 B         103 kB
+├ ƒ /api/telemetry/landing-cta                  178 B         103 kB
+├ ƒ /api/telemetry/passage-presented            178 B         103 kB
+├ ƒ /api/telemetry/source-opened                178 B         103 kB
+├ ƒ /auth/confirm                               178 B         103 kB
+├ ƒ /begin                                    10.8 kB         226 kB
+├ ƒ /fiction/niuda-v1                         1.51 kB         108 kB
+├ ○ /icon.png                                     0 B            0 B
+├ ○ /privacy                                    172 B         106 kB
+├ ƒ /retellings                               1.41 kB         107 kB
+├ ƒ /retellings/[slug]                        2.13 kB         108 kB
+├ ○ /robots.txt                                 178 B         103 kB
+├ ƒ /signin                                   2.54 kB         217 kB
+├ ƒ /stories                                  3.17 kB         218 kB
+├ ƒ /stories/[sessionId]/delete                 451 B         106 kB
+└ ƒ /story/[sessionId]                        16.4 kB         231 kB
++ First Load JS shared by all                  103 kB
+  ├ chunks/1255-7316b50163a428e6.js           46.4 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js       54.2 kB
+  └ other shared chunks (total)                  2 kB
+
+
+ƒ Middleware                                   106 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (113kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (267kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+
+recipe-attestor
+Trusted recipe attestor self-test: PASS
+
+story-batch:wave-2-rewritten-2026-09-10
+{
+  "ok": true,
+  "directory": "docs/releases/wave-2-rewritten-2026-09-10",
+  "expectedCount": 6,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "approval": "none; source accuracy and reading quality require independent review",
+  "candidates": [
+    {
+      "file": "berlin_i-1901-1907-bowery-to-first-song-v1.candidate.json",
+      "id": "berlin_i:1901-1907-bowery-to-first-song:v1",
+      "figureKey": "berlin_i",
+      "sha256": "4c733e4c4e971a2ed3a5412ee7d6ecf600554c247761321768b74f0ecf0b3898",
+      "words": 309,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 55,
+          "sentenceMean": 9.17,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 35,
+          "sentenceMean": 8.75,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 38,
+          "sentenceMean": 9.5,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 35,
+          "sentenceMean": 8.75,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 37,
+          "sentenceMean": 7.4,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 55,
+          "sentenceMean": 6.88,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 54,
+          "sentenceMean": 9,
+          "longestSentence": 18,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "bronte_c-1846-1847-two-copies-v1.candidate.json",
+      "id": "bronte_c:1846-1847-two-copies:v1",
+      "figureKey": "bronte_c",
+      "sha256": "62d167d5c3fff7acbd070b14e59c5eeb4f2386f63550c7e5a8cb18e47c8362a3",
+      "words": 565,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 81,
+          "sentenceMean": 10.13,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 72,
+          "sentenceMean": 9,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 67,
+          "sentenceMean": 9.57,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 100,
+          "sentenceMean": 9.09,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 74,
+          "sentenceMean": 7.4,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 125,
+          "sentenceMean": 8.93,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 46,
+          "sentenceMean": 7.67,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "butler-1974-1975-pre-patternmaster-v1.candidate.json",
+      "id": "butler:1974-1975-pre-patternmaster:v1",
+      "figureKey": "butler",
+      "sha256": "925b5d1ca44ad0595efe29a80f6f35c7d1a26c088a093fe9e905b3c119e6a36e",
+      "words": 441,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 61,
+          "sentenceMean": 7.63,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 69,
+          "sentenceMean": 9.86,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 64,
+          "sentenceMean": 10.67,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 66,
+          "sentenceMean": 7.33,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 43,
+          "sentenceMean": 8.6,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 97,
+          "sentenceMean": 8.08,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 41,
+          "sentenceMean": 6.83,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "carver-1885-1891-turned-away-to-the-sod-house-v1.candidate.json",
+      "id": "carver:1885-1891-turned-away-to-the-sod-house:v1",
+      "figureKey": "carver",
+      "sha256": "0d48e0817701019845e856457947aba7f1408b4f2e9bafff03241d7020d154a9",
+      "words": 461,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 68,
+          "sentenceMean": 8.5,
+          "longestSentence": 20,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 69,
+          "sentenceMean": 9.86,
+          "longestSentence": 20,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 69,
+          "sentenceMean": 9.86,
+          "longestSentence": 18,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 101,
+          "sentenceMean": 10.1,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 28,
+          "sentenceMean": 9.33,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 76,
+          "sentenceMean": 10.86,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 50,
+          "sentenceMean": 8.33,
+          "longestSentence": 12,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "charles_r-1945-1948-orphaned-to-the-bus-v1.candidate.json",
+      "id": "charles_r:1945-1948-orphaned-to-the-bus:v1",
+      "figureKey": "charles_r",
+      "sha256": "41b662b6160575e8e691d624a071793f94004c5433fa1eb52dfd53aab01f822b",
+      "words": 487,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 79,
+          "sentenceMean": 8.78,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 38,
+          "sentenceMean": 7.6,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 74,
+          "sentenceMean": 9.25,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 107,
+          "sentenceMean": 10.7,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 26,
+          "sentenceMean": 5.2,
+          "longestSentence": 8,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 107,
+          "sentenceMean": 9.73,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 56,
+          "sentenceMean": 9.33,
+          "longestSentence": 14,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "christie-1926-1928-the-year-that-broke-v1.candidate.json",
+      "id": "christie:1926-1928-the-year-that-broke:v1",
+      "figureKey": "christie",
+      "sha256": "ae8444b6a80550f4d8a3688faf8644083a1fb316d2b745fa65912d0c8ddd2cbd",
+      "words": 445,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 87,
+          "sentenceMean": 8.7,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 83,
+          "sentenceMean": 9.22,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 60,
+          "sentenceMean": 8.57,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 69,
+          "sentenceMean": 8.63,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 34,
+          "sentenceMean": 8.5,
+          "longestSentence": 10,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 52,
+          "sentenceMean": 8.67,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 60,
+          "sentenceMean": 10,
+          "longestSentence": 17,
+          "textureSentences": 0
+        }
+      ]
+    }
+  ]
+}
+
+story-batch:wave-3-drafts-2026-09-14
+{
+  "ok": true,
+  "directory": "docs/releases/wave-3-drafts-2026-09-14",
+  "expectedCount": 9,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "approval": "none; source accuracy and reading quality require independent review",
+  "candidates": [
+    {
+      "file": "coleman-1918-1921-no-school-would-take-her-v1.candidate.json",
+      "id": "coleman:1918-1921-no-school-would-take-her:v1",
+      "figureKey": "coleman",
+      "sha256": "f819cc6b7cb22e4ea59f7eddebccfc46abc5d85958e679e6ed9781285f365434",
+      "words": 482,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 78,
+          "sentenceMean": 8.67,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 47,
+          "sentenceMean": 7.83,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 37,
+          "sentenceMean": 7.4,
+          "longestSentence": 10,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 111,
+          "sentenceMean": 10.09,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 69,
+          "sentenceMean": 7.67,
+          "longestSentence": 10,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 87,
+          "sentenceMean": 8.7,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 53,
+          "sentenceMean": 8.83,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "coltrane-1957-fired-and-clean-v1.candidate.json",
+      "id": "coltrane:1957-fired-and-clean:v1",
+      "figureKey": "coltrane",
+      "sha256": "66a2d5d4d91fa29a91b48cf0171022d767446e5bb0f77926caa52233ec45845c",
+      "words": 590,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": false,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 88,
+          "sentenceMean": 11,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 77,
+          "sentenceMean": 8.56,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 87,
+          "sentenceMean": 9.67,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 96,
+          "sentenceMean": 8.73,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 113,
+          "sentenceMean": 9.42,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 78,
+          "sentenceMean": 9.75,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "faraday-1812-1815-bottle-washer-and-valet-v1.candidate.json",
+      "id": "faraday:1812-1815-bottle-washer-and-valet:v1",
+      "figureKey": "faraday",
+      "sha256": "42d6334dc0b6935e7eeba43ec0371756088958c5065369382778cb765384048c",
+      "words": 680,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 90,
+          "sentenceMean": 9,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 107,
+          "sentenceMean": 8.92,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 95,
+          "sentenceMean": 9.5,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 129,
+          "sentenceMean": 9.92,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 107,
+          "sentenceMean": 9.73,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 93,
+          "sentenceMean": 9.3,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 59,
+          "sentenceMean": 9.83,
+          "longestSentence": 18,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "fitzgerald_e-1932-1934-streets-to-amateur-night-v1.candidate.json",
+      "id": "fitzgerald_e:1932-1934-streets-to-amateur-night:v1",
+      "figureKey": "fitzgerald_e",
+      "sha256": "0bad16690950606624abf0d9c8af59d867cdd3be2c186cab9b3da9dd690fee7b",
+      "words": 365,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 23,
+          "sentenceMean": 7.67,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 44,
+          "sentenceMean": 8.8,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 35,
+          "sentenceMean": 8.75,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 103,
+          "sentenceMean": 9.36,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 76,
+          "sentenceMean": 9.5,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 31,
+          "sentenceMean": 10.33,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 53,
+          "sentenceMean": 8.83,
+          "longestSentence": 15,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "graham-1963-1971-thrust-into-the-chair-v1.candidate.json",
+      "id": "graham:1963-1971-thrust-into-the-chair:v1",
+      "figureKey": "graham",
+      "sha256": "fcc977a8c65ec59a0eb5b2a4615a837ff410395107ccc77af4c67f2ddd00dbc2",
+      "words": 496,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 61,
+          "sentenceMean": 10.17,
+          "longestSentence": 18,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 46,
+          "sentenceMean": 7.67,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 28,
+          "sentenceMean": 9.33,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 111,
+          "sentenceMean": 9.25,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 108,
+          "sentenceMean": 9,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 89,
+          "sentenceMean": 8.09,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 53,
+          "sentenceMean": 8.83,
+          "longestSentence": 15,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "hughes-1920-1926-fathers-deal-to-first-book-v1.candidate.json",
+      "id": "hughes:1920-1926-fathers-deal-to-first-book:v1",
+      "figureKey": "hughes",
+      "sha256": "4221485861e7c44b2f3347551b0dba26d32a1084d50413f5ce7ea425dea08454",
+      "words": 539,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 93,
+          "sentenceMean": 9.3,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 83,
+          "sentenceMean": 9.22,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 43,
+          "sentenceMean": 10.75,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 155,
+          "sentenceMean": 9.69,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 52,
+          "sentenceMean": 10.4,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 61,
+          "sentenceMean": 8.71,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 52,
+          "sentenceMean": 8.67,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "hurston-1917-1921-sixteen-again-v1.candidate.json",
+      "id": "hurston:1917-1921-sixteen-again:v1",
+      "figureKey": "hurston",
+      "sha256": "32070f91a9ba998a022e4346213b92fecdd3b71565f76c3fd3fc48ed4068a97c",
+      "words": 519,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 72,
+          "sentenceMean": 9,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 34,
+          "sentenceMean": 8.5,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 25,
+          "sentenceMean": 8.33,
+          "longestSentence": 9,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 124,
+          "sentenceMean": 9.54,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 106,
+          "sentenceMean": 10.6,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 107,
+          "sentenceMean": 9.73,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "jones-1937-1945-the-silent-years-v1.candidate.json",
+      "id": "jones:1937-1945-the-silent-years:v1",
+      "figureKey": "jones",
+      "sha256": "47ff6dacb484de4e83b329b2c32f1dc78b9c45208677bafe19b9ff5031932bda",
+      "words": 525,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": false,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 63,
+          "sentenceMean": 9,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 52,
+          "sentenceMean": 8.67,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 89,
+          "sentenceMean": 9.89,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 104,
+          "sentenceMean": 9.45,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 79,
+          "sentenceMean": 7.9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 81,
+          "sentenceMean": 10.13,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 57,
+          "sentenceMean": 9.5,
+          "longestSentence": 15,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "kovalevskaya-1868-1874-fictitious-marriage-to-doctorate-v1.candidate.json",
+      "id": "kovalevskaya:1868-1874-fictitious-marriage-to-doctorate:v1",
+      "figureKey": "kovalevskaya",
+      "sha256": "0f0c8255664fa5686db983e4e8fe19dbedbf4fc4c259ddc97d7de0ac4230d33d",
+      "words": 568,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": false,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 79,
+          "sentenceMean": 9.88,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 75,
+          "sentenceMean": 8.33,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 66,
+          "sentenceMean": 8.25,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 109,
+          "sentenceMean": 9.08,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 78,
+          "sentenceMean": 7.8,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 108,
+          "sentenceMean": 9.82,
+          "longestSentence": 18,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 53,
+          "sentenceMean": 8.83,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    }
+  ]
+}
+
+story-batch:wave-3-repairs-2026-09-15
+{
+  "ok": true,
+  "directory": "docs/releases/wave-3-repairs-2026-09-15",
+  "expectedCount": 1,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "approval": "none; source accuracy and reading quality require independent review",
+  "candidates": [
+    {
+      "file": "hurston-1917-1921-sixteen-again-v1.candidate.json",
+      "id": "hurston:1917-1921-sixteen-again:v1",
+      "figureKey": "hurston",
+      "sha256": "c29d7856a483ff106cfb0f2ad45f0851c8176b4d08dc020a0931f4f396ade51e",
+      "words": 342,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 58,
+          "sentenceMean": 8.29,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 34,
+          "sentenceMean": 11.33,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 20,
+          "sentenceMean": 10,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 96,
+          "sentenceMean": 8.73,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 32,
+          "sentenceMean": 6.4,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    }
+  ]
+}
+
+story-batch:wave-4-drafts-2026-09-19
+{
+  "ok": true,
+  "directory": "docs/releases/wave-4-drafts-2026-09-19",
+  "expectedCount": 9,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "approval": "none; source accuracy and reading quality require independent review",
+  "candidates": [
+    {
+      "file": "lamarr-1940-1942-the-shelved-invention-v1.candidate.json",
+      "id": "lamarr:1940-1942-the-shelved-invention:v1",
+      "figureKey": "lamarr",
+      "sha256": "fde1737f3ddeb9b0924a9ec92f98421942b6ca316dcca8a25ffdb6ae91627ca3",
+      "words": 488,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 69,
+          "sentenceMean": 8.63,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 71,
+          "sentenceMean": 8.88,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 71,
+          "sentenceMean": 8.88,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 95,
+          "sentenceMean": 8.64,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 74,
+          "sentenceMean": 9.25,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 56,
+          "sentenceMean": 7,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 52,
+          "sentenceMean": 8.67,
+          "longestSentence": 12,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "lee-1929-1931-harvard-pivot-v1.candidate.json",
+      "id": "lee:1929-1931-harvard-pivot:v1",
+      "figureKey": "lee",
+      "sha256": "b8326b667b18ac7d14edd2e52e908e9efd32b29a03d4e964540bc3ba79fad977",
+      "words": 402,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 60,
+          "sentenceMean": 7.5,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 71,
+          "sentenceMean": 8.88,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 54,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 54,
+          "sentenceMean": 7.71,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 43,
+          "sentenceMean": 7.17,
+          "longestSentence": 10,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 71,
+          "sentenceMean": 8.88,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 49,
+          "sentenceMean": 8.17,
+          "longestSentence": 12,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "lewis-1960-1961-a-grief-observed-v1.candidate.json",
+      "id": "lewis:1960-1961-a-grief-observed:v1",
+      "figureKey": "lewis",
+      "sha256": "2629432a8fdd4ab5523dc57c295788e51cd2cd6ff64cf35e96d7fa815ca6e871",
+      "words": 696,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 98,
+          "sentenceMean": 8.91,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 115,
+          "sentenceMean": 9.58,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 94,
+          "sentenceMean": 9.4,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 111,
+          "sentenceMean": 9.25,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 121,
+          "sentenceMean": 8.64,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 106,
+          "sentenceMean": 9.64,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 12,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "lewis_e-1862-1866-accused-acquitted-expelled-v1.candidate.json",
+      "id": "lewis_e:1862-1866-accused-acquitted-expelled:v1",
+      "figureKey": "lewis_e",
+      "sha256": "fc1355e6be443ec3f082f6e69fc6b94e40d53b0b4cd3b6462cd5343a1ba26f45",
+      "words": 621,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 84,
+          "sentenceMean": 9.33,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 93,
+          "sentenceMean": 9.3,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 71,
+          "sentenceMean": 8.88,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 119,
+          "sentenceMean": 9.15,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 98,
+          "sentenceMean": 10.89,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 111,
+          "sentenceMean": 10.09,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 45,
+          "sentenceMean": 7.5,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "lindgren-1926-1929-the-secret-son-v1.candidate.json",
+      "id": "lindgren:1926-1929-the-secret-son:v1",
+      "figureKey": "lindgren",
+      "sha256": "bebeef915a4bdd8fa8b642af811e781c843a97dc326e7caa3b7c4c070553333c",
+      "words": 362,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 42,
+          "sentenceMean": 8.4,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 41,
+          "sentenceMean": 10.25,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 34,
+          "sentenceMean": 6.8,
+          "longestSentence": 9,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 67,
+          "sentenceMean": 8.38,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 72,
+          "sentenceMean": 9,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 61,
+          "sentenceMean": 7.63,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 45,
+          "sentenceMean": 7.5,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "marshall-1982-1984-drinking-the-proof-v1.candidate.json",
+      "id": "marshall:1982-1984-drinking-the-proof:v1",
+      "figureKey": "marshall",
+      "sha256": "db2b95b04e29af652e6ec507b0a55e39e673ba7bc5ca237fae4d2cab3d9966da",
+      "words": 596,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 89,
+          "sentenceMean": 9.89,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 93,
+          "sentenceMean": 8.45,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 58,
+          "sentenceMean": 8.29,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 119,
+          "sentenceMean": 9.15,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 54,
+          "sentenceMean": 7.71,
+          "longestSentence": 9,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 136,
+          "sentenceMean": 9.07,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 47,
+          "sentenceMean": 7.83,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "mcclintock-1951-1960s-dismissed-and-right-v1.candidate.json",
+      "id": "mcclintock:1951-1960s-dismissed-and-right:v1",
+      "figureKey": "mcclintock",
+      "sha256": "51ee0d5543da35d4477e9b140ad2b805c044f535e50b7aa063e39cf2a8e69e0e",
+      "words": 441,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 59,
+          "sentenceMean": 7.38,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 76,
+          "sentenceMean": 9.5,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 54,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 86,
+          "sentenceMean": 10.75,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 69,
+          "sentenceMean": 9.86,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 13,
+          "textureSentences": 1
+        },
+        {
+          "role": "bridge",
+          "words": 46,
+          "sentenceMean": 7.67,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "nightingale-1856-1860-spent-v1.candidate.json",
+      "id": "nightingale:1856-1860-spent:v1",
+      "figureKey": "nightingale",
+      "sha256": "eb8bc2c60c4036dbd2ace38a0b8fa5770b16e6086ba7ab70c6ad64d42ecfd732",
+      "words": 693,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 99,
+          "sentenceMean": 11,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 120,
+          "sentenceMean": 10,
+          "longestSentence": 15,
+          "textureSentences": 2
+        },
+        {
+          "role": "response",
+          "words": 80,
+          "sentenceMean": 8.89,
+          "longestSentence": 12,
+          "textureSentences": 1
+        },
+        {
+          "role": "struggle",
+          "words": 105,
+          "sentenceMean": 9.55,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 136,
+          "sentenceMean": 9.71,
+          "longestSentence": 14,
+          "textureSentences": 1
+        },
+        {
+          "role": "became",
+          "words": 99,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 54,
+          "sentenceMean": 9,
+          "longestSentence": 14,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "oconnor-1950-1955-lupus-and-the-farm-v1.candidate.json",
+      "id": "oconnor:1950-1955-lupus-and-the-farm:v1",
+      "figureKey": "oconnor",
+      "sha256": "039a1afc8ea3d4960af0d363a7cfdafc506caac71b45f24d3af8357757fa35b7",
+      "words": 646,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 90,
+          "sentenceMean": 10,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 119,
+          "sentenceMean": 10.82,
+          "longestSentence": 16,
+          "textureSentences": 3
+        },
+        {
+          "role": "response",
+          "words": 82,
+          "sentenceMean": 9.11,
+          "longestSentence": 13,
+          "textureSentences": 1
+        },
+        {
+          "role": "struggle",
+          "words": 122,
+          "sentenceMean": 11.09,
+          "longestSentence": 18,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 95,
+          "sentenceMean": 8.64,
+          "longestSentence": 14,
+          "textureSentences": 2
+        },
+        {
+          "role": "became",
+          "words": 93,
+          "sentenceMean": 9.3,
+          "longestSentence": 16,
+          "textureSentences": 1
+        },
+        {
+          "role": "bridge",
+          "words": 45,
+          "sentenceMean": 7.5,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    }
+  ]
+}
+
+story-batch:wave-5-drafts-2026-09-20
+{
+  "ok": true,
+  "directory": "docs/releases/wave-5-drafts-2026-09-20",
+  "expectedCount": 9,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "approval": "none; source accuracy and reading quality require independent review",
+  "candidates": [
+    {
+      "file": "owens-1936-1940-after-the-gold-v1.candidate.json",
+      "id": "owens:1936-1940-after-the-gold:v1",
+      "figureKey": "owens",
+      "sha256": "1e1eac978416f1523b3c9dfac46aeaa9214d40665784a372bafd35e7582ae8fb",
+      "words": 462,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 94,
+          "sentenceMean": 9.4,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 81,
+          "sentenceMean": 10.13,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 47,
+          "sentenceMean": 7.83,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 80,
+          "sentenceMean": 10,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 57,
+          "sentenceMean": 7.13,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 52,
+          "sentenceMean": 8.67,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 12,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "poitier-1943-1945-dishwasher-to-second-audition-v1.candidate.json",
+      "id": "poitier:1943-1945-dishwasher-to-second-audition:v1",
+      "figureKey": "poitier",
+      "sha256": "62096205be61b2214dfa96e2f982e6cf6b16da229c03bba01b38cf140dc4325e",
+      "words": 572,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 108,
+          "sentenceMean": 9,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 82,
+          "sentenceMean": 9.11,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 50,
+          "sentenceMean": 10,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 108,
+          "sentenceMean": 9,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 75,
+          "sentenceMean": 8.33,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 88,
+          "sentenceMean": 8.8,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 61,
+          "sentenceMean": 10.17,
+          "longestSentence": 21,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "rachmaninoff-1897-1901-after-the-first-symphony-v1.candidate.json",
+      "id": "rachmaninoff:1897-1901-after-the-first-symphony:v1",
+      "figureKey": "rachmaninoff",
+      "sha256": "9d30082874819b3de2c2558431b5b67c1658f1421e90b9ad26ae083f6dbac5b0",
+      "words": 546,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 80,
+          "sentenceMean": 8.89,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 75,
+          "sentenceMean": 9.38,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 67,
+          "sentenceMean": 9.57,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 95,
+          "sentenceMean": 9.5,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 53,
+          "sentenceMean": 8.83,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 122,
+          "sentenceMean": 11.09,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 54,
+          "sentenceMean": 9,
+          "longestSentence": 15,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "rogers-1936-1941-latrobe-childhood-v1.candidate.json",
+      "id": "rogers:1936-1941-latrobe-childhood:v1",
+      "figureKey": "rogers",
+      "sha256": "85807e2de8eeb10334e29bb43c257a3cb9784aebdafb8194e6ca7ef5e2b6d785",
+      "words": 314,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": false,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 55,
+          "sentenceMean": 11,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 38,
+          "sentenceMean": 9.5,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 27,
+          "sentenceMean": 9,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 57,
+          "sentenceMean": 9.5,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 41,
+          "sentenceMean": 8.2,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 59,
+          "sentenceMean": 9.83,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 37,
+          "sentenceMean": 7.4,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "rudolph-1945-1953-the-brace-years-v1.candidate.json",
+      "id": "rudolph:1945-1953-the-brace-years:v1",
+      "figureKey": "rudolph",
+      "sha256": "e40532188e5d1c19c49c042f7d4a12c11a6ab836292238398717c83edd9c8a70",
+      "words": 241,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 40,
+          "sentenceMean": 10,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 26,
+          "sentenceMean": 6.5,
+          "longestSentence": 9,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 32,
+          "sentenceMean": 10.67,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 48,
+          "sentenceMean": 8,
+          "longestSentence": 9,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 22,
+          "sentenceMean": 7.33,
+          "longestSentence": 10,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 40,
+          "sentenceMean": 8,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 33,
+          "sentenceMean": 6.6,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "rustin-1963-the-man-in-the-back-v1.candidate.json",
+      "id": "rustin:1963-the-man-in-the-back:v1",
+      "figureKey": "rustin",
+      "sha256": "ef1f0f9ad23008e75658acce03781d0612d9b0afa4d34b78def9be7501ee9275",
+      "words": 434,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 54,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 43,
+          "sentenceMean": 8.6,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 36,
+          "sentenceMean": 9,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 122,
+          "sentenceMean": 10.17,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 34,
+          "sentenceMean": 6.8,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 107,
+          "sentenceMean": 9.73,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 38,
+          "sentenceMean": 7.6,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "sanders-1956-broke-at-sixty-five-v1.candidate.json",
+      "id": "sanders:1956-broke-at-sixty-five:v1",
+      "figureKey": "sanders",
+      "sha256": "6e0e808ee14b64884d17b6410cb52f349c15df777245efb44db6fb0d9ec2adfc",
+      "words": 312,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 46,
+          "sentenceMean": 9.2,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 43,
+          "sentenceMean": 8.6,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 37,
+          "sentenceMean": 7.4,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 47,
+          "sentenceMean": 7.83,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 53,
+          "sentenceMean": 10.6,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 41,
+          "sentenceMean": 8.2,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 45,
+          "sentenceMean": 7.5,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "shelley_m-1818-1823-the-losses-v1.candidate.json",
+      "id": "shelley_m:1818-1823-the-losses:v1",
+      "figureKey": "shelley_m",
+      "sha256": "fb3e996c03f1a9bed101b22a8bffae515b75e7aeef36343c64dfb21306d2f4c8",
+      "words": 705,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 99,
+          "sentenceMean": 9,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 104,
+          "sentenceMean": 9.45,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 95,
+          "sentenceMean": 9.5,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 129,
+          "sentenceMean": 10.75,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 118,
+          "sentenceMean": 9.83,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 113,
+          "sentenceMean": 11.3,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 47,
+          "sentenceMean": 7.83,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "simone-1950-1954-curtis-no-to-the-bar-v1.candidate.json",
+      "id": "simone:1950-1954-curtis-no-to-the-bar:v1",
+      "figureKey": "simone",
+      "sha256": "7e0234a51110a636c509b808935b5d54fb43d4b8f61f6c7aeff70b70f3b625ff",
+      "words": 371,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 42,
+          "sentenceMean": 7,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 56,
+          "sentenceMean": 9.33,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 58,
+          "sentenceMean": 9.67,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 64,
+          "sentenceMean": 9.14,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 51,
+          "sentenceMean": 8.5,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 54,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 46,
+          "sentenceMean": 7.67,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    }
+  ]
+}
+
+story-batch:wave-6-drafts-2026-09-20
+{
+  "ok": true,
+  "directory": "docs/releases/wave-6-drafts-2026-09-20",
+  "expectedCount": 5,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "approval": "none; source accuracy and reading quality require independent review",
+  "candidates": [
+    {
+      "file": "sullivan_a-1880-1886-almshouse-to-valedictorian-v1.candidate.json",
+      "id": "sullivan_a:1880-1886-almshouse-to-valedictorian:v1",
+      "figureKey": "sullivan_a",
+      "sha256": "1b9b2bc08a715aec0ec2470f2afbd2e79645d9cac73ae78a78634cbbebb54f9d",
+      "words": 309,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": false,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 34,
+          "sentenceMean": 11.33,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 34,
+          "sentenceMean": 8.5,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 23,
+          "sentenceMean": 7.67,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 68,
+          "sentenceMean": 9.71,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 42,
+          "sentenceMean": 10.5,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 60,
+          "sentenceMean": 12,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 48,
+          "sentenceMean": 9.6,
+          "longestSentence": 17,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "tallchief-1942-1947-the-name-stays-v1.candidate.json",
+      "id": "tallchief:1942-1947-the-name-stays:v1",
+      "figureKey": "tallchief",
+      "sha256": "e1129f797aba454ba728102c38f5fba75d978fae894acdc2ede121be38d1ad32",
+      "words": 230,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": false,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 29,
+          "sentenceMean": 9.67,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 27,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 20,
+          "sentenceMean": 10,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 66,
+          "sentenceMean": 11,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 24,
+          "sentenceMean": 8,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 21,
+          "sentenceMean": 10.5,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 43,
+          "sentenceMean": 8.6,
+          "longestSentence": 12,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "wang-1987-1990-passed-over-to-the-pivot-v1.candidate.json",
+      "id": "wang:1987-1990-passed-over-to-the-pivot:v1",
+      "figureKey": "wang",
+      "sha256": "33efd588627ee81208853823d4fad6fd3570a7dfd77b54b6062eb2c69c6f3618",
+      "words": 231,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 32,
+          "sentenceMean": 10.67,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 30,
+          "sentenceMean": 10,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 21,
+          "sentenceMean": 10.5,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 52,
+          "sentenceMean": 13,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 22,
+          "sentenceMean": 11,
+          "longestSentence": 17,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 34,
+          "sentenceMean": 11.33,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 40,
+          "sentenceMean": 8,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "wilson-1934-1935-rock-bottom-to-the-fellowship-v1.candidate.json",
+      "id": "wilson:1934-1935-rock-bottom-to-the-fellowship:v1",
+      "figureKey": "wilson",
+      "sha256": "230c169ba975008ba9cebe0370bedcb5383814b70f05f96185715d36062a0cc1",
+      "words": 385,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 54,
+          "sentenceMean": 10.8,
+          "longestSentence": 19,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 51,
+          "sentenceMean": 10.2,
+          "longestSentence": 20,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 45,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 94,
+          "sentenceMean": 10.44,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 41,
+          "sentenceMean": 8.2,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 63,
+          "sentenceMean": 9,
+          "longestSentence": 13,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 37,
+          "sentenceMean": 7.4,
+          "longestSentence": 11,
+          "textureSentences": 0
+        }
+      ]
+    },
+    {
+      "file": "yeats-1889-1893-the-no-and-the-poems-v1.candidate.json",
+      "id": "yeats:1889-1893-the-no-and-the-poems:v1",
+      "figureKey": "yeats",
+      "sha256": "c9fef1e4dfe90d00ecca5a03b5981656f948e08607df4fa083ad17e29793c5d9",
+      "words": 191,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 27,
+          "sentenceMean": 9,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 24,
+          "sentenceMean": 8,
+          "longestSentence": 11,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 18,
+          "sentenceMean": 9,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 40,
+          "sentenceMean": 10,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 15,
+          "sentenceMean": 7.5,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 24,
+          "sentenceMean": 12,
+          "longestSentence": 15,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 43,
+          "sentenceMean": 8.6,
+          "longestSentence": 12,
+          "textureSentences": 0
+        }
+      ]
+    }
+  ]
+}
+
+story-batch:remaining-story-review-2026-09-20/held-repairs
+{
+  "ok": true,
+  "directory": "docs/releases/remaining-story-review-2026-09-20/held-repairs",
+  "expectedCount": 1,
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "approval": "none; source accuracy and reading quality require independent review",
+  "candidates": [
+    {
+      "file": "bronte_c-1846-1847-two-copies-v1.candidate.json",
+      "id": "bronte_c:1846-1847-two-copies:v1",
+      "figureKey": "bronte_c",
+      "sha256": "680159c859a3019dd486a5c246956559650447b1a46e1a8380b7d3f6d8cb8b56",
+      "words": 461,
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "publicationErrors": 0,
+      "publicationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true,
+      "matchingAgeRangeDiffers": true,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 39,
+          "sentenceMean": 9.75,
+          "longestSentence": 14,
+          "textureSentences": 0
+        },
+        {
+          "role": "dark_moment",
+          "words": 36,
+          "sentenceMean": 9,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "response",
+          "words": 39,
+          "sentenceMean": 6.5,
+          "longestSentence": 10,
+          "textureSentences": 0
+        },
+        {
+          "role": "struggle",
+          "words": 114,
+          "sentenceMean": 10.36,
+          "longestSentence": 16,
+          "textureSentences": 0
+        },
+        {
+          "role": "turning_point",
+          "words": 62,
+          "sentenceMean": 8.86,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "became",
+          "words": 125,
+          "sentenceMean": 8.93,
+          "longestSentence": 12,
+          "textureSentences": 0
+        },
+        {
+          "role": "bridge",
+          "words": 46,
+          "sentenceMean": 7.67,
+          "longestSentence": 13,
+          "textureSentences": 0
+        }
+      ]
+    }
+  ]
+}
+
+base:check-recipe-immutability
+
+> onward@0.1.0 check-recipe-immutability
+> tsx scripts/check-recipe-immutability.ts 38815c83922afd7350ab1f1aafcd3dcafd874cd3
+
+Recipe immutability check passed (history is append-only).
+
+base:check-prompt-releases
+
+> onward@0.1.0 check-prompt-releases
+> tsx scripts/check-prompt-releases.ts 38815c83922afd7350ab1f1aafcd3dcafd874cd3
+
+Prompt release check passed (rerank=rerank-prompt-v1-2026-07; story=opening-copy-prompt-v1-2026-07; executableStoryReleases=2; facetTagger=facet-tagger-prompt-v1-2026-07).
+
+base:check-story-quality-immutability
+
+> onward@0.1.0 check-story-quality-immutability
+> tsx scripts/check-story-quality-immutability.ts 38815c83922afd7350ab1f1aafcd3dcafd874cd3
+
+Story-quality immutability check passed (evidence is append-only).

@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "match-eval-evidence-v1",
+  "harnessVersion": "match-eval-harness-v3-2026-08",
+  "evidenceId": "ev_6f9f15f110e062a26799e08df3b71ddf2de73be13d1f230a44b3262576a6ba1d",
+  "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+  "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  "dataset": {
+    "version": "match-104-2026-07-02",
+    "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "visibility": "synthetic"
+  },
+  "catalog": null,
+  "run": {
+    "startedAt": "2026-10-03T00:54:07.414Z",
+    "completedAt": "2026-10-03T00:54:40.298Z",
+    "k": 1,
+    "concurrency": 1,
+    "maxRetries": 2,
+    "caseCount": 104,
+    "trialCount": 104
+  },
+  "config": {
+    "provider": "real",
+    "model": "gpt-oss-120b",
+    "retrievalMode": "keyword",
+    "embeddingModelId": null,
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "rerankTemperature": 0,
+    "rerankReasoningEffort": "low",
+    "rerankTopK": 6
+  },
+  "metrics": {
+    "rerankTop1": 0.9504950495049505,
+    "overallTop1": 0.9504950495049505,
+    "missDetection": 0.6666666666666666,
+    "hardConfusion": 0,
+    "goldSurvivalStageA": null,
+    "goldSurvivalStageB": null,
+    "stability": null,
+    "counts": {
+      "rerankCorrect": 96,
+      "rerankTotal": 101,
+      "overallCorrect": 96,
+      "overallTotal": 101,
+      "missDetected": 2,
+      "missTotal": 3,
+      "hardConfused": 0,
+      "hardTotal": 44,
+      "survivedStageA": 0,
+      "survivedStageB": 0,
+      "survivalTotal": 0,
+      "rerankChosen": 104,
+      "keywordFallback": 0
+    },
+    "calibration": {
+      "definitiveCorrect": 90,
+      "definitiveWrong": 1,
+      "partialCorrect": 6,
+      "partialWrong": 4
+    },
+    "latency": {
+      "p50Ms": 286,
+      "p95Ms": 471
+    },
+    "trustGate": {
+      "passed": false,
+      "coverage": 1,
+      "checks": {
+        "coverage": true,
+        "rerankTop1": false,
+        "missDetection": false,
+        "noDefinitiveWrong": false,
+        "top1": false,
+        "hardConfusion": true
+      },
+      "thresholds": {
+        "minCoverage": 0.95,
+        "minRerankTop1": 0.971,
+        "minOverallTop1": 0.971,
+        "minMissDetection": 1,
+        "maxDefinitiveWrong": 0,
+        "maxHardConfusion": 0
+      }
+    }
+  },
+  "provenance": {
+    "gitCommit": "4a494259aee5b00f7d03791b78a932b39d9947df",
+    "deploymentId": "ten-story-content-release-bb27964f",
+    "sourceRun": "2026-10-03T00-54-40-298Z.json",
+    "runId": "ten-story-eval-1790988846396",
+    "sourceRunSha256": "fddf8b12d8d8a4fcf480aae4a64c231cee8900f6f82f6b80bba4ae4a57144464",
+    "inputTreeSha256": "2e5dd8d2e2617c5a1342f70e17c29ed8fd058bc9dc44be2e35bec453d16bd7fb"
+  },
+  "legacyImported": false,
+  "candidate": false,
+  "promotable": false
+}

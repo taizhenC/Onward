@@ -83,7 +83,8 @@
     "check-db": "tsx scripts/check-db.ts",
     "check-embeddings": "tsx scripts/check-embeddings.ts",
     "audit:high": "npm audit --audit-level=high",
-    "check-sharp-runtime": "node scripts/check-sharp-runtime.mjs"
+    "check-sharp-runtime": "node scripts/check-sharp-runtime.mjs",
+    "check-next-lint-glob": "node scripts/check-next-lint-glob.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -104,11 +105,15 @@
     "eslint-config-next": "15.5.26",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.23.15",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "@onward/next-lint-glob": "file:vendor/next-lint-glob"
   },
   "overrides": {
     "nanoid": "3.3.18",
     "postcss": "8.5.25",
-    "sharp": "0.35.4"
+    "sharp": "0.35.4",
+    "@next/eslint-plugin-next": {
+      "fast-glob": "file:../../../vendor/next-lint-glob"
+    }
   }
 }

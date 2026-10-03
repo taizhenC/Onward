@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "new-ten-held-draft-pr-v1",
+  "observedAt": "2026-10-03T01:13:27.490Z",
+  "pullRequest": {
+    "baseRefName": "main",
+    "headRefName": "codex/ten-story-production",
+    "headRefOid": "b3d0dccbed9ab7e51eae7c2cafbb9f0e3472f8e2",
+    "isDraft": true,
+    "number": 146,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-03T01:12:58Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37085205776/job/111093949070",
+        "name": "verify",
+        "startedAt": "2026-10-03T01:12:38Z",
+        "status": "COMPLETED",
+        "workflowName": "CI"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-03T01:12:47Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37085205292/job/111093948252",
+        "name": "detect-recipe-promotion",
+        "startedAt": "2026-10-03T01:12:39Z",
+        "status": "COMPLETED",
+        "workflowName": "Recipe Promotion Authority"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-03T01:12:47Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37085205292/job/111093984520",
+        "name": "attest-recipe-promotion",
+        "startedAt": "2026-10-03T01:12:48Z",
+        "status": "COMPLETED",
+        "workflowName": "Recipe Promotion Authority"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-03T01:12:52Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37085205292/job/111093983528",
+        "name": "recipe-promotion-gate",
+        "startedAt": "2026-10-03T01:12:49Z",
+        "status": "COMPLETED",
+        "workflowName": "Recipe Promotion Authority"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-10-03T01:13:23Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/taizhencs-projects/onward/6t948BLjRzaqcAcbknGNHnSSCfb7"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-03T01:13:24Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-10-03T01:13:24Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "url": "https://github.com/taizhenC/Onward/pull/146"
+  },
+  "productionMainSha": "38815c83922afd7350ab1f1aafcd3dcafd874cd3",
+  "releaseStatus": "held; not published",
+  "attachmentCreated": true,
+  "productionMergePerformed": false,
+  "productionDeploymentPerformed": false,
+  "databaseMetadataMutationPerformed": false,
+  "publicationPerformed": false,
+  "liveCanaryPerformed": false,
+  "dbHoldReceipt": "PRODUCTION-HOLD-DB.json",
+  "validationReceipt": "VALIDATION.json",
+  "observedHeadQualification": "This snapshot identifies the observed PR head before committing this receipt document; later documentation commits do not establish a passing gate."
+}

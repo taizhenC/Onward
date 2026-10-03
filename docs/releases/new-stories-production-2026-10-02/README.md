@@ -15,3 +15,5 @@ Structural checks, TypeScript, lint, supplemental offline self-tests and all ten
 The compatible dependency fix changes only two transitive `brace-expansion` lock entries. The production branch retains the existing retellings feature and all unrelated production changes.
 
 The twenty public historical candidate/stage inputs are explicitly tracked under `docs/research/new-stories-2026-10-02/`, with exact-byte attributes preserving the existing receipt hashes. This makes the prepared offline input validation reproducible in a fresh checkout. The broader research directory remains ignored. Live publication requires the private local database baselines, production credentials, independently qualified review and a genuinely passing matching release; those inputs are not committed, and no live tool is authorized by the offline checks. See [validation](VALIDATION.md) and [the read-only database hold proof](PRODUCTION-HOLD-DB.md).
+
+The complete work is pushed to [draft PR #146](https://github.com/taizhenC/Onward/pull/146), attached to this task and held from merge. See [the PR checkpoint](PULL-REQUEST.md).

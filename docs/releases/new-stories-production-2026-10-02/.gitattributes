@@ -1,0 +1,2 @@
+# Preserve the already-frozen projection receipt's exact bytes on every host.
+PROJECTED-CATALOG.json -text

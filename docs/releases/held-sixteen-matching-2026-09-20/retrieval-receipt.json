@@ -1,0 +1,1175 @@
+{
+  "kind": "review-only-deterministic-migration-receipt-v1",
+  "recordedAtUtc": "2026-09-21 02:42:42 UTC",
+  "inputCommit": "db29028c8f25d14579d2e6f09f734d51364292a5",
+  "qualification": "Not provider evidence or approval. Shortlist survival is a necessary condition for expected-figure top-1, not proof of semantic suitability. Cases with expect:miss require provider framing and are not measured here. Original labels are tested mechanically against replaced stories only to expose changed coverage; that does not validate obsolete premises.",
+  "providerCalls": 0,
+  "databaseCalls": 0,
+  "productionWrites": false,
+  "runs": [
+    {
+      "kind": "frozen-label-shortlist-diagnostic-v1",
+      "mode": "legacy-current",
+      "corpusSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+      "labelFreezeSha256": "7c89510d4c45b759e018977c2469677e5698d95b01933c283fb1044edd2be08d",
+      "routesSha256": "1f349bc863883c4fefc30e6fab18e6b5847980652cbae84df5ae4a2f47989181",
+      "strata": {
+        "all": {
+          "cases": 104,
+          "positives": 101,
+          "missesUnmeasured": 3,
+          "survives": 101,
+          "failedIds": []
+        },
+        "inherited": {
+          "cases": 104,
+          "positives": 101,
+          "missesUnmeasured": 3,
+          "survives": 101,
+          "failedIds": []
+        },
+        "new": {
+          "cases": 0,
+          "positives": 0,
+          "missesUnmeasured": 0,
+          "survives": 0,
+          "failedIds": []
+        },
+        "hard": {
+          "cases": 44,
+          "positives": 44,
+          "missesUnmeasured": 0,
+          "survives": 44,
+          "failedIds": []
+        },
+        "semantic": {
+          "cases": 5,
+          "positives": 5,
+          "missesUnmeasured": 0,
+          "survives": 5,
+          "failedIds": []
+        }
+      },
+      "semanticViolations": [],
+      "providerCalls": 0,
+      "databaseCalls": 0,
+      "providerTop1": null,
+      "missDetection": null,
+      "definitiveWrong": null,
+      "hardConfusion": null,
+      "trustGateEvaluated": false,
+      "legacyCoverageEquivalent": false,
+      "unresolvedLegacyChallenges": 33,
+      "currentRuntimeUnchanged": true,
+      "productionAuthority": false,
+      "failures": [],
+      "exitCode": 0,
+      "identicalOnIndependentRootRerun": true
+    },
+    {
+      "kind": "frozen-label-shortlist-diagnostic-v1",
+      "mode": "legacy-overlay",
+      "corpusSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+      "labelFreezeSha256": "7c89510d4c45b759e018977c2469677e5698d95b01933c283fb1044edd2be08d",
+      "routesSha256": "1f349bc863883c4fefc30e6fab18e6b5847980652cbae84df5ae4a2f47989181",
+      "strata": {
+        "all": {
+          "cases": 104,
+          "positives": 101,
+          "missesUnmeasured": 3,
+          "survives": 86,
+          "failedIds": [
+            "legacy-008",
+            "legacy-012",
+            "legacy-016",
+            "legacy-019",
+            "legacy-036",
+            "legacy-043",
+            "legacy-048",
+            "legacy-054",
+            "legacy-058",
+            "legacy-060",
+            "legacy-067",
+            "legacy-078",
+            "legacy-079",
+            "legacy-090",
+            "legacy-100"
+          ]
+        },
+        "inherited": {
+          "cases": 104,
+          "positives": 101,
+          "missesUnmeasured": 3,
+          "survives": 86,
+          "failedIds": [
+            "legacy-008",
+            "legacy-012",
+            "legacy-016",
+            "legacy-019",
+            "legacy-036",
+            "legacy-043",
+            "legacy-048",
+            "legacy-054",
+            "legacy-058",
+            "legacy-060",
+            "legacy-067",
+            "legacy-078",
+            "legacy-079",
+            "legacy-090",
+            "legacy-100"
+          ]
+        },
+        "new": {
+          "cases": 0,
+          "positives": 0,
+          "missesUnmeasured": 0,
+          "survives": 0,
+          "failedIds": []
+        },
+        "hard": {
+          "cases": 44,
+          "positives": 44,
+          "missesUnmeasured": 0,
+          "survives": 36,
+          "failedIds": [
+            "legacy-012",
+            "legacy-019",
+            "legacy-036",
+            "legacy-048",
+            "legacy-058",
+            "legacy-060",
+            "legacy-079",
+            "legacy-090"
+          ]
+        },
+        "semantic": {
+          "cases": 5,
+          "positives": 5,
+          "missesUnmeasured": 0,
+          "survives": 4,
+          "failedIds": [
+            "legacy-100"
+          ]
+        }
+      },
+      "semanticViolations": [],
+      "providerCalls": 0,
+      "databaseCalls": 0,
+      "providerTop1": null,
+      "missDetection": null,
+      "definitiveWrong": null,
+      "hardConfusion": null,
+      "trustGateEvaluated": false,
+      "legacyCoverageEquivalent": false,
+      "unresolvedLegacyChallenges": 33,
+      "currentRuntimeUnchanged": true,
+      "productionAuthority": false,
+      "failures": [
+        {
+          "id": "legacy-008",
+          "expect": "rogers",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 0,
+          "themes": {
+            "bullied": 1,
+            "solitude": 1
+          },
+          "selected": [
+            "jones",
+            "fitzgerald_e",
+            "andersen",
+            "douglass",
+            "ramanujan",
+            "shelley_m"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-012",
+          "expect": "rogers",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 0,
+          "themes": {
+            "solitude": 1,
+            "bullied": 1,
+            "worthlessness": 1
+          },
+          "selected": [
+            "andersen",
+            "ramanujan",
+            "jones",
+            "sullivan_a",
+            "fitzgerald_e",
+            "douglass"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-016",
+          "expect": "rachmaninoff",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 14,
+          "themes": {
+            "public_failure": 2,
+            "shame": 1,
+            "creative_dismissal": 1
+          },
+          "selected": [
+            "owens",
+            "shostakovich",
+            "butler",
+            "bronte_c",
+            "simone",
+            "poitier"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-019",
+          "expect": "rachmaninoff",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 19,
+          "themes": {
+            "public_failure": 1,
+            "shame": 1
+          },
+          "selected": [
+            "owens",
+            "shostakovich",
+            "simone",
+            "anning",
+            "carver",
+            "coleman"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-036",
+          "expect": "mcclintock",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 11,
+          "themes": {
+            "dismissed": 2,
+            "quiet_defiance": 1
+          },
+          "selected": [
+            "chandler",
+            "child",
+            "graham",
+            "rustin",
+            "lee",
+            "rogers"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-043",
+          "expect": "poitier",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 15,
+          "themes": {
+            "dismissed": 2,
+            "worthlessness": 2
+          },
+          "selected": [
+            "banting",
+            "andersen",
+            "simone",
+            "sullivan_a",
+            "tallchief",
+            "bly"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-048",
+          "expect": "poitier",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 20,
+          "themes": {
+            "late_start": 1,
+            "social_constraint": 1,
+            "dismissed": 3,
+            "quiet_defiance": 1,
+            "worthlessness": 2
+          },
+          "selected": [
+            "tallchief",
+            "banting",
+            "bly",
+            "faraday",
+            "anning",
+            "coleman"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-054",
+          "expect": "lewis_e",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 19,
+          "themes": {
+            "dismissed": 3,
+            "shame": 1,
+            "dispossession": 1
+          },
+          "selected": [
+            "simone",
+            "tallchief",
+            "bly",
+            "faraday",
+            "anning",
+            "coleman"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-058",
+          "expect": "rogers",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 0,
+          "themes": {
+            "bullied": 1,
+            "solitude": 2
+          },
+          "selected": [
+            "jones",
+            "fitzgerald_e",
+            "douglass",
+            "ramanujan",
+            "shelley_m",
+            "andersen"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-060",
+          "expect": "lindgren",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 22,
+          "themes": {
+            "shame": 1,
+            "exile": 1,
+            "solitude": 1
+          },
+          "selected": [
+            "jones",
+            "douglass",
+            "simone",
+            "ramanujan",
+            "shelley_m",
+            "fitzgerald_e"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-067",
+          "expect": "carver",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 19,
+          "themes": {
+            "solitude": 2,
+            "dismissed": 2,
+            "social_constraint": 1
+          },
+          "selected": [
+            "anning",
+            "bly",
+            "faraday",
+            "tallchief",
+            "douglass",
+            "ramanujan"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-078",
+          "expect": "lamarr",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 18,
+          "themes": {
+            "dismissed": 3,
+            "social_constraint": 1,
+            "creative_dismissal": 1
+          },
+          "selected": [
+            "anning",
+            "faraday",
+            "bly",
+            "tallchief",
+            "coleman",
+            "banting"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-079",
+          "expect": "lamarr",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 18,
+          "themes": {
+            "creative_dismissal": 1,
+            "dismissed": 1
+          },
+          "selected": [
+            "anning",
+            "banting",
+            "bronte_c",
+            "butler",
+            "coleman",
+            "marshall"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-090",
+          "expect": "rachmaninoff",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 12,
+          "themes": {
+            "public_failure": 1,
+            "creative_dismissal": 1
+          },
+          "selected": [
+            "bronte_c",
+            "butler",
+            "shostakovich",
+            "owens",
+            "poitier",
+            "anning"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-100",
+          "expect": "rogers",
+          "hard": false,
+          "semantic": true,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 0,
+          "themes": {},
+          "selected": [
+            "jones",
+            "rudolph",
+            "charles_r",
+            "sullivan_a",
+            "fitzgerald_e",
+            "poitier"
+          ],
+          "framing": "unmeasured-no-provider"
+        }
+      ],
+      "exitCode": 1,
+      "identicalOnIndependentRootRerun": true
+    },
+    {
+      "kind": "frozen-label-shortlist-diagnostic-v1",
+      "mode": "draft-baseline",
+      "corpusSha256": "a57e29ed47821270118319e80a7fdd4ae02ca72191300b6a4a3d0d9de73be54c",
+      "labelFreezeSha256": "7c89510d4c45b759e018977c2469677e5698d95b01933c283fb1044edd2be08d",
+      "routesSha256": "1f349bc863883c4fefc30e6fab18e6b5847980652cbae84df5ae4a2f47989181",
+      "strata": {
+        "all": {
+          "cases": 107,
+          "positives": 100,
+          "missesUnmeasured": 7,
+          "survives": 88,
+          "failedIds": [
+            "legacy-043",
+            "legacy-048",
+            "new-lamarr-b",
+            "new-lewis_e-a",
+            "new-lindgren-a",
+            "new-lindgren-b",
+            "new-poitier-a",
+            "new-poitier-b",
+            "new-rachmaninoff-a",
+            "new-rachmaninoff-b",
+            "new-rudolph-a",
+            "new-rudolph-b"
+          ]
+        },
+        "inherited": {
+          "cases": 71,
+          "positives": 68,
+          "missesUnmeasured": 3,
+          "survives": 66,
+          "failedIds": [
+            "legacy-043",
+            "legacy-048"
+          ]
+        },
+        "new": {
+          "cases": 36,
+          "positives": 32,
+          "missesUnmeasured": 4,
+          "survives": 22,
+          "failedIds": [
+            "new-lamarr-b",
+            "new-lewis_e-a",
+            "new-lindgren-a",
+            "new-lindgren-b",
+            "new-poitier-a",
+            "new-poitier-b",
+            "new-rachmaninoff-a",
+            "new-rachmaninoff-b",
+            "new-rudolph-a",
+            "new-rudolph-b"
+          ]
+        },
+        "hard": {
+          "cases": 37,
+          "positives": 37,
+          "missesUnmeasured": 0,
+          "survives": 32,
+          "failedIds": [
+            "legacy-048",
+            "new-lindgren-b",
+            "new-poitier-b",
+            "new-rachmaninoff-b",
+            "new-rudolph-b"
+          ]
+        },
+        "semantic": {
+          "cases": 3,
+          "positives": 3,
+          "missesUnmeasured": 0,
+          "survives": 3,
+          "failedIds": []
+        }
+      },
+      "semanticViolations": [],
+      "providerCalls": 0,
+      "databaseCalls": 0,
+      "providerTop1": null,
+      "missDetection": null,
+      "definitiveWrong": null,
+      "hardConfusion": null,
+      "trustGateEvaluated": false,
+      "legacyCoverageEquivalent": false,
+      "unresolvedLegacyChallenges": 33,
+      "currentRuntimeUnchanged": true,
+      "productionAuthority": false,
+      "failures": [
+        {
+          "id": "legacy-043",
+          "expect": "poitier",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 15,
+          "themes": {
+            "dismissed": 2,
+            "worthlessness": 2
+          },
+          "selected": [
+            "banting",
+            "andersen",
+            "simone",
+            "sullivan_a",
+            "tallchief",
+            "bly"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-048",
+          "expect": "poitier",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 20,
+          "themes": {
+            "late_start": 1,
+            "social_constraint": 1,
+            "dismissed": 3,
+            "quiet_defiance": 1,
+            "worthlessness": 2
+          },
+          "selected": [
+            "tallchief",
+            "banting",
+            "bly",
+            "faraday",
+            "anning",
+            "coleman"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lamarr-b",
+          "expect": "lamarr",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 9,
+          "themes": {},
+          "selected": [
+            "anning",
+            "butler",
+            "carver",
+            "coleman",
+            "hurston",
+            "oconnor"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lewis_e-a",
+          "expect": "lewis_e",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 7,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "bly",
+            "douglass",
+            "faraday",
+            "hughes",
+            "kovalevskaya"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lindgren-a",
+          "expect": "lindgren",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 8,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "anning",
+            "bly",
+            "douglass",
+            "faraday",
+            "hughes"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lindgren-b",
+          "expect": "lindgren",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 14,
+          "themes": {},
+          "selected": [
+            "anning",
+            "bly",
+            "douglass",
+            "faraday",
+            "hughes",
+            "kovalevskaya"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-poitier-a",
+          "expect": "poitier",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 12,
+          "themes": {
+            "dismissed": 2
+          },
+          "selected": [
+            "simone",
+            "tallchief",
+            "bly",
+            "faraday",
+            "anning",
+            "coleman"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-poitier-b",
+          "expect": "poitier",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 7,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "angelou",
+            "berlin_i",
+            "hughes",
+            "kovalevskaya",
+            "lewis_e"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rachmaninoff-a",
+          "expect": "rachmaninoff",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 8,
+          "themes": {},
+          "selected": [
+            "anning",
+            "butler",
+            "carver",
+            "coleman",
+            "hurston",
+            "lamarr"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rachmaninoff-b",
+          "expect": "rachmaninoff",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 9,
+          "themes": {},
+          "selected": [
+            "anning",
+            "banting",
+            "bronte_c",
+            "butler",
+            "coleman",
+            "hurston"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rudolph-a",
+          "expect": "rudolph",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 16,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "angelou",
+            "berlin_i",
+            "kovalevskaya",
+            "poitier",
+            "simone"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rudolph-b",
+          "expect": "rudolph",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 21,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "angelou",
+            "berlin_i",
+            "hughes",
+            "kovalevskaya",
+            "lewis_e"
+          ],
+          "framing": "unmeasured-no-provider"
+        }
+      ],
+      "exitCode": 1,
+      "identicalOnIndependentRootRerun": true
+    },
+    {
+      "kind": "frozen-label-shortlist-diagnostic-v1",
+      "mode": "draft-proposal",
+      "corpusSha256": "a57e29ed47821270118319e80a7fdd4ae02ca72191300b6a4a3d0d9de73be54c",
+      "labelFreezeSha256": "7c89510d4c45b759e018977c2469677e5698d95b01933c283fb1044edd2be08d",
+      "routesSha256": "1f349bc863883c4fefc30e6fab18e6b5847980652cbae84df5ae4a2f47989181",
+      "strata": {
+        "all": {
+          "cases": 107,
+          "positives": 100,
+          "missesUnmeasured": 7,
+          "survives": 88,
+          "failedIds": [
+            "legacy-043",
+            "legacy-048",
+            "new-lamarr-b",
+            "new-lewis_e-a",
+            "new-lindgren-a",
+            "new-lindgren-b",
+            "new-poitier-a",
+            "new-poitier-b",
+            "new-rachmaninoff-a",
+            "new-rachmaninoff-b",
+            "new-rudolph-a",
+            "new-rudolph-b"
+          ]
+        },
+        "inherited": {
+          "cases": 71,
+          "positives": 68,
+          "missesUnmeasured": 3,
+          "survives": 66,
+          "failedIds": [
+            "legacy-043",
+            "legacy-048"
+          ]
+        },
+        "new": {
+          "cases": 36,
+          "positives": 32,
+          "missesUnmeasured": 4,
+          "survives": 22,
+          "failedIds": [
+            "new-lamarr-b",
+            "new-lewis_e-a",
+            "new-lindgren-a",
+            "new-lindgren-b",
+            "new-poitier-a",
+            "new-poitier-b",
+            "new-rachmaninoff-a",
+            "new-rachmaninoff-b",
+            "new-rudolph-a",
+            "new-rudolph-b"
+          ]
+        },
+        "hard": {
+          "cases": 37,
+          "positives": 37,
+          "missesUnmeasured": 0,
+          "survives": 32,
+          "failedIds": [
+            "legacy-048",
+            "new-lindgren-b",
+            "new-poitier-b",
+            "new-rachmaninoff-b",
+            "new-rudolph-b"
+          ]
+        },
+        "semantic": {
+          "cases": 3,
+          "positives": 3,
+          "missesUnmeasured": 0,
+          "survives": 3,
+          "failedIds": []
+        }
+      },
+      "semanticViolations": [],
+      "providerCalls": 0,
+      "databaseCalls": 0,
+      "providerTop1": null,
+      "missDetection": null,
+      "definitiveWrong": null,
+      "hardConfusion": null,
+      "trustGateEvaluated": false,
+      "legacyCoverageEquivalent": false,
+      "unresolvedLegacyChallenges": 33,
+      "currentRuntimeUnchanged": true,
+      "productionAuthority": false,
+      "failures": [
+        {
+          "id": "legacy-043",
+          "expect": "poitier",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 12,
+          "themes": {
+            "dismissed": 2,
+            "creative_dismissal": 1,
+            "worthlessness": 2
+          },
+          "selected": [
+            "banting",
+            "butler",
+            "andersen",
+            "simone",
+            "sullivan_a",
+            "tallchief"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "legacy-048",
+          "expect": "poitier",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 20,
+          "themes": {
+            "late_start": 1,
+            "social_constraint": 1,
+            "dismissed": 3,
+            "quiet_defiance": 1,
+            "worthlessness": 2
+          },
+          "selected": [
+            "tallchief",
+            "banting",
+            "bly",
+            "faraday",
+            "anning",
+            "coleman"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lamarr-b",
+          "expect": "lamarr",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 9,
+          "themes": {},
+          "selected": [
+            "anning",
+            "butler",
+            "carver",
+            "coleman",
+            "hurston",
+            "oconnor"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lewis_e-a",
+          "expect": "lewis_e",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 7,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "bly",
+            "douglass",
+            "faraday",
+            "hughes",
+            "kovalevskaya"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lindgren-a",
+          "expect": "lindgren",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 8,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "anning",
+            "bly",
+            "douglass",
+            "faraday",
+            "hughes"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-lindgren-b",
+          "expect": "lindgren",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 14,
+          "themes": {},
+          "selected": [
+            "anning",
+            "bly",
+            "douglass",
+            "faraday",
+            "hughes",
+            "kovalevskaya"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-poitier-a",
+          "expect": "poitier",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 8,
+          "themes": {
+            "dismissed": 2,
+            "creative_dismissal": 1
+          },
+          "selected": [
+            "simone",
+            "tallchief",
+            "bly",
+            "faraday",
+            "anning",
+            "coleman"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-poitier-b",
+          "expect": "poitier",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 7,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "angelou",
+            "berlin_i",
+            "hughes",
+            "kovalevskaya",
+            "lewis_e"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rachmaninoff-a",
+          "expect": "rachmaninoff",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 8,
+          "themes": {},
+          "selected": [
+            "anning",
+            "butler",
+            "carver",
+            "coleman",
+            "hurston",
+            "lamarr"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rachmaninoff-b",
+          "expect": "rachmaninoff",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 9,
+          "themes": {},
+          "selected": [
+            "anning",
+            "banting",
+            "bronte_c",
+            "butler",
+            "coleman",
+            "hurston"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rudolph-a",
+          "expect": "rudolph",
+          "hard": false,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 16,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "angelou",
+            "berlin_i",
+            "kovalevskaya",
+            "poitier",
+            "simone"
+          ],
+          "framing": "unmeasured-no-provider"
+        },
+        {
+          "id": "new-rudolph-b",
+          "expect": "rudolph",
+          "hard": true,
+          "semantic": false,
+          "semanticFlagStillHonest": true,
+          "survives": false,
+          "targetRank": 21,
+          "themes": {},
+          "selected": [
+            "andersen",
+            "angelou",
+            "berlin_i",
+            "hughes",
+            "kovalevskaya",
+            "lewis_e"
+          ],
+          "framing": "unmeasured-no-provider"
+        }
+      ],
+      "exitCode": 1,
+      "identicalOnIndependentRootRerun": true
+    }
+  ]
+}

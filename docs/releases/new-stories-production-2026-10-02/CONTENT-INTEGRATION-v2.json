@@ -1,0 +1,100 @@
+{
+  "preparedAt": "2026-10-03T00:53:39.692Z",
+  "status": "reviewed factual summaries installed; fresh evaluation pending",
+  "baseCommit": "38815c83922afd7350ab1f1aafcd3dcafd874cd3",
+  "originalLibrarySha256": "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+  "librarySha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+  "originalFiftyDeclarationPrefixSha256": "5712679a2ebc710b1a80e509f2ea262ed7703197e55bc5fb73d25c1e7efba846",
+  "originalFiftyPreserved": true,
+  "librarySize": 60,
+  "proposalSha256": "9427e7e099252b91d7f23b3873fa0a32b9f770a93aa0dcfacc2a47c44e7883ac",
+  "targets": [
+    {
+      "figureKey": "addams",
+      "file": "addams-1888-1889-telling-the-plan-v1.stage.json",
+      "proposedSha256": "88b9f38e502427b62f5a9fbd1f4b627570e43b611695b1bcdf58c4b5a9378f5c",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "blackwell_e",
+      "file": "blackwell_e-1847-1849-a-place-to-study-v1.stage.json",
+      "proposedSha256": "1e4ffa9de5a7ded0bbc197a7bfb697aaa7979a5106bbc3f3d393bae988fff233",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "darwin",
+      "file": "darwin-1831-the-refusal-and-the-letter-v1.stage.json",
+      "proposedSha256": "ae02bc2cdb464181e3dc491f22ec1790acb38b13e18e2a779fc42df17623e986",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "equiano",
+      "file": "equiano.stage.json",
+      "proposedSha256": "71a9b20926b1d79e7dcf89d6d8e8cd0bd491a6ec9114d14733d2687e75fe80d5",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "grant",
+      "file": "grant-1858-1861-a-place-in-the-shop-v1.stage.json",
+      "proposedSha256": "62f823659ae9ba9852645b3f0a87cd095b1bb9bf5c4ec2121495e07f0d228da4",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "jacobs",
+      "file": "jacobs.stage.json",
+      "proposedSha256": "1e742185296306e1002dd43be85485cda013eeb874a0206537bbd68b3ffeb9d8",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "keller",
+      "file": "keller-1887-learning-that-things-have-names-v1.stage.json",
+      "proposedSha256": "a52a2553641b684f809ed4e7c5bbb921ca2b376769cddf4252ee6a2b8fe140ac",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "riis",
+      "file": "riis.stage.json",
+      "proposedSha256": "8f16ac5cd2cd5f60ab56542e6cc178b6708db1aa78d7a2fb5c88133ba9d17b44",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "seacole",
+      "file": "seacole.stage.json",
+      "proposedSha256": "0fd509e00f40915730c5b9eeefad2e91bea1331ccc1b44d9e2b1578d42aeb248",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    },
+    {
+      "figureKey": "washington_b",
+      "file": "washington_b-1872-reaching-the-classroom-v1.stage.json",
+      "proposedSha256": "42c2c501b720c9bb1cfa504eee1b3b61cda0f89668fdff042a1bec79d9264677",
+      "changedFields": [
+        "biographicalFacts"
+      ]
+    }
+  ],
+  "unchanged": [
+    "existing fifty stage values",
+    "keyword map",
+    "recipe identities and selection",
+    "original gold labels",
+    "all ten canonical stories"
+  ]
+}

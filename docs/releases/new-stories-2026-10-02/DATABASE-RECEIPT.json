@@ -1,0 +1,108 @@
+{
+  "completedAt": "2026-10-02T23:44:29.884Z",
+  "mode": "draft-only-insert",
+  "verifiedNewStoryCount": 10,
+  "beforeCounts": {
+    "figures": 50,
+    "stages": 50,
+    "specs": 51
+  },
+  "afterCounts": {
+    "figures": 60,
+    "stages": 60,
+    "specs": 61
+  },
+  "publishedStoriesBefore": 34,
+  "publishedStoriesAfter": 34,
+  "preexistingCatalogUnchanged": true,
+  "databaseReadbackMatchesInputs": true,
+  "reviewMetadataEmpty": true,
+  "beforeHashes": {
+    "figures": "ce50d13f072fec2486620e9992bdc7ed9a0e6393ac47b054bbcb4dcd30066753",
+    "stages": "74e3fae5ac3c6fb09fd3432873e751fddbfa34068dfe0fd05143d8975b5afc8b",
+    "specs": "c4c5d9b1c17a08841ad90817f7c41490ad39d90b72592675f20af20efc4a8744"
+  },
+  "targets": [
+    {
+      "figureKey": "addams",
+      "storySpecId": "addams:1888-1889-telling-the-plan:v1",
+      "candidateSha256": "9260ee4b57ebf2c787eee79b1793e4bee6cd0ac1672546ed5de5c9aeaf87891d",
+      "stageSha256": "a8341b21d86a210e0dff86f36ddd436f73fdf6a152fb9f4dd0bccaf0eb242b2c",
+      "words": 700,
+      "status": "draft"
+    },
+    {
+      "figureKey": "blackwell_e",
+      "storySpecId": "blackwell_e:1847-1849-a-place-to-study:v1",
+      "candidateSha256": "00603068c790572fcd006caef825c0623980258ab243d176d8be4b9f55d2470b",
+      "stageSha256": "b9008cdf3d9d3e76e95c360dadbc5364c8accc43a2e1127b46296fdeac524557",
+      "words": 704,
+      "status": "draft"
+    },
+    {
+      "figureKey": "darwin",
+      "storySpecId": "darwin:1831-the-refusal-and-the-letter:v1",
+      "candidateSha256": "992ad5607114cba116e5116250280f3427d3908f9ad2efbe9ac36c647485d275",
+      "stageSha256": "7aa1520d9a3961b1371df96ea9ae5cfa06f5673ca22a511ce3de652f85c2edd4",
+      "words": 642,
+      "status": "draft"
+    },
+    {
+      "figureKey": "equiano",
+      "storySpecId": "equiano:1766-the-money-and-the-release:v1",
+      "candidateSha256": "1bc840b38367c4e160b51b3108a21e9bbc1159148e5944fcf1e4bed16cc2828b",
+      "stageSha256": "3f4d89498917cc873736856169bfc19e3b0f3b90905051d8e898953bbe400572",
+      "words": 717,
+      "status": "draft"
+    },
+    {
+      "figureKey": "grant",
+      "storySpecId": "grant:1858-1861-a-place-in-the-shop:v1",
+      "candidateSha256": "b3109af80eef19de3895a887f4a2afbac507510c38273080086ce80609036d40",
+      "stageSha256": "92d7d46a90f782e57fc5e37afdf13c8d7c61a9cdd3f7ede2dadd228531d7c432",
+      "words": 575,
+      "status": "draft"
+    },
+    {
+      "figureKey": "jacobs",
+      "storySpecId": "jacobs:1835-1842-concealment-to-escape:v1",
+      "candidateSha256": "a356885b4d87bcc3d0d17690fbc12ad305f7ae786161dd50231db7d815f7380d",
+      "stageSha256": "248b265a2e9b8e8610da885c29c3dba20b3e91b33e8cfa6e326329d6ad839544",
+      "words": 785,
+      "status": "draft"
+    },
+    {
+      "figureKey": "keller",
+      "storySpecId": "keller:1887-learning-that-things-have-names:v1",
+      "candidateSha256": "f22c3d72571e23bb7724d55417f6bd8b348dbd0a10ae777b51968c3cd3f03f38",
+      "stageSha256": "a1a3dbf3462a653a77c69a0c43fc71277c2a3466e98b5be079be6a0e6d8eef99",
+      "words": 700,
+      "status": "draft"
+    },
+    {
+      "figureKey": "riis",
+      "storySpecId": "riis:1873-unpaid-work-to-reporting:v1",
+      "candidateSha256": "36fb3e3faeba4bedb135184dc50e9c3566f6ff4c6ca9d64cf77f8d93025447a9",
+      "stageSha256": "2f7863e85f7f4615c343155241453e648705242ad36fd861dd86768b0593ef50",
+      "words": 669,
+      "status": "draft"
+    },
+    {
+      "figureKey": "seacole",
+      "storySpecId": "seacole:1854-1855-refusal-to-sick-wharf:v1",
+      "candidateSha256": "a95630dfba3878e46b27e46621f14e740e4828583d7c51416a91510908920a2c",
+      "stageSha256": "c3d1a4566aedc3fbb578ea23247fed11abcec27e2e70416cae703b9d4cc0331c",
+      "words": 754,
+      "status": "draft"
+    },
+    {
+      "figureKey": "washington_b",
+      "storySpecId": "washington_b:1872-reaching-the-classroom:v1",
+      "candidateSha256": "4f3f3802b6ccb30c0f0ef817d9ce650a331682066237eca39dfb3158a2a6cc55",
+      "stageSha256": "0bcd6d3752ccc0073354a15f901a36eef2df13db7d7e47a61bc5d69c3defbfe8",
+      "words": 703,
+      "status": "draft"
+    }
+  ],
+  "approval": "No publication approval recorded or simulated metadata persisted"
+}

@@ -1,0 +1,1177 @@
+{
+  "schemaVersion": "new-ten-facts-proposal-v2",
+  "status": "editorial-proposal-for-independent-review",
+  "createdAt": "2026-10-03T00:51:27.345Z",
+  "purpose": "Replace long assembled reranker claim lists with concise source-grounded episode summaries. Does not assert the cause of the earlier matching regression or any improved matching result.",
+  "inputDirectory": "proposed-stages",
+  "outputDirectory": "facts-v2-stages",
+  "changedFieldsFromV1": [
+    "biographicalFacts"
+  ],
+  "preserved": [
+    "original fifty library stages",
+    "original proposal files",
+    "historical ages",
+    "canonical story prose",
+    "StorySpec candidates",
+    "source notes",
+    "sources",
+    "shape sentences",
+    "facets",
+    "anti-themes",
+    "already reviewed Jacobs self_invention and Riis late_start theme additions",
+    "keyword routes",
+    "recipe selection",
+    "frozen gold labels",
+    "matching thresholds"
+  ],
+  "actionsPerformed": {
+    "databaseMutation": false,
+    "providerEvaluation": false,
+    "deployment": false
+  },
+  "totals": {
+    "stages": 10,
+    "originalFactsWords": 5293,
+    "proposedFactsWords": 1479,
+    "originalFactsCharacters": 31732,
+    "proposedFactsCharacters": 9300
+  },
+  "stages": [
+    {
+      "figureKey": "addams",
+      "stageId": "1888-1889-telling-the-plan",
+      "file": "addams-1888-1889-telling-the-plan-v1.stage.json",
+      "originalWritingStageSha256": "19f0c4891bfd948c1cac9f08feedb02fe657ed15a723de56405a61acd4dcbbf9",
+      "proposedV1StageSha256": "19f0c4891bfd948c1cac9f08feedb02fe657ed15a723de56405a61acd4dcbbf9",
+      "proposedV2StageSha256": "88b9f38e502427b62f5a9fbd1f4b627570e43b611695b1bcdf58c4b5a9378f5c",
+      "originalSha256": "19f0c4891bfd948c1cac9f08feedb02fe657ed15a723de56405a61acd4dcbbf9",
+      "proposedSha256": "88b9f38e502427b62f5a9fbd1f4b627570e43b611695b1bcdf58c4b5a9378f5c",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "addams-1888-1889-telling-the-plan-v1.candidate.json",
+      "unchangedCandidateSha256": "7f58b64e1d3c48be8a057e1b30435a4ffc6be37ca2eefae77ffdf1c4c5249e20",
+      "originalFactsWords": 435,
+      "proposedFactsWords": 133,
+      "originalFactsCharacters": 2722,
+      "proposedFactsCharacters": 872,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "Jane Addams was born September 6, 1860; she was twenty-seven in April 1888 and twenty-nine on September 18, 1889. In April 1888, Addams attended a bullfight in Madrid and stayed longer than the other travelers, carried by historical associations. She met the others in the foyer; they were pale, disapproving, and affected by the spectacle. She had paid little attention to the bloodshed. That evening she felt deep chagrin and condemned by both the spectacle and the wider moral situation. She judged that her proposed reform had served as an excuse to continue studying and traveling without carrying it out. Her gradually forming plan was to rent a city house among people with unmet needs, where young women could connect study with active life; she could not date its beginning. She resolved to start by talking, then explained the plan to her old school friend Ellen Gates Starr with stumbling, uncertainty, and fear it might collapse when spoken. Starr brought comfort, vigor and enthusiasm; the plan gained substance but remained hazy in detail. In June 1888 Addams visited Toynbee Hall with an introduction, seeking suggestions and firsthand activity. In January 1889 Addams and Starr searched Chicago neighborhoods and described the plan; they intended to begin with their own resources. Thomas Davidson criticized their plan, arguing that communal life could distract residents from the wider neighborhood; their reply did not convince him. She saw an appealing old house from a carriage, searched for it on several days, and eventually gave up. Three weeks later, while searching in the advised neighborhood, she rediscovered the house and felt surprised and overjoyed; some rooms could eventually be sublet. The repaired house had a wide hall and open fireplace; they furnished it with travel photographs, family furniture and durable new pieces suited to its character, taking great pleasure in the work. On September 18, 1889, Addams and Starr moved in with Mary Keyser, who performed housework and became important to household and neighborhood. On the first night they forgot to close or lock a side door and found no theft the next morning, which pleased them. In the first weeks Starr began weekly reading in the upstairs dining room; two members ate with them, helped wash dishes, then cleared the table for photographs. Addams’s early descriptions reported dirty streets, inadequate schools, poor lighting, inadequate sanitation and homes divided among multiple families; many homes had only a backyard water faucet. The first guest was a young woman from a neighboring tenement; her widowed mother helped support their family by scrubbing a downtown theater every night, and the guest stayed a month.",
+          "after": "Jane Addams was twenty-seven to twenty-nine during April 1888–September 1889. Her memoir describes chagrin after a bullfight; she judged that her proposed reform had become an excuse for continued study and travel. She had gradually formed a plan to rent a city house where young women would connect study with active life among neighbors with unmet needs. She told Ellen Gates Starr despite stumbling and fearing that speaking would make the plan collapse. Starr's enthusiasm helped give it substance, although details remained uncertain. They sought advice, faced criticism and searched unsuccessfully before finding the house again. They intended to begin with their own resources. After repairs and furnishing, they moved in with housekeeper Mary Keyser in September 1889. Early work included a reading group, shared meals, washing dishes and housing a young neighbor."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "Jane Addams was born September 6, 1860; she was twenty-seven in April 1888 and twenty-nine on September 18, 1889. In April 1888, Addams attended a bullfight in Madrid and stayed longer than the other travelers, carried by historical associations. She met the others in the foyer; they were pale, disapproving, and affected by the spectacle. She had paid little attention to the bloodshed. That evening she felt deep chagrin and condemned by both the spectacle and the wider moral situation. She judged that her proposed reform had served as an excuse to continue studying and traveling without carrying it out. Her gradually forming plan was to rent a city house among people with unmet needs, where young women could connect study with active life; she could not date its beginning. She resolved to start by talking, then explained the plan to her old school friend Ellen Gates Starr with stumbling, uncertainty, and fear it might collapse when spoken. Starr brought comfort, vigor and enthusiasm; the plan gained substance but remained hazy in detail. In June 1888 Addams visited Toynbee Hall with an introduction, seeking suggestions and firsthand activity. In January 1889 Addams and Starr searched Chicago neighborhoods and described the plan; they intended to begin with their own resources. Thomas Davidson criticized their plan, arguing that communal life could distract residents from the wider neighborhood; their reply did not convince him. She saw an appealing old house from a carriage, searched for it on several days, and eventually gave up. Three weeks later, while searching in the advised neighborhood, she rediscovered the house and felt surprised and overjoyed; some rooms could eventually be sublet. The repaired house had a wide hall and open fireplace; they furnished it with travel photographs, family furniture and durable new pieces suited to its character, taking great pleasure in the work. On September 18, 1889, Addams and Starr moved in with Mary Keyser, who performed housework and became important to household and neighborhood. On the first night they forgot to close or lock a side door and found no theft the next morning, which pleased them. In the first weeks Starr began weekly reading in the upstairs dining room; two members ate with them, helped wash dishes, then cleared the table for photographs. Addams’s early descriptions reported dirty streets, inadequate schools, poor lighting, inadequate sanitation and homes divided among multiple families; many homes had only a backyard water faucet. The first guest was a young woman from a neighboring tenement; her widowed mother helped support their family by scrubbing a downtown theater every night, and the guest stayed a month.",
+          "after": "Jane Addams was twenty-seven to twenty-nine during April 1888–September 1889. Her memoir describes chagrin after a bullfight; she judged that her proposed reform had become an excuse for continued study and travel. She had gradually formed a plan to rent a city house where young women would connect study with active life among neighbors with unmet needs. She told Ellen Gates Starr despite stumbling and fearing that speaking would make the plan collapse. Starr's enthusiasm helped give it substance, although details remained uncertain. They sought advice, faced criticism and searched unsuccessfully before finding the house again. They intended to begin with their own resources. After repairs and furnishing, they moved in with housekeeper Mary Keyser in September 1889. Early work included a reading group, shared meals, washing dishes and housing a young neighbor."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "Jane Addams was twenty-seven to twenty-nine during April 1888–September 1889.",
+          "candidateFactIds": [
+            "fact-age"
+          ]
+        },
+        {
+          "sentence": "Her memoir describes chagrin after a bullfight; she judged that her proposed reform had become an excuse for continued study and travel.",
+          "candidateFactIds": [
+            "fact-arena",
+            "fact-chagrin",
+            "fact-paper"
+          ]
+        },
+        {
+          "sentence": "She had gradually formed a plan to rent a city house where young women would connect study with active life among neighbors with unmet needs.",
+          "candidateFactIds": [
+            "fact-plan"
+          ]
+        },
+        {
+          "sentence": "She told Ellen Gates Starr despite stumbling and fearing that speaking would make the plan collapse.",
+          "candidateFactIds": [
+            "fact-talk"
+          ]
+        },
+        {
+          "sentence": "Starr's enthusiasm helped give it substance, although details remained uncertain.",
+          "candidateFactIds": [
+            "fact-companion"
+          ]
+        },
+        {
+          "sentence": "They sought advice, faced criticism and searched unsuccessfully before finding the house again.",
+          "candidateFactIds": [
+            "fact-visit",
+            "fact-critic",
+            "fact-search",
+            "fact-lost-house",
+            "fact-found-house"
+          ]
+        },
+        {
+          "sentence": "They intended to begin with their own resources.",
+          "candidateFactIds": [
+            "fact-search"
+          ]
+        },
+        {
+          "sentence": "After repairs and furnishing, they moved in with housekeeper Mary Keyser in September 1889.",
+          "candidateFactIds": [
+            "fact-repair",
+            "fact-move"
+          ]
+        },
+        {
+          "sentence": "Early work included a reading group, shared meals, washing dishes and housing a young neighbor.",
+          "candidateFactIds": [
+            "fact-reading",
+            "fact-guest"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Jane Addams, Twenty Years at Hull-House with Autobiographical Notes (1910; accessed Gutenberg transcription of 1912 edition). Chapters IV, The Snare of Preparation, and V, First Days at Hull-House. https://www.gutenberg.org/cache/epub/1325/pg1325-images.html",
+        "Jane Addams Hull House / Metropolitan Family Services, History. Jane Addams Biography, birth and rented house paragraphs. https://janeaddamshullhouse.org/history/"
+      ]
+    },
+    {
+      "figureKey": "blackwell_e",
+      "stageId": "1847-1849-a-place-to-study",
+      "file": "blackwell_e-1847-1849-a-place-to-study-v1.stage.json",
+      "originalWritingStageSha256": "250e8d2849b39f8752ad31a11b2048c43da12ce5fc26d3ae431e045f45911efd",
+      "proposedV1StageSha256": "250e8d2849b39f8752ad31a11b2048c43da12ce5fc26d3ae431e045f45911efd",
+      "proposedV2StageSha256": "1e4ffa9de5a7ded0bbc197a7bfb697aaa7979a5106bbc3f3d393bae988fff233",
+      "originalSha256": "250e8d2849b39f8752ad31a11b2048c43da12ce5fc26d3ae431e045f45911efd",
+      "proposedSha256": "1e4ffa9de5a7ded0bbc197a7bfb697aaa7979a5106bbc3f3d393bae988fff233",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "blackwell_e-1847-1849-a-place-to-study-v1.candidate.json",
+      "unchangedCandidateSha256": "61dac9480f73dd6834c8651b689ebe0434cc2d36779710053073e200aee5bdd2",
+      "originalFactsWords": 644,
+      "proposedFactsWords": 137,
+      "originalFactsCharacters": 4019,
+      "proposedFactsCharacters": 888,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "On November 9, 1847, Blackwell met the anatomy professor at the college. He shook her hand warmly, asked what she had studied, and promised opportunities for the course after she said she had studied all branches but surgery. She handed him an introductory note; he told her to wait in the anteroom while he read it to the assembled class. She heard laughter and concluding applause, entered quietly, and later received help on a missed subject. The letter describes her sitting quietly in the assemblage. Elizabeth Blackwell was born February 3, 1821, and was twenty-six during her 1847 medical-school applications and twenty-seven on graduating January 23, 1849. The November 22 journal describes a dissection as a trying ordeal. Some students blushed or smiled, some held their faces down and shook; she sat grave while her heart palpitated painfully, and afterwards felt nearly worn out. Her sense of propriety was disturbed, though she also found aspects of the exhibition ludicrous. She did not characterize every smile as cruelty and believed some classmates would not want to hurt her feelings. During the November 22 dissection Blackwell called on Christ to help her refrain from smiling, believing that smiling would ruin everything. She sat with grave indifference despite a painfully palpitating heart, regarded the professor's conduct as admirable, and described the day as partly encouraging and in some measure a triumph. These are her attested response and assessments, not proof that prayer caused an outcome; no prayer words or audible delivery are recorded. The November 15 journal records a second operation at which Blackwell was not allowed to be present. The professor's request that she miss some demonstrations annoyed, saddened, and discouraged her; she wrote to him hoping to change this. She believed the exclusion was not his wish, an attested belief rather than a verified motive. It does not identify her physical location while excluded. Blackwell wrote the professor a note asking to be regarded simply as a student with an earnest purpose. She called anatomy serious and worthy of reverence, objected to missing lectures, and offered to yield if the class wanted her absent. November 15 records the writing; November 24 describes its contents. No precise writing location, time, or original full text is supplied. On November 17 the professor appeared pleased with her note and wished to read it to the class the next day; this cheered her. The book records the actual reading in the November 24 entry, not as fulfilled on the earlier proposed date. During the previous day's class, the November 20 journal says a folded paper dropped onto her arms while she took notes. It looked as though it contained writing; she shook it off and continued. A similar action produced a hiss elsewhere, and she felt a light touch on her head. The sender and intent are not independently established. On November 24 the professor read Blackwell's note to the class while she waited in the anteroom. She joyfully heard their hearty approval, entered the amphitheatre, and quietly resumed her place. He said he felt relieved. The following statement of no further difficulty is scoped to this local demonstration dispute. The class reserved her place in lecture rooms, and she could quietly review notes there while waiting for a professor. After enrolling, she decorated her boarding room with reminders of absent friends; anatomy work was arranged with four fellow students, and she studied at night until nearly midnight. In summer hospital study, some resident doctors stopped recording diagnoses and treatment on the cards beside patients' beds, leaving her without that assistance. After graduating she felt she needed substantially more medical experience and continued seeking further study. Blackwell passed her examinations on January 19, 1849. On January 23, after the other graduates received their degrees, she was called alone to the platform and given a medical diploma by the president.",
+          "after": "Elizabeth Blackwell was twenty-six to twenty-seven during medical school in 1847–1849. In November 1847, a professor had asked her to miss some demonstrations. Her journal records annoyance, sadness and discouragement, and her note asked to be regarded as a serious student. During a dissection she sat gravely while her heart palpitated painfully and afterwards felt nearly worn out. She prayed for help in keeping from smiling. She believed some classmates did not wish to hurt her feelings. On November 24 the professor read her note while she waited outside; she heard the class's approval and returned to her place. The class subsequently reserved her seat. She studied with other students. Later hospital doctors stopped recording diagnoses and treatment beside beds, depriving her of that assistance. After receiving her diploma in January 1849, she sought more medical experience."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "On November 9, 1847, Blackwell met the anatomy professor at the college. He shook her hand warmly, asked what she had studied, and promised opportunities for the course after she said she had studied all branches but surgery. She handed him an introductory note; he told her to wait in the anteroom while he read it to the assembled class. She heard laughter and concluding applause, entered quietly, and later received help on a missed subject. The letter describes her sitting quietly in the assemblage. Elizabeth Blackwell was born February 3, 1821, and was twenty-six during her 1847 medical-school applications and twenty-seven on graduating January 23, 1849. The November 22 journal describes a dissection as a trying ordeal. Some students blushed or smiled, some held their faces down and shook; she sat grave while her heart palpitated painfully, and afterwards felt nearly worn out. Her sense of propriety was disturbed, though she also found aspects of the exhibition ludicrous. She did not characterize every smile as cruelty and believed some classmates would not want to hurt her feelings. During the November 22 dissection Blackwell called on Christ to help her refrain from smiling, believing that smiling would ruin everything. She sat with grave indifference despite a painfully palpitating heart, regarded the professor's conduct as admirable, and described the day as partly encouraging and in some measure a triumph. These are her attested response and assessments, not proof that prayer caused an outcome; no prayer words or audible delivery are recorded. The November 15 journal records a second operation at which Blackwell was not allowed to be present. The professor's request that she miss some demonstrations annoyed, saddened, and discouraged her; she wrote to him hoping to change this. She believed the exclusion was not his wish, an attested belief rather than a verified motive. It does not identify her physical location while excluded. Blackwell wrote the professor a note asking to be regarded simply as a student with an earnest purpose. She called anatomy serious and worthy of reverence, objected to missing lectures, and offered to yield if the class wanted her absent. November 15 records the writing; November 24 describes its contents. No precise writing location, time, or original full text is supplied. On November 17 the professor appeared pleased with her note and wished to read it to the class the next day; this cheered her. The book records the actual reading in the November 24 entry, not as fulfilled on the earlier proposed date. During the previous day's class, the November 20 journal says a folded paper dropped onto her arms while she took notes. It looked as though it contained writing; she shook it off and continued. A similar action produced a hiss elsewhere, and she felt a light touch on her head. The sender and intent are not independently established. On November 24 the professor read Blackwell's note to the class while she waited in the anteroom. She joyfully heard their hearty approval, entered the amphitheatre, and quietly resumed her place. He said he felt relieved. The following statement of no further difficulty is scoped to this local demonstration dispute. The class reserved her place in lecture rooms, and she could quietly review notes there while waiting for a professor. After enrolling, she decorated her boarding room with reminders of absent friends; anatomy work was arranged with four fellow students, and she studied at night until nearly midnight. In summer hospital study, some resident doctors stopped recording diagnoses and treatment on the cards beside patients' beds, leaving her without that assistance. After graduating she felt she needed substantially more medical experience and continued seeking further study. Blackwell passed her examinations on January 19, 1849. On January 23, after the other graduates received their degrees, she was called alone to the platform and given a medical diploma by the president.",
+          "after": "Elizabeth Blackwell was twenty-six to twenty-seven during medical school in 1847–1849. In November 1847, a professor had asked her to miss some demonstrations. Her journal records annoyance, sadness and discouragement, and her note asked to be regarded as a serious student. During a dissection she sat gravely while her heart palpitated painfully and afterwards felt nearly worn out. She prayed for help in keeping from smiling. She believed some classmates did not wish to hurt her feelings. On November 24 the professor read her note while she waited outside; she heard the class's approval and returned to her place. The class subsequently reserved her seat. She studied with other students. Later hospital doctors stopped recording diagnoses and treatment beside beds, depriving her of that assistance. After receiving her diploma in January 1849, she sought more medical experience."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "Elizabeth Blackwell was twenty-six to twenty-seven during medical school in 1847–1849.",
+          "candidateFactIds": [
+            "fact-age"
+          ]
+        },
+        {
+          "sentence": "In November 1847, a professor had asked her to miss some demonstrations.",
+          "candidateFactIds": [
+            "w-exclusion"
+          ]
+        },
+        {
+          "sentence": "Her journal records annoyance, sadness and discouragement, and her note asked to be regarded as a serious student.",
+          "candidateFactIds": [
+            "w-exclusion",
+            "w-note"
+          ]
+        },
+        {
+          "sentence": "During a dissection she sat gravely while her heart palpitated painfully and afterwards felt nearly worn out.",
+          "candidateFactIds": [
+            "w-dissection"
+          ]
+        },
+        {
+          "sentence": "She prayed for help in keeping from smiling.",
+          "candidateFactIds": [
+            "w-prayer"
+          ]
+        },
+        {
+          "sentence": "She believed some classmates did not wish to hurt her feelings.",
+          "candidateFactIds": [
+            "w-dissection"
+          ]
+        },
+        {
+          "sentence": "On November 24 the professor read her note while she waited outside; she heard the class's approval and returned to her place.",
+          "candidateFactIds": [
+            "w-return"
+          ]
+        },
+        {
+          "sentence": "The class subsequently reserved her seat.",
+          "candidateFactIds": [
+            "fact-seat"
+          ]
+        },
+        {
+          "sentence": "She studied with other students.",
+          "candidateFactIds": [
+            "fact-study"
+          ]
+        },
+        {
+          "sentence": "Later hospital doctors stopped recording diagnoses and treatment beside beds, depriving her of that assistance.",
+          "candidateFactIds": [
+            "fact-hospital"
+          ]
+        },
+        {
+          "sentence": "After receiving her diploma in January 1849, she sought more medical experience.",
+          "candidateFactIds": [
+            "fact-degree",
+            "fact-next"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Elizabeth Blackwell, Pioneer Work in Opening the Medical Profession to Women: Autobiographical Sketches (1895). https://www.gutenberg.org/cache/epub/65496/pg65496-images.html Chapter III: November 9 letter pp. 67–69; November 15, 17, 20, 22 and 24 journal entries pp. 71–72; study recollections pp. 73–74; hospital obstruction pp. 80–81; January 23, 1849 graduation record pp. 87–91; further training p. 92. Chapter IV, birth-record cousin letter pp. 118–119. Chapter VI, women's medical college and practice pp. 237–239 for the bridge."
+      ]
+    },
+    {
+      "figureKey": "darwin",
+      "stageId": "1831-the-refusal-and-the-letter",
+      "file": "darwin-1831-the-refusal-and-the-letter-v1.stage.json",
+      "originalWritingStageSha256": "0b9866aed70e86a86ce038a88b050f0aeb3b848e6530ee39c838ecbf1f210dc0",
+      "proposedV1StageSha256": "0b9866aed70e86a86ce038a88b050f0aeb3b848e6530ee39c838ecbf1f210dc0",
+      "proposedV2StageSha256": "ae02bc2cdb464181e3dc491f22ec1790acb38b13e18e2a779fc42df17623e986",
+      "originalSha256": "0b9866aed70e86a86ce038a88b050f0aeb3b848e6530ee39c838ecbf1f210dc0",
+      "proposedSha256": "ae02bc2cdb464181e3dc491f22ec1790acb38b13e18e2a779fc42df17623e986",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "darwin-1831-the-refusal-and-the-letter-v1.candidate.json",
+      "unchangedCandidateSha256": "26707c4dbde4c4f9dcb18cfdfbe3f3ce0aa3730049cc2b4b8e91271f85cf24f4",
+      "originalFactsWords": 634,
+      "proposedFactsWords": 134,
+      "originalFactsCharacters": 3722,
+      "proposedFactsCharacters": 878,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "Charles Darwin was born February 12, 1809; he was twenty-two in August and September 1831. He received the offer late on August 29 and wanted to accept it. The offer was to accompany a captain on a voyage, with natural history collecting, observing and noting; he was not presented as a finished naturalist. His father had not firmly refused but gave advice so strongly against the voyage that Darwin said he could not be comfortable ignoring it. Objections included later steady work, little seafaring, short time for preparation and the chance he might not suit the captain. He said even going with his father’s disapproval would take away energy he needed; without those objections he would have taken the risks. He wrote to refuse, thanked Henslow for the trouble taken, and asked him to send a confirming line in case the badly addressed letter failed to arrive. On the last day of August he visited his uncle’s household, whose members supported going; that evening he drew up his father’s objections. His list included concern the voyage would be useless, uncomfortable, a wild scheme, or another change of profession; his uncle answered the objections. He sent the objection list and uncle’s answers with a new request for a definite yes or no; he promised to yield to a no and stop raising it. He wrote that he would hesitate to go if his father remained uncomfortable and doubted it would unfit him for a steady life. His uncle argued that the voyage had definite work and suited his current interests, while leaving the decision to father and son. On September 1 the uncle sent for Darwin while he was out shooting and offered to take him to see his father; the two traveled together. When they arrived, Darwin’s father kindly gave consent; in his September 2 letter Darwin said his father had changed his mind. After arriving at the Red Lion on September 2, he sent Henslow a note saying he was tired, hoped the place remained open, and wanted to meet next morning. On September 4 he reported spending the preceding day with Henslow considering much that needed to be done; Henslow could supply introductions. Henslow cautioned him against making up his mind until long conversations with the captains; he asked his sister not to spread the news in case he did not go. On September 4, a letter from FitzRoy was so much against Darwin’s going that Darwin and Henslow gave up the scheme; Darwin went to London nevertheless. Darwin met FitzRoy in London on September 5 and found him open, kind and direct; FitzRoy’s intended companion had just written that he could not go. FitzRoy offered to share his cabin and accommodation, though room was scarce; he warned that discomfort in constant company on a small vessel could make both men miserable. FitzRoy said Darwin must live plainly with no wine and the plainest dinners, and advised him not to decide yet; the scheme was less favorable than previously described. FitzRoy directly asked whether Darwin could accept being told to leave the cabin when FitzRoy wanted privacy; Darwin liked that direct approach. The route around the world was not certain, and Darwin said he would not decide until it was settled. On September 6 he reported his first truly cheerful day since the offer, attributing it to his confidence in the captain, while expressly saying the matter was not settled. On September 6 he worked all day adding and removing articles from his lists but would buy nothing until everything was settled. He asked his family for more shirts, slippers, walking shoes, books and instruments needing alteration, and requested an answer by return post. The captain already had many of the books on Darwin’s list, reducing the expected cost of his equipment.",
+          "after": "In August–September 1831, Charles Darwin was twenty-two. He wanted to accept a voyage offer to collect and observe natural history. His father advised strongly against it, citing steady employment, preparation and compatibility with the captain. Darwin wrote to decline because ignoring that advice would make him uncomfortable. His uncle answered the objections and accompanied him to his father, who gave consent. A discouraging letter from the captain then led Darwin and Henslow to abandon the plan again, but Darwin still went to London. On September 5 he met the captain and liked his directness. The captain described cramped shared accommodation, plain meals and his need for cabin privacy. On September 6 Darwin felt cheerful but said the matter remained unsettled. He worked on equipment lists and family requests, postponing purchases until arrangements were certain."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "Charles Darwin was born February 12, 1809; he was twenty-two in August and September 1831. He received the offer late on August 29 and wanted to accept it. The offer was to accompany a captain on a voyage, with natural history collecting, observing and noting; he was not presented as a finished naturalist. His father had not firmly refused but gave advice so strongly against the voyage that Darwin said he could not be comfortable ignoring it. Objections included later steady work, little seafaring, short time for preparation and the chance he might not suit the captain. He said even going with his father’s disapproval would take away energy he needed; without those objections he would have taken the risks. He wrote to refuse, thanked Henslow for the trouble taken, and asked him to send a confirming line in case the badly addressed letter failed to arrive. On the last day of August he visited his uncle’s household, whose members supported going; that evening he drew up his father’s objections. His list included concern the voyage would be useless, uncomfortable, a wild scheme, or another change of profession; his uncle answered the objections. He sent the objection list and uncle’s answers with a new request for a definite yes or no; he promised to yield to a no and stop raising it. He wrote that he would hesitate to go if his father remained uncomfortable and doubted it would unfit him for a steady life. His uncle argued that the voyage had definite work and suited his current interests, while leaving the decision to father and son. On September 1 the uncle sent for Darwin while he was out shooting and offered to take him to see his father; the two traveled together. When they arrived, Darwin’s father kindly gave consent; in his September 2 letter Darwin said his father had changed his mind. After arriving at the Red Lion on September 2, he sent Henslow a note saying he was tired, hoped the place remained open, and wanted to meet next morning. On September 4 he reported spending the preceding day with Henslow considering much that needed to be done; Henslow could supply introductions. Henslow cautioned him against making up his mind until long conversations with the captains; he asked his sister not to spread the news in case he did not go. On September 4, a letter from FitzRoy was so much against Darwin’s going that Darwin and Henslow gave up the scheme; Darwin went to London nevertheless. Darwin met FitzRoy in London on September 5 and found him open, kind and direct; FitzRoy’s intended companion had just written that he could not go. FitzRoy offered to share his cabin and accommodation, though room was scarce; he warned that discomfort in constant company on a small vessel could make both men miserable. FitzRoy said Darwin must live plainly with no wine and the plainest dinners, and advised him not to decide yet; the scheme was less favorable than previously described. FitzRoy directly asked whether Darwin could accept being told to leave the cabin when FitzRoy wanted privacy; Darwin liked that direct approach. The route around the world was not certain, and Darwin said he would not decide until it was settled. On September 6 he reported his first truly cheerful day since the offer, attributing it to his confidence in the captain, while expressly saying the matter was not settled. On September 6 he worked all day adding and removing articles from his lists but would buy nothing until everything was settled. He asked his family for more shirts, slippers, walking shoes, books and instruments needing alteration, and requested an answer by return post. The captain already had many of the books on Darwin’s list, reducing the expected cost of his equipment.",
+          "after": "In August–September 1831, Charles Darwin was twenty-two. He wanted to accept a voyage offer to collect and observe natural history. His father advised strongly against it, citing steady employment, preparation and compatibility with the captain. Darwin wrote to decline because ignoring that advice would make him uncomfortable. His uncle answered the objections and accompanied him to his father, who gave consent. A discouraging letter from the captain then led Darwin and Henslow to abandon the plan again, but Darwin still went to London. On September 5 he met the captain and liked his directness. The captain described cramped shared accommodation, plain meals and his need for cabin privacy. On September 6 Darwin felt cheerful but said the matter remained unsettled. He worked on equipment lists and family requests, postponing purchases until arrangements were certain."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "In August–September 1831, Charles Darwin was twenty-two.",
+          "candidateFactIds": [
+            "fact-age"
+          ]
+        },
+        {
+          "sentence": "He wanted to accept a voyage offer to collect and observe natural history.",
+          "candidateFactIds": [
+            "fact-letter",
+            "fact-offer"
+          ]
+        },
+        {
+          "sentence": "His father advised strongly against it, citing steady employment, preparation and compatibility with the captain.",
+          "candidateFactIds": [
+            "fact-advice",
+            "fact-concerns"
+          ]
+        },
+        {
+          "sentence": "Darwin wrote to decline because ignoring that advice would make him uncomfortable.",
+          "candidateFactIds": [
+            "fact-advice",
+            "fact-refusal"
+          ]
+        },
+        {
+          "sentence": "His uncle answered the objections and accompanied him to his father, who gave consent.",
+          "candidateFactIds": [
+            "fact-list",
+            "fact-answers",
+            "fact-drive",
+            "fact-consent"
+          ]
+        },
+        {
+          "sentence": "A discouraging letter from the captain then led Darwin and Henslow to abandon the plan again, but Darwin still went to London.",
+          "candidateFactIds": [
+            "fact-discouraged"
+          ]
+        },
+        {
+          "sentence": "On September 5 he met the captain and liked his directness.",
+          "candidateFactIds": [
+            "fact-meeting",
+            "fact-privacy"
+          ]
+        },
+        {
+          "sentence": "The captain described cramped shared accommodation, plain meals and his need for cabin privacy.",
+          "candidateFactIds": [
+            "fact-cabin",
+            "fact-plain-meals",
+            "fact-privacy"
+          ]
+        },
+        {
+          "sentence": "On September 6 Darwin felt cheerful but said the matter remained unsettled.",
+          "candidateFactIds": [
+            "fact-cheerful",
+            "fact-route-uncertain"
+          ]
+        },
+        {
+          "sentence": "He worked on equipment lists and family requests, postponing purchases until arrangements were certain.",
+          "candidateFactIds": [
+            "fact-lists",
+            "fact-commissions"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "John Stevens Henslow to Charles Darwin, August 24, 1831, Darwin Correspondence Project letter 105. Transcript, naturalist/companion offer and qualifications paragraphs. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-105.xml",
+        "Charles Darwin to John Stevens Henslow, August 30, 1831, Darwin Correspondence Project letter 107. Transcript opening offer, objections and postscript. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-107.xml",
+        "Charles Darwin to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 110. Transcript request for answer and numbered objections. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-110.xml",
+        "Josiah Wedgwood II to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 109. Transcript numbered replies; footnote 1 transcribes Darwin’s December 16, 1831 diary account. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-109.xml",
+        "Charles Darwin, letters of September 2 and 4, 1831, in Francis Darwin (ed.), Charles Darwin: His Life Told in an Autobiographical Chapter, and in a Selected Series of His Published Letters (1902). Chapter V, September 2 arrival note and September 4 letter to Susan; Gutenberg inline pages 118–119. https://www.gutenberg.org/cache/epub/38629/pg38629-images.html",
+        "Charles Darwin, Autobiography, written 1876, edited by Francis Darwin. Opening birth statement; Voyage of the Beagle and publications sections. https://www.gutenberg.org/files/2010/2010-h/2010-h.htm",
+        "Charles Darwin, letters of September 5 and 6, 1831, in Francis Darwin (ed.), The Life and Letters of Charles Darwin, volume I (1887). Chapter V (Chapter 1.V in transcription), The Appointment to the Beagle: September 5 letters to Susan Darwin and J. S. Henslow; September 6 letter to Susan Darwin. https://www.gutenberg.org/files/2087/2087-h/2087-h.htm"
+      ]
+    },
+    {
+      "figureKey": "equiano",
+      "stageId": "1766-the-money-and-the-release",
+      "file": "equiano.stage.json",
+      "originalWritingStageSha256": "2c5800b61b6d2ce134f0bed8165ee9e2cf72ce0c3a11faf357c9b2c26f5f2144",
+      "proposedV1StageSha256": "2c5800b61b6d2ce134f0bed8165ee9e2cf72ce0c3a11faf357c9b2c26f5f2144",
+      "proposedV2StageSha256": "71a9b20926b1d79e7dcf89d6d8e8cd0bd491a6ec9114d14733d2687e75fe80d5",
+      "originalSha256": "2c5800b61b6d2ce134f0bed8165ee9e2cf72ce0c3a11faf357c9b2c26f5f2144",
+      "proposedSha256": "71a9b20926b1d79e7dcf89d6d8e8cd0bd491a6ec9114d14733d2687e75fe80d5",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "equiano.candidate.json",
+      "unchangedCandidateSha256": "f2d63a7dd33de0a889c60f2e87ba4137812ffac4c80b53d447561400338b329c",
+      "originalFactsWords": 546,
+      "proposedFactsWords": 151,
+      "originalFactsCharacters": 3198,
+      "proposedFactsCharacters": 919,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "Equiano reports birth in 1745 in chapter I; the 1766 episode therefore implies about 20–21. The birth year is self-reported and must remain approximate; no birthplace claim is used. Early in 1766 he sold goods on a voyage and hoped selling them after returning to Montserrat would provide enough to purchase freedom. The owner ordered the vessel to other ports instead of returning home; Equiano was disappointed and could not invest all his money as profitably at the new stop. On that voyage the vessel also carried enslaved people; his personal trading unfolded within this coercive shipping system. A silversmith became gravely ill; the captain attended him and promised Equiano extra pay after receiving the man’s property. After the death they eagerly opened a nest of trunks. Papers in the smallest were mistaken for valuable notes and the captain clapped his hands. Examination found that the whole nest held only one dollar and a half; all the property could not pay for a coffin. Both men went away mortified. Equiano had nearly enough to purchase freedom even before the anticipated bonus. After returning and selling his goods, he had about 47 pounds and asked the captain how to present the agreed 40-pound sterling purchase price. The captain told him to come one morning when he and the owner were having breakfast together. He entered with money in his hand and fear in his heart, bowed, and asked the owner to keep his promise of freedom when he could pay. The owner recoiled from the request; Equiano heart sank, and the owner questioned whether he had the money and how he earned it. Equiano explained honestly how he obtained the money; the captain confirmed honest earnings and industry. The owner said Equiano had gained money faster than he had and that he would not have made the promise had he expected savings so quickly. At breakfast the captain clapped the owner on the back and urged him to keep the freedom promise and accept payment. He argued that the owner had already profited from Equiano’s work, was now receiving his purchase money back, and could still save money because Equiano would remain with the vessels. The owner said he would keep the promise, accepted the money, and sent Equiano to obtain a written release. His fear turned to joy; he bowed, cried, thanked the men, and left the room to obtain the document. He paid for the document at the register office and took it back to be signed; the owner signed it that day. The reproduced document was signed July 10, 1766 and registered July 11, 1766. It records 70 pounds in island currency; his narrative states 40 pounds sterling. These are distinct currency labels, not contradictory purchase amounts. He remained with the vessel as a paid able-bodied sailor, though he wanted to return to England. During the next voyage in August 1766, an enslaved man insulted and struck him; he lost his temper and beat the man. The other man’s owner threatened to have him publicly flogged. He refused to come ashore and, after repeated advice, hid at a friend’s house. The vessel was searched after he left. Friends demanded return of the warrant before he resumed work; he paid the expenses and returned aboard.",
+          "after": "In 1766, Olaudah Equiano was about twenty to twenty-one, based on his memoir's reported birth year. While enslaved, he traded goods while working aboard vessels that also carried enslaved people. Owner-directed port changes disrupted his trading plans. A promised bonus proved disappointing when a dead man's trunks contained little value; he already had nearly enough money to buy his freedom. After returning and selling goods, he approached the owner with the agreed purchase price. The owner questioned his earnings and regretted making the promise when he saved so quickly. A captain confirmed his honest earnings and urged the owner to keep his word. The owner accepted payment and signed a written release in July. Equiano remained with the vessel as a paid sailor. On a subsequent voyage he beat a man who had struck him, then faced the other man's owner's threat of public flogging and hid at a friend's house."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "Equiano reports birth in 1745 in chapter I; the 1766 episode therefore implies about 20–21. The birth year is self-reported and must remain approximate; no birthplace claim is used. Early in 1766 he sold goods on a voyage and hoped selling them after returning to Montserrat would provide enough to purchase freedom. The owner ordered the vessel to other ports instead of returning home; Equiano was disappointed and could not invest all his money as profitably at the new stop. On that voyage the vessel also carried enslaved people; his personal trading unfolded within this coercive shipping system. A silversmith became gravely ill; the captain attended him and promised Equiano extra pay after receiving the man’s property. After the death they eagerly opened a nest of trunks. Papers in the smallest were mistaken for valuable notes and the captain clapped his hands. Examination found that the whole nest held only one dollar and a half; all the property could not pay for a coffin. Both men went away mortified. Equiano had nearly enough to purchase freedom even before the anticipated bonus. After returning and selling his goods, he had about 47 pounds and asked the captain how to present the agreed 40-pound sterling purchase price. The captain told him to come one morning when he and the owner were having breakfast together. He entered with money in his hand and fear in his heart, bowed, and asked the owner to keep his promise of freedom when he could pay. The owner recoiled from the request; Equiano heart sank, and the owner questioned whether he had the money and how he earned it. Equiano explained honestly how he obtained the money; the captain confirmed honest earnings and industry. The owner said Equiano had gained money faster than he had and that he would not have made the promise had he expected savings so quickly. At breakfast the captain clapped the owner on the back and urged him to keep the freedom promise and accept payment. He argued that the owner had already profited from Equiano’s work, was now receiving his purchase money back, and could still save money because Equiano would remain with the vessels. The owner said he would keep the promise, accepted the money, and sent Equiano to obtain a written release. His fear turned to joy; he bowed, cried, thanked the men, and left the room to obtain the document. He paid for the document at the register office and took it back to be signed; the owner signed it that day. The reproduced document was signed July 10, 1766 and registered July 11, 1766. It records 70 pounds in island currency; his narrative states 40 pounds sterling. These are distinct currency labels, not contradictory purchase amounts. He remained with the vessel as a paid able-bodied sailor, though he wanted to return to England. During the next voyage in August 1766, an enslaved man insulted and struck him; he lost his temper and beat the man. The other man’s owner threatened to have him publicly flogged. He refused to come ashore and, after repeated advice, hid at a friend’s house. The vessel was searched after he left. Friends demanded return of the warrant before he resumed work; he paid the expenses and returned aboard.",
+          "after": "In 1766, Olaudah Equiano was about twenty to twenty-one, based on his memoir's reported birth year. While enslaved, he traded goods while working aboard vessels that also carried enslaved people. Owner-directed port changes disrupted his trading plans. A promised bonus proved disappointing when a dead man's trunks contained little value; he already had nearly enough money to buy his freedom. After returning and selling goods, he approached the owner with the agreed purchase price. The owner questioned his earnings and regretted making the promise when he saved so quickly. A captain confirmed his honest earnings and urged the owner to keep his word. The owner accepted payment and signed a written release in July. Equiano remained with the vessel as a paid sailor. On a subsequent voyage he beat a man who had struck him, then faced the other man's owner's threat of public flogging and hid at a friend's house."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "In 1766, Olaudah Equiano was about twenty to twenty-one, based on his memoir's reported birth year.",
+          "candidateFactIds": [
+            "age"
+          ]
+        },
+        {
+          "sentence": "While enslaved, he traded goods while working aboard vessels that also carried enslaved people.",
+          "candidateFactIds": [
+            "voyage",
+            "cargo"
+          ]
+        },
+        {
+          "sentence": "Owner-directed port changes disrupted his trading plans.",
+          "candidateFactIds": [
+            "detour"
+          ]
+        },
+        {
+          "sentence": "A promised bonus proved disappointing when a dead man's trunks contained little value; he already had nearly enough money to buy his freedom.",
+          "candidateFactIds": [
+            "bonus"
+          ]
+        },
+        {
+          "sentence": "After returning and selling goods, he approached the owner with the agreed purchase price.",
+          "candidateFactIds": [
+            "savings",
+            "appointment",
+            "plea"
+          ]
+        },
+        {
+          "sentence": "The owner questioned his earnings and regretted making the promise when he saved so quickly.",
+          "candidateFactIds": [
+            "recoil",
+            "regret"
+          ]
+        },
+        {
+          "sentence": "A captain confirmed his honest earnings and urged the owner to keep his word.",
+          "candidateFactIds": [
+            "answer",
+            "support"
+          ]
+        },
+        {
+          "sentence": "The owner accepted payment and signed a written release in July.",
+          "candidateFactIds": [
+            "consent",
+            "paper",
+            "legal"
+          ]
+        },
+        {
+          "sentence": "Equiano remained with the vessel as a paid sailor.",
+          "candidateFactIds": [
+            "employment"
+          ]
+        },
+        {
+          "sentence": "On a subsequent voyage he beat a man who had struck him, then faced the other man's owner's threat of public flogging and hid at a friend's house.",
+          "candidateFactIds": [
+            "threat"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Olaudah Equiano, The Interesting Narrative (1789), chapters I and VII, including the reproduced manumission. https://www.gutenberg.org/cache/epub/15399/pg15399-images.html"
+      ]
+    },
+    {
+      "figureKey": "grant",
+      "stageId": "1858-1861-a-place-in-the-shop",
+      "file": "grant-1858-1861-a-place-in-the-shop-v1.stage.json",
+      "originalWritingStageSha256": "3d7dfe032176623a7cce00b730b56c8f9a4b9d612e4fdf7687bdf861474c8a34",
+      "proposedV1StageSha256": "3d7dfe032176623a7cce00b730b56c8f9a4b9d612e4fdf7687bdf861474c8a34",
+      "proposedV2StageSha256": "62f823659ae9ba9852645b3f0a87cd095b1bb9bf5c4ec2121495e07f0d228da4",
+      "originalSha256": "3d7dfe032176623a7cce00b730b56c8f9a4b9d612e4fdf7687bdf861474c8a34",
+      "proposedSha256": "62f823659ae9ba9852645b3f0a87cd095b1bb9bf5c4ec2121495e07f0d228da4",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "grant-1858-1861-a-place-in-the-shop-v1.candidate.json",
+      "unchangedCandidateSha256": "9243aab98e701af974666d4d962aabdc0b19cf4b346935b5c4cf633b704fa758",
+      "originalFactsWords": 633,
+      "proposedFactsWords": 149,
+      "originalFactsCharacters": 3712,
+      "proposedFactsCharacters": 912,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "Ulysses S. Grant was born April 27, 1822; he was thirty-six in autumn 1858 and thirty-nine by May 2, 1861. He arrived home Tuesday evening before his October 1, 1858 letter; it was his chill day and he felt very badly. His wife had worsened during his absence and improved again; his son’s hearing was nearly restored after illness; the rest of the family was tolerably well except his father-in-law, whose health was much as before. During September 1858 his son had been dangerously ill, Grant and his wife had chills and fever, and others in the household were sick. He said he could not oversee his farmworkers, much less work himself, and was getting behind in the farm business. He recalled that fever and ague in 1858 reduced the work he could do for over a year without confining him to the house. In the October 1 letter he planned a sale with his father-in-law to dispose of farm stock, rent cleared land and sell a portion including his place. He planned a visit toward spring, preferred his father’s offer to mere salary, and wanted the prospect of eventually doing business for himself. He expressed pleasure in income depending partly on his own work and business ability instead of fixed pay. In autumn 1858 he auctioned his stock, crops and farming tools and left farming. He entered a real estate partnership that winter; it had enough work for one person but not enough income for two families. In March 1859 he could not tell whether the new business would succeed; he proposed sending business cards for his father to distribute and enclosed property descriptions and prices. He applied for the county engineer appointment but did not receive it. By October 24, 1859 he wrote that he remained unemployed and expected, but had not secured, a customs appointment. In May 1860 he left the real estate partnership, moved to Galena, Illinois, and took a clerkship in his father’s store. At the shop he supported himself and his family on a stipulated salary; his father had established his two younger brothers there. Grant attended closely to the shop and made few acquaintances beyond customers and people in the same trade. His March 21, 1858 letter records farm labor by three Black men, two hired by the year and one belonging to Dent; October 1 discusses an enslaved boy given to Julia and possible income from hiring him out. After the first volunteer call he declined consideration for captain of the local company, offered practical help, drilled the men and accompanied them to the state capital. He thought his duties had ended after the company was mustered and prepared to return home by the nine o’clock evening train; the governor stayed at the same hotel, and Grant knew him by sight from seeing him at meals. After leaving the supper room before the governor, Grant stood at the hotel’s front door. The governor addressed him by his former captain title, asked about leaving, and invited him to stay overnight and visit the office next morning. His April 29, 1861 letter says he had intended to return home the previous evening but the governor detained him and presumably wanted help organizing troops. The next morning Grant visited the governor’s office, was asked to help the Adjutant-General using his army experience, and accepted. Grant knew army forms from past service and could direct their preparation, but said he was no clerk; he relied on a coat pocket or a more careful clerk to retain papers. A clerk in the Adjutant-General’s office supplied what Grant lacked in clerical work. His May 2, 1861 letter was written from the Adjutant-General’s office; he had heard no news from home and advised not urging collections from reliable customers amid disrupted currency.",
+          "after": "From 1858 to early 1861, Ulysses S. Grant was thirty-six to thirty-nine. His family had serious illnesses, and his own fever reduced his ability to work and supervise farmworkers. That farm household used enslaved labor. He sold stock, crops and tools, then entered a real estate partnership that could not support two families. He did not receive the county engineer appointment and remained unemployed in late 1859. He wanted the prospect of eventually doing business for himself. In 1860 he took a salaried clerkship in his father's store, where his younger brothers already worked, and supported his family. In 1861 he helped drill a volunteer company and accompanied it to the state capital. Preparing to return home, he was asked by the governor to stay and visit the office next morning. He accepted work preparing troop paperwork using his army experience, relying on a clerk for assistance with records."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "Ulysses S. Grant was born April 27, 1822; he was thirty-six in autumn 1858 and thirty-nine by May 2, 1861. He arrived home Tuesday evening before his October 1, 1858 letter; it was his chill day and he felt very badly. His wife had worsened during his absence and improved again; his son’s hearing was nearly restored after illness; the rest of the family was tolerably well except his father-in-law, whose health was much as before. During September 1858 his son had been dangerously ill, Grant and his wife had chills and fever, and others in the household were sick. He said he could not oversee his farmworkers, much less work himself, and was getting behind in the farm business. He recalled that fever and ague in 1858 reduced the work he could do for over a year without confining him to the house. In the October 1 letter he planned a sale with his father-in-law to dispose of farm stock, rent cleared land and sell a portion including his place. He planned a visit toward spring, preferred his father’s offer to mere salary, and wanted the prospect of eventually doing business for himself. He expressed pleasure in income depending partly on his own work and business ability instead of fixed pay. In autumn 1858 he auctioned his stock, crops and farming tools and left farming. He entered a real estate partnership that winter; it had enough work for one person but not enough income for two families. In March 1859 he could not tell whether the new business would succeed; he proposed sending business cards for his father to distribute and enclosed property descriptions and prices. He applied for the county engineer appointment but did not receive it. By October 24, 1859 he wrote that he remained unemployed and expected, but had not secured, a customs appointment. In May 1860 he left the real estate partnership, moved to Galena, Illinois, and took a clerkship in his father’s store. At the shop he supported himself and his family on a stipulated salary; his father had established his two younger brothers there. Grant attended closely to the shop and made few acquaintances beyond customers and people in the same trade. His March 21, 1858 letter records farm labor by three Black men, two hired by the year and one belonging to Dent; October 1 discusses an enslaved boy given to Julia and possible income from hiring him out. After the first volunteer call he declined consideration for captain of the local company, offered practical help, drilled the men and accompanied them to the state capital. He thought his duties had ended after the company was mustered and prepared to return home by the nine o’clock evening train; the governor stayed at the same hotel, and Grant knew him by sight from seeing him at meals. After leaving the supper room before the governor, Grant stood at the hotel’s front door. The governor addressed him by his former captain title, asked about leaving, and invited him to stay overnight and visit the office next morning. His April 29, 1861 letter says he had intended to return home the previous evening but the governor detained him and presumably wanted help organizing troops. The next morning Grant visited the governor’s office, was asked to help the Adjutant-General using his army experience, and accepted. Grant knew army forms from past service and could direct their preparation, but said he was no clerk; he relied on a coat pocket or a more careful clerk to retain papers. A clerk in the Adjutant-General’s office supplied what Grant lacked in clerical work. His May 2, 1861 letter was written from the Adjutant-General’s office; he had heard no news from home and advised not urging collections from reliable customers amid disrupted currency.",
+          "after": "From 1858 to early 1861, Ulysses S. Grant was thirty-six to thirty-nine. His family had serious illnesses, and his own fever reduced his ability to work and supervise farmworkers. That farm household used enslaved labor. He sold stock, crops and tools, then entered a real estate partnership that could not support two families. He did not receive the county engineer appointment and remained unemployed in late 1859. He wanted the prospect of eventually doing business for himself. In 1860 he took a salaried clerkship in his father's store, where his younger brothers already worked, and supported his family. In 1861 he helped drill a volunteer company and accompanied it to the state capital. Preparing to return home, he was asked by the governor to stay and visit the office next morning. He accepted work preparing troop paperwork using his army experience, relying on a clerk for assistance with records."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "From 1858 to early 1861, Ulysses S. Grant was thirty-six to thirty-nine.",
+          "candidateFactIds": [
+            "fact-age"
+          ]
+        },
+        {
+          "sentence": "His family had serious illnesses, and his own fever reduced his ability to work and supervise farmworkers.",
+          "candidateFactIds": [
+            "fact-family-illness",
+            "fact-behind",
+            "fact-fever"
+          ]
+        },
+        {
+          "sentence": "That farm household used enslaved labor.",
+          "candidateFactIds": [
+            "fact-enslaved-labor"
+          ]
+        },
+        {
+          "sentence": "He sold stock, crops and tools, then entered a real estate partnership that could not support two families.",
+          "candidateFactIds": [
+            "fact-auction",
+            "fact-agency"
+          ]
+        },
+        {
+          "sentence": "He did not receive the county engineer appointment and remained unemployed in late 1859.",
+          "candidateFactIds": [
+            "fact-engineer",
+            "fact-unemployed"
+          ]
+        },
+        {
+          "sentence": "He wanted the prospect of eventually doing business for himself.",
+          "candidateFactIds": [
+            "fact-father-offer",
+            "fact-income-preference"
+          ]
+        },
+        {
+          "sentence": "In 1860 he took a salaried clerkship in his father's store, where his younger brothers already worked, and supported his family.",
+          "candidateFactIds": [
+            "fact-move",
+            "fact-salary"
+          ]
+        },
+        {
+          "sentence": "In 1861 he helped drill a volunteer company and accompanied it to the state capital.",
+          "candidateFactIds": [
+            "fact-help"
+          ]
+        },
+        {
+          "sentence": "Preparing to return home, he was asked by the governor to stay and visit the office next morning.",
+          "candidateFactIds": [
+            "fact-departure",
+            "fact-front-door",
+            "fact-overnight"
+          ]
+        },
+        {
+          "sentence": "He accepted work preparing troop paperwork using his army experience, relying on a clerk for assistance with records.",
+          "candidateFactIds": [
+            "fact-office",
+            "fact-forms",
+            "fact-clerk-help"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Ulysses S. Grant, Letters to His Father and His Youngest Sister, 1857–78, edited Jesse Grant Cramer (1912). Letters March 21, September 7 and October 1, 1858; March 12 and October 24, 1859; April 29 and May 2, 1861. Claim support is in Grant’s letters, not editorial commentary. https://www.gutenberg.org/files/13471/13471-h/13471-h.htm",
+        "Ulysses S. Grant, Personal Memoirs (1885). Chapter I birth; Chapter XVI farming, property agency and store; Chapter XVII volunteer company, hotel-front-door encounter and office work. https://www.gutenberg.org/cache/epub/4367/pg4367-images.html",
+        "U.S. National Park Service, Ulysses S. Grant. Quick Facts and biography service and presidency paragraphs. https://www.nps.gov/people/ulysses-s-grant.htm"
+      ]
+    },
+    {
+      "figureKey": "jacobs",
+      "stageId": "1835-1842-concealment-to-escape",
+      "file": "jacobs.stage.json",
+      "originalWritingStageSha256": "a8cc1d0240c8a1f78ab0e69b6374a2d9e77eb1d2517b97ddcdbde58c6898940d",
+      "proposedV1StageSha256": "b1b42c978305421387e6f7d12bb0798884eef2e6f8e3b352d458ba49fcb42b37",
+      "proposedV2StageSha256": "1e742185296306e1002dd43be85485cda013eeb874a0206537bbd68b3ffeb9d8",
+      "originalSha256": "b1b42c978305421387e6f7d12bb0798884eef2e6f8e3b352d458ba49fcb42b37",
+      "proposedSha256": "1e742185296306e1002dd43be85485cda013eeb874a0206537bbd68b3ffeb9d8",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "jacobs.candidate.json",
+      "unchangedCandidateSha256": "515a62f30d6c8d6dac0fe7c02f6a112065f353d24c0fcc69f71b847305fd87ed",
+      "originalFactsWords": 598,
+      "proposedFactsWords": 176,
+      "originalFactsCharacters": 3549,
+      "proposedFactsCharacters": 1109,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "The state historical marker dates Jacobs birth to about 1813, concealment to 1835 and escape north to 1842; her preface says 27 years in a Slave State. Ages 20–29 deliberately cover this chronological uncertainty. After entering her grandmother’s house, Jacobs was conveyed into the small space beneath the sloping roof. A bed was on the floor, she could not stand upright, and she could sleep on one side but could not turn without hitting the roof. Rats and mice ran over the bed; she was weary and slept. The space admitted neither light nor air; she could turn only by striking the roof. Noises alone marked morning. She suffered for air and found the continued darkness oppressive while sitting or lying cramped without a gleam of light. She heard her children voices below, cried at them, and wanted to speak and see their faces but could find no opening. Relatives passed food up through a concealed door and visited at the opening when it was safe in darkness. While crawling for exercise she struck her head on a small boring tool her carpenter uncle had left behind. She searched for the side facing the street, waited for evening, and bored holes together to make a small opening. She sat at the opening late at night to enjoy a small flow of air; in the morning she watched for her children. She first saw her pursuer, feared the sight, and later saw her children through the opening. Nearly seven years passed in confinement; at times she was listless and at times impatient for air and sunshine, and her cramped body remained painful. The roof deteriorated; her uncle feared repairs would expose her; rain drenched clothes and bedding and worsened bodily pain. A trusted friend arranged passage, but family fear after news of a fugitive killing led her to give up that first plan; she offered the place to another concealed woman. An unexpected visitor entered the storeroom while she was there; she hid behind a barrel and feared discovery, though she later believed the visitor did not see her. Her relatives supported renewed departure; the friend secured a delay of the vessel; she said goodbye and reached it with assistance. The captain led her to a small cabin where the other concealed woman sat; they embraced and she sobbed. The captain heard her sobs, cautioned the women against drawing attention, told them to stay below when another sail was visible, and otherwise allowed deck access. He had represented them as women going to meet husbands. They thanked him and agreed to follow his directions, then talked quietly in the cabin. In the cabin her companion described suffering during escape, fear while concealed at her mother’s house, and separation from all her children at an auction. Jacobs told her about nearly seven years in concealment; the companion scarcely believed it and feared never hearing from her children again. While still near their place of departure she feared being returned, distrusted the crew, and wondered whether the captain could be paid to surrender them. The captain kind manner and her friend report of good treatment reassured her; he invited them onto deck and gave them comfortable seats. Approaching the northern city she watched dawn from the deck with her companion; both had tears and thought themselves safe but had left loved ones behind. After landing a Black minister and his wife offered food and a place to rest, and abolitionist friends offered assistance. When traveling onward she was excluded from first-class cars on racial grounds and endured a crowded unpleasant ride.",
+          "after": "In 1835–1842, Harriet Jacobs, an enslaved mother, spent nearly seven years hidden beneath the roof of her grandmother's house. Her age range of twenty to twenty-nine reflects uncertain birth chronology. Relatives brought food through concealed access. She could not stand upright; the unlit, poorly ventilated space left her cramped and in physical pain. She heard her children below, cried and wanted to see or speak to them. Using a boring tool, she made an opening for air and watched her children through it. Rain later drenched her clothes and bedding, and fear of discovery complicated repairs. She gave up the first arranged escape when her family feared danger after a fugitive killing, then left with relatives' and a friend's assistance. The vessel's captain warned her and another escaping woman to stay below when other ships were visible. Near departure, she feared being returned. They reached a northern city, but Jacobs had left loved ones behind and remained legally enslaved. After landing, racial discrimination barred her from first-class rail cars. Her legal freedom was obtained in 1852."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "The state historical marker dates Jacobs birth to about 1813, concealment to 1835 and escape north to 1842; her preface says 27 years in a Slave State. Ages 20–29 deliberately cover this chronological uncertainty. After entering her grandmother’s house, Jacobs was conveyed into the small space beneath the sloping roof. A bed was on the floor, she could not stand upright, and she could sleep on one side but could not turn without hitting the roof. Rats and mice ran over the bed; she was weary and slept. The space admitted neither light nor air; she could turn only by striking the roof. Noises alone marked morning. She suffered for air and found the continued darkness oppressive while sitting or lying cramped without a gleam of light. She heard her children voices below, cried at them, and wanted to speak and see their faces but could find no opening. Relatives passed food up through a concealed door and visited at the opening when it was safe in darkness. While crawling for exercise she struck her head on a small boring tool her carpenter uncle had left behind. She searched for the side facing the street, waited for evening, and bored holes together to make a small opening. She sat at the opening late at night to enjoy a small flow of air; in the morning she watched for her children. She first saw her pursuer, feared the sight, and later saw her children through the opening. Nearly seven years passed in confinement; at times she was listless and at times impatient for air and sunshine, and her cramped body remained painful. The roof deteriorated; her uncle feared repairs would expose her; rain drenched clothes and bedding and worsened bodily pain. A trusted friend arranged passage, but family fear after news of a fugitive killing led her to give up that first plan; she offered the place to another concealed woman. An unexpected visitor entered the storeroom while she was there; she hid behind a barrel and feared discovery, though she later believed the visitor did not see her. Her relatives supported renewed departure; the friend secured a delay of the vessel; she said goodbye and reached it with assistance. The captain led her to a small cabin where the other concealed woman sat; they embraced and she sobbed. The captain heard her sobs, cautioned the women against drawing attention, told them to stay below when another sail was visible, and otherwise allowed deck access. He had represented them as women going to meet husbands. They thanked him and agreed to follow his directions, then talked quietly in the cabin. In the cabin her companion described suffering during escape, fear while concealed at her mother’s house, and separation from all her children at an auction. Jacobs told her about nearly seven years in concealment; the companion scarcely believed it and feared never hearing from her children again. While still near their place of departure she feared being returned, distrusted the crew, and wondered whether the captain could be paid to surrender them. The captain kind manner and her friend report of good treatment reassured her; he invited them onto deck and gave them comfortable seats. Approaching the northern city she watched dawn from the deck with her companion; both had tears and thought themselves safe but had left loved ones behind. After landing a Black minister and his wife offered food and a place to rest, and abolitionist friends offered assistance. When traveling onward she was excluded from first-class cars on racial grounds and endured a crowded unpleasant ride.",
+          "after": "In 1835–1842, Harriet Jacobs, an enslaved mother, spent nearly seven years hidden beneath the roof of her grandmother's house. Her age range of twenty to twenty-nine reflects uncertain birth chronology. Relatives brought food through concealed access. She could not stand upright; the unlit, poorly ventilated space left her cramped and in physical pain. She heard her children below, cried and wanted to see or speak to them. Using a boring tool, she made an opening for air and watched her children through it. Rain later drenched her clothes and bedding, and fear of discovery complicated repairs. She gave up the first arranged escape when her family feared danger after a fugitive killing, then left with relatives' and a friend's assistance. The vessel's captain warned her and another escaping woman to stay below when other ships were visible. Near departure, she feared being returned. They reached a northern city, but Jacobs had left loved ones behind and remained legally enslaved. After landing, racial discrimination barred her from first-class rail cars. Her legal freedom was obtained in 1852."
+        },
+        {
+          "path": "themes",
+          "before": [
+            "dispossession",
+            "social_constraint",
+            "quiet_defiance",
+            "solitude"
+          ],
+          "after": [
+            "dispossession",
+            "social_constraint",
+            "quiet_defiance",
+            "solitude",
+            "self_invention"
+          ]
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "In 1835–1842, Harriet Jacobs, an enslaved mother, spent nearly seven years hidden beneath the roof of her grandmother's house.",
+          "candidateFactIds": [
+            "age",
+            "space",
+            "years",
+            "children",
+            "legal"
+          ]
+        },
+        {
+          "sentence": "Her age range of twenty to twenty-nine reflects uncertain birth chronology.",
+          "candidateFactIds": [
+            "age"
+          ]
+        },
+        {
+          "sentence": "Relatives brought food through concealed access.",
+          "candidateFactIds": [
+            "aid"
+          ]
+        },
+        {
+          "sentence": "She could not stand upright; the unlit, poorly ventilated space left her cramped and in physical pain.",
+          "candidateFactIds": [
+            "space",
+            "darkness",
+            "years"
+          ]
+        },
+        {
+          "sentence": "She heard her children below, cried and wanted to see or speak to them.",
+          "candidateFactIds": [
+            "children"
+          ]
+        },
+        {
+          "sentence": "Using a boring tool, she made an opening for air and watched her children through it.",
+          "candidateFactIds": [
+            "tool",
+            "holes",
+            "air",
+            "seeing"
+          ]
+        },
+        {
+          "sentence": "Rain later drenched her clothes and bedding, and fear of discovery complicated repairs.",
+          "candidateFactIds": [
+            "leak"
+          ]
+        },
+        {
+          "sentence": "She gave up the first arranged escape when her family feared danger after a fugitive killing, then left with relatives' and a friend's assistance.",
+          "candidateFactIds": [
+            "lost-chance",
+            "departure"
+          ]
+        },
+        {
+          "sentence": "The vessel's captain warned her and another escaping woman to stay below when other ships were visible.",
+          "candidateFactIds": [
+            "cabin",
+            "quiet"
+          ]
+        },
+        {
+          "sentence": "Near departure, she feared being returned.",
+          "candidateFactIds": [
+            "distrust"
+          ]
+        },
+        {
+          "sentence": "They reached a northern city, but Jacobs had left loved ones behind and remained legally enslaved.",
+          "candidateFactIds": [
+            "arrival",
+            "legal"
+          ]
+        },
+        {
+          "sentence": "After landing, racial discrimination barred her from first-class rail cars.",
+          "candidateFactIds": [
+            "rail"
+          ]
+        },
+        {
+          "sentence": "Her legal freedom was obtained in 1852.",
+          "candidateFactIds": [
+            "legal"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Harriet A. Jacobs, Incidents in the Life of a Slave Girl (1861), preface and chapters XXI, XXIX–XXXI. https://www.gutenberg.org/cache/epub/11030/pg11030-images.html",
+        "North Carolina Department of Natural and Cultural Resources, Harriet Jacobs c.1813–1897 (A-72). https://www.dncr.nc.gov/blog/2023/12/04/harriet-jacobs-c-1813-1897-72"
+      ]
+    },
+    {
+      "figureKey": "keller",
+      "stageId": "1887-learning-that-things-have-names",
+      "file": "keller-1887-learning-that-things-have-names-v1.stage.json",
+      "originalWritingStageSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "proposedV1StageSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "proposedV2StageSha256": "a52a2553641b684f809ed4e7c5bbb921ca2b376769cddf4252ee6a2b8fe140ac",
+      "originalSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "proposedSha256": "a52a2553641b684f809ed4e7c5bbb921ca2b376769cddf4252ee6a2b8fe140ac",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "keller-1887-learning-that-things-have-names-v1.candidate.json",
+      "unchangedCandidateSha256": "d0103c4b4447cfa5c1d1c8dc9e3e74be8146ec0a40399e7cb2f8b91e5054a94a",
+      "originalFactsWords": 536,
+      "proposedFactsWords": 152,
+      "originalFactsCharacters": 3267,
+      "proposedFactsCharacters": 977,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "During the early lesson reported March 6, Keller helped unpack Sullivan's trunk and was delighted by the doll. Sullivan spelled in her hand, pointed to the doll, and nodded. Keller looked puzzled, felt Sullivan's hand, imitated the repeated letters, and pointed to the doll herself. Helen Keller was born June 27, 1880; Sullivan arrived March 3, 1887, when Keller was six. She was still six through the April learning episode. An illness in early childhood left Keller unable to see or hear; its precise diagnosis is unknown. Sullivan took the doll, shook her head, and tried to form the letters with Keller's fingers. Keller tried to seize the doll and grew increasingly angry; Sullivan forced her into a chair and held her until the teacher was nearly exhausted. Sullivan interpreted Keller's anger as believing the doll was being taken away, rather than understanding the spelling exercise. This is the teacher's interpretation, not an independently recorded child statement. After releasing Keller but withholding the doll, Sullivan brought cake, formed its letters, and patted the child's hand. Keller formed the letters rapidly and ate the cake; she then formed most of the doll word, received help with its final letter, and took the doll downstairs. Through March 20 and April 3, Keller learned finger forms for more nouns and verbs through sustained spelling practice before the teacher reported understanding that everything had a name. Sullivan's March 20 letter reports that Keller confused the cup and milk names with drinking gestures and still did not understand that everything had a name. Sullivan's April 10 letter says Keller eagerly asked for object names, wanted friends to spell, tried to teach letters to others, and replaced earlier gestures when she learned words. A search game using a hidden ball or spool initially defeated Keller: she searched unsuitable places and soon gave up. With practice she sustained the search longer. The April 24 letter reports that Keller commonly expressed full requests through single words with gestures and was not yet fluent in finger language. This is not a claim about oral speech or an absolute inability to form any short sentence. On the morning recorded April 24, Sullivan hid a cracker. Keller searched unsuccessfully, ran to Sullivan, made her open her mouth very wide, and investigated it. Finding no trace of the cracker, Keller pointed to Sullivan's stomach and spelled eat. The precise room and elapsed duration are not given. Sullivan interpreted Keller's pointing and spelling eat during the cracker search as asking whether the teacher had eaten it. This is the teacher's interpretation of the documented words and gestures, not a verbatim full sentence from Keller. By May 8 Keller adopted finger words for small and large in place of gestures. Sullivan could ask for a large book or small plate, and on the recorded morning Keller added a word for and when told to shut a door. She used small and very small for puppies, stones, her sister, and steps. By May 16 the teacher and child took long morning walks; Keller asked about things along the way and returned eager to tell her mother. She still made mistakes and tangled words and phrases; Sullivan supplied missing words or sentences.",
+          "after": "In March–May 1887, Helen Keller was six and unable to see or hear after an early childhood illness of uncertain diagnosis. Anne Sullivan's letters describe tactile fingerspelling lessons with a doll, cake and other objects. Keller first imitated finger forms while puzzled. When Sullivan withheld the doll, Keller grew angry; the teacher forced her into a chair and held her, then released her and resumed the exercise. Sullivan interpreted the anger as believing the doll was being taken away. Keller learned more words but confused object names and drinking gestures. Search games initially defeated her, and requests commonly combined single words with gestures. In April, she unsuccessfully sought a hidden cracker, examined Sullivan's mouth, and pointed to her stomach while spelling eat. Sullivan interpreted this as asking whether she had eaten it. By May Keller asked about objects on walks and reported to her mother, still making mistakes and needing Sullivan's help."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "During the early lesson reported March 6, Keller helped unpack Sullivan's trunk and was delighted by the doll. Sullivan spelled in her hand, pointed to the doll, and nodded. Keller looked puzzled, felt Sullivan's hand, imitated the repeated letters, and pointed to the doll herself. Helen Keller was born June 27, 1880; Sullivan arrived March 3, 1887, when Keller was six. She was still six through the April learning episode. An illness in early childhood left Keller unable to see or hear; its precise diagnosis is unknown. Sullivan took the doll, shook her head, and tried to form the letters with Keller's fingers. Keller tried to seize the doll and grew increasingly angry; Sullivan forced her into a chair and held her until the teacher was nearly exhausted. Sullivan interpreted Keller's anger as believing the doll was being taken away, rather than understanding the spelling exercise. This is the teacher's interpretation, not an independently recorded child statement. After releasing Keller but withholding the doll, Sullivan brought cake, formed its letters, and patted the child's hand. Keller formed the letters rapidly and ate the cake; she then formed most of the doll word, received help with its final letter, and took the doll downstairs. Through March 20 and April 3, Keller learned finger forms for more nouns and verbs through sustained spelling practice before the teacher reported understanding that everything had a name. Sullivan's March 20 letter reports that Keller confused the cup and milk names with drinking gestures and still did not understand that everything had a name. Sullivan's April 10 letter says Keller eagerly asked for object names, wanted friends to spell, tried to teach letters to others, and replaced earlier gestures when she learned words. A search game using a hidden ball or spool initially defeated Keller: she searched unsuitable places and soon gave up. With practice she sustained the search longer. The April 24 letter reports that Keller commonly expressed full requests through single words with gestures and was not yet fluent in finger language. This is not a claim about oral speech or an absolute inability to form any short sentence. On the morning recorded April 24, Sullivan hid a cracker. Keller searched unsuccessfully, ran to Sullivan, made her open her mouth very wide, and investigated it. Finding no trace of the cracker, Keller pointed to Sullivan's stomach and spelled eat. The precise room and elapsed duration are not given. Sullivan interpreted Keller's pointing and spelling eat during the cracker search as asking whether the teacher had eaten it. This is the teacher's interpretation of the documented words and gestures, not a verbatim full sentence from Keller. By May 8 Keller adopted finger words for small and large in place of gestures. Sullivan could ask for a large book or small plate, and on the recorded morning Keller added a word for and when told to shut a door. She used small and very small for puppies, stones, her sister, and steps. By May 16 the teacher and child took long morning walks; Keller asked about things along the way and returned eager to tell her mother. She still made mistakes and tangled words and phrases; Sullivan supplied missing words or sentences.",
+          "after": "In March–May 1887, Helen Keller was six and unable to see or hear after an early childhood illness of uncertain diagnosis. Anne Sullivan's letters describe tactile fingerspelling lessons with a doll, cake and other objects. Keller first imitated finger forms while puzzled. When Sullivan withheld the doll, Keller grew angry; the teacher forced her into a chair and held her, then released her and resumed the exercise. Sullivan interpreted the anger as believing the doll was being taken away. Keller learned more words but confused object names and drinking gestures. Search games initially defeated her, and requests commonly combined single words with gestures. In April, she unsuccessfully sought a hidden cracker, examined Sullivan's mouth, and pointed to her stomach while spelling eat. Sullivan interpreted this as asking whether she had eaten it. By May Keller asked about objects on walks and reported to her mother, still making mistakes and needing Sullivan's help."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "In March–May 1887, Helen Keller was six and unable to see or hear after an early childhood illness of uncertain diagnosis.",
+          "candidateFactIds": [
+            "fact-age",
+            "fact-loss",
+            "w-walks"
+          ]
+        },
+        {
+          "sentence": "Anne Sullivan's letters describe tactile fingerspelling lessons with a doll, cake and other objects.",
+          "candidateFactIds": [
+            "w-doll",
+            "w-cake",
+            "fact-repeat"
+          ]
+        },
+        {
+          "sentence": "Keller first imitated finger forms while puzzled.",
+          "candidateFactIds": [
+            "w-doll"
+          ]
+        },
+        {
+          "sentence": "When Sullivan withheld the doll, Keller grew angry; the teacher forced her into a chair and held her, then released her and resumed the exercise.",
+          "candidateFactIds": [
+            "w-restraint",
+            "w-cake"
+          ]
+        },
+        {
+          "sentence": "Sullivan interpreted the anger as believing the doll was being taken away.",
+          "candidateFactIds": [
+            "w-interpretation"
+          ]
+        },
+        {
+          "sentence": "Keller learned more words but confused object names and drinking gestures.",
+          "candidateFactIds": [
+            "fact-repeat",
+            "fact-confusion"
+          ]
+        },
+        {
+          "sentence": "Search games initially defeated her, and requests commonly combined single words with gestures.",
+          "candidateFactIds": [
+            "fact-game",
+            "fact-grammar"
+          ]
+        },
+        {
+          "sentence": "In April, she unsuccessfully sought a hidden cracker, examined Sullivan's mouth, and pointed to her stomach while spelling eat.",
+          "candidateFactIds": [
+            "w-cracker"
+          ]
+        },
+        {
+          "sentence": "Sullivan interpreted this as asking whether she had eaten it.",
+          "candidateFactIds": [
+            "w-question"
+          ]
+        },
+        {
+          "sentence": "By May Keller asked about objects on walks and reported to her mother, still making mistakes and needing Sullivan's help.",
+          "candidateFactIds": [
+            "w-walks"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Anne Sullivan's 1887 letters to Sophia Hopkins, reproduced in The Story of My Life (1903). https://www.gutenberg.org/files/2397/2397-h/2397-h.htm Part III, Education: editorial note on extracts; March 6 first doll/cake lesson; March 20 cup/milk confusion; April 10 requests; April 24 grammar, initial failed searches, and that morning's cracker search; May 8 small/large words; May 16 walks, reports, and mistakes.",
+        "American Foundation for the Blind, Chronology of Helen Keller's Life. https://www.afb.org/about-afb/history/helen-keller/biography-and-chronology/chronology Entries June 27, 1880, February 1882, March 3 and April 5, 1887; institutional chronology for dates and age.",
+        "American Foundation for the Blind, Helen Keller Biography. https://www.afb.org/about-afb/history/helen-keller/biography-and-chronology/biography Opening full-name paragraph; Political and Social Activism section for writer identity and disability advocacy."
+      ]
+    },
+    {
+      "figureKey": "riis",
+      "stageId": "1873-unpaid-work-to-reporting",
+      "file": "riis.stage.json",
+      "originalWritingStageSha256": "652ce7834f17917babbc28d135b08630b5c07e98642bbb411f0e449032730ab9",
+      "proposedV1StageSha256": "0aa584264dceb7d0792576dd52435c38d619c5a8780e283471417a2651dd5ad9",
+      "proposedV2StageSha256": "8f16ac5cd2cd5f60ab56542e6cc178b6708db1aa78d7a2fb5c88133ba9d17b44",
+      "originalSha256": "0aa584264dceb7d0792576dd52435c38d619c5a8780e283471417a2651dd5ad9",
+      "proposedSha256": "8f16ac5cd2cd5f60ab56542e6cc178b6708db1aa78d7a2fb5c88133ba9d17b44",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "riis.candidate.json",
+      "unchangedCandidateSha256": "aa17b49862bdf3bbf994ee02af41c5175c4506584f0e165070759613d38a28b2",
+      "originalFactsWords": 402,
+      "proposedFactsWords": 145,
+      "originalFactsCharacters": 2235,
+      "proposedFactsCharacters": 875,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "Riis was born May 3, 1849 and began newspaper work in 1873. This episode covers the first reporting work and winter 1873–74 before the memoir’s May 20, 1874 spring move, making him approximately 23–24. The endpoint 1874 is an inferred year-precision boundary, not a known final work day. He answered an advertised city-editor vacancy and was hired to fill a local weekly column. He stayed two weeks at the weekly, was not paid, and met the editor on outside stairs being pursued by an unpaid washerwoman. He left owing two weeks pay, carrying experience of finding local items and a large dog given to him. He tried selling books with the dog beside him, but a day of canvassing yielded no money. Hungry, he sat on steps below a lit clock; his dog lay at his feet, having been fed by a cook during their rounds. On the steps he felt three years had been wasted, had no money and no hope or purpose, and drummed on his book. The principal of his former telegraph school recognized him, asked about his selling, and offered an introduction to a news agency seeking a trainee. He followed the principal across the street to the school office and obtained the letter. The principal offered the dog a better home; Riis agreed to bring it next day and spent their final night walking with it. At sunrise he washed his face and hands in a dog drinking trough, straightened his clothes, took the dog to its new home, and delivered the letter. The desk editor looked doubtful, allowed a trial, and sent him to wait at a desk for an assignment. His first assignment was a public lunch; he saw and smelled the food but did not ask for any. After reading his report the editor accepted him and gave him a desk and a regular morning reporting time. After work he went to a family boarding house, now able to pay, collapsed on the stairs, and was carried inside. During his first reporting winter, 1873–74, the job had low pay, six or seven assignments in an evening, and days beginning at ten in the morning and ending at one or two the next morning. The agency supplied both morning and evening papers; three reporters covered general news outside the regular department channels. Long rides left his feet painfully cold; he now had enough to eat.",
+          "after": "Jacob Riis was approximately twenty-three to twenty-four during his first reporting work in 1873–1874. After two unpaid weeks at a local newspaper, he tried selling books and earned nothing from a day's canvassing. Hungry and without money, he sat on steps with his dog and felt three years had been wasted. His former telegraph-school principal recognized him and gave him an introduction to a news agency. Riis found a new home for the dog and delivered the letter. The desk editor allowed a trial assignment covering a public lunch. Riis watched the food without eating, then wrote a report that earned him acceptance and a regular reporting time. Afterward he collapsed on the stairs at a separate boarding house. The job provided food and pay but involved low wages, long days and multiple evening assignments. The first winter's long rides left his feet painfully cold."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "Riis was born May 3, 1849 and began newspaper work in 1873. This episode covers the first reporting work and winter 1873–74 before the memoir’s May 20, 1874 spring move, making him approximately 23–24. The endpoint 1874 is an inferred year-precision boundary, not a known final work day. He answered an advertised city-editor vacancy and was hired to fill a local weekly column. He stayed two weeks at the weekly, was not paid, and met the editor on outside stairs being pursued by an unpaid washerwoman. He left owing two weeks pay, carrying experience of finding local items and a large dog given to him. He tried selling books with the dog beside him, but a day of canvassing yielded no money. Hungry, he sat on steps below a lit clock; his dog lay at his feet, having been fed by a cook during their rounds. On the steps he felt three years had been wasted, had no money and no hope or purpose, and drummed on his book. The principal of his former telegraph school recognized him, asked about his selling, and offered an introduction to a news agency seeking a trainee. He followed the principal across the street to the school office and obtained the letter. The principal offered the dog a better home; Riis agreed to bring it next day and spent their final night walking with it. At sunrise he washed his face and hands in a dog drinking trough, straightened his clothes, took the dog to its new home, and delivered the letter. The desk editor looked doubtful, allowed a trial, and sent him to wait at a desk for an assignment. His first assignment was a public lunch; he saw and smelled the food but did not ask for any. After reading his report the editor accepted him and gave him a desk and a regular morning reporting time. After work he went to a family boarding house, now able to pay, collapsed on the stairs, and was carried inside. During his first reporting winter, 1873–74, the job had low pay, six or seven assignments in an evening, and days beginning at ten in the morning and ending at one or two the next morning. The agency supplied both morning and evening papers; three reporters covered general news outside the regular department channels. Long rides left his feet painfully cold; he now had enough to eat.",
+          "after": "Jacob Riis was approximately twenty-three to twenty-four during his first reporting work in 1873–1874. After two unpaid weeks at a local newspaper, he tried selling books and earned nothing from a day's canvassing. Hungry and without money, he sat on steps with his dog and felt three years had been wasted. His former telegraph-school principal recognized him and gave him an introduction to a news agency. Riis found a new home for the dog and delivered the letter. The desk editor allowed a trial assignment covering a public lunch. Riis watched the food without eating, then wrote a report that earned him acceptance and a regular reporting time. Afterward he collapsed on the stairs at a separate boarding house. The job provided food and pay but involved low wages, long days and multiple evening assignments. The first winter's long rides left his feet painfully cold."
+        },
+        {
+          "path": "themes",
+          "before": [
+            "self_doubt",
+            "dispossession",
+            "self_invention"
+          ],
+          "after": [
+            "self_doubt",
+            "dispossession",
+            "self_invention",
+            "late_start"
+          ]
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "Jacob Riis was approximately twenty-three to twenty-four during his first reporting work in 1873–1874.",
+          "candidateFactIds": [
+            "age"
+          ]
+        },
+        {
+          "sentence": "After two unpaid weeks at a local newspaper, he tried selling books and earned nothing from a day's canvassing.",
+          "candidateFactIds": [
+            "first-job",
+            "unpaid",
+            "canvass"
+          ]
+        },
+        {
+          "sentence": "Hungry and without money, he sat on steps with his dog and felt three years had been wasted.",
+          "candidateFactIds": [
+            "steps",
+            "despair"
+          ]
+        },
+        {
+          "sentence": "His former telegraph-school principal recognized him and gave him an introduction to a news agency.",
+          "candidateFactIds": [
+            "teacher",
+            "letter"
+          ]
+        },
+        {
+          "sentence": "Riis found a new home for the dog and delivered the letter.",
+          "candidateFactIds": [
+            "dog-home",
+            "morning"
+          ]
+        },
+        {
+          "sentence": "The desk editor allowed a trial assignment covering a public lunch.",
+          "candidateFactIds": [
+            "trial",
+            "meal"
+          ]
+        },
+        {
+          "sentence": "Riis watched the food without eating, then wrote a report that earned him acceptance and a regular reporting time.",
+          "candidateFactIds": [
+            "meal",
+            "accepted"
+          ]
+        },
+        {
+          "sentence": "Afterward he collapsed on the stairs at a separate boarding house.",
+          "candidateFactIds": [
+            "collapse"
+          ]
+        },
+        {
+          "sentence": "The job provided food and pay but involved low wages, long days and multiple evening assignments.",
+          "candidateFactIds": [
+            "workload"
+          ]
+        },
+        {
+          "sentence": "The first winter's long rides left his feet painfully cold.",
+          "candidateFactIds": [
+            "workload"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Jacob A. Riis, The Making of an American (1901), chapter V and opening of chapter VI. https://www.gutenberg.org/cache/epub/6125/pg6125-images.html",
+        "Library of Congress, Jacob Riis exhibition, Biography. https://www.loc.gov/exhibits/jacob-riis/biography.html",
+        "Library of Congress, Jacob A. Riis Papers finding aid, Biographical Note. https://tile.loc.gov/storage-services/service/gdc/gdcfindingaidpdfs/ms010258/ms010258.pdf"
+      ]
+    },
+    {
+      "figureKey": "seacole",
+      "stageId": "1854-1855-refusal-to-sick-wharf",
+      "file": "seacole.stage.json",
+      "originalWritingStageSha256": "a85ff657cd70e8d1f7b33488334238f003600f3ddbdb6631b6573e9277fac5fb",
+      "proposedV1StageSha256": "a85ff657cd70e8d1f7b33488334238f003600f3ddbdb6631b6573e9277fac5fb",
+      "proposedV2StageSha256": "0fd509e00f40915730c5b9eeefad2e91bea1331ccc1b44d9e2b1578d42aeb248",
+      "originalSha256": "a85ff657cd70e8d1f7b33488334238f003600f3ddbdb6631b6573e9277fac5fb",
+      "proposedSha256": "0fd509e00f40915730c5b9eeefad2e91bea1331ccc1b44d9e2b1578d42aeb248",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "seacole.candidate.json",
+      "unchangedCandidateSha256": "6775e85d7a9682cc241ffaaaed5e2f5e5c5051c9fdc3f5758f1ec1c0a777b75a",
+      "originalFactsWords": 466,
+      "proposedFactsWords": 155,
+      "originalFactsCharacters": 2836,
+      "proposedFactsCharacters": 975,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "The National Library of Jamaica records a birth date of November 23, 1805. She arrived in London in autumn 1854; the episode extends to early 1855, so she was 48–49. She had cared for patients in Jamaica and Panama; in London she offered experience and references for army nursing. After unsuccessful office applications, she waited long hours in the Secretary-at-War’s private hall while people passed and servants resented her persistence. A message said all nursing places were filled. Another nursing organizer gave the same reply. Her last application to the Crimean Fund for passage failed. On a cold evening she stood in deepening twilight in thinning streets. She questioned whether racial prejudice caused the refusals; this was her suspicion, not established knowledge of the officials’ motives. She describes tears of grief over her motives being doubted, standing still, looking upward at dark clouds and praying aloud. The next morning after a good night’s rest her determination strengthened. She would go on her own responsibility and at her own expense, trusting former patients, doctors and other contacts who already knew her in Jamaica to welcome her. She proposed an independent hotel for invalids and printed cards announcing passage and a mess table and comfortable quarters for sick or recovering officers. She met Thomas Day in England and agreed they might jointly open a store as well as a hotel near the camp. With help from a medical friend, she spent much of her limited capital on medicines and the remainder on home comforts, then sailed east. Officers she had known in Jamaica met her at Gibraltar and warned that she would not find a roof at the destination; she continued. Letters from her business partner described worsening conditions. Transferring goods between ships in strong current and wind left her drenched and frightened. On arrival she lodged on an ammunition ship. With no warehouses available their stores were stacked on shore. Her first approach to the sick wharf coincided with the arrival of sick and wounded men. She ran to an artilleryman on a pallet who was groaning, eased his stiff dressings, and heard his groans subside to an uneasy mutter. Small cups of tea stood on the wharf. She raised tea to the man’s dry lips. His hand touched and rested on hers, and he continued holding her hand while she tried to whisper about hope and trust in God. A surgeon approached, shook her hand, thanked her for attending the man and welcomed her help. For six weeks she spent days ashore and nights aboard ship, selling stores under tarpaulin and chiefly assisting transfer of wounded men to hospital transports. The sick-wharf work remained trying. Men who scorned comfort for themselves worried that preparations for the wounded might be late, and others cried while witnessing suffering.",
+          "after": "Mary Seacole was forty-eight to forty-nine during 1854–1855. Experienced in caring for patients in Jamaica and Panama, she offered her experience and references for army nursing in London. Office requests failed; she was told that nursing places were filled, and her final request for funded passage was refused. Her memoir records grief and tears and her suspicion of racial prejudice, without establishing officials' motives. She stood on the street and prayed, then resolved to travel at her own expense. With Thomas Day, she planned a store and hotel near the camp and spent limited capital on medicines and home comforts. She proceeded despite warnings and difficult goods transfers. At the sick wharf, she assisted a wounded artilleryman with dressings and tea. A surgeon thanked her and welcomed her help. For six weeks she sold stores ashore and helped transfer wounded men to hospital ships, sleeping aboard ship at night. A later letter reports business misfortune."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "The National Library of Jamaica records a birth date of November 23, 1805. She arrived in London in autumn 1854; the episode extends to early 1855, so she was 48–49. She had cared for patients in Jamaica and Panama; in London she offered experience and references for army nursing. After unsuccessful office applications, she waited long hours in the Secretary-at-War’s private hall while people passed and servants resented her persistence. A message said all nursing places were filled. Another nursing organizer gave the same reply. Her last application to the Crimean Fund for passage failed. On a cold evening she stood in deepening twilight in thinning streets. She questioned whether racial prejudice caused the refusals; this was her suspicion, not established knowledge of the officials’ motives. She describes tears of grief over her motives being doubted, standing still, looking upward at dark clouds and praying aloud. The next morning after a good night’s rest her determination strengthened. She would go on her own responsibility and at her own expense, trusting former patients, doctors and other contacts who already knew her in Jamaica to welcome her. She proposed an independent hotel for invalids and printed cards announcing passage and a mess table and comfortable quarters for sick or recovering officers. She met Thomas Day in England and agreed they might jointly open a store as well as a hotel near the camp. With help from a medical friend, she spent much of her limited capital on medicines and the remainder on home comforts, then sailed east. Officers she had known in Jamaica met her at Gibraltar and warned that she would not find a roof at the destination; she continued. Letters from her business partner described worsening conditions. Transferring goods between ships in strong current and wind left her drenched and frightened. On arrival she lodged on an ammunition ship. With no warehouses available their stores were stacked on shore. Her first approach to the sick wharf coincided with the arrival of sick and wounded men. She ran to an artilleryman on a pallet who was groaning, eased his stiff dressings, and heard his groans subside to an uneasy mutter. Small cups of tea stood on the wharf. She raised tea to the man’s dry lips. His hand touched and rested on hers, and he continued holding her hand while she tried to whisper about hope and trust in God. A surgeon approached, shook her hand, thanked her for attending the man and welcomed her help. For six weeks she spent days ashore and nights aboard ship, selling stores under tarpaulin and chiefly assisting transfer of wounded men to hospital transports. The sick-wharf work remained trying. Men who scorned comfort for themselves worried that preparations for the wounded might be late, and others cried while witnessing suffering.",
+          "after": "Mary Seacole was forty-eight to forty-nine during 1854–1855. Experienced in caring for patients in Jamaica and Panama, she offered her experience and references for army nursing in London. Office requests failed; she was told that nursing places were filled, and her final request for funded passage was refused. Her memoir records grief and tears and her suspicion of racial prejudice, without establishing officials' motives. She stood on the street and prayed, then resolved to travel at her own expense. With Thomas Day, she planned a store and hotel near the camp and spent limited capital on medicines and home comforts. She proceeded despite warnings and difficult goods transfers. At the sick wharf, she assisted a wounded artilleryman with dressings and tea. A surgeon thanked her and welcomed her help. For six weeks she sold stores ashore and helped transfer wounded men to hospital ships, sleeping aboard ship at night. A later letter reports business misfortune."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "Mary Seacole was forty-eight to forty-nine during 1854–1855.",
+          "candidateFactIds": [
+            "f-age"
+          ]
+        },
+        {
+          "sentence": "Experienced in caring for patients in Jamaica and Panama, she offered her experience and references for army nursing in London.",
+          "candidateFactIds": [
+            "f-experience"
+          ]
+        },
+        {
+          "sentence": "Office requests failed; she was told that nursing places were filled, and her final request for funded passage was refused.",
+          "candidateFactIds": [
+            "f-hall",
+            "f-full",
+            "f-final"
+          ]
+        },
+        {
+          "sentence": "Her memoir records grief and tears and her suspicion of racial prejudice, without establishing officials' motives.",
+          "candidateFactIds": [
+            "f-tears",
+            "f-doubt"
+          ]
+        },
+        {
+          "sentence": "She stood on the street and prayed, then resolved to travel at her own expense.",
+          "candidateFactIds": [
+            "f-final",
+            "f-tears",
+            "f-morrow"
+          ]
+        },
+        {
+          "sentence": "With Thomas Day, she planned a store and hotel near the camp and spent limited capital on medicines and home comforts.",
+          "candidateFactIds": [
+            "f-cards",
+            "f-partner",
+            "f-capital"
+          ]
+        },
+        {
+          "sentence": "She proceeded despite warnings and difficult goods transfers.",
+          "candidateFactIds": [
+            "f-warning",
+            "f-transfer"
+          ]
+        },
+        {
+          "sentence": "At the sick wharf, she assisted a wounded artilleryman with dressings and tea.",
+          "candidateFactIds": [
+            "f-arrival",
+            "f-dressings",
+            "f-tea"
+          ]
+        },
+        {
+          "sentence": "A surgeon thanked her and welcomed her help.",
+          "candidateFactIds": [
+            "f-surgeon"
+          ]
+        },
+        {
+          "sentence": "For six weeks she sold stores ashore and helped transfer wounded men to hospital ships, sleeping aboard ship at night.",
+          "candidateFactIds": [
+            "f-routine"
+          ]
+        },
+        {
+          "sentence": "A later letter reports business misfortune.",
+          "candidateFactIds": [
+            "f-later-cost"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Mary Seacole, Wonderful Adventures of Mrs. Seacole in Many Lands (1857), edited by W. J. S.; retrospective personal account. VIII, pp.73–82; IX, pp.83–85; X, pp.93–100 https://www.gutenberg.org/files/23031/23031-h/23031-h.htm",
+        "National Library of Jamaica, Mary Seacole (1805–1881), institutional biography. Used only for identity and birth chronology. Biographical heading and opening paragraph https://nlj.gov.jm/project/mary-seacole-1805-1881/"
+      ]
+    },
+    {
+      "figureKey": "washington_b",
+      "stageId": "1872-reaching-the-classroom",
+      "file": "washington_b-1872-reaching-the-classroom-v1.stage.json",
+      "originalWritingStageSha256": "113c6b0e9519697a5c49c8fb428c2227789b6ec77e9bc5d45d13fefd95e073b0",
+      "proposedV1StageSha256": "113c6b0e9519697a5c49c8fb428c2227789b6ec77e9bc5d45d13fefd95e073b0",
+      "proposedV2StageSha256": "42c2c501b720c9bb1cfa504eee1b3b61cda0f89668fdff042a1bec79d9264677",
+      "originalSha256": "113c6b0e9519697a5c49c8fb428c2227789b6ec77e9bc5d45d13fefd95e073b0",
+      "proposedSha256": "42c2c501b720c9bb1cfa504eee1b3b61cda0f89668fdff042a1bec79d9264677",
+      "changedFields": [
+        "biographicalFacts"
+      ],
+      "unchangedCandidateFile": "washington_b-1872-reaching-the-classroom-v1.candidate.json",
+      "unchangedCandidateSha256": "d13fce353183245f5cd8d0feff765c9d2dd2301921011437113e9273f20a2044",
+      "originalFactsWords": 399,
+      "proposedFactsWords": 147,
+      "originalFactsCharacters": 2472,
+      "proposedFactsCharacters": 895,
+      "exactFieldDiffsFromProposedV1": [
+        {
+          "path": "biographicalFacts",
+          "before": "He asked several places for lodging, but all required money; walking the streets, he passed food stands selling fried chicken and apple pies and could buy nothing. Washington reached Richmond late at night, exhausted, hungry, dirty, out of money, without an acquaintance, and unfamiliar with large cities. He carried a small, cheap satchel containing the few clothes he possessed. Washington left for Hampton in autumn 1872. The NPS chronology gives his birth as April 5, 1856, making him about sixteen; his memoir says his exact birth date was unknown. Exhausted and unable to walk farther, he waited until nobody could see him, then slept beneath an elevated sidewalk with his clothing satchel as a pillow and heard footsteps overhead. At daylight he saw a ship unloading iron and asked its captain to let him work to earn money for food; the captain agreed. He worked long enough to buy breakfast, and the pleased captain offered him continued work for a small daily wage. For several days he unloaded the ship, bought food with small wages, and continued sleeping beneath the sidewalk to save enough money to reach Hampton. After thanking the captain, he reached Hampton with fifty cents and presented himself to the head teacher after a long period without adequate food, washing, or fresh clothes. The head teacher neither admitted nor rejected him initially; he waited near her while she admitted other students, feeling increasingly uncomfortable and wanting a chance. After several hours the teacher asked him to sweep the adjoining classroom; he welcomed the task, having learned careful cleaning in a household job. He swept the room three times and dusted it four times, moved its furniture, cleaned every corner and closet, and reported to the teacher; he felt his future depended on her impression. The teacher inspected the floor and closets and rubbed a handkerchief over woodwork, tables, and benches; finding no dust, she said he could enter the institution. Washington accepted a janitor job that paid nearly all his board; its hard work included caring for many rooms, working late, rising early to build fires, and preparing lessons. The head teacher provided advice and encouragement during difficulties. He borrowed books, lacked clothing, washed his single pair of socks at night, and received used clothing from teachers. His janitor work eventually paid all his board, but tuition remained unaffordable; Armstrong found Morgan to pay his tuition.",
+          "after": "Booker T. Washington was about sixteen when he traveled toward Hampton in 1872; his autobiography says his exact birth date was unknown. He arrived in Richmond hungry, exhausted and without money or lodging. He slept under a raised sidewalk, using his clothing satchel as a pillow. At dawn he asked a ship's captain for unloading work to earn food. Days of paid work and continued sleeping beneath the sidewalk allowed him to save enough to travel on. At Hampton, the head teacher initially left him waiting. She then asked him to sweep a classroom. He repeatedly swept and dusted, moved furniture and cleaned corners and closets. After inspecting the room and finding no dust, she admitted him. He worked as a janitor while preparing lessons, borrowed books and received used clothing and encouragement from teachers. The janitor work paid board; separate financial help was needed for tuition."
+        }
+      ],
+      "exactFieldDiffsFromOriginalWriting": [
+        {
+          "path": "biographicalFacts",
+          "before": "He asked several places for lodging, but all required money; walking the streets, he passed food stands selling fried chicken and apple pies and could buy nothing. Washington reached Richmond late at night, exhausted, hungry, dirty, out of money, without an acquaintance, and unfamiliar with large cities. He carried a small, cheap satchel containing the few clothes he possessed. Washington left for Hampton in autumn 1872. The NPS chronology gives his birth as April 5, 1856, making him about sixteen; his memoir says his exact birth date was unknown. Exhausted and unable to walk farther, he waited until nobody could see him, then slept beneath an elevated sidewalk with his clothing satchel as a pillow and heard footsteps overhead. At daylight he saw a ship unloading iron and asked its captain to let him work to earn money for food; the captain agreed. He worked long enough to buy breakfast, and the pleased captain offered him continued work for a small daily wage. For several days he unloaded the ship, bought food with small wages, and continued sleeping beneath the sidewalk to save enough money to reach Hampton. After thanking the captain, he reached Hampton with fifty cents and presented himself to the head teacher after a long period without adequate food, washing, or fresh clothes. The head teacher neither admitted nor rejected him initially; he waited near her while she admitted other students, feeling increasingly uncomfortable and wanting a chance. After several hours the teacher asked him to sweep the adjoining classroom; he welcomed the task, having learned careful cleaning in a household job. He swept the room three times and dusted it four times, moved its furniture, cleaned every corner and closet, and reported to the teacher; he felt his future depended on her impression. The teacher inspected the floor and closets and rubbed a handkerchief over woodwork, tables, and benches; finding no dust, she said he could enter the institution. Washington accepted a janitor job that paid nearly all his board; its hard work included caring for many rooms, working late, rising early to build fires, and preparing lessons. The head teacher provided advice and encouragement during difficulties. He borrowed books, lacked clothing, washed his single pair of socks at night, and received used clothing from teachers. His janitor work eventually paid all his board, but tuition remained unaffordable; Armstrong found Morgan to pay his tuition.",
+          "after": "Booker T. Washington was about sixteen when he traveled toward Hampton in 1872; his autobiography says his exact birth date was unknown. He arrived in Richmond hungry, exhausted and without money or lodging. He slept under a raised sidewalk, using his clothing satchel as a pillow. At dawn he asked a ship's captain for unloading work to earn food. Days of paid work and continued sleeping beneath the sidewalk allowed him to save enough to travel on. At Hampton, the head teacher initially left him waiting. She then asked him to sweep a classroom. He repeatedly swept and dusted, moved furniture and cleaned corners and closets. After inspecting the room and finding no dust, she admitted him. He worked as a janitor while preparing lessons, borrowed books and received used clothing and encouragement from teachers. The janitor work paid board; separate financial help was needed for tuition."
+        }
+      ],
+      "sentenceEvidence": [
+        {
+          "sentence": "Booker T. Washington was about sixteen when he traveled toward Hampton in 1872; his autobiography says his exact birth date was unknown.",
+          "candidateFactIds": [
+            "fact-age"
+          ]
+        },
+        {
+          "sentence": "He arrived in Richmond hungry, exhausted and without money or lodging.",
+          "candidateFactIds": [
+            "fact-city",
+            "fact-food"
+          ]
+        },
+        {
+          "sentence": "He slept under a raised sidewalk, using his clothing satchel as a pillow.",
+          "candidateFactIds": [
+            "fact-bag",
+            "fact-rest"
+          ]
+        },
+        {
+          "sentence": "At dawn he asked a ship's captain for unloading work to earn food.",
+          "candidateFactIds": [
+            "fact-ask"
+          ]
+        },
+        {
+          "sentence": "Days of paid work and continued sleeping beneath the sidewalk allowed him to save enough to travel on.",
+          "candidateFactIds": [
+            "fact-breakfast",
+            "fact-saving"
+          ]
+        },
+        {
+          "sentence": "At Hampton, the head teacher initially left him waiting.",
+          "candidateFactIds": [
+            "fact-arrival",
+            "fact-wait"
+          ]
+        },
+        {
+          "sentence": "She then asked him to sweep a classroom.",
+          "candidateFactIds": [
+            "fact-sweep"
+          ]
+        },
+        {
+          "sentence": "He repeatedly swept and dusted, moved furniture and cleaned corners and closets.",
+          "candidateFactIds": [
+            "fact-clean"
+          ]
+        },
+        {
+          "sentence": "After inspecting the room and finding no dust, she admitted him.",
+          "candidateFactIds": [
+            "fact-inspect"
+          ]
+        },
+        {
+          "sentence": "He worked as a janitor while preparing lessons, borrowed books and received used clothing and encouragement from teachers.",
+          "candidateFactIds": [
+            "fact-janitor",
+            "fact-books"
+          ]
+        },
+        {
+          "sentence": "The janitor work paid board; separate financial help was needed for tuition.",
+          "candidateFactIds": [
+            "fact-aid"
+          ]
+        }
+      ],
+      "preservedSources": [
+        "Booker T. Washington, Up from Slavery: An Autobiography (1901). https://www.gutenberg.org/files/2376/2376-h/2376-h.htm Chapter I, opening birth uncertainty; Chapter II, name paragraphs for reveal; Chapter III, late-night Richmond arrival through initial Hampton work, books, socks, and tuition aid; Chapter VII, founding school teaching purpose for the bridge.",
+        "U.S. National Park Service, Washington Timeline. https://www.nps.gov/bowa/learn/historyculture/washington-timeline.htm Timeline entries 1856 and 1872, compared with Chapter I of the memoir."
+      ]
+    }
+  ]
+}

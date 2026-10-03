@@ -1,0 +1,1347 @@
+{
+  "storySpecId": "jacobs:1835-1842-concealment-to-escape:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "jacobs",
+  "stageId": "1835-1842-concealment-to-escape",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 20,
+    "ageMax": 29,
+    "startDate": "1835",
+    "endDate": "1842",
+    "throughLine": "A mother escaping enslavement hides close enough to hear her children but cannot speak to them, makes a small opening to see them, and eventually leaves with help."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "abuse_or_violence",
+      "discrimination",
+      "pregnancy_or_parenthood",
+      "death_or_grief"
+    ],
+    "contentNote": "Enslavement, threatened capture, family separation, prolonged confinement and bodily pain. News of a fugitive being killed contributes to giving up an initial chance to leave. No assault scene or graphic violence. Arrival in the North does not confer legal freedom."
+  },
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "The state historical marker dates Jacobs birth to about 1813, concealment to 1835 and escape north to 1842; her preface says 27 years in a Slave State. Ages 20–29 deliberately cover this chronological uncertainty.",
+      "sourceRefs": [
+        {
+          "sourceId": "marker",
+          "scope": "bounded",
+          "locator": "Marker birth/concealment/escape paragraphs."
+        },
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Preface: remained in a Slave State twenty-seven years."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "space",
+      "statement": "After entering her grandmother’s house, Jacobs was conveyed into the small space beneath the sloping roof. A bed was on the floor, she could not stand upright, and she could sleep on one side but could not turn without hitting the roof. Rats and mice ran over the bed; she was weary and slept.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Chapter XXI, A small shed through I slept such sleep as the wretched may."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "darkness",
+      "statement": "The space admitted neither light nor air; she could turn only by striking the roof. Noises alone marked morning. She suffered for air and found the continued darkness oppressive while sitting or lying cramped without a gleam of light.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Chapter XXI, There was no admission through without one gleam of light."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "children",
+      "statement": "She heard her children voices below, cried at them, and wanted to speak and see their faces but could find no opening.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXI: I heard the voices of my children through no crack through which I could peep."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "aid",
+      "statement": "Relatives passed food up through a concealed door and visited at the opening when it was safe in darkness.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXI: My food was passed up through It must all be done in darkness."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "tool",
+      "statement": "While crawling for exercise she struck her head on a small boring tool her carpenter uncle had left behind.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXI: One day I hit my head through made the trap-door."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "holes",
+      "statement": "She searched for the side facing the street, waited for evening, and bored holes together to make a small opening.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXI: I did not dare to begin through about an inch broad."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "air",
+      "statement": "She sat at the opening late at night to enjoy a small flow of air; in the morning she watched for her children.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXI: I sat by it till late through watched for my children."
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "seeing",
+      "statement": "She first saw her pursuer, feared the sight, and later saw her children through the opening.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXI: The first person I saw through I saw the children."
+        }
+      ],
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "years",
+      "statement": "Nearly seven years passed in confinement; at times she was listless and at times impatient for air and sunshine, and her cramped body remained painful.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXIX: I hardly expect through these dark years would end."
+        }
+      ],
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "leak",
+      "statement": "The roof deteriorated; her uncle feared repairs would expose her; rain drenched clothes and bedding and worsened bodily pain.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXIX: Moreover, I was likely through stiffened limbs were greatly increased."
+        }
+      ],
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "lost-chance",
+      "statement": "A trusted friend arranged passage, but family fear after news of a fugitive killing led her to give up that first plan; she offered the place to another concealed woman.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXIX: My friend Peter came one evening; I was to escape in a vessel through arrangements were made for her."
+        }
+      ],
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fear-discovery",
+      "statement": "An unexpected visitor entered the storeroom while she was there; she hid behind a barrel and feared discovery, though she later believed the visitor did not see her.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXIX: On the third morning through I afterwards believed that she did not see me."
+        }
+      ],
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "departure",
+      "statement": "Her relatives supported renewed departure; the friend secured a delay of the vessel; she said goodbye and reached it with assistance.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXIX: Uncle Phillip was sent for through As the hour approached; XXX: I never could tell through Swiftly the boat glided."
+        }
+      ],
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "cabin",
+      "statement": "The captain led her to a small cabin where the other concealed woman sat; they embraced and she sobbed.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXX: When I entered the vessel through overwrought feelings could no longer be restrained."
+        }
+      ],
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "quiet",
+      "statement": "The captain heard her sobs, cautioned the women against drawing attention, told them to stay below when another sail was visible, and otherwise allowed deck access. He had represented them as women going to meet husbands. They thanked him and agreed to follow his directions, then talked quietly in the cabin.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Chapter XXX, My sobs reached the ears of the captain through low and quietly, in our little cabin."
+        }
+      ],
+      "eventOrder": 16,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "cabin-talk",
+      "statement": "In the cabin her companion described suffering during escape, fear while concealed at her mother’s house, and separation from all her children at an auction. Jacobs told her about nearly seven years in concealment; the companion scarcely believed it and feared never hearing from her children again.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Chapter XXX, She told me of the sufferings through there is no hope that I shall ever even hear from mine."
+        }
+      ],
+      "eventOrder": 17,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "distrust",
+      "statement": "While still near their place of departure she feared being returned, distrusted the crew, and wondered whether the captain could be paid to surrender them.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXX: The vessel was soon under way through slavery had made me suspicious."
+        }
+      ],
+      "eventOrder": 18,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "deck",
+      "statement": "The captain kind manner and her friend report of good treatment reassured her; he invited them onto deck and gave them comfortable seats.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXX: The captain soon came through occasionally entered into conversation."
+        }
+      ],
+      "eventOrder": 19,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "arrival",
+      "statement": "Approaching the northern city she watched dawn from the deck with her companion; both had tears and thought themselves safe but had left loved ones behind.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXX: The next morning I was on deck through ties cruelly sundered."
+        }
+      ],
+      "eventOrder": 20,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "welcome",
+      "statement": "After landing a Black minister and his wife offered food and a place to rest, and abolitionist friends offered assistance.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXXI: He invited me to go home through The anti-slavery friend had come."
+        }
+      ],
+      "eventOrder": 21,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "rail",
+      "statement": "When traveling onward she was excluded from first-class cars on racial grounds and endured a crowded unpleasant ride.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "XXXI: When Mr Durham handed us our tickets through very disagreeable ride."
+        }
+      ],
+      "eventOrder": 22,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "legal",
+      "statement": "Escape north in 1842 was not legal emancipation; legal freedom was achieved in 1852.",
+      "sourceRefs": [
+        {
+          "sourceId": "marker",
+          "scope": "bounded",
+          "locator": "Marker: In 1842 Jacobs boarded a ship, through in 1852 achieved her freedom."
+        }
+      ],
+      "eventOrder": 23,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "legacy",
+      "statement": "Jacobs authored a first-person account of enslavement and escape, published in 1861.",
+      "sourceRefs": [
+        {
+          "sourceId": "memoir",
+          "scope": "bounded",
+          "locator": "Memoir title page: Written by Herself,1861; author preface and Child editorial introduction."
+        }
+      ],
+      "eventOrder": 24,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Harriet Ann Jacobs",
+      "aliases": [
+        "Harriet Jacobs",
+        "Linda Brent"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She lay on a bed beneath a low, sloping roof. She was in her early twenties. She had been hidden in a space at her grandmother’s house. Boards separated it from the room below. Her uncle had made a concealed door connecting the two spaces. The bed had been spread on the floor.\n\nShe could lie on one side without hitting the roof. When she turned, her body struck it. There was not enough room to stand. No light or air came through. Rats and mice ran across the bed. She was weary. She lay down and slept beneath the roof.",
+      "requiredFactIds": [
+        "space",
+        "age",
+        "aid",
+        "darkness"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "aid",
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "darkness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter XXI, entry and first sleep. One bed beneath the roof. Concealed door is static background. Approximate early-twenties age uses both marker chronology and Preface; no specific conveyance actor is named."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "Morning came, and she heard her children below. Their voices made her cry. Their voices brought joy and sadness together. She wanted to speak to them. She wanted to look at their faces. She could find no opening in the boards. Not even a crack gave her a glimpse outside.\n\nThe sounds were the only way she knew the night had ended. The space was still dark. She could sit or lie down, but her body stayed cramped. She suffered for air. She found the darkness hard to bear. The roof kept her out of sight of the people pursuing her. It also kept her out of sight of her children. She listened to them from above, unable to see their faces.",
+      "requiredFactIds": [
+        "darkness",
+        "children",
+        "space"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "darkness",
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "darkness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "darkness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space",
+            "darkness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "darkness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "darkness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "space"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter XXI, first morning, child voices, longing, tears and no crack. One morning in the concealed space. No imagined thought, diagnosis, or graphic violence."
+    },
+    {
+      "role": "response",
+      "canonicalText": "One evening, she used a small tool to bore holes through the wood. She had found it while crawling for exercise. Her head had struck it where her uncle had left it. She had felt around for the side facing the street. She waited for darkness, afraid that daytime work could attract attention. Now she bored holes in rows, one above another.\n\nThen she bored out the wood between the holes. The separate spaces became one small opening. She sat beside it late into the night. A little air floated in. She could sit there and breathe it. The opening faced the street where her children passed.",
+      "requiredFactIds": [
+        "holes",
+        "tool",
+        "air"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "holes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "tool"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "tool"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "holes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "holes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "holes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "holes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "holes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "air"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "air"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "air"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "holes"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter XXI, evening boring work through sitting late into the night. The tool is found one day, at an unspecified interval from entry; she waits for that evening. One evening avoids assigning the work to the first morning’s date. Next-morning sightings are excluded from this located response and refer to the morning after the boring work in struggle."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The next morning, she watched through the opening. First she saw the man pursuing her, and shuddered. Later she heard laughter and saw her children looking up. Years passed with her beneath the roof. The covering began to fail. Her uncle feared repairs could expose her. Rain soaked her clothes and bedding and made her stiff limbs ache.\n\nA trusted friend arranged a passage out. Then news came of another fugitive being killed. Her grandmother begged her to stay. She gave up the passage and offered it to another woman in hiding. Later, a visitor entered while she was downstairs speaking with her grandmother. She crouched behind a barrel, afraid she had been seen. Her family urged her to leave, and her friend arranged another departure.",
+      "requiredFactIds": [
+        "air",
+        "seeing",
+        "years",
+        "leak",
+        "lost-chance",
+        "fear-discovery",
+        "departure"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "air"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "seeing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "seeing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "years"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "leak"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "leak"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "leak"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "lost-chance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "lost-chance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "lost-chance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "lost-chance"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fear-discovery"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fear-discovery"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "departure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter XXI first view and chapter XXIX years, roof failure, canceled passage, feared discovery and renewed plan. All compression occurs here. Exact seven-year duration stays in the mapped record rather than becoming a distinctive identifier in prose."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The captain showed her into a small cabin on the vessel. Inside sat the woman who had taken the earlier passage. Her friend stared at her in astonishment. They held each other, and she began to sob. The captain heard her and came to the cabin. He reminded them that noise could put all of them in danger. He told them to stay below whenever another sail was in sight. At other times, they could go on deck.\n\nThey thanked him and promised to follow his directions. Then the women talked quietly by themselves. Her companion described hiding in her mother’s house and fearing discovery. All her companion’s children had been taken from her at an auction. Her companion feared she might never hear from them again. She replied with the story of her own years beneath the roof. The woman listening could scarcely believe it.",
+      "requiredFactIds": [
+        "cabin",
+        "lost-chance",
+        "quiet",
+        "cabin-talk"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "lost-chance",
+            "cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "quiet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "quiet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "quiet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "quiet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "quiet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "quiet"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "cabin-talk"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter XXX, cabin reunion through quiet exchange about children and concealment. One cabin encounter, with captain precautions and both women’s reported histories. No deck movement or voyage summary enters the turn."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The vessel moved away slowly, with the wind against it. She feared being taken back while the town remained in sight. She also wondered whether the captain might surrender them for money. Her companion said the crew had treated her kindly. The captain’s respectful manner helped reassure her. She went onto the deck and sat in the fresh air. Sunlight and open air were hers to enjoy again.\n\nAs they approached the northern city, the women watched dawn from the deck. Both had tears in their eyes. They thought they were safe, but had left people they loved behind. After landing, a minister and his wife offered food and a place to rest. Travel onward brought racial exclusion and a crowded, unpleasant ride. She had escaped, but had not been legally freed. Her children were not beside her.",
+      "requiredFactIds": [
+        "distrust",
+        "deck",
+        "arrival",
+        "welcome",
+        "rail",
+        "legal",
+        "children"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "distrust"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "distrust"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "distrust"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "deck"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "deck"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "deck"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "deck",
+            "arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "arrival"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "welcome"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "rail"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "arrival",
+            "children"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Chapter XXX voyage and dawn, XXXI arrival and racial exclusion. Legal-status sentence maps the 1852 context fact so the fold discloses the difference between escape and manumission. The later legal-freedom scene is not dramatized."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Harriet Ann Jacobs.\n\nShe wrote a book about her own life in slavery and the long effort to reach freedom.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need more time to feel ready.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Name and one plain book legacy, exact distance pair, then two authored permissions. No quoted dialogue, invented texture, comparison, or promise."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented events, dates, dialogue, motives, or causal links.",
+    "Interior states and sensory particulars only where the memoir explicitly reports them.",
+    "This draft uses no quotation and no invented texture."
+  ],
+  "avoidRules": [
+    "Do not say the unexpected visitor actually saw or betrayed her.",
+    "Do not imply escaping north made her legally free in 1842.",
+    "Do not portray confinement as solitary in every respect; family members supplied food and conversation.",
+    "Do not diagnose her listlessness or add sexual violence scenes to this bounded episode.",
+    "Do not omit the first abandoned departure and practical help.",
+    "Do not equate ordinary waiting or parenting stress with enslavement.",
+    "Do not convert memoir pseudonyms into real identities without separate evidence."
+  ],
+  "sources": [
+    {
+      "sourceId": "memoir",
+      "citation": "Harriet A. Jacobs, Incidents in the Life of a Slave Girl (1861), preface and chapters XXI, XXIX–XXXI.",
+      "url": "https://www.gutenberg.org/cache/epub/11030/pg11030-images.html",
+      "locator": "XXI The Loophole Of Retreat: entry, children, tool and opening; XXIX Preparations For Escape: leaking roof and lost first chance; XXX Northward Bound: cabin and voyage; XXXI Incidents In Philadelphia: landing and racial exclusion."
+    },
+    {
+      "sourceId": "marker",
+      "citation": "North Carolina Department of Natural and Cultural Resources, Harriet Jacobs c.1813–1897 (A-72).",
+      "url": "https://www.dncr.nc.gov/blog/2023/12/04/harriet-jacobs-c-1813-1897-72",
+      "locator": "Paragraphs beginning Born in 1813, Jacobs established a liaison, In 1842 Jacobs boarded, and Archivist George Stevenson. Official editorial chronology and explicit warning about selected autobiographical testimony."
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,76 @@
+{
+  "figureKey": "addams",
+  "displayName": "Jane Addams",
+  "birthYear": 1860,
+  "deathYear": 1935,
+  "stageId": "1888-1889-telling-the-plan",
+  "stageLabel": "Telling the plan, then finding the house",
+  "ageMin": 27,
+  "ageMax": 29,
+  "shapeSentences": [
+    "She had prepared for a useful life for years but had not found a way to begin it.",
+    "She risked telling a friend an unfinished plan and accepted companionship in carrying it out.",
+    "Criticism and a failed search remained part of the beginning, before ordinary shared work replaced private preparation."
+  ],
+  "facets": {
+    "emotionalCore": "Uncertain purpose, self-reproach, and fear an important plan will seem empty when spoken aloud.",
+    "decisionShape": "Explain an unfinished plan to a trusted friend, then test it through a shared place and daily work.",
+    "triggerEvent": "Discomfort after a public spectacle exposed how private preparation had delayed acting.",
+    "agencyState": "Can speak and search, but needs companionship, resources and a suitable house."
+  },
+  "biographicalFacts": "Jane Addams was twenty-seven to twenty-nine during April 1888–September 1889. Her memoir describes chagrin after a bullfight; she judged that her proposed reform had become an excuse for continued study and travel. She had gradually formed a plan to rent a city house where young women would connect study with active life among neighbors with unmet needs. She told Ellen Gates Starr despite stumbling and fearing that speaking would make the plan collapse. Starr's enthusiasm helped give it substance, although details remained uncertain. They sought advice, faced criticism and searched unsuccessfully before finding the house again. They intended to begin with their own resources. After repairs and furnishing, they moved in with housekeeper Mary Keyser in September 1889. Early work included a reading group, shared meals, washing dishes and housing a young neighbor.",
+  "themes": [
+    "self_doubt",
+    "self_invention",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She stayed to watch a public spectacle after her traveling companions had left. She was twenty-seven. Animals were being killed in front of her. She watched with little reaction to their deaths. The spectacle brought earlier public contests and old stories to her mind.\n\nShe saw the riders through those associations with figures from the past. That history absorbed her attention while the killing continued. The rest of the party had reached the limit of what they could bear. She remained longer than any of them.",
+      "sourceNotes": "One stretch of watching the spectacle in April 1888. Age comes from birth and memoir dating. Historical associations and comparative indifference are attested, without identifying historical names or a named arena."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "That evening, she felt deep shame over what had happened. She had met her pale companions in the foyer, with little defense for staying to watch. Her hands were still. She felt condemned by more than the spectacle. She had been planning a house among people whose daily needs went unmet. Young women could live there and connect their studies with useful activity.\n\nThe plan had formed gradually, without a beginning she could clearly date. She had continued studying and traveling while that useful life remained ahead of her. Now she judged the plan itself part of her excuse for staying idle. She had gone on preparing instead of starting the work. She had treated study and travel as necessities for the great things expected of her. She had not yet told anyone about the house.",
+      "sourceNotes": "One attested evening of chagrin and self-judgment. The foyer encounter is past context, not the location of the evening reaction. Exact room is unrecorded. Invented inert texture, disclosed verbatim: Her hands were still. It renders attested shame only and adds no cause, decision or event; all moral judgment is sourced historical_claim."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She began explaining the plan to an old school friend in the traveling party. She stumbled as she tried to put it into words. The uncertainty that had surrounded the plan came into the explanation. She hoped her friend might join her in carrying it out. At the same time, she feared what speaking about it might reveal.\n\nA plan cherished privately might show itself empty once she said it aloud. She set it before someone who knew her from school. Its practical details were still hazy. The unfinished explanation was now shared.",
+      "sourceNotes": "One later conversation with a school friend. Stumbling, uncertainty and fear of emptiness are attested. Exact day and location within the trip are unrecorded; the intended next-day action is not dated as accomplished next day."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Companionship gradually gave the plan more substance, though its details remained uncertain. She visited an existing community house to see its daily activities firsthand. Months later, the two women searched neighborhoods for a home they could afford. They meant to begin with their own limited resources. One critic questioned whether living together might draw them away from the neighbors. They answered that shared living was not essential to the work.\n\nHis objection remained; their explanation had not convinced him. In spring, she noticed an appealing old house while passing through a neighborhood. Several days of searching failed to find it again, and she gave up. Three weeks later, she searched a neighborhood recommended to her. On the first day there, she found the house again. She was surprised and overjoyed.",
+      "sourceNotes": "The single permitted long interval: visit, search, skeptical conversation, lost house and rediscovery. The critic’s stated objection and their unsuccessful answer remain visible. Names, dates and locations stay in evidence."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "She moved into the house with her school friend and a third woman. The third resident began the housework. Some rooms had been secured by subletting them from the people already using the building. The old house had responded well to repair. A wide hall and an open fireplace were part of the rooms they entered. They had furnished the place with family furniture and photographs brought home from their travels.\n\nNew pieces had been chosen with the character of the house in mind. Preparing those rooms had given them great pleasure. They had begun the house with their own resources. Now they lived there, with housework beginning alongside the plan. The work had a place and three residents.",
+      "sourceNotes": "September 18 move-in day. The already repaired and furnished rooms are the documented immediate surroundings. The three residents and housework are attested; no invented arrival gesture, conversation or same-day furnishing sequence."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "On their first night, they forgot to close and lock a side door. Nothing had been taken by morning, and they were pleased by their neighbors’ honesty. In the first weeks, her friend began a weekly reading group upstairs. Two members ate dinner with them before the reading. They helped wash the dishes and clear the dining table for photographs. Their first guest came from a neighboring apartment and stayed a month.\n\nThe guest’s widowed mother helped support the family by cleaning a theater every night. Their new home stood among dirty streets with poor lighting. Schools and sanitation were inadequate. Houses built for one family had been divided among several. Many households drew their water from a faucet in the backyard. The reading group met above those streets.",
+      "sourceNotes": "First night and first weeks, plus the early-address account of neighborhood conditions. Reading, meals, dishes, photographs and the first guest are actual activities and people. No claim that sharing a home solved poverty or that all conditions were first observed that day."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Jane Addams.\n\nShe helped establish a house offering education and community activities for its neighbors.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to speak about a plan before its details are clear. You do not have to begin alone.",
+      "sourceNotes": "Name, one plain known-for sentence, exact two-sentence distance, and two bounded permissions in four paragraphs."
+    }
+  ],
+  "sources": [
+    "Jane Addams, Twenty Years at Hull-House with Autobiographical Notes (1910; accessed Gutenberg transcription of 1912 edition). Chapters IV, The Snare of Preparation, and V, First Days at Hull-House. https://www.gutenberg.org/cache/epub/1325/pg1325-images.html",
+    "Jane Addams Hull House / Metropolitan Family Services, History. Jane Addams Biography, birth and rented house paragraphs. https://janeaddamshullhouse.org/history/"
+  ]
+}

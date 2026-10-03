@@ -8272,4 +8272,811 @@ You are not your old capacity. Worth survives the crash. Hers did — at one-ten
   ],
 };
 
-export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones, rudolph, angelou, rachmaninoff, oconnor, marshall, allende, wilson, wang, chandler, graham, mcclintock, rustin, sanders, berlin_i, charles_r, sullivan_a, fitzgerald_e, poitier, simone, andersen, tallchief, lindgren, lewis_e, kovalevskaya, hughes, shelley_m, bly, faraday, carver, ramanujan, anning, owens, yeats, coleman, lamarr, hurston, muir, banting, bronte_c, shostakovich, coltrane, christie, nightingale];
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_addams: FigureStageRow = {
+  "figureKey": "addams",
+  "displayName": "Jane Addams",
+  "birthYear": 1860,
+  "deathYear": 1935,
+  "stageId": "1888-1889-telling-the-plan",
+  "stageLabel": "Telling the plan, then finding the house",
+  "ageMin": 27,
+  "ageMax": 29,
+  "shapeSentences": [
+    "She had prepared for a useful life for years but had not found a way to begin it.",
+    "She risked telling a friend an unfinished plan and accepted companionship in carrying it out.",
+    "Criticism and a failed search remained part of the beginning, before ordinary shared work replaced private preparation."
+  ],
+  "facets": {
+    "emotionalCore": "Uncertain purpose, self-reproach, and fear an important plan will seem empty when spoken aloud.",
+    "decisionShape": "Explain an unfinished plan to a trusted friend, then test it through a shared place and daily work.",
+    "triggerEvent": "Discomfort after a public spectacle exposed how private preparation had delayed acting.",
+    "agencyState": "Can speak and search, but needs companionship, resources and a suitable house."
+  },
+  "biographicalFacts": "Jane Addams was twenty-seven to twenty-nine during April 1888–September 1889. Her memoir describes chagrin after a bullfight; she judged that her proposed reform had become an excuse for continued study and travel. She had gradually formed a plan to rent a city house where young women would connect study with active life among neighbors with unmet needs. She told Ellen Gates Starr despite stumbling and fearing that speaking would make the plan collapse. Starr's enthusiasm helped give it substance, although details remained uncertain. They sought advice, faced criticism and searched unsuccessfully before finding the house again. They intended to begin with their own resources. After repairs and furnishing, they moved in with housekeeper Mary Keyser in September 1889. Early work included a reading group, shared meals, washing dishes and housing a young neighbor.",
+  "themes": [
+    "self_doubt",
+    "self_invention",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She stayed to watch a public spectacle after her traveling companions had left. She was twenty-seven. Animals were being killed in front of her. She watched with little reaction to their deaths. The spectacle brought earlier public contests and old stories to her mind.\n\nShe saw the riders through those associations with figures from the past. That history absorbed her attention while the killing continued. The rest of the party had reached the limit of what they could bear. She remained longer than any of them.",
+      "sourceNotes": "One stretch of watching the spectacle in April 1888. Age comes from birth and memoir dating. Historical associations and comparative indifference are attested, without identifying historical names or a named arena."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "That evening, she felt deep shame over what had happened. She had met her pale companions in the foyer, with little defense for staying to watch. Her hands were still. She felt condemned by more than the spectacle. She had been planning a house among people whose daily needs went unmet. Young women could live there and connect their studies with useful activity.\n\nThe plan had formed gradually, without a beginning she could clearly date. She had continued studying and traveling while that useful life remained ahead of her. Now she judged the plan itself part of her excuse for staying idle. She had gone on preparing instead of starting the work. She had treated study and travel as necessities for the great things expected of her. She had not yet told anyone about the house.",
+      "sourceNotes": "One attested evening of chagrin and self-judgment. The foyer encounter is past context, not the location of the evening reaction. Exact room is unrecorded. Invented inert texture, disclosed verbatim: Her hands were still. It renders attested shame only and adds no cause, decision or event; all moral judgment is sourced historical_claim."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She began explaining the plan to an old school friend in the traveling party. She stumbled as she tried to put it into words. The uncertainty that had surrounded the plan came into the explanation. She hoped her friend might join her in carrying it out. At the same time, she feared what speaking about it might reveal.\n\nA plan cherished privately might show itself empty once she said it aloud. She set it before someone who knew her from school. Its practical details were still hazy. The unfinished explanation was now shared.",
+      "sourceNotes": "One later conversation with a school friend. Stumbling, uncertainty and fear of emptiness are attested. Exact day and location within the trip are unrecorded; the intended next-day action is not dated as accomplished next day."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Companionship gradually gave the plan more substance, though its details remained uncertain. She visited an existing community house to see its daily activities firsthand. Months later, the two women searched neighborhoods for a home they could afford. They meant to begin with their own limited resources. One critic questioned whether living together might draw them away from the neighbors. They answered that shared living was not essential to the work.\n\nHis objection remained; their explanation had not convinced him. In spring, she noticed an appealing old house while passing through a neighborhood. Several days of searching failed to find it again, and she gave up. Three weeks later, she searched a neighborhood recommended to her. On the first day there, she found the house again. She was surprised and overjoyed.",
+      "sourceNotes": "The single permitted long interval: visit, search, skeptical conversation, lost house and rediscovery. The critic’s stated objection and their unsuccessful answer remain visible. Names, dates and locations stay in evidence."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "She moved into the house with her school friend and a third woman. The third resident began the housework. Some rooms had been secured by subletting them from the people already using the building. The old house had responded well to repair. A wide hall and an open fireplace were part of the rooms they entered. They had furnished the place with family furniture and photographs brought home from their travels.\n\nNew pieces had been chosen with the character of the house in mind. Preparing those rooms had given them great pleasure. They had begun the house with their own resources. Now they lived there, with housework beginning alongside the plan. The work had a place and three residents.",
+      "sourceNotes": "September 18 move-in day. The already repaired and furnished rooms are the documented immediate surroundings. The three residents and housework are attested; no invented arrival gesture, conversation or same-day furnishing sequence."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "On their first night, they forgot to close and lock a side door. Nothing had been taken by morning, and they were pleased by their neighbors’ honesty. In the first weeks, her friend began a weekly reading group upstairs. Two members ate dinner with them before the reading. They helped wash the dishes and clear the dining table for photographs. Their first guest came from a neighboring apartment and stayed a month.\n\nThe guest’s widowed mother helped support the family by cleaning a theater every night. Their new home stood among dirty streets with poor lighting. Schools and sanitation were inadequate. Houses built for one family had been divided among several. Many households drew their water from a faucet in the backyard. The reading group met above those streets.",
+      "sourceNotes": "First night and first weeks, plus the early-address account of neighborhood conditions. Reading, meals, dishes, photographs and the first guest are actual activities and people. No claim that sharing a home solved poverty or that all conditions were first observed that day."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Jane Addams.\n\nShe helped establish a house offering education and community activities for its neighbors.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to speak about a plan before its details are clear. You do not have to begin alone.",
+      "sourceNotes": "Name, one plain known-for sentence, exact two-sentence distance, and two bounded permissions in four paragraphs."
+    }
+  ],
+  "sources": [
+    "Jane Addams, Twenty Years at Hull-House with Autobiographical Notes (1910; accessed Gutenberg transcription of 1912 edition). Chapters IV, The Snare of Preparation, and V, First Days at Hull-House. https://www.gutenberg.org/cache/epub/1325/pg1325-images.html",
+    "Jane Addams Hull House / Metropolitan Family Services, History. Jane Addams Biography, birth and rented house paragraphs. https://janeaddamshullhouse.org/history/"
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_blackwell_e: FigureStageRow = {
+  "figureKey": "blackwell_e",
+  "displayName": "Elizabeth Blackwell",
+  "birthYear": 1821,
+  "deathYear": 1910,
+  "stageId": "1847-1849-a-place-to-study",
+  "stageLabel": "A difficult dissection and support for classroom access",
+  "ageMin": 26,
+  "ageMax": 27,
+  "themes": [
+    "dismissed",
+    "social_constraint",
+    "quiet_defiance",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "A medical student endured a difficult classroom lesson, asked for help through prayer, and resumed her place after her earlier written request received support, with further training still ahead.",
+    "College admission brought a place to study, but exclusion continued in demonstrations and hospital training; the diploma marked a first step in learning."
+  ],
+  "facets": {
+    "emotionalCore": "A classroom dissection is a trying ordeal, with painful heartbeat and near exhaustion.",
+    "decisionShape": "Call on Christ for help from smiling and remain grave during the documented lesson.",
+    "triggerEvent": "A dissection unsettles her while classmates blush, smile, and shake with contained laughter.",
+    "agencyState": "She can pray, continue attending, write, and study; the professor and classmates still control access, and support does not remove later hospital obstruction."
+  },
+  "biographicalFacts": "Elizabeth Blackwell was twenty-six to twenty-seven during medical school in 1847–1849. In November 1847, a professor had asked her to miss some demonstrations. Her journal records annoyance, sadness and discouragement, and her note asked to be regarded as a serious student. During a dissection she sat gravely while her heart palpitated painfully and afterwards felt nearly worn out. She prayed for help in keeping from smiling. She believed some classmates did not wish to hurt her feelings. On November 24 the professor read her note while she waited outside; she heard the class's approval and returned to her place. The class subsequently reserved her seat. She studied with other students. Later hospital doctors stopped recording diagnoses and treatment beside beds, depriving her of that assistance. After receiving her diploma in January 1849, she sought more medical experience.",
+  "sources": [
+    "Elizabeth Blackwell, Pioneer Work in Opening the Medical Profession to Women: Autobiographical Sketches (1895). https://www.gutenberg.org/cache/epub/65496/pg65496-images.html Chapter III: November 9 letter pp. 67–69; November 15, 17, 20, 22 and 24 journal entries pp. 71–72; study recollections pp. 73–74; hospital obstruction pp. 80–81; January 23, 1849 graduation record pp. 87–91; further training p. 92. Chapter IV, birth-record cousin letter pp. 118–119. Chapter VI, women's medical college and practice pp. 237–239 for the bridge."
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She handed the professor a note of introduction at the college. She was twenty-six. He had shaken her hand warmly and asked what she had studied. She had studied the other subjects, she said, but not surgery. He promised to give her the opportunities for the course. Now he asked her to wait in the room outside the lecture hall.\n\nThe students were already assembled inside. She could hear him reading the introduction to them. There was laughter at one point, then applause at the end. She entered quietly and sat among the students. After the lecture, another instructor explained a subject she had missed. Her classes had begun.",
+      "sourceNotes": "The November 9 letter supplies one continuous introduction and reading at the college, not the earlier application campaign. The introductory note is distinct from the later protest note. No invented dialogue or physical setting; birth chronology supplies age twenty-six."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "She sat at a dissection with her heart beating painfully. The lesson was as much as she could bear. Some students blushed, and some could not keep from smiling. Others held their faces down and shook. Her own sense of what was proper was disturbed by the demonstration. At the same time, part of what was happening seemed funny to her.\n\nShe believed that smiling herself could ruin everything. She sat gravely among the students. Her heart was beating painfully with the effort. The day had become a trying ordeal. She felt almost worn out.",
+      "sourceNotes": "The November 22 dissection supplies one bodied low: sitting grave, painful heartbeat, disturbed propriety, and a trying ordeal. Her belief that smiling could ruin everything is her recorded assessment, not an editorial claim that she deserved exclusion. The hand pinch is omitted from drama and projected facts. No procedure or bodily injury is described."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She prayed for help to keep from smiling. It was a request for help during the same difficult lesson. She did not want to smile at what was being shown. She remained seated with a grave manner while her heart beat painfully. The professor's conduct during the dissection seemed admirable to her.\n\nThe lesson had been hard to bear. But she also found the day encouraging in some measure. She still felt nearly worn out by the lesson. She had stayed through the ordeal.",
+      "sourceNotes": "A single attested act in the same November 22 lesson: calling on Christ for help from smiling. No spoken or inner words, prayer posture, miraculous outcome, invented resolve, or claim that prayer produces class approval. Her mixed assessment of the day is recorded in the journal, not retrospective empowerment supplied by the author."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Before that lesson, the professor had asked her to miss some demonstrations. One operation had been closed to her. She had written him a note asking to be regarded simply as a student. Two days later, he seemed pleased with it and wanted to read it to the class. That encouragement cheered her.\n\nThe ordinary classes had brought other difficulties too. During one, a folded paper dropped onto her arms while she took notes. It looked as though it had writing inside. She shook it off and continued her notes. Another such action drew a hiss from across the room. She also felt a light touch on her head. Her written request was still waiting to be read.",
+      "sourceNotes": "Before that lesson explicitly marks earlier context from November 15, 17 and the incident recorded November 20 as yesterday. This is an honest chronological jump in the permitted compression passage. The planned next-day reading is not claimed as having occurred. No sender, intent, or explanation for classmates' behavior is invented; the single note remains pending until the November 24 turn."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "She waited in the room outside while the professor read her note aloud. The students were together in the lecture hall. Inside, they heard her request to be regarded simply as a student. They heard that she took anatomy seriously, with respect for what she was studying. Her note called the suggestion that she miss lectures a grave mistake. It also left the class free to say if they wanted her absent.\n\nTheir response was hearty approval. She listened joyfully from outside. Then she entered the lecture hall and quietly resumed her place. The professor told her he felt relieved. Her place was among the other students again. This dispute over attending the demonstrations ended.",
+      "sourceNotes": "The November 24 entry supplies one reading and return, with observed class approval, joy, and the professor's stated relief. The resolution applies to this local demonstration dispute, not all later exclusion."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "In the following months, her classmates kept a seat for her in the lecture rooms. She reviewed her notes there while waiting for the professor. Four students worked beside her in a teaching room in the evenings. She also studied anatomy alone, following the parts of the body until nearly midnight. The work required more than a place in a class.\n\nDuring later hospital study, resident doctors stopped filling in the cards beside patients' beds. The diagnoses and treatments she needed to learn from were missing. She returned to college and completed her examinations. After the other graduates, she was called alone to the platform. The president gave her a medical diploma. She still needed more experience before taking responsibility for patients herself. There was further study ahead.",
+      "sourceNotes": "Later recollections supply study routines and hospital obstruction; the dated graduation record and brother's letter support the diploma. Examinations are supported in the January 19 entry, included in the degree fact's added reference. No instant clinical expertise or end to discrimination is claimed."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Elizabeth Blackwell.\n\nShe worked as a doctor and helped create a medical school where women could receive the training the profession required.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to want a place.",
+      "sourceNotes": "Name and one plain medical-education role, followed by the fixed distance pair and bounded permissions. No promise that any reader receives admission."
+    }
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_darwin: FigureStageRow = {
+  "figureKey": "darwin",
+  "displayName": "Charles Darwin",
+  "birthYear": 1809,
+  "deathYear": 1882,
+  "stageId": "1831-the-refusal-and-the-letter",
+  "stageLabel": "Declining the offer, then hearing its real conditions",
+  "ageMin": 22,
+  "ageMax": 22,
+  "shapeSentences": [
+    "He wanted an offered opportunity but declined under strong family advice.",
+    "With his uncle’s help he examined objections and asked again, then received a discouraging account after consent.",
+    "A direct conversation about actual conditions reopened preparation while important terms remained uncertain."
+  ],
+  "facets": {
+    "emotionalCore": "Eagerness checked by family disapproval and the fear of not being ready.",
+    "decisionShape": "Refuse, ask again with family help, and hear the actual terms before preparing.",
+    "triggerEvent": "An unexpected letter offered work away from the planned steady profession.",
+    "agencyState": "Able to write and prepare, but dependent on family support and another person’s acceptance."
+  },
+  "biographicalFacts": "In August–September 1831, Charles Darwin was twenty-two. He wanted to accept a voyage offer to collect and observe natural history. His father advised strongly against it, citing steady employment, preparation and compatibility with the captain. Darwin wrote to decline because ignoring that advice would make him uncomfortable. His uncle answered the objections and accompanied him to his father, who gave consent. A discouraging letter from the captain then led Darwin and Henslow to abandon the plan again, but Darwin still went to London. On September 5 he met the captain and liked his directness. The captain described cramped shared accommodation, plain meals and his need for cabin privacy. On September 6 Darwin felt cheerful but said the matter remained unsettled. He worked on equipment lists and family requests, postponing purchases until arrangements were certain.",
+  "themes": [
+    "social_constraint",
+    "self_doubt",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "At home, he received a letter offering a place on a voyage. He was twenty-two. The letter reached him late in the evening. A captain needed a companion able to collect, observe and make notes about the natural world. His adviser had recommended him for that work.\n\nThe recommendation did not present him as someone whose training was complete. It rested on his ability to collect and notice things worth recording. As far as his own wishes went, he wanted to accept. He considered it an excellent opportunity.",
+      "sourceNotes": "One received-letter moment at home, late August 29, from the next-day contemporary letter. Age and the incompleteness of training are supported. No invented room or place beyond home."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "At home, he wrote to his adviser about the voyage. His father had advised him strongly against going. The answer was not a firm refusal. But he could not feel comfortable accepting against that advice. There was the profession he had intended to enter afterward. His father worried that the voyage could keep him from settling into that steady work.\n\nHe had little experience at sea and little time to prepare. The captain might discover that the proposed companion did not suit him. His body and mind both needed preparation for an undertaking of that size. He believed his father’s disapproval could drain the energy he needed to go. Without those objections, he had been ready to take the risks.",
+      "sourceNotes": "One August 30 refusal-letter writing act at home. The letter is the physical anchor, not an invented family interview. Father’s advice is past context; discomfort, lost energy and willingness to risk are contemporary stated positions. No exact room or posture is invented."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He wrote to refuse the offer. He explained his father’s objections to the adviser who had recommended him. He thanked the adviser for the trouble taken on his behalf. He had also written to the man arranging the place. That man’s address was difficult to read.\n\nHelp from the post office had not made the address certain. He asked the adviser to send a confirming line in case his letter failed to arrive. He also asked that the captain receive the news. He repeated his thanks at the end of the letter. His written answer declined the opportunity he wanted.",
+      "sourceNotes": "The same refusal-correspondence act continues. The unclear address, unsuccessful post-office help and confirming-line request are recorded; the prose does not invent a visit or move between places during the passage. The two passages do not invent two separate refusal letters to the adviser."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "He visited his uncle, whose household supported his going. That evening, he listed his father’s objections and his uncle wrote answers. He sent both with a request for a definite yes or no. A no meant he promised to yield and stop raising the subject. His uncle took him to see his father, who kindly gave consent. After traveling to meet his adviser, he sent a tired note asking whether the place remained open.\n\nThey spent a day considering the preparations. His adviser warned him to consult the captains before deciding. He asked his sister to keep the news quiet in case he did not go. Then a discouraging letter from the captain made them both give up the scheme. He traveled to meet the captain anyway.",
+      "sourceNotes": "The permitted compressed interval contains uncle-assisted reconsideration, consent, travel, consultation and the September 4 discouraging letter. It does not hide the renewed setback."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "He met the captain and found him open and kind. A promised companion had just written that he could not come. That made the shortage of room less of an obstacle. The captain offered to share his cabin and whatever accommodation was possible. He also explained the difficulty of being uncomfortable in constant company aboard a small vessel. He considered it his duty to explain how difficult the voyage could be.\n\nMeals were to be plain, with no wine. He asked directly whether the young man could accept being sent out when he wanted privacy. The young man liked that direct way of proceeding. The captain still advised him to wait before deciding. The proposed voyage was less favorable than the first description. Its full route remained uncertain.",
+      "sourceNotes": "One September 5 meeting with the captain in London, exact room unrecorded. Cabin conditions, privacy request, plain meals and uncertainty are attested in same-day letters. No exact dialogue or invented gesture."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The next day was his first cheerful day since receiving the offer. He attributed that change to his confidence in the captain. The matter was still unsettled, even as he wrote home with practical requests. He asked for more shirts, slippers, walking shoes, books and instruments. Some instruments needed alterations before he took them. His family had things he needed for the voyage.\n\nThe captain already had many books from his list, reducing the expected expense. He requested an answer by return post. He worked all day on his lists, putting articles in and striking others out. He intended to buy nothing until everything was settled. The list changed while the larger decision remained open.",
+      "sourceNotes": "September 6 preparation: stated cheerfulness alongside unsettled plans, family commissions, revisions and deferred purchases. No famous voyage, theory or lifetime success is narrated."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Charles Darwin.\n\nHe wrote about how living species change through natural selection.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need another conversation before deciding. You do not have to be certain yet.",
+      "sourceNotes": "Name, one plain known-for sentence, exact distance pair and two bounded permissions, each in its required paragraph group."
+    }
+  ],
+  "sources": [
+    "John Stevens Henslow to Charles Darwin, August 24, 1831, Darwin Correspondence Project letter 105. Transcript, naturalist/companion offer and qualifications paragraphs. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-105.xml",
+    "Charles Darwin to John Stevens Henslow, August 30, 1831, Darwin Correspondence Project letter 107. Transcript opening offer, objections and postscript. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-107.xml",
+    "Charles Darwin to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 110. Transcript request for answer and numbered objections. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-110.xml",
+    "Josiah Wedgwood II to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 109. Transcript numbered replies; footnote 1 transcribes Darwin’s December 16, 1831 diary account. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-109.xml",
+    "Charles Darwin, letters of September 2 and 4, 1831, in Francis Darwin (ed.), Charles Darwin: His Life Told in an Autobiographical Chapter, and in a Selected Series of His Published Letters (1902). Chapter V, September 2 arrival note and September 4 letter to Susan; Gutenberg inline pages 118–119. https://www.gutenberg.org/cache/epub/38629/pg38629-images.html",
+    "Charles Darwin, Autobiography, written 1876, edited by Francis Darwin. Opening birth statement; Voyage of the Beagle and publications sections. https://www.gutenberg.org/files/2010/2010-h/2010-h.htm",
+    "Charles Darwin, letters of September 5 and 6, 1831, in Francis Darwin (ed.), The Life and Letters of Charles Darwin, volume I (1887). Chapter V (Chapter 1.V in transcription), The Appointment to the Beagle: September 5 letters to Susan Darwin and J. S. Henslow; September 6 letter to Susan Darwin. https://www.gutenberg.org/files/2087/2087-h/2087-h.htm"
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_equiano: FigureStageRow = {
+  "figureKey": "equiano",
+  "displayName": "Olaudah Equiano",
+  "birthYear": 1745,
+  "deathYear": 1797,
+  "stageId": "1766-the-money-and-the-release",
+  "stageLabel": "Savings, a refused promise, and a signed release",
+  "ageMin": 20,
+  "ageMax": 21,
+  "shapeSentences": [
+    "An enslaved sailor’s route is changed and an expected reward fails; after selling his own goods he asks how to present the price for freedom, faces the owner backing away, and obtains a release with the captain’s intervention.",
+    "Money permits him to ask for an earlier promise to be kept, but the owner still controls the decision and document, and legal freedom does not end racial coercion."
+  ],
+  "facets": {
+    "emotionalCore": "Expected payment fails, and later the owner’s resistance makes his heart sink despite having the agreed price.",
+    "decisionShape": "After selling his goods he asks the captain how to present the money, then requests the promised freedom and explains his earnings.",
+    "triggerEvent": "The owner changes the voyage and later resists honoring a freedom promise even when the purchase price is available.",
+    "agencyState": "He can trade, save and ask, but depends on the owner’s agreement, the captain’s intervention and a formal signed release; racial coercion continues."
+  },
+  "biographicalFacts": "In 1766, Olaudah Equiano was about twenty to twenty-one, based on his memoir's reported birth year. While enslaved, he traded goods while working aboard vessels that also carried enslaved people. Owner-directed port changes disrupted his trading plans. A promised bonus proved disappointing when a dead man's trunks contained little value; he already had nearly enough money to buy his freedom. After returning and selling goods, he approached the owner with the agreed purchase price. The owner questioned his earnings and regretted making the promise when he saved so quickly. A captain confirmed his honest earnings and urged the owner to keep his word. The owner accepted payment and signed a written release in July. Equiano remained with the vessel as a paid sailor. On a subsequent voyage he beat a man who had struck him, then faced the other man's owner's threat of public flogging and hid at a friend's house.",
+  "themes": [
+    "dispossession",
+    "social_constraint",
+    "quiet_defiance",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He was back in port when the owner came aboard the loaded vessel. He was about twenty-one. He had been selling goods during the voyage. He hoped selling his goods here could leave him enough to purchase his freedom. The man giving the orders owned him as well as the vessel.\n\nThe owner ordered them to unload at another port, then sail on again. He was disappointed. He could not choose where the vessel went. His goods were still on board.",
+      "sourceNotes": "Chapter VII owner boarding and route order. One loaded vessel in port. Age is approximate from the self-reported birth year. No exact cargo, port name, period identifier, or unrecorded instruction is added."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "In the house, he and the captain opened the smallest trunk. There were papers inside. They thought the papers were valuable notes. They had taken the trunks out of one another, expecting to find money. The man they had been caring for was dead. He had promised the captain a large amount of money. The captain had promised him extra pay for helping attend the man.\n\nThe captain had clapped his hands when they first saw the papers. They examined what they had found. The whole set of trunks held only a little money. All the man’s possessions could not even pay for his coffin. The payment he had expected was gone. Now he and the captain were bitterly disappointed. They went away from the trunks.",
+      "sourceNotes": "Chapter VII, trunk examination after the silversmith’s death. One encounter in the house. Expected notes prove to be little money; reported mortification supplies the feeling. He already had nearly enough savings, so this failure is not portrayed as destroying every prospect."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He asked the captain how to offer the owner the money for his freedom. They had returned to the port, unloaded the vessel, and he had sold his goods. He now had more than the price the owner had named. His trading had taken place aboard a vessel that also carried people held in slavery.\n\nThe owner’s earlier offer was to free him once he could pay. The captain told him to come one morning when he and the owner were having breakfast together. He could make the request then.",
+      "sourceNotes": "Chapter VII, We set sail once more: after selling goods he consults the captain about offering the money. One conversation; exact room and gestures are unspecified and not invented. Past earnings and the completed voyage’s coerced shipping context are brief background; no unrecorded moral realization is assigned."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "That morning, he entered with the money in his hand. He was afraid. He bowed and asked the owner to keep the promise. The owner drew back from the request. He felt discouraged. The owner asked whether he had the whole amount, and where it had come from. He answered honestly about how he had earned it.\n\nThe captain confirmed that he had earned it through work and careful trading. The owner said he had gained money faster than he had himself. He said he would never have promised freedom if he had expected such quick payment. The money was in the room. The owner was still questioning the release.",
+      "sourceNotes": "Chapter VII, Accordingly, on that morning through got money so soon. Breakfast request, questioning, his truthful answer, and the owner’s stated regret. This follows the consultation chronologically and contains no voyage flashback."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The captain clapped the owner on the back and pressed him to accept the money. He argued that the owner had already profited from the young man’s work. Now the price he had paid for him was being returned. He also said the young man could remain with the vessels and save him money. The captain asked him to keep the freedom promise.\n\nThe owner agreed to keep the promise. He took the money and told him to have a written release prepared. His fear turned to joy. He bowed, with tears flowing before he could express all he felt. The captain congratulated them both. After the first strong feelings of joy passed, he thanked the two men. Then he rose and left the room to have his release prepared.",
+      "sourceNotes": "Chapter VII, Come, come through left the room. One breakfast encounter: back-clap, economic pressure, acceptance, tears, thanks and leaving for paperwork. Captain help does not erase owner control or the economics of enslavement."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "An official prepared the release for a fee. He paid and took it back for the owner to sign. The document was signed that day and registered the next. He had legal freedom now. He wanted to go elsewhere, but agreed to remain with the vessel. From that day he worked as a sailor for wages.\n\nOn the next voyage, another man struck him, and he struck back. That man’s owner threatened to have him beaten in public. He refused to come ashore. After repeated advice, he hid at a friend’s house. Friends insisted that the warrant be withdrawn before he returned. He had to pay the expenses. Then he went back aboard to work.",
+      "sourceNotes": "Chapter VII document, paid sailor entry, and August altercation, concealment, warrant and return. Legal signing and registration retain separate dates in the used fold fact. Both the assault against him and his retaliation are stated; no graphic detail is added."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Olaudah Equiano.\n\nHe wrote an account of his life in slavery and freedom that became part of the argument against slavery.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to feel uncertain about what comes next.",
+      "sourceNotes": "Primary title page and abolition petition supply the plain legacy. Name, one known-for sentence, fixed distance pair, and two authored permissions. No invented texture or promise."
+    }
+  ],
+  "sources": [
+    "Olaudah Equiano, The Interesting Narrative (1789), chapters I and VII, including the reproduced manumission. https://www.gutenberg.org/cache/epub/15399/pg15399-images.html"
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_grant: FigureStageRow = {
+  "figureKey": "grant",
+  "displayName": "Ulysses S. Grant",
+  "birthYear": 1822,
+  "deathYear": 1885,
+  "stageId": "1858-1861-a-place-in-the-shop",
+  "stageLabel": "Trying new work, then staying to help",
+  "ageMin": 36,
+  "ageMax": 39,
+  "shapeSentences": [
+    "Illness reduced the work he could do while family and farm income were under pressure.",
+    "A sale, property agency and search for employment led to salaried work with family, before he offered practical help elsewhere.",
+    "When he meant to go home, an invitation to stay made use of old experience while leaving him dependent on another person’s clerical skill."
+  ],
+  "facets": {
+    "emotionalCore": "Practical pressure from illness, dependents, uncertain income and repeated employment disappointments.",
+    "decisionShape": "Try income-producing work, offer limited practical help, then stay for an invitation that requires both existing skill and assistance.",
+    "triggerEvent": "Fever limited the labor needed to keep his farm business going.",
+    "agencyState": "Can write, sell, seek work and help with familiar tasks, but illness and limited clerical capacity prevent an uncomplicated independence story."
+  },
+  "biographicalFacts": "From 1858 to early 1861, Ulysses S. Grant was thirty-six to thirty-nine. His family had serious illnesses, and his own fever reduced his ability to work and supervise farmworkers. That farm household used enslaved labor. He sold stock, crops and tools, then entered a real estate partnership that could not support two families. He did not receive the county engineer appointment and remained unemployed in late 1859. He wanted the prospect of eventually doing business for himself. In 1860 he took a salaried clerkship in his father's store, where his younger brothers already worked, and supported his family. In 1861 he helped drill a volunteer company and accompanied it to the state capital. Preparing to return home, he was asked by the governor to stay and visit the office next morning. He accepted work preparing troop paperwork using his army experience, relying on a clerk for assistance with records.",
+  "themes": [
+    "illness",
+    "self_invention",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He came home one evening on a day when the chills were bad. He was thirty-six. He felt very ill. His wife had become worse while he was away. She had since improved to about where she had been before he left.\n\nTheir son’s hearing had been improving since his illness. He could now hear nearly as well as before. The rest of the family were fairly well. His father-in-law’s health had changed little while he was away. Illness remained part of the household he returned to.",
+      "sourceNotes": "One return-home evening before the October 1 letter, at age thirty-six. Chills, the wife’s change and son’s hearing are documented. The passage invents no bedside meeting or welcome."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "At home, he planned a sale of the farm’s stock with his father-in-law. His farm business had been getting behind. In the preceding weeks, illness had kept him from supervising workers or doing the work himself. Those workers included an enslaved man. The household also considered income from hiring out an enslaved boy assigned to his wife.\n\nHe had been sick with chills and fever, as had his wife. Their son had been dangerously ill. The proposed sale included renting cleared land and selling another part of the farm. The portion to be sold included his own place. He expected the sale to clear all the stock from the place that autumn.",
+      "sourceNotes": "One sale plan at home in the October 1 record, with September inability to work marked as earlier context. Enslaved labor is explicit and mapped. No single day of fieldwork or emotional humiliation is invented."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He wrote to his father about the sale he meant to make. He also set down what he wanted from a business offer his father had made. A place with only a fixed salary did not suit that wish. He preferred the prospect of eventually doing business for himself.\n\nHe liked knowing that income could depend partly on his own work and business ability. He planned to visit toward the next spring. The visit and a change of work were still plans. He had put his preference before the person offering help.",
+      "sourceNotes": "One October 1 letter to his father. Plans, preferences, a proposed spring visit and a wish for independent income remain stated intentions. This does not claim the business offer was then accepted."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "That autumn, his stock, crops and farming tools went to auction. He gave up farming and entered a property partnership in winter. It had enough work for one person but could not support two families. He offered business cards for his father to pass on and enclosed property descriptions and prices. An application for a county appointment failed. Later that year, he was still unemployed and waiting for another appointment.\n\nHe eventually left the partnership and became a clerk in his father’s shop. A fixed salary now supported his family. He attended closely to the business and knew mainly customers and others in the trade. After a call for volunteers, he offered to help drill a company. He accompanied it to the capital.",
+      "sourceNotes": "Only struggle compresses auction, insufficient partnership, cards, unsuccessful appointment, unemployment, paid shop work and volunteering practical assistance. Recruitment is context, not battle or a heroic comeback."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "He was standing at the hotel’s front door after leaving the supper room. He had planned to take the evening train home. It was due to leave at nine. The company he had accompanied was accepted for service, and he thought his duties were finished. The official came out after him. They were staying in the same hotel.\n\nHe knew the official by sight from seeing him at meals. The official addressed him by the captain’s title he had held before. He said he understood the visitor was leaving the city. The visitor answered that he was. The official asked him to remain overnight and come to the office the next morning. He stayed instead of going home that evening.",
+      "sourceNotes": "One hotel-front-door encounter after supper, Chapter XVII. The planned train and prior absence of introduction are context to this conversation. Exact words are paraphrased; no invented expression, gesture or calendar day."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The next morning, he went to the office and accepted work helping organize troops. His previous army duties had made its forms familiar. He could explain how they needed to be completed. Keeping papers in order was another matter. He considered himself without the capacity to become a clerk. To find a paper again, he relied on a coat pocket or someone more careful.\n\nAn office clerk supplied the skills he lacked. He was still writing from the office a few days later. He had heard no news from home and sent his father advice about their business. He advised against pressing reliable customers for payment while the currency was unsettled. The new work used his experience and another person’s help.",
+      "sourceNotes": "The following office morning and initial work, bounded by May 2 office letter. Familiar forms, limited clerical skill and reliance on a careful clerk are retained. No lifetime command or military achievement."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Ulysses S. Grant.\n\nHe became a president of the United States.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need help with part of the work. You do not have to call that failure.",
+      "sourceNotes": "Name in its own paragraph; one plain known-for sentence; exact distance pair; bounded permissions. Middle initial is mapped through the shared sentence splitter as in the original draft."
+    }
+  ],
+  "sources": [
+    "Ulysses S. Grant, Letters to His Father and His Youngest Sister, 1857–78, edited Jesse Grant Cramer (1912). Letters March 21, September 7 and October 1, 1858; March 12 and October 24, 1859; April 29 and May 2, 1861. Claim support is in Grant’s letters, not editorial commentary. https://www.gutenberg.org/files/13471/13471-h/13471-h.htm",
+    "Ulysses S. Grant, Personal Memoirs (1885). Chapter I birth; Chapter XVI farming, property agency and store; Chapter XVII volunteer company, hotel-front-door encounter and office work. https://www.gutenberg.org/cache/epub/4367/pg4367-images.html",
+    "U.S. National Park Service, Ulysses S. Grant. Quick Facts and biography service and presidency paragraphs. https://www.nps.gov/people/ulysses-s-grant.htm"
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_jacobs: FigureStageRow = {
+  "figureKey": "jacobs",
+  "displayName": "Harriet Ann Jacobs",
+  "birthYear": 1813,
+  "deathYear": 1897,
+  "stageId": "1835-1842-concealment-to-escape",
+  "stageLabel": "Concealment near her children and an escape north",
+  "ageMin": 20,
+  "ageMax": 29,
+  "shapeSentences": [
+    "A mother escaping enslavement hides close enough to hear her children but cannot speak to them, makes a small opening to see them, and eventually leaves with help.",
+    "Confinement protects her from capture while injuring her body and separating her from the people she can hear below."
+  ],
+  "facets": {
+    "emotionalCore": "She longs to speak to her children while confinement, fear of capture, and growing bodily pain wear her down.",
+    "decisionShape": "She makes an opening to see her children and later accepts a dangerous departure arranged by a trusted friend.",
+    "triggerEvent": "Enslavement and pursuit force her into concealment in a small space near her children.",
+    "agencyState": "She has small acts within confinement but depends on relatives, a trusted friend, and a vessel captain to leave."
+  },
+  "biographicalFacts": "In 1835–1842, Harriet Jacobs, an enslaved mother, spent nearly seven years hidden beneath the roof of her grandmother's house. Her age range of twenty to twenty-nine reflects uncertain birth chronology. Relatives brought food through concealed access. She could not stand upright; the unlit, poorly ventilated space left her cramped and in physical pain. She heard her children below, cried and wanted to see or speak to them. Using a boring tool, she made an opening for air and watched her children through it. Rain later drenched her clothes and bedding, and fear of discovery complicated repairs. She gave up the first arranged escape when her family feared danger after a fugitive killing, then left with relatives' and a friend's assistance. The vessel's captain warned her and another escaping woman to stay below when other ships were visible. Near departure, she feared being returned. They reached a northern city, but Jacobs had left loved ones behind and remained legally enslaved. After landing, racial discrimination barred her from first-class rail cars. Her legal freedom was obtained in 1852.",
+  "themes": [
+    "dispossession",
+    "social_constraint",
+    "quiet_defiance",
+    "solitude",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She lay on a bed beneath a low, sloping roof. She was in her early twenties. She had been hidden in a space at her grandmother’s house. Boards separated it from the room below. Her uncle had made a concealed door connecting the two spaces. The bed had been spread on the floor.\n\nShe could lie on one side without hitting the roof. When she turned, her body struck it. There was not enough room to stand. No light or air came through. Rats and mice ran across the bed. She was weary. She lay down and slept beneath the roof.",
+      "sourceNotes": "Chapter XXI, entry and first sleep. One bed beneath the roof. Concealed door is static background. Approximate early-twenties age uses both marker chronology and Preface; no specific conveyance actor is named."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "Morning came, and she heard her children below. Their voices made her cry. Their voices brought joy and sadness together. She wanted to speak to them. She wanted to look at their faces. She could find no opening in the boards. Not even a crack gave her a glimpse outside.\n\nThe sounds were the only way she knew the night had ended. The space was still dark. She could sit or lie down, but her body stayed cramped. She suffered for air. She found the darkness hard to bear. The roof kept her out of sight of the people pursuing her. It also kept her out of sight of her children. She listened to them from above, unable to see their faces.",
+      "sourceNotes": "Chapter XXI, first morning, child voices, longing, tears and no crack. One morning in the concealed space. No imagined thought, diagnosis, or graphic violence."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "One evening, she used a small tool to bore holes through the wood. She had found it while crawling for exercise. Her head had struck it where her uncle had left it. She had felt around for the side facing the street. She waited for darkness, afraid that daytime work could attract attention. Now she bored holes in rows, one above another.\n\nThen she bored out the wood between the holes. The separate spaces became one small opening. She sat beside it late into the night. A little air floated in. She could sit there and breathe it. The opening faced the street where her children passed.",
+      "sourceNotes": "Chapter XXI, evening boring work through sitting late into the night. The tool is found one day, at an unspecified interval from entry; she waits for that evening. One evening avoids assigning the work to the first morning’s date. Next-morning sightings are excluded from this located response and refer to the morning after the boring work in struggle."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "The next morning, she watched through the opening. First she saw the man pursuing her, and shuddered. Later she heard laughter and saw her children looking up. Years passed with her beneath the roof. The covering began to fail. Her uncle feared repairs could expose her. Rain soaked her clothes and bedding and made her stiff limbs ache.\n\nA trusted friend arranged a passage out. Then news came of another fugitive being killed. Her grandmother begged her to stay. She gave up the passage and offered it to another woman in hiding. Later, a visitor entered while she was downstairs speaking with her grandmother. She crouched behind a barrel, afraid she had been seen. Her family urged her to leave, and her friend arranged another departure.",
+      "sourceNotes": "Chapter XXI first view and chapter XXIX years, roof failure, canceled passage, feared discovery and renewed plan. All compression occurs here. Exact seven-year duration stays in the mapped record rather than becoming a distinctive identifier in prose."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The captain showed her into a small cabin on the vessel. Inside sat the woman who had taken the earlier passage. Her friend stared at her in astonishment. They held each other, and she began to sob. The captain heard her and came to the cabin. He reminded them that noise could put all of them in danger. He told them to stay below whenever another sail was in sight. At other times, they could go on deck.\n\nThey thanked him and promised to follow his directions. Then the women talked quietly by themselves. Her companion described hiding in her mother’s house and fearing discovery. All her companion’s children had been taken from her at an auction. Her companion feared she might never hear from them again. She replied with the story of her own years beneath the roof. The woman listening could scarcely believe it.",
+      "sourceNotes": "Chapter XXX, cabin reunion through quiet exchange about children and concealment. One cabin encounter, with captain precautions and both women’s reported histories. No deck movement or voyage summary enters the turn."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The vessel moved away slowly, with the wind against it. She feared being taken back while the town remained in sight. She also wondered whether the captain might surrender them for money. Her companion said the crew had treated her kindly. The captain’s respectful manner helped reassure her. She went onto the deck and sat in the fresh air. Sunlight and open air were hers to enjoy again.\n\nAs they approached the northern city, the women watched dawn from the deck. Both had tears in their eyes. They thought they were safe, but had left people they loved behind. After landing, a minister and his wife offered food and a place to rest. Travel onward brought racial exclusion and a crowded, unpleasant ride. She had escaped, but had not been legally freed. Her children were not beside her.",
+      "sourceNotes": "Chapter XXX voyage and dawn, XXXI arrival and racial exclusion. Legal-status sentence maps the 1852 context fact so the fold discloses the difference between escape and manumission. The later legal-freedom scene is not dramatized."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Harriet Ann Jacobs.\n\nShe wrote a book about her own life in slavery and the long effort to reach freedom.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need more time to feel ready.",
+      "sourceNotes": "Name and one plain book legacy, exact distance pair, then two authored permissions. No quoted dialogue, invented texture, comparison, or promise."
+    }
+  ],
+  "sources": [
+    "Harriet A. Jacobs, Incidents in the Life of a Slave Girl (1861), preface and chapters XXI, XXIX–XXXI. https://www.gutenberg.org/cache/epub/11030/pg11030-images.html",
+    "North Carolina Department of Natural and Cultural Resources, Harriet Jacobs c.1813–1897 (A-72). https://www.dncr.nc.gov/blog/2023/12/04/harriet-jacobs-c-1813-1897-72"
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_keller: FigureStageRow = {
+  "figureKey": "keller",
+  "displayName": "Helen Keller",
+  "birthYear": 1880,
+  "deathYear": 1968,
+  "stageId": "1887-learning-that-things-have-names",
+  "stageLabel": "Early lessons, a failed exchange, and learning names",
+  "ageMin": 6,
+  "ageMax": 6,
+  "themes": [
+    "disability",
+    "finding_voice",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "A six-year-old child struggled through an early lesson, made a request with copied finger movements, and used growing language to ask a question during a search game.",
+    "Her asking and learning grew through sustained teaching, but using sentences and searching for hidden objects still took practice."
+  ],
+  "facets": {
+    "emotionalCore": "Anger during a failed exchange with a teacher who restrains the child and holds an object out of reach.",
+    "decisionShape": "Make the finger pattern for a small request, before its language meaning is understood.",
+    "triggerEvent": "A new teacher takes the doll during an early finger-spelling lesson.",
+    "agencyState": "She can imitate, request, and explore; accessible language depends on sustained teaching and does not result from physical restraint."
+  },
+  "biographicalFacts": "In March–May 1887, Helen Keller was six and unable to see or hear after an early childhood illness of uncertain diagnosis. Anne Sullivan's letters describe tactile fingerspelling lessons with a doll, cake and other objects. Keller first imitated finger forms while puzzled. When Sullivan withheld the doll, Keller grew angry; the teacher forced her into a chair and held her, then released her and resumed the exercise. Sullivan interpreted the anger as believing the doll was being taken away. Keller learned more words but confused object names and drinking gestures. Search games initially defeated her, and requests commonly combined single words with gestures. In April, she unsuccessfully sought a hidden cracker, examined Sullivan's mouth, and pointed to her stomach while spelling eat. Sullivan interpreted this as asking whether she had eaten it. By May Keller asked about objects on walks and reported to her mother, still making mistakes and needing Sullivan's help.",
+  "sources": [
+    "Anne Sullivan's 1887 letters to Sophia Hopkins, reproduced in The Story of My Life (1903). https://www.gutenberg.org/files/2397/2397-h/2397-h.htm Part III, Education: editorial note on extracts; March 6 first doll/cake lesson; March 20 cup/milk confusion; April 10 requests; April 24 grammar, initial failed searches, and that morning's cracker search; May 8 small/large words; May 16 walks, reports, and mistakes.",
+    "American Foundation for the Blind, Chronology of Helen Keller's Life. https://www.afb.org/about-afb/history/helen-keller/biography-and-chronology/chronology Entries June 27, 1880, February 1882, March 3 and April 5, 1887; institutional chronology for dates and age.",
+    "American Foundation for the Blind, Helen Keller Biography. https://www.afb.org/about-afb/history/helen-keller/biography-and-chronology/biography Opening full-name paragraph; Political and Social Activism section for writer identity and disability advocacy."
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She helped the new woman unpack her luggage in the room upstairs. She was six. Inside was a doll, and she was delighted to find it. She could not see it, and she could not hear. The woman slowly made a pattern of letters in her hand. The woman pointed to the doll.\n\nThe girl felt the woman's hand and looked puzzled. The letters came again. She copied the movements well and pointed to the doll herself. Her fingers had matched the fingers she had felt. Then the woman took the doll.",
+      "sourceNotes": "Sullivan's March 6 published letter extract supplies the upstairs unpacking and doll lesson. The editor discloses connected extracts and slight wording changes; observer actions are recorded, not invented. AFB chronology supplies age six."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "She tried to seize the doll. The woman shook her head and tried to form the letters with the girl's fingers. The girl grew angrier. The doll had just been in her hands. Now the other person held it, and she was trying to get it back. The woman forced her into a chair and held her there.\n\nShe had copied the hand movements, but had not understood the exchange. She thought the woman meant to take the doll away from her. The woman held her until she herself was nearly exhausted. The girl was still angry in the chair.",
+      "sourceNotes": "One bounded early lesson: attempted seizure, increasing anger, and chair restraint. The teacher's belief about the child's understanding is marked probable in w-interpretation. No invented feeling, injury, or motive; the restraint is not justified or made the cause of language learning."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She made the letters in her hand again, this time for a piece of cake. The woman had let her out of the chair and brought the cake upstairs. She held it towards the girl and formed its name. The girl tried to take it. The letters came again, followed by a pat on her hand. She made the movements quickly herself.\n\nThe woman gave her the cake, and she ate it in a hurry. Then the doll was held towards her with its finger word. She made the letters, leaving one unfinished. The woman supplied it and handed her the doll. She ran downstairs with it.",
+      "sourceNotes": "The child's documented small act is making the cake letters herself in the same upstairs lesson, then the doll letters. No claim that reward proves word meaning or that obedience causes recovery."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Over the next weeks, her hands learned more patterns. The finger words for a cup and milk were hard to distinguish. She pointed to the cup when she made one word. For the other, she made the sign for pouring or drinking. She still did not understand that everything had a name.\n\nLater, she asked for names and wanted other people to spell too. But new games still defeated her. The teacher hid a ball, and she looked beneath a flat board. There was no room for the ball there. When a spool was hidden, she looked in a box too small to hold it. She soon gave up searching. With practice she searched for longer. For requests, she relied on single words and gestures.",
+      "sourceNotes": "Forward compression from early practice to March 20, April 10 and the first search games two or three days before April 24. The water episode is omitted rather than disguised. Cup/milk confusion and failed searches are real failures, not invented metaphors or merged encounters."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The teacher had hidden a cracker for her to find that morning. She searched everywhere she could think of, without success. Then she ran to the teacher and made her open her mouth wide. She examined the open mouth thoroughly. There was no trace of the cracker inside. Her search had brought her to the person who had hidden the food.\n\nShe pointed to the woman's stomach and spelled the word for eat. With that word and gesture, she was asking whether the teacher had eaten it. She had not found the hidden cracker. But she had a question for the other person about where it had gone. Her fingers made the word, and her pointing filled out the question. The search was still unfinished.",
+      "sourceNotes": "One search explicitly dated This morning in Sullivan's April 24 letter: cracker hidden, unsuccessful searching, running to teacher, open-mouth inspection, pointing, and spelling. No outcome or exact room is invented. w-question is probable observer interpretation of the child's word and gesture, not a fabricated full utterance. The ordinary search replaces the recognizable water encounter."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "In the following weeks, she gained words for differences between things. She could ask for something small or something large with the finger words. The teacher could ask her to bring a large book or a small plate. She compared the sizes of puppies, stones, her sister, and her own steps. She was learning more than names.\n\nOn their morning walks, she found things to ask about along the way. Back home, she wanted to tell her mother what they had found. She still tangled words and phrases and made many mistakes. The teacher supplied a missing word, and sometimes a whole sentence. None of the words had restored her sight or hearing. There was more for her to learn.",
+      "sourceNotes": "Forward compression through May 8 and May 16: size words, morning walks, telling her mother, continuing mistakes, and teaching assistance. No fluent speech, cure, completed language education, or achievement list. Age six and impairment with hand spelling may remain recognizable to a familiar reader."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Helen Adams Keller.\n\nShe became a writer whose work helped press for the rights of people with disabilities.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need more time.",
+      "sourceNotes": "Full name and plain writer/advocacy role from AFB institutional biography. Exact distance pair and bounded permission, without promises or equivalence."
+    }
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_riis: FigureStageRow = {
+  "figureKey": "riis",
+  "displayName": "Jacob August Riis",
+  "birthYear": 1849,
+  "deathYear": 1914,
+  "stageId": "1873-unpaid-work-to-reporting",
+  "stageLabel": "Unpaid newspaper work, hunger, and a reporting trial",
+  "ageMin": 23,
+  "ageMax": 24,
+  "shapeSentences": [
+    "An immigrant whose first reporting job never pays goes hungry selling books, follows a teacher to obtain an introduction, and earns a reporting job after a trial.",
+    "Work has repeatedly failed to provide enough food or a secure place to sleep; an introduction opens a trial rather than guaranteeing acceptance."
+  ],
+  "facets": {
+    "emotionalCore": "He feels his years of effort have been wasted and has no hope left after unsuccessful selling and unpaid work.",
+    "decisionShape": "He follows his former teacher to collect a letter of introduction and delivers it for a reporting trial.",
+    "triggerEvent": "The first newspaper employer withholds his wages, and unsuccessful selling leaves him hungry without money.",
+    "agencyState": "He can apply and write a trial report, but depends on an introduction and the editor accepting his work."
+  },
+  "biographicalFacts": "Jacob Riis was approximately twenty-three to twenty-four during his first reporting work in 1873–1874. After two unpaid weeks at a local newspaper, he tried selling books and earned nothing from a day's canvassing. Hungry and without money, he sat on steps with his dog and felt three years had been wasted. His former telegraph-school principal recognized him and gave him an introduction to a news agency. Riis found a new home for the dog and delivered the letter. The desk editor allowed a trial assignment covering a public lunch. Riis watched the food without eating, then wrote a report that earned him acceptance and a regular reporting time. Afterward he collapsed on the stairs at a separate boarding house. The job provided food and pay but involved low wages, long days and multiple evening assignments. The first winter's long rides left his feet painfully cold.",
+  "themes": [
+    "self_doubt",
+    "dispossession",
+    "self_invention",
+    "late_start"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He met his editor on the stairs outside the newspaper office. He was about twenty-four. A woman followed the editor down, striking his head with her basket. She called to the people outside to witness what he had done. He had failed to pay for washing his shirts. The young man was waiting for his pay, too.\n\nHis second pay day had come and brought no wages. He had answered an advertisement and taken the job filling the local column. He had searched for news and made notes when he found it. Now he left with his work unpaid. He took his experience and a large dog someone had given him.",
+      "sourceNotes": "Chapter V, second deferred pay-day and outside stairs. One encounter with the editor and washerwoman; brief basket violence disclosed. Approximate age uses LOC chronology. No invented detail."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "He sat on steps beneath a clock with its face lit. He was faint with hunger. His dog stretched out at his feet. The dog had persuaded a cook to feed it during their last rounds. He had watched from a corner, wanting some of that food. There was no supper for him. He held the book he had spent the day trying to sell.\n\nNo one had bought it. He expected another day of going hungry tomorrow. He thought of leaving these same steps hungry three years earlier. Then he had carried a little money. Now he had none. He felt those years had been wasted. He could find no hope or purpose in them. Nothing had gone right, and he could not imagine anything going right. He no longer cared. He drummed on the book in his hands.",
+      "sourceNotes": "Chapter V, Faint with hunger and How long was this to last. One seated low point; the earlier departure is his attested memory. No relief or invented diagnosis."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He walked across the street to his former teacher’s office. The dog came with him. The teacher had recognized him on the steps and asked about his work. He had explained that he was trying to sell books. Now he collected a letter introducing him to a news agency. Its manager was looking for someone to train.\n\nBefore he left the office, the teacher offered his dog a home. It was a better home than he could provide. He agreed to bring the dog the next day. He left with the letter.",
+      "sourceNotes": "Chapter V, As in a dream and Bob went along. The present action is obtaining the letter in the school office; the earlier conversation explains the introduction. Dog-home agreement occurs before departure from that office."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "He spent that last night walking with the dog. At sunrise he washed his face and hands at a drinking trough. He straightened his clothes and took the dog to its new home. Then he delivered the letter to the news office. The desk editor looked him over doubtfully and allowed a trial. He waited at a desk while the editor prepared the assignments.\n\nHis assignment took him to a public lunch. Food was spread out where he could see and smell it. He had arrived hungry after failing to earn money selling books. Now the food was close, but he did not ask for any. He had reached a point where he no longer felt his hunger. He watched the gathering and wrote his report.",
+      "sourceNotes": "Chapter V, last night, sunrise, letter delivery, and first public lunch. This passage openly moves through the next morning and assignment. Failure to obtain food remains documented after the introduction."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The editor read his report. This was the work of the trial he had been allowed that morning. The editor had looked doubtful when he arrived with the letter. Now he accepted him for the job. He gave him the desk and a time to report each morning. There was another day of work to return for.",
+      "sourceNotes": "Chapter V, But it may be that a touch of it all crept into my report. One editor-report encounter; previous assignment and letter are background. No invented speech or editor gesture."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "After work that evening, he went to a family boarding house. With work and wages, he could pay to stay. On the stairs his strength gave out. He collapsed and lay there until someone stumbled over him in the dark. They carried him inside.\n\nThe reporting work that winter was hard and poorly paid. The office supplied news to papers printed in the morning and evening. He and two other reporters covered news outside the usual department reports. An evening could bring several assignments spread across the city. His working day began in the morning and ran into the next early morning. Long rides left his feet so cold that he lost feeling in them. He had enough to eat now. He still had to get himself to the next assignment.",
+      "sourceNotes": "Chapter V collapse and chapter VI first winter, inferred as 1873–74 from the following May 20, 1874 spring move. Enough food coexists with low pay, long hours and painful cold rides. Year-precision endDate 1874 bounds this winter, not the entire year. No later editor job, marriage, fame, or reform enters the outcome."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Jacob August Riis.\n\nHe wrote books about the lives of people crowded into poor city housing and the conditions around them.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need food, rest, and help.",
+      "sourceNotes": "Plain legacy from the owning archive biography. Name, legacy, exact distance pair, then authored permission. No texture or forecast."
+    }
+  ],
+  "sources": [
+    "Jacob A. Riis, The Making of an American (1901), chapter V and opening of chapter VI. https://www.gutenberg.org/cache/epub/6125/pg6125-images.html",
+    "Library of Congress, Jacob Riis exhibition, Biography. https://www.loc.gov/exhibits/jacob-riis/biography.html",
+    "Library of Congress, Jacob A. Riis Papers finding aid, Biographical Note. https://tile.loc.gov/storage-services/service/gdc/gdcfindingaidpdfs/ms010258/ms010258.pdf"
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_seacole: FigureStageRow = {
+  "figureKey": "seacole",
+  "displayName": "Mary Seacole",
+  "birthYear": 1805,
+  "deathYear": 1881,
+  "stageId": "1854-1855-refusal-to-sick-wharf",
+  "stageLabel": "Refused nursing places to an independent journey and the sick wharf",
+  "ageMin": 48,
+  "ageMax": 49,
+  "shapeSentences": [
+    "After repeated refusals of her nursing offer, she financed a journey to the war zone and found welcome through work at the sick wharf.",
+    "Her confidence in her experience survived repeated refusals, though she cried and questioned whether racial prejudice lay behind them.",
+    "Welcome came through practical care after a journey financed with limited capital, without an official nursing appointment."
+  ],
+  "facets": {
+    "emotionalCore": "Wanting to contribute with real experience while being repeatedly turned away and suspecting racial exclusion.",
+    "decisionShape": "Whether to abandon an offer of help after official refusals or attempt an independent, financially risky route.",
+    "triggerEvent": "The relief fund refused passage after successive nursing applications had failed.",
+    "agencyState": "She could use limited savings, former contacts and a commercial partnership, but could not secure official nursing placement."
+  },
+  "biographicalFacts": "Mary Seacole was forty-eight to forty-nine during 1854–1855. Experienced in caring for patients in Jamaica and Panama, she offered her experience and references for army nursing in London. Office requests failed; she was told that nursing places were filled, and her final request for funded passage was refused. Her memoir records grief and tears and her suspicion of racial prejudice, without establishing officials' motives. She stood on the street and prayed, then resolved to travel at her own expense. With Thomas Day, she planned a store and hotel near the camp and spent limited capital on medicines and home comforts. She proceeded despite warnings and difficult goods transfers. At the sick wharf, she assisted a wounded artilleryman with dressings and tea. A surgeon thanked her and welcomed her help. For six weeks she sold stores ashore and helped transfer wounded men to hospital ships, sleeping aboard ship at night. A later letter reports business misfortune.",
+  "themes": [
+    "dismissed",
+    "social_constraint",
+    "quiet_defiance",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She waited in a great hall while people passed in and out. She was in her late forties. She had brought references from people who knew her nursing work. She wanted to go where soldiers were wounded and ill. Some of the people passing through the hall looked at her with curiosity. The servants wanted her to leave.\n\nThey offered excuses and showed their irritation. She stayed, waiting for someone who could hear her offer. The hall was busy. People entered and people left. She remained among them, asking for a place with the nurses.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "On a cold evening, she stood in the street as daylight faded. Her last request had failed. The nursing places were filled, and a fund had refused to pay for her passage. People hurried home around her. The street was growing quiet. She had been certain she could help the sick men. She had wanted others to see that her offer was sincere. Instead, she felt that her motives had been doubted. Tears ran down her cheeks while the remaining people passed.\n\nShe wondered whether the colour of her skin had something to do with the refusals. She stood there with the suspicion and the disappointment, while the light kept fading. She was still crying.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She stopped in the street and looked up through the dark clouds. Then she prayed aloud for help. Her disappointment had not gone away. She was still outside, still without the passage she had asked for. Her offer to nurse had not been accepted.\n\nThe few people left were hurrying home through the cold and mist. She stood still as she called for help. She had wanted the chance to use the work she knew. Now she was asking for help herself. She spoke aloud there in the cold street.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "The next morning, after sleep, her determination returned. She arranged to travel with her own money. Cards announced her plan to provide meals and lodging for sick officers. An acquaintance agreed to consider opening a store with her. A medical friend helped her choose supplies. The trip brought warnings. Officers who knew her said she might not find a roof. Her partner sent letters describing worse conditions ahead. Moving her supplies between ships meant strong currents and a fierce wind. She climbed aboard frightened and soaked.\n\nAt the destination, there were no warehouses for their goods. They stacked the supplies on shore. She had paid for the trip and brought the things she thought were needed. Now those things had no building to protect them. She slept aboard a ship.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "On her first visit to the landing place, sick and wounded men had just arrived. They were waiting to be moved onto ships. One man lay on a bed, groaning heavily. She ran towards him without waiting for permission. Her fingers began easing his stiff dressings. His groans became an uneasy mutter. There were cups of tea nearby. She bent down and raised some tea to his dry lips. Then his hand touched hers and rested there. He kept holding it. She tried to say something about hope and trust in God.\n\nA surgeon came towards her. He shook her hand and thanked her for looking after the man. He was glad to see her there. She had come without an official nursing place, but he welcomed her help. He had offered her his hand.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "For six weeks she spent her days on shore and her nights aboard the ship. Rough sheets covered the stores against the rain and wind. Beneath them, she received visitors and sold goods. The business gave her work alongside the care she had come to offer. Her main work was helping move sick and wounded men onto the hospital ships. The doctors welcomed her help. She kept that work ahead of the business. The landing place grew familiar through repeated days of attending to the men brought there.\n\nShe still had hard work to do. Men who refused comfort for themselves worried about getting things ready for the wounded. Others cried at what they saw. At night she climbed back aboard the ship.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Mary Seacole.\n\nShe was a Jamaican nurse and businesswoman remembered for caring for wounded soldiers during the Crimean War.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to explain every disappointment before you are allowed to feel it. You are allowed to need some time.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    }
+  ],
+  "sources": [
+    "Mary Seacole, Wonderful Adventures of Mrs. Seacole in Many Lands (1857), edited by W. J. S.; retrospective personal account. VIII, pp.73–82; IX, pp.83–85; X, pp.93–100 https://www.gutenberg.org/files/23031/23031-h/23031-h.htm",
+    "National Library of Jamaica, Mary Seacole (1805–1881), institutional biography. Used only for identity and birth chronology. Biographical heading and opening paragraph https://nlj.gov.jm/project/mary-seacole-1805-1881/"
+  ]
+};
+
+// Documented: source-bound facts in this release's candidate and FACTS-PROPOSAL.v2.json.
+// Interpretive: controlled matching themes; bounded additions reviewed in THEME-REVIEW.md.
+// Avoid saying: see candidate avoidRules and independent source review.
+const octoberStory_washington_b: FigureStageRow = {
+  "figureKey": "washington_b",
+  "displayName": "Booker T. Washington",
+  "birthYear": 1856,
+  "deathYear": 1915,
+  "stageId": "1872-reaching-the-classroom",
+  "stageLabel": "Work for food, a cleaning task, and school admission",
+  "ageMin": 16,
+  "ageMax": 17,
+  "themes": [
+    "dispossession",
+    "social_constraint",
+    "keep_going",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "A young person travelling toward school without enough money found work for food, earned admission through one cleaning task, and still needed work and other people's help to study.",
+    "Admission came through a cleaning task, while meals, tuition, books, and clothing still required work and other people's support."
+  ],
+  "facets": {
+    "emotionalCore": "Hunger and physical exhaustion without money for food or lodging, then discomfort while other applicants are admitted.",
+    "decisionShape": "Ask a ship captain for work to earn breakfast, and complete the later cleaning task carefully.",
+    "triggerEvent": "Out of money during the trip toward school, he cannot purchase food or a bed.",
+    "agencyState": "He can seek work, clean, and prepare lessons; access still depends on the captain, head teacher, tuition donor, and material assistance."
+  },
+  "biographicalFacts": "Booker T. Washington was about sixteen when he traveled toward Hampton in 1872; his autobiography says his exact birth date was unknown. He arrived in Richmond hungry, exhausted and without money or lodging. He slept under a raised sidewalk, using his clothing satchel as a pillow. At dawn he asked a ship's captain for unloading work to earn food. Days of paid work and continued sleeping beneath the sidewalk allowed him to save enough to travel on. At Hampton, the head teacher initially left him waiting. She then asked him to sweep a classroom. He repeatedly swept and dusted, moved furniture and cleaned corners and closets. After inspecting the room and finding no dust, she admitted him. He worked as a janitor while preparing lessons, borrowed books and received used clothing and encouragement from teachers. The janitor work paid board; separate financial help was needed for tuition.",
+  "sources": [
+    "Booker T. Washington, Up from Slavery: An Autobiography (1901). https://www.gutenberg.org/files/2376/2376-h/2376-h.htm Chapter I, opening birth uncertainty; Chapter II, name paragraphs for reveal; Chapter III, late-night Richmond arrival through initial Hampton work, books, socks, and tuition aid; Chapter VII, founding school teaching purpose for the bridge.",
+    "U.S. National Park Service, Washington Timeline. https://www.nps.gov/bowa/learn/historyculture/washington-timeline.htm Timeline entries 1856 and 1872, compared with Chapter I of the memoir."
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He passed a food stand late at night, carrying a bag with his few clothes. He was about sixteen. Chicken and pies were piled up for sale. He was hungry, tired, dirty, and completely out of money. He wanted some of the food, but could not buy anything. He had never been in a large city before.\n\nThere was nobody he knew there, and he did not know where to go. Places he had asked for a bed all wanted money. He had none to give them. The food was close enough to pass on the street. He walked on without eating.",
+      "sourceNotes": "One continuous late-night street stretch from Chapter III. The stand is one of the many he reports passing; food, hunger, bag, and lack of money are recorded. Earlier requests for lodging are immediate bounded context, not a reenacted itinerary. No price, city, year, invented scent, or passerby reaction."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "He reached a raised section of sidewalk and could walk no farther. His body was exhausted. He waited until he was sure nobody passing could see him. Then he crept into the space beneath the sidewalk. He lay on the ground and put his bag of clothes beneath his head.\n\nNearly all night, he heard people's feet walking above him. The bag was his pillow, and the ground was where he slept. He was still hungry. He had not eaten enough for a long time. He spent the night beneath the passing feet.",
+      "sourceNotes": "One night at the raised sidewalk. Waiting, crawling, ground, bag pillow, and footsteps are later recalled actions and sensations. His memoir explicitly says he was not discouraged; physical exhaustion is not changed into despair, shame, or a suicidal crisis."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "At daylight he went to a nearby ship and asked its captain for work. As the light grew, he had seen the ship unloading a cargo of iron. He asked to help with that unloading so he could earn money for food. The captain agreed. He began working on the ship's cargo.\n\nThe work earned him enough to buy breakfast. He had arrived beside the ship without money for a meal. Now he had earned what he needed for it. The captain was pleased with his work and offered to let him continue. There was another day's work available.",
+      "sourceNotes": "One morning's request and first work at the nearby ship. The purpose of food money and captain's consent are explicit. No invented loading technique, bodily gesture, breakfast setting, duration, or claim that all money problems ended."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "For several days, he unloaded the ship and bought food with his wages. After eating, there was little money left to put towards reaching school. He kept sleeping beneath the sidewalk to save what he could. When he had enough, he thanked the captain and set out again. He reached the school with very little left.\n\nHe presented himself to the head teacher after a long stretch without proper food or washing. His clothes had not been changed. She neither admitted him nor sent him away. He lingered near her while she admitted other students. He grew more uncomfortable as they went in. He felt he deserved a chance too. He waited for several hours.",
+      "sourceNotes": "Open forward compression: days of low-paid unloading and outdoor sleep, further travel, then waiting near the teacher. Failure is a real shortage after food, followed by uncertain admission. The memoir's guess about the teacher's private thoughts is not dramatized."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The teacher asked him to sweep the classroom next to hers. He took up a broom and welcomed the task. Careful cleaning was something he had learned in a household job. He swept the floor, then went over it again and again. He dusted the room repeatedly. He moved every piece of furniture in the room. He worked through every corner and closet.\n\nHe felt his future depended on the impression this room made. When he finished, he reported to the teacher. She inspected the floor and checked the closets. With a cloth, she rubbed the woodwork, tables, and benches, looking for dust. She could not find any on the furniture or the floor. Then she told him he could enter the school. He had been admitted.",
+      "sourceNotes": "One classroom task and inspection. Repeated sweeping and dusting, moving furniture, cleaning corners, reporting, inspection cloth and admission are sourced in Chapter III. A handkerchief is softened to cloth. The remembered direct remark is paraphrased, not quoted; no invented cause beyond the reported sequence. This does not endorse the requirement as fair or generalize it to other students."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "He accepted a job cleaning the school's rooms while he studied. The work covered nearly all the cost of his board at first. There were many rooms to care for. He worked late and rose early to build fires before preparing his lessons. The head teacher gave him advice and encouragement when things were difficult.\n\nHe borrowed books because he could not buy them. With only one pair of socks, he washed them at night. Teachers helped him with used clothing. His work eventually paid for his board, but he still could not afford tuition. The school's leader found someone to pay that part. Admission had brought him lessons, hard work, and help from other people. He still had to prepare for class.",
+      "sourceNotes": "Forward compression within the initial student period. Board, tuition, books, clothing, early fires and lessons remain separate costs. A donor's tuition and teachers' help remain visible; work alone does not fund every need. No graduation, later institutional fame, or retrospective political creed."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Booker Taliaferro Washington.\n\nHe helped establish and led a school that trained Black teachers.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need help.",
+      "sourceNotes": "Full first, middle and surname avoids an abbreviation-induced false sentence. One plain teaching-school role is followed by the exact distance pair and bounded permissions."
+    }
+  ]
+};
+
+export const FIGURE_STAGES: FigureStageRow[] = [douglass, butler, lee, rogers, child, lewis, jones, rudolph, angelou, rachmaninoff, oconnor, marshall, allende, wilson, wang, chandler, graham, mcclintock, rustin, sanders, berlin_i, charles_r, sullivan_a, fitzgerald_e, poitier, simone, andersen, tallchief, lindgren, lewis_e, kovalevskaya, hughes, shelley_m, bly, faraday, carver, ramanujan, anning, owens, yeats, coleman, lamarr, hurston, muir, banting, bronte_c, shostakovich, coltrane, christie, nightingale, octoberStory_addams, octoberStory_blackwell_e, octoberStory_darwin, octoberStory_equiano, octoberStory_grant, octoberStory_jacobs, octoberStory_keller, octoberStory_riis, octoberStory_seacole, octoberStory_washington_b];

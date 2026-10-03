@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "dependency-replacement-verification-v1",
+  "observedAt": "2026-10-03 02:26:06 UTC",
+  "targetPullRequest": 145,
+  "originalPullRequestHead": "fdbb941637dfef33d5b99ac582ebb5dd8cc265f8",
+  "sourceDirectory": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward",
+  "checks": [
+    {
+      "command": "npm run lint",
+      "workingDirectory": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward",
+      "toolResult": {
+        "chunk_id": "b7492e",
+        "wall_time_seconds": 10.0019091,
+        "original_token_count": 13,
+        "output": "\n> onward@0.1.0 lint\n> eslint . --max-warnings=0\n\n",
+        "exit_code": 0,
+        "completionChunkId": "7a6076",
+        "completionWallTimeSeconds": 2.8091095
+      }
+    },
+    {
+      "command": "npm run typecheck",
+      "workingDirectory": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward",
+      "toolResult": {
+        "chunk_id": "9b19b7",
+        "wall_time_seconds": 3.1401054,
+        "exit_code": 0,
+        "original_token_count": 11,
+        "output": "\n> onward@0.1.0 typecheck\n> tsc --noEmit\n\n"
+      }
+    },
+    {
+      "command": "npm audit --json",
+      "workingDirectory": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward",
+      "toolResult": {
+        "chunk_id": "7da71b",
+        "wall_time_seconds": 1.6989797,
+        "exit_code": 0,
+        "original_token_count": 92,
+        "output": "{\n  \"auditReportVersion\": 2,\n  \"vulnerabilities\": {},\n  \"metadata\": {\n    \"vulnerabilities\": {\n      \"info\": 0,\n      \"low\": 0,\n      \"moderate\": 0,\n      \"high\": 0,\n      \"critical\": 0,\n      \"total\": 0\n    },\n    \"dependencies\": {\n      \"prod\": 32,\n      \"dev\": 378,\n      \"optional\": 116,\n      \"peer\": 0,\n      \"peerOptional\": 0,\n      \"total\": 446\n    }\n  }\n}\n"
+      }
+    },
+    {
+      "command": "node scripts/check-next-lint-glob.mjs --reference-fast-glob=C:/Users/taich/.codex/worktrees/ten-story-production/Onward/node_modules/fast-glob",
+      "workingDirectory": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward",
+      "toolResult": {
+        "chunk_id": "361725",
+        "wall_time_seconds": 1.0897812,
+        "exit_code": 0,
+        "original_token_count": 117,
+        "output": "Pages directory cannot be found at apps\\project-a\\pages\\pages or apps\\project-a\\pages\\src\\pages or apps\\project-b\\pages\\pages or apps\\project-b\\pages\\src\\pages. If using a custom path, please configure with the `no-html-link-for-pages` rule in your eslint config file.\n{\"ok\":true,\"rootCases\":29,\"actualNextRuleCases\":54,\"rejectedUnsupportedCalls\":5,\"differentialCases\":28,\"pluginVersion\":\"15.5.26\",\"replacement\":\"@onward/next-lint-glob@1.0.0\",\"globVersion\":\"13.0.6\"}\n"
+      }
+    }
+  ],
+  "cleanInstall": {
+    "command": "npm ci",
+    "exitCode": 0,
+    "completionChunkId": "d7f51b",
+    "output": "added 340 packages, and audited 341 packages in 20s; found 0 vulnerabilities",
+    "npmVersion": "10.9.2",
+    "nodeVersion": "v22.15.0",
+    "requiredConfiguration": "install-links=true"
+  },
+  "hashes": {
+    "package.json": "2528cb89b8465c68683115dd9a631cad84046960eedef499c445c7c9b412cb3b",
+    "package-lock.json": "bde6817490252a9ec35a8051391fe900ed28017138e9731df537ed4b8f8b288d",
+    "vendor/next-lint-glob/index.cjs": "8486e3acd3a5ee85c3ce842b2c75baffe31df7f9e45c9dfadb540b01b41e692c",
+    "scripts/check-next-lint-glob.mjs": "bc8e2b0a733a1e0bec6e361274e62426a4941358bf8479ea50d2cdd9b3299bc8",
+    ".npmrc": "0de568ed41940a3875665c76cc7577fc9cac6380a2c27823f03a32020edce711"
+  },
+  "independentReview": {
+    "rootPatterns": 47,
+    "actualNextRuleCases": 7,
+    "scopeVerdict": "pass",
+    "pathSpellingQualification": "Leading ./ retention differs only for bare globstar variants; resolved directory roots and lint coverage are equivalent."
+  },
+  "limitations": [
+    "This receipt verifies the scoped dependency repair, not the complete repository CI run or a GitHub merged head.",
+    "Glob API support is intentionally limited to the pinned Next root-directory consumer; future callers or options fail and require review."
+  ]
+}

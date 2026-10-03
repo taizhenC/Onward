@@ -1,0 +1,106 @@
+{
+  "completedAt": "2026-10-03T00:07:51.112Z",
+  "storyCount": 1,
+  "approval": "None; mechanical checks and agent reviews do not approve publication",
+  "candidates": [
+    {
+      "figureKey": "keller",
+      "storySpecId": "keller:1887-learning-that-things-have-names:v1",
+      "candidateSha256": "d0103c4b4447cfa5c1d1c8dc9e3e74be8146ec0a40399e7cb2f8b91e5054a94a",
+      "stageSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "words": 725,
+      "passages": [
+        {
+          "role": "scene",
+          "words": 92,
+          "targetWords": [
+            90,
+            140
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 8.36,
+          "longestSentence": 12,
+          "endingWords": 6
+        },
+        {
+          "role": "dark_moment",
+          "words": 100,
+          "targetWords": [
+            120,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10,
+          "longestSentence": 15,
+          "endingWords": 8
+        },
+        {
+          "role": "response",
+          "words": 107,
+          "targetWords": [
+            90,
+            130
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.73,
+          "longestSentence": 15,
+          "endingWords": 5
+        },
+        {
+          "role": "struggle",
+          "words": 125,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 9.62,
+          "longestSentence": 15,
+          "endingWords": 9
+        },
+        {
+          "role": "turning_point",
+          "words": 125,
+          "targetWords": [
+            130,
+            180
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 10.42,
+          "longestSentence": 14,
+          "endingWords": 5
+        },
+        {
+          "role": "became",
+          "words": 120,
+          "targetWords": [
+            100,
+            150
+          ],
+          "outsideTarget": false,
+          "sentenceMean": 10.91,
+          "longestSentence": 14,
+          "endingWords": 7
+        },
+        {
+          "role": "bridge",
+          "words": 56,
+          "targetWords": [
+            60,
+            120
+          ],
+          "outsideTarget": true,
+          "sentenceMean": 9.33,
+          "longestSentence": 15,
+          "endingWords": 7
+        }
+      ],
+      "draftErrors": 0,
+      "draftWarnings": 0,
+      "simulationErrors": 0,
+      "simulationWarnings": 0,
+      "canonicalProsePreserved": true,
+      "serializedReplay": true
+    }
+  ]
+}

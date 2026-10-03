@@ -1,0 +1,55 @@
+
+> onward@0.1.0 check-db
+> tsx scripts/check-db.ts
+
+Onward Supabase check (PERSISTENCE=supabase)
+============================================
+
+Loaded 10 var(s) from .env.local
+
+[1/22] OK    library seeded (figures + figure_stages)
+         figures=60, figure_stages=60
+[2/22] OK    figures served from DB == authored library
+         34 stage(s) deep-equal the const
+[3/22] OK    public stages have valid published StorySpecs
+         34 valid published StorySpec(s) eligible for matching
+[4/22] OK    StorySpec publication compare-and-set schema installed
+         strict JSON identity, exact lifecycle enforcement, one published version per stage, snapshot-bound promotion, legacy revocation, and service-only grants are safe
+[5/22] OK    StoryArtifact and retention schema installed
+         story_artifacts reachable (0 row(s)); columns, current defaults, validated constraints, exact trigger helpers, labels, and grants are safe
+[6/22] OK    durable account-level Owner Story Save schema installed
+         all 9 closed health flags prove table shape, constraints, Auth trigger, immutable helpers, grants, RLS, owner coverage, and row validity
+[7/22] OK    immutable promoted story-recipe registry installed
+         active keyword-rerank-figure-library-50-2026-07-02; 1 selectable manifest(s) installed
+[8/22] OK    single-use match recovery schema installed
+         table/RPC reachable (0 active or recently consumed row(s))
+[9/22] OK    privacy-safe historical concern queue installed
+         queue/RPC reachable (0 bounded report row(s))
+[10/22] OK    bounded story feedback schema installed
+         table/RPC reachable (0 bounded row(s))
+[11/22] OK    one-use alternate story schema installed
+         context columns and flow RPC reachable (0 bounded row(s))
+[12/22] OK    owner-scoped story deletion boundary installed
+         nonexistent owner probe is closed; direct service-role delete is denied
+[13/22] OK    owner-confirmed account deletion boundary installed
+         nonexistent auth owner is closed; rate-limit ownership FK is reachable
+[14/22] OK    privacy-safe telemetry schemas installed
+         typed tables reachable (21 product event(s), 0 reduced attempt(s))
+[15/22] OK    transactional telemetry lifecycle RPCs installed
+         all lifecycle/capture signatures and service-role grants are reachable without writes
+[16/22] OK    first-party telemetry rollup dispatcher installed
+         count-only dispatch, closed queue health, private helpers, grants, RLS, and cron definitions are reachable
+[17/22] OK    transactional match telemetry producer RPCs installed
+         rate-limit, recovery, and artifact producer signatures reject before any write
+[18/22] OK    transactional story progress telemetry RPC installed
+         owner-first acknowledgement signature is reachable without writes
+[19/22] OK    transactional story feedback telemetry RPC installed
+         owner-first feedback signature is reachable without writes
+[20/22] OK    transactional alternate-request telemetry RPC installed
+         claim-first alternate telemetry signature is reachable without writes
+[21/22] OK    transactional alternate-resolution telemetry RPCs installed
+         claim/release/unavailable/expired/ready signatures are reachable without writes
+[22/22] OK    crisis persists nothing
+         crisis response, sessions unchanged (10)
+
+Supabase foundation healthy. Sessions persist; figures served from DB.

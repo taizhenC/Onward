@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "new-ten-owner-code-first-merge-v1",
+  "observedAt": "2026-10-03T01:48:44.1979866Z",
+  "pullRequest": {
+    "headRefOid": "0ea765c32c817c32fa2b8eecc3aa4d7477d8fb6e",
+    "mergeCommit": {
+      "oid": "e65edfc23000b8407fc74e35287d88b7b9f1f5a0"
+    },
+    "mergedAt": "2026-10-03T01:47:36Z",
+    "number": 146,
+    "state": "MERGED",
+    "url": "https://github.com/taizhenC/Onward/pull/146"
+  },
+  "ownerAuthorizationSha256": "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8",
+  "realMatchingTrustGatePassed": false,
+  "fullDependencyAuditPassed": false,
+  "acceptedOnlyByExactOwnerDirection": true,
+  "databasePublicationPerformed": false,
+  "deploymentQualification": "Actual exact-SHA production deployment is verified separately."
+}

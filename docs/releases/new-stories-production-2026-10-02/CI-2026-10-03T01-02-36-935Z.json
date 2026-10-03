@@ -1,0 +1,324 @@
+{
+  "schemaVersion": "new-ten-local-ci-v1",
+  "gitCommit": "9edb1731c5bf818ba92fd25916ba9ca00400555d",
+  "startedAt": "2026-10-03T01:02:36.935Z",
+  "completedAt": "2026-10-03T01:06:12.648Z",
+  "ok": false,
+  "steps": [
+    {
+      "name": "lint",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:00.011Z"
+    },
+    {
+      "name": "typecheck",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:02.917Z"
+    },
+    {
+      "name": "check-facet-signal",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:03.710Z"
+    },
+    {
+      "name": "check-facet-weighting",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:04.470Z"
+    },
+    {
+      "name": "check-recipe-manifest-v2",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:05.319Z"
+    },
+    {
+      "name": "check-facet-tagger-provider",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:06.832Z"
+    },
+    {
+      "name": "check-recipe-governance",
+      "exitCode": 1,
+      "completedAt": "2026-10-03T01:03:07.575Z"
+    },
+    {
+      "name": "check-prompt-releases",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:08.299Z"
+    },
+    {
+      "name": "check-opening-copy-policy",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:09.262Z"
+    },
+    {
+      "name": "check-personalized-preface",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:10.299Z"
+    },
+    {
+      "name": "check-recipe-registry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:11.079Z"
+    },
+    {
+      "name": "check-recipe-registry-v2",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:11.801Z"
+    },
+    {
+      "name": "check-recipe-deployment",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:12.775Z"
+    },
+    {
+      "name": "check-recipe-failure-boundary",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:13.433Z"
+    },
+    {
+      "name": "check-figure",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:14.162Z"
+    },
+    {
+      "name": "check-story-spec",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:15.041Z"
+    },
+    {
+      "name": "check-wave-2-reviewed",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:03:15.958Z"
+    },
+    {
+      "name": "check-story-spec-migration",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:12.904Z"
+    },
+    {
+      "name": "check-story-artifact",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:14.747Z"
+    },
+    {
+      "name": "check-derived-output-retention",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:19.472Z"
+    },
+    {
+      "name": "check-story-quality-benchmark",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:34.784Z"
+    },
+    {
+      "name": "check-story-quality-immutability-self-test",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:35.450Z"
+    },
+    {
+      "name": "check-source-transparency",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:36.945Z"
+    },
+    {
+      "name": "check-resonance-feedback",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:38.208Z"
+    },
+    {
+      "name": "check-try-another",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:39.905Z"
+    },
+    {
+      "name": "check-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:40.898Z"
+    },
+    {
+      "name": "check-telemetry-lifecycle",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:42.205Z"
+    },
+    {
+      "name": "check-telemetry-producers",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:43.347Z"
+    },
+    {
+      "name": "check-story-progress-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:44.499Z"
+    },
+    {
+      "name": "check-feedback-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:45.686Z"
+    },
+    {
+      "name": "check-alternate-request-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:46.806Z"
+    },
+    {
+      "name": "check-alternate-resolution-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:47.992Z"
+    },
+    {
+      "name": "check-entry-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:49.784Z"
+    },
+    {
+      "name": "check-intake-experience",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:50.840Z"
+    },
+    {
+      "name": "check-fiction-special",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:52.720Z"
+    },
+    {
+      "name": "check-retellings",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:54.021Z"
+    },
+    {
+      "name": "check-core-accessibility",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:54.760Z"
+    },
+    {
+      "name": "check-auth-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:56.196Z"
+    },
+    {
+      "name": "check-flow-failure-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:58.434Z"
+    },
+    {
+      "name": "check-telemetry-dispatcher",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:04:59.242Z"
+    },
+    {
+      "name": "check-story-deletion",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:00.517Z"
+    },
+    {
+      "name": "check-account-deletion",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:01.598Z"
+    },
+    {
+      "name": "check-owner-story-save",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:02.809Z"
+    },
+    {
+      "name": "check-story-beat-resilience",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:03.620Z"
+    },
+    {
+      "name": "check-reader-visibility-telemetry",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:04.763Z"
+    },
+    {
+      "name": "check-story-boundaries",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:05.884Z"
+    },
+    {
+      "name": "check-resonance-brief",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:06.844Z"
+    },
+    {
+      "name": "check-story-composer",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:07.963Z"
+    },
+    {
+      "name": "check-match-recovery",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:09.146Z"
+    },
+    {
+      "name": "eval-crisis",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:09.871Z"
+    },
+    {
+      "name": "smoke",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:05:11.136Z"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:00.381Z"
+    },
+    {
+      "name": "recipe-attestor",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:00.475Z"
+    },
+    {
+      "name": "story-batch:wave-2-rewritten-2026-09-10",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:01.031Z"
+    },
+    {
+      "name": "story-batch:wave-3-drafts-2026-09-14",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:01.477Z"
+    },
+    {
+      "name": "story-batch:wave-3-repairs-2026-09-15",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:01.811Z"
+    },
+    {
+      "name": "story-batch:wave-4-drafts-2026-09-19",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:02.240Z"
+    },
+    {
+      "name": "story-batch:wave-5-drafts-2026-09-20",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:02.634Z"
+    },
+    {
+      "name": "story-batch:wave-6-drafts-2026-09-20",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:02.991Z"
+    },
+    {
+      "name": "story-batch:remaining-story-review-2026-09-20/held-repairs",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:03.328Z"
+    },
+    {
+      "name": "base:check-recipe-immutability",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:04.256Z"
+    },
+    {
+      "name": "base:check-prompt-releases",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:04.910Z"
+    },
+    {
+      "name": "base:check-story-quality-immutability",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:12.648Z"
+    }
+  ]
+}

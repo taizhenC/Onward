@@ -79,7 +79,7 @@ The retrievable unit is not a person but a **stage**: one emotional episode, org
 - **Biographical facts** are primary-source facts scoped to the episode. They are the only thing the reranker reads.
 - **Beats** are the seven authored passages, each with a structural role and a provenance note.
 
-Keeping retrieval text away from the reranker is the *anti-echo* rule: the model must judge fit from facts, not confirm what similarity search already said. The library holds 50 stages (about 48,000 words, a five-minute read each), tagged from a controlled vocabulary of 23 themes, weighted toward ages 15 to 30, with subjects ranging from a six-year-old who stopped speaking to a sixty-five-year-old who was broke. Every entry in `lib/figures-data.ts` records what is documented, what is interpretive, and what must not be said. In production a stage becomes matchable only after its evidence-bound StorySpec passes review.
+Keeping retrieval text away from the reranker is the *anti-echo* rule: the model must judge fit from facts, not confirm what similarity search already said. The library holds 60 stages, tagged from a controlled vocabulary of 23 themes, weighted toward ages 15 to 30, with subjects ranging from a six-year-old who stopped speaking to a sixty-five-year-old who was broke. Every entry in `lib/figures-data.ts` records what is documented, what is interpretive, and what must not be said. In production a stage becomes matchable only after its evidence-bound StorySpec passes review. The adult intake accepts ages 18–100; historical episodes outside the matching age tolerance remain catalog entries without adult-route reachability.
 
 ### Matching modes and recipes
 

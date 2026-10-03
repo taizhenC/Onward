@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "new-ten-production-deployment-v1",
+  "startedAt": "2026-10-03T01:47:44.664Z",
+  "observedAt": "2026-10-03T01:49:18.468Z",
+  "ok": true,
+  "phase": "code-first",
+  "requestedSha": "e65edfc23000b8407fc74e35287d88b7b9f1f5a0",
+  "deployment": {
+    "deploymentId": 6821822272,
+    "sha": "e65edfc23000b8407fc74e35287d88b7b9f1f5a0",
+    "environment": "Production",
+    "createdAt": "2026-10-03T01:49:10Z",
+    "status": "success",
+    "statusCreatedAt": "2026-10-03T01:49:10Z",
+    "environmentUrl": "https://onward-coylnknao-taizhencs-projects.vercel.app",
+    "detailsUrl": "https://onward-coylnknao-taizhencs-projects.vercel.app"
+  },
+  "qualification": "GitHub Vercel production deployment status for the exact SHA; live artifact identity is checked separately by the bounded canary."
+}

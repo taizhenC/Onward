@@ -1,0 +1,7 @@
+# Ten-story draft PR saved
+
+The reviewed release work is pushed as [draft PR #146](https://github.com/taizhenC/Onward/pull/146) and attached to this Codex task. It is open, targets production main, and is explicitly held from merge and publication. The observed head is `b3d0dccbed9ab7e51eae7c2cafbb9f0e3472f8e2`; production main remains `38815c83922afd7350ab1f1aafcd3dcafd874cd3`. The JSON receipt records the exact observation time and check states for that head. The receipt itself is a subsequent documentation commit, so these states are not advertised as checks of a later head.
+
+Both mandatory real matching evaluations failed; the current sixty-stage revision measured 96/101 positive matches (95.0%), one wrong definitive positive and two of three misses detected. The final security audit also failed. [Release hold](RELEASE-HOLD.md), [validation](VALIDATION.md) and [database proof](PRODUCTION-HOLD-DB.md) preserve the evidence and limitations. No passing release registration was appended.
+
+Production retains 34 valid existing publications and ten exact finished-writing drafts with empty review metadata. No production merge, production deployment, metadata mutation, publication or live canary was performed. Vercel feature-branch preview/check activity is not a production release. The next release requires matching calibration with qualified independent evidence, a passing exact-library content gate and security-gate resolution, followed by the documented publication/deployment sequence.

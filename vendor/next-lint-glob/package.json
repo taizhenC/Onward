@@ -1,0 +1,13 @@
+{
+  "name": "@onward/next-lint-glob",
+  "version": "1.0.0",
+  "private": true,
+  "description": "The pinned Next.js ESLint directory globSync API without the vulnerable braces package.",
+  "license": "MIT",
+  "main": "index.cjs",
+  "dependencies": {
+    "glob": "13.0.6",
+    "minimatch": "10.2.6",
+    "picomatch": "4.0.4"
+  }
+}

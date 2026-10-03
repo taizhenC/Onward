@@ -1,0 +1,74 @@
+{
+  "ok": true,
+  "installedAdapter": "C:\\Users\\taich\\.codex\\worktrees\\merge-all-prs\\Onward\\node_modules\\fast-glob\\index.cjs",
+  "installedName": "@onward/next-lint-glob",
+  "installedSourceSha256": "8486e3acd3a5ee85c3ce842b2c75baffe31df7f9e45c9dfadb540b01b41e692c",
+  "authoredSourceSha256": "8486e3acd3a5ee85c3ce842b2c75baffe31df7f9e45c9dfadb540b01b41e692c",
+  "packageSha256": "e22d27cf13b40a81ffc223be2944b4750186b60a13784af3b62139fe75768781",
+  "compatibilityScriptSha256": "bc8e2b0a733a1e0bec6e361274e62426a4941358bf8479ea50d2cdd9b3299bc8",
+  "lockSha256": "bde6817490252a9ec35a8051391fe900ed28017138e9731df537ed4b8f8b288d",
+  "tests": [
+    {
+      "pattern": "packages/*",
+      "jsx": "<a href=\"/about\">About</a>",
+      "expected": 1,
+      "actual": 1,
+      "ruleIds": [
+        "next/no-html-link-for-pages"
+      ],
+      "passed": true
+    },
+    {
+      "pattern": "packages/*",
+      "jsx": "<a href=\"https://example.test/about\">About</a>",
+      "expected": 0,
+      "actual": 0,
+      "ruleIds": [],
+      "passed": true
+    },
+    {
+      "pattern": "packages/*",
+      "jsx": "<a href=\"/about\" target=\"_blank\">About</a>",
+      "expected": 0,
+      "actual": 0,
+      "ruleIds": [],
+      "passed": true
+    },
+    {
+      "pattern": "linked/*",
+      "jsx": "<a href=\"/about\">About</a>",
+      "expected": 1,
+      "actual": 1,
+      "ruleIds": [
+        "next/no-html-link-for-pages"
+      ],
+      "passed": true
+    },
+    {
+      "pattern": "linked/*",
+      "jsx": "<a href=\"https://example.test/about\">About</a>",
+      "expected": 0,
+      "actual": 0,
+      "ruleIds": [],
+      "passed": true
+    },
+    {
+      "pattern": "hidden-only/!(a)",
+      "jsx": "<a href=\"/about\">About</a>",
+      "expected": 1,
+      "actual": 1,
+      "ruleIds": [
+        "next/no-html-link-for-pages"
+      ],
+      "passed": true
+    },
+    {
+      "pattern": "hidden-only/!(a)",
+      "jsx": "<a href=\"https://example.test/about\">About</a>",
+      "expected": 0,
+      "actual": 0,
+      "ruleIds": [],
+      "passed": true
+    }
+  ]
+}

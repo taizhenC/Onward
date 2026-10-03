@@ -1,0 +1,509 @@
+{
+  "storySpecId": "rogers:1969-speaking-for-childrens-television:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "rogers",
+  "stageId": "1969-speaking-for-childrens-television",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 41,
+    "ageMax": 41,
+    "throughLine": "A television host explains the value of caring work at a funding hearing and receives a favorable response, without claiming that one speech secured an appropriation."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "A short, dated public-hearing vignette about explaining work to a decision-maker. This replaces the undated childhood episode. No private fear, medical intervention, funding victory caused by one speech, or exact fiscal outcome is claimed."
+  },
+  "facts": [
+    {
+      "factId": "identity",
+      "statement": "Fred Rogers was a television host who testified at a Senate communications hearing in spring 1969.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-owning",
+          "locator": "Event identification supplies 1969; the archive has conflicting event and broadcast date metadata, so no exact day is asserted.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-hearing",
+          "locator": "Program record and introduction of Rogers; May 1 is labeled broadcast date, while the description places hearings April 29–30.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "age",
+      "statement": "Born March 20, 1928, Rogers was forty-one at the spring 1969 hearing; both April 29–30 and May 1 fall after his birthday.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-birth",
+          "locator": "Birth-date narration; spring hearing chronology from source-hearing metadata.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-hearing",
+          "locator": "Spring 1969 program record and introduction of Rogers; exact hearing day is not asserted.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "length",
+      "statement": "The senator asked the program's length; Rogers answered half an hour every day.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hearing",
+          "locator": "Exchange beginning How long a program is it?",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "funds",
+      "statement": "Rogers recalled that money ran out after a hundred programs and people in several cities helped the work continue.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hearing",
+          "locator": "We made 100 programs through neighborhood expression of care.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "drama",
+      "statement": "He described ordinary childhood matters and feelings as drama without requiring screen violence.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hearing",
+          "locator": "We deal with such things as the inner drama of childhood: haircuts, siblings and anger.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "work",
+      "statement": "He told the senator he hosted the program, performed the puppets, and wrote its music and scripts.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hearing",
+          "locator": "Do you narrate it? through I write all the script.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "response",
+      "statement": "The senator said the testimony gave him goosebumps; Rogers thanked him for his interest in that communication.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hearing",
+          "locator": "Well, I'm supposed to be a pretty tough guy through your interest in our kind of communication.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "song",
+      "statement": "Rogers offered a children's song about choices when angry; the senator praised it and spoke favorably about the proposed funding.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-hearing",
+          "locator": "Could I tell you the words through final committee response. No lyrics reproduced; no appropriation inferred.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 8,
+      "confidence": "documented",
+      "claimKind": "event"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Fred Rogers",
+      "aliases": [
+        "Rogers"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At forty-one, a television host explained his daily program to a senator at a public hearing. The senator asked how long it lasted. Half an hour, every day.",
+      "requiredFactIds": [
+        "identity",
+        "age",
+        "length"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity",
+            "age",
+            "length"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "length"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "length"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Dated public exchange, not an invented room or private reaction."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "He recalled making a hundred programs before the money ran out. People in several cities had helped the work continue. He described that support.",
+      "requiredFactIds": [
+        "funds"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "funds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "funds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "funds"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "An earlier funding limit, explicitly recollected during the hearing; not a personal rock bottom."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He described children's ordinary feelings as material worthy of attention on television. Anger between family members could become a story. Violence was not required.",
+      "requiredFactIds": [
+        "drama"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "drama"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "drama"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "drama"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Paraphrase of his stated argument; no present-day clinical claim."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The senator asked whether he narrated the program, and he explained his several jobs. He hosted, performed the puppets, and wrote the music and scripts. He described the work itself.",
+      "requiredFactIds": [
+        "work"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The slot records explanation, not an invented failed attempt or working condition."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "The senator said the testimony had given him goosebumps, though he described himself as tough. The host thanked him for taking an interest in this kind of communication. The reply was favorable.",
+      "requiredFactIds": [
+        "response"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "response"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "response"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "response"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A reported verbal response, not proof of an internal transformation."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He offered a children's song about having choices when anger came. The senator praised it and spoke favorably about the funding. That was the senator's response.",
+      "requiredFactIds": [
+        "song"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "song"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "song"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "song"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "No song lyrics. A favorable statement is not an appropriation or proof this witness alone secured one."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Fred Rogers.\n\nHe hosted a daily television program for children.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYour quiet work is allowed to matter.",
+      "requiredFactIds": [
+        "identity",
+        "length"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "identity",
+            "length"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Own-line identity; permission does not promise a receptive decision-maker."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Authorized short source-led vignette: seven compatibility slots are not seven proven scenes or a full crisis-to-recovery arc.",
+    "The hearing is scoped to spring 1969, at age 41. AAPB labels May 1 as broadcast date but describes hearings April 29–30; no exact event day is asserted. The funding interruption is earlier background.",
+    "No invented gesture, scenery, nervousness, private motive, audience reaction or dialogue.",
+    "No song lyrics, therapy claim, precise funding amount, final appropriation, or sole-cause saved-public-television claim."
+  ],
+  "avoidRules": [
+    "Do not route this adult testimony to childhood bullying or illness.",
+    "Do not turn a favorable committee response into a guaranteed outcome for the reader.",
+    "Anonymous until the bridge; no disclosure echo, instruction or promised result."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-hearing",
+      "citation": "National Educational Television, Public Affairs: Senate Commerce Communications Hearings, preserved by the American Archive of Public Broadcasting. May 1, 1969 is labeled broadcast date; the description places hearings April 29–30. Transcript read, soundtrack not independently audited.",
+      "url": "https://americanarchive.org/catalog/cpb-aacip-516-t72794201n",
+      "locator": "Fred Rogers segment: program length; money ran out; childhood feelings; host/puppets/music/scripts; Pastore's response and concluding song exchange."
+    },
+    {
+      "sourceId": "source-owning",
+      "citation": "Fred Rogers Productions, Fred Rogers testifies before the Senate Subcommittee on Communications 1969. Owning program's event identification; video not independently audited here.",
+      "url": "https://www.misterrogers.org/videos/pastore/",
+      "locator": "Page title identifies speaker, committee and 1969 testimony."
+    },
+    {
+      "sourceId": "source-birth",
+      "citation": "WQED, Our Neighbor Fred Rogers, 1989, PBS caption transcript. Narrator's birth-date identification.",
+      "url": "https://www.pbs.org/video/our-neighbor-fred-rogers-qmsiqr/",
+      "locator": "Narration: born March 20, 1928; either late-April or early-May 1969 hearing chronology gives age 41."
+    }
+  ],
+  "review": {}
+}

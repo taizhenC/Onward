@@ -1,0 +1,76 @@
+{
+  "figureKey": "coltrane",
+  "displayName": "John Coltrane",
+  "birthYear": 1926,
+  "deathYear": 1967,
+  "stageId": "1957-learning-with-monk",
+  "stageLabel": "Learning with another musician: passages, practice and help",
+  "ageMin": 30,
+  "ageMax": 31,
+  "shapeSentences": [
+    "A musician who could already perform asked another player for help with difficult music and learned through repetition, written notes and demonstrations.",
+    "Being experienced did not remove the need to ask questions or try more than one way of learning.",
+    "Even after rehearsing, he remembered relying on the bassist when the piano stopped during performances."
+  ],
+  "facets": {
+    "emotionalCore": "Difficulty learning passages and a remembered feeling of being alone when a musical partner stopped playing, without treating either as a verdict on his ability.",
+    "decisionShape": "Asking to learn a tune, visiting another musician to rehearse it and using both repeated listening and written music.",
+    "triggerEvent": "A tune he liked and passages he found difficult brought him into practical study with another musician.",
+    "agencyState": "An experienced saxophonist could ask questions and practise, while another musician demonstrated answers and supplied written music when needed."
+  },
+  "biographicalFacts": "John Coltrane was born in 1926 and was about thirty during the 1957 rehearsals before his work with Thelonious Monk at the Five Spot. In August Blume's interview published in The Jazz Review in January 1959, Coltrane said he liked a tune they had recorded and asked to learn it; Monk invited him over. He described repeated visits to Monk's home, listening at the piano and trying to find the music on his saxophone. They repeated passages, and Monk showed written music when Coltrane had difficulty. In his 1960 DownBeat essay Coltrane likewise described asking Monk musical questions and watching the answers played at the piano. He placed their work together in the latter part of 1957. The earlier interview also records feeling lonesome when Monk left the keyboard during performances and relying on bassist Wilbur Ware. These are retrospective accounts of learning and collaboration. The 30–31 age range covers that year's documented work.",
+  "themes": [
+    "finding_voice",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He was about thirty, visiting a pianist's home to work on music with his saxophone. These were repeated visits.",
+      "sourceNotes": "Rehearsal-period summary; no single invented date. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "In his memory, some passages remained difficult even after they played through the tune repeatedly. He still needed help.",
+      "sourceNotes": "Learning difficulty, not an invented inner crisis. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "Earlier, he had liked a tune they recorded and asked to learn it. The pianist invited him over.",
+      "sourceNotes": "Marked backward request, not presented as occurring after the later rehearsals. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "At the rehearsals, he listened to the piano and tried to find the music on his horn. They played passages again and again.",
+      "sourceNotes": "Repeated effort, no invented failed take. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "When he struggled with a passage, the pianist showed him the music written down. He could also watch answers played at the keyboard. There were other ways to learn.",
+      "sourceNotes": "Habitual practical help is the summarized turn, not a one-day transformation. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "Playing together did not mean the pianist stayed at the keyboard throughout every performance. When the piano fell silent, the saxophonist remembered feeling alone. He relied on the bassist and his knowledge of the tune. He was still listening.",
+      "sourceNotes": "Continued performance difficulty, not recovered addiction or finished mastery. Listening is implied by documented reliance on the bassist, not invented sensory texture. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was John Coltrane.\n\nHe was a jazz saxophonist who wrote music for his bands.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to be unfinished without making your whole life a verdict.\n\nYou are allowed to need help.",
+      "sourceNotes": "Permission, not treatment advice. User-authorized short source-led format; proposed emphasis shift remains for owner decision."
+    }
+  ],
+  "sources": [
+    "August Blume, An Interview with John Coltrane, The Jazz Review, January 1959, p. 25; digitized issue JREVTwo1, Jazz Studies Online. https://www.jazzstudiesonline.org/files/jso/resources/pdf/JREVTwo1.pdf Printed p. 25, rehearsal question/answer in the central column; continuation beginning When I met him and answer beginning I felt sort of lonesome in the right column. Bounded text and preserved source image at docs/research/story-specs/wave-3/source-checks-a/coltrane-page-25.png freshly read for the integration repair on 2026-09-20. The image contains corrupt technical text; only legible passages are used.",
+    "John Coltrane with Don DeMicheal, Coltrane on Coltrane, DownBeat, 29 September 1960; publisher archive. https://downbeat.com/microsites/prestige/trane-interview.html Publisher-owned full essay freshly read 2026-09-20; In 1955 and Working with Monk paragraphs. First-person retrospective essay with Don DeMicheal, not a contemporaneous rehearsal transcript. Post-Monk technical problems are not moved into 1957.",
+    "John Coltrane official website, John Coltrane Biography. https://www.johncoltrane.com/biography Official biography freshly read 2026-09-20: 1926 birth paragraph and saxophonist/composer identification. Only context, not source of a private moment."
+  ]
+}

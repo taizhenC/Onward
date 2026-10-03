@@ -1,0 +1,78 @@
+{
+  "figureKey": "wang",
+  "displayName": "Vera Wang",
+  "birthYear": 1949,
+  "stageId": "1989-1990-the-bridal-store",
+  "stageLabel": "A bridal business built from earlier fashion experience",
+  "ageMin": 39,
+  "ageMax": 41,
+  "themes": [
+    "late_start",
+    "self_invention",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "An experienced editor and designer changed direction near forty after looking for a wedding dress and seeing room for different clothes.",
+    "Her earlier disappointment did not erase the skills developed in a long career.",
+    "She moved from design work for another company to opening a bridal business of her own."
+  ],
+  "facets": {
+    "emotionalCore": "Dissatisfaction with available bridal clothes followed an earlier career disappointment, without erasing her experience or interest in design.",
+    "decisionShape": "She commissioned her own wedding design and developed a business around the modern bridal clothes she thought other women might want.",
+    "triggerEvent": "Near forty, searching for her own wedding dress exposed a gap between the available gowns and the simpler designs she wanted.",
+    "agencyState": "She brought years of editorial and design work into a new business; the evidence does not establish a start with no resources or experience."
+  },
+  "biographicalFacts": "Vera Wang's foreground episode is her 1989 wedding-dress search and the 1990 opening of her first bridal store, covering ages thirty-nine to forty-one. Earlier career material is background: in direct interviews she recalled sixteen years at Vogue, disappointment about not becoming editor in chief, and moving in 1987 to Ralph Lauren as accessories design director. Her design work therefore predates the business. A 2011 profile describes dissatisfaction with available wedding dresses and hiring a dressmaker for her own design. In a 2010 interview she described a market for simpler, modern bridal clothes; her official brand history dates the first flagship store to 1990. The account is about changing direction with accumulated experience, not beginning from zero. It does not assert a formal 1987 rejection in favor of Anna Wintour. Conflicting recollections about exact wedding-age fractions and family funding are not resolved or used to claim she lacked support.",
+  "sources": [
+    "Vera Wang interviewed by Bandana Tewari, Meet Vera Wang, the Bride Maker, Vogue India, June 5, 2010. https://www.vogue.in/content/meet-vera-wang-bride-maker (First two answers: editorial career, 1987 design role, and 1990 bridal-market concept.)",
+    "Elisa Lipsky-Karasz, The Vera Wang Interview: Made of Honor, Harper's Bazaar, March 24, 2011. https://www.harpersbazaar.com/fashion/designers/a694/vera-wang-interview/ (Paragraph beginning In fact, it was her own wedding; following business-concept quotation.)",
+    "Vera Wang interviewed by Claire Stern Milch, Vera Wang Is More Than Just Her Age, Elle, March 16, 2023. https://www.elle.com/beauty/makeup-skin-care/a43328070/vera-wang-kohls-aging-interview/ (Answer on changing from editor to designer; recollection of marrying at thirty-nine and three quarters.)",
+    "Vera Wang, The Brand, official company history. https://www.verawang.com/pages/the-brand (Founding/first flagship store account.)",
+    "Vera Wang interviewed/profiled in TIME, Aisles of Style, September21,2007; direct retrospective remarks. https://time.com/archive/6682262/aisles-of-style/ (Her next passion was fashion paragraph; following Ralph Lauren paragraph. Only article body, not unrelated material prepended by extraction.)"
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "sourceNotes": "Short source-led vignette. Shopping and opening are summarized, not invented located scenes. No funding claim, recovery guarantee or exact wedding-age fraction.",
+      "text": "She was nearly forty when she looked for a dress for her own wedding. After years of working in fashion, she wanted something simpler than the gowns she found. The search left her dissatisfied."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "sourceNotes": "Explicit flashback to the earlier editorial/design career; no precise dismissal day, formal promotion competition or appointment story. Retrospective primary remarks support this summary.",
+      "text": "Earlier, she had wanted the top editorial job at the magazine where she worked. She later recalled needing to recover when she realized she would not get it. She had stayed for sixteen years."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "sourceNotes": "Explicit flashback to the earlier editorial/design career; no precise dismissal day, formal promotion competition or appointment story. Retrospective primary remarks support this summary.",
+      "text": "That earlier change took her into an accessories design job at another fashion company. She said she was finally doing work she had long wanted to do. She was designing."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "sourceNotes": "Short source-led vignette. Shopping and opening are summarized, not invented located scenes. No funding claim, recovery guarantee or exact wedding-age fraction.",
+      "text": "Now, planning her wedding, she still could not find the dress she wanted. She hired a dressmaker to make her design. She had it made."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "sourceNotes": "Short source-led vignette. Shopping and opening are summarized, not invented located scenes. No funding claim, recovery guarantee or exact wedding-age fraction.",
+      "text": "She thought other women might also want simpler, more modern wedding clothes. The following year, she opened her first bridal store. The idea had premises."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "sourceNotes": "Short source-led vignette. Shopping and opening are summarized, not invented located scenes. No funding claim, recovery guarantee or exact wedding-age fraction.",
+      "text": "She had moved from editing and designing for another company to a business of her own. The first store offered bridal clothes. It was a beginning."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "sourceNotes": "Short source-led vignette. Shopping and opening are summarized, not invented located scenes. No funding claim, recovery guarantee or exact wedding-age fraction.",
+      "text": "Her name was Vera Wang.\n\nShe became known for bridal dresses and fashion design.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou can change direction without erasing your earlier work."
+    }
+  ]
+}

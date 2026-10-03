@@ -1,0 +1,75 @@
+{
+  "figureKey": "carver",
+  "displayName": "George Washington Carver",
+  "deathYear": 1943,
+  "stageId": "1890-1891-laundry-and-college",
+  "stageLabel": "At college: laundry work, scarce food and help",
+  "ageMin": 24,
+  "ageMax": 27,
+  "shapeSentences": [
+    "A student worked to pay his way through college but still lacked enough food until work and help came from the surrounding community.",
+    "Being admitted did not remove the difficulty of supporting himself while studying.",
+    "He remembered reluctance to tell strangers about his need and credited others with helping him continue."
+  ],
+  "facets": {
+    "emotionalCore": "Needing help while trying to support himself, with his own account recording reluctance to tell strangers how little he had.",
+    "decisionShape": "Working at a laundry while studying, after friends had encouraged him to attend art school.",
+    "triggerEvent": "At the start of college his attempt to support himself through laundry work did not provide enough food.",
+    "agencyState": "He could work and study, but his resources were insufficient; customers, teachers, students and townspeople supplied substantial help."
+  },
+  "biographicalFacts": "George Washington Carver attended Simpson College in 1890–1891, studying art and piano. His birth date is uncertain, around 1864–1865, so 24–27 is an approximate episode range. In his autobiographical fragment of about 1897, he wrote that Highland College had earlier refused him because of his color. He credited the Milhollands with encouraging art school and choosing Simpson. At the opening of school he tried to support himself by running a laundry and living cheaply, sometimes lacking even cornmeal and beef suet. He said modesty prevented him from telling strangers his condition. When word spread that he did laundry and needed the work, he remembered substantial help from faculty, students and townspeople. He named Etta Budd and the Liston and Field families. Budd encouraged botany, and he transferred to Iowa Agricultural College in 1891. These recollections are fragmentary, as their NPS custodian warns; they establish help over time, not a single rescue scene.",
+  "themes": [
+    "social_constraint",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He came to college to study art and piano. He was in his mid-twenties. Friends had encouraged him to enter art school and helped choose this one. He tried to support himself by taking in laundry.",
+      "sourceNotes": "Opening is an honest period summary, not an invented first-day scene. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "In his memory, there were days when he lacked even the plain food he was living on. He was trying to live as cheaply as he could. He did not tell strangers how little he had. He was short of food.",
+      "sourceNotes": "Attested material hardship and reluctance; no invented shame, thought, meal, room or diagnosis. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He worked at running the laundry while he attended school. This was how he was trying to pay his way. He needed customers.",
+      "sourceNotes": "Continuing work, not a newly located plea or a claimed sudden act after one dark moment. Authorized vignette exception. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Getting into this college had followed an earlier refusal. Another college had rejected him because he was Black. Later, friends had urged him toward art school. Now he was enrolled, but his effort to support himself had not immediately provided enough to eat. Admission had not paid for food.",
+      "sourceNotes": "Explicit earlier setback, then return to the current financial difficulty. No detailed Highland encounter, immediate causal leap or new failed attempt. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "Word spread that he did laundry work and needed it. Help came from teachers, students and people in the town. In his account, it was substantial.",
+      "sourceNotes": "The primary account describes a collective response over time. No particular customer, benefactor meeting, parcel or changed feeling is invented. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "He studied art and piano there, then moved to another college to study agriculture. His art teacher had encouraged him toward the study of plants. He credited her and other supporters with helping him reach the next college. He had not got there alone.",
+      "sourceNotes": "Ends at 1891 transfer; later degrees, inventions and fame excluded. Help does not establish an end to poverty or racism. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was George Washington Carver.\n\nHe became a scientist who studied agriculture and taught others.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou may need help without losing your part in your own life.\n\nYou are allowed to need people.",
+      "sourceNotes": "No equation between the reader's difficulty and racial exclusion; no promise that help will arrive. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    }
+  ],
+  "sources": [
+    "Carver, George W. Autobiographical fragment, 1897 or thereabouts, written for Mrs. W. A. Liston and Miss Etta M. Budd. National Park Service transcription with explicit warning that the recollections are not definitive. https://www.nps.gov/gwca/learn/historyculture/index.htm Paragraphs beginning 'I was here to have a position', 'I went from here', and 'The opening of school' through the thanks to helpers. Freshly reopened 2026-09-20; institutional transcription/context, not original manuscripts.",
+    "Gart, Jason H. He Shall Direct Thy Paths: The Early Life of George W. Carver. Historic Resource Study, National Park Service, 2014. Used for specified quoted primary passages and archival-document summaries; original manuscripts not independently opened. Official GovInfo copy reopened 2026-09-09. https://www.govinfo.gov/content/pkg/GOVPUB-I29-PURL-gpo236603/pdf/GOVPUB-I29-PURL-gpo236603.pdf Executive Summary p. vii only freshly reopened 2026-09-20: approximate birth and career context. Earlier dining episode/letters no longer used.",
+    "Simpson College, Dunn Library Archives and Special Collections. George Washington Carver Collection. Institutional account of its former student, consulted only for attendance and the move toward botany. https://www.simpson.edu/academics-programs/dunn-library/archives-special-collections/george-washington-carver-collection/ About Carver paragraph: art/piano in 1890–91, Etta Budd and transfer to Iowa Agricultural College. The page's birth and exposition timeline entries are not relied on. Freshly reopened 2026-09-20; institutional transcription/context, not original manuscripts."
+  ]
+}

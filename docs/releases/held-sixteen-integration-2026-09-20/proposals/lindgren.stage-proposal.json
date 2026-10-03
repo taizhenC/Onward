@@ -1,0 +1,76 @@
+{
+  "figureKey": "lindgren",
+  "displayName": "Astrid Lindgren",
+  "birthYear": 1907,
+  "deathYear": 2002,
+  "stageId": "1929-1930-sharing-her-sons-care",
+  "stageLabel": "A child's move and a mother's need to share his care",
+  "ageMin": 22,
+  "ageMax": 22,
+  "shapeSentences": [
+    "A young mother tried to care for her child while working, then accepted help from her parents when she could not sustain both.",
+    "The child had to leave his foster home, and she later remembered his distress without claiming that the next arrangement erased it.",
+    "Sharing his care was a practical change, not a judgment that she had abandoned him or stopped caring."
+  ],
+  "facets": {
+    "emotionalCore": "A mother later remembered the pain of her child's separation while the practical task of caring for him had required help.",
+    "decisionShape": "Bringing the child to her parents after her mother proposed sharing his care.",
+    "triggerEvent": "The foster mother's illness ended the child's first care arrangement; he then became ill while living with his mother.",
+    "agencyState": "She brought him to her rented room, tried to combine care with secretarial work, and accepted family care when that arrangement could not continue."
+  },
+  "biographicalFacts": "Astrid Lindgren was born on 14 November 1907 and was 22 during December 1929–May 1930. Her son Lars had spent his first three years with foster mother Marie Stevens near Copenhagen. The family-owned estate chronology dates Stevens's illness to December 1929 and Lars's arrival in Stockholm to January 1930. He lived for several months in Lindgren's rented room. The estate's youth account says that he had whooping cough and that she could not sustain both his care and her secretarial job. Her mother proposed that he come to the family farm, and Lindgren brought him there in May 1930. His grandparents subsequently cared for him for more than a year. In notes written in 1976–77, Lindgren remembered him crying quietly across a chair when he was losing his foster family and said the tears still remained painful to her. The chronology is later estate narration; the remembered tears are her published retrospective testimony. This episode does not establish secret-birth shame, inferred maternal guilt, a final reunion in 1930, or marriage as rescue.",
+  "themes": [
+    "new_parent_fear"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She brought her young son to live with her after his foster mother became ill. She was twenty-two. He had spent his first three years with that other family. They were the home he knew.",
+      "sourceNotes": "Chronology summary, not a staged arrival. Estate date is January1930; the exact place and day of the remembered chair episode are not supplied."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "Years later, she remembered him lying across a chair and crying quietly. He was losing the family he had known.",
+      "sourceNotes": "Primary memoir excerpt explicitly memory-framed. No continuous-room claim, invented touch or inferred guilt."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He stayed with her in the room she rented. Mother and child lived together for several months.",
+      "sourceNotes": "STRUCTURAL EXCEPTION: documented living arrangement, not an invented smallest response to the chair incident. Owning-estate chronology is secondary context, not a letter read."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Her son was ill with a cough that kept him awake at night. She was also trying to manage her secretarial job. She could not keep the arrangement going.",
+      "sourceNotes": "Estate narrative of practical care difficulty. No treatment guidance, invented failed comfort or diagnosis beyond the source's account."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "Her mother suggested that the child come to live at the family farm. She took him there.",
+      "sourceNotes": "Secondary chronological account, not reconstructed dialogue or a newly documented decision scene. No first-person letter is claimed."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "His grandparents cared for him for more than a year. Much later, his mother wrote that the memory of his tears still hurt. She had not forgotten them.",
+      "sourceNotes": "A bounded care consequence plus explicitly later recollection, not a claim that shared care erased distress or produced her fiction."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Astrid Lindgren.\n\nShe wrote children's books, including the stories about Pippi Longstocking.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to have complicated feelings about needing help.",
+      "sourceNotes": "Own-line reveal. No promise of reunion, advice or claim that a child's pain caused artistic greatness."
+    }
+  ],
+  "sources": [
+    "The Astrid Lindgren Company, Om Astrid Lindgren. Family-owned estate biography; later context. https://www.astridlindgren.com/se/om-astrid-lindgren Opening biography and Ett makalost forfattarskap.",
+    "The Astrid Lindgren Company, Ungdomen. Estate chronology with some quotations, not original letters or a contemporaneous diary. https://www.astridlindgren.com/se/om-astrid-lindgren/ungdomen Forsta aret i Stockholm through Lasse kommer till Stockholm.",
+    "The Astrid Lindgren Company, Om Lasse. Estate chronology; later context. https://www.astridlindgren.com/se/om-astrid-lindgren/ungdomen/lasse Opening two paragraphs and final biographical paragraph.",
+    "Astrid Lindgren, notes for a biography, 1976-1977; excerpt reproduced in English by the family company, 27 January 2022. https://www.mynewsdesk.com/se/astrid-lindgren-aktiebolag/pressreleases/20-years-since-the-death-of-astrid-lindgren-3158100 ASTRID LINDGREN QUOTES, second quotation and attribution. Published excerpt read; manuscript not accessed."
+  ]
+}

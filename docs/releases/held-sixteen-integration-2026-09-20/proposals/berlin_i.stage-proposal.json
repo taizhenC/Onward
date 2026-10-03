@@ -1,0 +1,76 @@
+{
+  "figureKey": "berlin_i",
+  "displayName": "Irving Berlin",
+  "birthYear": 1888,
+  "deathYear": 1989,
+  "stageId": "1907-the-first-song",
+  "stageLabel": "The first song: collaboration and a modest return",
+  "ageMin": 18,
+  "ageMax": 19,
+  "shapeSentences": [
+    "A young worker made his first song with a colleague after seeing a rival succeed, but publication brought very little money.",
+    "A first completed collaboration was real work even though its commercial result was small.",
+    "He remembered surprise at how little the song earned; the episode ends with a beginning, not a breakthrough."
+  ],
+  "facets": {
+    "emotionalCore": "Disappointment at a first creative project's small return, grounded in his remembered surprise at the earnings.",
+    "decisionShape": "Responding to another team's success by making a first song together, with one collaborator writing words and the other music.",
+    "triggerEvent": "A rival café's singing waiter and pianist had written a hit, prompting his own collaboration.",
+    "agencyState": "A singing waiter could contribute lyrics and work with the café pianist; publication was possible without a hit or a living wage."
+  },
+  "biographicalFacts": "Irving Berlin was born on May 11, 1888. His first published song, Marie from Sunny Italy, appeared in 1907, at eighteen or nineteen. In his attributed 1934 Radio Stars interview he recalled being a singing waiter and collaborating with the café pianist because a rival café's waiter and pianist had produced a hit. The original published score credits I. Berlin with words and M. Nicholson with music. The publisher was Jos. W. Stern & Co. Berlin recalled that their song was not a hit and that its small profit surprised him. The interview's thirty-odd cents describes a joint profit; it is not equated with an individual royalty. The episode is a first collaboration and modest publication, not a claim that earnings or confidence were secured.",
+  "themes": [
+    "finding_voice",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He was a singing waiter, about nineteen, when he worked on his first published song. The café's pianist worked with him.",
+      "sourceNotes": "Summary, not a located composition day. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "In his memory, competition between the cafés pushed him toward writing a song of his own. A rival song was already a hit.",
+      "sourceNotes": "Competitive impetus, not a documented emotional low; explicit structural exception. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He and the pianist made a song together, with words by one and music by the other. He supplied the words.",
+      "sourceNotes": "Actual collaboration, summarized without invented mechanics. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "The result was a collaboration, not a song he had made entirely alone. His partner supplied the music.",
+      "sourceNotes": "No separate failed intermediate effort is documented in the retained primary account; this role is a brief division-of-work summary. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "Their song was published, with both men's contributions credited on the sheet music. It was his first publication.",
+      "sourceNotes": "Documented publication, not an invented acceptance encounter. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The song did not become a hit, and he remembered being surprised by its small return. The profit was less than a dollar.",
+      "sourceNotes": "Remembered result, no claim of continued employment or a cure. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Irving Berlin.\n\nHe wrote songs for singers, musical theatre, and films.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to value a beginning that brought little reward.\n\nYou are allowed to need other people.",
+      "sourceNotes": "Permission, not advice or a promised reward. User-authorized short source-led vignette; FOR OWNER READING, not approved."
+    }
+  ],
+  "sources": [
+    "Marie from Sunny Italy. Words I. Berlin, music M. Nicholson. Jos. W. Stern & Co., 1907. Johns Hopkins University, Lester S. Levy Sheet Music Collection, Box 077, Item 181. https://levysheetmusic.mse.jhu.edu/collection/077/181 Catalog reopened 2026-09-20: date 1907; Words I. Berlin / Music M. Nicholson; publisher. Original cover/music images had been inspected in the earlier packet; this repair freshly checks the owning catalog, not a new image rendering.",
+    "Irving Berlin official website, Concise Biography. https://www.irvingberlin.com/biography Concise Biography, birth May 11, 1888; 1907 first song; Broadway and film-writing paragraphs. Reopened and read 2026-09-20. Owning institutional context, not a contemporaneous scene record.",
+    "Bland Mulholland, Love Songs for Sale, Radio Stars, vol. 4 no. 5, August 1934, pp. 32–33 (continued p. 90). https://www.worldradiohistory.com/Archive-Radio-Stars/Radio-Stars-1934-08.pdf Printed p. 33, PDF p. 27, attributed answer beginning at foot of left column and continuing atop right column, from first-song collaboration through poor profit. Preservation scan, visually re-read 2026-09-20 from the previously downloaded original PDF render. Fresh web fetch returned 403; no new interview notes/audio inspected. Surrounding reporter psychology is excluded."
+  ]
+}

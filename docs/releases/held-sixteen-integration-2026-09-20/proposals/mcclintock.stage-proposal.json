@@ -1,0 +1,74 @@
+{
+  "figureKey": "mcclintock",
+  "displayName": "Barbara McClintock",
+  "birthYear": 1902,
+  "deathYear": 1992,
+  "stageId": "1961-comparison-with-open-questions",
+  "stageLabel": "Publishing a comparison without claiming more than the evidence supports",
+  "ageMin": 59,
+  "ageMax": 59,
+  "shapeSentences": [
+    "She published a comparison while stating the limits of what the available evidence could show.",
+    "She connected findings in two organisms without treating a possible relationship as a settled general rule.",
+    "The work offered a way to investigate further rather than a story of being rejected and later proved right."
+  ],
+  "facets": {
+    "emotionalCore": "Continuing useful work while acknowledging that an important question remains open; this is an evidential position, not a documented feeling.",
+    "decisionShape": "Publishing a bounded comparison without claiming that the observations already establish a universal system.",
+    "triggerEvent": "Recent bacterial findings supplied material to compare with the control systems described in corn.",
+    "agencyState": "Able to set out the comparison and its limits in print; not claiming power over the field's reception or later confirmation."
+  },
+  "biographicalFacts": "Barbara McClintock, born 16 June 1902, was 59 when Some Parallels Between Gene Control Systems in Maize and in Bacteria appeared in the September–October 1961 American Naturalist. The opening distinguishes having a gene from controlling its action. She states that maize findings, without adequate confirmation in other organisms, might not represent a general control system. She then points to recent bacterial findings and proposes a possible relationship with maize. She compares paired elements and describes specificity within each system. The inspected primary evidence is the article opening reproduced on page 16 of Edith Heard's 2017 College de France lecture, not the entire paper. This episode is publication of a qualified scientific comparison. It supplies no evidence of a personal crisis, universal dismissal, withdrawn publication, subsequent vindication, or a guaranteed result.",
+  "themes": [
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "Her paper compared how genes were controlled in corn and in bacteria. She was fifty-nine when it appeared.",
+      "sourceNotes": "Document opening, not invented writing-room or conference scene.1961issue date is visible in original facsimile."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "Near the beginning, she stated a limit to what the corn studies could show. Without confirmation elsewhere, their findings might not describe a general system.",
+      "sourceNotes": "STRUCTURAL EXCEPTION: scientific limitation, not an emotional low or proof that everyone rejected her."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She began with a distinction between having a gene and controlling its action. A gene alone might not be enough.",
+      "sourceNotes": "A published explanatory move, not an invented earliest private act."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "The comparison needed evidence from more than one kind of organism. Corn could not settle that alone.",
+      "sourceNotes": "STRUCTURAL EXCEPTION: stated evidential limit, not fabricated failed experiments or sustained personal frustration."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "She pointed to recently discovered control systems in bacteria. There might be a relationship.",
+      "sourceNotes": "Possibility remains possibility. No sudden encounter, receipt, Nobel vindication or claim that bacterial findings proved every proposal."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "She described two interacting elements in the bacterial system, then compared them with elements in corn. She also set out how each pair was specific to its own system. Her paper offered the comparison.",
+      "sourceNotes": "Endpoint is the published argument, not its universal acceptance. Details are presented as her1961account, not current scientific instruction."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Barbara McClintock.\n\nShe discovered that genetic elements can change position within chromosomes.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to leave a question open.",
+      "sourceNotes": "Identity only, no award as narrative payoff."
+    }
+  ],
+  "sources": [
+    "Barbara McClintock, Some Parallels Between Gene Control Systems in Maize and in Bacteria, The American Naturalist95(884), September–October1961, opening paragraphs onp265. Primary facsimile excerpt reproduced by Edith Heard, Collège de France lecture,6February2017. https://www.college-de-france.fr/sites/default/files/documents/en-edith-heard/UPL4955809431944515605_COURS_I_2017_HEARD.compressed.pdf PDFpage16: left image of1961article opening and enlarged right continuation beginning In maize likewise through element of its own system. Entire visible primary excerpt visually read; remainder of paper not accessed.",
+    "Nobel Prize, Barbara McClintock—Facts. Institutional biographical and award record, accessed in search-rendered full substantive text; direct fetch returned403. https://www.nobelprize.org/laureate/428 Born:16June1902; Work paragraph and prize motivation. Used for calculated age and bridge only."
+  ]
+}

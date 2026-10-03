@@ -1,0 +1,76 @@
+{
+  "figureKey": "christie",
+  "displayName": "Agatha Christie",
+  "birthYear": 1890,
+  "deathYear": 1976,
+  "stageId": "1927-1928-the-difficult-book",
+  "stageLabel": "A difficult book: writing during separation",
+  "ageMin": 36,
+  "ageMax": 38,
+  "shapeSentences": [
+    "Separated from her husband and needing money, a writer worked on a difficult book that she continued to dislike after publication.",
+    "Work and caring for a child continued during a separation; completing the book did not make her pleased with it.",
+    "The outcome was a published novel, not a claim that writing resolved the separation or made everything feel better."
+  ],
+  "facets": {
+    "emotionalCore": "The difficulty of doing creative work during separation and financial pressure, followed by a remembered dislike of the finished result.",
+    "decisionShape": "Returning to writing and drawing on an earlier story while a new book was needed.",
+    "triggerEvent": "She was separated and needed funds when she returned to work on a difficult novel.",
+    "agencyState": "She could write and had a secretary accompanying her, but also cared for a young daughter whose interruptions complicated writing time."
+  },
+  "biographicalFacts": "Agatha Christie was thirty-six during a February 1927 stay in the Canary Islands with her daughter Rosalind and secretary Carlo Fisher. The owning estate's work record says she was separated from her husband, needed funds and returned to writing. The Mystery of the Blue Train developed from her earlier story The Plymouth Express. The estate's reading guide describes writing in the hotel garden and interruptions by her seven-year-old daughter. The novel appeared in 1928; without an exact publication date the episode range is conservatively 36–38. The estate quotes her autobiography's continuing dislike of the novel and its plot. The account distinguishes institutional chronology from a retrospective personal evaluation. Publication was a completed work, not evidence of emotional recovery.",
+  "themes": [
+    "heartbreak",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She was thirty-six, working on a novel during a stay away from home. Her daughter and secretary had travelled with her.",
+      "sourceNotes": "Owning institutional summary of the February 1927 stay, not a reconstructed day. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "Separated from her husband and needing money, she had returned to writing. The book was difficult to write.",
+      "sourceNotes": "Practical difficulty as described by the estate, without invented private thoughts. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She worked on a novel drawn from a short story she had already written. It was not an entirely new plot.",
+      "sourceNotes": "Documented writing and adaptation, not a located decision. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "In the hotel garden, her daughter interrupted while she was trying to write. The child was seven.",
+      "sourceNotes": "Only the owning guide's summary; no minute-by-minute memoir mechanics. Repeated interruption is not converted into an invented new attempt. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The novel appeared in print the following year, after the difficult stay. It was published.",
+      "sourceNotes": "Publication is a summarized result, not a completion or dispatch scene. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "In her memory, this was a book she continued to dislike long after writing it. She disliked its plot too.",
+      "sourceNotes": "Paraphrased first-person memoir evaluation quoted by the estate; not a claim that publication caused her feelings. User-authorized short source-led format; FOR OWNER READING, not approved."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Agatha Christie.\n\nShe wrote mystery novels and plays.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou are allowed to have mixed feelings about something you have finished.\n\nYou do not owe it a cheerful ending.",
+      "sourceNotes": "Permission, not an instruction to work through distress. User-authorized short source-led format; FOR OWNER READING, not approved."
+    }
+  ],
+  "sources": [
+    "Agatha Christie Limited / Christie Archive Trust, About Agatha Christie. https://www.agathachristie.com/about-christie Early Years birth date; A Difficult Period; The Orient Express and the Middle East. The broad page contains an erroneous 1928 Canary Islands placement and is not used for that date. Reopened and bounded passages read 2026-09-20; no original-edition collation claimed.",
+    "Agatha Christie Limited, Read Christie 2024, March selection: The Mystery of the Blue Train. https://www.agathachristie.com/news/2024/read-christie-2024 Our March choice, paragraphs on February 1927 departure and hotel-garden writing; explicitly references Christie's autobiography. Reopened and bounded passages read 2026-09-20; no original-edition collation claimed.",
+    "Agatha Christie Limited, The Mystery of the Blue Train work record. https://www.agathachristie.com/stories/the-mystery-of-the-blue-train Original publication year, More about this story, and dedication information. Reopened and bounded passages read 2026-09-20; no original-edition collation claimed."
+  ]
+}

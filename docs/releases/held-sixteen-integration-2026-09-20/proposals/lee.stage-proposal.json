@@ -1,0 +1,74 @@
+{
+  "figureKey": "lee",
+  "displayName": "Frances Glessner Lee",
+  "birthYear": 1878,
+  "deathYear": 1962,
+  "stageId": "1934-library-dedication",
+  "stageLabel": "A useful contribution before the larger plan is finished",
+  "ageMin": 56,
+  "ageMax": 56,
+  "shapeSentences": [
+    "She offered a useful contribution while saying plainly that the larger project was not finished.",
+    "She had collected a library, and presented it as an early part of a plan that would take time.",
+    "Her gift was accepted without a claim that the whole undertaking was complete."
+  ],
+  "facets": {
+    "emotionalCore": "A long-standing wish to do useful work alongside the admission that only part of the larger plan is ready.",
+    "decisionShape": "Presenting the contribution already assembled while keeping its limited scope explicit.",
+    "triggerEvent": "A gathering to dedicate the library she had collected.",
+    "agencyState": "Able to contribute a collection and describe the work still needed; not claiming to have finished the institution."
+  },
+  "biographicalFacts": "On 24 May 1934, Frances Glessner Lee, aged 56, presented the thousand-volume George Burgess Magrath Library of Legal Medicine at Harvard Medical School. The next day's Harvard Crimson reproduced her remarks and President James B. Conant's reply. Lee said she had long hoped to contribute something valuable to the community. She described the larger department she hoped to build as a gradual undertaking, only a small part of which was under way, and presented the library in its early form. Conant accepted the gift for the university, called it a step toward the larger department, and thanked her for collecting rare and valuable books. The source documents a presentation and institutional acceptance, not a bereavement-driven escape, rejected offer, private crisis, or completed department.",
+  "themes": [
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She was fifty-six when she presented the library. A university gathering had been arranged for four in the afternoon. She wanted the ceremony kept simple and brief.",
+      "sourceNotes": "Contemporary reported speaking occasion. No invented podium, posture, possessions or sensory details. The dedicated 1934 stage keeps the episode separate from the unsupported 1929–1931 pivot."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "In her remarks, she described something she had wanted for many years. She had hoped to do work that would be useful to her community. This was the opportunity she had found.",
+      "sourceNotes": "STRUCTURAL EXCEPTION: stated aspiration, not a low point. No grief, thwarted ambition, exclusion or causal inheritance claim."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She presented a collection of a thousand books on legal medicine. It bore the name of an old friend whose work she wished to honor. The collection was still beginning.",
+      "sourceNotes": "Her presentation is attested in the speech; beginning paraphrases her qualification that the library was in embryonic form."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Her larger aim was a department devoted to the field. She said its growth would have to be gradual. Only a small part was under way.",
+      "sourceNotes": "STRUCTURAL EXCEPTION: acknowledged incompleteness, not a failed attempt. No invented rejected offer, negotiation or hardship."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The university's president accepted the collection on its behalf. He described the library as a step toward the larger department. He accepted the gift.",
+      "sourceNotes": "Documented institutional acceptance only, not an inferred inward transformation or completion of the department."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "He also thanked her for the work of collecting the books themselves. Many were rare and valuable. The larger plan remained unfinished.",
+      "sourceNotes": "Episode endpoint stays within the dedication; no 1939 department or later model-making inserted as its immediate result."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Frances Glessner Lee.\n\nShe made miniature death scenes used to train investigators.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to offer something unfinished.",
+      "sourceNotes": "Identity only here. Reader permission is not a promise of acceptance."
+    }
+  ],
+  "sources": [
+    "Glessner House, Glessner Family. Institutional family history, not contemporaneous narrative. https://www.glessnerhouse.org/glessner-family Frances Glessner Lee opening paragraph (birth) and paragraph beginning She created a series (miniatures used in police training). Institutional secondary identity anchors only.",
+    "The Harvard Crimson, Mrs. Lee and President Conant Are Speakers at Opening of Library, 25 May 1934. Contemporary report reproducing both speeches. https://www.thecrimson.com/article/1934/5/25/mrs-lee-and-president-conant-are/ Introductory paragraph; Lee's four quoted paragraphs; Conant's acceptance and collecting paragraphs. Read entire article."
+  ]
+}

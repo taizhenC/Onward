@@ -1,0 +1,549 @@
+{
+  "storySpecId": "carver:1890-1891-laundry-and-college:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "carver",
+  "stageId": "1890-1891-laundry-and-college",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 24,
+    "ageMax": 27,
+    "throughLine": "A source-led 1890–1891 student vignette: laundry work did not initially provide enough food, then work and support came from the college community; earlier racial exclusion remains marked background."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination"
+    ],
+    "contentNote": "FOR OWNER REVIEW, not approved. Educational racial exclusion appears as marked earlier context; the foreground is scarce food, laundry work and community support during Simpson attendance in 1890–1891. The new stage and candidate both use approximate ages 24–27 because his birth date is uncertain. User-authorized short source-led form summarizes duration and help without inventing an encounter or a financial cure."
+  },
+  "facts": [
+    {
+      "factId": "fact-001",
+      "statement": "Carver's birth is uncertain, approximately 1864–1865. His Simpson attendance in 1890–1891 places this vignette in his mid-twenties; 24–27 is an approximate narrative range.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "bounded",
+          "locator": "Executive Summary, printed p. vii: working estimate circa1865, not a precise birth record."
+        },
+        {
+          "sourceId": "source-simpson-collection",
+          "scope": "bounded",
+          "locator": "About Carver paragraph and timeline1890/1891 entries: attendance and transfer only; exact birth date on the same page is not adopted."
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-026",
+      "statement": "In his c.1897 autobiographical fragment, Carver said Highland College refused him because of his color.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'I was here to have a position', final sentence."
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-012",
+      "statement": "Carver's c.1897 autobiographical fragment credits the Milhollands with insisting on art school and choosing Simpson College.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'I went from here', last sentence."
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-014",
+      "statement": "At Simpson Carver tried to support himself with laundry work and lived very cheaply; his c.1897 fragment describes about a month of cornmeal and beef suet, sometimes without either, and reluctance to tell strangers.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraph beginning 'The opening of school'."
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "context"
+    },
+    {
+      "factId": "fact-015",
+      "statement": "Carver remembered that when word spread he needed laundry work, faculty, students and townspeople gave substantial help; he named Etta Budd, the Liston family and the Field family.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-fragment-c1897",
+          "scope": "exact",
+          "locator": "Paragraphs beginning 'The news soon spread' and 'But I wish to especially mention'."
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "causal"
+    },
+    {
+      "factId": "fact-016",
+      "statement": "Carver attended Simpson in 1890–91, studied art and piano, and transferred to Iowa Agricultural College in 1891 after Etta Budd encouraged botany.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-simpson-collection",
+          "scope": "exact",
+          "locator": "About Carver paragraph."
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "fact-018",
+      "statement": "George Washington Carver became an agricultural scientist and teacher.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-gart-primary-extracts",
+          "scope": "exact",
+          "locator": "Executive Summary p. vii; Chapter Five, Higher Education and Life as a Teacher."
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "George Washington Carver",
+      "aliases": [
+        "George W. Carver",
+        "Carver"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He came to college to study art and piano. He was in his mid-twenties. Friends had encouraged him to enter art school and helped choose this one. He tried to support himself by taking in laundry.",
+      "requiredFactIds": [
+        "fact-016",
+        "fact-001",
+        "fact-012",
+        "fact-014"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-001"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-012"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Opening is an honest period summary, not an invented first-day scene. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "In his memory, there were days when he lacked even the plain food he was living on. He was trying to live as cheaply as he could. He did not tell strangers how little he had. He was short of food.",
+      "requiredFactIds": [
+        "fact-014"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Attested material hardship and reluctance; no invented shame, thought, meal, room or diagnosis. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He worked at running the laundry while he attended school. This was how he was trying to pay his way. He needed customers.",
+      "requiredFactIds": [
+        "fact-014",
+        "fact-015"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014",
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Continuing work, not a newly located plea or a claimed sudden act after one dark moment. Authorized vignette exception. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "Getting into this college had followed an earlier refusal. Another college had rejected him because he was Black. Later, friends had urged him toward art school. Now he was enrolled, but his effort to support himself had not immediately provided enough to eat. Admission had not paid for food.",
+      "requiredFactIds": [
+        "fact-026",
+        "fact-016",
+        "fact-012",
+        "fact-014"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-026",
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-026"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-012"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014",
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-014"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Explicit earlier setback, then return to the current financial difficulty. No detailed Highland encounter, immediate causal leap or new failed attempt. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "Word spread that he did laundry work and needed it. Help came from teachers, students and people in the town. In his account, it was substantial.",
+      "requiredFactIds": [
+        "fact-015"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The primary account describes a collective response over time. No particular customer, benefactor meeting, parcel or changed feeling is invented. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "role": "became",
+      "canonicalText": "He studied art and piano there, then moved to another college to study agriculture. His art teacher had encouraged him toward the study of plants. He credited her and other supporters with helping him reach the next college. He had not got there alone.",
+      "requiredFactIds": [
+        "fact-016",
+        "fact-015"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-016"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-015"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Ends at 1891 transfer; later degrees, inventions and fame excluded. Help does not establish an end to poverty or racism. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was George Washington Carver.\n\nHe became a scientist who studied agriculture and taught others.\n\nYour life is not theirs.\n\nBut a piece of this story may still sit beside you.\n\nYou may need help without losing your part in your own life.\n\nYou are allowed to need people.",
+      "requiredFactIds": [
+        "fact-018"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-018"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-018"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "No equation between the reader's difficulty and racial exclusion; no promise that help will arrive. FOR OWNER READING: short source-led structure authorized 2026-09-20, not publication or full-recipe clearance."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented kitchen, laundry equipment, meal or request for help.",
+    "The c.1897 fragment is retrospective and acknowledged by its custodian to be incomplete; its claims remain probable.",
+    "No claim that support ended racism or removed every financial difficulty."
+  ],
+  "avoidRules": [
+    "Do not use Crisp's untraced letter, shared-meal inference or next-day emotional aftermath; those are excluded.",
+    "The short source-led format openly summarizes duration and help rather than claiming located full moments.",
+    "The new Simpson-focused stage must replace the earlier rejection/sod-house matching premise; exact-text review does not by itself publish a new stage."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-fragment-c1897",
+      "citation": "Carver, George W. Autobiographical fragment, 1897 or thereabouts, written for Mrs. W. A. Liston and Miss Etta M. Budd. National Park Service transcription with explicit warning that the recollections are not definitive.",
+      "url": "https://www.nps.gov/gwca/learn/historyculture/index.htm",
+      "locator": "Paragraphs beginning 'I was here to have a position', 'I went from here', and 'The opening of school' through the thanks to helpers. Freshly reopened 2026-09-20; institutional transcription/context, not original manuscripts."
+    },
+    {
+      "sourceId": "source-gart-primary-extracts",
+      "citation": "Gart, Jason H. He Shall Direct Thy Paths: The Early Life of George W. Carver. Historic Resource Study, National Park Service, 2014. Used for specified quoted primary passages and archival-document summaries; original manuscripts not independently opened. Official GovInfo copy reopened 2026-09-09.",
+      "url": "https://www.govinfo.gov/content/pkg/GOVPUB-I29-PURL-gpo236603/pdf/GOVPUB-I29-PURL-gpo236603.pdf",
+      "locator": "Executive Summary p. vii only freshly reopened 2026-09-20: approximate birth and career context. Earlier dining episode/letters no longer used."
+    },
+    {
+      "sourceId": "source-simpson-collection",
+      "citation": "Simpson College, Dunn Library Archives and Special Collections. George Washington Carver Collection. Institutional account of its former student, consulted only for attendance and the move toward botany.",
+      "url": "https://www.simpson.edu/academics-programs/dunn-library/archives-special-collections/george-washington-carver-collection/",
+      "locator": "About Carver paragraph: art/piano in 1890–91, Etta Budd and transfer to Iowa Agricultural College. The page's birth and exposition timeline entries are not relied on. Freshly reopened 2026-09-20; institutional transcription/context, not original manuscripts."
+    }
+  ],
+  "review": {}
+}

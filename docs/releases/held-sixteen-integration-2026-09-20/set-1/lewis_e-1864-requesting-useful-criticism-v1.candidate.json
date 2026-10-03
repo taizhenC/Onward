@@ -1,0 +1,450 @@
+{
+  "storySpecId": "lewis_e:1864-requesting-useful-criticism:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "lewis_e",
+  "stageId": "1864-requesting-useful-criticism",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 19,
+    "ageMax": 20,
+    "startDate": "1864",
+    "endDate": "1864-02-19",
+    "throughLine": "A young sculptor tells a contemporary writer how she sought advice and asks for useful criticism instead of praise based on her race."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination"
+    ],
+    "contentNote": "Short reported-conversation vignette. Racially condescending praise, without slurs or the former assault and poisoning narrative. The focus is learning and requesting useful criticism; no completed studio visit or improvement is claimed."
+  },
+  "sources": [
+    {
+      "sourceId": "child",
+      "citation": "Lydia Maria Child, Letter from L. Maria Child, The Liberator, 19 February 1864.",
+      "url": "https://fair-use.org/the-liberator/1864/02/19/the-liberator-34-08.pdf",
+      "locator": "Printed page 31, column 3, from One of the most interesting individuals through She wanted me: Child's reception conversation, Lewis's account of Brackett and invitation to inspect her bust. Freshly downloaded public scan and visually reread the complete conversation column; no manuscript inspected."
+    },
+    {
+      "sourceId": "museum",
+      "citation": "Allen Memorial Art Museum, Oberlin College, Bust of James Peck Thomas, object 2002.3. Owning institution's later contextual account.",
+      "url": "https://allenartcollection.oberlin.edu/objects/12270/bust-of-james-peck-thomas",
+      "locator": "Artist/Maker and More Information paragraphs 1-5."
+    }
+  ],
+  "facts": [
+    {
+      "factId": "age",
+      "statement": "Child described Lewis at a reception as about twenty; the owning museum lists birth1844, giving an approximate19–20 range for early1864.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "p31 column3, opening of paragraph One of the most interesting individuals; museum Artist/Maker birth1844.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "museum",
+          "locator": "Artist/Maker:1844–1907; approximate age qualified by Child's contemporary description.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "context"
+    },
+    {
+      "factId": "meeting",
+      "statement": "Child reported meeting Lewis at a reception and speaking with her about becoming a sculptor.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "p31 column3, paragraph One of the most interesting individuals.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 2,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "learning",
+      "statement": "Lewis told Child that her brother brought her to Boston to learn sculpture and that she sought Brackett's advice, considering his John Brown bust a reason to expect sympathy.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "p31 column3, answer beginning I have a brother through Mr. Brackett has been very kind.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "kindness",
+      "statement": "Lewis told Child that Brackett had treated her kindly.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "p31 column3, end of answer beginning I have a brother.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event"
+    },
+    {
+      "factId": "bust",
+      "statement": "Child reported that Lewis wanted her to visit her room to see her first bust, copied from a head of Voltaire.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "p31 column3, paragraph She wanted me, opening sentence.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 5,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "critique",
+      "statement": "Lewis told Child that praise was not good for her, did not want praise because of her race and wanted defects identified so she could learn.",
+      "sourceRefs": [
+        {
+          "sourceId": "child",
+          "locator": "p31 column3, paragraph She wanted me, quoted request from I don't want through teach me something.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 6,
+      "confidence": "documented",
+      "claimKind": "event"
+    },
+    {
+      "factId": "legacy",
+      "statement": "Edmonia Lewis was a sculptor who made marble portraits.",
+      "sourceRefs": [
+        {
+          "sourceId": "museum",
+          "locator": "Artist/Maker, Medium, and More Information paragraphs3–5.",
+          "scope": "bounded"
+        }
+      ],
+      "eventOrder": 7,
+      "confidence": "documented",
+      "claimKind": "context"
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Edmonia Lewis",
+      "aliases": [
+        "Lewis"
+      ]
+    }
+  ],
+  "quotes": [],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "Short source-led conversation exception, not a full-recipe pass. No failed effort or inward turning scene is invented.",
+    "The distinct early 1864 learning-and-criticism episode replaces the 1862–1866 accusation/acquittal stage. Approximate ages 19–20 follow the museum birth-year anchor and Child's contemporary description, not a known exact birthday.",
+    "No poisoning-case chronology, assault, expulsion, college motive or causal route from injustice to art is asserted.",
+    "An invitation to inspect a bust is not an accomplished studio visit or received criticism. No historical quotes or texture."
+  ],
+  "avoidRules": [
+    "Anonymous until the bridge.",
+    "Do not repeat the source writer's racial hierarchy or endorse praise based on race.",
+    "Do not promise success, fair treatment or improvement to the reader."
+  ],
+  "review": {},
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "A writer met her at a reception and asked about her sculpture. She was about twenty.",
+      "requiredFactIds": [
+        "meeting",
+        "age"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A contemporary reported conversation, not a reconstructed studio visit. Child supplied approximate age; metadata19–20 reflects the museum1844 anchor, not an exact known birthday."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "She told the writer that some people praised her because she was Black. That was not the kind of praise she wanted.",
+      "requiredFactIds": [
+        "critique"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "STRUCTURAL EXCEPTION: expressed objection in the same conversation, not a fabricated low or humiliation scene. Child's own condescending framing is not adopted as truth."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She described how she had gone to an established sculptor for advice. He had made a bust of an abolitionist. She thought he might be a friend to her people.",
+      "requiredFactIds": [
+        "learning"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "learning"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "An explicitly recounted earlier action, not a claim that this followed the reception or an invented cause from the poisoning case. Names withheld until identity bridge."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "She had made a first bust by copying another sculpted head. She said that praise was not good for her.",
+      "requiredFactIds": [
+        "bust",
+        "critique"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "bust"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "STRUCTURAL EXCEPTION: her objection to unhelpful praise, not an assessment that the bust was bad or an invented failed trial."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "She invited the writer to visit her room and look at the bust. She asked her to point out its faults.",
+      "requiredFactIds": [
+        "bust",
+        "critique"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "bust"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The invitation and request are reported; no completed visit, supplied criticism or resulting revision is asserted."
+    },
+    {
+      "role": "became",
+      "canonicalText": "She said that hearing about the faults would teach her something. She had also spoken of the sculptor's kindness. She wanted useful criticism.",
+      "requiredFactIds": [
+        "critique",
+        "kindness"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "kindness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "critique"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Limited endpoint is her stated wish in the conversation, not proof of improvement, later success or emotional transformation."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Edmonia Lewis.\n\nShe was a sculptor who made portraits in marble.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to want useful feedback.",
+      "requiredFactIds": [
+        "legacy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "legacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Own-line identity reveal and non-prescriptive permission."
+    }
+  ]
+}

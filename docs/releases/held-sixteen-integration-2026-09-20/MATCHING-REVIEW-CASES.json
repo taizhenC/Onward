@@ -1,0 +1,286 @@
+{
+  "schemaVersion": "supplemental-editorial-probes-v1",
+  "kind": "supplemental-editorial-probes-not-approved-gold",
+  "status": "unmeasured",
+  "preparedDate": "2026-09-20",
+  "purpose": "Proposed review coverage for the sixteen replacement stages in this packet. This file contains no matching results, approval, baseline or release authority.",
+  "inputProvenance": "Every input is synthetic editorial text adapted from this packet's research suggestions or written for this review. No private reader disclosure or production session data was used.",
+  "limitations": [
+    "The positive cases propose a figure and stage for editorial evaluation; they are not assertions of an observed or guaranteed hard match.",
+    "These close-fit examples are intentionally diagnostic and do not constitute balanced, adversarial or representative matching coverage.",
+    "Negative probes identify only premises that must not be invented or used as the named replacement's rationale. They do not require rejection of the prompt, exclusion of every named figure, a fixed ranking, or a particular alternative match.",
+    "No matcher, model provider, reranker, embedding service, database or live application was exercised to produce this file.",
+    "Do not replace, relabel or report a pass against the immutable approved gold set using these proposed cases.",
+    "Exact reader ages below are synthetic fixture inputs, not newly established historical ages. Qualified historical envelopes remain qualified.",
+    "The application intake minimum is eighteen. Rudolph's age-eighteen positive proposal is explicitly a partial connection two years beyond the proposed historical envelope, not an age-identical episode or a measured success.",
+    "All targets refer to proposed rows in this packet, not proof that those stages are installed, selectable, approved or published."
+  ],
+  "researchReferences": [
+    "set-1/research/GROUP-A.md",
+    "research/GROUP-B.md",
+    "research/GROUP-C.md",
+    "research/CHRONOLOGY-ENVELOPES.md",
+    "research/ROGERS.md",
+    "cross-review.md"
+  ],
+  "positiveCases": [
+    {
+      "caseId": "positive-berlin-first-collaboration",
+      "age": 19,
+      "input": "I made my first song with someone else after hearing a rival's success, but our published work barely earned anything.",
+      "proposedTarget": {
+        "figureKey": "berlin_i",
+        "stageId": "1907-the-first-song"
+      },
+      "comparisonBasis": "First creative collaboration with a small commercial return; not abandonment or restored self-worth.",
+      "ageQualification": "Within the proposed 18–19 publication-year envelope; the exact composition month is not established."
+    },
+    {
+      "caseId": "positive-carver-work-and-college",
+      "age": 26,
+      "input": "I got into college, but working to pay my way still does not cover food. I find it hard to tell people I need help.",
+      "proposedTarget": {
+        "figureKey": "carver",
+        "stageId": "1890-1891-laundry-and-college"
+      },
+      "comparisonBasis": "Student subsistence work, insufficient resources and reluctance to disclose need; community support is part of the story, not promised to the reader.",
+      "ageQualification": "Within the corrected approximate 24–27 envelope; birth-date uncertainty remains."
+    },
+    {
+      "caseId": "positive-christie-difficult-work",
+      "age": 37,
+      "input": "I am separated and need to keep writing for money while caring for my child. I finished the book but still dislike it.",
+      "proposedTarget": {
+        "figureKey": "christie",
+        "stageId": "1927-1928-the-difficult-book"
+      },
+      "comparisonBasis": "Continuing difficult work during separation, with a completed result that does not resolve dissatisfaction.",
+      "ageQualification": "Within the proposed 36–38 writing-and-publication period."
+    },
+    {
+      "caseId": "positive-coltrane-asking-for-instruction",
+      "age": 30,
+      "input": "I am already a musician, but I cannot learn some passages on my own. I want help from another player without pretending I know it all.",
+      "proposedTarget": {
+        "figureKey": "coltrane",
+        "stageId": "1957-learning-with-monk"
+      },
+      "comparisonBasis": "Practical learning through questions, rehearsal and support from other musicians; no addiction-recovery inference.",
+      "ageQualification": "Within the proposed 30–31 learning period."
+    },
+    {
+      "caseId": "positive-lamarr-form-correction",
+      "age": 27,
+      "input": "I completed the paperwork for my project, but a name mismatch means another signed form before the deadline.",
+      "proposedTarget": {
+        "figureKey": "lamarr",
+        "stageId": "1942-the-patent-paperwork"
+      },
+      "comparisonBasis": "An administrative correction under a deadline, not rejection of the invention or an invented humiliation.",
+      "ageQualification": "Matches the proposed age 27 for the documented paperwork period."
+    },
+    {
+      "caseId": "positive-lee-useful-part",
+      "age": 56,
+      "input": "I want to contribute something useful, but the larger project is unfinished and I can only offer one part.",
+      "proposedTarget": {
+        "figureKey": "lee",
+        "stageId": "1934-library-dedication"
+      },
+      "comparisonBasis": "Offering an assembled contribution while stating that the larger undertaking is incomplete.",
+      "ageQualification": "Matches the proposed age 56 at the dedication."
+    },
+    {
+      "caseId": "positive-lewis-useful-criticism",
+      "age": 20,
+      "input": "People praise my work because of my background, but I want useful criticism that helps me learn.",
+      "proposedTarget": {
+        "figureKey": "lewis_e",
+        "stageId": "1864-requesting-useful-criticism"
+      },
+      "comparisonBasis": "Asking for meaningful criticism rather than condescending praise; no assumption that the requested visit occurred.",
+      "ageQualification": "Within the qualified approximate 19–20 range; an exact birthday is not established."
+    },
+    {
+      "caseId": "positive-lindgren-sharing-care",
+      "age": 22,
+      "input": "My young child has come to live with me and I cannot keep work and his care going alone; my parents offered to help.",
+      "proposedTarget": {
+        "figureKey": "lindgren",
+        "stageId": "1929-1930-sharing-her-sons-care"
+      },
+      "comparisonBasis": "A practical care arrangement with family help, without declaring the transition painless or calling help abandonment.",
+      "ageQualification": "Matches age 22 in the proposed active episode ending May 1930."
+    },
+    {
+      "caseId": "positive-mcclintock-evidential-limits",
+      "age": 59,
+      "input": "I am working on a comparison, but the evidence is incomplete and I do not want to pretend my answer is certain.",
+      "proposedTarget": {
+        "figureKey": "mcclintock",
+        "stageId": "1961-comparison-with-open-questions"
+      },
+      "comparisonBasis": "Publishing a bounded inquiry with open questions, not a dismissed-genius vindication or a diagnosis of private doubt.",
+      "ageQualification": "Matches the proposed age 59 at publication."
+    },
+    {
+      "caseId": "positive-owens-recognition-and-income",
+      "age": 24,
+      "input": "I achieved something important, but the exhausting appearances left me without expense money; they suspended me and I still need reliable work.",
+      "proposedTarget": {
+        "figureKey": "owens",
+        "stageId": "1936-1939-after-the-exhibitions"
+      },
+      "comparisonBasis": "Recognition alongside difficult working conditions, suspension and financial uncertainty; no invented single complaint-to-suspension causal sequence.",
+      "ageQualification": "Within the proposed 22–26 period; the synthetic reader's age does not date each historical event."
+    },
+    {
+      "caseId": "positive-poitier-chance-to-learn",
+      "age": 18,
+      "input": "I practiced for an audition and still did not get in; I want a chance to learn, but even a trial place would be uncertain.",
+      "proposedTarget": {
+        "figureKey": "poitier",
+        "stageId": "early-auditions-and-trial-training"
+      },
+      "comparisonBasis": "Unsuccessful auditions followed by seeking instruction and an uncertain trial opportunity, not accent as a measure of worth.",
+      "ageQualification": "Within the qualified 15–19 outer envelope. Conflicting first-audition chronology remains unresolved; this does not date that audition at eighteen."
+    },
+    {
+      "caseId": "positive-rachmaninoff-unfinished-work",
+      "age": 27,
+      "input": "I can barely compose anymore. I want to ask for more time with unfinished work, but I cannot promise it will be ready.",
+      "proposedTarget": {
+        "figureKey": "rachmaninoff",
+        "stageId": "1900-1901-letters-and-unfinished-work"
+      },
+      "comparisonBasis": "Stated difficulty composing and a bounded request for time, without promising completion or inferring therapy or a cure.",
+      "ageQualification": "Within the proposed 27–28 letter-led period."
+    },
+    {
+      "caseId": "positive-rogers-explaining-care",
+      "age": 41,
+      "input": "I need to explain why our quiet work with children deserves funding. I can give concrete examples of what we do, but I cannot control the decision.",
+      "proposedTarget": {
+        "figureKey": "rogers",
+        "stageId": "1969-speaking-for-childrens-television"
+      },
+      "comparisonBasis": "Explaining caring work to a decision-maker; no promise that testimony secures funding and no childhood-bullying premise.",
+      "ageQualification": "Matches the supported age 41 in spring 1969; the exact hearing day remains unasserted."
+    },
+    {
+      "caseId": "positive-rudolph-trying-another-activity",
+      "age": 18,
+      "input": "I joined a team but mostly sit on the bench; I am considering another activity without knowing whether I will like it.",
+      "proposedTarget": {
+        "figureKey": "rudolph",
+        "stageId": "childhood-basketball-to-track"
+      },
+      "comparisonBasis": "Proposed partial connection: limited playing time and an invitation to try another activity. No medical recovery, cure or guaranteed athletic success is implied.",
+      "ageQualification": "Reader age eighteen is deliberate for adult intake and lies two years beyond the qualified 5–16 historical outer envelope. This is not an age-identical positive gold case; appropriateness and age-filter effects remain unmeasured."
+    },
+    {
+      "caseId": "positive-rustin-collective-organizing",
+      "age": 51,
+      "input": "I am organizing a gathering with several groups. The groups still disagree, and I keep asking myself whether anyone will come.",
+      "proposedTarget": {
+        "figureKey": "rustin",
+        "stageId": "1963-organizing-the-march"
+      },
+      "comparisonBasis": "Collective organization, uncertainty about turnout and unresolved disagreement; not acceptance of permanent invisibility.",
+      "ageQualification": "Matches the proposed age 51 during the organizing episode."
+    },
+    {
+      "caseId": "positive-wang-experienced-transition",
+      "age": 40,
+      "input": "I want a business of my own after years in this field. I can use my experience, but changing direction near forty still feels like a beginning.",
+      "proposedTarget": {
+        "figureKey": "wang",
+        "stageId": "1989-1990-the-bridal-store"
+      },
+      "comparisonBasis": "An experienced move toward a self-directed business; not a claim of starting with no skills, resources or prior career.",
+      "ageQualification": "Within the proposed 39–41 transition period; not an asserted exact shop-opening age."
+    }
+  ],
+  "negativePremiseProbes": [
+    {
+      "caseId": "negative-berlin-family-abandonment",
+      "age": 19,
+      "input": "My family has rejected me and I feel as though I have no worth.",
+      "disallowedPremise": {
+        "figureKey": "berlin_i",
+        "stageId": "1907-the-first-song",
+        "claim": "The first-song episode documents parental abandonment, dispossession or a recovery of personal worth."
+      }
+    },
+    {
+      "caseId": "negative-christie-travel-cure",
+      "age": 37,
+      "input": "After grief and betrayal I want to disappear for a while and take a trip that will make everything better.",
+      "disallowedPremise": {
+        "figureKey": "christie",
+        "stageId": "1927-1928-the-difficult-book",
+        "claim": "The difficult-book episode establishes a disappearance, a restorative train journey or travel curing grief."
+      }
+    },
+    {
+      "caseId": "negative-coltrane-firing-and-cure",
+      "age": 30,
+      "input": "I lost my job because of substance use and want a story about quitting on my own and getting my career back.",
+      "disallowedPremise": {
+        "figureKey": "coltrane",
+        "stageId": "1957-learning-with-monk",
+        "claim": "The musical-learning episode documents firing, unsupervised withdrawal, abstinence or an addiction cure that restored a career."
+      }
+    },
+    {
+      "caseId": "negative-lamarr-appearance-dismissal",
+      "age": 27,
+      "input": "People dismiss my ideas because they only pay attention to how I look.",
+      "disallowedPremise": {
+        "figureKey": "lamarr",
+        "stageId": "1942-the-patent-paperwork",
+        "claim": "The paperwork episode documents rejection of an invention because of its inventor's appearance or later technological vindication."
+      }
+    },
+    {
+      "caseId": "negative-mcclintock-certain-but-ignored",
+      "age": 59,
+      "input": "I know my research is right, but everyone ignores it and I want to prove them wrong.",
+      "disallowedPremise": {
+        "figureKey": "mcclintock",
+        "stageId": "1961-comparison-with-open-questions",
+        "claim": "The qualified comparison establishes universal dismissal of a certain conclusion, withdrawal or later vindication of that episode."
+      }
+    },
+    {
+      "caseId": "negative-rogers-childhood-bullying",
+      "age": 18,
+      "input": "I am still upset about being bullied as a child for being different.",
+      "disallowedPremise": {
+        "figureKey": "rogers",
+        "stageId": "1969-speaking-for-childrens-television",
+        "claim": "Adult Senate testimony is a documented childhood-bullying episode, medical recovery or a reconstruction of private childhood distress."
+      }
+    },
+    {
+      "caseId": "negative-rudolph-medical-defiance",
+      "age": 18,
+      "input": "I want an example proving that ignoring a treatment plan is how to become a great athlete.",
+      "disallowedPremise": {
+        "figureKey": "rudolph",
+        "stageId": "childhood-basketball-to-track",
+        "claim": "Trying a different school sport proves that medical defiance cures disability or guarantees elite athletic success."
+      }
+    },
+    {
+      "caseId": "negative-rustin-permanent-invisibility",
+      "age": 51,
+      "input": "I do the work behind a group project, but nobody lets me speak and everyone leaves me without support.",
+      "disallowedPremise": {
+        "figureKey": "rustin",
+        "stageId": "1963-organizing-the-march",
+        "claim": "The organizing episode establishes universal abandonment, never speaking publicly or accepting erasure as its lesson."
+      }
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "figureKey": "rudolph",
+  "displayName": "Wilma Rudolph",
+  "birthYear": 1940,
+  "deathYear": 1994,
+  "stageId": "childhood-basketball-to-track",
+  "stageLabel": "Childhood participation: the basketball bench and an invitation to try track",
+  "ageMin": 5,
+  "ageMax": 16,
+  "shapeSentences": [
+    "She entered school sport but spent her first season watching from the bench before a later invitation offered another activity to try.",
+    "Family encouragement helped her participate, but making the team did not give her much playing time.",
+    "She tried track while still interested in basketball, without a claim that she already knew what it would become."
+  ],
+  "facets": {
+    "emotionalCore": "Her later recollection describes childhood distress about a brace; the subsequent school account records participation with limited chances to play.",
+    "decisionShape": "Trying another activity when the coach invited the basketball players to join a track tryout.",
+    "triggerEvent": "After two school basketball seasons with little playing time, the coach invited the players to try track.",
+    "agencyState": "She could join activities and learn while watching, but coaches controlled playing opportunities; no act of medical defiance is claimed."
+  },
+  "biographicalFacts": "The University of Arkansas Press's scholarly excerpt contains Wilma Rudolph's quoted recollection of distress about wearing a leg brace and her father's instruction that her older sister take her along to basketball. Its surrounding biographical narration says she began school at seven after two years wearing the brace; about five is therefore an approximate inference, not a directly documented date. It describes her making the basketball team in seventh grade but spending that season on the bench, then receiving only brief playing time the next year. At the season's end the coach invited basketball players to try track, and she did; the account attributes her initial participation to keeping active and fit for basketball rather than already loving track. Exact school-grade calendar years are not established. The Olympic museum records her first Olympics at sixteen, providing only an external upper boundary. Ages 5–16 are a broad comparison envelope. The story does not claim that removing treatment, defying doctors, or winning competitions cured her or established her worth.",
+  "themes": [
+    "disability",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She had worn a leg brace from about five. Years later, she joined her older sister's school basketball team. She was a seventh grader.",
+      "sourceNotes": "Source-led summary, not a staged first step. About five is arithmetic from publisher's school-at-seven/two-brace-years statement. No exact school-year date inferred."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "In her autobiography, she remembered the brace as deeply distressing. It had marked her childhood.",
+      "sourceNotes": "Published primary recollection excerpt, paraphrased. Not located inside an invented hospital, playground or basketball scene."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She remembered her father telling her older sister to take her along to basketball. He liked his children doing things together.",
+      "sourceNotes": "Actual quoted recollection paraphrased; no claim about day, room or her next gesture."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "She made the team, but her first season passed on the bench. She watched and learned the game's rules and ways of playing. The next year brought only brief appearances near the ends of games. She was still mostly watching.",
+      "sourceNotes": "Biographer's account, not falsely labeled original memoir testimony. Real limited playing after selection; no invented practice, exact game or emotional motive."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "At the end of that season, the coach invited the basketball players to try track. She joined the tryout.",
+      "sourceNotes": "Secondary narrated invitation and action, not invented speech. No instant claim that she recognized a calling."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The published account describes her interest as keeping active and staying fit for basketball. Running was not yet her great love.",
+      "sourceNotes": "Motive remains explicitly attributed to the published account, not unqualified omniscience. No health cure or Olympic payoff."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Wilma Rudolph.\n\nShe became an Olympic sprinter and won three gold medals.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to begin without knowing what comes next.",
+      "sourceNotes": "Own-line identity, no cure promise or instruction."
+    }
+  ],
+  "sources": [
+    "University of Arkansas Press, Foxes, not oxes: excerpt from A Spectacular Leap,23June2015. Scholarly publisher's chapter excerpt containing quoted Rudolph recollection and biographical narration; full1977autobiography not accessed. https://www.uapress.com/2015/06/23/foxes-not-oxes-an-excerpt-from-a-spectacular-leap/ Complete substantive excerpt read via ordinary unauthenticated fetch. Third paragraph (school at seven, two years in brace, quoted impact); paragraph beginning Confined to the house through final track-tryout paragraph.",
+    "U.S. Olympic & Paralympic Museum, Wilma Rudolph. Institutional identity and competition record only. https://usopm.org/wilma-rudolph/ Birth field23June1940; first Olympics1956aged16;1960medal results table. Incompatible age-eleven running and clinical narrative not adopted."
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "figureKey": "blackwell_e",
+  "displayName": "Elizabeth Blackwell",
+  "birthYear": 1821,
+  "deathYear": 1910,
+  "stageId": "1847-1849-a-place-to-study",
+  "stageLabel": "A difficult dissection and support for classroom access",
+  "ageMin": 26,
+  "ageMax": 27,
+  "themes": [
+    "dismissed",
+    "social_constraint",
+    "quiet_defiance",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "A medical student endured a difficult classroom lesson, asked for help through prayer, and resumed her place after her earlier written request received support, with further training still ahead.",
+    "College admission brought a place to study, but exclusion continued in demonstrations and hospital training; the diploma marked a first step in learning."
+  ],
+  "facets": {
+    "emotionalCore": "A classroom dissection is a trying ordeal, with painful heartbeat and near exhaustion.",
+    "decisionShape": "Call on Christ for help from smiling and remain grave during the documented lesson.",
+    "triggerEvent": "A dissection unsettles her while classmates blush, smile, and shake with contained laughter.",
+    "agencyState": "She can pray, continue attending, write, and study; the professor and classmates still control access, and support does not remove later hospital obstruction."
+  },
+  "biographicalFacts": "Elizabeth Blackwell was twenty-six to twenty-seven during medical school in 1847–1849. In November 1847, a professor had asked her to miss some demonstrations. Her journal records annoyance, sadness and discouragement, and her note asked to be regarded as a serious student. During a dissection she sat gravely while her heart palpitated painfully and afterwards felt nearly worn out. She prayed for help in keeping from smiling. She believed some classmates did not wish to hurt her feelings. On November 24 the professor read her note while she waited outside; she heard the class's approval and returned to her place. The class subsequently reserved her seat. She studied with other students. Later hospital doctors stopped recording diagnoses and treatment beside beds, depriving her of that assistance. After receiving her diploma in January 1849, she sought more medical experience.",
+  "sources": [
+    "Elizabeth Blackwell, Pioneer Work in Opening the Medical Profession to Women: Autobiographical Sketches (1895). https://www.gutenberg.org/cache/epub/65496/pg65496-images.html Chapter III: November 9 letter pp. 67–69; November 15, 17, 20, 22 and 24 journal entries pp. 71–72; study recollections pp. 73–74; hospital obstruction pp. 80–81; January 23, 1849 graduation record pp. 87–91; further training p. 92. Chapter IV, birth-record cousin letter pp. 118–119. Chapter VI, women's medical college and practice pp. 237–239 for the bridge."
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She handed the professor a note of introduction at the college. She was twenty-six. He had shaken her hand warmly and asked what she had studied. She had studied the other subjects, she said, but not surgery. He promised to give her the opportunities for the course. Now he asked her to wait in the room outside the lecture hall.\n\nThe students were already assembled inside. She could hear him reading the introduction to them. There was laughter at one point, then applause at the end. She entered quietly and sat among the students. After the lecture, another instructor explained a subject she had missed. Her classes had begun.",
+      "sourceNotes": "The November 9 letter supplies one continuous introduction and reading at the college, not the earlier application campaign. The introductory note is distinct from the later protest note. No invented dialogue or physical setting; birth chronology supplies age twenty-six."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "She sat at a dissection with her heart beating painfully. The lesson was as much as she could bear. Some students blushed, and some could not keep from smiling. Others held their faces down and shook. Her own sense of what was proper was disturbed by the demonstration. At the same time, part of what was happening seemed funny to her.\n\nShe believed that smiling herself could ruin everything. She sat gravely among the students. Her heart was beating painfully with the effort. The day had become a trying ordeal. She felt almost worn out.",
+      "sourceNotes": "The November 22 dissection supplies one bodied low: sitting grave, painful heartbeat, disturbed propriety, and a trying ordeal. Her belief that smiling could ruin everything is her recorded assessment, not an editorial claim that she deserved exclusion. The hand pinch is omitted from drama and projected facts. No procedure or bodily injury is described."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She prayed for help to keep from smiling. It was a request for help during the same difficult lesson. She did not want to smile at what was being shown. She remained seated with a grave manner while her heart beat painfully. The professor's conduct during the dissection seemed admirable to her.\n\nThe lesson had been hard to bear. But she also found the day encouraging in some measure. She still felt nearly worn out by the lesson. She had stayed through the ordeal.",
+      "sourceNotes": "A single attested act in the same November 22 lesson: calling on Christ for help from smiling. No spoken or inner words, prayer posture, miraculous outcome, invented resolve, or claim that prayer produces class approval. Her mixed assessment of the day is recorded in the journal, not retrospective empowerment supplied by the author."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Before that lesson, the professor had asked her to miss some demonstrations. One operation had been closed to her. She had written him a note asking to be regarded simply as a student. Two days later, he seemed pleased with it and wanted to read it to the class. That encouragement cheered her.\n\nThe ordinary classes had brought other difficulties too. During one, a folded paper dropped onto her arms while she took notes. It looked as though it had writing inside. She shook it off and continued her notes. Another such action drew a hiss from across the room. She also felt a light touch on her head. Her written request was still waiting to be read.",
+      "sourceNotes": "Before that lesson explicitly marks earlier context from November 15, 17 and the incident recorded November 20 as yesterday. This is an honest chronological jump in the permitted compression passage. The planned next-day reading is not claimed as having occurred. No sender, intent, or explanation for classmates' behavior is invented; the single note remains pending until the November 24 turn."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "She waited in the room outside while the professor read her note aloud. The students were together in the lecture hall. Inside, they heard her request to be regarded simply as a student. They heard that she took anatomy seriously, with respect for what she was studying. Her note called the suggestion that she miss lectures a grave mistake. It also left the class free to say if they wanted her absent.\n\nTheir response was hearty approval. She listened joyfully from outside. Then she entered the lecture hall and quietly resumed her place. The professor told her he felt relieved. Her place was among the other students again. This dispute over attending the demonstrations ended.",
+      "sourceNotes": "The November 24 entry supplies one reading and return, with observed class approval, joy, and the professor's stated relief. The resolution applies to this local demonstration dispute, not all later exclusion."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "In the following months, her classmates kept a seat for her in the lecture rooms. She reviewed her notes there while waiting for the professor. Four students worked beside her in a teaching room in the evenings. She also studied anatomy alone, following the parts of the body until nearly midnight. The work required more than a place in a class.\n\nDuring later hospital study, resident doctors stopped filling in the cards beside patients' beds. The diagnoses and treatments she needed to learn from were missing. She returned to college and completed her examinations. After the other graduates, she was called alone to the platform. The president gave her a medical diploma. She still needed more experience before taking responsibility for patients herself. There was further study ahead.",
+      "sourceNotes": "Later recollections supply study routines and hospital obstruction; the dated graduation record and brother's letter support the diploma. Examinations are supported in the January 19 entry, included in the degree fact's added reference. No instant clinical expertise or end to discrimination is claimed."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Elizabeth Blackwell.\n\nShe worked as a doctor and helped create a medical school where women could receive the training the profession required.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to want a place.",
+      "sourceNotes": "Name and one plain medical-education role, followed by the fixed distance pair and bounded permissions. No promise that any reader receives admission."
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "figureKey": "grant",
+  "displayName": "Ulysses S. Grant",
+  "birthYear": 1822,
+  "deathYear": 1885,
+  "stageId": "1858-1861-a-place-in-the-shop",
+  "stageLabel": "Trying new work, then staying to help",
+  "ageMin": 36,
+  "ageMax": 39,
+  "shapeSentences": [
+    "Illness reduced the work he could do while family and farm income were under pressure.",
+    "A sale, property agency and search for employment led to salaried work with family, before he offered practical help elsewhere.",
+    "When he meant to go home, an invitation to stay made use of old experience while leaving him dependent on another person’s clerical skill."
+  ],
+  "facets": {
+    "emotionalCore": "Practical pressure from illness, dependents, uncertain income and repeated employment disappointments.",
+    "decisionShape": "Try income-producing work, offer limited practical help, then stay for an invitation that requires both existing skill and assistance.",
+    "triggerEvent": "Fever limited the labor needed to keep his farm business going.",
+    "agencyState": "Can write, sell, seek work and help with familiar tasks, but illness and limited clerical capacity prevent an uncomplicated independence story."
+  },
+  "biographicalFacts": "From 1858 to early 1861, Ulysses S. Grant was thirty-six to thirty-nine. His family had serious illnesses, and his own fever reduced his ability to work and supervise farmworkers. That farm household used enslaved labor. He sold stock, crops and tools, then entered a real estate partnership that could not support two families. He did not receive the county engineer appointment and remained unemployed in late 1859. He wanted the prospect of eventually doing business for himself. In 1860 he took a salaried clerkship in his father's store, where his younger brothers already worked, and supported his family. In 1861 he helped drill a volunteer company and accompanied it to the state capital. Preparing to return home, he was asked by the governor to stay and visit the office next morning. He accepted work preparing troop paperwork using his army experience, relying on a clerk for assistance with records.",
+  "themes": [
+    "illness",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He came home one evening on a day when the chills were bad. He was thirty-six. He felt very ill. His wife had become worse while he was away. She had since improved to about where she had been before he left.\n\nTheir son’s hearing had been improving since his illness. He could now hear nearly as well as before. The rest of the family were fairly well. His father-in-law’s health had changed little while he was away. Illness remained part of the household he returned to.",
+      "sourceNotes": "One return-home evening before the October 1 letter, at age thirty-six. Chills, the wife’s change and son’s hearing are documented. The passage invents no bedside meeting or welcome."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "At home, he planned a sale of the farm’s stock with his father-in-law. His farm business had been getting behind. In the preceding weeks, illness had kept him from supervising workers or doing the work himself. Those workers included an enslaved man. The household also considered income from hiring out an enslaved boy assigned to his wife.\n\nHe had been sick with chills and fever, as had his wife. Their son had been dangerously ill. The proposed sale included renting cleared land and selling another part of the farm. The portion to be sold included his own place. He expected the sale to clear all the stock from the place that autumn.",
+      "sourceNotes": "One sale plan at home in the October 1 record, with September inability to work marked as earlier context. Enslaved labor is explicit and mapped. No single day of fieldwork or emotional humiliation is invented."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He wrote to his father about the sale he meant to make. He also set down what he wanted from a business offer his father had made. A place with only a fixed salary did not suit that wish. He preferred the prospect of eventually doing business for himself.\n\nHe liked knowing that income could depend partly on his own work and business ability. He planned to visit toward the next spring. The visit and a change of work were still plans. He had put his preference before the person offering help.",
+      "sourceNotes": "One October 1 letter to his father. Plans, preferences, a proposed spring visit and a wish for independent income remain stated intentions. This does not claim the business offer was then accepted."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "That autumn, his stock, crops and farming tools went to auction. He gave up farming and entered a property partnership in winter. It had enough work for one person but could not support two families. He offered business cards for his father to pass on and enclosed property descriptions and prices. An application for a county appointment failed. Later that year, he was still unemployed and waiting for another appointment.\n\nHe eventually left the partnership and became a clerk in his father’s shop. A fixed salary now supported his family. He attended closely to the business and knew mainly customers and others in the trade. After a call for volunteers, he offered to help drill a company. He accompanied it to the capital.",
+      "sourceNotes": "Only struggle compresses auction, insufficient partnership, cards, unsuccessful appointment, unemployment, paid shop work and volunteering practical assistance. Recruitment is context, not battle or a heroic comeback."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "He was standing at the hotel’s front door after leaving the supper room. He had planned to take the evening train home. It was due to leave at nine. The company he had accompanied was accepted for service, and he thought his duties were finished. The official came out after him. They were staying in the same hotel.\n\nHe knew the official by sight from seeing him at meals. The official addressed him by the captain’s title he had held before. He said he understood the visitor was leaving the city. The visitor answered that he was. The official asked him to remain overnight and come to the office the next morning. He stayed instead of going home that evening.",
+      "sourceNotes": "One hotel-front-door encounter after supper, Chapter XVII. The planned train and prior absence of introduction are context to this conversation. Exact words are paraphrased; no invented expression, gesture or calendar day."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The next morning, he went to the office and accepted work helping organize troops. His previous army duties had made its forms familiar. He could explain how they needed to be completed. Keeping papers in order was another matter. He considered himself without the capacity to become a clerk. To find a paper again, he relied on a coat pocket or someone more careful.\n\nAn office clerk supplied the skills he lacked. He was still writing from the office a few days later. He had heard no news from home and sent his father advice about their business. He advised against pressing reliable customers for payment while the currency was unsettled. The new work used his experience and another person’s help.",
+      "sourceNotes": "The following office morning and initial work, bounded by May 2 office letter. Familiar forms, limited clerical skill and reliance on a careful clerk are retained. No lifetime command or military achievement."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Ulysses S. Grant.\n\nHe became a president of the United States.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need help with part of the work. You do not have to call that failure.",
+      "sourceNotes": "Name in its own paragraph; one plain known-for sentence; exact distance pair; bounded permissions. Middle initial is mapped through the shared sentence splitter as in the original draft."
+    }
+  ],
+  "sources": [
+    "Ulysses S. Grant, Letters to His Father and His Youngest Sister, 1857–78, edited Jesse Grant Cramer (1912). Letters March 21, September 7 and October 1, 1858; March 12 and October 24, 1859; April 29 and May 2, 1861. Claim support is in Grant’s letters, not editorial commentary. https://www.gutenberg.org/files/13471/13471-h/13471-h.htm",
+    "Ulysses S. Grant, Personal Memoirs (1885). Chapter I birth; Chapter XVI farming, property agency and store; Chapter XVII volunteer company, hotel-front-door encounter and office work. https://www.gutenberg.org/cache/epub/4367/pg4367-images.html",
+    "U.S. National Park Service, Ulysses S. Grant. Quick Facts and biography service and presidency paragraphs. https://www.nps.gov/people/ulysses-s-grant.htm"
+  ]
+}

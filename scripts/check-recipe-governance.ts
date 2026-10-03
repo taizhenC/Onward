@@ -67,7 +67,19 @@ type LibraryRelease = {
   supersedes: string | null;
   note: string;
   evidenceIds: string[];
+  ownerAuthorizationSha256?: string;
 };
+
+// One informed owner decision authorizes one exact content snapshot despite
+// its preserved failed trust gate. It cannot authorize a recipe promotion,
+// different evidence, altered inputs, or a future library release.
+const OWNER_AUTHORIZED_LIBRARY_RELEASE = {
+  librarySha256: "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+  evidenceId: "ev_6f9f15f110e062a26799e08df3b71ddf2de73be13d1f230a44b3262576a6ba1d",
+  recipeId: "keyword-rerank-figure-library-50-2026-07-02",
+  authorizationSha256: "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8",
+  authorizationPath: "docs/releases/new-stories-production-2026-10-02/OWNER-AUTHORIZATION.json",
+} as const;
 
 // The first production selector predates challenger promotion governance. Keep
 // exactly this retain record as the one explicit bootstrap exception; no future
@@ -196,6 +208,9 @@ function main(): void {
   console.log(
     "  synthetic/legacy evidence is retained for audit but cannot authorize promotion",
   );
+  if (installedLibraryRelease.ownerAuthorizationSha256) {
+    console.log("  owner-authorized content exception: recorded real matching trust gate FAIL; recorded development dependency audit FAIL");
+  }
 }
 
 function parseRegistry(value: unknown): StoryRecipeRegistry {
@@ -1783,7 +1798,8 @@ function parseLibraryRelease(
   const item = record(value, path);
   exactKeys(
     item,
-    ["sha256", "releasedAt", "supersedes", "note", "evidenceIds"],
+    ["sha256", "releasedAt", "supersedes", "note", "evidenceIds",
+      ...(Object.hasOwn(item, "ownerAuthorizationSha256") ? ["ownerAuthorizationSha256"] : [])],
     path,
   );
   const release: LibraryRelease = {
@@ -1795,6 +1811,9 @@ function parseLibraryRelease(
         : sha(item.supersedes, `${path}.supersedes`),
     note: string(item.note, `${path}.note`),
     evidenceIds: idArray(item.evidenceIds, EVIDENCE_ID, `${path}.evidenceIds`),
+    ...(Object.hasOwn(item, "ownerAuthorizationSha256") ? {
+      ownerAuthorizationSha256: sha(item.ownerAuthorizationSha256, `${path}.ownerAuthorizationSha256`),
+    } : {}),
   };
   assert(release.note.trim().length > 0, `${path}.note must explain the release`);
   assert(
@@ -1855,10 +1874,14 @@ function validateLibraryReleases(
         evidence.config.provider === "real",
         `${evidenceId} must come from the real reranker`,
       );
-      assert(
-        evidence.metrics.trustGate.passed,
-        `${evidenceId} did not pass the rerank trust gate; figure-library release ${release.sha256} cannot ship`,
-      );
+      if (release.ownerAuthorizationSha256) {
+        validateOwnerLibraryAuthorization(release, state, evidence, undefined, index);
+      } else {
+        assert(
+          evidence.metrics.trustGate.passed,
+          `${evidenceId} did not pass the rerank trust gate; figure-library release ${release.sha256} cannot ship`,
+        );
+      }
       if (index === 0) continue;
       assert(
         !evidence.legacyImported,
@@ -1880,6 +1903,87 @@ function validateLibraryReleases(
       );
     }
   });
+}
+
+function validateOwnerLibraryAuthorization(
+  release: LibraryRelease,
+  state: GovernanceState,
+  evidence: EvalEvidence,
+  authorizationBytes: Buffer = readFileSync(resolve(process.cwd(), OWNER_AUTHORIZED_LIBRARY_RELEASE.authorizationPath)),
+  releaseIndex = 1,
+): void {
+  const pin = OWNER_AUTHORIZED_LIBRARY_RELEASE;
+  assert(releaseIndex === 1, "the owner exception is restricted to the first release after the immutable bootstrap");
+  assert(release.sha256 === pin.librarySha256, "owner exception cannot authorize a different library");
+  assert(release.ownerAuthorizationSha256 === pin.authorizationSha256, "owner exception must name the exact recorded decision");
+  assert(canonicalJson(release.evidenceIds) === canonicalJson([pin.evidenceId]), "owner exception cannot authorize different evidence");
+  assert(evidence.evidenceId === pin.evidenceId && evidence.recipeId === pin.recipeId, "owner exception evidence/recipe changed");
+  assert(createHash("sha256").update(authorizationBytes).digest("hex") === pin.authorizationSha256, "owner authorization document changed");
+  const authorization = record(JSON.parse(authorizationBytes.toString("utf8")), "owner authorization");
+  exactKeys(authorization, ["schemaVersion", "decisionId", "authorizedAt", "ownerId", "ownerStatement", "authorizationSource", "authorizationScope", "librarySha256", "evidenceId", "evidenceSha256", "recipeId", "recipeSelection", "approvedStageProposalSha256", "approvedStageReviewSha256", "targets", "unchangedInputs", "observedMatching", "securityException", "constraints"], "owner authorization");
+  literal(authorization.schemaVersion, "owner-authorized-library-exception-v1", "owner authorization schema");
+  literal(authorization.decisionId, "owner-publish-new-ten-2026-10-03", "owner decision identity");
+  literal(authorization.ownerId, "taizhenC", "owner decision operator");
+  literal(authorization.ownerStatement, "I checked it, publish those into the production", "owner instruction");
+  literal(authorization.authorizationSource, "current-conversation-user-message", "owner authorization source");
+  assert(authorization.librarySha256 === release.sha256 && authorization.evidenceId === evidence.evidenceId && authorization.recipeId === evidence.recipeId, "owner decision does not bind the exact release");
+  assert(authorization.authorizedAt === release.releasedAt, "owner-authorized release date differs from the decision");
+  assert(state.recipes.get(evidence.recipeId)?.manifestSha256 === evidence.recipeManifestSha256, "owner exception cannot authorize a changed recipe manifest");
+  const sourceCommit = evidence.provenance.gitCommit;
+  assert(sourceCommit !== null && FULL_GIT_COMMIT.test(sourceCommit), "owner decision needs its complete evidence source commit");
+  // The decision is historical content authority, not an indefinite freeze or
+  // security-audit exemption. Deployment adapters enforce the current exact
+  // operation inputs. Future security fixes and independently governed recipe
+  // changes need not rewrite this immutable past decision.
+  committedTree(sourceCommit, evidence.evidenceId);
+  const historicalRegistry = record(JSON.parse(committedFile(sourceCommit, "config/story-recipes.json", evidence.evidenceId).toString("utf8")), "owner source recipe registry");
+  assert(canonicalJson(authorization.recipeSelection) === canonicalJson(historicalRegistry.selection), "owner decision changed the historical recipe selection");
+  const observed = record(authorization.observedMatching, "owner observed matching");
+  assert(observed.trustGatePassed === false && evidence.metrics.trustGate.passed === false, "owner exception must retain the actual failed matching result");
+  assert(canonicalJson(observed.metrics) === canonicalJson(evidence.metrics), "owner decision changed failed metrics");
+  const evidencePath = resolve(EVAL_HISTORY_DIR, evidence.dataset.version, evidence.recipeId, `${evidence.evidenceId}.json`);
+  assert(sha256File(evidencePath) === authorization.evidenceSha256, "owner-authorized failed evidence bytes changed");
+  for (const raw of array(authorization.unchangedInputs, "owner unchanged inputs")) {
+    const input = record(raw, "owner input pin");
+    exactKeys(input, ["path", "sha256"], "owner input pin");
+    const path = string(input.path, "owner input path");
+    assert(!path.includes("..") && !path.includes("\\") && !path.startsWith("/"), "owner input path is not repository-relative");
+    assert(createHash("sha256").update(committedFile(sourceCommit, path, evidence.evidenceId)).digest("hex") === input.sha256, `owner decision changed historical input ${path}`);
+  }
+  const packet = resolve(process.cwd(), "docs/releases/new-stories-production-2026-10-02");
+  assert(sha256File(resolve(packet, "FACTS-PROPOSAL.v2.json")) === authorization.approvedStageProposalSha256, "owner exception stage proposal changed");
+  assert(sha256File(resolve(packet, "FACTS-REVIEW.v2.md")) === authorization.approvedStageReviewSha256, "owner exception stage review changed");
+  const proposal = record(readJson(resolve(packet, "FACTS-PROPOSAL.v2.json")), "owner stage proposal");
+  const proposed = array(proposal.stages, "owner proposed stages").map(raw => record(raw, "owner proposed stage"));
+  const writing = record(readJson(resolve(process.cwd(), "docs/releases/new-stories-written-2026-10-02/DATABASE-RECEIPT.json")), "owner writing receipt");
+  const written = array(writing.targets, "owner written targets").map(raw => record(raw, "owner written target"));
+  const targets = array(authorization.targets, "owner exact targets").map(raw => record(raw, "owner exact target"));
+  assert(targets.length === 10 && proposed.length === 10 && written.length === 10, "owner exception must cover the exact ten stories");
+  assert(new Set(targets.map(target => target.figureKey)).size === 10, "owner exception repeats a target");
+  for (const target of targets) {
+    exactKeys(target, ["figureKey", "storySpecId", "candidateSha256", "stageSha256", "productionStageSha256"], "owner exact target");
+    const original = written.find(item => item.figureKey === target.figureKey);
+    const stage = proposed.find(item => item.figureKey === target.figureKey);
+    assert(original && stage, "owner target is outside the reviewed ten");
+    assert(target.storySpecId === original.storySpecId && target.candidateSha256 === original.candidateSha256 && target.stageSha256 === original.stageSha256, "owner exception changed a finished story pin");
+    assert(target.productionStageSha256 === stage.proposedV2StageSha256 && target.candidateSha256 === stage.unchangedCandidateSha256 && target.stageSha256 === stage.originalWritingStageSha256, "owner exception changed reviewed stage ancestry");
+    const file = string(stage.file, "owner reviewed stage file");
+    assert(!file.includes("/") && !file.includes("\\") && file.endsWith(".stage.json"), "owner stage filename changed");
+    assert(sha256File(resolve(packet, "facts-v2-stages", file)) === target.productionStageSha256, "owner-authorized stage bytes changed");
+  }
+  const security = record(authorization.securityException, "owner security exception");
+  assert(security.advisoryId === "GHSA-vfj7-8cjw-p6xm" && security.standardAuditPassed === false && security.scope === "development-dependency-only", "owner exception must preserve the disclosed development advisory failure");
+  assert(createHash("sha256").update(committedFile(sourceCommit, "package-lock.json", evidence.evidenceId)).digest("hex") === security.packageLockSha256, "owner decision changed the historical dependency lock");
+  assert(security.reportFile === "SECURITY-RELEASE-PATH-20261003T013352Z.json", "owner security report changed");
+  assert(sha256File(resolve(packet, string(security.reportFile, "owner security report"))) === security.reportSha256, "owner security evidence changed");
+}
+
+function committedFile(commit: string, path: string, evidenceId: string): Buffer {
+  const result = spawnSync("git", ["show", `${commit}:${path}`], {
+    cwd: process.cwd(), windowsHide: true, maxBuffer: 64 * 1024 * 1024,
+  });
+  assert(result.status === 0, `${evidenceId} source file ${path} is unavailable at ${commit}`);
+  return result.stdout;
 }
 
 // Recomputes, from git, the two facts a release binds evidence to: the sha256
@@ -2010,7 +2114,36 @@ function runTamperSelfChecks(state: GovernanceState): void {
     selected.decisionType !== "promote_challenger" || selected.dataset.visibility === "protected_holdout",
     "synthetic evidence authorized a promotion",
   );
+  runOwnerLibrarySelfChecks(state);
   runManifestV2SelfChecks(state);
+}
+
+function runOwnerLibrarySelfChecks(state: GovernanceState): void {
+  const releases = loadLibraryReleases();
+  const release = releases.find(item => item.ownerAuthorizationSha256);
+  if (!release) return;
+  const evidence = requiredMap(state.evidence, OWNER_AUTHORIZED_LIBRARY_RELEASE.evidenceId);
+  const bytes = readFileSync(resolve(process.cwd(), OWNER_AUTHORIZED_LIBRARY_RELEASE.authorizationPath));
+  const rejects = (label: string, run: () => void) => {
+    let rejected = false;
+    try { run(); } catch { rejected = true; }
+    assert(rejected, `owner exception self-check accepted ${label}`);
+  };
+  rejects("another library", () => validateOwnerLibraryAuthorization({...release, sha256: "0".repeat(64)}, state, evidence));
+  rejects("a different authorization pin", () => validateOwnerLibraryAuthorization({...release, ownerAuthorizationSha256: "0".repeat(64)}, state, evidence));
+  rejects("different evidence", () => validateOwnerLibraryAuthorization({...release, evidenceIds: [HISTORICAL_BOOTSTRAP_LIBRARY.evidenceId]}, state, evidence));
+  rejects("another recipe", () => validateOwnerLibraryAuthorization(release, state, {...evidence, recipeId: "another-recipe"}));
+  rejects("altered authorization bytes", () => validateOwnerLibraryAuthorization(release, state, evidence, Buffer.concat([bytes, Buffer.from("\n")])));
+  const forgedPass = structuredClone(evidence);
+  forgedPass.metrics.trustGate.passed = true;
+  rejects("a forged passing trust gate", () => validateOwnerLibraryAuthorization(release, state, forgedPass));
+  const alteredMetrics = structuredClone(evidence);
+  alteredMetrics.metrics.calibration.definitiveWrong = 0;
+  rejects("hidden definitive wrong result", () => validateOwnerLibraryAuthorization(release, state, alteredMetrics));
+  const ordinary = {...release}; delete ordinary.ownerAuthorizationSha256;
+  rejects("failed evidence on an ordinary release", () => validateLibraryReleases([releases[0]!, ordinary], state));
+  rejects("exception on a future release", () => validateOwnerLibraryAuthorization(release, state, evidence, bytes, 2));
+  console.log("  owner exception tamper checks: PASS (9 negative cases; ordinary passing-evidence rule preserved)");
 }
 
 function runManifestV2SelfChecks(state: GovernanceState): void {

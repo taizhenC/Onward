@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "new-ten-owner-exception-implementation-v1",
+  "observedAt": "2026-10-03T01:40:16.080Z",
+  "ownerAuthorizationSha256": "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8",
+  "librarySha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+  "governanceFileSha256": "bce0539f2f36070f9abb785727108c3dc223f685acf840bad8b972db407a1dcf",
+  "libraryRegistrySha256": "45e95abf0129ee73be8658ab7fbcf4dde55a64b8ccd73e60cf8eb74f94800a1a",
+  "checks": [
+    {
+      "command": "npm run check-recipe-governance",
+      "passed": true,
+      "negativeCases": 9,
+      "realTrustGatePassed": false,
+      "recordedStandardSecurityAuditPassed": false
+    },
+    {
+      "command": "npx eslint scripts/check-recipe-governance.ts",
+      "passed": true
+    },
+    {
+      "command": "npm run typecheck",
+      "passed": true
+    },
+    {
+      "command": "npm run check-recipe-immutability -- 38815c83922afd7350ab1f1aafcd3dcafd874cd3",
+      "passed": true
+    }
+  ],
+  "historicalDecisionDoesNotFreezeFutureLockfile": true,
+  "standardReleaseStillRequiresPassingEvidence": true,
+  "recipePromotionRulesUnchanged": true,
+  "productionActions": {
+    "databaseReads": 0,
+    "databaseMutations": 0,
+    "merge": false,
+    "deploy": false,
+    "liveCanary": false
+  }
+}

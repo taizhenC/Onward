@@ -1,0 +1,1330 @@
+{
+  "storySpecId": "seacole:1854-1855-refusal-to-sick-wharf:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "seacole",
+  "stageId": "1854-1855-refusal-to-sick-wharf",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 48,
+    "ageMax": 49,
+    "startDate": "1854-09",
+    "endDate": "1855-04",
+    "throughLine": "After repeated refusals of her nursing offer, she financed a journey to the war zone and found welcome through work at the sick wharf."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "discrimination",
+      "abuse_or_violence",
+      "serious_illness"
+    ],
+    "contentNote": "Racial exclusion is suspected in the narrator’s account; the story includes crying and wounded soldiers, without graphic injury detail."
+  },
+  "facts": [
+    {
+      "factId": "f-age",
+      "statement": "The National Library of Jamaica records a birth date of November 23, 1805. She arrived in London in autumn 1854; the episode extends to early 1855, so she was 48–49.",
+      "eventOrder": 1,
+      "confidence": "documented",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-age",
+          "locator": "Biographical heading and opening paragraph",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, p.74, autumn arrival; X, pp.93–94, arrival four months after November storm",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-experience",
+      "statement": "She had cared for patients in Jamaica and Panama; in London she offered experience and references for army nursing.",
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, pp.76–78, paragraphs beginning My first idea and Now, no one",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-hall",
+      "statement": "After unsuccessful office applications, she waited long hours in the Secretary-at-War’s private hall while people passed and servants resented her persistence.",
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, pp.78–79, paragraphs beginning My new scheme and Many a long hour",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-full",
+      "statement": "A message said all nursing places were filled. Another nursing organizer gave the same reply.",
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, p.79, paragraphs beginning Many a long hour and that the full complement",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-final",
+      "statement": "Her last application to the Crimean Fund for passage failed. On a cold evening she stood in deepening twilight in thinning streets.",
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, pp.79–80, paragraph beginning As a last resort",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-doubt",
+      "statement": "She questioned whether racial prejudice caused the refusals; this was her suspicion, not established knowledge of the officials’ motives.",
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, pp.79–80, paragraphs beginning I was so conscious and Was it possible",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-tears",
+      "statement": "She describes tears of grief over her motives being doubted, standing still, looking upward at dark clouds and praying aloud.",
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, p.80, paragraph beginning Was it possible",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-morrow",
+      "statement": "The next morning after a good night’s rest her determination strengthened. She would go on her own responsibility and at her own expense, trusting former patients, doctors and other contacts who already knew her in Jamaica to welcome her.",
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, pp.80–81, paragraphs beginning The morrow and Why not trust",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-cards",
+      "statement": "She proposed an independent hotel for invalids and printed cards announcing passage and a mess table and comfortable quarters for sick or recovering officers.",
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, pp.80–81, paragraph beginning Why not trust and reproduced announcement",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-partner",
+      "statement": "She met Thomas Day in England and agreed they might jointly open a store as well as a hotel near the camp.",
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, p.81, paragraphs beginning While this new scheme and So was originated",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-capital",
+      "statement": "With help from a medical friend, she spent much of her limited capital on medicines and the remainder on home comforts, then sailed east.",
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "VIII, pp.81–82, paragraphs beginning These new arrangements and I had scarcely",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-warning",
+      "statement": "Officers she had known in Jamaica met her at Gibraltar and warned that she would not find a roof at the destination; she continued.",
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "IX, pp.83–85, paragraphs beginning Why, bless and Glad were; dialogue through Then I’ll go",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-transfer",
+      "statement": "Letters from her business partner described worsening conditions. Transferring goods between ships in strong current and wind left her drenched and frightened.",
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, pp.93–94, paragraphs beginning More letters and I thought",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-storage",
+      "statement": "On arrival she lodged on an ammunition ship. With no warehouses available their stores were stacked on shore.",
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, p.94, paragraphs beginning On the following morning and Warehouses",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-arrival",
+      "statement": "Her first approach to the sick wharf coincided with the arrival of sick and wounded men.",
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, pp.96–97, paragraphs beginning But my chief occupation and My acquaintance",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-dressings",
+      "statement": "She ran to an artilleryman on a pallet who was groaning, eased his stiff dressings, and heard his groans subside to an uneasy mutter.",
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, p.97, paragraphs beginning My acquaintance and Lightly my practised",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-tea",
+      "statement": "Small cups of tea stood on the wharf. She raised tea to the man’s dry lips. His hand touched and rested on hers, and he continued holding her hand while she tried to whisper about hope and trust in God.",
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, pp.97–98, paragraphs beginning Lightly my practised, Then his hand and I couldn’t",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-surgeon",
+      "statement": "A surgeon approached, shook her hand, thanked her for attending the man and welcomed her help.",
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, p.98, paragraphs beginning I do not think and As it was",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-routine",
+      "statement": "For six weeks she spent days ashore and nights aboard ship, selling stores under tarpaulin and chiefly assisting transfer of wounded men to hospital transports.",
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, pp.96–97, paragraphs beginning I remained six weeks and But my chief occupation",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-hard-work",
+      "statement": "The sick-wharf work remained trying. Men who scorned comfort for themselves worried that preparations for the wounded might be late, and others cried while witnessing suffering.",
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, pp.98–99, paragraphs beginning I wonder, I have often and The task",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-later-cost",
+      "statement": "A letter reproduced in the memoir, dated September 1856, says she had been unfortunate in business and had friends ready to help her. The nursing work did not guarantee later financial security.",
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "X, p.100, reproduced letter beginning Dear Mrs. Seacole",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "f-identity",
+      "statement": "Mary Seacole was a Jamaican-born nurse and businesswoman who wrote Wonderful Adventures of Mrs. Seacole in Many Lands in 1857, including her Crimea work.",
+      "eventOrder": 15,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Title page, pp.1–2 and chapter X; National Library biography for identity",
+          "scope": "bounded"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "subject",
+      "kind": "person",
+      "value": "Mary Seacole",
+      "aliases": [
+        "Seacole"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "She waited in a great hall while people passed in and out. She was in her late forties. She had brought references from people who knew her nursing work. She wanted to go where soldiers were wounded and ill. Some of the people passing through the hall looked at her with curiosity. The servants wanted her to leave.\n\nThey offered excuses and showed their irritation. She stayed, waiting for someone who could hear her offer. The hall was busy. People entered and people left. She remained among them, asking for a place with the nurses.",
+      "requiredFactIds": [
+        "f-hall",
+        "f-age",
+        "f-experience"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hall",
+            "f-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hall",
+            "f-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hall"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "On a cold evening, she stood in the street as daylight faded. Her last request had failed. The nursing places were filled, and a fund had refused to pay for her passage. People hurried home around her. The street was growing quiet. She had been certain she could help the sick men. She had wanted others to see that her offer was sincere. Instead, she felt that her motives had been doubted. Tears ran down her cheeks while the remaining people passed.\n\nShe wondered whether the colour of her skin had something to do with the refusals. She stood there with the suspicion and the disappointment, while the light kept fading. She was still crying.",
+      "requiredFactIds": [
+        "f-final",
+        "f-full",
+        "f-experience",
+        "f-tears",
+        "f-doubt"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-final",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-final",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-final",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-final",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-final",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-tears"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-tears"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-tears"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-experience",
+            "f-tears"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-doubt",
+            "f-final",
+            "f-tears"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-doubt",
+            "f-final",
+            "f-tears"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-doubt",
+            "f-final",
+            "f-tears"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "role": "response",
+      "canonicalText": "She stopped in the street and looked up through the dark clouds. Then she prayed aloud for help. Her disappointment had not gone away. She was still outside, still without the passage she had asked for. Her offer to nurse had not been accepted.\n\nThe few people left were hurrying home through the cold and mist. She stood still as she called for help. She had wanted the chance to use the work she knew. Now she was asking for help herself. She spoke aloud there in the cold street.",
+      "requiredFactIds": [
+        "f-tears",
+        "f-final",
+        "f-experience"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-experience",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-experience",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-experience",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-experience",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-tears",
+            "f-experience",
+            "f-final"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "The next morning, after sleep, her determination returned. She arranged to travel with her own money. Cards announced her plan to provide meals and lodging for sick officers. An acquaintance agreed to consider opening a store with her. A medical friend helped her choose supplies. The trip brought warnings. Officers who knew her said she might not find a roof. Her partner sent letters describing worse conditions ahead. Moving her supplies between ships meant strong currents and a fierce wind. She climbed aboard frightened and soaked.\n\nAt the destination, there were no warehouses for their goods. They stacked the supplies on shore. She had paid for the trip and brought the things she thought were needed. Now those things had no building to protect them. She slept aboard a ship.",
+      "requiredFactIds": [
+        "f-morrow",
+        "f-cards",
+        "f-partner",
+        "f-capital",
+        "f-warning",
+        "f-transfer",
+        "f-storage"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-morrow",
+            "f-cards",
+            "f-partner",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-morrow",
+            "f-cards",
+            "f-partner",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-morrow",
+            "f-cards",
+            "f-partner",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-morrow",
+            "f-cards",
+            "f-partner",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-morrow",
+            "f-cards",
+            "f-partner",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-warning",
+            "f-transfer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-warning",
+            "f-transfer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-warning",
+            "f-transfer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-warning",
+            "f-transfer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-warning",
+            "f-transfer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-storage",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-storage",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-storage",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-storage",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-storage",
+            "f-capital"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "On her first visit to the landing place, sick and wounded men had just arrived. They were waiting to be moved onto ships. One man lay on a bed, groaning heavily. She ran towards him without waiting for permission. Her fingers began easing his stiff dressings. His groans became an uneasy mutter. There were cups of tea nearby. She bent down and raised some tea to his dry lips. Then his hand touched hers and rested there. He kept holding it. She tried to say something about hope and trust in God.\n\nA surgeon came towards her. He shook her hand and thanked her for looking after the man. He was glad to see her there. She had come without an official nursing place, but he welcomed her help. He had offered her his hand.",
+      "requiredFactIds": [
+        "f-arrival",
+        "f-dressings",
+        "f-tea",
+        "f-surgeon",
+        "f-full"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-arrival",
+            "f-dressings"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-arrival",
+            "f-dressings"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-arrival",
+            "f-dressings"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-arrival",
+            "f-dressings"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-arrival",
+            "f-dressings"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-dressings",
+            "f-tea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-dressings",
+            "f-tea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-dressings",
+            "f-tea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-dressings",
+            "f-tea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-dressings",
+            "f-tea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-dressings",
+            "f-tea"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-surgeon",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-surgeon",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-surgeon",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 14,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-surgeon",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 15,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-surgeon",
+            "f-full"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "role": "became",
+      "canonicalText": "For six weeks she spent her days on shore and her nights aboard the ship. Rough sheets covered the stores against the rain and wind. Beneath them, she received visitors and sold goods. The business gave her work alongside the care she had come to offer. Her main work was helping move sick and wounded men onto the hospital ships. The doctors welcomed her help. She kept that work ahead of the business. The landing place grew familiar through repeated days of attending to the men brought there.\n\nShe still had hard work to do. Men who refused comfort for themselves worried about getting things ready for the wounded. Others cried at what they saw. At night she climbed back aboard the ship.",
+      "requiredFactIds": [
+        "f-routine",
+        "f-surgeon",
+        "f-hard-work"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine",
+            "f-surgeon"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine",
+            "f-surgeon"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine",
+            "f-surgeon"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-routine",
+            "f-surgeon"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hard-work",
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hard-work",
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hard-work",
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-hard-work",
+            "f-routine"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "Her name was Mary Seacole.\n\nShe was a Jamaican nurse and businesswoman remembered for caring for wounded soldiers during the Crimean War.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to explain every disappointment before you are allowed to feel it. You are allowed to need some time.",
+      "requiredFactIds": [
+        "f-identity",
+        "f-later-cost"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-identity"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "f-identity",
+            "f-later-cost"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dialogue, action, decision, gesture, weather or interior realization.",
+    "Retain the author’s uncertainty about the cause of refusal and retrospective status of the account."
+  ],
+  "avoidRules": [
+    "Do not assert that Florence Nightingale personally rejected her London application.",
+    "Do not assert that officials’ racial motives were proved.",
+    "Do not describe historical medicines as effective treatments or advise their use.",
+    "Do not erase the commercial partnership, finances or practical help from others.",
+    "Do not promise outcomes to the reader or turn this episode into a lesson about overcoming all barriers."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-memoir",
+      "citation": "Mary Seacole, Wonderful Adventures of Mrs. Seacole in Many Lands (1857), edited by W. J. S.; retrospective personal account.",
+      "locator": "VIII, pp.73–82; IX, pp.83–85; X, pp.93–100",
+      "url": "https://www.gutenberg.org/files/23031/23031-h/23031-h.htm"
+    },
+    {
+      "sourceId": "source-age",
+      "citation": "National Library of Jamaica, Mary Seacole (1805–1881), institutional biography. Used only for identity and birth chronology.",
+      "locator": "Biographical heading and opening paragraph",
+      "url": "https://nlj.gov.jm/project/mary-seacole-1805-1881/"
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,77 @@
+{
+  "figureKey": "riis",
+  "displayName": "Jacob August Riis",
+  "birthYear": 1849,
+  "deathYear": 1914,
+  "stageId": "1873-unpaid-work-to-reporting",
+  "stageLabel": "Unpaid newspaper work, hunger, and a reporting trial",
+  "ageMin": 23,
+  "ageMax": 24,
+  "shapeSentences": [
+    "An immigrant whose first reporting job never pays goes hungry selling books, follows a teacher to obtain an introduction, and earns a reporting job after a trial.",
+    "Work has repeatedly failed to provide enough food or a secure place to sleep; an introduction opens a trial rather than guaranteeing acceptance."
+  ],
+  "facets": {
+    "emotionalCore": "He feels his years of effort have been wasted and has no hope left after unsuccessful selling and unpaid work.",
+    "decisionShape": "He follows his former teacher to collect a letter of introduction and delivers it for a reporting trial.",
+    "triggerEvent": "The first newspaper employer withholds his wages, and unsuccessful selling leaves him hungry without money.",
+    "agencyState": "He can apply and write a trial report, but depends on an introduction and the editor accepting his work."
+  },
+  "biographicalFacts": "Jacob Riis was approximately twenty-three to twenty-four during his first reporting work in 1873–1874. After two unpaid weeks at a local newspaper, he tried selling books and earned nothing from a day's canvassing. Hungry and without money, he sat on steps with his dog and felt three years had been wasted. His former telegraph-school principal recognized him and gave him an introduction to a news agency. Riis found a new home for the dog and delivered the letter. The desk editor allowed a trial assignment covering a public lunch. Riis watched the food without eating, then wrote a report that earned him acceptance and a regular reporting time. Afterward he collapsed on the stairs at a separate boarding house. The job provided food and pay but involved low wages, long days and multiple evening assignments. The first winter's long rides left his feet painfully cold.",
+  "themes": [
+    "self_doubt",
+    "dispossession",
+    "self_invention",
+    "late_start"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He met his editor on the stairs outside the newspaper office. He was about twenty-four. A woman followed the editor down, striking his head with her basket. She called to the people outside to witness what he had done. He had failed to pay for washing his shirts. The young man was waiting for his pay, too.\n\nHis second pay day had come and brought no wages. He had answered an advertisement and taken the job filling the local column. He had searched for news and made notes when he found it. Now he left with his work unpaid. He took his experience and a large dog someone had given him.",
+      "sourceNotes": "Chapter V, second deferred pay-day and outside stairs. One encounter with the editor and washerwoman; brief basket violence disclosed. Approximate age uses LOC chronology. No invented detail."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "He sat on steps beneath a clock with its face lit. He was faint with hunger. His dog stretched out at his feet. The dog had persuaded a cook to feed it during their last rounds. He had watched from a corner, wanting some of that food. There was no supper for him. He held the book he had spent the day trying to sell.\n\nNo one had bought it. He expected another day of going hungry tomorrow. He thought of leaving these same steps hungry three years earlier. Then he had carried a little money. Now he had none. He felt those years had been wasted. He could find no hope or purpose in them. Nothing had gone right, and he could not imagine anything going right. He no longer cared. He drummed on the book in his hands.",
+      "sourceNotes": "Chapter V, Faint with hunger and How long was this to last. One seated low point; the earlier departure is his attested memory. No relief or invented diagnosis."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He walked across the street to his former teacher’s office. The dog came with him. The teacher had recognized him on the steps and asked about his work. He had explained that he was trying to sell books. Now he collected a letter introducing him to a news agency. Its manager was looking for someone to train.\n\nBefore he left the office, the teacher offered his dog a home. It was a better home than he could provide. He agreed to bring the dog the next day. He left with the letter.",
+      "sourceNotes": "Chapter V, As in a dream and Bob went along. The present action is obtaining the letter in the school office; the earlier conversation explains the introduction. Dog-home agreement occurs before departure from that office."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "He spent that last night walking with the dog. At sunrise he washed his face and hands at a drinking trough. He straightened his clothes and took the dog to its new home. Then he delivered the letter to the news office. The desk editor looked him over doubtfully and allowed a trial. He waited at a desk while the editor prepared the assignments.\n\nHis assignment took him to a public lunch. Food was spread out where he could see and smell it. He had arrived hungry after failing to earn money selling books. Now the food was close, but he did not ask for any. He had reached a point where he no longer felt his hunger. He watched the gathering and wrote his report.",
+      "sourceNotes": "Chapter V, last night, sunrise, letter delivery, and first public lunch. This passage openly moves through the next morning and assignment. Failure to obtain food remains documented after the introduction."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The editor read his report. This was the work of the trial he had been allowed that morning. The editor had looked doubtful when he arrived with the letter. Now he accepted him for the job. He gave him the desk and a time to report each morning. There was another day of work to return for.",
+      "sourceNotes": "Chapter V, But it may be that a touch of it all crept into my report. One editor-report encounter; previous assignment and letter are background. No invented speech or editor gesture."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "After work that evening, he went to a family boarding house. With work and wages, he could pay to stay. On the stairs his strength gave out. He collapsed and lay there until someone stumbled over him in the dark. They carried him inside.\n\nThe reporting work that winter was hard and poorly paid. The office supplied news to papers printed in the morning and evening. He and two other reporters covered news outside the usual department reports. An evening could bring several assignments spread across the city. His working day began in the morning and ran into the next early morning. Long rides left his feet so cold that he lost feeling in them. He had enough to eat now. He still had to get himself to the next assignment.",
+      "sourceNotes": "Chapter V collapse and chapter VI first winter, inferred as 1873–74 from the following May 20, 1874 spring move. Enough food coexists with low pay, long hours and painful cold rides. Year-precision endDate 1874 bounds this winter, not the entire year. No later editor job, marriage, fame, or reform enters the outcome."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Jacob August Riis.\n\nHe wrote books about the lives of people crowded into poor city housing and the conditions around them.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need food, rest, and help.",
+      "sourceNotes": "Plain legacy from the owning archive biography. Name, legacy, exact distance pair, then authored permission. No texture or forecast."
+    }
+  ],
+  "sources": [
+    "Jacob A. Riis, The Making of an American (1901), chapter V and opening of chapter VI. https://www.gutenberg.org/cache/epub/6125/pg6125-images.html",
+    "Library of Congress, Jacob Riis exhibition, Biography. https://www.loc.gov/exhibits/jacob-riis/biography.html",
+    "Library of Congress, Jacob A. Riis Papers finding aid, Biographical Note. https://tile.loc.gov/storage-services/service/gdc/gdcfindingaidpdfs/ms010258/ms010258.pdf"
+  ]
+}

@@ -1,0 +1,11 @@
+# Owner-directed production release execution
+
+The owner was told that all ten new stories remained drafts after matching and security failures. The next explicit instruction was: “I checked it, publish those into the production”. That instruction is treated as informed authorization to publish this exact batch despite the disclosed failures. It supersedes the earlier hold for this batch; the earlier hold and measurements remain preserved as historical evidence.
+
+The release decision records the actual failed matching result: 96/101 positive matches, one wrong definitive positive and 2/3 miss detection. The selected recipe, original benchmark labels, thresholds, historical ages, finished story prose and source ledgers remain unchanged. The separate security investigation preserves the failed full audit and the zero-finding runtime-only audit without substituting one for the other. No incompatible dependency downgrade or audit-threshold change is part of this release.
+
+This is a publication decision by one owner, recorded in the schema's required review roles. It does not claim three independent human reviewers. The exact authorization document, ten candidate/stage hashes, factual-summary approval and installed library snapshot are bound to the new release. Ordinary library releases retain their requirement for passing matching evidence; this exception cannot authorize a different snapshot or future batch.
+
+Execution order is: independently validate the exception and bounded adapters; deploy the reviewed code and matching metadata; publish the exact ten through the existing whole-document promotion RPC; verify 44 valid publications, zero quarantine and unchanged prior 34; commit the actual reduced publication receipt to refresh production workers; verify the exact deployment and run the one preselected normal-route API canary. Full live baseline snapshots and credentials remain local. Actual phase receipts will establish what completed; this plan alone establishes no deployment or publication.
+
+Keller's historical episode remains at age six and outside the adult intake range. Publication of all ten therefore does not mean all ten are selectable through the adult form. The final release record will retain that limitation and the measured matching failures.

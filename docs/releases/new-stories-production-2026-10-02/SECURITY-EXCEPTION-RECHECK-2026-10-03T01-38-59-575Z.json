@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "new-ten-security-exception-recheck-v1",
+  "startedAt": "2026-10-03T01:38:59.575Z",
+  "completedAt": "2026-10-03T01:39:02.207Z",
+  "onlyPreviouslyDisclosedAdvisory": true,
+  "advisoryUrls": [
+    "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm"
+  ],
+  "packageLockSha256": "449b89a953b6c2679f00aee6ad10ccdbb326fad21978d1703757e0c8fa86be37",
+  "fullAudit": {
+    "passed": false,
+    "exitCode": 1,
+    "counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 5,
+      "critical": 0,
+      "total": 5
+    }
+  },
+  "runtimeOnlySupplementalAudit": {
+    "passed": true,
+    "exitCode": 0,
+    "counts": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    }
+  },
+  "qualification": "Exact known failed development audit is accepted for this owner-directed release; the full audit remains failed and its threshold is unchanged."
+}

@@ -1,0 +1,81 @@
+{
+  "figureKey": "darwin",
+  "displayName": "Charles Darwin",
+  "birthYear": 1809,
+  "deathYear": 1882,
+  "stageId": "1831-the-refusal-and-the-letter",
+  "stageLabel": "Declining the offer, then hearing its real conditions",
+  "ageMin": 22,
+  "ageMax": 22,
+  "shapeSentences": [
+    "He wanted an offered opportunity but declined under strong family advice.",
+    "With his uncle’s help he examined objections and asked again, then received a discouraging account after consent.",
+    "A direct conversation about actual conditions reopened preparation while important terms remained uncertain."
+  ],
+  "facets": {
+    "emotionalCore": "Eagerness checked by family disapproval and the fear of not being ready.",
+    "decisionShape": "Refuse, ask again with family help, and hear the actual terms before preparing.",
+    "triggerEvent": "An unexpected letter offered work away from the planned steady profession.",
+    "agencyState": "Able to write and prepare, but dependent on family support and another person’s acceptance."
+  },
+  "biographicalFacts": "In August–September 1831, Charles Darwin was twenty-two. He wanted to accept a voyage offer to collect and observe natural history. His father advised strongly against it, citing steady employment, preparation and compatibility with the captain. Darwin wrote to decline because ignoring that advice would make him uncomfortable. His uncle answered the objections and accompanied him to his father, who gave consent. A discouraging letter from the captain then led Darwin and Henslow to abandon the plan again, but Darwin still went to London. On September 5 he met the captain and liked his directness. The captain described cramped shared accommodation, plain meals and his need for cabin privacy. On September 6 Darwin felt cheerful but said the matter remained unsettled. He worked on equipment lists and family requests, postponing purchases until arrangements were certain.",
+  "themes": [
+    "social_constraint",
+    "self_doubt",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "At home, he received a letter offering a place on a voyage. He was twenty-two. The letter reached him late in the evening. A captain needed a companion able to collect, observe and make notes about the natural world. His adviser had recommended him for that work.\n\nThe recommendation did not present him as someone whose training was complete. It rested on his ability to collect and notice things worth recording. As far as his own wishes went, he wanted to accept. He considered it an excellent opportunity.",
+      "sourceNotes": "One received-letter moment at home, late August 29, from the next-day contemporary letter. Age and the incompleteness of training are supported. No invented room or place beyond home."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "At home, he wrote to his adviser about the voyage. His father had advised him strongly against going. The answer was not a firm refusal. But he could not feel comfortable accepting against that advice. There was the profession he had intended to enter afterward. His father worried that the voyage could keep him from settling into that steady work.\n\nHe had little experience at sea and little time to prepare. The captain might discover that the proposed companion did not suit him. His body and mind both needed preparation for an undertaking of that size. He believed his father’s disapproval could drain the energy he needed to go. Without those objections, he had been ready to take the risks.",
+      "sourceNotes": "One August 30 refusal-letter writing act at home. The letter is the physical anchor, not an invented family interview. Father’s advice is past context; discomfort, lost energy and willingness to risk are contemporary stated positions. No exact room or posture is invented."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He wrote to refuse the offer. He explained his father’s objections to the adviser who had recommended him. He thanked the adviser for the trouble taken on his behalf. He had also written to the man arranging the place. That man’s address was difficult to read.\n\nHelp from the post office had not made the address certain. He asked the adviser to send a confirming line in case his letter failed to arrive. He also asked that the captain receive the news. He repeated his thanks at the end of the letter. His written answer declined the opportunity he wanted.",
+      "sourceNotes": "The same refusal-correspondence act continues. The unclear address, unsuccessful post-office help and confirming-line request are recorded; the prose does not invent a visit or move between places during the passage. The two passages do not invent two separate refusal letters to the adviser."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "He visited his uncle, whose household supported his going. That evening, he listed his father’s objections and his uncle wrote answers. He sent both with a request for a definite yes or no. A no meant he promised to yield and stop raising the subject. His uncle took him to see his father, who kindly gave consent. After traveling to meet his adviser, he sent a tired note asking whether the place remained open.\n\nThey spent a day considering the preparations. His adviser warned him to consult the captains before deciding. He asked his sister to keep the news quiet in case he did not go. Then a discouraging letter from the captain made them both give up the scheme. He traveled to meet the captain anyway.",
+      "sourceNotes": "The permitted compressed interval contains uncle-assisted reconsideration, consent, travel, consultation and the September 4 discouraging letter. It does not hide the renewed setback."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "He met the captain and found him open and kind. A promised companion had just written that he could not come. That made the shortage of room less of an obstacle. The captain offered to share his cabin and whatever accommodation was possible. He also explained the difficulty of being uncomfortable in constant company aboard a small vessel. He considered it his duty to explain how difficult the voyage could be.\n\nMeals were to be plain, with no wine. He asked directly whether the young man could accept being sent out when he wanted privacy. The young man liked that direct way of proceeding. The captain still advised him to wait before deciding. The proposed voyage was less favorable than the first description. Its full route remained uncertain.",
+      "sourceNotes": "One September 5 meeting with the captain in London, exact room unrecorded. Cabin conditions, privacy request, plain meals and uncertainty are attested in same-day letters. No exact dialogue or invented gesture."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The next day was his first cheerful day since receiving the offer. He attributed that change to his confidence in the captain. The matter was still unsettled, even as he wrote home with practical requests. He asked for more shirts, slippers, walking shoes, books and instruments. Some instruments needed alterations before he took them. His family had things he needed for the voyage.\n\nThe captain already had many books from his list, reducing the expected expense. He requested an answer by return post. He worked all day on his lists, putting articles in and striking others out. He intended to buy nothing until everything was settled. The list changed while the larger decision remained open.",
+      "sourceNotes": "September 6 preparation: stated cheerfulness alongside unsettled plans, family commissions, revisions and deferred purchases. No famous voyage, theory or lifetime success is narrated."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Charles Darwin.\n\nHe wrote about how living species change through natural selection.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need another conversation before deciding. You do not have to be certain yet.",
+      "sourceNotes": "Name, one plain known-for sentence, exact distance pair and two bounded permissions, each in its required paragraph group."
+    }
+  ],
+  "sources": [
+    "John Stevens Henslow to Charles Darwin, August 24, 1831, Darwin Correspondence Project letter 105. Transcript, naturalist/companion offer and qualifications paragraphs. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-105.xml",
+    "Charles Darwin to John Stevens Henslow, August 30, 1831, Darwin Correspondence Project letter 107. Transcript opening offer, objections and postscript. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-107.xml",
+    "Charles Darwin to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 110. Transcript request for answer and numbered objections. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-110.xml",
+    "Josiah Wedgwood II to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 109. Transcript numbered replies; footnote 1 transcribes Darwin’s December 16, 1831 diary account. https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-109.xml",
+    "Charles Darwin, letters of September 2 and 4, 1831, in Francis Darwin (ed.), Charles Darwin: His Life Told in an Autobiographical Chapter, and in a Selected Series of His Published Letters (1902). Chapter V, September 2 arrival note and September 4 letter to Susan; Gutenberg inline pages 118–119. https://www.gutenberg.org/cache/epub/38629/pg38629-images.html",
+    "Charles Darwin, Autobiography, written 1876, edited by Francis Darwin. Opening birth statement; Voyage of the Beagle and publications sections. https://www.gutenberg.org/files/2010/2010-h/2010-h.htm",
+    "Charles Darwin, letters of September 5 and 6, 1831, in Francis Darwin (ed.), The Life and Letters of Charles Darwin, volume I (1887). Chapter V (Chapter 1.V in transcription), The Appointment to the Beagle: September 5 letters to Susan Darwin and J. S. Henslow; September 6 letter to Susan Darwin. https://www.gutenberg.org/files/2087/2087-h/2087-h.htm"
+  ]
+}

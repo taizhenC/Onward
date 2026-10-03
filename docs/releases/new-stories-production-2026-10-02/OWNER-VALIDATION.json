@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "new-ten-owner-directed-validation-v1",
+  "recordedAt": "2026-10-03T01:47:10.791Z",
+  "readyForExactOwnerDirectedRelease": true,
+  "allChecksPassed": false,
+  "fullLocalWorkflow": {
+    "file": "CI-2026-10-03T01-43-37-813Z.json",
+    "sha256": "a3bbe952758ec5b284d663b486cba958a3a263ed11beb3cd47d3bfe61cd9edea",
+    "gitCommit": "b7accd3acea10d3b6c070b434166ddec3ded009c",
+    "startedAt": "2026-10-03T01:43:37.813Z",
+    "completedAt": "2026-10-03T01:46:41.782Z",
+    "checks": 65,
+    "passed": 64,
+    "failed": [
+      {
+        "name": "audit:high",
+        "exitCode": 1,
+        "completedAt": "2026-10-03T01:43:39.832Z"
+      }
+    ]
+  },
+  "ownerAuthorizationSha256": "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8",
+  "ownerReleaseReceiptSha256": "4d8ea478a834b0e318452bfaf2191f9c5a30248f6cee4b5b4a288a0df916fc96",
+  "currentPreparedCodeHashes": {
+    "../../../scripts/check-recipe-governance.ts": "70279a5afe9fd0ae319631dd32db0662b54a429314839ebc03901afe6a6b7832",
+    "owner-publication-authority.ts": "68f845888d2bb730c9817ffe5ec91736e525e85dc66bb5dab5f13061f7ff7135",
+    "apply-owner-approved-stage-v2.ts": "2e262c4ef02c33e79a8b2b9f08a15dd9a9f319155f8abf592e79abc4c84ccadb",
+    "publish-owner-approved.ts": "a312cfcc1a8fc19efd88c8fb8fa60ca9e9fcf2f221331e1abf8e6ae3edef9c85",
+    "LIVE-CANARY.ts": "1b57debc2a3cdd66cfdf3e84b9bf660e43f530d56483fbd29b1a7c879f1a5388"
+  },
+  "independentReview": "OWNER-PATH-INDEPENDENT-AUDIT-20261003T014116Z.md",
+  "qualification": "The known full dependency audit is accepted solely by this exact informed owner decision. Real matching failure and full audit failure remain recorded; this is not an all-green ordinary release or a new recipe promotion."
+}

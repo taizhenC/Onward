@@ -1,0 +1,76 @@
+{
+  "figureKey": "washington_b",
+  "displayName": "Booker T. Washington",
+  "birthYear": 1856,
+  "deathYear": 1915,
+  "stageId": "1872-reaching-the-classroom",
+  "stageLabel": "Work for food, a cleaning task, and school admission",
+  "ageMin": 16,
+  "ageMax": 17,
+  "themes": [
+    "dispossession",
+    "social_constraint",
+    "keep_going",
+    "self_invention"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "A young person travelling toward school without enough money found work for food, earned admission through one cleaning task, and still needed work and other people's help to study.",
+    "Admission came through a cleaning task, while meals, tuition, books, and clothing still required work and other people's support."
+  ],
+  "facets": {
+    "emotionalCore": "Hunger and physical exhaustion without money for food or lodging, then discomfort while other applicants are admitted.",
+    "decisionShape": "Ask a ship captain for work to earn breakfast, and complete the later cleaning task carefully.",
+    "triggerEvent": "Out of money during the trip toward school, he cannot purchase food or a bed.",
+    "agencyState": "He can seek work, clean, and prepare lessons; access still depends on the captain, head teacher, tuition donor, and material assistance."
+  },
+  "biographicalFacts": "He asked several places for lodging, but all required money; walking the streets, he passed food stands selling fried chicken and apple pies and could buy nothing. Washington reached Richmond late at night, exhausted, hungry, dirty, out of money, without an acquaintance, and unfamiliar with large cities. He carried a small, cheap satchel containing the few clothes he possessed. Washington left for Hampton in autumn 1872. The NPS chronology gives his birth as April 5, 1856, making him about sixteen; his memoir says his exact birth date was unknown. Exhausted and unable to walk farther, he waited until nobody could see him, then slept beneath an elevated sidewalk with his clothing satchel as a pillow and heard footsteps overhead. At daylight he saw a ship unloading iron and asked its captain to let him work to earn money for food; the captain agreed. He worked long enough to buy breakfast, and the pleased captain offered him continued work for a small daily wage. For several days he unloaded the ship, bought food with small wages, and continued sleeping beneath the sidewalk to save enough money to reach Hampton. After thanking the captain, he reached Hampton with fifty cents and presented himself to the head teacher after a long period without adequate food, washing, or fresh clothes. The head teacher neither admitted nor rejected him initially; he waited near her while she admitted other students, feeling increasingly uncomfortable and wanting a chance. After several hours the teacher asked him to sweep the adjoining classroom; he welcomed the task, having learned careful cleaning in a household job. He swept the room three times and dusted it four times, moved its furniture, cleaned every corner and closet, and reported to the teacher; he felt his future depended on her impression. The teacher inspected the floor and closets and rubbed a handkerchief over woodwork, tables, and benches; finding no dust, she said he could enter the institution. Washington accepted a janitor job that paid nearly all his board; its hard work included caring for many rooms, working late, rising early to build fires, and preparing lessons. The head teacher provided advice and encouragement during difficulties. He borrowed books, lacked clothing, washed his single pair of socks at night, and received used clothing from teachers. His janitor work eventually paid all his board, but tuition remained unaffordable; Armstrong found Morgan to pay his tuition.",
+  "sources": [
+    "Booker T. Washington, Up from Slavery: An Autobiography (1901). https://www.gutenberg.org/files/2376/2376-h/2376-h.htm Chapter I, opening birth uncertainty; Chapter II, name paragraphs for reveal; Chapter III, late-night Richmond arrival through initial Hampton work, books, socks, and tuition aid; Chapter VII, founding school teaching purpose for the bridge.",
+    "U.S. National Park Service, Washington Timeline. https://www.nps.gov/bowa/learn/historyculture/washington-timeline.htm Timeline entries 1856 and 1872, compared with Chapter I of the memoir."
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He passed a food stand late at night, carrying a bag with his few clothes. He was about sixteen. Chicken and pies were piled up for sale. He was hungry, tired, dirty, and completely out of money. He wanted some of the food, but could not buy anything. He had never been in a large city before.\n\nThere was nobody he knew there, and he did not know where to go. Places he had asked for a bed all wanted money. He had none to give them. The food was close enough to pass on the street. He walked on without eating.",
+      "sourceNotes": "One continuous late-night street stretch from Chapter III. The stand is one of the many he reports passing; food, hunger, bag, and lack of money are recorded. Earlier requests for lodging are immediate bounded context, not a reenacted itinerary. No price, city, year, invented scent, or passerby reaction."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "He reached a raised section of sidewalk and could walk no farther. His body was exhausted. He waited until he was sure nobody passing could see him. Then he crept into the space beneath the sidewalk. He lay on the ground and put his bag of clothes beneath his head.\n\nNearly all night, he heard people's feet walking above him. The bag was his pillow, and the ground was where he slept. He was still hungry. He had not eaten enough for a long time. He spent the night beneath the passing feet.",
+      "sourceNotes": "One night at the raised sidewalk. Waiting, crawling, ground, bag pillow, and footsteps are later recalled actions and sensations. His memoir explicitly says he was not discouraged; physical exhaustion is not changed into despair, shame, or a suicidal crisis."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "At daylight he went to a nearby ship and asked its captain for work. As the light grew, he had seen the ship unloading a cargo of iron. He asked to help with that unloading so he could earn money for food. The captain agreed. He began working on the ship's cargo.\n\nThe work earned him enough to buy breakfast. He had arrived beside the ship without money for a meal. Now he had earned what he needed for it. The captain was pleased with his work and offered to let him continue. There was another day's work available.",
+      "sourceNotes": "One morning's request and first work at the nearby ship. The purpose of food money and captain's consent are explicit. No invented loading technique, bodily gesture, breakfast setting, duration, or claim that all money problems ended."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "For several days, he unloaded the ship and bought food with his wages. After eating, there was little money left to put towards reaching school. He kept sleeping beneath the sidewalk to save what he could. When he had enough, he thanked the captain and set out again. He reached the school with very little left.\n\nHe presented himself to the head teacher after a long stretch without proper food or washing. His clothes had not been changed. She neither admitted him nor sent him away. He lingered near her while she admitted other students. He grew more uncomfortable as they went in. He felt he deserved a chance too. He waited for several hours.",
+      "sourceNotes": "Open forward compression: days of low-paid unloading and outdoor sleep, further travel, then waiting near the teacher. Failure is a real shortage after food, followed by uncertain admission. The memoir's guess about the teacher's private thoughts is not dramatized."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The teacher asked him to sweep the classroom next to hers. He took up a broom and welcomed the task. Careful cleaning was something he had learned in a household job. He swept the floor, then went over it again and again. He dusted the room repeatedly. He moved every piece of furniture in the room. He worked through every corner and closet.\n\nHe felt his future depended on the impression this room made. When he finished, he reported to the teacher. She inspected the floor and checked the closets. With a cloth, she rubbed the woodwork, tables, and benches, looking for dust. She could not find any on the furniture or the floor. Then she told him he could enter the school. He had been admitted.",
+      "sourceNotes": "One classroom task and inspection. Repeated sweeping and dusting, moving furniture, cleaning corners, reporting, inspection cloth and admission are sourced in Chapter III. A handkerchief is softened to cloth. The remembered direct remark is paraphrased, not quoted; no invented cause beyond the reported sequence. This does not endorse the requirement as fair or generalize it to other students."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "He accepted a job cleaning the school's rooms while he studied. The work covered nearly all the cost of his board at first. There were many rooms to care for. He worked late and rose early to build fires before preparing his lessons. The head teacher gave him advice and encouragement when things were difficult.\n\nHe borrowed books because he could not buy them. With only one pair of socks, he washed them at night. Teachers helped him with used clothing. His work eventually paid for his board, but he still could not afford tuition. The school's leader found someone to pay that part. Admission had brought him lessons, hard work, and help from other people. He still had to prepare for class.",
+      "sourceNotes": "Forward compression within the initial student period. Board, tuition, books, clothing, early fires and lessons remain separate costs. A donor's tuition and teachers' help remain visible; work alone does not fund every need. No graduation, later institutional fame, or retrospective political creed."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Booker Taliaferro Washington.\n\nHe helped establish and led a school that trained Black teachers.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need help.",
+      "sourceNotes": "Full first, middle and surname avoids an abbreviation-induced false sentence. One plain teaching-school role is followed by the exact distance pair and bounded permissions."
+    }
+  ]
+}

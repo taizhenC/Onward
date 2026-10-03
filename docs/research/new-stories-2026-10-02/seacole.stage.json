@@ -1,0 +1,77 @@
+{
+  "figureKey": "seacole",
+  "displayName": "Mary Seacole",
+  "birthYear": 1805,
+  "deathYear": 1881,
+  "stageId": "1854-1855-refusal-to-sick-wharf",
+  "stageLabel": "Refused nursing places to an independent journey and the sick wharf",
+  "ageMin": 48,
+  "ageMax": 49,
+  "shapeSentences": [
+    "After repeated refusals of her nursing offer, she financed a journey to the war zone and found welcome through work at the sick wharf.",
+    "Her confidence in her experience survived repeated refusals, though she cried and questioned whether racial prejudice lay behind them.",
+    "Welcome came through practical care after a journey financed with limited capital, without an official nursing appointment."
+  ],
+  "facets": {
+    "emotionalCore": "Wanting to contribute with real experience while being repeatedly turned away and suspecting racial exclusion.",
+    "decisionShape": "Whether to abandon an offer of help after official refusals or attempt an independent, financially risky route.",
+    "triggerEvent": "The relief fund refused passage after successive nursing applications had failed.",
+    "agencyState": "She could use limited savings, former contacts and a commercial partnership, but could not secure official nursing placement."
+  },
+  "biographicalFacts": "The National Library of Jamaica records a birth date of November 23, 1805. She arrived in London in autumn 1854; the episode extends to early 1855, so she was 48–49. She had cared for patients in Jamaica and Panama; in London she offered experience and references for army nursing. After unsuccessful office applications, she waited long hours in the Secretary-at-War’s private hall while people passed and servants resented her persistence. A message said all nursing places were filled. Another nursing organizer gave the same reply. Her last application to the Crimean Fund for passage failed. On a cold evening she stood in deepening twilight in thinning streets. She questioned whether racial prejudice caused the refusals; this was her suspicion, not established knowledge of the officials’ motives. She describes tears of grief over her motives being doubted, standing still, looking upward at dark clouds and praying aloud. The next morning after a good night’s rest her determination strengthened. She would go on her own responsibility and at her own expense, trusting former patients, doctors and other contacts who already knew her in Jamaica to welcome her. She proposed an independent hotel for invalids and printed cards announcing passage and a mess table and comfortable quarters for sick or recovering officers. She met Thomas Day in England and agreed they might jointly open a store as well as a hotel near the camp. With help from a medical friend, she spent much of her limited capital on medicines and the remainder on home comforts, then sailed east. Officers she had known in Jamaica met her at Gibraltar and warned that she would not find a roof at the destination; she continued. Letters from her business partner described worsening conditions. Transferring goods between ships in strong current and wind left her drenched and frightened. On arrival she lodged on an ammunition ship. With no warehouses available their stores were stacked on shore. Her first approach to the sick wharf coincided with the arrival of sick and wounded men. She ran to an artilleryman on a pallet who was groaning, eased his stiff dressings, and heard his groans subside to an uneasy mutter. Small cups of tea stood on the wharf. She raised tea to the man’s dry lips. His hand touched and rested on hers, and he continued holding her hand while she tried to whisper about hope and trust in God. A surgeon approached, shook her hand, thanked her for attending the man and welcomed her help. For six weeks she spent days ashore and nights aboard ship, selling stores under tarpaulin and chiefly assisting transfer of wounded men to hospital transports. The sick-wharf work remained trying. Men who scorned comfort for themselves worried that preparations for the wounded might be late, and others cried while witnessing suffering.",
+  "themes": [
+    "dismissed",
+    "social_constraint",
+    "quiet_defiance",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She waited in a great hall while people passed in and out. She was in her late forties. She had brought references from people who knew her nursing work. She wanted to go where soldiers were wounded and ill. Some of the people passing through the hall looked at her with curiosity. The servants wanted her to leave.\n\nThey offered excuses and showed their irritation. She stayed, waiting for someone who could hear her offer. The hall was busy. People entered and people left. She remained among them, asking for a place with the nurses.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "On a cold evening, she stood in the street as daylight faded. Her last request had failed. The nursing places were filled, and a fund had refused to pay for her passage. People hurried home around her. The street was growing quiet. She had been certain she could help the sick men. She had wanted others to see that her offer was sincere. Instead, she felt that her motives had been doubted. Tears ran down her cheeks while the remaining people passed.\n\nShe wondered whether the colour of her skin had something to do with the refusals. She stood there with the suspicion and the disappointment, while the light kept fading. She was still crying.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She stopped in the street and looked up through the dark clouds. Then she prayed aloud for help. Her disappointment had not gone away. She was still outside, still without the passage she had asked for. Her offer to nurse had not been accepted.\n\nThe few people left were hurrying home through the cold and mist. She stood still as she called for help. She had wanted the chance to use the work she knew. Now she was asking for help herself. She spoke aloud there in the cold street.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "The next morning, after sleep, her determination returned. She arranged to travel with her own money. Cards announced her plan to provide meals and lodging for sick officers. An acquaintance agreed to consider opening a store with her. A medical friend helped her choose supplies. The trip brought warnings. Officers who knew her said she might not find a roof. Her partner sent letters describing worse conditions ahead. Moving her supplies between ships meant strong currents and a fierce wind. She climbed aboard frightened and soaked.\n\nAt the destination, there were no warehouses for their goods. They stacked the supplies on shore. She had paid for the trip and brought the things she thought were needed. Now those things had no building to protect them. She slept aboard a ship.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "On her first visit to the landing place, sick and wounded men had just arrived. They were waiting to be moved onto ships. One man lay on a bed, groaning heavily. She ran towards him without waiting for permission. Her fingers began easing his stiff dressings. His groans became an uneasy mutter. There were cups of tea nearby. She bent down and raised some tea to his dry lips. Then his hand touched hers and rested there. He kept holding it. She tried to say something about hope and trust in God.\n\nA surgeon came towards her. He shook her hand and thanked her for looking after the man. He was glad to see her there. She had come without an official nursing place, but he welcomed her help. He had offered her his hand.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "For six weeks she spent her days on shore and her nights aboard the ship. Rough sheets covered the stores against the rain and wind. Beneath them, she received visitors and sold goods. The business gave her work alongside the care she had come to offer. Her main work was helping move sick and wounded men onto the hospital ships. The doctors welcomed her help. She kept that work ahead of the business. The landing place grew familiar through repeated days of attending to the men brought there.\n\nShe still had hard work to do. Men who refused comfort for themselves worried about getting things ready for the wounded. Others cried at what they saw. At night she climbed back aboard the ship.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Mary Seacole.\n\nShe was a Jamaican nurse and businesswoman remembered for caring for wounded soldiers during the Crimean War.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to explain every disappointment before you are allowed to feel it. You are allowed to need some time.",
+      "sourceNotes": "A bounded adaptation of Seacole’s retrospective 1857 memoir. Scene renders one of the attested hall waits without claiming a specific visit or placing the refusal message within it. Dark and response are consecutive portions of the documented cold-evening street encounter; response is her spoken prayer for help, before any relief. Struggle alone compresses planning and travel. No dialogue, medical efficacy claim, invented action or undisclosed sensory texture; officials’ motives remain unproven. The commercial store and care work are both retained. Later business hardship is evidence context mapped to the bridge’s business identity; it appears only in the fold."
+    }
+  ],
+  "sources": [
+    "Mary Seacole, Wonderful Adventures of Mrs. Seacole in Many Lands (1857), edited by W. J. S.; retrospective personal account. VIII, pp.73–82; IX, pp.83–85; X, pp.93–100 https://www.gutenberg.org/files/23031/23031-h/23031-h.htm",
+    "National Library of Jamaica, Mary Seacole (1805–1881), institutional biography. Used only for identity and birth chronology. Biographical heading and opening paragraph https://nlj.gov.jm/project/mary-seacole-1805-1881/"
+  ]
+}

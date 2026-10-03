@@ -1,0 +1,1263 @@
+{
+  "storySpecId": "darwin:1831-the-refusal-and-the-letter:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "darwin",
+  "stageId": "1831-the-refusal-and-the-letter",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 22,
+    "ageMax": 22,
+    "startDate": "1831-08-29",
+    "endDate": "1831-09-06",
+    "throughLine": "He declined a voyage against strong family advice, asked again with his uncle’s help, then met the captain to discuss cramped accommodation and uncertain plans before preparing."
+  },
+  "contentProfile": {
+    "intensity": "gentle",
+    "flags": [],
+    "contentNote": "Family disagreement about an uncertain opportunity. The episode ends with preparation, not a promise of eventual success. Draft based on contemporary letters and qualified recollection."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Charles Darwin was born February 12, 1809; he was twenty-two in August and September 1831.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography",
+          "locator": "Opening autobiographical paragraph: I was born at Shrewsbury on February 12th, 1809.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 1
+    },
+    {
+      "factId": "fact-letter",
+      "statement": "He received the offer late on August 29 and wanted to accept it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-refusal",
+          "locator": "Opening paragraph, letter received late yesterday evening and gladly accepted opportunity.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-autobiography",
+          "locator": "Voyage of the Beagle section, paragraph beginning On returning home from my short geological tour: home and receipt of Henslow’s letter. The contemporary letter supplies the nearer receipt date.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 2
+    },
+    {
+      "factId": "fact-offer",
+      "statement": "The offer was to accompany a captain on a voyage, with natural history collecting, observing and noting; he was not presented as a finished naturalist.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-offer",
+          "locator": "Transcript beginning I have been asked by Peacock and following qualifications paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 3
+    },
+    {
+      "factId": "fact-advice",
+      "statement": "His father had not firmly refused but gave advice so strongly against the voyage that Darwin said he could not be comfortable ignoring it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-refusal",
+          "locator": "Opening paragraph, But my Father, although he does not decidedly refuse me.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "causal",
+      "eventOrder": 4
+    },
+    {
+      "factId": "fact-concerns",
+      "statement": "Objections included later steady work, little seafaring, short time for preparation and the chance he might not suit the captain.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-refusal",
+          "locator": "Opening paragraph, My Fathers objections are these.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 5
+    },
+    {
+      "factId": "fact-energy",
+      "statement": "He said even going with his father’s disapproval would take away energy he needed; without those objections he would have taken the risks.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-refusal",
+          "locator": "Opening paragraph risk statement and final postscript.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 6
+    },
+    {
+      "factId": "fact-refusal",
+      "statement": "He wrote to refuse, thanked Henslow for the trouble taken, and asked him to send a confirming line in case the badly addressed letter failed to arrive.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-refusal",
+          "locator": "Paragraph beginning What was the reason, address difficulty, and final postscript I have written to Mr. Peacock.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-autobiography",
+          "locator": "Voyage of the Beagle section, On returning home paragraph and the following father-objection/refusal paragraph: home context. Contemporary August 30 letter controls chronology over this late memory.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 7
+    },
+    {
+      "factId": "fact-uncle-house",
+      "statement": "On the last day of August he visited his uncle’s household, whose members supported going; that evening he drew up his father’s objections.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-uncle",
+          "locator": "Footnote 1, diary written December 16, 1831: last day of August visit and evening list.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 8
+    },
+    {
+      "factId": "fact-list",
+      "statement": "His list included concern the voyage would be useless, uncomfortable, a wild scheme, or another change of profession; his uncle answered the objections.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-reconsider",
+          "locator": "Transcript enclosure, numbered objections 2 and 6–8.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 9
+    },
+    {
+      "factId": "fact-request",
+      "statement": "He sent the objection list and uncle’s answers with a new request for a definite yes or no; he promised to yield to a no and stop raising it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-reconsider",
+          "locator": "Paragraph beginning I have given Uncle Jos, request for decided answer and promise never to mention again.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 10
+    },
+    {
+      "factId": "fact-respect",
+      "statement": "He wrote that he would hesitate to go if his father remained uncomfortable and doubted it would unfit him for a steady life.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-reconsider",
+          "locator": "End of I have given Uncle Jos paragraph and I must again state paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 11
+    },
+    {
+      "factId": "fact-answers",
+      "statement": "His uncle argued that the voyage had definite work and suited his current interests, while leaving the decision to father and son.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-uncle",
+          "locator": "Transcript numbered replies 2, 7 and concluding You will bear in mind.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 12
+    },
+    {
+      "factId": "fact-drive",
+      "statement": "On September 1 the uncle sent for Darwin while he was out shooting and offered to take him to see his father; the two traveled together.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-uncle",
+          "locator": "Footnote 1, diary December 16: next morning dispatch, shooting, message and arrival.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 13
+    },
+    {
+      "factId": "fact-consent",
+      "statement": "When they arrived, Darwin’s father kindly gave consent; in his September 2 letter Darwin said his father had changed his mind.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-uncle",
+          "locator": "Footnote 1: When we arrived there, all things were settled, and father consent. Corroborated selected letters September 2 note.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 14
+    },
+    {
+      "factId": "fact-arrival-note",
+      "statement": "After arriving at the Red Lion on September 2, he sent Henslow a note saying he was tired, hoped the place remained open, and wanted to meet next morning.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-selected-letters",
+          "locator": "Chapter V, editorial arrival sentence and September 2 note, I am just arrived.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 15
+    },
+    {
+      "factId": "fact-preparing",
+      "statement": "On September 4 he reported spending the preceding day with Henslow considering much that needed to be done; Henslow could supply introductions.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-selected-letters",
+          "locator": "Chapter V, September 4 letter, The whole of yesterday and Henslow will give me letters.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 16
+    },
+    {
+      "factId": "fact-not-settled",
+      "statement": "Henslow cautioned him against making up his mind until long conversations with the captains; he asked his sister not to spread the news in case he did not go.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-selected-letters",
+          "locator": "Chapter V, September 4 letter, I write as if it was settled and The reason I don’t want people told.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 17
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Charles Darwin developed an account of evolution by natural selection and wrote On the Origin of Species.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-autobiography",
+          "locator": "Publication section, conception of natural selection after Malthus and Origin publication account.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 18
+    },
+    {
+      "factId": "fact-discouraged",
+      "statement": "On September 4, a letter from FitzRoy was so much against Darwin’s going that Darwin and Henslow gave up the scheme; Darwin went to London nevertheless.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 5 letter to Susan Darwin, paragraphs beginning In the middle of the day and I scarcely thought of going to town.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 19
+    },
+    {
+      "factId": "fact-meeting",
+      "statement": "Darwin met FitzRoy in London on September 5 and found him open, kind and direct; FitzRoy’s intended companion had just written that he could not go.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 5 letter to Susan Darwin, paragraphs beginning I scarcely thought of going to town and It seems he had promised.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 20
+    },
+    {
+      "factId": "fact-cabin",
+      "statement": "FitzRoy offered to share his cabin and accommodation, though room was scarce; he warned that discomfort in constant company on a small vessel could make both men miserable.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 5 letter to Susan Darwin, It seems he had promised and He says nothing would be so miserable paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 21
+    },
+    {
+      "factId": "fact-plain-meals",
+      "statement": "FitzRoy said Darwin must live plainly with no wine and the plainest dinners, and advised him not to decide yet; the scheme was less favorable than previously described.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 5 letter to Susan Darwin, paragraph beginning There is something most extremely attractive.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 22
+    },
+    {
+      "factId": "fact-privacy",
+      "statement": "FitzRoy directly asked whether Darwin could accept being told to leave the cabin when FitzRoy wanted privacy; Darwin liked that direct approach.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 5 letter to Susan Darwin, paragraph beginning I like his manner of proceeding.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 23
+    },
+    {
+      "factId": "fact-route-uncertain",
+      "statement": "The route around the world was not certain, and Darwin said he would not decide until it was settled.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 5 letter to Susan Darwin, paragraph beginning It will probably be out nearly three years, final route and decision clauses; September 5 letter to Henslow, But till that is decided.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 24
+    },
+    {
+      "factId": "fact-cheerful",
+      "statement": "On September 6 he reported his first truly cheerful day since the offer, attributing it to his confidence in the captain, while expressly saying the matter was not settled.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 6 letter to Susan Darwin, paragraphs beginning I write all this as if it was settled and This is the first really cheerful day.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "causal",
+      "eventOrder": 25
+    },
+    {
+      "factId": "fact-lists",
+      "statement": "On September 6 he worked all day adding and removing articles from his lists but would buy nothing until everything was settled.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 6 letter to Susan Darwin, paragraph beginning He recommends me strongly, final two clauses.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 26
+    },
+    {
+      "factId": "fact-commissions",
+      "statement": "He asked his family for more shirts, slippers, walking shoes, books and instruments needing alteration, and requested an answer by return post.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 6 letter to Susan Darwin, paragraphs beginning Again I am going to trouble you and Tell Edward to send me up; closing Answer by return of post and instruments postscript.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 27
+    },
+    {
+      "factId": "fact-books",
+      "statement": "The captain already had many of the books on Darwin’s list, reducing the expected cost of his equipment.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-life-letters",
+          "locator": "September 5 letter to Henslow, paragraph beginning Captain Fitz-Roy has a good stock of books.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 28
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Charles Darwin",
+      "aliases": [
+        "Darwin"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "At home, he received a letter offering a place on a voyage. He was twenty-two. The letter reached him late in the evening. A captain needed a companion able to collect, observe and make notes about the natural world. His adviser had recommended him for that work.\n\nThe recommendation did not present him as someone whose training was complete. It rested on his ability to collect and notice things worth recording. As far as his own wishes went, he wanted to accept. He considered it an excellent opportunity.",
+      "requiredFactIds": [
+        "fact-letter",
+        "fact-offer",
+        "fact-age",
+        "fact-refusal"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letter",
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-letter",
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One received-letter moment at home, late August 29, from the next-day contemporary letter. Age and the incompleteness of training are supported. No invented room or place beyond home."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "At home, he wrote to his adviser about the voyage. His father had advised him strongly against going. The answer was not a firm refusal. But he could not feel comfortable accepting against that advice. There was the profession he had intended to enter afterward. His father worried that the voyage could keep him from settling into that steady work.\n\nHe had little experience at sea and little time to prepare. The captain might discover that the proposed companion did not suit him. His body and mind both needed preparation for an undertaking of that size. He believed his father’s disapproval could drain the energy he needed to go. Without those objections, he had been ready to take the risks.",
+      "requiredFactIds": [
+        "fact-refusal",
+        "fact-advice",
+        "fact-concerns",
+        "fact-energy"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-advice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-advice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-advice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-concerns"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-concerns"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-concerns"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-concerns"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-concerns"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-energy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-energy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One August 30 refusal-letter writing act at home. The letter is the physical anchor, not an invented family interview. Father’s advice is past context; discomfort, lost energy and willingness to risk are contemporary stated positions. No exact room or posture is invented."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He wrote to refuse the offer. He explained his father’s objections to the adviser who had recommended him. He thanked the adviser for the trouble taken on his behalf. He had also written to the man arranging the place. That man’s address was difficult to read.\n\nHelp from the post office had not made the address certain. He asked the adviser to send a confirming line in case his letter failed to arrive. He also asked that the captain receive the news. He repeated his thanks at the end of the letter. His written answer declined the opportunity he wanted.",
+      "requiredFactIds": [
+        "fact-refusal",
+        "fact-concerns",
+        "fact-letter"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal",
+            "fact-concerns"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-refusal",
+            "fact-letter"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The same refusal-correspondence act continues. The unclear address, unsuccessful post-office help and confirming-line request are recorded; the prose does not invent a visit or move between places during the passage. The two passages do not invent two separate refusal letters to the adviser."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "He visited his uncle, whose household supported his going. That evening, he listed his father’s objections and his uncle wrote answers. He sent both with a request for a definite yes or no. A no meant he promised to yield and stop raising the subject. His uncle took him to see his father, who kindly gave consent. After traveling to meet his adviser, he sent a tired note asking whether the place remained open.\n\nThey spent a day considering the preparations. His adviser warned him to consult the captains before deciding. He asked his sister to keep the news quiet in case he did not go. Then a discouraging letter from the captain made them both give up the scheme. He traveled to meet the captain anyway.",
+      "requiredFactIds": [
+        "fact-uncle-house",
+        "fact-list",
+        "fact-answers",
+        "fact-request",
+        "fact-drive",
+        "fact-consent",
+        "fact-arrival-note",
+        "fact-preparing",
+        "fact-not-settled",
+        "fact-discouraged"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-uncle-house"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-list",
+            "fact-answers"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-request"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-drive",
+            "fact-consent"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-arrival-note"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-preparing"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-not-settled"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-not-settled"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-discouraged"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-discouraged"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The permitted compressed interval contains uncle-assisted reconsideration, consent, travel, consultation and the September 4 discouraging letter. It does not hide the renewed setback."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "He met the captain and found him open and kind. A promised companion had just written that he could not come. That made the shortage of room less of an obstacle. The captain offered to share his cabin and whatever accommodation was possible. He also explained the difficulty of being uncomfortable in constant company aboard a small vessel. He considered it his duty to explain how difficult the voyage could be.\n\nMeals were to be plain, with no wine. He asked directly whether the young man could accept being sent out when he wanted privacy. The young man liked that direct way of proceeding. The captain still advised him to wait before deciding. The proposed voyage was less favorable than the first description. Its full route remained uncertain.",
+      "requiredFactIds": [
+        "fact-meeting",
+        "fact-cabin",
+        "fact-plain-meals",
+        "fact-privacy",
+        "fact-route-uncertain"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-meeting",
+            "fact-cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cabin"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plain-meals"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-privacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-privacy"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plain-meals"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-plain-meals"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-route-uncertain"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One September 5 meeting with the captain in London, exact room unrecorded. Cabin conditions, privacy request, plain meals and uncertainty are attested in same-day letters. No exact dialogue or invented gesture."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The next day was his first cheerful day since receiving the offer. He attributed that change to his confidence in the captain. The matter was still unsettled, even as he wrote home with practical requests. He asked for more shirts, slippers, walking shoes, books and instruments. Some instruments needed alterations before he took them. His family had things he needed for the voyage.\n\nThe captain already had many books from his list, reducing the expected expense. He requested an answer by return post. He worked all day on his lists, putting articles in and striking others out. He intended to buy nothing until everything was settled. The list changed while the larger decision remained open.",
+      "requiredFactIds": [
+        "fact-cheerful",
+        "fact-commissions",
+        "fact-books",
+        "fact-lists"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cheerful"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cheerful"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cheerful",
+            "fact-commissions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-commissions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-commissions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-commissions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-books"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-commissions"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lists"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lists"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-lists",
+            "fact-cheerful"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "September 6 preparation: stated cheerfulness alongside unsettled plans, family commissions, revisions and deferred purchases. No famous voyage, theory or lifetime success is narrated."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Charles Darwin.\n\nHe wrote about how living species change through natural selection.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need another conversation before deciding. You do not have to be certain yet.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Name, one plain known-for sentence, exact distance pair and two bounded permissions, each in its required paragraph group."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dialogue, gestures, rooms, weather, chronology, causes, or inner states.",
+    "Only marked texture may render a mapped documented circumstance without adding a fact.",
+    "The autobiographical account is retrospective and does not establish clinical recovery."
+  ],
+  "avoidRules": [
+    "Do not turn family help into solitary achievement.",
+    "Do not compare the reader with the subject or promise an outcome.",
+    "Do not extend the became passage into a lifetime achievement list.",
+    "Do not depict defiant independence, inevitable success, or a self-made origin."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-offer",
+      "citation": "John Stevens Henslow to Charles Darwin, August 24, 1831, Darwin Correspondence Project letter 105.",
+      "locator": "Transcript, naturalist/companion offer and qualifications paragraphs.",
+      "url": "https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-105.xml"
+    },
+    {
+      "sourceId": "source-refusal",
+      "citation": "Charles Darwin to John Stevens Henslow, August 30, 1831, Darwin Correspondence Project letter 107.",
+      "locator": "Transcript opening offer, objections and postscript.",
+      "url": "https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-107.xml"
+    },
+    {
+      "sourceId": "source-reconsider",
+      "citation": "Charles Darwin to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 110.",
+      "locator": "Transcript request for answer and numbered objections.",
+      "url": "https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-110.xml"
+    },
+    {
+      "sourceId": "source-uncle",
+      "citation": "Josiah Wedgwood II to Robert Waring Darwin, August 31, 1831, Darwin Correspondence Project letter 109.",
+      "locator": "Transcript numbered replies; footnote 1 transcribes Darwin’s December 16, 1831 diary account.",
+      "url": "https://www.darwinproject.ac.uk/letter/?docId=letters/DCP-LETT-109.xml"
+    },
+    {
+      "sourceId": "source-selected-letters",
+      "citation": "Charles Darwin, letters of September 2 and 4, 1831, in Francis Darwin (ed.), Charles Darwin: His Life Told in an Autobiographical Chapter, and in a Selected Series of His Published Letters (1902).",
+      "locator": "Chapter V, September 2 arrival note and September 4 letter to Susan; Gutenberg inline pages 118–119.",
+      "url": "https://www.gutenberg.org/cache/epub/38629/pg38629-images.html"
+    },
+    {
+      "sourceId": "source-autobiography",
+      "citation": "Charles Darwin, Autobiography, written 1876, edited by Francis Darwin.",
+      "locator": "Opening birth statement; Voyage of the Beagle and publications sections.",
+      "url": "https://www.gutenberg.org/files/2010/2010-h/2010-h.htm"
+    },
+    {
+      "sourceId": "source-life-letters",
+      "citation": "Charles Darwin, letters of September 5 and 6, 1831, in Francis Darwin (ed.), The Life and Letters of Charles Darwin, volume I (1887).",
+      "locator": "Chapter V (Chapter 1.V in transcription), The Appointment to the Beagle: September 5 letters to Susan Darwin and J. S. Henslow; September 6 letter to Susan Darwin.",
+      "url": "https://www.gutenberg.org/files/2087/2087-h/2087-h.htm"
+    }
+  ],
+  "review": {}
+}

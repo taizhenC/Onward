@@ -2,7 +2,7 @@
   "schemaVersion": "new-ten-local-ci-v1",
   "gitCommit": "9edb1731c5bf818ba92fd25916ba9ca00400555d",
   "startedAt": "2026-10-03T01:02:36.935Z",
-  "completedAt": "2026-10-03T01:05:11.137Z",
+  "completedAt": "2026-10-03T01:06:12.648Z",
   "ok": false,
   "steps": [
     {
@@ -259,6 +259,66 @@
       "name": "smoke",
       "exitCode": 0,
       "completedAt": "2026-10-03T01:05:11.136Z"
+    },
+    {
+      "name": "build",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:00.381Z"
+    },
+    {
+      "name": "recipe-attestor",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:00.475Z"
+    },
+    {
+      "name": "story-batch:wave-2-rewritten-2026-09-10",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:01.031Z"
+    },
+    {
+      "name": "story-batch:wave-3-drafts-2026-09-14",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:01.477Z"
+    },
+    {
+      "name": "story-batch:wave-3-repairs-2026-09-15",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:01.811Z"
+    },
+    {
+      "name": "story-batch:wave-4-drafts-2026-09-19",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:02.240Z"
+    },
+    {
+      "name": "story-batch:wave-5-drafts-2026-09-20",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:02.634Z"
+    },
+    {
+      "name": "story-batch:wave-6-drafts-2026-09-20",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:02.991Z"
+    },
+    {
+      "name": "story-batch:remaining-story-review-2026-09-20/held-repairs",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:03.328Z"
+    },
+    {
+      "name": "base:check-recipe-immutability",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:04.256Z"
+    },
+    {
+      "name": "base:check-prompt-releases",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:04.910Z"
+    },
+    {
+      "name": "base:check-story-quality-immutability",
+      "exitCode": 0,
+      "completedAt": "2026-10-03T01:06:12.648Z"
     }
   ]
 }

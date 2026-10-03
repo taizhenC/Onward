@@ -1,0 +1,1208 @@
+{
+  "storySpecId": "grant:1858-1861-a-place-in-the-shop:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "grant",
+  "stageId": "1858-1861-a-place-in-the-shop",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 36,
+    "ageMax": 39,
+    "startDate": "1858-09",
+    "endDate": "1861-05-02",
+    "throughLine": "After illness, unsuccessful farming and uncertain employment, he worked for family, helped a volunteer company, and accepted an invitation to stay for office work that required both his experience and a clerk’s help."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "serious_illness",
+      "abuse_or_violence",
+      "discrimination",
+      "pregnancy_or_parenthood"
+    ],
+    "contentNote": "Family illness, insecure work, farm failure and the farm’s use of enslaved labor. Military recruiting is described without combat or heroic recovery. Draft based on contemporary letters and retrospective memoir."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Ulysses S. Grant was born April 27, 1822; he was thirty-six in autumn 1858 and thirty-nine by May 2, 1861.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter I, paragraph beginning In June, 1821, my father: birth April 27, 1822.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-letters",
+          "locator": "October 1, 1858 letter and May 2, 1861 letter with dated Adjutant-General’s Office heading, five days after birthday.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 1
+    },
+    {
+      "factId": "fact-return",
+      "statement": "He arrived home Tuesday evening before his October 1, 1858 letter; it was his chill day and he felt very badly.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "October 1, 1858 letter, opening I arrived at home on Tuesday evening.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 2
+    },
+    {
+      "factId": "fact-household",
+      "statement": "His wife had worsened during his absence and improved again; his son’s hearing was nearly restored after illness; the rest of the family was tolerably well except his father-in-law, whose health was much as before.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "October 1, 1858 letter, opening paragraph Julia had been much worse and Fred has improved.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 3
+    },
+    {
+      "factId": "fact-family-illness",
+      "statement": "During September 1858 his son had been dangerously ill, Grant and his wife had chills and fever, and others in the household were sick.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "September 7, 1858 letter, opening paragraph household sickness and son’s convalescence.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 4
+    },
+    {
+      "factId": "fact-behind",
+      "statement": "He said he could not oversee his farmworkers, much less work himself, and was getting behind in the farm business.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "September 7, 1858 letter, Not being able to even attend to my hands paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "causal",
+      "eventOrder": 5
+    },
+    {
+      "factId": "fact-fever",
+      "statement": "He recalled that fever and ague in 1858 reduced the work he could do for over a year without confining him to the house.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVI, paragraph beginning If nothing else could be done, illness clauses.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 6
+    },
+    {
+      "factId": "fact-sale-plan",
+      "statement": "In the October 1 letter he planned a sale with his father-in-law to dispose of farm stock, rent cleared land and sell a portion including his place.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "October 1, 1858 letter, Mr. Dent and myself will make a sale this fall paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 7
+    },
+    {
+      "factId": "fact-father-offer",
+      "statement": "He planned a visit toward spring, preferred his father’s offer to mere salary, and wanted the prospect of eventually doing business for himself.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "October 1, 1858 letter, I shall plan to go and I do not want any place paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 8
+    },
+    {
+      "factId": "fact-income-preference",
+      "statement": "He expressed pleasure in income depending partly on his own work and business ability instead of fixed pay.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "October 1, 1858 letter, There is a pleasure in knowing paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 9
+    },
+    {
+      "factId": "fact-auction",
+      "statement": "In autumn 1858 he auctioned his stock, crops and farming tools and left farming.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVI, paragraph beginning In the fall of 1858.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 10
+    },
+    {
+      "factId": "fact-agency",
+      "statement": "He entered a real estate partnership that winter; it had enough work for one person but not enough income for two families.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVI, paragraph beginning In the winter I established a partnership.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 11
+    },
+    {
+      "factId": "fact-cards",
+      "statement": "In March 1859 he could not tell whether the new business would succeed; he proposed sending business cards for his father to distribute and enclosed property descriptions and prices.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "March 12, 1859 letter, I can hardly tell; If I find an opportunity; I enclose paragraphs.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 12
+    },
+    {
+      "factId": "fact-engineer",
+      "statement": "He applied for the county engineer appointment but did not receive it.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVI, end of partnership paragraph and county court appointment account.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 13
+    },
+    {
+      "factId": "fact-unemployed",
+      "statement": "By October 24, 1859 he wrote that he remained unemployed and expected, but had not secured, a customs appointment.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "October 24, 1859 letter, paragraph beginning My family are all well, I am still unemployed clause.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 14
+    },
+    {
+      "factId": "fact-move",
+      "statement": "In May 1860 he left the real estate partnership, moved to Galena, Illinois, and took a clerkship in his father’s store.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVI, paragraph beginning I now withdrew from the co-partnership.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 15
+    },
+    {
+      "factId": "fact-salary",
+      "statement": "At the shop he supported himself and his family on a stipulated salary; his father had established his two younger brothers there.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVI, paragraph beginning While living in Galena I was nominally only a clerk.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 16
+    },
+    {
+      "factId": "fact-customers",
+      "statement": "Grant attended closely to the shop and made few acquaintances beyond customers and people in the same trade.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVI, paragraph beginning During the eleven months that I lived in Galena.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 17
+    },
+    {
+      "factId": "fact-enslaved-labor",
+      "statement": "His March 21, 1858 letter records farm labor by three Black men, two hired by the year and one belonging to Dent; October 1 discusses an enslaved boy given to Julia and possible income from hiring him out.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "March 21, 1858 letter, I have now three negro men; October 1, 1858, Mr. Dent thinks paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 18
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Ulysses S. Grant served as a United States president.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nps",
+          "locator": "Quick Facts significance and presidency biography paragraph.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "context",
+      "eventOrder": 19
+    },
+    {
+      "factId": "fact-help",
+      "statement": "After the first volunteer call he declined consideration for captain of the local company, offered practical help, drilled the men and accompanied them to the state capital.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVII, paragraphs beginning After the speaking was over, Before the close of the meeting, We began drilling and On the way up.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 20
+    },
+    {
+      "factId": "fact-departure",
+      "statement": "He thought his duties had ended after the company was mustered and prepared to return home by the nine o’clock evening train; the governor stayed at the same hotel, and Grant knew him by sight from seeing him at meals.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVII, paragraph beginning In time the Galena company was mustered.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 21
+    },
+    {
+      "factId": "fact-front-door",
+      "statement": "After leaving the supper room before the governor, Grant stood at the hotel’s front door. The governor addressed him by his former captain title, asked about leaving, and invited him to stay overnight and visit the office next morning.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVII, paragraph beginning The evening I was to quit the capital.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 22
+    },
+    {
+      "factId": "fact-overnight",
+      "statement": "His April 29, 1861 letter says he had intended to return home the previous evening but the governor detained him and presumably wanted help organizing troops.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "April 29, 1861 letter to his sister, paragraph beginning I came to this place several days ago.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 23
+    },
+    {
+      "factId": "fact-office",
+      "statement": "The next morning Grant visited the governor’s office, was asked to help the Adjutant-General using his army experience, and accepted.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVII, paragraph beginning I did so, and was asked to go into the Adjutant-General’s office.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 24
+    },
+    {
+      "factId": "fact-forms",
+      "statement": "Grant knew army forms from past service and could direct their preparation, but said he was no clerk; he relied on a coat pocket or a more careful clerk to retain papers.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVII, paragraph beginning My old army experience I found indeed.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 25
+    },
+    {
+      "factId": "fact-clerk-help",
+      "statement": "A clerk in the Adjutant-General’s office supplied what Grant lacked in clerical work.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoirs",
+          "locator": "Chapter XVII, paragraph beginning There was a clerk in the office.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "probable",
+      "claimKind": "event",
+      "eventOrder": 26
+    },
+    {
+      "factId": "fact-office-date",
+      "statement": "His May 2, 1861 letter was written from the Adjutant-General’s office; he had heard no news from home and advised not urging collections from reliable customers amid disrupted currency.",
+      "sourceRefs": [
+        {
+          "sourceId": "source-letters",
+          "locator": "May 2, 1861 letter, General Head-Quarters, State of Illinois, Adjutant-General’s Office heading, and paragraph beginning I have not heard from Galena.",
+          "scope": "bounded"
+        }
+      ],
+      "confidence": "documented",
+      "claimKind": "event",
+      "eventOrder": 27
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Ulysses S. Grant",
+      "aliases": [
+        "Ulysses Grant",
+        "Grant"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He came home one evening on a day when the chills were bad. He was thirty-six. He felt very ill. His wife had become worse while he was away. She had since improved to about where she had been before he left.\n\nTheir son’s hearing had been improving since his illness. He could now hear nearly as well as before. The rest of the family were fairly well. His father-in-law’s health had changed little while he was away. Illness remained part of the household he returned to.",
+      "requiredFactIds": [
+        "fact-return",
+        "fact-age",
+        "fact-household"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-household"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-household"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-household"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-household"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-household"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-household"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return",
+            "fact-household"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One return-home evening before the October 1 letter, at age thirty-six. Chills, the wife’s change and son’s hearing are documented. The passage invents no bedside meeting or welcome."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "At home, he planned a sale of the farm’s stock with his father-in-law. His farm business had been getting behind. In the preceding weeks, illness had kept him from supervising workers or doing the work himself. Those workers included an enslaved man. The household also considered income from hiring out an enslaved boy assigned to his wife.\n\nHe had been sick with chills and fever, as had his wife. Their son had been dangerously ill. The proposed sale included renting cleared land and selling another part of the farm. The portion to be sold included his own place. He expected the sale to clear all the stock from the place that autumn.",
+      "requiredFactIds": [
+        "fact-sale-plan",
+        "fact-behind",
+        "fact-enslaved-labor",
+        "fact-family-illness"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sale-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-behind"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-behind"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-enslaved-labor"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-enslaved-labor"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-family-illness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-family-illness"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sale-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sale-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sale-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One sale plan at home in the October 1 record, with September inability to work marked as earlier context. Enslaved labor is explicit and mapped. No single day of fieldwork or emotional humiliation is invented."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He wrote to his father about the sale he meant to make. He also set down what he wanted from a business offer his father had made. A place with only a fixed salary did not suit that wish. He preferred the prospect of eventually doing business for himself.\n\nHe liked knowing that income could depend partly on his own work and business ability. He planned to visit toward the next spring. The visit and a change of work were still plans. He had put his preference before the person offering help.",
+      "requiredFactIds": [
+        "fact-sale-plan",
+        "fact-father-offer",
+        "fact-income-preference"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-sale-plan"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-father-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-father-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-father-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-income-preference"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-father-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-father-offer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-father-offer",
+            "fact-income-preference"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One October 1 letter to his father. Plans, preferences, a proposed spring visit and a wish for independent income remain stated intentions. This does not claim the business offer was then accepted."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "That autumn, his stock, crops and farming tools went to auction. He gave up farming and entered a property partnership in winter. It had enough work for one person but could not support two families. He offered business cards for his father to pass on and enclosed property descriptions and prices. An application for a county appointment failed. Later that year, he was still unemployed and waiting for another appointment.\n\nHe eventually left the partnership and became a clerk in his father’s shop. A fixed salary now supported his family. He attended closely to the business and knew mainly customers and others in the trade. After a call for volunteers, he offered to help drill a company. He accompanied it to the capital.",
+      "requiredFactIds": [
+        "fact-auction",
+        "fact-agency",
+        "fact-cards",
+        "fact-engineer",
+        "fact-unemployed",
+        "fact-move",
+        "fact-salary",
+        "fact-customers",
+        "fact-help"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-auction"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-auction",
+            "fact-agency"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-agency"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-cards"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-engineer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-unemployed"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-move"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-salary"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customers"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-help"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-help"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "Only struggle compresses auction, insufficient partnership, cards, unsuccessful appointment, unemployment, paid shop work and volunteering practical assistance. Recruitment is context, not battle or a heroic comeback."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "He was standing at the hotel’s front door after leaving the supper room. He had planned to take the evening train home. It was due to leave at nine. The company he had accompanied was accepted for service, and he thought his duties were finished. The official came out after him. They were staying in the same hotel.\n\nHe knew the official by sight from seeing him at meals. The official addressed him by the captain’s title he had held before. He said he understood the visitor was leaving the city. The visitor answered that he was. The official asked him to remain overnight and come to the office the next morning. He stayed instead of going home that evening.",
+      "requiredFactIds": [
+        "fact-front-door",
+        "fact-departure",
+        "fact-overnight"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-front-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-departure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-departure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-departure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-front-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-departure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-departure"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-front-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-front-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-front-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-front-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-overnight"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "One hotel-front-door encounter after supper, Chapter XVII. The planned train and prior absence of introduction are context to this conversation. Exact words are paraphrased; no invented expression, gesture or calendar day."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The next morning, he went to the office and accepted work helping organize troops. His previous army duties had made its forms familiar. He could explain how they needed to be completed. Keeping papers in order was another matter. He considered himself without the capacity to become a clerk. To find a paper again, he relied on a coat pocket or someone more careful.\n\nAn office clerk supplied the skills he lacked. He was still writing from the office a few days later. He had heard no news from home and sent his father advice about their business. He advised against pressing reliable customers for payment while the currency was unsettled. The new work used his experience and another person’s help.",
+      "requiredFactIds": [
+        "fact-office",
+        "fact-forms",
+        "fact-clerk-help",
+        "fact-office-date"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-office"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-forms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-forms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-forms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-forms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-forms"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-clerk-help"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-office-date"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-office-date"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-office-date"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-forms",
+            "fact-clerk-help"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "The following office morning and initial work, bounded by May 2 office letter. Familiar forms, limited clerical skill and reliance on a careful clerk are retained. No lifetime command or military achievement."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Ulysses S. Grant.\n\nHe became a president of the United States.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou are allowed to need help with part of the work. You do not have to call that failure.",
+      "requiredFactIds": [
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Name in its own paragraph; one plain known-for sentence; exact distance pair; bounded permissions. Middle initial is mapped through the shared sentence splitter as in the original draft."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No invented dialogue, gestures, rooms, weather, chronology, causes, or inner states.",
+    "Only marked texture may render a mapped documented circumstance without adding a fact.",
+    "The autobiographical account is retrospective and does not establish clinical recovery."
+  ],
+  "avoidRules": [
+    "Do not turn family help into solitary achievement.",
+    "Do not compare the reader with the subject or promise an outcome.",
+    "Do not extend the became passage into a lifetime achievement list.",
+    "Do not depict solitary success, uncomplicated poverty, instant prosperity, or clinical recovery."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-letters",
+      "citation": "Ulysses S. Grant, Letters to His Father and His Youngest Sister, 1857–78, edited Jesse Grant Cramer (1912).",
+      "locator": "Letters March 21, September 7 and October 1, 1858; March 12 and October 24, 1859; April 29 and May 2, 1861. Claim support is in Grant’s letters, not editorial commentary.",
+      "url": "https://www.gutenberg.org/files/13471/13471-h/13471-h.htm"
+    },
+    {
+      "sourceId": "source-memoirs",
+      "citation": "Ulysses S. Grant, Personal Memoirs (1885).",
+      "locator": "Chapter I birth; Chapter XVI farming, property agency and store; Chapter XVII volunteer company, hotel-front-door encounter and office work.",
+      "url": "https://www.gutenberg.org/cache/epub/4367/pg4367-images.html"
+    },
+    {
+      "sourceId": "source-nps",
+      "citation": "U.S. National Park Service, Ulysses S. Grant.",
+      "locator": "Quick Facts and biography service and presidency paragraphs.",
+      "url": "https://www.nps.gov/people/ulysses-s-grant.htm"
+    }
+  ],
+  "review": {}
+}

@@ -64,24 +64,42 @@ function renderedSurface(html: string) {
   return html.replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, " ")
     .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, " ").replace(/<!--[\s\S]*?-->/g, " ");
 }
+function containingElement(html: string, tagName: "section" | "details", descendantId: string) {
+  const stack: Array<{start: number; containsId: boolean}> = [];
+  for (const match of html.matchAll(/<\/?([a-z][a-z0-9:-]*)\b[^>]*>/gi)) {
+    const tag = match[0], name = match[1].toLowerCase();
+    const closing = tag.startsWith("</");
+    if (name === tagName && !closing) stack.push({start: match.index!, containsId: false});
+    const id = tag.match(/\bid=["']([^"']+)["']/)?.[1];
+    if (!closing && id === descendantId && stack.length) stack.at(-1)!.containsId = true;
+    if (name === tagName && closing) {
+      const opened = stack.pop();
+      if (opened?.containsId) return html.slice(opened.start, match.index! + tag.length);
+    }
+  }
+  throw new CanaryFailure("completed-source-record-region-missing");
+}
 function checkSourceHtml(html: string, transparency: StoryTransparency, displayName: string, bridge: string) {
   const rendered = renderedSurface(html);
-  const text = flat(decodeHtml(rendered.replace(/<[^>]+>/g, " ")));
+  const afterword = containingElement(rendered, "section", "story-afterword-heading");
+  const record = containingElement(afterword, "details", "story-record-heading");
+  const text = flat(decodeHtml(record.replace(/<[^>]+>/g, " ")));
   const has = (value: string) => text.includes(flat(value));
   const headings = ["Who this was, and what really happened", "What really happened", "How each passage was told", "Where to read more", "Story record", "Editorially reviewed"];
   requireSafe(headings.every(has), "completed-source-headings-missing");
-  requireSafe(has(displayName) && has(storySpecId) && has(bridge), "completed-story-identity-or-bridge-missing");
-  requireSafe(!has("Editorial review draft") && !has("awaiting editorial review"), "completed-source-review-not-public");
-  requireSafe(has(transparency.rationale.resonance) && has(transparency.rationale.gap), "completed-source-rationale-missing");
+  requireSafe(has(displayName) && has(storySpecId) && flat(decodeHtml(rendered.replace(/<[^>]+>/g, " "))).includes(flat(bridge)), "completed-story-identity-or-bridge-missing");
+  const afterwordText = flat(decodeHtml(afterword.replace(/<[^>]+>/g, " ")));
+  requireSafe(!afterwordText.includes("Editorial review draft") && !has("awaiting editorial review"), "completed-source-review-not-public");
+  requireSafe(afterwordText.includes(flat(transparency.rationale.resonance)) && afterwordText.includes(flat(transparency.rationale.gap)), "completed-source-rationale-missing");
   requireSafe(transparency.facts.every(fact => has(fact.statement) && fact.sourceRefs.every(ref => !ref.locator || has(ref.locator))), "completed-source-fact-or-locator-missing");
-  const hrefs = [...rendered.matchAll(/\bhref=["']([^"']+)["']/g)].map(match => decodeHtml(match[1]));
+  const hrefs = [...record.matchAll(/\bhref=["']([^"']+)["']/g)].map(match => decodeHtml(match[1]));
   requireSafe(transparency.sources.every(source => has(source.citation) && (!source.url || hrefs.includes(source.url))), "completed-source-citation-or-link-missing");
   requireSafe(transparency.quotes.every(quote => has(quote.text)), "completed-source-quotation-missing");
   const texture = transparency.beats.flatMap(beat => beat.dramatizedSentences ?? []);
   requireSafe(texture.every(has), "completed-source-texture-missing");
   return {headings: headings.length, facts: transparency.facts.length, sources: transparency.sources.length,
     sourceLinks: transparency.sources.filter(source => source.url).length, quotes: transparency.quotes.length,
-    dramatizedSentences: texture.length, renderedHtmlChecked: true, serializedFlightDataExcluded: true};
+    dramatizedSentences: texture.length, renderedHtmlChecked: true, serializedFlightDataExcluded: true, sourceRecordRegionChecked: true, reportFormDuplicatesExcluded: true};
 }
 function localInput() {
   const fixtureBytes = readFileSync(resolve(packet, "matching-extension.json"));
@@ -183,12 +201,13 @@ function selfTest(draft: StorySpec) {
     ...transparency.sources.map(source => source.citation), ...transparency.quotes.map(quote => quote.text),
     ...transparency.beats.flatMap(beat => beat.dramatizedSentences ?? [])].map(escape).join(" <p></p> ");
   const links = transparency.sources.filter(source => source.url).map(source => `<a href="${escape(source.url!)}">source</a>`).join("");
-  const html = `<main>${body}${links}</main>`;
+  const html = `<main><p>${escape(bridge)}</p><section><h2 id="story-afterword-heading">Why this story</h2><p>${escape(transparency.rationale.resonance)}</p><p>${escape(transparency.rationale.gap)}</p><details><h3 id="story-record-heading">Who this was, and what really happened</h3>${body}${links}</details></section></main>`;
   checkSourceHtml(html, transparency, "Elizabeth Blackwell", bridge);
   let negativeTests = 0;
   const rejects = (action: () => void) => { let failed = false; try { action(); } catch (error) { failed = error instanceof CanaryFailure; } requireSafe(failed, "offline-negative-case-not-rejected"); negativeTests++; };
   rejects(() => checkSourceHtml(`<script>${html}</script><main>Reader</main>`, transparency, "Elizabeth Blackwell", bridge));
   rejects(() => checkSourceHtml(html.replace(escape(transparency.facts[0].statement), "altered"), transparency, "Elizabeth Blackwell", bridge));
+  rejects(() => checkSourceHtml(html.replace(escape(transparency.facts[0].statement), "altered").replace("</details>", `</details><form><select><option>${escape(transparency.facts[0].statement)}</option></select></form>`), transparency, "Elizabeth Blackwell", bridge));
   rejects(() => checkSourceHtml(html.replace("Where to read more", "absent"), transparency, "Elizabeth Blackwell", bridge));
   checkChunk([], "first half", "first half second half", "first half", "chunk");
   checkChunk(["first half"], "second half", "first half second half", "second half", "end");
@@ -209,7 +228,7 @@ async function run(draft: StorySpec, deployment: string) {
   const jar = new Map<string, string>();
   let userId: string | null = null, sessionId: string | null = null, artifactId: string | null = null;
   let phase = "auth", failedPhase: string | null = null, failure: string | null = null, cleanupFailure: string | null = null;
-  let guestAttempted = false, guestDeleted = false, ownedSessionRemoved = false, matchRequests = 0, storyGets = 0, chunkGets = 0, acknowledgements = 0, completeBeats = 0, expectedPassages = 0;
+  let guestAttempted = false, guestDeleted = false, ownedSessionRemoved = false, matchRequests = 0, storyGets = 0, chunkGets = 0, ackRequests = 0, acknowledgements = 0, completeBeats = 0, expectedPassages = 0;
   let workerVerified = false, sourceProjectionVerified = false, progressVerified = false, artifactContentHash: string | null = null;
   let sourceHtml: ReturnType<typeof checkSourceHtml> | null = null, sourceProjectionSha256: string | null = null;
   const authRequests = new Set<string>();
@@ -265,7 +284,8 @@ async function run(draft: StorySpec, deployment: string) {
     artifactContentHash = artifact.contentHash;
     sourceProjectionSha256 = sha(JSON.stringify(checked.transparency));
     phase = "owned-story-start";
-    const page = await request(`/story/${encodeURIComponent(sessionId)}`); storyGets++;
+    storyGets++;
+    const page = await request(`/story/${encodeURIComponent(sessionId)}`);
     requireSafe(page.status === 200, "owned-story-get-failed"); await page.text();
     for (const [beatIndex, beat] of artifact.beats.entries()) {
       const received: string[] = [];
@@ -274,12 +294,14 @@ async function run(draft: StorySpec, deployment: string) {
         const body = JSON.stringify({sessionId, beatIndex, chunkIndex});
         const next = getNextStoryAdvance({beatIndex, chunkIndex, chunkCount: beat.chunks.length, beatCount: artifact.beats.length});
         phase = "beat";
-        const chunk = await request("/api/beat", {method: "POST", headers: {"content-type": "application/json"}, body}); chunkGets++;
+        chunkGets++;
+        const chunk = await request("/api/beat", {method: "POST", headers: {"content-type": "application/json"}, body});
         requireSafe(chunk.status === 200 && chunk.headers.get("x-onward-next") === next, "beat-route-status-or-progress-failure");
         const text = await chunk.text();
         checkChunk(received, text, published.arc[beatIndex].canonicalText, expectedChunk, next);
         received.push(text);
         phase = "ack";
+        ackRequests++;
         const ack = await request("/api/beat/ack", {method: "POST", headers: {"content-type": "application/json"}, body});
         requireSafe(ack.status === 200 && (await readObject(ack)).next === next, "ack-route-status-or-progress-failure");
         acknowledgements++;
@@ -291,7 +313,8 @@ async function run(draft: StorySpec, deployment: string) {
     requireSafe(ended && ended.figure_key === "blackwell_e" && ended.stage_id === published.stageId && ended.story_artifact_id === artifactId && ended.next_beat_index === 7 && ended.next_chunk_index === 0 && isDeepStrictEqual(ended.match_recipe, session.match_recipe), "completed-owned-progress-readback-failed");
     requireSafe(completeBeats === 7 && chunkGets === expectedPassages && acknowledgements === expectedPassages, "seven-beats-and-all-passages-not-complete"); progressVerified = true;
     phase = "completed-normal-route-source-html";
-    const completed = await request(`/story/${encodeURIComponent(sessionId)}`); storyGets++;
+    storyGets++;
+    const completed = await request(`/story/${encodeURIComponent(sessionId)}`);
     requireSafe(completed.status === 200, "completed-owned-story-get-failed");
     sourceHtml = checkSourceHtml(await completed.text(), checked.transparency, artifact.figure.displayName, published.arc[6].canonicalText);
     phase = "complete";
@@ -320,7 +343,7 @@ async function run(draft: StorySpec, deployment: string) {
       fixtureIndex: 2, fixtureSha256, age: 26, figureKey: "blackwell_e", storySpecId, candidateSha256,
       canonicalProseSha256: sha(JSON.stringify(draft.arc.map(beat => flat(beat.canonicalText)))), artifactContentHash, sourceProjectionSha256,
       recipeId, recipeManifestHash, workerVerified, sourceProjectionVerified, progressVerified, sourceHtml,
-      canonicalBeatsVerified: completeBeats, artifactPassageCount: expectedPassages, beatRequests: chunkGets, successfulAcknowledgements: acknowledgements,
+      canonicalBeatsVerified: completeBeats, artifactPassageCount: expectedPassages, attemptedBeatRequests: chunkGets, attemptedAcknowledgements: ackRequests, successfulAcknowledgements: acknowledgements,
       matchRequests, storyGets, guestCreationAttempts: guestAttempted ? 1 : 0, confirmedAnonymousGuest: userId !== null, guestDeleted, ownedSessionRemoved,
       failure, failedPhase, cleanupFailure, maximumMatchRequests: 1, maximumGuestCreationAttempts: 1, maximumPassages: MAX_STORY_PASSAGES,
       coverage: "Normal SSR story GET and beat/ACK API coverage. No interactive UI, Save, source-toggle telemetry, visual layout, youth intake or full-catalog evaluation.",

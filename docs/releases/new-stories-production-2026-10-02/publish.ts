@@ -14,6 +14,7 @@ import { parseStorySpecDocument, validateStorySpec } from "../../../lib/story-sp
 import type { StorySpec } from "../../../lib/story-spec-types";
 import type { FigureStageRow } from "../../../lib/types";
 import { loadEnvLocal } from "../../../scripts/_load-env";
+import { factsV2ProposalSha256, factsV2ReviewSha256, themeV1ReviewSha256, readApprovedV2Inputs } from "./approved-stage-inputs-v2";
 
 const packet = resolve("docs/releases/new-stories-production-2026-10-02");
 const inputs = resolve("docs/research/new-stories-2026-10-02");
@@ -65,6 +66,7 @@ type Target = { figureKey: string; storySpecId: string; candidateFile: string;
 type Selection = { schemaVersion: "new-ten-owner-publication-v1"; capturedAt: string;
   projectHost: string; ownerId: string; ownerStatement: string; authorizationScope: string;
   writingReceiptSha256: string; writingDatabaseBaselineSha256: string;
+  approvedStageProposalSha256: string; approvedStageReviewSha256: string;
   installedRepository: string; productionStageDirectory: string; targets: Target[] };
 type Baseline = { capturedAt: string; projectHost: string; selectionSha256: string;
   initialPublishedStoryCount: number; catalog: Catalog };
@@ -147,6 +149,11 @@ function loadInputs(reviewedAt: string, productionStageDirectory: string): Targe
   assert.equal(proposal.stages.length, 10);
   const themeReview = readFileSync(resolve(packet, "THEME-REVIEW.md"), "utf8");
   assert(themeReview.includes(approvedProposalHash), "Theme source review does not pin this proposal");
+  const approvedV2 = readApprovedV2Inputs();
+  const first = approvedV2[0];
+  const firstFile = proposal.stages.find(item => item.figureKey === first.figureKey)!.file;
+  const factsV2Selected = sha(readFileSync(resolve(productionStageDirectory, firstFile))) === first.productionStageSha256;
+  assert.equal(readdirSync(productionStageDirectory).filter(file => file.endsWith(".stage.json")).length, 10, "Production selection must contain exactly ten stages");
   const receiptPath = resolve(writing, "DATABASE-RECEIPT.json");
   const receipt = readJson<{verifiedStoryCount: number; targets: Array<{figureKey: string;
     storySpecId: string; candidateSha256: string; stageSha256: string}>}>(receiptPath);
@@ -163,15 +170,23 @@ function loadInputs(reviewedAt: string, productionStageDirectory: string): Targe
     const authoredStage = JSON.parse(stageBytes.toString("utf8")) as FigureStageRow;
     const productionStageBytes = readFileSync(resolve(productionStageDirectory, candidateFile.replace(".candidate.json", ".stage.json")));
     const stage = JSON.parse(productionStageBytes.toString("utf8")) as FigureStageRow;
-    same({...stage, themes: authoredStage.themes}, authoredStage, `${candidateFile}: production stage may change only themes`);
+    same({...stage, themes: authoredStage.themes,
+      ...(factsV2Selected ? {biographicalFacts: authoredStage.biographicalFacts} : {})}, authoredStage,
+      `${candidateFile}: production stage changed outside exact reviewed metadata scope`);
     assert(stage.themes.length > 0 && new Set(stage.themes).size === stage.themes.length &&
       stage.themes.every(theme => THEME_VOCABULARY.includes(theme)), "Invalid or uncontrolled production themes");
     const productionStageSha256 = sha(productionStageBytes);
     const candidateSha256 = sha(bytes); const stageSha256 = sha(stageBytes);
     const approvedStage = proposal.stages.find(item => item.figureKey === draft.figureKey);
-    assert(approvedStage && approvedStage.file === candidateFile.replace(".candidate.json", ".stage.json") &&
-      approvedStage.originalSha256 === stageSha256 && approvedStage.proposedSha256 === productionStageSha256,
-      `${candidateFile}: production themes differ from the exact independently reviewed proposal`);
+    assert(approvedStage && approvedStage.file === candidateFile.replace(".candidate.json", ".stage.json") && approvedStage.originalSha256 === stageSha256,
+      `${candidateFile}: original writing ancestry differs from the reviewed proposal`);
+    if (factsV2Selected) {
+      const approved = approvedV2.find(item => item.figureKey === draft.figureKey);
+      assert(approved && approved.stageSha256 === stageSha256 && approved.candidateSha256 === candidateSha256 && approved.productionStageSha256 === productionStageSha256,
+        `${candidateFile}: production stage differs from exact independently reviewed facts-v2`);
+      same(stage, approved.proposed, "Production stage does not equal the complete reviewed v2 copy");
+    } else assert.equal(approvedStage.proposedSha256, productionStageSha256,
+      `${candidateFile}: production stage differs from exact independently reviewed v1 themes`);
     const pin = receipt.targets.find(item => item.figureKey === draft.figureKey);
     assert(pin && pin.storySpecId === draft.storySpecId && pin.candidateSha256 === candidateSha256 && pin.stageSha256 === stageSha256,
       `${candidateFile}: differs from the completed writing receipt`);
@@ -193,6 +208,12 @@ function loadInputs(reviewedAt: string, productionStageDirectory: string): Targe
   assert.equal(new Set(targets.map(item => item.figureKey)).size, 10);
   assert.equal(new Set(targets.map(item => item.storySpecId)).size, 10);
   return targets;
+}
+function stageApproval(targets: Target[]) {
+  const v2 = readApprovedV2Inputs();
+  const selected = targets.every(target => v2.some(input => input.figureKey === target.figureKey && input.productionStageSha256 === target.productionStageSha256));
+  return {approvedStageProposalSha256: selected ? factsV2ProposalSha256 : approvedProposalHash,
+    approvedStageReviewSha256: selected ? factsV2ReviewSha256 : themeV1ReviewSha256};
 }
 async function matchingGate(path: string, expectedHash: string, targets: Target[], installedRepository: string) {
   assert(/^[a-f0-9]{64}$/.test(expectedHash), "Pin the complete matching-gate file SHA-256");
@@ -242,16 +263,20 @@ async function main() {
     assert.equal(selection.writingReceiptSha256, sha(readFileSync(resolve(writing, "DATABASE-RECEIPT.json"))));
     assert.equal(selection.writingDatabaseBaselineSha256, sha(readFileSync(writingDatabaseBaselinePath)));
     same(loadInputs(selection.capturedAt, selection.productionStageDirectory), selection.targets, "Authorized inputs changed after selection");
+    const approval = stageApproval(selection.targets);
+    assert.equal(selection.approvedStageProposalSha256, approval.approvedStageProposalSha256);
+    assert.equal(selection.approvedStageReviewSha256, approval.approvedStageReviewSha256);
   } else {
     assert(mode === "--preflight", "Create the read-only preflight first");
     const capturedAt = new Date().toISOString();
     const installedRepository = installedArg ? resolve(installedArg.slice("--installed-repository=".length)) : resolve(".");
-    const productionStageDirectory = stageDirectoryArg ? resolve(stageDirectoryArg.slice("--production-stage-directory=".length)) : resolve(packet, "proposed-stages");
+    const productionStageDirectory = stageDirectoryArg ? resolve(stageDirectoryArg.slice("--production-stage-directory=".length)) : resolve(packet, "facts-v2-stages");
+    const targets = loadInputs(capturedAt, productionStageDirectory);
     selection = {schemaVersion: "new-ten-owner-publication-v1", capturedAt, projectHost, ownerId: owner,
       ownerStatement, authorizationScope: "Owner publication decision for the exact ten finished stories; one owner occupies the three required schema roles. No independent human review or prior reading assertion is invented.",
       writingReceiptSha256: sha(readFileSync(resolve(writing, "DATABASE-RECEIPT.json"))),
       writingDatabaseBaselineSha256: sha(readFileSync(writingDatabaseBaselinePath)), installedRepository,
-      productionStageDirectory, targets: loadInputs(capturedAt, productionStageDirectory)};
+      ...stageApproval(targets), productionStageDirectory, targets};
     saveOnce(selectionPath, selection);
   }
   const selectionSha256 = sha(readFileSync(selectionPath));

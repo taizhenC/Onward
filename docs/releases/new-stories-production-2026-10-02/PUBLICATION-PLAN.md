@@ -4,29 +4,35 @@ The owner requested: “lets push all those story into the production.” This a
 
 The matching library must first pass its content-release gate. These ten stages are new to the installed fifty-stage library. Publishing their database rows would change the live candidate pool; it therefore requires an evaluated library release under [the deployment runbook](../../../docs/DEPLOYING.md#figure-library-releases). It does not require changing the selected recipe. The production release starts from the actual production `origin/main`, rather than merging unrelated work from the authoring branch.
 
-The proposed production stages preserve all historical content and differ from the completed writing inputs only by the reviewed Jacobs `self_invention` and Riis `late_start` additions. See [the exact theme proposal](THEME-PROPOSAL.json) and [independent review](THEME-REVIEW.md). Frozen original candidates and stages remain intact.
+The preserved v1 stages differ from the completed writing inputs only by the reviewed Jacobs `self_invention` and Riis `late_start` additions. The separately preserved [facts-v2 proposal](FACTS-PROPOSAL.v2.json) replaces only all ten `biographicalFacts` summaries relative to v1; [its independent source review](FACTS-REVIEW.v2.md) approves installation and fresh measurement. Frozen original candidates, prose, source ledgers, ages, v1 files and reviews remain intact.
 
-**Current state: publication is paused.** The proposed sixty-stage snapshot failed its official matching gate. Root is preparing a separately preserved source-facts-v2 proposal, which needs independent review and a new passing gate. The current v1 helper scope below is preserved preparation; it must not be used to treat the failed snapshot as ready. See [the preparation audit](AUDIT.md).
+**Current state: publication is paused after two failed matching gates.** Root reported v1 at 94.1% with four definitive wrong matches and v2 at 95% with only two of three misses partial and one definitive positive error. Source-quality approval and mechanical checks do not satisfy those release gates. Prepared v1/v2 helper scopes must not be invoked for database preflight freezing or application until root establishes the final passing content snapshot. See [the preserved initial audit](AUDIT.md) and [v2 preparation audit](AUDIT.v2.md).
 
 ## Operator sequence
 
 1. Install and evaluate the exact proposed stages in the isolated production checkout, preserve earlier stages, recipe selection, keyword routes and frozen gold labels, and append the passing real-provider library-release evidence. Document the two unresolved lexical probes and Keller's adult age-gate limit.
-2. Once the final reviewed proposal passes, apply only its exact approved matching-column changes to the still-draft database stages. The preserved v1 two-theme scope has [a separately bounded helper](apply-approved-themes.ts); accepting facts-v2 requires a separately pinned and reviewed scope. The publisher does not write matching content. Its first preflight requires complete database equality with all ten approved production stages.
+2. Once the final reviewed proposal passes, apply only its exact approved matching-column changes to the still-draft database stages. The preserved v1 two-theme scope has [a historical helper](apply-approved-themes.ts). The separately bounded [v2 helper](apply-approved-stage-v2.ts) accepts only exact proposal/review hashes for ten factual summaries and the two reviewed themes. Any future v3 scope needs its own approval and exact allowlist. The publisher does not write matching content. Its first preflight requires complete database equality with all ten approved production stages.
 3. Run current database health and publication-integrity checks. Establish a serialized editorial window for these targets. The existing local telemetry probe-secret qualification remains separate from verification of deployed telemetry configuration.
 4. Run the publisher's read-only preflight from the original authoring repository, passing the isolated production checkout and approved stage directory. It freezes selection, full intended reviewed documents and an editorial-only baseline covering all figures, stages and StorySpecs. No reader/account table or credential is archived.
 5. After independent review of those pins and the passed matching gate, invoke publication with the gate's exact SHA-256. The tool stages only the ten authorized drafts to review, records actual complete readbacks, and persists each review receipt before publishing. The publication RPC receives the full receipt-pinned reviewed document.
-6. Verify 44 valid historical publications, zero quarantine, exact prose and review metadata, all ten matching stages published, and all previous 34 publications and unrelated rows unchanged. Refresh production workers after publication and run a bounded normal-route reader/progress canary. Record deployment and cleanup evidence separately.
+6. Verify 44 valid historical publications, zero quarantine, exact prose and review metadata, all ten matching stages published, and all previous 34 publications and unrelated rows unchanged. Refresh production workers after publication and run the [one-request normal-route API canary](LIVE-CANARY-PLAN.md). Record deployment and cleanup evidence separately.
 
 ```powershell
 # Run with D:\code_save\Onward as the working directory. Replace the isolated
-# checkout path with the managed production worktree returned by Codex.
-node --import tsx docs/releases/new-stories-production-2026-10-02/publish.ts --preflight --installed-repository="<production-worktree>" --production-stage-directory="docs/releases/new-stories-production-2026-10-02/proposed-stages"
+# checkout path with the managed production worktree returned by Codex. Current
+# gate failures prohibit the live preflight/apply/publication commands below.
+node --import tsx docs/releases/new-stories-production-2026-10-02/apply-approved-stage-v2.ts --validate-inputs
+
+# Only if this exact v2 proposal separately passes the applicable matching gate:
+node --import tsx docs/releases/new-stories-production-2026-10-02/apply-approved-stage-v2.ts --preflight --installed-repository="<production-worktree>"
+node --import tsx docs/releases/new-stories-production-2026-10-02/apply-approved-stage-v2.ts --apply --matching-gate="<gate-receipt-path>" --matching-gate-sha256="<exact-64-character-sha256>"
+node --import tsx docs/releases/new-stories-production-2026-10-02/publish.ts --preflight --installed-repository="<production-worktree>" --production-stage-directory="docs/releases/new-stories-production-2026-10-02/facts-v2-stages"
 
 # Only after the matching gate and independent release audit are complete:
 node --import tsx docs/releases/new-stories-production-2026-10-02/publish.ts --publish --matching-gate="<gate-receipt-path>" --matching-gate-sha256="<exact-64-character-sha256>"
 ```
 
-The preflight pins both configured paths. Later calls use those same paths and reject any explicit replacement. It also binds the independently established production Supabase hostname. Preflight never recaptures an existing baseline or rewrites an existing selection. Idempotent recovery accepts only the exact frozen draft, reviewed or published documents; an unexpected edit, lifecycle, gate or prior-catalog change stops the tool.
+The preflight pins both configured paths and the exact proposal/review identity. Later calls use those same paths and reject any explicit replacement. The publisher permits either all ten exact preserved v1 stages or all ten exact independently approved v2 stages; it rejects mixed or arbitrary metadata. Its default is v2. It also binds the independently established production Supabase hostname. Preflight never recaptures an existing baseline or rewrites an existing selection. Idempotent recovery accepts only the exact frozen draft, reviewed or published documents; an unexpected edit, lifecycle, gate or prior-catalog change stops the tool.
 
 ## Matching-gate receipt contract
 

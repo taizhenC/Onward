@@ -11,7 +11,7 @@ import { isValidIntakeAge, isValidIntakeFeeling } from "../../../lib/intake-cons
 import { createResonanceBrief } from "../../../lib/resonance-brief";
 import { validateStoredStoryArtifact } from "../../../lib/story-artifact";
 import { MAX_STORY_PASSAGES, STORY_ARTIFACT_SCHEMA_VERSION, type StoryArtifact } from "../../../lib/story-artifact-types";
-import { getOwnedStoryArtifact } from "../../../lib/story-artifacts";
+import { parsePersistedRetentionLabel } from "../../../lib/derived-output-retention";
 import { getNextStoryAdvance } from "../../../lib/story-progress";
 import { parseStorySpecDocument, validateStorySpec } from "../../../lib/story-spec";
 import { parseStorySpecRow } from "../../../lib/story-spec-repository";
@@ -128,9 +128,22 @@ async function ownedKnownSession(sessionId: string, userId: string): Promise<Ses
   // freshly confirmed anonymous owner. No user listing or catalog reads occur.
   const result = await getSupabase().from("sessions")
     .select("session_id,user_id,figure_key,stage_id,story_artifact_id,match_recipe,next_beat_index,next_chunk_index,age")
-    .eq("session_id", sessionId).eq("user_id", userId).maybeSingle();
+    .eq("session_id", sessionId).eq("user_id", userId).abortSignal(AbortSignal.timeout(20_000)).maybeSingle();
   requireSafe(!result.error, "owned-canary-session-read-failed");
   return result.data as SessionRow | null;
+}
+async function ownedKnownArtifact(artifactId: string, userId: string, sessionId: string) {
+  const result = await getSupabase().from("story_artifacts")
+    .select("artifact_id,schema_version,content_hash,artifact,retention_class,retention_policy_version")
+    .eq("artifact_id", artifactId).eq("user_id", userId).eq("session_id", sessionId)
+    .abortSignal(AbortSignal.timeout(20_000)).maybeSingle();
+  requireSafe(!result.error && result.data, "known-owned-artifact-unavailable");
+  const row = object(result.data, "known-owned-artifact-invalid-row");
+  requireSafe(row.artifact_id === artifactId && typeof row.schema_version === "string" && typeof row.content_hash === "string", "known-owned-artifact-envelope-invalid");
+  parsePersistedRetentionLabel({policyVersion: row.retention_policy_version, retentionClass: row.retention_class}, "owned_story");
+  const artifact = validateStoredStoryArtifact(row.artifact, {artifactId, schemaVersion: row.schema_version, contentHash: row.content_hash, legacyV5ReplayEligible: false});
+  requireSafe(artifact, "known-owned-artifact-strict-validation-failed");
+  return artifact;
 }
 function checkArtifact(artifact: StoryArtifact, published: StorySpec, deployment: string) {
   requireSafe(artifact.schemaVersion === STORY_ARTIFACT_SCHEMA_VERSION && artifact.storySpecId === storySpecId && artifact.storySpecVersion === published.version && artifact.storySpecSchemaVersion === published.schemaVersion && artifact.figureKey === "blackwell_e" && artifact.stageId === published.stageId, "owned-artifact-identity-mismatch");
@@ -160,7 +173,7 @@ async function readObject(response: Response): Promise<Record<string, unknown>> 
 function selfTest(draft: StorySpec) {
   // These negative tests guard against claiming source visibility from flight
   // props alone and against acknowledging an altered or truncated passage.
-  const published: StorySpec = {...draft, status: "published", review: {historicalReviewer: "offline-fixture", safetyReviewer: "offline-fixture", proseReviewer: "offline-fixture", reviewedAt: "2026-10-02T00:00:00.000Z"}};
+  const published: StorySpec = {...draft, status: "published", review: {reviewedAt: "2026-10-02T00:00:00.000Z"}};
   const transparency = buildStoryTransparency(published, createResonanceBrief(frozenFeeling), "definitive");
   const escape = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;");
   const headings = "Who this was, and what really happened What really happened How each passage was told Where to read more Story record Editorially reviewed";
@@ -193,15 +206,22 @@ async function run(draft: StorySpec, deployment: string) {
   requireSafe(authUrl && new URL(authUrl).hostname === projectHost && new URL(authUrl).protocol === "https:" && anonKey && process.env.SUPABASE_SERVICE_ROLE_KEY, "verified-production-auth-and-owned-read-config-required");
   process.env.PERSISTENCE = "supabase";
   const startedAt = new Date().toISOString();
-  // Write before Auth. A lost response cannot silently authorize another guest.
-  immutableJson(attemptPath, {schemaVersion: "new-ten-live-canary-attempt-v1", startedAt, deployment, origin, fixtureSha256, fixtureIndex: 2, candidateSha256, maximumGuestCreationAttempts: 1, maximumMatchRequests: 1});
   const jar = new Map<string, string>();
   let userId: string | null = null, sessionId: string | null = null, artifactId: string | null = null;
   let phase = "auth", failedPhase: string | null = null, failure: string | null = null, cleanupFailure: string | null = null;
   let guestAttempted = false, guestDeleted = false, ownedSessionRemoved = false, matchRequests = 0, storyGets = 0, chunkGets = 0, acknowledgements = 0, completeBeats = 0, expectedPassages = 0;
   let workerVerified = false, sourceProjectionVerified = false, progressVerified = false, artifactContentHash: string | null = null;
   let sourceHtml: ReturnType<typeof checkSourceHtml> | null = null, sourceProjectionSha256: string | null = null;
-  const auth = createServerClient(authUrl, anonKey, {auth: {autoRefreshToken: false, debug: false}, cookies: {
+  const authRequests = new Set<string>();
+  const auth = createServerClient(authUrl, anonKey, {auth: {autoRefreshToken: false, debug: false}, global: {fetch: async (input, init) => {
+    const url = new URL(typeof input === "string" ? input : input instanceof URL ? input.href : input.url);
+    const method = (init?.method ?? (input instanceof Request ? input.method : "GET")).toUpperCase();
+    const key = `${method}:${url.pathname}`;
+    requireSafe(url.hostname === projectHost && url.protocol === "https:" &&
+      ((method === "POST" && url.pathname === "/auth/v1/signup") || (method === "GET" && url.pathname === "/auth/v1/user")), "canary-unexpected-auth-endpoint");
+    requireSafe(!authRequests.has(key), "canary-auth-repeat-refused"); authRequests.add(key);
+    return fetch(input, {...init, redirect: "error", signal: AbortSignal.timeout(20_000)});
+  }}, cookies: {
     getAll: () => [...jar].map(([name, value]) => ({name, value})),
     setAll: entries => { for (const {name, value} of entries) { if (value) jar.set(name, value); else jar.delete(name); } },
   }});
@@ -219,6 +239,9 @@ async function run(draft: StorySpec, deployment: string) {
     }
     return response;
   }
+  // Write before the first Auth request. Client construction above is local; a
+  // lost signup response cannot silently authorize another guest afterward.
+  immutableJson(attemptPath, {schemaVersion: "new-ten-live-canary-attempt-v1", startedAt, deployment, origin, fixtureSha256, fixtureIndex: 2, candidateSha256, maximumGuestCreationAttempts: 1, maximumMatchRequests: 1});
   try {
     guestAttempted = true;
     const created = await auth.auth.signInAnonymously();
@@ -236,8 +259,7 @@ async function run(draft: StorySpec, deployment: string) {
     requireSafe(session && session.figure_key === "blackwell_e" && session.stage_id === published.stageId && session.age === 26 && session.next_beat_index === 0 && session.next_chunk_index === 0 && typeof session.story_artifact_id === "string" && session.story_artifact_id.length > 0, "known-session-target-or-initial-progress-mismatch");
     checkRecipe(session.match_recipe, deployment);
     artifactId = session.story_artifact_id;
-    const artifact = await getOwnedStoryArtifact(artifactId, userId, sessionId);
-    requireSafe(artifact, "known-owned-artifact-unavailable");
+    const artifact = await ownedKnownArtifact(artifactId, userId, sessionId);
     const checked = checkArtifact(artifact, published, deployment);
     expectedPassages = checked.passages; workerVerified = true; sourceProjectionVerified = true;
     artifactContentHash = artifact.contentHash;
@@ -258,8 +280,9 @@ async function run(draft: StorySpec, deployment: string) {
         checkChunk(received, text, published.arc[beatIndex].canonicalText, expectedChunk, next);
         received.push(text);
         phase = "ack";
-        const ack = await request("/api/beat/ack", {method: "POST", headers: {"content-type": "application/json"}, body}); acknowledgements++;
+        const ack = await request("/api/beat/ack", {method: "POST", headers: {"content-type": "application/json"}, body});
         requireSafe(ack.status === 200 && (await readObject(ack)).next === next, "ack-route-status-or-progress-failure");
+        acknowledgements++;
       }
       requireSafe(flat(received.join(" ")) === flat(published.arc[beatIndex].canonicalText), "completed-canonical-beat-mismatch"); completeBeats++;
     }
@@ -297,7 +320,7 @@ async function run(draft: StorySpec, deployment: string) {
       fixtureIndex: 2, fixtureSha256, age: 26, figureKey: "blackwell_e", storySpecId, candidateSha256,
       canonicalProseSha256: sha(JSON.stringify(draft.arc.map(beat => flat(beat.canonicalText)))), artifactContentHash, sourceProjectionSha256,
       recipeId, recipeManifestHash, workerVerified, sourceProjectionVerified, progressVerified, sourceHtml,
-      canonicalBeatsVerified: completeBeats, artifactPassageCount: expectedPassages, beatRequests: chunkGets, successfulAcknowledgements: failure === null ? acknowledgements : Math.min(acknowledgements, chunkGets),
+      canonicalBeatsVerified: completeBeats, artifactPassageCount: expectedPassages, beatRequests: chunkGets, successfulAcknowledgements: acknowledgements,
       matchRequests, storyGets, guestCreationAttempts: guestAttempted ? 1 : 0, confirmedAnonymousGuest: userId !== null, guestDeleted, ownedSessionRemoved,
       failure, failedPhase, cleanupFailure, maximumMatchRequests: 1, maximumGuestCreationAttempts: 1, maximumPassages: MAX_STORY_PASSAGES,
       coverage: "Normal SSR story GET and beat/ACK API coverage. No interactive UI, Save, source-toggle telemetry, visual layout, youth intake or full-catalog evaluation.",

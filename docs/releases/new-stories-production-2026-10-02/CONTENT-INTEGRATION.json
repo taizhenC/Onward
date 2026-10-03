@@ -1,0 +1,234 @@
+{
+  "preparedAt": "2026-10-03T00:35:04.239Z",
+  "status": "content prepared; evaluation and release registration pending",
+  "baseBranch": "origin/main",
+  "originalLibrarySha256": "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+  "librarySha256": "dd4999537dc39fb45cf31b9bd67d76e8e866fe97eae2b136c1e88c18c2cdfb5a",
+  "originalFiftyDeclarationPrefixSha256": "5712679a2ebc710b1a80e509f2ea262ed7703197e55bc5fb73d25c1e7efba846",
+  "originalFiftyPreserved": true,
+  "librarySize": 60,
+  "proposedStagePins": [
+    {
+      "figureKey": "addams",
+      "file": "addams-1888-1889-telling-the-plan-v1.stage.json",
+      "originalSha256": "19f0c4891bfd948c1cac9f08feedb02fe657ed15a723de56405a61acd4dcbbf9",
+      "proposedSha256": "19f0c4891bfd948c1cac9f08feedb02fe657ed15a723de56405a61acd4dcbbf9",
+      "changedFields": [],
+      "before": [
+        "self_doubt",
+        "self_invention",
+        "keep_going"
+      ],
+      "after": [
+        "self_doubt",
+        "self_invention",
+        "keep_going"
+      ],
+      "justification": null
+    },
+    {
+      "figureKey": "blackwell_e",
+      "file": "blackwell_e-1847-1849-a-place-to-study-v1.stage.json",
+      "originalSha256": "250e8d2849b39f8752ad31a11b2048c43da12ce5fc26d3ae431e045f45911efd",
+      "proposedSha256": "250e8d2849b39f8752ad31a11b2048c43da12ce5fc26d3ae431e045f45911efd",
+      "changedFields": [],
+      "before": [
+        "dismissed",
+        "social_constraint",
+        "quiet_defiance",
+        "self_invention"
+      ],
+      "after": [
+        "dismissed",
+        "social_constraint",
+        "quiet_defiance",
+        "self_invention"
+      ],
+      "justification": null
+    },
+    {
+      "figureKey": "darwin",
+      "file": "darwin-1831-the-refusal-and-the-letter-v1.stage.json",
+      "originalSha256": "0b9866aed70e86a86ce038a88b050f0aeb3b848e6530ee39c838ecbf1f210dc0",
+      "proposedSha256": "0b9866aed70e86a86ce038a88b050f0aeb3b848e6530ee39c838ecbf1f210dc0",
+      "changedFields": [],
+      "before": [
+        "social_constraint",
+        "self_doubt",
+        "keep_going"
+      ],
+      "after": [
+        "social_constraint",
+        "self_doubt",
+        "keep_going"
+      ],
+      "justification": null
+    },
+    {
+      "figureKey": "equiano",
+      "file": "equiano.stage.json",
+      "originalSha256": "2c5800b61b6d2ce134f0bed8165ee9e2cf72ce0c3a11faf357c9b2c26f5f2144",
+      "proposedSha256": "2c5800b61b6d2ce134f0bed8165ee9e2cf72ce0c3a11faf357c9b2c26f5f2144",
+      "changedFields": [],
+      "before": [
+        "dispossession",
+        "social_constraint",
+        "quiet_defiance",
+        "self_invention"
+      ],
+      "after": [
+        "dispossession",
+        "social_constraint",
+        "quiet_defiance",
+        "self_invention"
+      ],
+      "justification": null
+    },
+    {
+      "figureKey": "grant",
+      "file": "grant-1858-1861-a-place-in-the-shop-v1.stage.json",
+      "originalSha256": "3d7dfe032176623a7cce00b730b56c8f9a4b9d612e4fdf7687bdf861474c8a34",
+      "proposedSha256": "3d7dfe032176623a7cce00b730b56c8f9a4b9d612e4fdf7687bdf861474c8a34",
+      "changedFields": [],
+      "before": [
+        "illness",
+        "self_invention",
+        "keep_going"
+      ],
+      "after": [
+        "illness",
+        "self_invention",
+        "keep_going"
+      ],
+      "justification": null
+    },
+    {
+      "figureKey": "jacobs",
+      "file": "jacobs.stage.json",
+      "originalSha256": "a8cc1d0240c8a1f78ab0e69b6374a2d9e77eb1d2517b97ddcdbde58c6898940d",
+      "proposedSha256": "b1b42c978305421387e6f7d12bb0798884eef2e6f8e3b352d458ba49fcb42b37",
+      "changedFields": [
+        "themes"
+      ],
+      "before": [
+        "dispossession",
+        "social_constraint",
+        "quiet_defiance",
+        "solitude"
+      ],
+      "after": [
+        "dispossession",
+        "social_constraint",
+        "quiet_defiance",
+        "solitude",
+        "self_invention"
+      ],
+      "justification": {
+        "add": "self_invention",
+        "reasoning": "Thematic inference from actual movement out of years of concealment toward an unfamiliar northern life: arranging departure, leaving the hiding space, managing fear aboard ship, and accepting temporary help after arrival. The label captures beginning a different life under uncertain conditions; it does not claim a new name, immediate legal freedom, erased fear or an invented realization. Existing dispossession, social constraint, quiet defiance and solitude remain.",
+        "primary": "Harriet A. Jacobs, Incidents in the Life of a Slave Girl, chapters XXIX–XXXI: abandoning the first passage, arranging another, voyage and northern arrival.",
+        "reading": "docs/releases/new-stories-written-2026-10-02/jacobs.md, struggle through became: she leaves the hidden space, fears return, gains open air, and reaches shelter while legally enslaved and separated from her children.",
+        "qualifications": [
+          "Editorial theme, not a new historical claim or documented subjective transformation.",
+          "Does not imply that enslavement equals an ordinary life transition.",
+          "The long confinement remains the episode's center; the escape and uncertain beginning provide the bounded additional theme."
+        ]
+      }
+    },
+    {
+      "figureKey": "keller",
+      "file": "keller-1887-learning-that-things-have-names-v1.stage.json",
+      "originalSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "proposedSha256": "b1db24b02de4260c42e9a4efc4c9ecb6a06fb6df82ff5ffde38d35d466cb7fa8",
+      "changedFields": [],
+      "before": [
+        "disability",
+        "finding_voice",
+        "keep_going"
+      ],
+      "after": [
+        "disability",
+        "finding_voice",
+        "keep_going"
+      ],
+      "justification": null
+    },
+    {
+      "figureKey": "riis",
+      "file": "riis.stage.json",
+      "originalSha256": "652ce7834f17917babbc28d135b08630b5c07e98642bbb411f0e449032730ab9",
+      "proposedSha256": "0aa584264dceb7d0792576dd52435c38d619c5a8780e283471417a2651dd5ad9",
+      "changedFields": [
+        "themes"
+      ],
+      "before": [
+        "self_doubt",
+        "dispossession",
+        "self_invention"
+      ],
+      "after": [
+        "self_doubt",
+        "dispossession",
+        "self_invention",
+        "late_start"
+      ],
+      "justification": {
+        "add": "late_start",
+        "reasoning": "Thematic inference from the memoir's explicit judgment that three years of effort had been wasted before he obtained an introduction and began another job. The vocabulary already uses late_start for perceived lost time in young adulthood; it is not restricted to chronological old age. This fits regret over stalled beginning and restarting work, without making the ordinary reporting position a recovered childhood calling. Existing self-doubt, dispossession and self-invention remain.",
+        "primary": "Jacob A. Riis, The Making of an American, chapter V: returning hungry to the same steps three years later, feeling those years wasted, then collecting the letter and entering reporting work; chapter VI's difficult first winter.",
+        "reading": "docs/releases/new-stories-written-2026-10-02/riis.md, dark_moment: he remembered leaving the same steps three years earlier and felt the years wasted; response through became retains concrete assistance, a work trial and continued bodily costs.",
+        "qualifications": [
+          "Perceived lateness and lost years, not a claim that twenty-four is old.",
+          "No creative_dismissal is added: accepted but unpaid reporting is not documented rejection of a manuscript or artistic work.",
+          "No claim that effort alone supplied the job; teacher and editor assistance remain essential."
+        ]
+      }
+    },
+    {
+      "figureKey": "seacole",
+      "file": "seacole.stage.json",
+      "originalSha256": "a85ff657cd70e8d1f7b33488334238f003600f3ddbdb6631b6573e9277fac5fb",
+      "proposedSha256": "a85ff657cd70e8d1f7b33488334238f003600f3ddbdb6631b6573e9277fac5fb",
+      "changedFields": [],
+      "before": [
+        "dismissed",
+        "social_constraint",
+        "quiet_defiance",
+        "keep_going"
+      ],
+      "after": [
+        "dismissed",
+        "social_constraint",
+        "quiet_defiance",
+        "keep_going"
+      ],
+      "justification": null
+    },
+    {
+      "figureKey": "washington_b",
+      "file": "washington_b-1872-reaching-the-classroom-v1.stage.json",
+      "originalSha256": "113c6b0e9519697a5c49c8fb428c2227789b6ec77e9bc5d45d13fefd95e073b0",
+      "proposedSha256": "113c6b0e9519697a5c49c8fb428c2227789b6ec77e9bc5d45d13fefd95e073b0",
+      "changedFields": [],
+      "before": [
+        "dispossession",
+        "social_constraint",
+        "keep_going",
+        "self_invention"
+      ],
+      "after": [
+        "dispossession",
+        "social_constraint",
+        "keep_going",
+        "self_invention"
+      ],
+      "justification": null
+    }
+  ],
+  "unchanged": [
+    "existing fifty stage values",
+    "keyword map",
+    "recipe identities and selection",
+    "original gold labels"
+  ]
+}

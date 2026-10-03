@@ -3,3 +3,6 @@
 # routes, and components). A CRLF checkout on Windows makes those assertions
 # fail locally while CI, on Linux, stays green — so pin the working tree to LF.
 * text=auto eol=lf
+# These reviewed, seeded historical inputs have frozen byte-level receipt pins.
+docs/research/new-stories-2026-10-02/*.candidate.json -text
+docs/research/new-stories-2026-10-02/*.stage.json -text

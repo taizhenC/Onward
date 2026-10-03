@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "owner-release-database-health-v1",
+  "startedAt": "2026-10-03T01:54:16.226Z",
+  "completedAt": "2026-10-03T01:54:20.955Z",
+  "exitCode": 0,
+  "ok": true,
+  "temporaryProcessOnlyTelemetryProbeSecret": true,
+  "qualification": "This probe does not establish production worker telemetry secret configuration. No environment settings were changed."
+}

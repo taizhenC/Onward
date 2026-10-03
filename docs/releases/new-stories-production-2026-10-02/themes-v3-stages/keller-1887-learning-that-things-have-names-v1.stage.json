@@ -1,0 +1,76 @@
+{
+  "figureKey": "keller",
+  "displayName": "Helen Keller",
+  "birthYear": 1880,
+  "deathYear": 1968,
+  "stageId": "1887-learning-that-things-have-names",
+  "stageLabel": "Early lessons, a failed exchange, and learning names",
+  "ageMin": 6,
+  "ageMax": 6,
+  "themes": [
+    "disability",
+    "finding_voice",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "A six-year-old child struggled through an early lesson, made a request with copied finger movements, and used growing language to ask a question during a search game.",
+    "Her asking and learning grew through sustained teaching, but using sentences and searching for hidden objects still took practice."
+  ],
+  "facets": {
+    "emotionalCore": "Anger during a failed exchange with a teacher who restrains the child and holds an object out of reach.",
+    "decisionShape": "Make the finger pattern for a small request, before its language meaning is understood.",
+    "triggerEvent": "A new teacher takes the doll during an early finger-spelling lesson.",
+    "agencyState": "She can imitate, request, and explore; accessible language depends on sustained teaching and does not result from physical restraint."
+  },
+  "biographicalFacts": "In March–May 1887, Helen Keller was six and unable to see or hear after an early childhood illness of uncertain diagnosis. Anne Sullivan's letters describe tactile fingerspelling lessons with a doll, cake and other objects. Keller first imitated finger forms while puzzled. When Sullivan withheld the doll, Keller grew angry; the teacher forced her into a chair and held her, then released her and resumed the exercise. Sullivan interpreted the anger as believing the doll was being taken away. Keller learned more words but confused object names and drinking gestures. Search games initially defeated her, and requests commonly combined single words with gestures. In April, she unsuccessfully sought a hidden cracker, examined Sullivan's mouth, and pointed to her stomach while spelling eat. Sullivan interpreted this as asking whether she had eaten it. By May Keller asked about objects on walks and reported to her mother, still making mistakes and needing Sullivan's help.",
+  "sources": [
+    "Anne Sullivan's 1887 letters to Sophia Hopkins, reproduced in The Story of My Life (1903). https://www.gutenberg.org/files/2397/2397-h/2397-h.htm Part III, Education: editorial note on extracts; March 6 first doll/cake lesson; March 20 cup/milk confusion; April 10 requests; April 24 grammar, initial failed searches, and that morning's cracker search; May 8 small/large words; May 16 walks, reports, and mistakes.",
+    "American Foundation for the Blind, Chronology of Helen Keller's Life. https://www.afb.org/about-afb/history/helen-keller/biography-and-chronology/chronology Entries June 27, 1880, February 1882, March 3 and April 5, 1887; institutional chronology for dates and age.",
+    "American Foundation for the Blind, Helen Keller Biography. https://www.afb.org/about-afb/history/helen-keller/biography-and-chronology/biography Opening full-name paragraph; Political and Social Activism section for writer identity and disability advocacy."
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "She helped the new woman unpack her luggage in the room upstairs. She was six. Inside was a doll, and she was delighted to find it. She could not see it, and she could not hear. The woman slowly made a pattern of letters in her hand. The woman pointed to the doll.\n\nThe girl felt the woman's hand and looked puzzled. The letters came again. She copied the movements well and pointed to the doll herself. Her fingers had matched the fingers she had felt. Then the woman took the doll.",
+      "sourceNotes": "Sullivan's March 6 published letter extract supplies the upstairs unpacking and doll lesson. The editor discloses connected extracts and slight wording changes; observer actions are recorded, not invented. AFB chronology supplies age six."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "She tried to seize the doll. The woman shook her head and tried to form the letters with the girl's fingers. The girl grew angrier. The doll had just been in her hands. Now the other person held it, and she was trying to get it back. The woman forced her into a chair and held her there.\n\nShe had copied the hand movements, but had not understood the exchange. She thought the woman meant to take the doll away from her. The woman held her until she herself was nearly exhausted. The girl was still angry in the chair.",
+      "sourceNotes": "One bounded early lesson: attempted seizure, increasing anger, and chair restraint. The teacher's belief about the child's understanding is marked probable in w-interpretation. No invented feeling, injury, or motive; the restraint is not justified or made the cause of language learning."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "She made the letters in her hand again, this time for a piece of cake. The woman had let her out of the chair and brought the cake upstairs. She held it towards the girl and formed its name. The girl tried to take it. The letters came again, followed by a pat on her hand. She made the movements quickly herself.\n\nThe woman gave her the cake, and she ate it in a hurry. Then the doll was held towards her with its finger word. She made the letters, leaving one unfinished. The woman supplied it and handed her the doll. She ran downstairs with it.",
+      "sourceNotes": "The child's documented small act is making the cake letters herself in the same upstairs lesson, then the doll letters. No claim that reward proves word meaning or that obedience causes recovery."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "Over the next weeks, her hands learned more patterns. The finger words for a cup and milk were hard to distinguish. She pointed to the cup when she made one word. For the other, she made the sign for pouring or drinking. She still did not understand that everything had a name.\n\nLater, she asked for names and wanted other people to spell too. But new games still defeated her. The teacher hid a ball, and she looked beneath a flat board. There was no room for the ball there. When a spool was hidden, she looked in a box too small to hold it. She soon gave up searching. With practice she searched for longer. For requests, she relied on single words and gestures.",
+      "sourceNotes": "Forward compression from early practice to March 20, April 10 and the first search games two or three days before April 24. The water episode is omitted rather than disguised. Cup/milk confusion and failed searches are real failures, not invented metaphors or merged encounters."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "The teacher had hidden a cracker for her to find that morning. She searched everywhere she could think of, without success. Then she ran to the teacher and made her open her mouth wide. She examined the open mouth thoroughly. There was no trace of the cracker inside. Her search had brought her to the person who had hidden the food.\n\nShe pointed to the woman's stomach and spelled the word for eat. With that word and gesture, she was asking whether the teacher had eaten it. She had not found the hidden cracker. But she had a question for the other person about where it had gone. Her fingers made the word, and her pointing filled out the question. The search was still unfinished.",
+      "sourceNotes": "One search explicitly dated This morning in Sullivan's April 24 letter: cracker hidden, unsuccessful searching, running to teacher, open-mouth inspection, pointing, and spelling. No outcome or exact room is invented. w-question is probable observer interpretation of the child's word and gesture, not a fabricated full utterance. The ordinary search replaces the recognizable water encounter."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "In the following weeks, she gained words for differences between things. She could ask for something small or something large with the finger words. The teacher could ask her to bring a large book or a small plate. She compared the sizes of puppies, stones, her sister, and her own steps. She was learning more than names.\n\nOn their morning walks, she found things to ask about along the way. Back home, she wanted to tell her mother what they had found. She still tangled words and phrases and made many mistakes. The teacher supplied a missing word, and sometimes a whole sentence. None of the words had restored her sight or hearing. There was more for her to learn.",
+      "sourceNotes": "Forward compression through May 8 and May 16: size words, morning walks, telling her mother, continuing mistakes, and teaching assistance. No fluent speech, cure, completed language education, or achievement list. Age six and impairment with hand spelling may remain recognizable to a familiar reader."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "Her name was Helen Adams Keller.\n\nShe became a writer whose work helped press for the rights of people with disabilities.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need more time.",
+      "sourceNotes": "Full name and plain writer/advocacy role from AFB institutional biography. Exact distance pair and bounded permission, without promises or equivalence."
+    }
+  ]
+}

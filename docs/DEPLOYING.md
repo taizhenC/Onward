@@ -131,6 +131,27 @@ To ship a content change to the library:
    Rolling the content back is the reverse: append the previous snapshot as a
    new release (its evidence is already in the lineage) and reseed.
 
+One explicit owner-directed exception to step 2 is recorded for the ten-story
+snapshot `bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061`.
+After disclosure of the actual failed matching and security checks, the owner
+instructed: “I checked it, publish those into the production”. The exact
+[owner decision](releases/new-stories-production-2026-10-02/OWNER-AUTHORIZATION.md)
+and its JSON hash are bound by the new release's `ownerAuthorizationSha256`.
+Governance accepts only that fixed decision, library and original failed
+evidence; it retains all source-commit, input-tree, real-provider, immutable
+recipe and append-only checks. The trust gate and the development dependency
+audit remain failed and visible. Other content releases still require passing
+evidence, and this exception cannot authorize a recipe promotion.
+
+For this one operation, the owner publication adapters enforce the exact
+current story, stage, matching, recipe, dependency and decision pins, preserve
+the prior 34 publications, and use receipt-bound full-document publication.
+Do not supply a fabricated matching-pass receipt. The historical decision is
+verified against its cited evidence commit, rather than indefinitely freezing
+future dependency files; later security fixes must use the normal audit, and
+later matching changes must use the existing promotion governance. No audit
+command, threshold or workflow is disabled by the exception.
+
 Migration `0021` is schema-first compatible. Apply it before this application
 build, but first pause new stories and drain in-flight story/progress/deletion
 requests because it takes explicit session-then-artifact access-exclusive

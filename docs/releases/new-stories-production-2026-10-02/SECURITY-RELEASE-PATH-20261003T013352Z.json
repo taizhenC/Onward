@@ -1,0 +1,65 @@
+{
+  "schema": "new-ten-security-release-path-investigation-v1",
+  "observedAt": "2026-10-03T01:33:52.820Z",
+  "mode": "read-only",
+  "pullRequest": "https://github.com/taizhenC/Onward/pull/146",
+  "observedHead": "f975e1d998495f29620830e7715ca9dd4a036fc8",
+  "lockfileSha256": "449b89a953b6c2679f00aee6ad10ccdbb326fad21978d1703757e0c8fa86be37",
+  "freshLocalFullAudit": {
+    "observedAt": "2026-10-03T01:34:48.3048349Z",
+    "command": "npm audit --json",
+    "exitCode": 1,
+    "reportedCounts": { "info": 0, "low": 0, "moderate": 0, "high": 5, "critical": 0, "total": 5 },
+    "advisoryUrl": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+    "installedEntries": [
+      { "node": "node_modules/eslint-config-next", "version": "15.5.25", "dev": true, "direct": true, "via": "@next/eslint-plugin-next" },
+      { "node": "node_modules/@next/eslint-plugin-next", "version": "15.5.25", "dev": true, "direct": false, "via": "fast-glob" },
+      { "node": "node_modules/fast-glob", "version": "3.3.1", "dev": true, "direct": false, "via": "micromatch" },
+      { "node": "node_modules/micromatch", "version": "4.0.8", "dev": true, "direct": false, "via": "braces" },
+      { "node": "node_modules/braces", "version": "3.0.3", "dev": true, "direct": false, "via": "GHSA-vfj7-8cjw-p6xm" }
+    ]
+  },
+  "failedCheck": {
+    "url": "https://github.com/taizhenC/Onward/actions/runs/37085267290/job/111094131640",
+    "step": "Reject high-severity dependency advisories",
+    "command": "npm run audit:high",
+    "exitCode": 1,
+    "highPackageEntries": 5,
+    "advisory": "GHSA-vfj7-8cjw-p6xm",
+    "patchedBracesVersion": null
+  },
+  "compatiblePublishedPackageSearch": {
+    "next15Plugin": "15.5.27",
+    "next16Plugin": "16.3.8",
+    "bothRequireFastGlob": "3.3.1",
+    "latestFastGlob": "3.3.3",
+    "latestMicromatch": "4.0.8",
+    "latestBraces": "3.0.3",
+    "verifiedCompatibleFixAvailable": false
+  },
+  "supplementalExposureEvidence": {
+    "command": "npm audit --omit=dev --json",
+    "exitCode": 0,
+    "reportedVulnerabilities": 0,
+    "allFiveAffectedChainEntriesDevOnly": true,
+    "localBuildTraceFiles": 38,
+    "localBuildTraceLintChainMatches": 0,
+    "calculatedEslintNextSettings": null,
+    "productionDeployedFilesystemVerified": false,
+    "completeExploitabilityProof": false
+  },
+  "changesMade": {
+    "dependencyManifest": false,
+    "lockfile": false,
+    "workflow": false,
+    "lintConfig": false,
+    "auditThreshold": false,
+    "production": false,
+    "documentationOnly": true
+  },
+  "releaseAuthority": {
+    "auditPassed": false,
+    "exceptionImplementedByThisInvestigation": false,
+    "matchingApprovalGrantedByThisInvestigation": false
+  }
+}

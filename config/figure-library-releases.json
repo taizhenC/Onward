@@ -9,6 +9,16 @@
       "evidenceIds": [
         "ev_7a7d9bfa19852146f38ee523c1c0caa916601720cdc9e446bbf32984e38053ad"
       ]
+    },
+    {
+      "sha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+      "releasedAt": "2026-10-03T01:35:25.606Z",
+      "supersedes": "e88751de566fa1077059cee143c4bd9d88b55e8adcca48eab4d5fa49b04ddf88",
+      "note": "Owner-directed publication of the exact ten source-reviewed stories after disclosure of actual failing matching and development dependency security checks. The matching evidence remains failed (96/101 positive matches; 2/3 misses; one wrong definitive positive). Exception is limited to the pinned owner decision and exact library; immutable recipe selection, thresholds, history and prior publications are preserved.",
+      "evidenceIds": [
+        "ev_6f9f15f110e062a26799e08df3b71ddf2de73be13d1f230a44b3262576a6ba1d"
+      ],
+      "ownerAuthorizationSha256": "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8"
     }
   ]
 }

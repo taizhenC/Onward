@@ -1,6 +1,8 @@
 # Ten-story production release
 
-**Release held. No production merge, deployment, metadata update or publication has occurred.** The ten finished stories remain drafts. The initial expanded library failed the mandatory matching gate at 95/101 positive cases; the reviewed concise revision failed at 96/101, with one wrong definitive positive match and only two of three misses detected. The original fifty-stage control passed at 100/101 with zero wrong definitive positives and all three misses detected. See [the release hold](RELEASE-HOLD.md).
+**Owner-directed release is in progress.** After disclosure of the matching and security failures, the owner instructed: “I checked it, publish those into the production”. The narrowly pinned [authorization](OWNER-AUTHORIZATION.json) and [execution plan](OWNER-RELEASE-EXECUTION.md) supersede the earlier hold for this exact batch. Actual publication and deployment receipts will establish completion; this preparation notice does not claim the stories are already live.
+
+The initial expanded library failed the mandatory matching gate at 95/101 positive cases; the reviewed concise revision failed at 96/101, with one wrong definitive positive match and only two of three misses detected. The original fifty-stage control passed at 100/101 with zero wrong definitive positives and all three misses detected. See [the preserved earlier release hold](RELEASE-HOLD.md). These failed measurements remain unchanged and are not represented as passes.
 
 The owner requested publication of the ten completed stories: “lets push all those story into the production.” This packet records the release work for Addams, Blackwell, Darwin, Equiano, Grant, Jacobs, Keller, Riis, Seacole and Washington. The [research packet](../new-stories-2026-10-02/README.md) and [finished writing packet](../new-stories-written-2026-10-02/README.md) preserve the earlier phases and individual reading documents.
 

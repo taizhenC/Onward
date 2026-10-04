@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "new-three-publication-completion-v1",
+  "recordedAt": "2026-10-04T04:32:29.521Z",
+  "ok": true,
+  "mergedPR": "https://github.com/taizhenC/Onward/pull/148",
+  "sourceHead": "a0f149af15e937807966e969d2e6bdd964ffb571",
+  "mergedMain": "60c6ee9e1262abe199b8a9aae56ace60201e0545",
+  "exactMainCI": "success",
+  "exactProductionDeployment": "6836764626",
+  "deploymentStatus": "success",
+  "publicationReceiptSha256": "5ceefd88f58b635734434cf2741d943e9a90a8a25af507d3fd3de56860e59338",
+  "totalValidPublications": 47,
+  "quarantinedRows": 0,
+  "previous44AndAllUnrelatedRowsPreserved": true,
+  "targets": [
+    {
+      "figureKey": "franklin_b",
+      "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+      "publishedReceiptSha256": "998bce612bd5c9fc7d471c27888c35ead1890fc0b9acca6762f3e4795ec01e1b"
+    },
+    {
+      "figureKey": "slocum_j",
+      "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+      "publishedReceiptSha256": "b1dac15acaf4cf6e58555e34ea87ba6d83065cdd60b73672c48888619319b83d"
+    },
+    {
+      "figureKey": "somerville_m",
+      "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+      "publishedReceiptSha256": "95ce9a1eb23a077083e46d213cb32ae0f0fe56d77211f17e33ae8d9c1cf35d12"
+    }
+  ],
+  "recovery": {
+    "originalSelectionUnchanged": true,
+    "originalBaselineUnchanged": true,
+    "originalSourceUnchangedDuringPublication": true,
+    "promotions": 3,
+    "reviewCompareAndSets": 3,
+    "interruptedExecutions": 3,
+    "finalExecutionExtraMutations": 0,
+    "fullReadbacksAtCounts": [
+      45,
+      46,
+      47
+    ],
+    "explanation": "Each void RPC committed one reviewed story, then the original client rejected its empty HTTP204 response. Each same-source retry fully verified and skipped earlier publications. The fourth execution made no writes and recorded the exact immutable completion receipts."
+  },
+  "readOnlyVerification": {
+    "file": "POST-REFRESH-VERIFICATION-2026-10-04T04-31-25-399Z-94022127-80ca-4069-9217-1ae10103b171.json",
+    "passed": true,
+    "scope": "Original M1 source and proof after DB publication; prior to any later refresh deployment.",
+    "databaseMutations": 0
+  },
+  "health": {
+    "receipt": "COMMAND-health-2026-10-04T04-31-58-188Z.json",
+    "checks": 22,
+    "passed": 22,
+    "qualification": "Read-only production catalog/schema and invalid/closed RPC probes; a caller-only temporary probe secret does not establish deployed telemetry configuration. No live Auth account or provider run."
+  },
+  "matchingTrustGatePassed": false,
+  "supplementalCoveragePassed": false,
+  "remaining": "Checked operator response fix and receipt merge, exact postpublication worker refresh, read-only final catalog audit, one preselected live reading and guest cleanup canary."
+}

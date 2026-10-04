@@ -1,0 +1,247 @@
+{
+  "schemaVersion": "new-three-publisher-independent-cross-review-v1",
+  "reviewedAt": "2026-10-04T04:16:05.275Z",
+  "reviewer": "/root/new_three_library_audit",
+  "implementationAuthor": "/root/held_pr_audit",
+  "independence": "Reviewer did not author the three publisher modules. The earlier governance review by this reviewer was expressly an author self-review.",
+  "status": "PASS_OFFLINE_SOURCE_BOUND_LIVE_PROOF_PENDING",
+  "observedHead": "a0f149af15e937807966e969d2e6bdd964ffb571",
+  "branch": "codex/new-three-stories-2026-10-03",
+  "sourcePins": [
+    {
+      "path": "docs/releases/new-three-2026-10-03/owner-publication-authority.ts",
+      "sha256": "9a56ae3797327064e72456613df9ac120f5c4446a3e257cd7deb08b51af81144"
+    },
+    {
+      "path": "docs/releases/new-three-2026-10-03/publish-owner-approved.ts",
+      "sha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482"
+    },
+    {
+      "path": "docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+      "sha256": "e6b6bcf93a082265e578427c3f75dd4050baeaf776b0071b3b2f826e5fbda6ba"
+    }
+  ],
+  "authority": {
+    "path": "docs/releases/new-three-2026-10-03/OWNER-AUTHORIZATION.json",
+    "sha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+    "decisionId": "owner-publish-new-three-2026-10-04",
+    "scope": "Exactly Franklin, Slocum and Somerville frozen candidate/stage inputs; the prior ten-story exception is unchanged.",
+    "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+    "evidenceId": "ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247",
+    "evidenceSha256": "f6764d3a637ec1962851559c1772de99dd4b8193bb60dd237a66fdf2c87445eb",
+    "evidenceSourceCommit": "df19fecee5aafafd57a7f349380a294522c80b44",
+    "failedMatching": {
+      "positiveCorrect": 96,
+      "positiveTotal": 101,
+      "missCorrect": 3,
+      "missTotal": 3,
+      "wrongDefinitive": 3,
+      "wrongPartial": 2,
+      "trustGatePassed": false
+    },
+    "supplementalCoverage": {
+      "providerCalls": 0,
+      "rerankTrials": 0,
+      "passed": false,
+      "lostPositiveCaseIndexesZeroBased": [
+        0,
+        1,
+        2,
+        4,
+        6
+      ]
+    }
+  },
+  "findings": [
+    {
+      "topic": "authority",
+      "result": "PASS",
+      "detail": "Current exact owner JSON byte pin, reading/input/draft receipt/cases/real evidence pins, unchanged matching inputs, current library and latest release are verified before credentials. Exact single owner fills three schema review roles with fixed authorization time; no invented independent human review or matching PASS."
+    },
+    {
+      "topic": "baseline-preservation",
+      "result": "PASS",
+      "detail": "Exclusive timestamp/UUID private selection and baseline capture bind fixed complete curated catalog and executable/source pins. All 63 figures, 60 unrelated stages and 61 unrelated complete specs including lifecycle are preserved. Pinned original import snapshot is read and never overwritten; prior 44 valid publications remain exact."
+    },
+    {
+      "topic": "draft-review-CAS",
+      "result": "PASS",
+      "detail": "Fresh full target row plus numeric xmin is checked against the frozen exact draft and prior full catalog. PATCH matches observed xmin, identity/version/schema, draft status, creation time and null publication/retirement; only review/status fields change. Exactly one complete approved response and advanced xmin required. It rejects stale, zero, multiple or altered responses."
+    },
+    {
+      "topic": "promotion-recovery",
+      "result": "PASS",
+      "detail": "Only existing promote_story_spec_v2 is called with the complete exact expected review JSON, after immutable full review archive and fresh catalog/sibling check. Only one target-stage spec is allowed. Exact draft/review/published recovery retains original selection, baseline, complete document and lifecycle pins. Published recovery requires prior review archive; verified lost-reply recovery performs no duplicate review or promotion."
+    },
+    {
+      "topic": "proof-before-live",
+      "result": "PASS_OFFLINE",
+      "detail": "Exact successful Production commit, source head CI and five named successful hosted checks are required; only completed skipped recipe attestation is allowed. Owner/library pins, helper bytes, Git ancestry, deployment tree bytes, checkout bytes and relevant runtime/validation diff are checked before env/network. Actual successful deployment and final full CI remain root-run evidence, not established by this audit."
+    },
+    {
+      "topic": "transport",
+      "result": "PASS_MOCKED",
+      "detail": "Actual request implementation restricts tables/methods, fixed production HTTPS origin, error redirects, 15s AbortController, 4MiB declared/stream limits and complete exact-count row responses. Source-derived transport probes verify actual guarded PATCH and full RPC body, wrong host, missing/truncated count, oversized/non-array/error responses and deadline abort."
+    }
+  ],
+  "validation": {
+    "focusedSuite": {
+      "command": "node --import tsx docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+      "exitCode": 0,
+      "checks": 66,
+      "negativeChecks": 54
+    },
+    "typecheck": {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0
+    },
+    "scopedLint": {
+      "command": "npx eslint docs/releases/new-three-2026-10-03/owner-publication-authority.ts docs/releases/new-three-2026-10-03/publish-owner-approved.ts docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+      "exitCode": 0
+    },
+    "independentActualMain": {
+      "ok": true,
+      "sourceSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
+      "fixtureScope": "frozen original curated import snapshot plus exact approved drafts; in-memory fs/transport; deployed Git proof seam mocked",
+      "realReceiptWrites": 0,
+      "realEnvReads": 0,
+      "networkCalls": 0,
+      "checks": 14,
+      "results": [
+        {
+          "name": "actual main preflight -> publish -> repeat preserves complete original rows and yields 47",
+          "outcome": "PASS"
+        },
+        {
+          "name": "actual main recovers CAS reply loss from exact review without replaying review",
+          "outcome": "PASS"
+        },
+        {
+          "name": "actual main recovers RPC reply loss from exact publication/archive without republishing",
+          "outcome": "PASS"
+        },
+        {
+          "name": "actual main stale fresh row rejects before PATCH or RPC",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual main zero-row CAS rejects before promotion",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual main missing archived review on published retry rejects without replay",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual main immutable review archive collision rejects before any write",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual main immutable published receipt collision rejects without republishing",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual main selection byte tamper rejects before transport",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual CLI rejects --bogus",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual CLI rejects --publish --publish",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual CLI rejects --preflight=1",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual CLI rejects --publish",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual CLI rejects --self-test --publish",
+          "outcome": "REJECTED_AS_REQUIRED"
+        }
+      ]
+    },
+    "independentActualTransport": {
+      "ok": true,
+      "sourceSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
+      "fixtureScope": "actual private liveTransport implementation with dummy env and mocked fetch/timer; no real env loading or HTTP",
+      "realEnvFilesRead": 0,
+      "realNetworkCalls": 0,
+      "databaseReads": 0,
+      "databaseMutations": 0,
+      "realReceiptWrites": 0,
+      "checks": 9,
+      "results": [
+        {
+          "name": "actual liveTransport sends only bounded curated GETs, guarded two-field PATCH, and full expected review RPC JSON",
+          "outcome": "PASS"
+        },
+        {
+          "name": "actual transport wrong database host rejects before fetch",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport exact count detects truncated rows",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport requires exact count header",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport rejects oversized declared content length",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport caps streamed response without content length",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport rejects non-array row payload",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport HTTP failure omits response body",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport deadline aborts request",
+          "outcome": "REJECTED_AS_REQUIRED"
+        }
+      ]
+    },
+    "totalChecks": 89,
+    "totalNegativeChecks": 73
+  },
+  "rootObservedCasProbe": {
+    "path": "docs/releases/new-three-2026-10-03/REVIEW-CAS-ZERO-ROW-PROBE.json",
+    "sha256": "70e0872c95512da8212120f5f5029eb98d82f68dd87c7ba0d4fbf55ec57c8d64",
+    "executedBy": "root, not this reviewer",
+    "result": "Impossible xmin eq.0 PATCH returned HTTP200, ContentRange */0, empty rows and unchanged before/after complete target plus xmin. Demonstrates deployed empty-CAS count behavior; successful one-row review mutation remains pending."
+  },
+  "limits": {
+    "reviewerLiveDbOperations": 0,
+    "reviewerAuthOperations": 0,
+    "reviewerProviderRequests": 0,
+    "reviewerEnvironmentFileReads": 0,
+    "reviewerRealReceiptWrites": 0,
+    "sourceEdits": 0,
+    "gitMutations": 0,
+    "writeScope": "Only PUBLISHER-CROSS-REVIEW.md/json in managed and ROOT release directories. Typecheck/lint may use their routine generated caches.",
+    "causalLimit": "Offline parser/control-flow/transport validation does not turn failed real matching into passing matching or establish production availability.",
+    "concurrencyLimit": "xmin atomically guards one observed complete target version. Existing RPC atomically guards expected review JSON and stage-key promotion, but does not transactionally guard the entire catalog or reject an externally introduced sibling. Immediate checks and readbacks require the serialized editorial publication window; concurrent external writes can be detected but not rolled back by this helper.",
+    "proofLimit": "Main harness substitutes only in-memory fs/transport and the deployment Git proof seam. Transport harness uses dummy env, mocked fetch and timer; it never loads real env files or makes HTTP calls. Final Git/deployed proof verification is source-reviewed, not falsely claimed executed against a future deployment."
+  },
+  "blockers": [],
+  "remainingBeforeLive": "Root must record actual final source-head full CI, merge/deployment exact proof, then fresh root-only preflight/live publication/worker refresh/read-only health and canary evidence.",
+  "independentHarnessMethod": {
+    "actualMain": "Transpile the pinned entire publisher source to CommonJS in memory. Replace only import.meta URL and env-loader import for instrumentation; inject in-memory fs, frozen approved inputs, deployment proof seam and Transport. Execute actual main preflight/publish/retry and CLI control flow.",
+    "actualTransport": "Use the same pinned source and capture its original private liveTransport before substituting main's mock. Execute it with dummy process.env, no-op instrumented env-loader, mocked fetch, and deadline timer. No real HTTP, env-loader or receipt write is possible in these probes.",
+    "fixture": "Original draft-import DB-BEFORE snapshot plus exact approved candidate/stage objects; no gold inputs, recipe thresholds or source files changed."
+  }
+}

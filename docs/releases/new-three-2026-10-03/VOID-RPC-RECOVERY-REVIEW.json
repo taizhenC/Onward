@@ -1,0 +1,295 @@
+{
+  "schemaVersion": "new-three-void-rpc-independent-recovery-review-v1",
+  "reviewedAt": "2026-10-04T04:34:44.948Z",
+  "reviewer": "/root/new_three_library_audit",
+  "implementationAuthor": "/root/held_pr_audit",
+  "status": "PASS_MINIMAL_FIX_AND_BOUNDED_RECOVERY",
+  "independence": "Reviewer authored no publisher or response-fix source; only this report pair.",
+  "cause": {
+    "originalPublisherSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
+    "sql": {
+      "path": "supabase/migrations/0023_story_spec_publication_cas.sql",
+      "sha256": "c70dc674393241675c6c9e18fc13095983c33cd8737c530a5897479ab0eb357d",
+      "definitionLine": 1744,
+      "contract": "promote_story_spec_v2 returns void"
+    },
+    "failure": "A successful bodyless HTTP204 RPC response had no reader; the original client asserted a reader after the authorized database transaction had already committed.",
+    "previousAuditGap": "Earlier cross-review transport mock returned JSON null rather than a bodyless Response(null,{status:204}); it did not cover this contract. This review reproduced the missed case before evaluating the fix."
+  },
+  "finalSourcePins": [
+    {
+      "path": "docs/releases/new-three-2026-10-03/owner-publication-authority.ts",
+      "sha256": "9a56ae3797327064e72456613df9ac120f5c4446a3e257cd7deb08b51af81144",
+      "changed": false
+    },
+    {
+      "path": "docs/releases/new-three-2026-10-03/publish-owner-approved.ts",
+      "sha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c",
+      "change": "Only missing-reader response handling: return null for exact POST rpc/promote_story_spec_v2 HTTP204; retain failure for every other bodyless response."
+    },
+    {
+      "path": "docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+      "sha256": "653955933f47623f748a0919adec3e485ce6be724a3418bc4a395e5833cc5fd1",
+      "change": "16 source-derived request-body/RPC-void regression probes invoked by the existing offline checker."
+    }
+  ],
+  "scopeReview": {
+    "onlyResponseBranchChanged": true,
+    "completeExpectedReviewRpcBodyUnchanged": true,
+    "authorityAndRecoveryStateMachineUnchanged": true,
+    "rowVersionCasUnchanged": true,
+    "mandatoryFullPublishedRowStageReadbackUnchanged": true,
+    "rowCountSizeDeadlineRedirectHostGuardsUnchanged": true,
+    "originalInputAndAuthorityPinsUnchanged": true,
+    "originalSelectionBaselineAndPublicationReceiptUnchanged": true,
+    "matchingTrustGatePassed": false,
+    "supplementalCoveragePassed": false,
+    "noRecipePromotion": true
+  },
+  "existingBoundedRecovery": {
+    "ok": true,
+    "sourceSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
+    "fixtureScope": "actual original publisher main; frozen original curated snapshot plus exact authorized drafts; in-memory fs/transport; every promotion commits then throws matching empty-body parser error",
+    "steps": [
+      {
+        "attempt": 1,
+        "publishedNewTargets": 1,
+        "totalValidPublications": 45,
+        "reviewWrites": 1,
+        "promotionCalls": 1,
+        "outcome": "authorized RPC committed; local empty-body parser failed"
+      },
+      {
+        "attempt": 2,
+        "publishedNewTargets": 2,
+        "totalValidPublications": 46,
+        "reviewWrites": 2,
+        "promotionCalls": 2,
+        "outcome": "authorized RPC committed; local empty-body parser failed"
+      },
+      {
+        "attempt": 3,
+        "publishedNewTargets": 3,
+        "totalValidPublications": 47,
+        "reviewWrites": 3,
+        "promotionCalls": 3,
+        "outcome": "authorized RPC committed; local empty-body parser failed"
+      }
+    ],
+    "completionAttempt": 4,
+    "repeatAddsWrites": false,
+    "totalReviewWrites": 3,
+    "totalPromotionCalls": 3,
+    "realReceiptWrites": 0,
+    "realEnvReads": 0,
+    "networkCalls": 0
+  },
+  "originalBugReproduction": {
+    "ok": true,
+    "outcome": "REPRODUCED_ORIGINAL_BODYLESS_VOID_RESPONSE_BUG",
+    "sourceSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
+    "mockPostResponses": 1,
+    "responseStatus": 204,
+    "responseBody": null,
+    "realEnvFilesRead": 0,
+    "realHttpCalls": 0,
+    "realDbOperations": 0,
+    "realReceiptWrites": 0
+  },
+  "proposalAndFinalByteIdenticalTests": {
+    "requestProbes": {
+      "ok": true,
+      "sourceSha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c",
+      "fixtureScope": "proposed minimal source actual private request implementation; dummy env and mocked fetch/timer; no actual HTTP or env loading",
+      "realEnvFilesRead": 0,
+      "realNetworkCalls": 0,
+      "databaseReads": 0,
+      "databaseMutations": 0,
+      "realReceiptWrites": 0,
+      "checks": 14,
+      "results": [
+        {
+          "name": "actual liveTransport sends only bounded curated GETs, guarded two-field PATCH, and full expected review RPC JSON",
+          "outcome": "PASS"
+        },
+        {
+          "name": "actual transport wrong database host rejects before fetch",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport exact count detects truncated rows",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport requires exact count header",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport rejects oversized declared content length",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport caps streamed response without content length",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport rejects non-array row payload",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport HTTP failure omits response body",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "actual transport deadline aborts request",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "proposal accepts exact void RPC bodyless HTTP204",
+          "outcome": "PASS"
+        },
+        {
+          "name": "proposal bodyless POST200 remains rejected",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "proposal bodyless POST201 remains rejected",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "proposal bodyless GET204 remains rejected",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "proposal bodyless PATCH204 remains rejected",
+          "outcome": "REJECTED_AS_REQUIRED"
+        }
+      ]
+    },
+    "actualMainAndRequestIntegration": {
+      "ok": true,
+      "sourceSha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c",
+      "fixtureScope": "actual proposed main and private liveTransport together; immutable original curated snapshot plus exact authorized drafts; in-memory fs and HTTP model; dummy env-loader instrumentation",
+      "checks": 3,
+      "results": [
+        {
+          "name": "proposal actual main + actual transport handle three bodyless204 RPCs in one pass; exact readbacks and repeat preserve prior rows with no duplicate writes",
+          "outcome": "PASS",
+          "reviewCalls": 3,
+          "rpcCalls": 3
+        },
+        {
+          "name": "204 acknowledgment without exact published row fails mandatory readback",
+          "outcome": "REJECTED_AS_REQUIRED",
+          "reviewCalls": 1,
+          "rpcCalls": 1
+        },
+        {
+          "name": "204 acknowledgment without stage publication fails mandatory readback",
+          "outcome": "REJECTED_AS_REQUIRED",
+          "reviewCalls": 1,
+          "rpcCalls": 1
+        }
+      ],
+      "realEnvFilesRead": 0,
+      "realHttpCalls": 0,
+      "realDbOperations": 0,
+      "realReceiptWrites": 0
+    }
+  },
+  "resultingManagedValidation": {
+    "command": "node --import tsx docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+    "exitCode": 0,
+    "checks": 82,
+    "negativeChecks": 66,
+    "environmentFilesRead": 0,
+    "networkAttempts": 0,
+    "databaseReads": 0,
+    "databaseMutations": 0,
+    "providerRequests": 0,
+    "receiptWrites": 0,
+    "typecheck": {
+      "command": "npx tsc --noEmit",
+      "exitCode": 0
+    },
+    "scopedLint": {
+      "command": "npx eslint docs/releases/new-three-2026-10-03/owner-publication-authority.ts docs/releases/new-three-2026-10-03/publish-owner-approved.ts docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+      "exitCode": 0
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  },
+  "localImmutableReceiptChecks": {
+    "selection": {
+      "ok": true,
+      "qualification": "Existing immutable local selection and complete preflight baseline checked read-only; no current DB claim",
+      "selectionSha256": "ef8da0e92759ed1c87e07263522e9c90591a2e4d1e100a96747bef25934ab5ff",
+      "baselineSha256": "02cb1612d16c9628d57a709119da5ffcb74323d8eab207c65bc19a6ff25b0f45",
+      "capturedAt": "2026-10-04T04:23:00.329Z",
+      "initialPublishedStoryCount": 44,
+      "targetCount": 3,
+      "sourcePins": 25
+    },
+    "completeTargetsAndArchives": {
+      "ok": true,
+      "qualification": "Local full target/publication and pre-promotion review receipts checked against immutable baseline and frozen authority; catalog reconstructed from baseline plus target receipt rows, not a current live DB observation",
+      "completePublishedTargetReceipts": 3,
+      "completeReviewArchives": 3,
+      "totalValidInReconstruction": 47,
+      "realEnvReads": 0,
+      "realNetworkCalls": 0,
+      "realDbOperations": 0
+    },
+    "newCodeRejectsOldAuthority": {
+      "ok": true,
+      "outcome": "REJECTED_AS_REQUIRED",
+      "qualification": "New executable hash cannot inherit historical M1 publication proof; no env or network",
+      "originalPublicationReceiptSha256": "5ceefd88f58b635734434cf2741d943e9a90a8a25af507d3fd3de56860e59338",
+      "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018"
+    }
+  },
+  "rootLiveResult": {
+    "executedBy": "root; reviewer read frozen receipts only",
+    "originalSourceMerge": "60c6ee9e1262abe199b8a9aae56ace60201e0545",
+    "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+    "selectionSha256": "ef8da0e92759ed1c87e07263522e9c90591a2e4d1e100a96747bef25934ab5ff",
+    "baselineSha256": "02cb1612d16c9628d57a709119da5ffcb74323d8eab207c65bc19a6ff25b0f45",
+    "deploymentProofSha256": "a8ee4dc9c2edf143d114e4f418f32cc3459e7cd485bca451686b0dcfbf602b0f",
+    "publication": {
+      "path": "docs/releases/new-three-2026-10-03/PUBLICATION-RECEIPT.json",
+      "sha256": "5ceefd88f58b635734434cf2741d943e9a90a8a25af507d3fd3de56860e59338",
+      "completedAt": "2026-10-04T04:31:20.278Z",
+      "totalValidPublications": 47,
+      "authorizedNewPublications": 3,
+      "previous44PublicationsPreserved": true,
+      "unrelatedCatalogPreserved": true,
+      "exactReadback": true,
+      "quarantinedRows": 0
+    },
+    "originalSourceReadOnlyVerification": {
+      "path": "docs/releases/new-three-2026-10-03/POST-REFRESH-VERIFICATION-2026-10-04T04-31-25-399Z-94022127-80ca-4069-9217-1ae10103b171.json",
+      "sha256": "c80f835744667ab6d50c39485c69926187aab44a87d494f54c0c930c24c399d0",
+      "verifiedAt": "2026-10-04T04:31:25.399Z",
+      "databaseMutations": 0,
+      "qualification": "Original helper's full catalog/receipt verification. Filename alone does not prove a later worker refresh or cache-ready reader availability."
+    }
+  },
+  "findings": [],
+  "blockers": [],
+  "limits": {
+    "actualEnvFileReadsByReviewer": 0,
+    "actualNetworkCallsByReviewer": 0,
+    "actualDatabaseOperationsByReviewer": 0,
+    "actualAuthOperationsByReviewer": 0,
+    "actualProviderRequestsByReviewer": 0,
+    "sourceEditsByReviewer": 0,
+    "gitMutationsByReviewer": 0,
+    "actualReceiptWritesByReviewer": 0,
+    "reportWrites": "VOID-RPC-RECOVERY-REVIEW.md/json mirrored to ROOT and MANAGED only; routine compiler/lint caches may be generated.",
+    "concurrency": "Original full-catalog readbacks remain subject to the serialized editorial window; response fix adds no wider transaction or retry authority.",
+    "newCodeAuthority": "Changed helper hashes cannot inherit the historical M1 proof; an actual negative exercised this guard. Historical selection/baseline/review/publication source pins must remain untouched. Receipt/fix CI and deployment are a later phase; no new publication replay is needed.",
+    "matching": "Real104 FAIL (96/101 positive, three wrong definitive) and supplemental12 preflight BLOCKED with zero provider calls remain historical facts, never relabeled as passing by recovery or CI."
+  }
+}

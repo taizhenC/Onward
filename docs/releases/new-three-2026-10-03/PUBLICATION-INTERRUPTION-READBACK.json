@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "new-three-publication-interruption-readback-v1",
+  "ok": true,
+  "observedAt": "2026-10-04T04:25:56.453Z",
+  "totalValidPublications": 45,
+  "authorizedPublishedTargets": 1,
+  "targets": [
+    {
+      "figureKey": "franklin_b",
+      "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+      "status": "published",
+      "stageStatus": "published"
+    },
+    {
+      "figureKey": "slocum_j",
+      "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+      "status": "draft",
+      "stageStatus": "draft"
+    },
+    {
+      "figureKey": "somerville_m",
+      "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+      "status": "draft",
+      "stageStatus": "draft"
+    }
+  ],
+  "previous44AndAllUnrelatedRowsPreserved": true,
+  "exactApprovedDocumentsAndLifecycle": true,
+  "baselineSha256": "02cb1612d16c9628d57a709119da5ffcb74323d8eab207c65bc19a6ff25b0f45",
+  "failure": "Publisher rejected an empty database response; actual row/stage readback verified before any retry.",
+  "databaseMutations": 0,
+  "providerRequests": 0,
+  "authMutations": 0
+}

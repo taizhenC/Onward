@@ -1,0 +1,142 @@
+{
+  "schemaVersion": "new-three-void-rpc-response-diagnosis-v1",
+  "capturedAt": "2026-10-04T04:29:49.987Z",
+  "status": "CAUSE_REPRODUCED_MINIMAL_204_FIX_PROPOSED_WAITING_FINAL_PUBLICATION",
+  "actualEvidence": {
+    "receipt": "docs/releases/new-three-2026-10-03/PUBLICATION-INTERRUPTION-READBACK.json",
+    "sha256": "4d306735431fd5e839696dc854b017d575fe67bb51503a531df9b9c9a2bd848a",
+    "observedAt": "2026-10-04T04:25:56.453Z",
+    "totalValidPublications": 45,
+    "authorizedPublishedTargets": 1,
+    "previous44AndAllUnrelatedRowsPreserved": true,
+    "exactApprovedDocumentsAndLifecycle": true
+  },
+  "cause": {
+    "migration": "supabase/migrations/0023_story_spec_publication_cas.sql",
+    "definitionLine": 1744,
+    "definition": "promote_story_spec_v2 returns void",
+    "transport": "HTTP success is checked, then response.body.getReader is unconditionally required",
+    "symptom": "Empty database response thrown after successful publication",
+    "previousTestGap": "Earlier mocked void RPC returned a JSON null body rather than an actual bodyless HTTP204 response"
+  },
+  "proposal": {
+    "path": "docs/research/new-three-2026-10-03/rpc-void-fix-proposal-2026-10-04/publish-owner-approved.ts",
+    "originalSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
+    "proposedSha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c",
+    "behavior": "If body is absent, accept only method POST, exact rpc/promote_story_spec_v2, and status204; return null and continue existing complete catalog/readback validation.",
+    "preserved": "All GET/PATCH empty-body rejection, exact count checks, request deadlines, response-size limits, existing JSON-null200 handling, complete expected review RPC body, and mandatory full catalog/spec/stage publication readback."
+  },
+  "regression": {
+    "schemaVersion": "new-three-void-rpc-regression-v1",
+    "capturedAt": "2026-10-04T04:29:23.194Z",
+    "ok": true,
+    "originalSourceSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
+    "proposedSourceSha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c",
+    "sqlSha256": "c70dc674393241675c6c9e18fc13095983c33cd8737c530a5897479ab0eb357d",
+    "redSignal": "HTTP204 succeeds but Response.body is null; current source throws Empty database response",
+    "originalSourceMutated": false,
+    "deployedSourceMutated": false,
+    "liveRequests": 0,
+    "mockedRequests": 17,
+    "environmentFilesRead": 0,
+    "databaseReads": 0,
+    "databaseMutations": 0,
+    "providerRequests": 0,
+    "authMutations": 0,
+    "checks": 18,
+    "results": [
+      {
+        "name": "current source reproduces successful bodyless void-RPC error",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "proposal accepts actual void RPC HTTP204 without a reader",
+        "outcome": "PASS"
+      },
+      {
+        "name": "void RPC bodyless HTTP200 remains fail closed",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "existing JSON-null void response remains supported",
+        "outcome": "PASS"
+      },
+      {
+        "name": "GET bodyless HTTP204 still fails",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "PATCH bodyless HTTP204 still fails",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "GET bodyless HTTP200 still fails",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "PATCH bodyless HTTP200 still fails",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "GET streamed empty body still fails row shape",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "PATCH streamed empty body still fails row shape",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "void RPC HTTP401 remains failure",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "void RPC bodyless unexpected HTTP201 remains failure",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "PATCH legitimate zero-row exact count still returns zero rows",
+        "outcome": "PASS"
+      },
+      {
+        "name": "GET complete exact count still returns rows",
+        "outcome": "PASS"
+      },
+      {
+        "name": "GET truncated count still fails",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "PATCH omitted exact count still fails",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "oversized body still fails",
+        "outcome": "REJECTED_AS_REQUIRED"
+      },
+      {
+        "name": "mandatory complete catalog and publication readback source is unchanged after RPC",
+        "outcome": "PASS"
+      }
+    ]
+  },
+  "executionBounds": {
+    "managedSourceUnchanged": true,
+    "liveRequestsByThisAgent": 0,
+    "environmentFilesRead": 0,
+    "databaseReads": 0,
+    "databaseMutations": 0,
+    "providerRequests": 0,
+    "authMutations": 0
+  },
+  "nextStep": "Root completes exact-selection recovery using unchanged attested helper and records47 valid publications. Only after root handoff, copy the narrow fix and committed regression into MANAGED for receiptPR149 review/CI. No selection/baseline replacement or extra CAS/RPC retries.",
+  "resolutionQualification": {
+    "capturedAt": "2026-10-04T04:32:52.406Z",
+    "finalPublicationReceiptSha256": "5ceefd88f58b635734434cf2741d943e9a90a8a25af507d3fd3de56860e59338",
+    "totalValidPublications": 47,
+    "originalHelperVerifyPassed": "root reported 2026-10-04T04:31:25Z before applying code change",
+    "fixedPublisherSha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c",
+    "offlineChecks": 82,
+    "negativeChecks": 66,
+    "originalRedAndInterruptionReceiptsRetained": true
+  }
+}

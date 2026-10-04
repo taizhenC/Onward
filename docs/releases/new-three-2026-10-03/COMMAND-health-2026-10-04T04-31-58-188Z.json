@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "new-three-command-receipt-v1",
+  "runId": "new-three-health-2026-10-04T04-31-58-188Z-94dc00ca-29d1-4481-bda2-d9cd11c34f3c",
+  "mode": "health",
+  "completedAt": "2026-10-04T04:32:02.903Z",
+  "exitCode": 0,
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/check-db.ts"
+  ],
+  "rawLog": "D:\\code_save\\Onward\\docs\\research\\new-three-2026-10-03\\health-2026-10-04T04-31-58-188Z.log",
+  "secretValuesLoggedByWrapper": false,
+  "temporaryProcessOnlyTelemetryProbeSecret": true,
+  "qualification": "Read-only production catalog/schema and invalid/closed RPC probes; a caller-only temporary probe secret does not establish deployed telemetry configuration. No live Auth account or provider run."
+}

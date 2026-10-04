@@ -1,7 +1,7 @@
 {
   "schemaVersion": "new-three-production-canary-implementation-v1",
   "preparedAt": "2026-10-04T04:08:41.000Z",
-  "status": "prepared-offline-only; root independent source review PASS; actual postpublication execution pending",
+  "status": "prepared-offline-only; initial root source review PASS retained historically; CI integration fix offline PASS; root revision review pending",
   "productionOrigin": "https://onwardapp.me",
   "expectedSupabaseHostname": "mbcqkljfekkxlgittzal.supabase.co",
   "runtimeRoot": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward",
@@ -9,7 +9,7 @@
   "helperFiles": [
     {
       "file": "docs/research/new-three-2026-10-03/run-production-canary.ts",
-      "sha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2"
+      "sha256": "5292a4b34eb62daa9ee29ea977a19dda14478696bdff6cc470b0ca75b4971293"
     },
     {
       "file": "docs/research/new-three-2026-10-03/run-production-canary.mjs",
@@ -49,7 +49,7 @@
   },
   "authorityManifestRequired": {
     "schemaVersion": "new-three-production-canary-authority-v1",
-    "helperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2",
+    "helperSha256": "5292a4b34eb62daa9ee29ea977a19dda14478696bdff6cc470b0ca75b4971293",
     "fixtureIndex": 3,
     "fixtureSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
     "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
@@ -81,7 +81,7 @@
     "Published Somerville full row with exact frozen prose/ledger plus publishable review/lifecycle; receipt target file and bytes match",
     "Verified production bundle/local Supabase project identity",
     "Exact post-publication-refresh merged40SHA Production success, proposed library, owner authorization, and source-head CI",
-    "Five mandatory successful named CI checks; only successful or skipped other checks"
+    "Five mandatory successful named CI checks, unique names and noncontradictory completed execution state/status; only completed skipped attest-recipe-promotion may be skipped"
   ],
   "deliveryAssertions": [
     "One normal anonymous Auth signup, one unchanged adult intake POST; no forced match/fixture rewriting",
@@ -124,7 +124,7 @@
     "ok": true,
     "launcherSelfTestExitCode": 0,
     "isolatedTypecheckExitCode": 0,
-    "negativeTests": 9,
+    "negativeTests": 16,
     "cleanupScenarios": 2,
     "cookieChecks": 2,
     "authAbsenceChecks": 4,
@@ -132,7 +132,9 @@
     "networkRequests": 0,
     "authMutations": 0,
     "databaseMutations": 0,
-    "details": "Rendered-only source HTML guards, report-option/flight false evidence, altered/truncated chunk and premature completion rejection, strict CLI shape, exact404/known missing Auth semantics, cookie path/removal, confirmation failure still checks all3 known absences, deletion/first absence failure still checks later absences."
+    "details": "Rendered-only source HTML guards, report-option/flight false evidence, altered/truncated chunk and premature completion rejection, strict CLI shape, exact404/known missing Auth semantics, cookie path/removal, confirmation failure still checks all3 known absences, deletion/first absence failure still checks later absences. CI proof synthetic positives: completed SUCCESS, completed skipped attest-recipe-promotion, legacy Vercel state SUCCESS. Rejected pending state/success, failure state/success, in-progress status/success, failed conclusion, unknown skipped check, duplicate identity, SUCCESS state/failed conclusion.",
+    "ciProofPositiveCases": 3,
+    "ciProofNegativeCases": 7
   },
   "output": {
     "attempt": "PRODUCTION-CANARY-SOMERVILLE-ATTEMPT.json",
@@ -152,14 +154,33 @@
     "observedAt": "2026-10-04T04:09:32.476Z",
     "ok": true,
     "findings": [],
-    "helperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2"
+    "helperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2",
+    "scope": "Historical review of original helper74dc only; revision2 needs root exact-hash delta review."
   },
   "qualifications": [
-    "No live production canary has been executed by this preparation task. Root independent helper source review and actual offline self-test PASS are recorded in CANARY-CROSS-REVIEW.json; actual47 publication and exact postpublication deployment proof remain required.",
+    "No live production canary has been executed by this preparation task. Original helper root review PASS remains historical; the bounded CI integration fix passed blocked-network self-test and isolated typecheck. Root delta review and actual47 publication/exact postpublication deployment proof remain required.",
     "Supersedes prior deployment plan execution examples: exactly one fixed Somerville case, no new Franklin fixture and no three-canary retry scheme.",
     "Availability is established by separately audited actual47 published catalog including all3; one successful canary can establish only this fixed normal route example.",
     "Real104 failed96/101 with3 wrong definitive; supplemental63-stage frozen memory preflight lost5/9 positive targets before provider execution. Those fixture losses do not prove Franklin universally unreachable in production’s47 published-stage catalog.",
     "Old Blackwell receipt remains overallfalse from normal confirmation failure; its recorded partial delivery cannot be borrowed as a PASS.",
     "Source review qualifications and late-memory probability remain unchanged. No candidate, stage, runtime, recipe, gold, case or matching threshold was edited."
-  ]
+  ],
+  "revision": {
+    "number": 2,
+    "changedAt": "2026-10-04T04:16:04.000Z",
+    "reason": "The actual saved GitHub proof distinguishes state/status COMPLETED from conclusion SUCCESS. The previous final all-check predicate preferred execution state over conclusion and incorrectly refused completed successful checks.",
+    "previousHelperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2",
+    "helperSha256": "5292a4b34eb62daa9ee29ea977a19dda14478696bdff6cc470b0ca75b4971293",
+    "changes": [
+      "Dedicated CI proof guard evaluates outcome conclusion and independently validates completed execution state/status, retaining legacy successful commit-status compatibility.",
+      "Exactly the five mandatory named successful checks, unique identities, only completed skipped attest-recipe-promotion accepted; unknown skip and contradictory/incomplete outcomes rejected.",
+      "Three synthetic positive CI shape cases and seven rejection cases added to blocked-network self-test."
+    ],
+    "unchanged": "Fixture, source/story/stage/case bytes, live routes, network budgets, credentials handling, normal cleanup and story/source assertions are unchanged.",
+    "historicalSource": {
+      "file": "docs/research/new-three-2026-10-03/run-production-canary.historical-74dc29e4.txt",
+      "sha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2"
+    },
+    "rootReviewQualification": "CANARY-CROSS-REVIEW.json remains an immutable historical review of previous helper74dc; root will separately record review of this new exact helper."
+  }
 }

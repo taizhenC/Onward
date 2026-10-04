@@ -148,7 +148,11 @@ async function liveTransport(): Promise<Transport> {
         ...(body === undefined ? {} : {body: JSON.stringify(body)})});
       assert(response.ok, `Curated database request failed (${response.status}); response contents withheld`);
       assert(Number(response.headers.get("content-length") ?? 0) <= 4 * 1024 * 1024, "Database response too large");
-      const reader = response.body?.getReader(); assert(reader, "Empty database response");
+      const reader = response.body?.getReader();
+      if (!reader) {
+        assert(method === "POST" && table === "rpc/promote_story_spec_v2" && response.status === 204, "Empty database response");
+        return null;
+      }
       const chunks: Uint8Array[] = []; let size = 0;
       while (true) {const next = await reader.read(); if (next.done) break; size += next.value.length;
         assert(size <= 4 * 1024 * 1024, "Database response exceeded bounded limit"); chunks.push(next.value);}

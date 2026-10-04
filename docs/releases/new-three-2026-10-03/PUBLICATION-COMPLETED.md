@@ -1,0 +1,11 @@
+# Three-story publication completed
+
+Benjamin Franklin, Joshua Slocum and Mary Somerville are published in the production database. The exact readback has 47 valid published StorySpecs, zero quarantined rows, and all prior 44 publications and unrelated full rows/lifecycle timestamps preserved. [Machine completion](PUBLICATION-COMPLETION.json), [immutable publication receipt](PUBLICATION-RECEIPT.json).
+
+[PR #148](https://github.com/taizhenC/Onward/pull/148) merged as `60c6ee9e1262abe199b8a9aae56ace60201e0545`. The checked PR head, exact main CI, and Production deployment `6836764626` all succeeded before publication. The owner authorization binds only these three unchanged reviewed texts and explicitly retains the failed matching evidence.
+
+The database promotion procedure returns void. Each of the first three executions successfully committed one target but the client then rejected the successful empty HTTP204 response. The bounded recovery kept the original executable, selection, deployment proof and baseline byte pins. Before each continuation, complete independent readback proved counts 45, 46 and 47 and preservation of every unrelated row. Already published targets were verified against their original full review archives and skipped. There were exactly three review compare-and-sets and three promotions; the fourth execution made no writes and completed immutable receipts. See [diagnosis](VOID-RPC-RESPONSE-DIAGNOSIS.md) and [independent recovery review](VOID-RPC-RECOVERY-REVIEW.md).
+
+A separate original-source read-only verification passed after publication; its schema name refers to the planned post-refresh mode, but this actual invocation preceded the later worker refresh and proves database state under M1 only. The production foundation check passed all 22 checks, including all 47 public stages matching authored bytes. Its caller-only temporary telemetry secret establishes probe behavior, not deployed telemetry configuration.
+
+The real 104-case matching trust gate remains failed and the frozen supplemental preflight remains blocked. Publishing under the reviewed owner exception does not change either result. The next records will cover the checked response-handling fix, exact postpublication refresh and bounded live canary.

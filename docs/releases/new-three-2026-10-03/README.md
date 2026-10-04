@@ -33,3 +33,9 @@ The owner has not reviewed or approved these three texts. [The per-set handoff](
 ## Completed draft verification
 
 All [67 final local CI checks passed](CI-2026-10-04T00-53-38-461Z.json) on the restored-library source commit `082948bb8d69dbef70fcfe22cbb4821c94df7857`. [The final handoff](HANDOFF.md) connects research, writing, independent review, database preservation, CI and the remaining release gates. [The failure audit](FAILURE-AUDIT.md) and [offline retrieval reproduction](REPRO-RETRIEVAL.md) retain the measured failures; no matching fix or passing real release gate is claimed.
+
+## Owner-approved publication continuation
+
+The owner subsequently confirmed review and directed merging PR #148 and publication: “good, I reiview it, lets merge that and publish to the production”. [The exact new authorization](OWNER-AUTHORIZATION.md) binds the unchanged three-story reading packet and original failed evidence. It is a separate decision from the earlier ten-story exception. The earlier sections preserve the draft-handoff checkpoints.
+
+The publication branch now prepares the exact measured 63-stage library and a separately pinned release entry. Fresh CI, checked merge, exact production deployment, guarded publication of only these three rows, worker refresh and live verification will be recorded as they actually complete. The previous 44 publications and all unrelated rows remain preservation requirements. A release exception does not turn the matching failure or blocked supplemental run into a passing result.

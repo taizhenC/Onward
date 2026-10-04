@@ -82,6 +82,8 @@ jobs:
         run: node --import tsx scripts/check-story-batch.ts docs/releases/remaining-story-review-2026-09-20/held-repairs 1 --require-hashes
       - name: Verify the three October editorial drafts offline
         run: node --import tsx docs/releases/new-three-2026-10-03/check-and-seed.ts
+      - name: Verify the exact three-story owner publication guards offline
+        run: node --import tsx docs/releases/new-three-2026-10-03/check-owner-publication.ts
       - run: npm run check-story-spec-migration
       - run: npm run check-story-artifact
       - run: npm run check-derived-output-retention

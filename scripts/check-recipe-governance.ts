@@ -81,6 +81,25 @@ const OWNER_AUTHORIZED_LIBRARY_RELEASE = {
   authorizationPath: "docs/releases/new-stories-production-2026-10-02/OWNER-AUTHORIZATION.json",
 } as const;
 
+// A separate owner instruction covers only this later three-story snapshot.
+// The ten-story exception above remains historical and cannot authorize it.
+const OWNER_AUTHORIZED_NEW_THREE_RELEASE = {
+  librarySha256: "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+  previousLibrarySha256: "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+  evidenceId: "ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247",
+  evidenceSha256: "f6764d3a637ec1962851559c1772de99dd4b8193bb60dd237a66fdf2c87445eb",
+  sourceCommit: "df19fecee5aafafd57a7f349380a294522c80b44",
+  inputTreeSha256: "54c7d302ccd423f5bf617aa68f5b6fb4ad5262277340a9086841c997e37b41b7",
+  recipeId: "keyword-rerank-figure-library-50-2026-07-02",
+  recipeManifestSha256: "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+  authorizationSha256: "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+  authorizationPath: "docs/releases/new-three-2026-10-03/OWNER-AUTHORIZATION.json",
+  readingPacketSha256: "475c81587af5559164e9abc810127a213e8edd0527076d7bbf4a882ffde87e1b",
+  frozenInputsSha256: "76acc1d8363bcac48d46ca6eb2fad71bc04bf36f883ee0a1862735ccc9f0ccf0",
+  draftImportReceiptSha256: "18e02ea53697778eeeaeb4afc336c1a97723eb51fdca487fcb76fcac4396c262",
+  coverageSha256: "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+} as const;
+
 // The first production selector predates challenger promotion governance. Keep
 // exactly this retain record as the one explicit bootstrap exception; no future
 // retain decision may mint a promoted recipe.
@@ -208,7 +227,10 @@ function main(): void {
   console.log(
     "  synthetic/legacy evidence is retained for audit but cannot authorize promotion",
   );
-  if (installedLibraryRelease.ownerAuthorizationSha256) {
+  if (installedLibraryRelease.sha256 === OWNER_AUTHORIZED_NEW_THREE_RELEASE.librarySha256 &&
+      installedLibraryRelease.ownerAuthorizationSha256) {
+    console.log("  owner-authorized three-story content exception: recorded real matching trust gate FAIL; supplemental prefilter blocked before provider calls; security audit is not exempted");
+  } else if (installedLibraryRelease.ownerAuthorizationSha256) {
     console.log("  owner-authorized content exception: recorded real matching trust gate FAIL; recorded development dependency audit FAIL");
   }
 }
@@ -1875,7 +1897,11 @@ function validateLibraryReleases(
         `${evidenceId} must come from the real reranker`,
       );
       if (release.ownerAuthorizationSha256) {
-        validateOwnerLibraryAuthorization(release, state, evidence, undefined, index);
+        if (release.sha256 === OWNER_AUTHORIZED_NEW_THREE_RELEASE.librarySha256) {
+          validateNewThreeOwnerLibraryAuthorization(release, state, evidence, undefined, index);
+        } else {
+          validateOwnerLibraryAuthorization(release, state, evidence, undefined, index);
+        }
       } else {
         assert(
           evidence.metrics.trustGate.passed,
@@ -1976,6 +2002,100 @@ function validateOwnerLibraryAuthorization(
   assert(createHash("sha256").update(committedFile(sourceCommit, "package-lock.json", evidence.evidenceId)).digest("hex") === security.packageLockSha256, "owner decision changed the historical dependency lock");
   assert(security.reportFile === "SECURITY-RELEASE-PATH-20261003T013352Z.json", "owner security report changed");
   assert(sha256File(resolve(packet, string(security.reportFile, "owner security report"))) === security.reportSha256, "owner security evidence changed");
+}
+
+function validateNewThreeOwnerLibraryAuthorization(
+  release: LibraryRelease,
+  state: GovernanceState,
+  evidence: EvalEvidence,
+  authorizationBytes: Buffer = readFileSync(resolve(process.cwd(), OWNER_AUTHORIZED_NEW_THREE_RELEASE.authorizationPath)),
+  releaseIndex = 2,
+): void {
+  const pin = OWNER_AUTHORIZED_NEW_THREE_RELEASE;
+  assert(releaseIndex === 2, "new-three owner exception is restricted to its exact third lineage entry");
+  assert(release.sha256 === pin.librarySha256 && release.supersedes === pin.previousLibrarySha256, "new-three owner exception changed its library or predecessor");
+  assert(release.ownerAuthorizationSha256 === pin.authorizationSha256, "new-three owner exception must name its exact decision");
+  assert(canonicalJson(release.evidenceIds) === canonicalJson([pin.evidenceId]), "new-three owner exception cannot authorize different evidence");
+  assert(evidence.evidenceId === pin.evidenceId && evidence.recipeId === pin.recipeId, "new-three owner exception changed evidence or recipe");
+  assert(evidence.config.provider === "real" && !evidence.legacyImported, "new-three owner exception requires its fresh real reranker evidence");
+  const approvedRecipe = state.recipes.get(pin.recipeId);
+  assert(approvedRecipe && evidence.recipeManifestSha256 === pin.recipeManifestSha256 && approvedRecipe.manifestSha256 === pin.recipeManifestSha256 && manifestSha256(approvedRecipe) === pin.recipeManifestSha256, "new-three owner exception changed its recipe manifest");
+  assert(evidence.provenance.gitCommit === pin.sourceCommit && evidence.provenance.inputTreeSha256 === pin.inputTreeSha256, "new-three owner exception changed its measured source tree");
+  assert(createHash("sha256").update(authorizationBytes).digest("hex") === pin.authorizationSha256, "new-three owner authorization bytes changed");
+  const authorization = record(JSON.parse(authorizationBytes.toString("utf8")), "new-three owner authorization");
+  exactKeys(authorization, ["schemaVersion", "decisionId", "authorizedAt", "ownerId", "ownerStatement", "authorizationSource", "authorizationScope", "librarySha256", "previousLibrarySha256", "evidenceId", "evidenceSha256", "evidenceSourceCommit", "evidenceInputTreeSha256", "recipeId", "recipeManifestSha256", "recipeSelection", "readingPacket", "frozenInputs", "draftImportReceipt", "supplementalCoverage", "targets", "unchangedInputs", "observedMatching", "constraints"], "new-three owner authorization");
+  literal(authorization.schemaVersion, "owner-authorized-new-three-library-exception-v1", "new-three owner schema");
+  literal(authorization.decisionId, "owner-publish-new-three-2026-10-04", "new-three owner decision");
+  literal(authorization.ownerId, "taizhenC", "new-three owner operator");
+  literal(authorization.ownerStatement, "good, I reiview it, lets merge that and publish to the production", "new-three owner instruction");
+  literal(authorization.authorizationSource, "current-conversation-user-message", "new-three owner instruction source");
+  assert(authorization.librarySha256 === pin.librarySha256 && authorization.previousLibrarySha256 === pin.previousLibrarySha256, "new-three owner decision changed library ancestry");
+  assert(authorization.evidenceId === pin.evidenceId && authorization.evidenceSha256 === pin.evidenceSha256, "new-three owner decision changed the failed evidence pin");
+  assert(authorization.evidenceSourceCommit === pin.sourceCommit && authorization.evidenceInputTreeSha256 === pin.inputTreeSha256, "new-three owner decision changed its measured source tree");
+  assert(authorization.recipeId === pin.recipeId && authorization.recipeManifestSha256 === pin.recipeManifestSha256, "new-three owner decision changed its recipe");
+  assert(authorization.authorizedAt === release.releasedAt, "new-three release time differs from its owner decision");
+  const tree = committedTree(pin.sourceCommit, pin.evidenceId);
+  assert(tree.librarySha256 === pin.librarySha256 && tree.inputTreeSha256 === pin.inputTreeSha256, "new-three owner decision does not bind its committed library and tree");
+  const sourceRegistry = record(JSON.parse(committedFile(pin.sourceCommit, "config/story-recipes.json", pin.evidenceId).toString("utf8")), "new-three source recipe registry");
+  assert(canonicalJson(authorization.recipeSelection) === canonicalJson(sourceRegistry.selection), "new-three owner decision changed its measured recipe selector");
+  const evidencePath = resolve(EVAL_HISTORY_DIR, evidence.dataset.version, evidence.recipeId, `${evidence.evidenceId}.json`);
+  assert(sha256File(evidencePath) === pin.evidenceSha256, "new-three failed evidence bytes changed");
+  assert(canonicalJson(evidence) === canonicalJson(readJson(evidencePath)), "new-three evidence no longer equals its exact preserved artifact");
+  const observed = record(authorization.observedMatching, "new-three observed matching");
+  exactKeys(observed, ["trustGatePassed", "metrics"], "new-three observed matching");
+  assert(observed.trustGatePassed === false && evidence.metrics.trustGate.passed === false, "new-three owner exception must retain the failed trust gate");
+  assert(canonicalJson(observed.metrics) === canonicalJson(evidence.metrics), "new-three owner decision hid or changed failed metrics");
+
+  const packet = "docs/releases/new-three-2026-10-03";
+  const checkDocument = (value: unknown, filename: string, expectedSha256: string): void => {
+    const document = record(value, `new-three ${filename} pin`);
+    exactKeys(document, ["path", "sha256"], `new-three ${filename} pin`);
+    assert(document.path === `${packet}/${filename}` && document.sha256 === expectedSha256, `new-three ${filename} decision pin changed`);
+    const path = string(document.path, `new-three ${filename} path`);
+    assert(sha256File(resolve(process.cwd(), path)) === expectedSha256, `new-three ${filename} bytes changed`);
+    assert(createHash("sha256").update(committedFile(pin.sourceCommit, path, pin.evidenceId)).digest("hex") === expectedSha256, `new-three ${filename} is not its measured input`);
+  };
+  checkDocument(authorization.readingPacket, "READING-PACKET.md", pin.readingPacketSha256);
+  checkDocument(authorization.frozenInputs, "INPUTS.json", pin.frozenInputsSha256);
+  checkDocument(authorization.draftImportReceipt, "DATABASE-RECEIPT.json", pin.draftImportReceiptSha256);
+  const inputs = record(readJson(resolve(process.cwd(), packet, "INPUTS.json")), "new-three frozen inputs");
+  const written = array(inputs.candidates, "new-three frozen candidates").map(raw => record(raw, "new-three frozen candidate"));
+  const targets = array(authorization.targets, "new-three owner targets").map(raw => record(raw, "new-three owner target"));
+  const exactKeysSet = ["franklin_b", "slocum_j", "somerville_m"];
+  assert(targets.length === 3 && written.length === 3 && new Set(targets.map(target => target.figureKey)).size === 3, "new-three owner exception must cover exactly three unique stories");
+  assert(canonicalJson(targets.map(target => target.figureKey).sort()) === canonicalJson(exactKeysSet), "new-three owner exception changed its three figures");
+  for (const target of targets) {
+    exactKeys(target, ["figureKey", "storySpecId", "candidateSha256", "stageSha256"], "new-three owner target");
+    const original = written.find(item => item.figureKey === target.figureKey);
+    assert(original && target.storySpecId === original.storySpecId && target.candidateSha256 === original.candidateSha256 && target.stageSha256 === original.stageSha256, "new-three owner exception changed a reviewed story pin");
+    for (const kind of ["candidate", "stage"] as const) {
+      const path = string(original[`${kind}File`], `new-three ${kind} file`);
+      assert(path.startsWith("docs/research/new-three-2026-10-03/") && !path.includes("..") && !path.includes("\\") && path.endsWith(`.${kind}.json`), `new-three ${kind} path escaped its packet`);
+      const expected = sha(target[`${kind}Sha256`], `new-three ${kind} hash`);
+      assert(sha256File(resolve(process.cwd(), path)) === expected, `new-three reviewed ${kind} bytes changed`);
+      assert(createHash("sha256").update(committedFile(pin.sourceCommit, path, pin.evidenceId)).digest("hex") === expected, `new-three ${kind} is outside its measured source`);
+    }
+  }
+  // These are historical source pins, not an indefinite freeze on future
+  // independently governed releases or security fixes. Publication adapters
+  // separately check the exact inputs used by the current operation.
+  const requiredInputs = ["config/prompt-releases.json", "config/story-recipes.json", "evals/match.json", "lib/keyword-match.ts", "lib/llm-real.ts", "lib/match-config.ts", "lib/match-recipe-constants.ts", "lib/matching.ts"];
+  const unchanged = array(authorization.unchangedInputs, "new-three unchanged inputs").map(raw => record(raw, "new-three input pin"));
+  assert(canonicalJson(unchanged.map(input => input.path).sort()) === canonicalJson([...requiredInputs].sort()), "new-three owner decision changed its matching input pin set");
+  for (const input of unchanged) {
+    exactKeys(input, ["path", "sha256"], "new-three historical input pin");
+    const path = string(input.path, "new-three historical input path");
+    assert(createHash("sha256").update(committedFile(pin.sourceCommit, path, pin.evidenceId)).digest("hex") === input.sha256, `new-three owner decision changed historical matching input ${path}`);
+  }
+  const coverage = record(authorization.supplementalCoverage, "new-three supplemental coverage");
+  exactKeys(coverage, ["datasetVersion", "path", "sha256", "providerCalls", "preflightPassed", "rerankTrials", "lostPositiveCaseIndexesZeroBased"], "new-three supplemental coverage");
+  assert(coverage.datasetVersion === "synthetic-new-three-12-2026-10-03" && coverage.path === "evals/new-three-12-2026-10-03.json" && coverage.sha256 === pin.coverageSha256, "new-three owner decision changed frozen supplementary cases");
+  assert(coverage.providerCalls === 0 && coverage.rerankTrials === 0 && coverage.preflightPassed === false && canonicalJson(coverage.lostPositiveCaseIndexesZeroBased) === canonicalJson([0, 1, 2, 4, 6]), "new-three owner decision must retain the prefilter failure without provider accuracy");
+  assert(sha256File(resolve(process.cwd(), string(coverage.path, "new-three coverage path"))) === pin.coverageSha256, "new-three frozen supplementary cases changed");
+  const constraints = record(authorization.constraints, "new-three owner constraints");
+  const requiredConstraints = ["onlyExactThreeReviewedInputs", "sourceCanonicalTextUnchanged", "matchingImplementationUnchanged", "recipeThresholdsUnchanged", "evidenceUnchanged", "noRecipePromotion", "prior44PublicationPreservationRequired", "strictEditorialPromotionRequired", "supplementalCoverageFailureRetained", "auditThresholdUnchanged", "noDependencyAdvisorySuppression"];
+  exactKeys(constraints, requiredConstraints, "new-three owner constraints");
+  assert(requiredConstraints.every(key => constraints[key] === true), "new-three owner decision cannot broaden publication, matching, promotion, or audit authority");
 }
 
 function committedFile(commit: string, path: string, evidenceId: string): Buffer {
@@ -2115,6 +2235,7 @@ function runTamperSelfChecks(state: GovernanceState): void {
     "synthetic evidence authorized a promotion",
   );
   runOwnerLibrarySelfChecks(state);
+  runNewThreeOwnerLibrarySelfChecks(state);
   runManifestV2SelfChecks(state);
 }
 
@@ -2144,6 +2265,79 @@ function runOwnerLibrarySelfChecks(state: GovernanceState): void {
   rejects("failed evidence on an ordinary release", () => validateLibraryReleases([releases[0]!, ordinary], state));
   rejects("exception on a future release", () => validateOwnerLibraryAuthorization(release, state, evidence, bytes, 2));
   console.log("  owner exception tamper checks: PASS (9 negative cases; ordinary passing-evidence rule preserved)");
+}
+
+function runNewThreeOwnerLibrarySelfChecks(state: GovernanceState): void {
+  const pin = OWNER_AUTHORIZED_NEW_THREE_RELEASE;
+  const releases = loadLibraryReleases();
+  const release = releases.find(item => item.sha256 === pin.librarySha256);
+  if (!release) return;
+  const evidence = requiredMap(state.evidence, pin.evidenceId);
+  const bytes = readFileSync(resolve(process.cwd(), pin.authorizationPath));
+  const authorization = record(JSON.parse(bytes.toString("utf8")), "new-three self-check authorization");
+  let negativeCount = 0;
+  const rejects = (label: string, run: () => void) => {
+    let rejected = false;
+    try { run(); } catch { rejected = true; }
+    assert(rejected, `new-three owner exception self-check accepted ${label}`);
+    negativeCount += 1;
+  };
+  const alteredDecision = (alter: (decision: Record<string, unknown>) => void): Buffer => {
+    const copy = structuredClone(authorization);
+    alter(copy);
+    return Buffer.from(JSON.stringify(copy));
+  };
+  const validateDecisionBytes = (modified: Buffer) =>
+    validateNewThreeOwnerLibraryAuthorization(release, state, evidence, modified);
+  rejects("the ten-story lineage slot", () => validateNewThreeOwnerLibraryAuthorization(release, state, evidence, bytes, 1));
+  rejects("a future lineage slot", () => validateNewThreeOwnerLibraryAuthorization(release, state, evidence, bytes, 3));
+  rejects("another library", () => validateNewThreeOwnerLibraryAuthorization({...release, sha256: "0".repeat(64)}, state, evidence));
+  rejects("another predecessor", () => validateNewThreeOwnerLibraryAuthorization({...release, supersedes: "0".repeat(64)}, state, evidence));
+  rejects("another decision pin", () => validateNewThreeOwnerLibraryAuthorization({...release, ownerAuthorizationSha256: "0".repeat(64)}, state, evidence));
+  rejects("different release evidence", () => validateNewThreeOwnerLibraryAuthorization({...release, evidenceIds: [OWNER_AUTHORIZED_LIBRARY_RELEASE.evidenceId]}, state, evidence));
+  rejects("different evidence identity", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, evidenceId: OWNER_AUTHORIZED_LIBRARY_RELEASE.evidenceId}));
+  rejects("another recipe", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, recipeId: "another-recipe"}));
+  rejects("another manifest", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, recipeManifestSha256: "0".repeat(64)}));
+  rejects("an altered rerank model", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, config: {...evidence.config, model: "another-model"}}));
+  rejects("altered gold data", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, dataset: {...evidence.dataset, sha256: "0".repeat(64)}}));
+  rejects("self-declared promotable evidence", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, promotable: true}));
+  const wrongPromptRecipe = {...requiredMap(state.recipes, pin.recipeId), rerankPromptVersion: "another-prompt"};
+  const wrongPromptState = {...state, recipes: new Map(state.recipes).set(pin.recipeId, wrongPromptRecipe)};
+  rejects("an altered rerank prompt with an unchanged claimed manifest hash", () => validateNewThreeOwnerLibraryAuthorization(release, wrongPromptState, evidence));
+  rejects("a stub provider", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, config: {...evidence.config, provider: "stub"}}));
+  rejects("legacy evidence", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, legacyImported: true}));
+  rejects("another measured commit", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, provenance: {...evidence.provenance, gitCommit: "0".repeat(40)}}));
+  rejects("another measured input tree", () => validateNewThreeOwnerLibraryAuthorization(release, state, {...evidence, provenance: {...evidence.provenance, inputTreeSha256: "0".repeat(64)}}));
+  const forgedPass = structuredClone(evidence);
+  forgedPass.metrics.trustGate.passed = true;
+  rejects("a forged passing trust gate", () => validateNewThreeOwnerLibraryAuthorization(release, state, forgedPass));
+  const alteredMetrics = structuredClone(evidence);
+  alteredMetrics.metrics.calibration.definitiveWrong = 0;
+  rejects("hidden wrong definitive matches", () => validateNewThreeOwnerLibraryAuthorization(release, state, alteredMetrics));
+  rejects("altered decision bytes", () => validateDecisionBytes(Buffer.concat([bytes, Buffer.from("\n")])));
+  rejects("another owner decision", () => validateDecisionBytes(alteredDecision(copy => { copy.decisionId = "another-owner-decision"; })));
+  rejects("a changed historical selector", () => validateDecisionBytes(alteredDecision(copy => { copy.recipeSelection = {...record(copy.recipeSelection, "self-check selector"), primaryRecipeId: "another-recipe"}; })));
+  rejects("a changed prompt source pin", () => validateDecisionBytes(alteredDecision(copy => {
+    const inputs = array(copy.unchangedInputs, "self-check inputs");
+    const prompt = inputs.map(raw => record(raw, "self-check input")).find(input => input.path === "config/prompt-releases.json");
+    assert(prompt, "new-three self-check needs the prompt source pin");
+    prompt.sha256 = "0".repeat(64);
+  })));
+  rejects("another story target", () => validateDecisionBytes(alteredDecision(copy => { copy.targets = [...array(copy.targets, "self-check targets"), {figureKey: "another-figure"}]; })));
+  rejects("a changed reading packet", () => validateDecisionBytes(alteredDecision(copy => { copy.readingPacket = {...record(copy.readingPacket, "self-check reading pin"), sha256: "0".repeat(64)}; })));
+  rejects("claimed supplemental provider success", () => validateDecisionBytes(alteredDecision(copy => { copy.supplementalCoverage = {...record(copy.supplementalCoverage, "self-check supplemental"), providerCalls: 12, preflightPassed: true}; })));
+  rejects("promotion authority in the owner decision", () => validateDecisionBytes(alteredDecision(copy => { copy.constraints = {...record(copy.constraints, "self-check constraints"), noRecipePromotion: false}; })));
+  const ordinary = {...release};
+  delete ordinary.ownerAuthorizationSha256;
+  rejects("failed evidence on the ordinary release path", () => validateLibraryReleases([...releases.slice(0, 2), ordinary], state));
+  rejects("using the ten-story exception for the new-three release", () => validateOwnerLibraryAuthorization(release, state, evidence, undefined, 2));
+  const promotedRegistry = {...state.registry, promotions: [...state.registry.promotions, {
+    recipeId: pin.recipeId,
+    decisionId: string(authorization.decisionId, "new-three self-check decision ID"),
+    promotedAt: release.releasedAt,
+  }]};
+  rejects("using the content owner decision as recipe-promotion authority", () => validateRegisteredPromotions({...state, registry: promotedRegistry}));
+  console.log(`  new-three owner exception tamper checks: PASS (${negativeCount} negative cases; ordinary passing-evidence and recipe-promotion rules preserved)`);
 }
 
 function runManifestV2SelfChecks(state: GovernanceState): void {

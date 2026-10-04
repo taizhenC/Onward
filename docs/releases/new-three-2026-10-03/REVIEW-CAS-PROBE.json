@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "new-three-review-cas-probe-v1",
+  "observedAt": "2026-10-04T04:00:00.407Z",
+  "projectHost": "mbcqkljfekkxlgittzal.supabase.co",
+  "target": "franklin_b:1727-1728-a-first-customer:v1",
+  "databaseMutations": 0,
+  "authMutations": 0,
+  "providerRequests": 0,
+  "fullDocumentFilter": {
+    "urlBytes": 39939,
+    "status": 400,
+    "usable": false
+  },
+  "rowVersionProbe": {
+    "urlBytes": 166,
+    "selectStatus": 200,
+    "numericXmin": true,
+    "matchingVersion": {
+      "status": 200,
+      "rows": 1
+    },
+    "differentVersion": {
+      "status": 200,
+      "rows": 0
+    }
+  },
+  "decision": "Use a fresh xmin selected together with the full target row; validate exact source/lifecycle; guard draft-to-review UPDATE by the observed xmin; require one exact returned row. Publication continues to use full expected-review-document CAS in existing promote_story_spec_v2 RPC.",
+  "qualification": "Read-only probes establish select/filter availability, not a completed guarded UPDATE. xmin is an immediate row-version guard, not durable identity. No runtime, schema, matching or database changes made by this probe.",
+  "primarySource": "https://www.postgresql.org/docs/17/ddl-system-columns.html"
+}

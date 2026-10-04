@@ -152,6 +152,18 @@ future dependency files; later security fixes must use the normal audit, and
 later matching changes must use the existing promotion governance. No audit
 command, threshold or workflow is disabled by the exception.
 
+A separate owner decision authorizes the exact three-story snapshot
+`1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90`.
+After the reviewed draft handoff disclosed 96/101 positive matches and three
+wrong definitive matches, the owner stated: “good, I reiview it, lets merge
+that and publish to the production”. The [three-story decision](releases/new-three-2026-10-03/OWNER-AUTHORIZATION.md)
+binds its unchanged reading packet, candidate/stage hashes, original failed
+real evidence and blocked supplemental coverage. Its JSON hash is
+`d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018`.
+This distinct fixed release preserves the previous 44 publications and leaves
+the matching gate failed. It does not extend the ten-story decision, authorize
+a recipe promotion or relax the normal passing-evidence rule for later content.
+
 Migration `0021` is schema-first compatible. Apply it before this application
 build, but first pause new stories and drain in-flight story/progress/deletion
 requests because it takes explicit session-then-artifact access-exclusive

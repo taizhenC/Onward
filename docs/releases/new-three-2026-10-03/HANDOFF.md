@@ -1,5 +1,7 @@
 # Three-story draft handoff — October 3, 2026
 
+This document preserves the draft checkpoint. The owner's later review and explicit merge/publication direction are recorded in [the separate exact-three authorization](OWNER-AUTHORIZATION.md). That decision preserves the failed matching evidence and supersedes the pending-owner hold below for these unchanged three texts. Publication and deployment execution receive separate receipts.
+
 Benjamin Franklin, Joshua Slocum and Mary Somerville are researched, written and independently checked. Their exact three StorySpecs and stages were inserted into the production database as drafts. Publication is held by matching failures and pending owner review.
 
 ## Reading and evidence

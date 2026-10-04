@@ -1,5 +1,7 @@
 # Matching release checks — three-story proposal
 
+These results preserve the original failed gate and publication hold. The owner's subsequent [exact-three release authorization](OWNER-AUTHORIZATION.md) directs publication of the unchanged reviewed texts after this disclosure. It does not change any metric, threshold, gold label, prompt or matching result below.
+
 The proposed 63-stage library is held. The original real-provider regression gate failed, and the supplemental coverage run stopped at shortlist preflight. Neither result authorizes a figure-library release or story publication.
 
 ## Original 104-case regression run

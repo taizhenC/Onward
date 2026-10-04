@@ -19,6 +19,16 @@
         "ev_6f9f15f110e062a26799e08df3b71ddf2de73be13d1f230a44b3262576a6ba1d"
       ],
       "ownerAuthorizationSha256": "454ea8a5eb1cba3c595d5824230cc2e5f1f4295bd6dae9e79c7958c3739a31d8"
+    },
+    {
+      "sha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+      "releasedAt": "2026-10-04T03:53:26.148Z",
+      "supersedes": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+      "note": "Owner-reviewed and explicitly directed publication of the exact Franklin, Slocum and Somerville three-story packet after disclosure of the real104 matching failure (96/101 positive; three wrong definitive; 3/3 misses). Supplemental12 remains blocked before provider calls by five lost shortlist targets. This separate fixed owner decision preserves all failed evidence, prior44 publications, immutable recipes, thresholds, prompts and gold; it authorizes no future release or recipe promotion.",
+      "evidenceIds": [
+        "ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247"
+      ],
+      "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018"
     }
   ]
 }

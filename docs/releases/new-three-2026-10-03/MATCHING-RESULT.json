@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "new-three-matching-handoff-v1",
+  "proposedLibrarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+  "releaseStatus": "held",
+  "regression": {
+    "sourceCommit": "df19fecee5aafafd57a7f349380a294522c80b44",
+    "evidenceId": "ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247",
+    "provider": "real",
+    "trials": 104,
+    "positiveCorrect": 96,
+    "positiveTotal": 101,
+    "missDetected": 3,
+    "missTotal": 3,
+    "wrongDefinitive": 3,
+    "wrongPartial": 2,
+    "passedTrustGate": false,
+    "exitCode": 1
+  },
+  "supplemental": {
+    "sourceCommit": "fdf714d5dc1e0b041f121b553e73cc2c9b7c39d7",
+    "datasetVersion": "synthetic-new-three-12-2026-10-03",
+    "datasetSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+    "caseCount": 12,
+    "positiveCaseCount": 9,
+    "unchangedMissControlCount": 3,
+    "requiredGoldSurvived": 4,
+    "lostPositiveCaseIndexesZeroBased": [0, 1, 2, 4, 6],
+    "result": "preflight-blocked",
+    "providerCalls": 0,
+    "rerankTrials": 0,
+    "accuracy": null,
+    "missDetection": null,
+    "exitCode": 1
+  },
+  "ownerReview": "pending exact three-story packet review",
+  "storySpecStatus": "draft",
+  "priorPublishedStoriesPreserved": 44,
+  "newLibraryReleaseRegistered": false,
+  "recipeSelectorChanged": false,
+  "priorTenStoryExceptionExtended": false
+}

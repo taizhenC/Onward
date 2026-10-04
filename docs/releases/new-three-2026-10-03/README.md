@@ -29,3 +29,7 @@ The final draft branch restores `lib/figures-data.ts` to the approved 60-stage b
 The earlier [67-step local CI pass](CI-2026-10-04T00-35-29-450Z.json) applies to draft commit `6b9816b40405ad0875239453225827a244440b38` with the approved library. CI now also verifies these exact editorial drafts offline. That machine check cannot clear the failed real matching gate.
 
 The owner has not reviewed or approved these three texts. [The per-set handoff](../../story-first-batches.md#per-set-handoff) requires: “Obtain the owner's review before recording approval or publishing a set.” [Figure-library release rules](../../DEPLOYING.md#figure-library-releases) require a passing real gate. All three new database StorySpecs stay `draft`, with empty review objects and null publication timestamps.
+
+## Completed draft verification
+
+All [67 final local CI checks passed](CI-2026-10-04T00-53-38-461Z.json) on the restored-library source commit `082948bb8d69dbef70fcfe22cbb4821c94df7857`. [The final handoff](HANDOFF.md) connects research, writing, independent review, database preservation, CI and the remaining release gates. [The failure audit](FAILURE-AUDIT.md) and [offline retrieval reproduction](REPRO-RETRIEVAL.md) retain the measured failures; no matching fix or passing real release gate is claimed.

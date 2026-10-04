@@ -1,0 +1,895 @@
+{
+  "schemaVersion": "new-three-104-failure-audit-v1",
+  "auditedAt": "2026-10-04T00:50:51.931Z",
+  "scope": "Read-only diagnosis of two saved real-provider runs; no provider calls, DB access, input edits, or Git mutations.",
+  "newCommit": "df19fecee5aafafd57a7f349380a294522c80b44",
+  "oldCommit": "4a494259aee5b00f7d03791b78a932b39d9947df",
+  "proposedLibrarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+  "oldLibrarySha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+  "artifacts": {
+    "newTrace": {
+      "path": "C:\\Users\\taich\\.codex\\worktrees\\merge-all-prs\\Onward\\evals\\runs\\2026-10-04T00-42-56-809Z.json",
+      "sha256": "5c30c3026947beac454bcce349a644149ae6c6c2cdcbb008449741c56ac914fd"
+    },
+    "newEvidence": {
+      "path": "C:\\Users\\taich\\.codex\\worktrees\\merge-all-prs\\Onward\\evals\\history\\match-104-2026-07-02\\keyword-rerank-figure-library-50-2026-07-02\\ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247.json",
+      "sha256": "f6764d3a637ec1962851559c1772de99dd4b8193bb60dd237a66fdf2c87445eb"
+    },
+    "oldTrace": {
+      "path": "C:\\Users\\taich\\.codex\\worktrees\\ten-story-production\\Onward\\evals\\runs\\2026-10-03T00-54-40-298Z.json",
+      "sha256": "fddf8b12d8d8a4fcf480aae4a64c231cee8900f6f82f6b80bba4ae4a57144464"
+    },
+    "oldEvidence": {
+      "path": "C:\\Users\\taich\\.codex\\worktrees\\merge-all-prs\\Onward\\evals\\history\\match-104-2026-07-02\\keyword-rerank-figure-library-50-2026-07-02\\ev_6f9f15f110e062a26799e08df3b71ddf2de73be13d1f230a44b3262576a6ba1d.json",
+      "sha256": "daeed85259fa3437a7b724168fe46cbba50e591ab0b5347ad7d04ea1a17497e4"
+    },
+    "gold": {
+      "path": "evals/match.json",
+      "sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e"
+    }
+  },
+  "unchangedMatchingSources": [
+    {
+      "path": "lib/keyword-match.ts",
+      "oldSha256": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e",
+      "newSha256": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e"
+    },
+    {
+      "path": "lib/matching.ts",
+      "oldSha256": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba",
+      "newSha256": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba"
+    },
+    {
+      "path": "lib/figures.ts",
+      "oldSha256": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42",
+      "newSha256": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42"
+    },
+    {
+      "path": "lib/match-config.ts",
+      "oldSha256": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845",
+      "newSha256": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845"
+    },
+    {
+      "path": "lib/llm-real.ts",
+      "oldSha256": "17ec4cee6e8d190b2ff483a1c54c9d37699b34da391c8a71e88eb50fc307c12c",
+      "newSha256": "17ec4cee6e8d190b2ff483a1c54c9d37699b34da391c8a71e88eb50fc307c12c"
+    },
+    {
+      "path": "lib/llm-prompts.ts",
+      "oldSha256": "2e33457512db63e0f967156ded3ed31e5eef1fd267551045557fd041ba4b8fa5",
+      "newSha256": "2e33457512db63e0f967156ded3ed31e5eef1fd267551045557fd041ba4b8fa5"
+    }
+  ],
+  "metrics": {
+    "old": {
+      "rerankTop1": 0.9504950495049505,
+      "rerankTop1Counts": {
+        "correct": 96,
+        "total": 101
+      },
+      "overallTop1": 0.9504950495049505,
+      "overallTop1Counts": {
+        "correct": 96,
+        "total": 101
+      },
+      "missDetection": 0.6666666666666666,
+      "missDetectionCounts": {
+        "detected": 2,
+        "total": 3
+      },
+      "hardConfusion": 0,
+      "hardConfusionCounts": {
+        "confused": 0,
+        "total": 44
+      },
+      "semanticTop1": 0.8,
+      "semanticTop1Counts": {
+        "correct": 4,
+        "total": 5
+      },
+      "literalTop1": 0.9583333333333334,
+      "literalTop1Counts": {
+        "correct": 92,
+        "total": 96
+      },
+      "goldSurvivalStageA": null,
+      "goldSurvivalStageB": null,
+      "goldSurvivalCounts": {
+        "survivedA": 0,
+        "survivedB": 0,
+        "total": 0
+      },
+      "confusionByGroup": [
+        {
+          "group": "persistence-vs-reinvention",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "lonely-child",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "creative-perseverance",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "late-start-midlife",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "boxed-in-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "dismissed-no-credit",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "trapped-life-vs-lost-career",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 0
+        },
+        {
+          "group": "private-trap-vs-denied-recognition",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 0
+        },
+        {
+          "group": "street-singer-teen",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "artist-at-the-door",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "young-disability",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "bullied-student",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "young-unready-mother",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "constrained-young-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "own-path-young-man",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "young-grief",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "uncredited-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "unread-work",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "shut-out-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "dismissed-idea",
+          "trials": 3,
+          "pickedPlausibleWrong": 0,
+          "correct": 3
+        },
+        {
+          "group": "illness-crossroads",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "rejected-writer",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "public-collapse",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "addiction-bottom",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "heartbreak-flavor",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        }
+      ],
+      "calibration": {
+        "definitiveCorrect": 90,
+        "definitiveWrong": 1,
+        "partialCorrect": 6,
+        "partialWrong": 4
+      },
+      "chosenBy": {
+        "rerank": 104,
+        "keyword_fallback": 0
+      },
+      "failureReasons": {},
+      "failureReasonStatuses": {},
+      "candidateCounts": {
+        "5": 1,
+        "6": 103
+      },
+      "failedCandidateCounts": {},
+      "promptChars": {
+        "min": 6527,
+        "p50": 9074,
+        "p95": 10547,
+        "max": 11088
+      },
+      "failedPromptChars": {
+        "min": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "latencyP50": 286,
+      "latencyP95": 471,
+      "stability": null,
+      "trustGate": {
+        "passed": false,
+        "coverage": 1,
+        "checks": {
+          "coverage": true,
+          "rerankTop1": false,
+          "missDetection": false,
+          "noDefinitiveWrong": false,
+          "top1": false,
+          "hardConfusion": true
+        },
+        "thresholds": {
+          "minCoverage": 0.95,
+          "minRerankTop1": 0.971,
+          "minOverallTop1": 0.971,
+          "minMissDetection": 1,
+          "maxDefinitiveWrong": 0,
+          "maxHardConfusion": 0
+        }
+      }
+    },
+    "new": {
+      "rerankTop1": 0.9504950495049505,
+      "rerankTop1Counts": {
+        "correct": 96,
+        "total": 101
+      },
+      "overallTop1": 0.9504950495049505,
+      "overallTop1Counts": {
+        "correct": 96,
+        "total": 101
+      },
+      "missDetection": 1,
+      "missDetectionCounts": {
+        "detected": 3,
+        "total": 3
+      },
+      "hardConfusion": 0,
+      "hardConfusionCounts": {
+        "confused": 0,
+        "total": 44
+      },
+      "semanticTop1": 0.8,
+      "semanticTop1Counts": {
+        "correct": 4,
+        "total": 5
+      },
+      "literalTop1": 0.9583333333333334,
+      "literalTop1Counts": {
+        "correct": 92,
+        "total": 96
+      },
+      "goldSurvivalStageA": null,
+      "goldSurvivalStageB": null,
+      "goldSurvivalCounts": {
+        "survivedA": 0,
+        "survivedB": 0,
+        "total": 0
+      },
+      "confusionByGroup": [
+        {
+          "group": "persistence-vs-reinvention",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 0
+        },
+        {
+          "group": "lonely-child",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "creative-perseverance",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "late-start-midlife",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "boxed-in-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "dismissed-no-credit",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "trapped-life-vs-lost-career",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 0
+        },
+        {
+          "group": "private-trap-vs-denied-recognition",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "street-singer-teen",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "artist-at-the-door",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "young-disability",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "bullied-student",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "young-unready-mother",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "constrained-young-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "own-path-young-man",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "young-grief",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "uncredited-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "unread-work",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "shut-out-woman",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "dismissed-idea",
+          "trials": 3,
+          "pickedPlausibleWrong": 0,
+          "correct": 3
+        },
+        {
+          "group": "illness-crossroads",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "rejected-writer",
+          "trials": 1,
+          "pickedPlausibleWrong": 0,
+          "correct": 1
+        },
+        {
+          "group": "public-collapse",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "addiction-bottom",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        },
+        {
+          "group": "heartbreak-flavor",
+          "trials": 2,
+          "pickedPlausibleWrong": 0,
+          "correct": 2
+        }
+      ],
+      "calibration": {
+        "definitiveCorrect": 89,
+        "definitiveWrong": 3,
+        "partialCorrect": 7,
+        "partialWrong": 2
+      },
+      "chosenBy": {
+        "rerank": 104,
+        "keyword_fallback": 0
+      },
+      "failureReasons": {},
+      "failureReasonStatuses": {},
+      "candidateCounts": {
+        "5": 1,
+        "6": 103
+      },
+      "failedCandidateCounts": {},
+      "promptChars": {
+        "min": 6527,
+        "p50": 9524,
+        "p95": 12781,
+        "max": 15937
+      },
+      "failedPromptChars": {
+        "min": 0,
+        "p50": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "latencyP50": 319,
+      "latencyP95": 570,
+      "stability": null,
+      "trustGate": {
+        "passed": false,
+        "coverage": 1,
+        "checks": {
+          "coverage": true,
+          "rerankTop1": false,
+          "missDetection": true,
+          "noDefinitiveWrong": false,
+          "top1": false,
+          "hardConfusion": true
+        },
+        "thresholds": {
+          "minCoverage": 0.95,
+          "minRerankTop1": 0.971,
+          "minOverallTop1": 0.971,
+          "minMissDetection": 1,
+          "maxDefinitiveWrong": 0,
+          "maxHardConfusion": 0
+        }
+      }
+    }
+  },
+  "newFailedPositiveIndices": [
+    6,
+    7,
+    37,
+    42,
+    99
+  ],
+  "oldFailedPositiveIndices": [
+    3,
+    7,
+    37,
+    38,
+    99
+  ],
+  "oldFailedMissIndices": [
+    21
+  ],
+  "correctToWrong": [
+    6,
+    42
+  ],
+  "wrongToCorrect": [
+    3,
+    21,
+    38
+  ],
+  "failures": [
+    {
+      "indexZeroBased": 6,
+      "expected": "butler",
+      "age": 27,
+      "oldResult": {
+        "chosen": "butler",
+        "framing": "definitive",
+        "confidence": "high",
+        "chosenBy": "rerank",
+        "agePoolCount": 46,
+        "candidateCount": 6,
+        "factChars": 10211
+      },
+      "newResult": {
+        "chosen": "banting",
+        "framing": "partial",
+        "confidence": "medium",
+        "chosenBy": "rerank",
+        "agePoolCount": 47,
+        "candidateCount": 6,
+        "factChars": 10211
+      },
+      "shortlist": {
+        "old": [
+          "butler",
+          "owens",
+          "banting",
+          "ramanujan",
+          "andersen",
+          "sullivan_a"
+        ],
+        "new": [
+          "butler",
+          "owens",
+          "banting",
+          "ramanujan",
+          "andersen",
+          "sullivan_a"
+        ],
+        "goldRankOld": 1,
+        "goldRankNew": 1,
+        "promptHashOld": "508057c2ba29849ea0de803d746397dee4e754d7513c580dcf3bd0cb09222aaa",
+        "promptHashNew": "508057c2ba29849ea0de803d746397dee4e754d7513c580dcf3bd0cb09222aaa"
+      },
+      "sameReconstructedUserPrompt": true,
+      "newStoryInShortlist": []
+    },
+    {
+      "indexZeroBased": 7,
+      "expected": "douglass",
+      "age": 24,
+      "oldResult": {
+        "chosen": "jacobs",
+        "framing": "partial",
+        "confidence": "medium",
+        "chosenBy": "rerank",
+        "agePoolCount": 45,
+        "candidateCount": 6,
+        "factChars": 7617
+      },
+      "newResult": {
+        "chosen": "jacobs",
+        "framing": "definitive",
+        "confidence": "high",
+        "chosenBy": "rerank",
+        "agePoolCount": 46,
+        "candidateCount": 6,
+        "factChars": 7617
+      },
+      "shortlist": {
+        "old": [
+          "jacobs",
+          "douglass",
+          "owens",
+          "riis",
+          "hurston",
+          "equiano"
+        ],
+        "new": [
+          "jacobs",
+          "douglass",
+          "owens",
+          "riis",
+          "hurston",
+          "equiano"
+        ],
+        "goldRankOld": 2,
+        "goldRankNew": 2,
+        "promptHashOld": "33aeecb6b4de6052da6d97273c781ab205f7e68993091136a7cfd275e05308a3",
+        "promptHashNew": "33aeecb6b4de6052da6d97273c781ab205f7e68993091136a7cfd275e05308a3"
+      },
+      "sameReconstructedUserPrompt": true,
+      "newStoryInShortlist": []
+    },
+    {
+      "indexZeroBased": 37,
+      "expected": "lee",
+      "age": 52,
+      "oldResult": {
+        "chosen": "graham",
+        "framing": "partial",
+        "confidence": "medium",
+        "chosenBy": "rerank",
+        "agePoolCount": 9,
+        "candidateCount": 6,
+        "factChars": 7553
+      },
+      "newResult": {
+        "chosen": "graham",
+        "framing": "definitive",
+        "confidence": "high",
+        "chosenBy": "rerank",
+        "agePoolCount": 11,
+        "candidateCount": 6,
+        "factChars": 10651
+      },
+      "shortlist": {
+        "old": [
+          "lee",
+          "rustin",
+          "seacole",
+          "graham",
+          "chandler",
+          "child"
+        ],
+        "new": [
+          "lee",
+          "rustin",
+          "somerville_m",
+          "seacole",
+          "graham",
+          "chandler"
+        ],
+        "goldRankOld": 1,
+        "goldRankNew": 1,
+        "promptHashOld": "08fd19ff9be204ae728e075aab1a68786273e440e1405d8e056680229f623817",
+        "promptHashNew": "a4ed795cfcb3ab4233a78e03f5389ab66cfa7504c124d89ce7c26f8e8c3f0cc9"
+      },
+      "sameReconstructedUserPrompt": false,
+      "newStoryInShortlist": [
+        "somerville_m"
+      ]
+    },
+    {
+      "indexZeroBased": 42,
+      "expected": "fitzgerald_e",
+      "age": 16,
+      "oldResult": {
+        "chosen": "fitzgerald_e",
+        "framing": "partial",
+        "confidence": "medium",
+        "chosenBy": "rerank",
+        "agePoolCount": 38,
+        "candidateCount": 6,
+        "factChars": 8559
+      },
+      "newResult": {
+        "chosen": "sullivan_a",
+        "framing": "partial",
+        "confidence": "medium",
+        "chosenBy": "rerank",
+        "agePoolCount": 39,
+        "candidateCount": 6,
+        "factChars": 8559
+      },
+      "shortlist": {
+        "old": [
+          "fitzgerald_e",
+          "douglass",
+          "jacobs",
+          "berlin_i",
+          "sullivan_a",
+          "washington_b"
+        ],
+        "new": [
+          "fitzgerald_e",
+          "douglass",
+          "jacobs",
+          "berlin_i",
+          "sullivan_a",
+          "washington_b"
+        ],
+        "goldRankOld": 1,
+        "goldRankNew": 1,
+        "promptHashOld": "a57a8aacacd38d224b95df94809409de60cca51ac8905aa4731fcf64b8619e6b",
+        "promptHashNew": "a57a8aacacd38d224b95df94809409de60cca51ac8905aa4731fcf64b8619e6b"
+      },
+      "sameReconstructedUserPrompt": true,
+      "newStoryInShortlist": []
+    },
+    {
+      "indexZeroBased": 99,
+      "expected": "butler",
+      "age": 27,
+      "oldResult": {
+        "chosen": "coleman",
+        "framing": "definitive",
+        "confidence": "high",
+        "chosenBy": "rerank",
+        "agePoolCount": 46,
+        "candidateCount": 6,
+        "factChars": 8961
+      },
+      "newResult": {
+        "chosen": "coleman",
+        "framing": "definitive",
+        "confidence": "high",
+        "chosenBy": "rerank",
+        "agePoolCount": 47,
+        "candidateCount": 6,
+        "factChars": 8961
+      },
+      "shortlist": {
+        "old": [
+          "addams",
+          "anning",
+          "blackwell_e",
+          "butler",
+          "coleman",
+          "hurston"
+        ],
+        "new": [
+          "addams",
+          "anning",
+          "blackwell_e",
+          "butler",
+          "coleman",
+          "hurston"
+        ],
+        "goldRankOld": 4,
+        "goldRankNew": 4,
+        "promptHashOld": "1f78ea87d1556119f058b673c6021a71487280aeee356d31d378697f05c04972",
+        "promptHashNew": "1f78ea87d1556119f058b673c6021a71487280aeee356d31d378697f05c04972"
+      },
+      "sameReconstructedUserPrompt": true,
+      "newStoryInShortlist": []
+    }
+  ],
+  "differentialReplay": {
+    "actualPureFunctions": [
+      "ageDistance",
+      "getMatchedThemeWeights",
+      "scoreAllByKeywordHybrid",
+      "selectRerankPool",
+      "toRerankCandidate",
+      "buildRerankUserPrompt"
+    ],
+    "method": "Extracted unchanged actual TypeScript declarations from frozen committed source into a VM; literal stage arrays parsed from both commits. No runtime imports with environment, DB, or provider initialization.",
+    "reconstructedAll104AgePoolCountsCandidateCountsAndRecordedFactsChars": true,
+    "identicalReconstructedUserPrompts": 86,
+    "changedCandidatePayloadIndices": [
+      2,
+      4,
+      9,
+      10,
+      21,
+      26,
+      27,
+      28,
+      29,
+      31,
+      32,
+      33,
+      34,
+      35,
+      37,
+      38,
+      101,
+      103
+    ],
+    "samePromptWithDifferentDecisionIndices": [
+      0,
+      3,
+      5,
+      6,
+      7,
+      41,
+      42
+    ]
+  },
+  "rankedHypotheses": [
+    {
+      "rank": 1,
+      "hypothesis": "Existing matching ambiguity persists.",
+      "prediction": "Previous failed cases recur and expected figures survive retrieval.",
+      "result": "Supported: 7,37,99 remain wrong; all five new-run expected figures survive top six."
+    },
+    {
+      "rank": 2,
+      "hypothesis": "Provider decisions or confidence vary despite unchanged request content.",
+      "prediction": "Identical reconstructed user prompts and unchanged request configuration produce different saved decisions.",
+      "result": "Supported at 6,7,42 (and four other same-prompt trials). Exact provider/backend reason cannot be isolated from saved scalar traces."
+    },
+    {
+      "rank": 3,
+      "hypothesis": "Added context alters an existing ambiguity.",
+      "prediction": "A failing case admits a new story and changes its candidate/prompt content.",
+      "result": "Possible at 37 only among failures: Somerville enters rank3, Child exits; facts characters grow7553→ 10651, while Lee retains rank1 and the chosen Graham was already wrong before. One pair does not establish causal confidence inflation."
+    }
+  ],
+  "conclusion": "The new-three proposal fails the immutable gate. No new story is a directly selected wrong answer. The two newly wrong positive cases have unchanged reranker inputs, and three wrong pairs already existed. Somerville changes one failed shortlist, but a source defect or a causal matching fix is not established. Keep the proposal held; do not weaken labels/thresholds or rewrite stories around these outcomes.",
+  "replaySeams": {
+    "capturedGate": "Actual isCorrect/ratio/computeTrustGate replay reproduced FAIL with 96/101 positive,3/3 miss,3 definitive wrong. A single captured index 7 wrong definitive outcome also remains red.",
+    "retrieval": "Pure age/keyword/top-six functions accept supplied frozen library rows and deterministic synthetic gold cases.",
+    "provider": "No deterministic provider inference replay is available from these scalar traces. They omit raw provider response and resonance/gap; reconstructed prompts alone cannot reproduce provider choice."
+  },
+  "qualification": [
+    "The logged field promptChars is the sum of candidate biographicalFacts character counts, not the total rendered prompt length.",
+    "Identical prompts here mean deterministic reconstruction from verified unchanged source and exact stage/input data; the original raw HTTP request bodies were not saved in these traces.",
+    "Temperature zero does not establish provider determinism from this evidence. Different backend versions or runtime variation cannot be distinguished.",
+    "Original 60 matching was already FAIL; restoring its registered source preserves the approved production snapshot and does not turn matching into PASS.",
+    "The supplemental 12 failed its prefilter before provider calls; this report gives no supplemental accuracy and does not alter that freeze."
+  ],
+  "replayScripts": {
+    "gate": "const fs=require('fs'),cp=require('child_process'),crypto=require('crypto'),ts=require('typescript'),vm=require('vm'),assert=require('assert/strict');const head='df19fecee5aafafd57a7f349380a294522c80b44';const hash=b=>crypto.createHash('sha256').update(b).digest('hex');const traceBytes=fs.readFileSync('evals/runs/2026-10-04T00-42-56-809Z.json');assert.equal(hash(traceBytes),'5c30c3026947beac454bcce349a644149ae6c6c2cdcbb008449741c56ac914fd');const trace=JSON.parse(traceBytes);const goldBytes=cp.execFileSync('git',['show',head+':evals/match.json']);assert.equal(hash(goldBytes),'f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e');const gold=JSON.parse(goldBytes);const ast=(p)=>ts.createSourceFile(p,cp.execFileSync('git',['show',head+':'+p]).toString(),ts.ScriptTarget.Latest,true);const source=ast('scripts/eval-match.ts'),names=['isCorrect','ratio','computeTrustGate'];const functions=source.statements.filter(x=>ts.isFunctionDeclaration(x)&&names.includes(x.name?.text)).map(x=>x.getText(source));assert.equal(functions.length,3);const policy=ast('lib/match-recipe-constants.ts');const threshold=policy.statements.find(x=>ts.isVariableStatement(x)&&x.declarationList.declarations.some(d=>d.name.getText(policy)==='RERANK_TRUST_GATE'));assert(threshold);const ctx={exports:{}};vm.createContext(ctx);vm.runInContext(ts.transpileModule(threshold.getText(policy)+'\\n'+functions.join('\\n')+'\\nglobalThis.correct=isCorrect;globalThis.gate=computeTrustGate;',{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,ctx);const rows=trace.trials.map((t,i)=>{assert.equal(t.gold.age,gold.cases[i].age);assert.equal(t.gold.expect,gold.cases[i].expect);return{index:i,gold:gold.cases[i],result:t.result,correct:ctx.correct(gold.cases[i],t.result)}});const positive=rows.filter(t=>t.gold.expect!=='miss'),wrong=positive.filter(t=>!t.correct),definitiveWrong=wrong.filter(t=>t.result.framing==='definitive');const verdict=ctx.gate({chosenBy:trace.metrics.chosenBy,calibration:{definitiveWrong:definitiveWrong.length},rerankTop1:positive.filter(x=>x.correct).length/positive.length,overallTop1:positive.filter(x=>x.correct).length/positive.length,missDetection:rows.filter(x=>x.gold.expect==='miss'&&x.correct).length/rows.filter(x=>x.gold.expect==='miss').length,hardConfusion:trace.metrics.hardConfusion,trialCount:rows.length});assert.equal(verdict.passed,trace.metrics.trustGate.passed);assert.equal(definitiveWrong.length,3);console.log(JSON.stringify({gatePassed:verdict.passed,checks:verdict.checks,positiveCorrect:positive.filter(x=>x.correct).length,positiveTotal:positive.length,definitiveWrong:definitiveWrong.length,wrongCases:wrong.map(x=>({index:x.index,gold:x.gold.expect,chosen:x.result.figureKey,framing:x.result.framing})),providerCalls:0},null,2));process.exit(verdict.passed?0:1);"
+  },
+  "replayInvocation": "From the managed repository: $audit = Get-Content D:/code_save/Onward/docs/releases/new-three-2026-10-03/FAILURE-AUDIT.json -Raw | ConvertFrom-Json; node -e $audit.replayScripts.gate"
+}

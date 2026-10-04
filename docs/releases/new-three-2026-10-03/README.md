@@ -39,3 +39,11 @@ All [67 final local CI checks passed](CI-2026-10-04T00-53-38-461Z.json) on the r
 The owner subsequently confirmed review and directed merging PR #148 and publication: “good, I reiview it, lets merge that and publish to the production”. [The exact new authorization](OWNER-AUTHORIZATION.md) binds the unchanged three-story reading packet and original failed evidence. It is a separate decision from the earlier ten-story exception. The earlier sections preserve the draft-handoff checkpoints.
 
 The publication branch now prepares the exact measured 63-stage library and a separately pinned release entry. Fresh CI, checked merge, exact production deployment, guarded publication of only these three rows, worker refresh and live verification will be recorded as they actually complete. The previous 44 publications and all unrelated rows remain preservation requirements. A release exception does not turn the matching failure or blocked supplemental run into a passing result.
+
+## Actual publication
+
+[PR #148](https://github.com/taizhenC/Onward/pull/148) merged with all checks passing; exact main CI and its Production deployment succeeded. Franklin, Slocum and Somerville are now published. [The completion document](PUBLICATION-COMPLETED.md) records the 47 valid publications, zero quarantines, complete preservation of the previous 44 and all unrelated rows, and all 22 production foundation checks passing. [The immutable receipt](PUBLICATION-RECEIPT.json) preserves the original selection, baseline and deployment pins.
+
+The void promotion RPC committed successfully before the original client rejected its empty HTTP204 response. Each bounded same-source recovery verified complete database state and skipped earlier publications; exactly three reviews and three promotions occurred. [The diagnosis](VOID-RPC-RESPONSE-DIAGNOSIS.md) and [independent review](VOID-RPC-RECOVERY-REVIEW.md) distinguish actual readbacks from offline probes. The later operator fix accepts HTTP204 only for that exact POST RPC and keeps GET/PATCH body/count checks unchanged. Original publication authority remains bound to the original M1 executable; the corrected helper does not inherit that historical write authority.
+
+The worker refresh and bounded live reading verification are separate final deployment records. The historical matching failures remain visible and unchanged.

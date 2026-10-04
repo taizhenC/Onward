@@ -1,0 +1,13 @@
+{
+  "schemaVersion": "new-three-checked-merge-v1",
+  "ok": true,
+  "observedAt": "2026-10-04T04:21:11.076Z",
+  "repository": "taizhenC/Onward",
+  "pullRequest": "https://github.com/taizhenC/Onward/pull/148",
+  "headSha": "a0f149af15e937807966e969d2e6bdd964ffb571",
+  "baseSha": "405f82357351723da6000b9a169999f3c7975191",
+  "mergeSha": "60c6ee9e1262abe199b8a9aae56ace60201e0545",
+  "mergedAt": "2026-10-04T04:20:44Z",
+  "currentMainMatchesMerge": true,
+  "qualification": "Owner-directed normal merge of the exact checked head; no administrator override, force push or history rewrite. Production deployment and DB readbacks are separate receipts."
+}

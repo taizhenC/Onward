@@ -41,3 +41,7 @@ The original104 matching gate remains failed, and supplemental12 remains blocked
 ## Transport qualification — 2026-10-04
 
 The root operator recorded a bounded impossible-xmin review PATCH at 04:12:27.100 UTC: HTTP 200, Content-Range */0, zero returned rows, and identical complete target row plus xmin before and after. REVIEW-CAS-ZERO-ROW-PROBE.json records zero changed rows. This confirms the deployed zero-row return/count behavior required by the guarded transport. An actual successful one-row review update remains a separate owner-authorized publication operation. This implementation agent made no live call.
+
+## Void RPC correction — 2026-10-04
+
+After actual root recovery completed47 valid publications and original-helper verification, a narrow HTTP204-only empty-response correction was applied. The prior captured66-check report remains above. The current offline checker adds actual-source transport regressions for the void RPC and now passes82 checks including66 expected rejections; TypeScript and scoped ESLint pass. VOID-RPC-FIX-VERIFICATION.md/json binds the corrected helper hashes, existing immutable publication receipt, and zero live operations by this implementation agent. Original authority, selection, baseline and deployment proof remain unchanged.

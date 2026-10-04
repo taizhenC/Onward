@@ -1,13 +1,54 @@
 // Offline source-derived fixtures only: no env files, network, DB or receipt writes.
 import "../../../scripts/_smoke-bootstrap";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { ScriptTarget, transpileModule } from "typescript";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { FIGURE_STAGES } from "../../../lib/figures-data";
 import { assertAuthority, assertDeploymentProof, assertTarget, librarySha256, ownerAuthorizationSha256,
-  readApprovedInputs, same, type DeploymentProof } from "./owner-publication-authority";
+  projectHost, readApprovedInputs, same, type DeploymentProof, type Target } from "./owner-publication-authority";
 import { assertCatalog, assertCasResult, assertImmutableReceipt, assertPublishedRecovery, coreRow, figureRow, publicationHealth, reviewCasQuery, reviewDraft, specRow, stageRow,
   type Catalog, type Transport, type VersionedRow } from "./publish-owner-approved";
+
+async function runVoidRpcTransportRegression(results: Array<{name: string; outcome: string}>, target: Target) {
+  // Compile only the actual request() body into a mock-fetch closure. No env loader or live transport initialization runs.
+  const source = readFileSync(new URL("./publish-owner-approved.ts", import.meta.url), "utf8");
+  const sql = readFileSync(new URL("../../../supabase/migrations/0023_story_spec_publication_cas.sql", import.meta.url), "utf8");
+  assert(/create or replace function public\.promote_story_spec_v2\([\s\S]*?\)\s*returns void\s*language plpgsql/.test(sql), "Actual promotion RPC is no longer void");
+  const start = source.indexOf("  async function request("); const end = source.indexOf("  const read = ", start);
+  assert(start >= 0 && end > start, "Transport regression source boundary missing");
+  const js = transpileModule(source.slice(start, end) + "\nreturn request;", {compilerOptions: {target: ScriptTarget.ES2022}}).outputText;
+  type Request = (table: string, method: string, query: URLSearchParams, body?: unknown) => Promise<unknown>;
+  const mockRequest = (response: Response, inspect: (url: string, options: RequestInit) => void = () => {}): Request => {
+    const mockFetch = async (url: string, options: RequestInit) => {inspect(url, options); return response;};
+    return new Function("assert", "fetch", "url", "key", "Buffer", "AbortController", "setTimeout", "clearTimeout", js)(
+      assert, mockFetch, new URL(`https://${projectHost}/`), "offline-dummy-key", Buffer, AbortController, setTimeout, clearTimeout) as Request;
+  };
+  const good = async (name: string, run: () => Promise<unknown>) => {await run(); results.push({name, outcome: "PASS"});};
+  const bad = async (name: string, run: () => Promise<unknown>, expected: RegExp) => {await assert.rejects(run, expected); results.push({name, outcome: "REJECTED_AS_REQUIRED"});};
+  const query = new URLSearchParams();
+  const fullExpected = {p_story_spec_id: target.storySpecId, p_expected_review_spec: target.reviewed};
+  await good("void RPC accepts bodyless HTTP204 with unchanged full expected review body", async () => {
+    const request = mockRequest(new Response(null, {status: 204}), (url, options) => {
+      assert.equal(url, `https://${projectHost}/rest/v1/rpc/promote_story_spec_v2?`);
+      assert.equal(options.method, "POST"); same(JSON.parse(String(options.body)), fullExpected, "Expected document RPC body differs");
+    });
+    assert.equal(await request("rpc/promote_story_spec_v2", "POST", query, fullExpected), null);
+  });
+  await good("void RPC existing HTTP200 JSON-null response", async () => assert.equal(await mockRequest(new Response("null", {status: 200}))("rpc/promote_story_spec_v2", "POST", query, fullExpected), null));
+  for (const method of ["GET", "PATCH"]) for (const status of [200, 204]) {
+    await bad(`${method} empty HTTP${status} still rejects`, () => mockRequest(new Response(null, {status}))("story_specs", method, query, {}), /Empty database response/);
+  }
+  for (const status of [200, 201]) await bad(`void RPC bodyless HTTP${status} remains fail closed`, () => mockRequest(new Response(null, {status}))("rpc/promote_story_spec_v2", "POST", query, fullExpected), /Empty database response/);
+  await bad("void RPC error status remains rejected", () => mockRequest(new Response(null, {status: 401}))("rpc/promote_story_spec_v2", "POST", query, fullExpected), /request failed \(401\)/);
+  for (const method of ["GET", "PATCH"]) await bad(`${method} streamed empty body still rejects`, () => mockRequest(new Response("", {status: 200}))("story_specs", method, query, {}), /did not return rows/);
+  await good("CAS zero rows still requires exact total zero", async () => same(await mockRequest(new Response("[]", {status: 200, headers: {"Content-Range": "*/0"}}))("story_specs", "PATCH", query, {}), [], "Zero-row representation differs"));
+  await good("GET exact count remains accepted", async () => same(await mockRequest(new Response('[{"id":1}]', {status: 200, headers: {"Content-Range": "0-0/1"}}))("story_specs", "GET", query), [{id: 1}], "Read rows differ"));
+  await bad("GET truncation remains rejected", () => mockRequest(new Response('[{"id":1}]', {status: 200, headers: {"Content-Range": "0-0/2"}}))("story_specs", "GET", query), /truncated/);
+  await bad("PATCH missing count remains rejected", () => mockRequest(new Response("[]", {status: 200}))("story_specs", "PATCH", query, {}), /Exact response count/);
+  await bad("RPC response size cap remains enforced", () => mockRequest(new Response("x".repeat(4 * 1024 * 1024 + 1), {status: 200}))("rpc/promote_story_spec_v2", "POST", query, fullExpected), /bounded limit/);
+}
 
 export async function runOfflineChecks() {
   const originalFetch = globalThis.fetch; let networkAttempts = 0;
@@ -122,6 +163,7 @@ export async function runOfflineChecks() {
     badProof("deployment changed library", p => {p.librarySha256 = "0".repeat(64);});
     badProof("deployment old owner authority", p => {p.ownerAuthorizationSha256 = "0".repeat(64);});
     positive("published health parser rejects zero quarantines requirement", () => publicationHealth(published, 47));
+    await runVoidRpcTransportRegression(results, target);
     assert.equal(networkAttempts, 0); assert.equal(coreRow(returned).status, "review");
     const result = {ok: true, mode: "offline-new-three-owner-publication", fixtureScope: "synthetic catalog, exact frozen new-three documents; no production receipt or matching pass",
       ownerAuthorizationSha256, librarySha256, checks: results.length, negativeChecks: results.filter(item => item.outcome === "REJECTED_AS_REQUIRED").length,

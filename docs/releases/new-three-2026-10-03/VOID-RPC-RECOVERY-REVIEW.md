@@ -1,0 +1,17 @@
+# Independent void-RPC recovery review
+
+**PASS: bounded original-source recovery and the minimal HTTP 204 fix.** Reviewer `/root/new_three_library_audit` did not author the publisher or fix.
+
+The original helper required a body reader after a successful RPC. Migration 0023 declares `promote_story_spec_v2 returns void`; a bodyless HTTP 204 therefore threw locally after the authorized publication transaction committed. My earlier transport probe supplied JSON `null` and missed this case. This review reproduced the original failure with an actual bodyless Response before evaluating the correction.
+
+The final publisher SHA is `a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c`; checker SHA is `653955933f47623f748a0919adec3e485ce6be724a3418bc4a395e5833cc5fd1`. Authority remains unchanged at `9a56ae…81144`. The publisher diff changes only the absent-reader branch: accept exact POST to `rpc/promote_story_spec_v2` with HTTP 204, returning null. Empty GET/PATCH and other bodyless POST statuses still fail. Exact review JSON, row-version CAS, target/source pins, catalog preservation, count/size/deadline/host guards and mandatory published-row/stage readbacks are unchanged.
+
+I executed the unchanged original main with every RPC committing then producing the parser error. Attempts 1–3 advance exactly one approved target each: 45, 46, 47 valid publications; attempt 4 completes receipts with no new review or RPC. Across all attempts there are exactly three review writes and three promotions, and a completed repeat adds zero writes. This models the existing exact-state recovery, with the same selection/baseline and pre-promotion archives.
+
+Root subsequently recorded the actual three publications under the unchanged M1 source: 47 valid, prior 44 and all unrelated rows preserved, zero quarantine. Publication receipt SHA remains `5ceefd88f58b635734434cf2741d943e9a90a8a25af507d3fd3de56860e59338`; original-source read-only verification is `c80f835…99d0`. I checked all three local full published-target receipts and pre-promotion review archives against the frozen inputs and immutable baseline. This is a local receipt verification, not an independent live DB query.
+
+The final managed checker passed **82 checks / 66 required rejections**, TypeScript, scoped lint and diff checks. I also executed **14 request probes** and **three integrations of actual main plus actual private transport** against the byte-identical proposal: bodyless HTTP 204 succeeds in one pass; repeat adds no publication writes; HTTP 204 without the exact published row or stage fails mandatory readback. Existing count, truncation, response size and deadline negatives remain effective.
+
+The new helper cannot inherit the old deployment proof: an actual local negative rejects its changed executable hash. Owner authorization, M1 deployment proof, original selection/baseline and publication receipts were not rewritten. No wider retry, new story, recipe promotion or threshold/gold change was introduced. Matching remains FAIL and supplemental coverage remains BLOCKED before provider work.
+
+No remaining code blocker was found. This reviewer performed no real env, network, DB, Auth, provider, publication or Git mutation and edited only this report pair. The receipt/fix PR’s CI/deployment and later worker refresh/canary evidence remain separate; the verification filename alone does not establish cache-ready production availability.

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "new-three-publication-preflight-receipt-v1",
+  "ok": true,
+  "observedAt": "2026-10-04T04:23:47.328Z",
+  "capturedAt": "2026-10-04T04:23:00.329Z",
+  "projectHost": "mbcqkljfekkxlgittzal.supabase.co",
+  "rows": {
+    "figures": 63,
+    "stages": 63,
+    "specs": 64
+  },
+  "totalValidPublications": 44,
+  "quarantinedRows": 0,
+  "exactApprovedDrafts": 3,
+  "previous44AndAllPreexistingCatalogPreserved": true,
+  "selectionSha256": "ef8da0e92759ed1c87e07263522e9c90591a2e4d1e100a96747bef25934ab5ff",
+  "baselineSha256": "02cb1612d16c9628d57a709119da5ffcb74323d8eab207c65bc19a6ff25b0f45",
+  "deploymentProofSha256": "a8ee4dc9c2edf143d114e4f418f32cc3459e7cd485bca451686b0dcfbf602b0f",
+  "sourceMerge": "60c6ee9e1262abe199b8a9aae56ace60201e0545",
+  "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+  "databaseMutations": 0,
+  "qualification": "Actual successful bounded production preflight; exact frozen drafts, figure/stage parity, strict published health and original pre-import rows/lifecycles verified. New private immutable publication baseline and selection were created without replacing the draft-import baseline. Publication remains a later operation."
+}

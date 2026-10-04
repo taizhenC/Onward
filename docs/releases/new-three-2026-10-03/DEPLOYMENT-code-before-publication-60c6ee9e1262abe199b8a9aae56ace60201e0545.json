@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "new-three-production-deployment-v1",
+  "ok": true,
+  "phase": "code-before-publication",
+  "repository": "taizhenC/Onward",
+  "requestedSha": "60c6ee9e1262abe199b8a9aae56ace60201e0545",
+  "sourceHead": "a0f149af15e937807966e969d2e6bdd964ffb571",
+  "ci": {
+    "schemaVersion": "new-three-github-checked-head-v1",
+    "ok": true,
+    "observedAt": "2026-10-04T04:20:10.076Z",
+    "repository": "taizhenC/Onward",
+    "pullRequest": "https://github.com/taizhenC/Onward/pull/148",
+    "headSha": "a0f149af15e937807966e969d2e6bdd964ffb571",
+    "baseSha": "405f82357351723da6000b9a169999f3c7975191",
+    "state": "OPEN",
+    "isDraft": false,
+    "mergeStateStatus": "CLEAN",
+    "checks": [
+      {
+        "name": "verify",
+        "status": "COMPLETED",
+        "state": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/taizhenC/Onward/actions/runs/37176518143/job/111360136186"
+      },
+      {
+        "name": "detect-recipe-promotion",
+        "status": "COMPLETED",
+        "state": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/taizhenC/Onward/actions/runs/37176516731/job/111360132508"
+      },
+      {
+        "name": "attest-recipe-promotion",
+        "status": "COMPLETED",
+        "state": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/taizhenC/Onward/actions/runs/37176516731/job/111360155752"
+      },
+      {
+        "name": "recipe-promotion-gate",
+        "status": "COMPLETED",
+        "state": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/taizhenC/Onward/actions/runs/37176516731/job/111360155317"
+      },
+      {
+        "name": "Vercel",
+        "status": "COMPLETED",
+        "state": "SUCCESS",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/taizhencs-projects/onward/21bd236mvW7amgXkXWYdXzGTSbRi"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "state": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ],
+    "qualification": "All active GitHub checks succeeded for this exact head. The matching evaluation FAIL is separately retained and owner-authorized; CI success is not a claim of matching accuracy. Repeated same-name checks for this exact unchanged head are grouped once only after every observed outcome agrees; the original complete checked-head receipt is preserved.",
+    "rawCheckReceipt": {
+      "path": "D:/code_save/Onward/docs/releases/new-three-2026-10-03/GITHUB-CHECKS-pr148-a0f149af15e937807966e969d2e6bdd964ffb571.json",
+      "sha256": "a5e3cf844cc41cfbc7648a1e144ce7d7218b4b5332e636614125796fc40a6194"
+    },
+    "observedCheckRuns": 12
+  },
+  "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+  "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+  "startedAt": "2026-10-04T04:21:11.301Z",
+  "observedAt": "2026-10-04T04:22:13.390Z",
+  "deployment": {
+    "deploymentId": 6836764626,
+    "sha": "60c6ee9e1262abe199b8a9aae56ace60201e0545",
+    "environment": "Production",
+    "createdAt": "2026-10-04T04:22:02Z",
+    "status": "success",
+    "statusCreatedAt": "2026-10-04T04:22:03Z",
+    "environmentUrl": "https://onward-d9eabga5h-taizhencs-projects.vercel.app",
+    "detailsUrl": "https://onward-d9eabga5h-taizhencs-projects.vercel.app"
+  },
+  "qualification": "GitHub Production deployment status binds this exact merged commit. Live catalog and owned intake validation are separate receipts."
+}

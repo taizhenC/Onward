@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "new-three-github-checked-head-v1",
+  "ok": true,
+  "observedAt": "2026-10-04T04:20:10.076Z",
+  "repository": "taizhenC/Onward",
+  "pullRequest": "https://github.com/taizhenC/Onward/pull/148",
+  "headSha": "a0f149af15e937807966e969d2e6bdd964ffb571",
+  "baseSha": "405f82357351723da6000b9a169999f3c7975191",
+  "state": "OPEN",
+  "isDraft": false,
+  "mergeStateStatus": "CLEAN",
+  "checks": [
+    {
+      "name": "verify",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176518143/job/111360136186"
+    },
+    {
+      "name": "detect-recipe-promotion",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176516731/job/111360132508"
+    },
+    {
+      "name": "detect-recipe-promotion",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176529203/job/111360168395"
+    },
+    {
+      "name": "detect-recipe-promotion",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176558522/job/111360258846"
+    },
+    {
+      "name": "attest-recipe-promotion",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SKIPPED",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176516731/job/111360155752"
+    },
+    {
+      "name": "attest-recipe-promotion",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SKIPPED",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176529203/job/111360199031"
+    },
+    {
+      "name": "attest-recipe-promotion",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SKIPPED",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176558522/job/111360278509"
+    },
+    {
+      "name": "recipe-promotion-gate",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176516731/job/111360155317"
+    },
+    {
+      "name": "recipe-promotion-gate",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176529203/job/111360198402"
+    },
+    {
+      "name": "recipe-promotion-gate",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://github.com/taizhenC/Onward/actions/runs/37176558522/job/111360278281"
+    },
+    {
+      "name": "Vercel",
+      "status": "COMPLETED",
+      "state": "SUCCESS",
+      "conclusion": "SUCCESS",
+      "url": "https://vercel.com/taizhencs-projects/onward/21bd236mvW7amgXkXWYdXzGTSbRi"
+    },
+    {
+      "name": "Vercel Preview Comments",
+      "status": "COMPLETED",
+      "state": "COMPLETED",
+      "conclusion": "SUCCESS",
+      "url": "https://vercel.com/github"
+    }
+  ],
+  "qualification": "All active GitHub checks succeeded for this exact head. The matching evaluation FAIL is separately retained and owner-authorized; CI success is not a claim of matching accuracy."
+}

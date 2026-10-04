@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "new-three-root-canary-ci-adapter-review-v1",
+  "observedAt": "2026-10-04T04:17:39.169Z",
+  "ok": true,
+  "reviewer": "root-agent",
+  "helperSha256": "5292a4b34eb62daa9ee29ea977a19dda14478696bdff6cc470b0ca75b4971293",
+  "supersedesSourceCheckpoint": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2",
+  "change": "CI check adapter distinguishes completed execution state from successful/skipped conclusion and rejects pending or contradictory outcomes. Original frozen fixture, signup/match budgets, source/chunk/ACK checks and normal cleanup are unchanged.",
+  "offlineNegativeChecks": 16,
+  "offlineEnvironmentRead": false,
+  "offlineNetworkRequests": 0,
+  "offlineAuthMutations": 0,
+  "offlineDatabaseMutations": 0,
+  "qualification": "Root independently reviewed the revised adapter and reran its actual offline self-test. The earlier74dc source review remains a historical checkpoint. Live publication/deployment/canary remain later receipts."
+}

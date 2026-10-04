@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "new-three-canary-ci-integration-fix-v1",
+  "observedAt": "2026-10-04T04:16:04.000Z",
+  "ok": true,
+  "number": 2,
+  "changedAt": "2026-10-04T04:16:04.000Z",
+  "reason": "The actual saved GitHub proof distinguishes state/status COMPLETED from conclusion SUCCESS. The previous final all-check predicate preferred execution state over conclusion and incorrectly refused completed successful checks.",
+  "previousHelperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2",
+  "helperSha256": "5292a4b34eb62daa9ee29ea977a19dda14478696bdff6cc470b0ca75b4971293",
+  "changes": [
+    "Dedicated CI proof guard evaluates outcome conclusion and independently validates completed execution state/status, retaining legacy successful commit-status compatibility.",
+    "Exactly the five mandatory named successful checks, unique identities, only completed skipped attest-recipe-promotion accepted; unknown skip and contradictory/incomplete outcomes rejected.",
+    "Three synthetic positive CI shape cases and seven rejection cases added to blocked-network self-test."
+  ],
+  "unchanged": "Fixture, source/story/stage/case bytes, live routes, network budgets, credentials handling, normal cleanup and story/source assertions are unchanged.",
+  "historicalSource": {
+    "file": "docs/research/new-three-2026-10-03/run-production-canary.historical-74dc29e4.txt",
+    "sha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2"
+  },
+  "rootReviewQualification": "CANARY-CROSS-REVIEW.json remains an immutable historical review of previous helper74dc; root will separately record review of this new exact helper.",
+  "offlineValidation": {
+    "ok": true,
+    "launcherSelfTestExitCode": 0,
+    "isolatedTypecheckExitCode": 0,
+    "negativeTests": 16,
+    "cleanupScenarios": 2,
+    "cookieChecks": 2,
+    "authAbsenceChecks": 4,
+    "environmentLoaded": false,
+    "networkRequests": 0,
+    "authMutations": 0,
+    "databaseMutations": 0,
+    "details": "Rendered-only source HTML guards, report-option/flight false evidence, altered/truncated chunk and premature completion rejection, strict CLI shape, exact404/known missing Auth semantics, cookie path/removal, confirmation failure still checks all3 known absences, deletion/first absence failure still checks later absences. CI proof synthetic positives: completed SUCCESS, completed skipped attest-recipe-promotion, legacy Vercel state SUCCESS. Rejected pending state/success, failure state/success, in-progress status/success, failed conclusion, unknown skipped check, duplicate identity, SUCCESS state/failed conclusion.",
+    "ciProofPositiveCases": 3,
+    "ciProofNegativeCases": 7
+  },
+  "oldRootReview": {
+    "file": "CANARY-CROSS-REVIEW.json",
+    "sha256": "d20f70cce169d45b049ea705cf65488d0497c9791597dabc2b1378960fdd4231",
+    "helperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2",
+    "scope": "Historical source checkpoint, unchanged"
+  },
+  "liveExecution": false,
+  "authMutations": 0,
+  "databaseMutations": 0,
+  "providerRequests": 0
+}

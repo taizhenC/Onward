@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "production-target-public-bundle-proof-v1",
+  "ok": true,
+  "startedAt": "2026-10-04T04:22:57.428Z",
+  "completedAt": "2026-10-04T04:22:58.455Z",
+  "productionOrigin": "https://onwardapp.me",
+  "home": {
+    "url": "https://onwardapp.me/",
+    "status": 200,
+    "sha256": "cf4d4bdbf0a93387612b92f5bf4aff85d944e6a311ecf68e2d6f3f07ddb1fcd4"
+  },
+  "signin": {
+    "url": "https://onwardapp.me/signin",
+    "status": 200,
+    "sha256": "d479004787aff388b367701cfed00e7dae3f14e2352a8024a23e485f77fc6219"
+  },
+  "inspectedScriptCount": 12,
+  "scriptAssets": [
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "status": 200,
+      "sha256": "2c752a401191671d5bbbe7514f5828bbb0a7cc50bfbe77ddaf1b1ccba4412ed2",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/255-2dbbf79f36f0dfa2.js",
+      "status": 200,
+      "sha256": "9b60b4b7e2ae237b93f20c6a520ba5cfa701b457f3418a8d5acf5797960571ce",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/main-app-f9b5d20365cb8be2.js",
+      "status": 200,
+      "sha256": "2e7f54a461dcd0e6291339c749f9048e5dcf98fbd2658bb4fd437d485f3bb385",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/app/layout-cdee1edf6f052fb4.js",
+      "status": 200,
+      "sha256": "8bd1c406b79c4dbc03fc73537cec57e003859c6e75506c2a3720e9d2dc49bff7",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/app/error-70207268190fc51a.js",
+      "status": 200,
+      "sha256": "02546d0a00520153211fe1dee7bc7306f8da21b16f4518dfd05482fb3a30defc",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/44530001-6a14ce924906b4cd.js",
+      "status": 200,
+      "sha256": "5d79e5c212f47b7f8f3c8fdddbaa5604221eb21f8e5dbe6a8922766235ab3985",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/619-ba102abea3e3d0e4.js",
+      "status": 200,
+      "sha256": "9541ff3dd96091ca8bebc305fb72eca68e6015a177e1d3b4aa72859dc52fbdd7",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/21-666cf495fcb9aded.js",
+      "status": 200,
+      "sha256": "293859bfd4d6406a2f0ceaf05b071cb68c336ce89e96e0881b8a707252decde9",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/235-7ba21dfec0fd5a41.js",
+      "status": 200,
+      "sha256": "575494fab3b4c956b6bb19423a339aef39c08ea414732f50aa75fe360ec7a49b",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/app/signin/page-899c423918f26e62.js",
+      "status": 200,
+      "sha256": "39223c3b0ed91110e2c7e95b07241c880c31d604ea760c132899e544897b9f5b",
+      "supabaseHostnames": [
+        "mbcqkljfekkxlgittzal.supabase.co"
+      ]
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/polyfills-42372ed130431b0a.js",
+      "status": 200,
+      "sha256": "0973c1d64c88adc8e3c950410cb58b288f72118d5965b78049438deb8f2f9683",
+      "supabaseHostnames": []
+    },
+    {
+      "url": "https://onwardapp.me/_next/static/chunks/webpack-b75f25cdd7080aea.js",
+      "status": 200,
+      "sha256": "2195f201e17fbf7ffdb61c237cba79e8ac5ffa3befa6f4e01a6913efbf697b24",
+      "supabaseHostnames": []
+    }
+  ],
+  "publicSupabaseHostname": "mbcqkljfekkxlgittzal.supabase.co",
+  "localSupabaseHostname": "mbcqkljfekkxlgittzal.supabase.co",
+  "localTargetMatchesCurrentProductionBundle": true,
+  "qualification": "Read-only public browser configuration hostname proof; exact build identity, catalog health and live intake are separate receipts. No login, database/provider/Auth operation, no key values or full HTML/JS saved."
+}

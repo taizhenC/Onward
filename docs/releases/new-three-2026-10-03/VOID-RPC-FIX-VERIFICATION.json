@@ -1,9 +1,8 @@
 {
-  "schemaVersion": "new-three-publisher-implementation-v1",
-  "capturedAt": "2026-10-04T04:12:27.671Z",
-  "status": "OFFLINE_IMPLEMENTATION_PASS_INDEPENDENT_REVIEW_PENDING",
-  "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
-  "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+  "schemaVersion": "new-three-void-rpc-fix-verification-v1",
+  "capturedAt": "2026-10-04T04:32:52.406Z",
+  "status": "MINIMAL_FIX_APPLIED_OFFLINE_PASS",
+  "originalPublisherSha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482",
   "files": [
     {
       "path": "docs/releases/new-three-2026-10-03/owner-publication-authority.ts",
@@ -11,36 +10,35 @@
     },
     {
       "path": "docs/releases/new-three-2026-10-03/publish-owner-approved.ts",
-      "sha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482"
+      "sha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c"
     },
     {
       "path": "docs/releases/new-three-2026-10-03/check-owner-publication.ts",
-      "sha256": "e6b6bcf93a082265e578427c3f75dd4050baeaf776b0071b3b2f826e5fbda6ba"
+      "sha256": "653955933f47623f748a0919adec3e485ce6be724a3418bc4a395e5833cc5fd1"
     }
   ],
+  "mutationBoundary": "Only absent-body successful HTTP204 POST to exact rpc/promote_story_spec_v2 now returns null. All authority, row-version CAS, full RPC expected document, catalog preservation and mandatory post-RPC readback logic unchanged.",
+  "publicationEvidence": {
+    "file": "docs/releases/new-three-2026-10-03/PUBLICATION-RECEIPT.json",
+    "sha256": "5ceefd88f58b635734434cf2741d943e9a90a8a25af507d3fd3de56860e59338",
+    "totalValidPublications": 47,
+    "previous44PublicationsPreserved": true,
+    "unrelatedCatalogPreserved": true,
+    "exactReadback": true,
+    "quarantinedRows": 0,
+    "qualification": "Root completed recovery and original-source read-only verification before source repair. This agent made no live calls."
+  },
   "verification": {
     "command": "node --import tsx docs/releases/new-three-2026-10-03/check-owner-publication.ts",
     "exitCode": 0,
-    "typecheck": {
-      "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
-      "exitCode": 0
-    },
-    "eslint": {
-      "command": "node node_modules/eslint/bin/eslint.js <three owned helpers> --max-warnings=0",
-      "exitCode": 0
-    },
-    "publisherSelfTest": {
-      "command": "node --import tsx docs/releases/new-three-2026-10-03/publish-owner-approved.ts --self-test",
-      "exitCode": 0
-    },
     "offline": {
       "ok": true,
       "mode": "offline-new-three-owner-publication",
       "fixtureScope": "synthetic catalog, exact frozen new-three documents; no production receipt or matching pass",
       "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
       "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
-      "checks": 66,
-      "negativeChecks": 54,
+      "checks": 82,
+      "negativeChecks": 66,
       "environmentFilesRead": 0,
       "networkAttempts": 0,
       "databaseReads": 0,
@@ -311,73 +309,96 @@
         {
           "name": "published health parser rejects zero quarantines requirement",
           "outcome": "PASS"
+        },
+        {
+          "name": "void RPC accepts bodyless HTTP204 with unchanged full expected review body",
+          "outcome": "PASS"
+        },
+        {
+          "name": "void RPC existing HTTP200 JSON-null response",
+          "outcome": "PASS"
+        },
+        {
+          "name": "GET empty HTTP200 still rejects",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "GET empty HTTP204 still rejects",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "PATCH empty HTTP200 still rejects",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "PATCH empty HTTP204 still rejects",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "void RPC bodyless HTTP200 remains fail closed",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "void RPC bodyless HTTP201 remains fail closed",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "void RPC error status remains rejected",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "GET streamed empty body still rejects",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "PATCH streamed empty body still rejects",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "CAS zero rows still requires exact total zero",
+          "outcome": "PASS"
+        },
+        {
+          "name": "GET exact count remains accepted",
+          "outcome": "PASS"
+        },
+        {
+          "name": "GET truncation remains rejected",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "PATCH missing count remains rejected",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "RPC response size cap remains enforced",
+          "outcome": "REJECTED_AS_REQUIRED"
         }
       ]
-    }
-  },
-  "bounds": {
-    "modeDefault": "offline",
-    "preflight": "read-only",
-    "publisher": "exact3 draft-to-review xmin CAS then complete expected-document promote_story_spec_v2",
-    "readResponseBytes": 4194304,
-    "requestTimeoutMs": 15000,
-    "rows": {
-      "figures": 63,
-      "stages": 63,
-      "specs": 64
     },
-    "publicationsBefore": 44,
-    "publicationsAfter": 47,
-    "immutableImportBaselineSha256": "11a6d8ca49a34bc3e9dadce24a72aee253c035bc73a957d1f12d2461f49df7a2"
+    "typecheckExitCode": 0,
+    "scopedEslintExitCode": 0,
+    "virtualProposalTypecheckExitCode": 0
   },
-  "actualLiveOperations": {
-    "environmentFilesRead": 0,
+  "retainedReproduction": {
+    "path": "docs/research/new-three-2026-10-03/rpc-void-fix-proposal-2026-10-04/repro-void-rpc.cjs",
+    "originalSourceSnapshot": "docs/research/new-three-2026-10-03/rpc-void-fix-proposal-2026-10-04/ORIGINAL-publish-owner-approved.ts",
+    "originalRedKept": true,
+    "actualSqlVoidDefinition": true
+  },
+  "immutableEvidence": {
+    "ownerAuthorizationChanged": false,
+    "originalSelectionChanged": false,
+    "originalBaselineChanged": false,
+    "originalDeploymentProofChanged": false,
+    "originalPublicationReceiptChanged": false
+  },
+  "liveOperationsByThisAgent": {
     "databaseReads": 0,
     "databaseMutations": 0,
     "providerRequests": 0,
-    "authMutations": 0
+    "authMutations": 0,
+    "environmentFilesRead": 0
   },
-  "qualification": [
-    "Offline catalog preservation fixtures are synthetic, and do not establish a production baseline or independent human editorial review. Exact approved candidate, stage, authority, reader packet and failed matching evidence byte pins are validated from source.",
-    "Actual production preflight/publication/verification and deployment are pending root execution.",
-    "The row-version CAS protects the target draft update from concurrent row changes. Whole-catalog preservation and the published-sibling exclusion are checked immediately before and after promotion; the existing RPC does not atomically lock the entire catalog. Root is the serialized editorial writer during publication.",
-    "The actual original104 matching gate remains FAILED and supplemental12 remains blocked before provider calls; owner authority is narrowly limited to this exact three-story content release."
-  ],
-  "transportQualification": {
-    "capturedAt": "2026-10-04T04:13:02.152Z",
-    "source": "root-operated bounded impossible-version PATCH",
-    "probeFile": "docs/releases/new-three-2026-10-03/REVIEW-CAS-ZERO-ROW-PROBE.json",
-    "probeSha256": "70e0872c95512da8212120f5f5029eb98d82f68dd87c7ba0d4fbf55ec57c8d64",
-    "observedAt": "2026-10-04T04:12:27.100Z",
-    "status": 200,
-    "contentRange": "*/0",
-    "returnedRows": 0,
-    "rowsChanged": 0,
-    "fullBeforeAfterRowAndXminIdentical": true,
-    "qualification": "Actual deployed zero-row response satisfies exact-count transport guard. One-row review publication remains pending. This subagent performed no live call."
-  },
-  "correctiveQualification": {
-    "capturedAt": "2026-10-04T04:32:52.406Z",
-    "verificationFile": "docs/releases/new-three-2026-10-03/VOID-RPC-FIX-VERIFICATION.json",
-    "verificationSha256": "17e93d1201b1987eae3cd96c19318c1e12e47763dae260419e373f2a2962c522",
-    "files": [
-      {
-        "path": "docs/releases/new-three-2026-10-03/owner-publication-authority.ts",
-        "sha256": "9a56ae3797327064e72456613df9ac120f5c4446a3e257cd7deb08b51af81144"
-      },
-      {
-        "path": "docs/releases/new-three-2026-10-03/publish-owner-approved.ts",
-        "sha256": "a2adb8edf2b61662233091b0ea3849c6acb5e10055b41a0b588e81003859d63c"
-      },
-      {
-        "path": "docs/releases/new-three-2026-10-03/check-owner-publication.ts",
-        "sha256": "653955933f47623f748a0919adec3e485ce6be724a3418bc4a395e5833cc5fd1"
-      }
-    ],
-    "checks": 82,
-    "negativeChecks": 66,
-    "actualPublicationReceiptSha256": "5ceefd88f58b635734434cf2741d943e9a90a8a25af507d3fd3de56860e59338",
-    "actualTotalValidPublications": 47,
-    "originalCapturedResultsRetained": true
-  }
+  "qualification": "The original selection still binds M1 original helper hashes. The corrected helper deliberately cannot inherit that live selection or rewrite its proof. Matching failures remain failed. Normal receipt-PR CI and separate deployment/canary proofs belong to root."
 }

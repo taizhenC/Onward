@@ -1,0 +1,70 @@
+{
+  "datasetVersion": "synthetic-new-three-12-2026-10-03",
+  "revision": 1,
+  "frozenAt": "2026-10-04T00:37:47.726Z",
+  "authoringPhase": "pre-measurement source-labelled freeze; independent static review pending",
+  "jsonPath": "docs/releases/new-three-2026-10-03/NEW-THREE-MATCH-CASES.json",
+  "jsonSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+  "labelsPath": "docs/releases/new-three-2026-10-03/COVERAGE-LABELS.md",
+  "labelsSha256": "c7bb527247fa4ebff1984c857ceae1f028d2bf6512d7cfc10f0473f67de9bf54",
+  "runtimeBaseCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "proposedContextCount": 63,
+  "existingContextSha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+  "newStages": [
+    {
+      "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+      "figureKey": "franklin_b",
+      "ageMin": 21,
+      "ageMax": 22,
+      "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+      "matchesAuthoredContext": true
+    },
+    {
+      "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+      "figureKey": "somerville_m",
+      "ageMin": 46,
+      "ageMax": 50,
+      "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+      "matchesAuthoredContext": true
+    },
+    {
+      "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+      "figureKey": "slocum_j",
+      "ageMin": 47,
+      "ageMax": 51,
+      "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2",
+      "matchesAuthoredContext": true
+    }
+  ],
+  "current104GoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+  "current104GoldCaseCount": 104,
+  "controlIndicesZeroBased": [
+    5,
+    20,
+    21
+  ],
+  "controlObjectsUnchanged": true,
+  "totalCaseCount": 12,
+  "labelCounts": {
+    "franklin_b": 3,
+    "somerville_m": 3,
+    "slocum_j": 3,
+    "miss": 3
+  },
+  "sourceAgeBoundsPass": true,
+  "caseShapeCheckPass": true,
+  "acceptedAlternatives": [
+    {
+      "caseIndexZeroBased": 6,
+      "expect": "slocum_j",
+      "accept": [
+        "grant"
+      ],
+      "basis": "Source-grounded work scarcity and uncertain practical earnings, with cause and occupation absent from the intake."
+    }
+  ],
+  "matchingMeasurements": 0,
+  "providerCalls": 0,
+  "separate104RegressionGateRequired": true,
+  "staticChecksPass": true
+}

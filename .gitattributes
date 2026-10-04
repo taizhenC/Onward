@@ -8,4 +8,5 @@ docs/research/new-stories-2026-10-02/*.candidate.json -text
 docs/research/new-stories-2026-10-02/*.stage.json -text
 docs/research/new-three-2026-10-03/*.candidate.json -text
 docs/research/new-three-2026-10-03/*.stage.json -text
-docs/releases/new-three-2026-10-03/*.json -text
+# Keep original review receipt bytes, including preserved Windows line endings.
+docs/releases/new-three-2026-10-03/*.json -text whitespace=trailing-space,space-before-tab,cr-at-eol

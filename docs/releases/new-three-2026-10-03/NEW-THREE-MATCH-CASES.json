@@ -1,0 +1,196 @@
+{
+  "readme": "Synthetic source-grounded coverage for the proposed Franklin, Somerville, and Slocum additions. Exactly 12 cases: nine new positive cases independently labelled before any matching measurement, followed by the three unchanged miss controls from the existing 104-case dataset. This separate coverage set does not replace the current 104-case regression release gate. See COVERAGE-LABELS.md and NEW-THREE-MATCH-CASES-FREEZE.json for provenance and the pre-measurement freeze.",
+  "datasetVersion": "synthetic-new-three-12-2026-10-03",
+  "authoring": {
+    "kind": "synthetic; no real reader records",
+    "labelsFrozenBeforeNewCaseMeasurement": true,
+    "reviewStatus": "independent static review pending; no publication approval",
+    "runtimeBaseCommit": "405f82357351723da6000b9a169999f3c7975191",
+    "proposedContextCount": 63,
+    "existingContextCount": 60,
+    "existingContextSha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+    "existingFigureKeys": [
+      "douglass",
+      "butler",
+      "lee",
+      "rogers",
+      "child",
+      "lewis",
+      "jones",
+      "rudolph",
+      "angelou",
+      "rachmaninoff",
+      "oconnor",
+      "marshall",
+      "allende",
+      "wilson",
+      "wang",
+      "chandler",
+      "graham",
+      "mcclintock",
+      "rustin",
+      "sanders",
+      "berlin_i",
+      "charles_r",
+      "sullivan_a",
+      "fitzgerald_e",
+      "poitier",
+      "simone",
+      "andersen",
+      "tallchief",
+      "lindgren",
+      "lewis_e",
+      "kovalevskaya",
+      "hughes",
+      "shelley_m",
+      "bly",
+      "faraday",
+      "carver",
+      "ramanujan",
+      "anning",
+      "owens",
+      "yeats",
+      "coleman",
+      "lamarr",
+      "hurston",
+      "muir",
+      "banting",
+      "bronte_c",
+      "shostakovich",
+      "coltrane",
+      "christie",
+      "nightingale",
+      "addams",
+      "blackwell_e",
+      "darwin",
+      "equiano",
+      "grant",
+      "jacobs",
+      "keller",
+      "riis",
+      "seacole",
+      "washington_b"
+    ],
+    "newStages": [
+      {
+        "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+        "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+        "figureKey": "franklin_b",
+        "themes": [
+          "dismissed",
+          "self_invention",
+          "keep_going"
+        ]
+      },
+      {
+        "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+        "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+        "figureKey": "somerville_m",
+        "themes": [
+          "self_doubt",
+          "social_constraint",
+          "keep_going"
+        ]
+      },
+      {
+        "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+        "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2",
+        "figureKey": "slocum_j",
+        "themes": [
+          "self_invention",
+          "self_doubt",
+          "keep_going"
+        ]
+      }
+    ],
+    "existingGoldCaseCount": 104,
+    "existingGoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "unchangedControlIndexesZeroBased": [
+      5,
+      20,
+      21
+    ],
+    "newPositiveCaseCount": 9,
+    "unchangedMissControlCount": 3,
+    "totalCaseCount": 12,
+    "providerCalls": 0,
+    "matchingMeasurements": 0
+  },
+  "cases": [
+    {
+      "age": 21,
+      "feeling": "my boss called me out in front of other people and i got angry enough to walk out. i tried to find another job, but nobody had room for me. now i'm considering going back because i still need work.",
+      "expect": "franklin_b",
+      "note": "Synthetic positive F1: public reproach, angry departure, failed alternate job search, and a possible return; memoir episode ages 21–22."
+    },
+    {
+      "age": 22,
+      "feeling": "i know how to do the work, but i don't have enough money to open a place of my own. someone wants to partner with me and get family help with the costs. i want to try, but getting started means depending on other people before we've earned anything.",
+      "expect": "franklin_b",
+      "note": "Synthetic positive F2: an experienced worker considers a new partnership despite lacking capital; financial help is relational, not immediate independence."
+    },
+    {
+      "age": 22,
+      "feeling": "we spent what we had getting a small business ready, and getting that first payment felt huge. then somebody told me the whole thing was bound to fail. the work is still slow and badly paid, so that little success hasn't settled much.",
+      "expect": "franklin_b",
+      "note": "Synthetic positive F3: a first customer's payment after setup cash is spent, followed by discouraging predictions and difficult low-paid work."
+    },
+    {
+      "age": 46,
+      "feeling": "i've studied this subject on my own for years, but now someone wants me to explain it for other people. i'm scared my background isn't enough. i said i'd try as long as it stays private until we know whether i've done a good enough job.",
+      "expect": "somerville_m",
+      "note": "Synthetic positive M1: an experienced self-taught reader accepts demanding explanatory writing under a condition of secrecy; not a novice beginning study."
+    },
+    {
+      "age": 48,
+      "feeling": "i'm trying to write something difficult, but visitors keep interrupting and my family needs me too. i don't feel free to say i'm busy, and the work is still a secret. after each interruption i have to find my way back into the thought i was halfway through.",
+      "expect": "somerville_m",
+      "note": "Synthetic positive M2: private technical writing interrupted by family work and social expectations, with the author learning to resume."
+    },
+    {
+      "age": 50,
+      "feeling": "someone knowledgeable read my work and said there was a lot to value in it. i felt proud, then had to face how much clearer parts of it still needed to be. i'm encouraged, but publishing it hasn't made it easy for everyone to understand.",
+      "expect": "somerville_m",
+      "note": "Synthetic positive M3: expert praise and corrections, further criticism of clarity, and a published technical book with bounded readership."
+    },
+    {
+      "age": 48,
+      "feeling": "regular work is hard to find, so i'm putting time into a project of my own. people keep asking if it can bring in money, and i don't have an answer yet. i'm doing the work while that question is still open.",
+      "expect": "slocum_j",
+      "accept": [
+        "grant"
+      ],
+      "note": "Synthetic positive S1 with one predeclared alternative: work scarcity and an uncertain practical project omit the occupation and cause, so Grant's documented effort to make a living is also defensible."
+    },
+    {
+      "age": 49,
+      "feeling": "i've done most of the work on a practical project, and now people watching say the next step is going to ruin it. i know what i planned to do, but their certainty makes me think about hiring someone to finish. it's hard to trust a method when people around me keep questioning it.",
+      "expect": "slocum_j",
+      "note": "Synthetic positive S2: outside warnings at a construction step and consideration of a professional; uncertainty is about a method, not global self-worth."
+    },
+    {
+      "age": 50,
+      "feeling": "i finished making something and the first test went well. then my attempt to earn money with it didn't work out. the project works, but using it to bring in money has been another problem.",
+      "expect": "slocum_j",
+      "note": "Synthetic positive S3: successful completion and trial followed by failed fishing income; physical success does not establish lasting earnings."
+    },
+    {
+      "age": 22,
+      "feeling": "my best friend and i grew apart this year, and i don't know what to do about a friendship that technically didn't end, it just faded",
+      "expect": "miss",
+      "note": "friendship drift - no figure covers this; keeps miss-calibration honest (replaced the gambling miss once addiction coverage grew: wilson/coltrane)"
+    },
+    {
+      "age": 30,
+      "feeling": "my life looks fine on paper but i feel completely numb inside, like i'm watching it all through glass",
+      "expect": "miss",
+      "note": "numbness/anhedonia - no figure covers this; keeps miss-calibration honest (replaced the betrayal miss once heartbreak coverage landed: yeats/christie)"
+    },
+    {
+      "age": 45,
+      "feeling": "i hate my coworkers and my boss and every single day at the office feels pointless",
+      "expect": "miss",
+      "note": "ordinary job dissatisfaction - no figure; keeps miss-calibration honest"
+    }
+  ]
+}

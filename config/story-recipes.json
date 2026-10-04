@@ -10,6 +10,11 @@
       "version": "match-124-2026-08-17",
       "sha256": "f8dbc9554276e2c617e02cbde16ec4571e4397d8491e6457248741f28c58630c",
       "visibility": "synthetic"
+    },
+    {
+      "version": "synthetic-new-three-12-2026-10-03",
+      "sha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+      "visibility": "synthetic"
     }
   ],
   "selection": {

@@ -1,0 +1,238 @@
+{
+  "checkedAt": "2026-10-04T00:23:32.771Z",
+  "runtimeWorktree": "C:\\Users\\taich\\.codex\\worktrees\\merge-all-prs\\Onward",
+  "runtimeGitHead": "405f82357351723da6000b9a169999f3c7975191",
+  "draft": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "unreviewedPublication": {
+    "valid": false,
+    "errors": [
+      "research, historical, tone, and review-date approvals are required",
+      "content profile must be reviewed before publish"
+    ],
+    "warnings": []
+  },
+  "publicationShapeSimulation": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "approval": "none; publication simulation exists in memory only, no simulated artifact or review is saved, candidate remains draft with empty review",
+  "passages": [
+    {
+      "role": "scene",
+      "words": 106,
+      "sentences": 13,
+      "mean": 8.154,
+      "longest": 12,
+      "last": 5,
+      "sentenceTargetPass": true,
+      "chunks": [
+        {
+          "characters": 189,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 178,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 205,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        }
+      ],
+      "chunkTargetPass": true
+    },
+    {
+      "role": "dark_moment",
+      "words": 132,
+      "sentences": 13,
+      "mean": 10.154,
+      "longest": 13,
+      "last": 6,
+      "sentenceTargetPass": true,
+      "chunks": [
+        {
+          "characters": 208,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 155,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 206,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 152,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        }
+      ],
+      "chunkTargetPass": true
+    },
+    {
+      "role": "response",
+      "words": 96,
+      "sentences": 10,
+      "mean": 9.6,
+      "longest": 14,
+      "last": 4,
+      "sentenceTargetPass": true,
+      "chunks": [
+        {
+          "characters": 198,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 200,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 132,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        }
+      ],
+      "chunkTargetPass": true
+    },
+    {
+      "role": "struggle",
+      "words": 138,
+      "sentences": 13,
+      "mean": 10.615,
+      "longest": 15,
+      "last": 9,
+      "sentenceTargetPass": true,
+      "chunks": [
+        {
+          "characters": 218,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 183,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 184,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 163,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        }
+      ],
+      "chunkTargetPass": true
+    },
+    {
+      "role": "turning_point",
+      "words": 136,
+      "sentences": 12,
+      "mean": 11.333,
+      "longest": 17,
+      "last": 9,
+      "sentenceTargetPass": true,
+      "chunks": [
+        {
+          "characters": 196,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 198,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 182,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 110,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        }
+      ],
+      "chunkTargetPass": true
+    },
+    {
+      "role": "became",
+      "words": 105,
+      "sentences": 10,
+      "mean": 10.5,
+      "longest": 14,
+      "last": 4,
+      "sentenceTargetPass": true,
+      "chunks": [
+        {
+          "characters": 206,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 217,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 164,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        }
+      ],
+      "chunkTargetPass": true
+    },
+    {
+      "role": "bridge",
+      "words": 61,
+      "sentences": 6,
+      "mean": 10.167,
+      "longest": 21,
+      "last": 7,
+      "sentenceTargetPass": true,
+      "chunks": [
+        {
+          "characters": 215,
+          "paragraphs": 2,
+          "endsAtSentence": true
+        },
+        {
+          "characters": 96,
+          "paragraphs": 1,
+          "endsAtSentence": true
+        }
+      ],
+      "chunkTargetPass": true
+    }
+  ],
+  "words": 774,
+  "artifactValidation": {
+    "valid": true,
+    "failureReasons": []
+  },
+  "canonicalProsePreserved": true,
+  "stageProseParity": true,
+  "serializedReplay": true,
+  "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+  "stageSha256": "f0d660a60b240664d3644735d75ac514319ee2cdfa286338bcdf87093c896658",
+  "laterDisappearanceProjected": true,
+  "momentPassagesWouldFree": true,
+  "ok": true
+}

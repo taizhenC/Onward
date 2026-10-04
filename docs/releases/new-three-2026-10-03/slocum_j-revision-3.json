@@ -1,0 +1,36 @@
+{
+  "revision": 3,
+  "kind": "metadata-only-controlled-vocabulary",
+  "checkedAt": "2026-10-04T00:29:33.987Z",
+  "runtimeGitHead": "405f82357351723da6000b9a169999f3c7975191",
+  "before": {
+    "stageSha256": "f0d660a60b240664d3644735d75ac514319ee2cdfa286338bcdf87093c896658",
+    "themes": [
+      "self_invention",
+      "uncertainty",
+      "work"
+    ]
+  },
+  "after": {
+    "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+    "stageSha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2",
+    "themes": [
+      "self_invention",
+      "self_doubt",
+      "keep_going"
+    ]
+  },
+  "candidateUnchanged": true,
+  "onlyThemesChanged": true,
+  "controlledVocabularyPass": true,
+  "stageProseParity": true,
+  "sourceRationale": {
+    "self_invention": "Rebuilding a vessel when ordinary shipyard entry and commands posed barriers; no claim of a new personality.",
+    "self_doubt": "Bounded uncertainty about his sealing method and consideration of hiring a professional, not attested despair or global worthlessness.",
+    "keep_going": "Carrying out his previously planned sealing work and completing construction, not an invented decision to adopt hope."
+  },
+  "approval": "none; candidate remains draft with empty review",
+  "providerCalls": 0,
+  "databaseMutation": false,
+  "ok": true
+}

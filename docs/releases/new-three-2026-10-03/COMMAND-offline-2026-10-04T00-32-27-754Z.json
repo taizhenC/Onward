@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "new-three-command-receipt-v1",
+  "runId": "new-three-offline-2026-10-04T00-32-27-754Z-4c13bed9-f0d2-4b14-8469-1b4e97f0c506",
+  "mode": "offline",
+  "completedAt": "2026-10-04T00:32:28.088Z",
+  "exitCode": 0,
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "docs/releases/new-three-2026-10-03/check-and-seed.ts"
+  ],
+  "rawLog": "D:\\code_save\\Onward\\docs\\research\\new-three-2026-10-03\\offline-2026-10-04T00-32-27-754Z.log",
+  "secretValuesLoggedByWrapper": false
+}

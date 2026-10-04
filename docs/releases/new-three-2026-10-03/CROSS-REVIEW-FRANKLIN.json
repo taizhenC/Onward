@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "new-three-cross-review-v1",
+  "subject": "franklin_b",
+  "reviewer": "/root/new_three_somerville",
+  "reviewedAt": "2026-10-04T00:20:58.031Z",
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "candidateSha256": "30ab2c910133d12927f17d64daf0bda89794bde9f71d7b52e2ef5d9fdeb40649",
+  "stageSha256": "664ac9544510eea941c8cd9fb1ed45f297cea24fa2cc99eb4bf01d77d50a38cd",
+  "expectedCandidateSha256": "30ab2c910133d12927f17d64daf0bda89794bde9f71d7b52e2ef5d9fdeb40649",
+  "expectedStageSha256": "664ac9544510eea941c8cd9fb1ed45f297cea24fa2cc99eb4bf01d77d50a38cd",
+  "parseValid": true,
+  "draft": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "publicationWithoutReviews": {
+    "valid": false,
+    "errors": [
+      "research, historical, tone, and review-date approvals are required",
+      "content profile must be reviewed before publish"
+    ],
+    "warnings": []
+  },
+  "metrics": [
+    {
+      "role": "scene",
+      "words": 96,
+      "sentences": 11,
+      "mean": 8.727272727272727,
+      "max": 12,
+      "last": 7,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "dark_moment",
+      "words": 120,
+      "sentences": 12,
+      "mean": 10,
+      "max": 16,
+      "last": 6,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "response",
+      "words": 92,
+      "sentences": 9,
+      "mean": 10.222222222222221,
+      "max": 15,
+      "last": 6,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "struggle",
+      "words": 137,
+      "sentences": 14,
+      "mean": 9.785714285714286,
+      "max": 13,
+      "last": 10,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "turning_point",
+      "words": 131,
+      "sentences": 14,
+      "mean": 9.357142857142858,
+      "max": 12,
+      "last": 5,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "became",
+      "words": 141,
+      "sentences": 14,
+      "mean": 10.071428571428571,
+      "max": 14,
+      "last": 11,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "bridge",
+      "words": 60,
+      "sentences": 6,
+      "mean": 10,
+      "max": 21,
+      "last": 6,
+      "evidenceExact": true,
+      "stageParity": true
+    }
+  ],
+  "totalWords": 777,
+  "mechanicalPass": true,
+  "artifact": {
+    "validStoredArtifact": true,
+    "provenanceStatus": "review_draft",
+    "beatCount": 7,
+    "chunkCount": 23,
+    "allChunksComplete": true,
+    "maximumChunkParagraphs": 2,
+    "maximumChunkCharacters": 232,
+    "projectedFactIds": [
+      "fact-age",
+      "fact-shop-work",
+      "fact-window",
+      "fact-reproach",
+      "fact-notice",
+      "fact-exit",
+      "fact-evening",
+      "fact-order",
+      "fact-return",
+      "fact-new-shop",
+      "fact-customer",
+      "fact-hard-job",
+      "fact-door",
+      "fact-name",
+      "fact-known"
+    ],
+    "laterLifeFactInFold": false,
+    "providerCalls": 0,
+    "persisted": false
+  },
+  "sourceVerdict": "NEEDS_CORRECTION",
+  "craftVerdict": "PASS",
+  "disclosureVerdict": "NEEDS_CORRECTION",
+  "issues": [
+    {
+      "id": "unused-loss-fold-claim",
+      "severity": "P2",
+      "description": "contentNote, research, and completion docs claim the later bereavement appears in the reader fold; fact-later-loss has no declared or mapped use, and actual projection omits it. Correct the claims and reassess death_or_grief flag."
+    },
+    {
+      "id": "away-job-actors",
+      "severity": "P2",
+      "description": "The struggle says they returned from the away printing job, with Franklin and Meredith the local antecedent. The memoir Burlington we is Franklin and Keimer. Change to singular Franklin return without implying Meredith traveled."
+    }
+  ],
+  "scope": "Content/source and draft mechanics only. No matching, human publication, or production approval."
+}

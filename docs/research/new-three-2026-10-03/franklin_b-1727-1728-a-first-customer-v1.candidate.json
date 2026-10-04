@@ -1,0 +1,1131 @@
+{
+  "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+  "schemaVersion": "story-spec-v1-2026-07",
+  "figureKey": "franklin_b",
+  "stageId": "1727-1728-a-first-customer",
+  "version": 1,
+  "status": "draft",
+  "episode": {
+    "ageMin": 21,
+    "ageMax": 22,
+    "throughLine": "After a public reprimand and an angry departure, a young printer failed to find another job, returned to work, and opened a shop with help; its first customer arrived when their cash was spent."
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief"
+    ],
+    "contentNote": "A worker receives a public reprimand and leaves his job after a quarrel. The source fold also records the death of a young son years after the printing episode."
+  },
+  "facts": [
+    {
+      "factId": "fact-age",
+      "statement": "Benjamin Franklin was born January 17, 1706. His memoir places his return to Keimer after his February 1726–7 illness, when he had just passed his twenty-first year. The printing partnership opened in 1728. The undated dismissal scene falls between these events, at approximately twenty-one to twenty-two; the exact argument date is not established.",
+      "eventOrder": 1,
+      "confidence": "probable",
+      "claimKind": "context",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, Mr. Denham took a store through My brother-in-law, Holmes; Library of Congress January 17 birth and shop chronology.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-loc",
+          "locator": "Benjamin Franklin section: born January 17, 1706; able to set up his own printing shop by 1728.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-shop-work",
+      "statement": "Franklin says he had put Keimer’s disordered printing shop in order and trained its workers. He made ink, supplied missing printing materials, and acted as warehouseman. As workers improved, he considered his own services less important. Keimer said the wages were too heavy and sought a reduction; his manner became less civil and more fault-finding. These are Franklin’s later recollections, not independently established employer motives.",
+      "eventOrder": 2,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, I soon perceiv’d that the intention through I went on, nevertheless, with a good deal of patience.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-window",
+      "statement": "Franklin says a great noise near the court-house prompted him to put his head out of the printing-shop window to see the matter. Keimer was in the street, looked up, and saw him. Neighbors were also looking out on the same occasion.",
+      "eventOrder": 3,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, I went on, nevertheless through Keimer, being in the street.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-reproach",
+      "statement": "Franklin describes Keimer calling loudly and angrily for him to mind his business, adding reproachful words. Franklin says their public delivery nettled him more, with neighbors witnessing the treatment. No neighbor’s approval, laughter, or other reaction is supplied.",
+      "eventOrder": 4,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, Keimer, being in the street, look’d up and saw me, through witnesses how I was treated.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-notice",
+      "statement": "Keimer immediately came into the printing shop and continued the quarrel. Franklin records harsh words on both sides. Keimer gave the quarter’s warning they had agreed upon, expressing a wish not to be obliged to give such long notice.",
+      "eventOrder": 5,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, He came up immediately into the printing-house, through oblig’d to so long a warning.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-exit",
+      "statement": "Franklin says he told Keimer the wish was unnecessary because he would leave immediately. He took his hat, walked out, saw Meredith below, and asked him to care for some things left behind and bring them to his lodgings. This is an attested practical request; the belongings and their contents are not identified.",
+      "eventOrder": 6,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, He came up immediately, from I told him his wish was unnecessary through bring them to my lodgings.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-evening",
+      "statement": "Meredith came to Franklin’s lodgings in the evening and they discussed the affair. Franklin had begun thinking of returning to his native country. Meredith discouraged that and proposed a partnership funded by his father, with Franklin’s skill contributing against the supplied stock. Franklin objected that he lacked money, then agreed to the proposal. The employer’s predicted failure is Meredith’s assessment in Franklin’s account, not a cause independently proved by the narrative.",
+      "eventOrder": 7,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, Meredith came accordingly in the evening through The proposal was agreeable, and I consented.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-order",
+      "statement": "Franklin gave Meredith’s father an inventory; the father took it to a merchant and the equipment was ordered. Franklin was to seek work in the other printing shop while waiting, but found no vacancy and remained idle for a few days.",
+      "eventOrder": 8,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, I gave an inventory to the father through But I found no vacancy there, and so remain’d idle a few days.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-return",
+      "statement": "Keimer sent a civil message asking Franklin to return. Meredith persuaded him to comply. Franklin returned, and describes subsequent work going more smoothly. Keimer obtained a printing job and traveled with Franklin to Burlington, where Franklin executed the job. This traveling companion was Keimer, not Meredith. No exact invitation-delivery location, apology, or forgiveness is recorded.",
+      "eventOrder": 9,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, But I found no vacancy there, from when Keimer through We went together to Burlington, where I executed the whole to satisfaction.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-new-shop",
+      "statement": "After returning from that job, the new printing materials arrived. Franklin and Meredith settled with Keimer and left with his consent. They rented a house near the market and shared its costs with Thomas Godfrey and his family, boarding with them. They put their press in order and had scarcely opened the materials when their first customer arrived.",
+      "eventOrder": 10,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, We had not been long return’d to Philadelphia through We had scarce opened our letters and put our press in order.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-customer",
+      "statement": "George House, an acquaintance, brought a countryman to Franklin and Meredith after meeting him in the street asking for a printer. All their available cash had been spent acquiring what the shop required. The customer paid five shillings, their first business proceeds. Franklin describes the timely payment as giving him more pleasure than later money earned, and says he felt gratitude to House. The memoir does not identify the print job, payment gesture, exact hour, or reaction of Meredith.",
+      "eventOrder": 11,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, We had scarce opened our letters through All our cash was now expended, ending assist young beginners.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-hard-job",
+      "statement": "A friend secured part of a Quaker history printing job for the partnership. The price was low, and they worked extremely hard. Franklin composed a sheet each day and Meredith printed it. Other small jobs delayed preparations for the next day; Franklin was working late. One night an accidental break scattered two pages, and he recomposed them before bed.",
+      "eventOrder": 12,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, But my giving this account of it here through I mention this industry the more particularly.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-door",
+      "statement": "A stranger, Samuel Mickle, stopped Franklin at his door and asked whether he had lately opened the printing shop. On receiving confirmation, he said the undertaking was expensive and its expense would be lost, then described existing or predicted local misfortunes. Franklin says the talk left him half melancholy. These were the stranger’s predictions, not established conditions or a narrator’s forecast.",
+      "eventOrder": 13,
+      "confidence": "probable",
+      "claimKind": "event",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part I, There are croakers in every country through And he gave me such a detail of misfortunes.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-name",
+      "statement": "The writer and narrator of the Autobiography is Benjamin Franklin. His memoir also records that one of his sons died at age four in 1736, years after this printing episode. This is later biographical context about the identified person, not an event within the 1727–1728 printing episode.",
+      "eventOrder": 14,
+      "confidence": "probable",
+      "claimKind": "context",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "locator": "Title and Part I salutation, His Autobiography; the first-person printing episode.",
+          "scope": "bounded"
+        },
+        {
+          "sourceId": "source-memoir",
+          "locator": "Part III, paragraph beginning In 1736 I lost one of my sons, first sentence recording the death of his four-year-old son.",
+          "scope": "bounded"
+        }
+      ]
+    },
+    {
+      "factId": "fact-known",
+      "statement": "Benjamin Franklin was a printer and writer. He served on the committee that drafted the Declaration of Independence, announcing independence for the country that became the United States.",
+      "eventOrder": 15,
+      "confidence": "documented",
+      "claimKind": "context",
+      "sourceRefs": [
+        {
+          "sourceId": "source-nps",
+          "locator": "Printer and Author and Publisher sections; Statesman and Diplomat section, committee that drafted the Declaration of Independence (1776).",
+          "scope": "bounded"
+        }
+      ]
+    }
+  ],
+  "entities": [
+    {
+      "entityId": "entity-subject",
+      "kind": "person",
+      "value": "Benjamin Franklin",
+      "aliases": [
+        "Franklin"
+      ]
+    }
+  ],
+  "quotes": [],
+  "arc": [
+    {
+      "role": "scene",
+      "canonicalText": "He put his head out of the printing shop window. He was about twenty-one. A loud noise outside had drawn him away from his work. He wanted to see what was happening. The neighbors had come to their windows for the same reason.\n\nHis employer was down in the street. The man looked up and saw him. Then he called out loudly for him to get back to work. His tone was angry, and there were words of reproach too.\n\nThe neighbors could hear how he was being treated. His employer came up into the shop.",
+      "requiredFactIds": [
+        "fact-window",
+        "fact-age",
+        "fact-reproach",
+        "fact-notice"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-window"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-age"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-window"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-window"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-window"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-window"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-window"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reproach"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reproach"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reproach"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. One window encounter, immediately followed by the employer entering the same shop. Age is approximate, using the memoir’s chronology and the independently dated 1728 office opening. The memoir attests his purpose in looking out; no cause for the noise or observers’ reaction is invented."
+    },
+    {
+      "role": "dark_moment",
+      "canonicalText": "The quarrel continued inside the printing shop. The public scolding had made him angry. Having the neighbors hear it had made the words sting more. Now harsh words passed between him and his employer. They came from both sides.\n\nHe had harsh words for the other man too. His employer gave him notice that his job was ending. Their agreement required a quarter of a year before he had to leave. The man said he wished he did not have to give that much notice.\n\nThis was the printing shop he had worked to bring out of confusion. It was also where he had helped the other workers learn how to do their jobs. His employer now wanted him gone.",
+      "requiredFactIds": [
+        "fact-notice",
+        "fact-reproach",
+        "fact-shop-work"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reproach"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-reproach"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-shop-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-shop-work"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-notice"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. Later memory supports irritation at public reproach, harsh words on both sides, and notice. No extra shame, fear, hunger, despair, bodily reaction, or third-party motive is invented. The notice’s quarter-year term is contractual context, not an invented elapsed duration."
+    },
+    {
+      "role": "response",
+      "canonicalText": "He told his employer he did not need to wait. He told his employer he was leaving that instant. He took his hat and walked out of the shop. Below, he saw another worker he knew. Some of his things were still in the printing shop.\n\nHe asked the worker to care for the things that were still in the shop. He also asked him to bring those things to the place where he was staying. The man he had asked was still working for the same employer.\n\nHis belongings had been left behind.",
+      "requiredFactIds": [
+        "fact-exit",
+        "fact-evening"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit",
+            "fact-evening"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-exit"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. One departure and practical request, directly after the quarrel. Taking the hat, walking out, meeting the coworker below, and requesting care and delivery are attested. The belongings are not identified or turned into a symbolic prop. No claim of an already formed business plan."
+    },
+    {
+      "role": "struggle",
+      "canonicalText": "That evening, the worker came to his lodgings and they talked. He was considering going home. His companion proposed that they open a printing business together. He said he had no money to put into it.\n\nThe other man said his father could supply the money. He agreed to the partnership and gave the father a list of equipment. The equipment was ordered, but he still needed work while it was coming. He tried the other printing shop.\n\nThere was no job for him there. For a few days, he had no work. Then a civil message from his former employer asked him to return. His companion encouraged him to accept, and he went back.\n\nAfter a printing job away, he returned and their new equipment arrived. They left with their employer’s consent and rented a house.",
+      "requiredFactIds": [
+        "fact-evening",
+        "fact-order",
+        "fact-return",
+        "fact-new-shop"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-evening"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-evening"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-evening"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-evening"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-evening"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-evening",
+            "fact-order"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-order"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-order"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-order"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-order"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-return",
+            "fact-new-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. Explicit permitted compression: evening proposal, ordered materials, genuinely unsuccessful alternate job search, documented invitation and return, then later equipment arrival and agreed departure. No invitation location, apology, new moral insight, or independently asserted motive. The exact interval between scenes is not invented."
+    },
+    {
+      "role": "turning_point",
+      "canonicalText": "An acquaintance brought a customer into the new printing shop. The acquaintance had met the customer in the street asking for a printer. They had barely finished putting their equipment in order.\n\nHe and his partner had rented this house together. They had taken in another family to share the cost. All their available cash had gone into the things the business needed. Now this customer was there with work for them.\n\nThe man made a payment to the partners. It was the first money their new business brought in. The payment came just when they needed it. He felt great pleasure at receiving it.\n\nHe also felt grateful to the acquaintance who had brought the customer. The rented house had become a place where someone came for printing. Their first customer had paid.",
+      "requiredFactIds": [
+        "fact-customer",
+        "fact-new-shop"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-shop",
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-customer"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. One arrival and first payment inside the prepared shop. Pleasure and gratitude are attested in the later memoir and remain probable memory. No invented handshake, coins on a counter, performed job, or claim this small payment cleared debts. The rented house, shared cost, and preceding setup are limited context for the arrival."
+    },
+    {
+      "role": "became",
+      "canonicalText": "The new shop brought a difficult conversation at its door. A stranger asked whether he was the young man who had opened it. He said he was. The stranger said the business cost too much and the money would be lost.\n\nHe described troubles he believed were happening or still to come. The talk left the young printer feeling low. They shared the rented house with a family to help cover its cost. A friend found them part of a book to print.\n\nThe pay was low, and they worked hard. He prepared a sheet each day while his partner printed it. Other small jobs put that work behind. One night, an accident scattered the printing material for two pages.\n\nHe put them together again before going to bed. He had a shop, work, and a share of the rent.",
+      "requiredFactIds": [
+        "fact-door",
+        "fact-new-shop",
+        "fact-hard-job"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-door"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 6,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-shop"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 7,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-hard-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 8,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-hard-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 9,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-hard-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 10,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-hard-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 11,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-hard-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 12,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-hard-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 13,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-new-shop",
+            "fact-hard-job"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "none"
+      ],
+      "sourceNote": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. Permitted compression confined to the early shop. The doorway prediction is clearly attributed to a stranger and is not a narrator’s economic fact. Half melancholy is rendered as feeling low, not depression. The accidental page breakdown uses generic printing material and no invented cause. Later fame is withheld from this passage."
+    },
+    {
+      "role": "bridge",
+      "canonicalText": "His name was Benjamin Franklin.\nHe was a printer who helped draft the statement that announced the United States as a country independent of British rule.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need help.",
+      "requiredFactIds": [
+        "fact-name",
+        "fact-known"
+      ],
+      "optionalFactIds": [],
+      "entityIds": [
+        "entity-subject"
+      ],
+      "quoteIds": [],
+      "sentenceEvidence": [
+        {
+          "sentenceIndex": 0,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-name"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 1,
+          "treatment": "historical_claim",
+          "factIds": [
+            "fact-known"
+          ],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 2,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 3,
+          "treatment": "reader_bridge",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 4,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        },
+        {
+          "sentenceIndex": 5,
+          "treatment": "reader_permission",
+          "factIds": [],
+          "interpretationIds": [],
+          "quoteIds": []
+        }
+      ],
+      "personalizationZones": [
+        "reader_bridge"
+      ],
+      "sourceNote": "Identity, one plain public role, fixed distance pair, and two bounded permissions. The identity-context atom includes a separately bounded later-life fact for the source fold: the memoir records a young son’s death in 1736. This probable autobiographical context is outside the printing episode and is not an event asserted by the name sentence. No comparison or prediction that a reader’s employer, finances, or business will improve."
+    }
+  ],
+  "interpretations": [],
+  "dramatizationLimits": [
+    "No generated texture or quotations. All narrative claims have bounded evidence. The memoir was written decades later, so remembered scenes and feelings remain probable.",
+    "No invented employer motives, apology, forgiveness, business plan at the departure, neighbor reactions, exact scene date, message-delivery setting, or first-customer print job.",
+    "The source fold includes a later family loss as separately bounded biographical context within the used identity atom. It is not mapped to a printing sentence or claimed to occur inside the episode; the narrative ends during the new shop’s difficult beginning."
+  ],
+  "avoidRules": [
+    "Do not name people, cities, dates, institutions, or distinctive period equipment before the bridge.",
+    "Do not promise success, diagnose a person, address the reader before the bridge, or treat the stranger’s business forecast as narrator fact.",
+    "Do not claim the first payment solved money problems, personal effort alone financed the shop, or that the later memoir independently proves another person’s motives."
+  ],
+  "sources": [
+    {
+      "sourceId": "source-memoir",
+      "citation": "Benjamin Franklin, Autobiography, Part I (written 1771), and Part III; Harvard Classics edition, edited Charles W. Eliot (1909), Project Gutenberg ebook 148.",
+      "url": "https://www.gutenberg.org/files/148/148-h/148-h.htm",
+      "locator": "Part I: dismissal paragraphs beginning I went on, nevertheless; Keimer, being in the street; He came up immediately; Meredith came accordingly; I gave an inventory; But I found no vacancy; later shop opening We had not been long return’d; first payment All our cash was now expended; early jobs But my giving this account. Part III: In 1736 I lost one of my sons."
+    },
+    {
+      "sourceId": "source-loc",
+      "citation": "Library of Congress, Today in History—January 17, Benjamin Franklin.",
+      "url": "https://www.loc.gov/item/today-in-history/january-17/",
+      "locator": "Benjamin Franklin section: birth; printing shop by 1728; publications; community involvements."
+    },
+    {
+      "sourceId": "source-nps",
+      "citation": "National Park Service, Independence National Historical Park, Benjamin Franklin’s Resume.",
+      "url": "https://home.nps.gov/inde/learn/historyculture/people-franklin-resume.htm",
+      "locator": "Printer, Author and Publisher, and Statesman and Diplomat sections; committee that drafted the Declaration of Independence (1776)."
+    }
+  ],
+  "review": {}
+}

@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "draft-import-final-source-derived-mock-probe-v1",
+  "recordedAt": "2026-10-04T00:25:30.158Z",
+  "helperSha256": "745bbbb4c99a137a82f66bf8f510c1f7c6433da99a270cd4d0daa37b60702af0",
+  "sourceMethod": "Exact repaired database-path source and installed-stage guard extracted and transpiled; synthetic in-memory Supabase/filesystem only.",
+  "results": [
+    {
+      "case": "fresh-insert-only-FK-order",
+      "pass": true,
+      "mockedCalls": 3
+    },
+    {
+      "case": "initial-baseline-exclusive-create",
+      "pass": true
+    },
+    {
+      "case": "baseline-content-path-and-hash-pins",
+      "pass": true
+    },
+    {
+      "case": "exact-draft-retry-keeps-first-baseline",
+      "pass": true
+    },
+    {
+      "case": "separate-exclusive-attempts-are-pinned",
+      "pass": true
+    },
+    {
+      "case": "changed-existing-figure",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "published-existing-stage",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "published-existing-spec",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "saved-existing-review",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unexpected-second-stage",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unexpected-second-spec",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "retry-nonnull-published_at",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "retry-nonnull-retired_at",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "retry-missing-created_at",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unrelated-created_at-change-detected",
+      "pass": true
+    },
+    {
+      "case": "unrelated-published_at-change-detected",
+      "pass": true
+    },
+    {
+      "case": "unrelated-retired_at-change-detected",
+      "pass": true
+    },
+    {
+      "case": "unrelated-core-change-detected",
+      "pass": true
+    },
+    {
+      "case": "new-draft-nonnull-published_at-readback-rejected",
+      "pass": true
+    },
+    {
+      "case": "new-draft-nonnull-retired_at-readback-rejected",
+      "pass": true
+    },
+    {
+      "case": "changed-initial-input-pins-rejected-before-writes",
+      "pass": true
+    },
+    {
+      "case": "attempt-path-collision-fails-before-inserts",
+      "pass": true
+    },
+    {
+      "case": "wrong-host-rejected-before-database-reads",
+      "pass": true
+    },
+    {
+      "case": "installed-absent",
+      "pass": true
+    },
+    {
+      "case": "installed-exact",
+      "pass": true
+    },
+    {
+      "case": "installed-different",
+      "pass": true
+    },
+    {
+      "case": "installed-duplicate",
+      "pass": true
+    }
+  ],
+  "passed": 27,
+  "total": 27,
+  "ok": true,
+  "initialFailedReceipt": "DRAFT-IMPORT-MOCK-PROBES.json",
+  "actualTopLevelHelperRuns": 0,
+  "actualCandidateReads": 0,
+  "actualEnvironmentFileReads": 0,
+  "actualDatabaseCalls": 0,
+  "actualAuthCalls": 0,
+  "actualProviderCalls": 0,
+  "sourceWrites": 0,
+  "qualification": "Both original red findings now pass; original reports remain unchanged. No top-level helper, authored prose or live services executed. Test dates/UUIDs and rows are synthetic."
+}

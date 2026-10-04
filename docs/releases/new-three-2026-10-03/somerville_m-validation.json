@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "new-three-draft-validation-v1",
+  "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+  "testedAt": "2026-10-04T00:31:55.483Z",
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+  "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+  "outsideEpisodeLossInStageBiography": false,
+  "parseValid": true,
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "publishValidationExpectedRejection": {
+    "valid": false,
+    "errors": [
+      "publish validation requires status=published",
+      "research, historical, tone, and review-date approvals are required",
+      "content profile must be reviewed before publish"
+    ],
+    "warnings": []
+  },
+  "totalWords": 766,
+  "metrics": [
+    {
+      "role": "scene",
+      "words": 104,
+      "sentences": 11,
+      "mean": 9.454545454545455,
+      "max": 14,
+      "last": 12,
+      "sentenceEvidenceComplete": true
+    },
+    {
+      "role": "dark_moment",
+      "words": 130,
+      "sentences": 13,
+      "mean": 10,
+      "max": 14,
+      "last": 9,
+      "sentenceEvidenceComplete": true
+    },
+    {
+      "role": "response",
+      "words": 93,
+      "sentences": 10,
+      "mean": 9.3,
+      "max": 14,
+      "last": 9,
+      "sentenceEvidenceComplete": true
+    },
+    {
+      "role": "struggle",
+      "words": 127,
+      "sentences": 13,
+      "mean": 9.76923076923077,
+      "max": 15,
+      "last": 9,
+      "sentenceEvidenceComplete": true
+    },
+    {
+      "role": "turning_point",
+      "words": 129,
+      "sentences": 15,
+      "mean": 8.6,
+      "max": 14,
+      "last": 4,
+      "sentenceEvidenceComplete": true
+    },
+    {
+      "role": "became",
+      "words": 121,
+      "sentences": 12,
+      "mean": 10.083333333333334,
+      "max": 15,
+      "last": 8,
+      "sentenceEvidenceComplete": true
+    },
+    {
+      "role": "bridge",
+      "words": 62,
+      "sentences": 6,
+      "mean": 10.333333333333334,
+      "max": 21,
+      "last": 6,
+      "sentenceEvidenceComplete": true
+    }
+  ],
+  "style": true,
+  "composition": {
+    "validStoredArtifact": true,
+    "provenanceStatus": "review_draft",
+    "passageCount": 7,
+    "chunkCount": 28,
+    "allChunksEndAtSentence": true,
+    "maximumChunkParagraphs": 2,
+    "standaloneLaterLifeFactPresentInFold": false,
+    "laterLifeIdentityContextPresentInFold": true
+  },
+  "ok": true
+}

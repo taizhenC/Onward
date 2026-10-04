@@ -1,0 +1,208 @@
+{
+  "schemaVersion": "draft-import-preservation-final-source-derived-mock-probe-v1",
+  "recordedAt": "2026-10-04T00:27:33.350Z",
+  "helperSha256": "85e6acec34014cea205c53d1e3f477b50e2e62677eacf255aa909cfd82deed8a",
+  "sourceMethod": "Exact final write-path and installed-stage source; TypeScript transpiled; synthetic in-memory database/filesystem only.",
+  "results": [
+    {
+      "case": "fresh-insert-only-FK-order",
+      "pass": true,
+      "mockedCalls": 3
+    },
+    {
+      "case": "initial-baseline-exclusive-create",
+      "pass": true
+    },
+    {
+      "case": "baseline-content-path-and-hash-pins",
+      "pass": true
+    },
+    {
+      "case": "exact-draft-retry-keeps-first-baseline",
+      "pass": true
+    },
+    {
+      "case": "separate-exclusive-attempts-are-pinned",
+      "pass": true
+    },
+    {
+      "case": "changed-existing-figure",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "published-existing-stage",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "published-existing-spec",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "saved-existing-review",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unexpected-second-stage",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unexpected-second-spec",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "retry-nonnull-published_at",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "retry-nonnull-retired_at",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "retry-missing-created_at",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unrelated-created_at-change-detected",
+      "pass": true
+    },
+    {
+      "case": "unrelated-published_at-change-detected",
+      "pass": true
+    },
+    {
+      "case": "unrelated-retired_at-change-detected",
+      "pass": true
+    },
+    {
+      "case": "unrelated-core-change-detected",
+      "pass": true
+    },
+    {
+      "case": "new-draft-nonnull-published_at-readback-rejected",
+      "pass": true
+    },
+    {
+      "case": "new-draft-nonnull-retired_at-readback-rejected",
+      "pass": true
+    },
+    {
+      "case": "changed-initial-input-pins-rejected-before-writes",
+      "pass": true
+    },
+    {
+      "case": "attempt-path-collision-fails-before-inserts",
+      "pass": true
+    },
+    {
+      "case": "wrong-host-rejected-before-database-reads",
+      "pass": true
+    },
+    {
+      "case": "installed-absent",
+      "pass": true
+    },
+    {
+      "case": "installed-exact",
+      "pass": true
+    },
+    {
+      "case": "installed-different",
+      "pass": true
+    },
+    {
+      "case": "installed-duplicate",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-original-created_at-drift-rejected",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "between-attempt-original-published_at-drift-rejected",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "between-attempt-original-retired_at-drift-rejected",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "between-attempt-original-figures-core-drift-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-original-figure_stages-core-drift-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-original-story_specs-core-drift-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-extra-unrelated-figures-row-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-extra-unrelated-figure_stages-row-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-extra-unrelated-story_specs-row-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-missing-original-figures-row-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-missing-original-figure_stages-row-rejected",
+      "pass": true
+    },
+    {
+      "case": "between-attempt-missing-original-story_specs-row-rejected",
+      "pass": true
+    },
+    {
+      "case": "initial-baseline-declared-hash-tamper-rejected-before-writes",
+      "pass": true
+    },
+    {
+      "case": "initial-baseline-snapshot-content-tamper-rejected-before-writes",
+      "pass": true
+    },
+    {
+      "case": "exact-partial-figure_stages-failure-recovery",
+      "pass": true
+    },
+    {
+      "case": "exact-partial-story_specs-failure-recovery",
+      "pass": true
+    }
+  ],
+  "passed": 43,
+  "total": 43,
+  "ok": true,
+  "previousReceipts": [
+    "DRAFT-IMPORT-MOCK-PROBES.json",
+    "DRAFT-IMPORT-FINAL-MOCK-PROBES.json"
+  ],
+  "actualTopLevelHelperRuns": 0,
+  "actualCandidateReads": 0,
+  "actualEnvironmentFileReads": 0,
+  "actualDatabaseCalls": 0,
+  "actualAuthCalls": 0,
+  "actualProviderCalls": 0,
+  "sourceWrites": 0,
+  "qualification": "Original red receipts and intermediate27-case repair receipt retained. Covers initial baseline self-consistency, cross-attempt original-row/unrelated drift, current and initial lifecycle preservation, insert-only exact recovery. No authored prose or live services executed."
+}

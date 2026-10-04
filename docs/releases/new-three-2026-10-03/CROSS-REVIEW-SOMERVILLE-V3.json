@@ -1,0 +1,176 @@
+{
+  "schema": "independent-somerville-draft-probe-v3",
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "candidateSha256": "df5509f1d2a509dd3b4cabe56be9d3bf0dfebdec5a00134b16879004b951721c",
+  "stageSha256": "fa07280ce7011646afd91eba5e1d0e892bb82aa67d31e02924544cbdecc044a5",
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "metrics": [
+    {
+      "role": "scene",
+      "words": 104,
+      "sentences": 11,
+      "mean": 9.454545454545455,
+      "max": 14,
+      "last": 12,
+      "stageMatches": true,
+      "evidenceCount": 11
+    },
+    {
+      "role": "dark_moment",
+      "words": 130,
+      "sentences": 13,
+      "mean": 10,
+      "max": 14,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 13
+    },
+    {
+      "role": "response",
+      "words": 93,
+      "sentences": 10,
+      "mean": 9.3,
+      "max": 14,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 10
+    },
+    {
+      "role": "struggle",
+      "words": 127,
+      "sentences": 13,
+      "mean": 9.76923076923077,
+      "max": 15,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 13
+    },
+    {
+      "role": "turning_point",
+      "words": 129,
+      "sentences": 15,
+      "mean": 8.6,
+      "max": 14,
+      "last": 4,
+      "stageMatches": true,
+      "evidenceCount": 15
+    },
+    {
+      "role": "became",
+      "words": 121,
+      "sentences": 12,
+      "mean": 10.083333333333334,
+      "max": 15,
+      "last": 8,
+      "stageMatches": true,
+      "evidenceCount": 12
+    },
+    {
+      "role": "bridge",
+      "words": 62,
+      "sentences": 6,
+      "mean": 10.333333333333334,
+      "max": 21,
+      "last": 6,
+      "stageMatches": true,
+      "evidenceCount": 6
+    }
+  ],
+  "totalWords": 766,
+  "chunkChecks": [
+    {
+      "role": "scene",
+      "chunkCount": 3,
+      "paragraphMaximum": 1,
+      "characterMaximum": 222,
+      "endsAtSentence": true
+    },
+    {
+      "role": "dark_moment",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 202,
+      "endsAtSentence": true
+    },
+    {
+      "role": "response",
+      "chunkCount": 4,
+      "paragraphMaximum": 1,
+      "characterMaximum": 215,
+      "endsAtSentence": true
+    },
+    {
+      "role": "struggle",
+      "chunkCount": 4,
+      "paragraphMaximum": 1,
+      "characterMaximum": 201,
+      "endsAtSentence": true
+    },
+    {
+      "role": "turning_point",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 197,
+      "endsAtSentence": true
+    },
+    {
+      "role": "became",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 207,
+      "endsAtSentence": true
+    },
+    {
+      "role": "bridge",
+      "chunkCount": 2,
+      "paragraphMaximum": 2,
+      "characterMaximum": 233,
+      "endsAtSentence": true
+    }
+  ],
+  "totalChunks": 28,
+  "validStoredArtifact": true,
+  "laterLossProjected": true,
+  "identityContext": {
+    "factId": "m-name",
+    "statement": "The author's name was Mary Somerville. As biographical identity context outside the 1827–1831 writing episode, her late recollection records losing her husband in Florence on June 26, 1860; her daughter describes his death after a three-day illness. Identity is supported by the title; the later family-loss context is probable recollection and is not narrated as an event in this episode.",
+    "confidence": "probable",
+    "claimKind": "context",
+    "sourceRefs": [
+      {
+        "sourceId": "source-recollections",
+        "scope": "bounded",
+        "locator": "Title page, Personal Recollections, from Early Life to Old Age, of Mary Somerville."
+      },
+      {
+        "sourceId": "source-recollections",
+        "scope": "bounded",
+        "locator": "Chapter XVI, pp. 325–326, I lost my husband in Florence on the 26th June, 1860 through after only three days' illness."
+      }
+    ]
+  },
+  "publicationApproval": false,
+  "providerCalls": 0,
+  "persisted": false,
+  "sourceCraftVerdict": "pass",
+  "primarySources": [
+    "https://www.gutenberg.org/files/27747/27747-h/27747-h.htm",
+    "https://www.gutenberg.org/files/67386/67386-h/67386-h.htm",
+    "https://library.some.ox.ac.uk/2025/06/06/mary-somerville-collections/"
+  ],
+  "proseUnchangedFromReviewedRevision2": true,
+  "rFoldLaterLifeFactIncluded": true,
+  "contentProfileReviewedForActualFold": {
+    "deathOrGriefFlagPresent": true,
+    "publicationProfileApproval": false,
+    "noteDisclosesLaterLoss": true
+  },
+  "requiredHistoricalCorrections": [],
+  "craftNotes": [
+    "Turning point is129 words, one below approximate130-word guidance; no unsupported padding was added."
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "figureKey": "franklin_b",
+  "displayName": "Benjamin Franklin",
+  "birthYear": 1706,
+  "deathYear": 1790,
+  "stageId": "1727-1728-a-first-customer",
+  "stageLabel": "Leaving a printing job, failing to find another, and opening a shop with help",
+  "ageMin": 21,
+  "ageMax": 22,
+  "themes": [
+    "dismissed",
+    "self_invention",
+    "keep_going"
+  ],
+  "antiThemes": [],
+  "shapeSentences": [
+    "After a public reprimand and an angry departure, a young printer failed to find another job, returned to work, and opened a shop with help; its first customer arrived when their cash was spent.",
+    "A partnership and shared costs made the new shop possible, but low-paid work, repairs, and discouragement continued."
+  ],
+  "facets": {
+    "emotionalCore": "Public reproach nettles a young worker, and a later stranger’s predictions leave him feeling low.",
+    "decisionShape": "Leave after a quarrel and ask a coworker to care for and bring belongings to his lodgings.",
+    "triggerEvent": "An employer calls angrily from the street before giving notice inside the printing shop.",
+    "agencyState": "He can leave, request practical help, seek work, return, and contribute skill; funding and referrals depend on other people, and a shop does not remove pressure."
+  },
+  "biographicalFacts": "Benjamin Franklin was born January 17, 1706. His memoir places his return to Keimer after his February 1726–7 illness, when he had just passed his twenty-first year. The printing partnership opened in 1728. The undated dismissal scene falls between these events, at approximately twenty-one to twenty-two; the exact argument date is not established. Franklin says he had put Keimer’s disordered printing shop in order and trained its workers. He made ink, supplied missing printing materials, and acted as warehouseman. As workers improved, he considered his own services less important. Keimer said the wages were too heavy and sought a reduction; his manner became less civil and more fault-finding. These are Franklin’s later recollections, not independently established employer motives. Franklin says a great noise near the court-house prompted him to put his head out of the printing-shop window to see the matter. Keimer was in the street, looked up, and saw him. Neighbors were also looking out on the same occasion. Franklin describes Keimer calling loudly and angrily for him to mind his business, adding reproachful words. Franklin says their public delivery nettled him more, with neighbors witnessing the treatment. No neighbor’s approval, laughter, or other reaction is supplied. Keimer immediately came into the printing shop and continued the quarrel. Franklin records harsh words on both sides. Keimer gave the quarter’s warning they had agreed upon, expressing a wish not to be obliged to give such long notice. Franklin says he told Keimer the wish was unnecessary because he would leave immediately. He took his hat, walked out, saw Meredith below, and asked him to care for some things left behind and bring them to his lodgings. This is an attested practical request; the belongings and their contents are not identified. Meredith came to Franklin’s lodgings in the evening and they discussed the affair. Franklin had begun thinking of returning to his native country. Meredith discouraged that and proposed a partnership funded by his father, with Franklin’s skill contributing against the supplied stock. Franklin objected that he lacked money, then agreed to the proposal. The employer’s predicted failure is Meredith’s assessment in Franklin’s account, not a cause independently proved by the narrative. Franklin gave Meredith’s father an inventory; the father took it to a merchant and the equipment was ordered. Franklin was to seek work in the other printing shop while waiting, but found no vacancy and remained idle for a few days. Keimer sent a civil message asking Franklin to return. Meredith persuaded him to comply. Franklin returned, and describes subsequent work going more smoothly. Keimer obtained a printing job and traveled with Franklin to Burlington, where Franklin executed the job. This traveling companion was Keimer, not Meredith. No exact invitation-delivery location, apology, or forgiveness is recorded. After returning from that job, the new printing materials arrived. Franklin and Meredith settled with Keimer and left with his consent. They rented a house near the market and shared its costs with Thomas Godfrey and his family, boarding with them. They put their press in order and had scarcely opened the materials when their first customer arrived. George House, an acquaintance, brought a countryman to Franklin and Meredith after meeting him in the street asking for a printer. All their available cash had been spent acquiring what the shop required. The customer paid five shillings, their first business proceeds. Franklin describes the timely payment as giving him more pleasure than later money earned, and says he felt gratitude to House. The memoir does not identify the print job, payment gesture, exact hour, or reaction of Meredith. A friend secured part of a Quaker history printing job for the partnership. The price was low, and they worked extremely hard. Franklin composed a sheet each day and Meredith printed it. Other small jobs delayed preparations for the next day; Franklin was working late. One night an accidental break scattered two pages, and he recomposed them before bed. A stranger, Samuel Mickle, stopped Franklin at his door and asked whether he had lately opened the printing shop. On receiving confirmation, he said the undertaking was expensive and its expense would be lost, then described existing or predicted local misfortunes. Franklin says the talk left him half melancholy. These were the stranger’s predictions, not established conditions or a narrator’s forecast.",
+  "sources": [
+    "Benjamin Franklin, Autobiography, Part I (written 1771), and Part III; Harvard Classics edition, edited Charles W. Eliot (1909), Project Gutenberg ebook 148. https://www.gutenberg.org/files/148/148-h/148-h.htm Part I: dismissal paragraphs beginning I went on, nevertheless; Keimer, being in the street; He came up immediately; Meredith came accordingly; I gave an inventory; But I found no vacancy; later shop opening We had not been long return’d; first payment All our cash was now expended; early jobs But my giving this account. Part III: In 1736 I lost one of my sons.",
+    "Library of Congress, Today in History—January 17, Benjamin Franklin. https://www.loc.gov/item/today-in-history/january-17/ Benjamin Franklin section: birth; printing shop by 1728; publications; community involvements.",
+    "National Park Service, Independence National Historical Park, Benjamin Franklin’s Resume. https://home.nps.gov/inde/learn/historyculture/people-franklin-resume.htm Printer, Author and Publisher, and Statesman and Diplomat sections; committee that drafted the Declaration of Independence (1776)."
+  ],
+  "beats": [
+    {
+      "kind": "narrative",
+      "role": "scene",
+      "text": "He put his head out of the printing shop window. He was about twenty-one. A loud noise outside had drawn him away from his work. He wanted to see what was happening. The neighbors had come to their windows for the same reason.\n\nHis employer was down in the street. The man looked up and saw him. Then he called out loudly for him to get back to work. His tone was angry, and there were words of reproach too.\n\nThe neighbors could hear how he was being treated. His employer came up into the shop.",
+      "sourceNotes": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. One window encounter, immediately followed by the employer entering the same shop. Age is approximate, using the memoir’s chronology and the independently dated 1728 office opening. The memoir attests his purpose in looking out; no cause for the noise or observers’ reaction is invented."
+    },
+    {
+      "kind": "narrative",
+      "role": "dark_moment",
+      "text": "The quarrel continued inside the printing shop. The public scolding had made him angry. Having the neighbors hear it had made the words sting more. Now harsh words passed between him and his employer. They came from both sides.\n\nHe had harsh words for the other man too. His employer gave him notice that his job was ending. Their agreement required a quarter of a year before he had to leave. The man said he wished he did not have to give that much notice.\n\nThis was the printing shop he had worked to bring out of confusion. It was also where he had helped the other workers learn how to do their jobs. His employer now wanted him gone.",
+      "sourceNotes": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. Later memory supports irritation at public reproach, harsh words on both sides, and notice. No extra shame, fear, hunger, despair, bodily reaction, or third-party motive is invented. The notice’s quarter-year term is contractual context, not an invented elapsed duration."
+    },
+    {
+      "kind": "narrative",
+      "role": "response",
+      "text": "He told his employer he did not need to wait. He told his employer he was leaving that instant. He took his hat and walked out of the shop. Below, he saw another worker he knew. Some of his things were still in the printing shop.\n\nHe asked the worker to care for the things that were still in the shop. He also asked him to bring those things to the place where he was staying. The man he had asked was still working for the same employer.\n\nHis belongings had been left behind.",
+      "sourceNotes": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. One departure and practical request, directly after the quarrel. Taking the hat, walking out, meeting the coworker below, and requesting care and delivery are attested. The belongings are not identified or turned into a symbolic prop. No claim of an already formed business plan."
+    },
+    {
+      "kind": "narrative",
+      "role": "struggle",
+      "text": "That evening, the worker came to his lodgings and they talked. He was considering going home. His companion proposed that they open a printing business together. He said he had no money to put into it.\n\nThe other man said his father could supply the money. He agreed to the partnership and gave the father a list of equipment. The equipment was ordered, but he still needed work while it was coming. He tried the other printing shop.\n\nThere was no job for him there. For a few days, he had no work. Then a civil message from his former employer asked him to return. His companion encouraged him to accept, and he went back.\n\nAfter a printing job away, he returned and their new equipment arrived. They left with their employer’s consent and rented a house.",
+      "sourceNotes": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. Explicit permitted compression: evening proposal, ordered materials, genuinely unsuccessful alternate job search, documented invitation and return, then later equipment arrival and agreed departure. No invitation location, apology, new moral insight, or independently asserted motive. The exact interval between scenes is not invented."
+    },
+    {
+      "kind": "narrative",
+      "role": "turning_point",
+      "text": "An acquaintance brought a customer into the new printing shop. The acquaintance had met the customer in the street asking for a printer. They had barely finished putting their equipment in order.\n\nHe and his partner had rented this house together. They had taken in another family to share the cost. All their available cash had gone into the things the business needed. Now this customer was there with work for them.\n\nThe man made a payment to the partners. It was the first money their new business brought in. The payment came just when they needed it. He felt great pleasure at receiving it.\n\nHe also felt grateful to the acquaintance who had brought the customer. The rented house had become a place where someone came for printing. Their first customer had paid.",
+      "sourceNotes": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. One arrival and first payment inside the prepared shop. Pleasure and gratitude are attested in the later memoir and remain probable memory. No invented handshake, coins on a counter, performed job, or claim this small payment cleared debts. The rented house, shared cost, and preceding setup are limited context for the arrival."
+    },
+    {
+      "kind": "narrative",
+      "role": "became",
+      "text": "The new shop brought a difficult conversation at its door. A stranger asked whether he was the young man who had opened it. He said he was. The stranger said the business cost too much and the money would be lost.\n\nHe described troubles he believed were happening or still to come. The talk left the young printer feeling low. They shared the rented house with a family to help cover its cost. A friend found them part of a book to print.\n\nThe pay was low, and they worked hard. He prepared a sheet each day while his partner printed it. Other small jobs put that work behind. One night, an accident scattered the printing material for two pages.\n\nHe put them together again before going to bed. He had a shop, work, and a share of the rent.",
+      "sourceNotes": "This passage rests on Franklin’s account written decades later; its episode claims are probable recollections. Permitted compression confined to the early shop. The doorway prediction is clearly attributed to a stranger and is not a narrator’s economic fact. Half melancholy is rendered as feeling low, not depression. The accidental page breakdown uses generic printing material and no invented cause. Later fame is withheld from this passage."
+    },
+    {
+      "kind": "bridge",
+      "role": "bridge",
+      "text": "His name was Benjamin Franklin.\nHe was a printer who helped draft the statement that announced the United States as a country independent of British rule.\n\nYour life is not theirs. But a piece of this story may still sit beside you.\n\nYou do not have to know how it ends to keep going. You are allowed to need help.",
+      "sourceNotes": "Identity, one plain public role, fixed distance pair, and two bounded permissions. The identity-context atom includes a separately bounded later-life fact for the source fold: the memoir records a young son’s death in 1736. This probable autobiographical context is outside the printing episode and is not an event asserted by the name sentence. No comparison or prediction that a reader’s employer, finances, or business will improve."
+    }
+  ]
+}

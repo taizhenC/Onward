@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "new-three-cross-review-final-v1",
+  "subject": "franklin_b",
+  "revision": 4,
+  "reviewer": "/root/new_three_somerville",
+  "reviewedAt": "2026-10-04T00:30:24.747Z",
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "candidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+  "stageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+  "expectedCandidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+  "expectedStageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+  "initialReceiptHashes": {
+    "CROSS-REVIEW-FRANKLIN.md": "23ca674bf3c49b839b715117cc3c0d5db8f63b1a783cb6de290ddc28281eff50",
+    "CROSS-REVIEW-FRANKLIN.json": "ee4d6dd2fe52c044a1e9182a299ed91018e5b5d9b7dce2ad500078156bc7b48e"
+  },
+  "parseValid": true,
+  "draft": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "publicationWithoutReviews": {
+    "valid": false,
+    "errors": [
+      "research, historical, tone, and review-date approvals are required",
+      "content profile must be reviewed before publish"
+    ],
+    "warnings": []
+  },
+  "metrics": [
+    {
+      "role": "scene",
+      "words": 96,
+      "sentences": 11,
+      "mean": 8.727272727272727,
+      "max": 12,
+      "last": 7,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "dark_moment",
+      "words": 120,
+      "sentences": 12,
+      "mean": 10,
+      "max": 16,
+      "last": 6,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "response",
+      "words": 94,
+      "sentences": 9,
+      "mean": 10.444444444444445,
+      "max": 15,
+      "last": 6,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "struggle",
+      "words": 137,
+      "sentences": 14,
+      "mean": 9.785714285714286,
+      "max": 13,
+      "last": 10,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "turning_point",
+      "words": 134,
+      "sentences": 14,
+      "mean": 9.571428571428571,
+      "max": 13,
+      "last": 5,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "became",
+      "words": 140,
+      "sentences": 14,
+      "mean": 10,
+      "max": 14,
+      "last": 11,
+      "evidenceExact": true,
+      "stageParity": true
+    },
+    {
+      "role": "bridge",
+      "words": 60,
+      "sentences": 6,
+      "mean": 10,
+      "max": 21,
+      "last": 6,
+      "evidenceExact": true,
+      "stageParity": true
+    }
+  ],
+  "totalWords": 781,
+  "proseUnchangedFromRevision2": true,
+  "invalidThemes": [],
+  "noLaterLossInStageBiography": true,
+  "mechanicalPass": true,
+  "artifact": {
+    "validStoredArtifact": true,
+    "provenanceStatus": "review_draft",
+    "beatCount": 7,
+    "chunkCount": 23,
+    "allChunksComplete": true,
+    "maximumChunkParagraphs": 2,
+    "maximumChunkCharacters": 232,
+    "projectedFactIds": [
+      "fact-age",
+      "fact-shop-work",
+      "fact-window",
+      "fact-reproach",
+      "fact-notice",
+      "fact-exit",
+      "fact-evening",
+      "fact-order",
+      "fact-return",
+      "fact-new-shop",
+      "fact-customer",
+      "fact-hard-job",
+      "fact-door",
+      "fact-name",
+      "fact-known"
+    ],
+    "laterLifeIdentityContextInFold": true,
+    "projectedIdentityContext": {
+      "factId": "fact-name",
+      "statement": "The writer and narrator of the Autobiography is Benjamin Franklin. His memoir also records that one of his sons died at age four in 1736, years after this printing episode. This is later biographical context about the identified person, not an event within the 1727–1728 printing episode.",
+      "confidence": "probable",
+      "claimKind": "context",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "Title and Part I salutation, His Autobiography; the first-person printing episode."
+        },
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "Part III, paragraph beginning In 1736 I lost one of my sons, first sentence recording the death of his four-year-old son."
+        }
+      ]
+    },
+    "standaloneLossAtomPresent": false,
+    "providerCalls": 0,
+    "persisted": false
+  },
+  "sourceVerdict": "PASS",
+  "craftVerdict": "PASS",
+  "disclosureVerdict": "PASS",
+  "issues": [],
+  "resolvedFindings": [
+    "away-job-actors: singular Franklin return is source-faithful; no Meredith trip is implied",
+    "unused-loss-fold-claim: used identity-context atom has separately bounded 1736 loss support, conservative probable confidence, and explicit outside-episode context; actual fold now displays it and profile discloses it"
+  ],
+  "sourceAccessLimitations": [
+    "Library of Congress January 17 direct open returned an internal error twice during initial review; relevant official search excerpt was accessible. Primary memoir and NPS provide independent age/shop bounds."
+  ],
+  "scope": "Content/source and draft mechanics only. No matching, human publication, or production approval."
+}

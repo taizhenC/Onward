@@ -6,3 +6,6 @@
 # These reviewed, seeded historical inputs have frozen byte-level receipt pins.
 docs/research/new-stories-2026-10-02/*.candidate.json -text
 docs/research/new-stories-2026-10-02/*.stage.json -text
+docs/research/new-three-2026-10-03/*.candidate.json -text
+docs/research/new-three-2026-10-03/*.stage.json -text
+docs/releases/new-three-2026-10-03/*.json -text

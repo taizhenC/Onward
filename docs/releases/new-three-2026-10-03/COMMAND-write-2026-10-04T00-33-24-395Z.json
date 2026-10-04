@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "new-three-command-receipt-v1",
+  "runId": "new-three-write-2026-10-04T00-33-24-395Z-71e1bc5f-0e7e-4dc6-ac99-9165da2f0afc",
+  "mode": "write",
+  "completedAt": "2026-10-04T00:33:27.157Z",
+  "exitCode": 0,
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "docs/releases/new-three-2026-10-03/check-and-seed.ts",
+    "--write"
+  ],
+  "rawLog": "D:\\code_save\\Onward\\docs\\research\\new-three-2026-10-03\\write-2026-10-04T00-33-24-395Z.log",
+  "secretValuesLoggedByWrapper": false
+}

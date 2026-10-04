@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "three-story-draft-import-final-independent-audit-v1",
+  "recordedAt": "2026-10-04T00:28:24.583Z",
+  "ok": true,
+  "result": "PASS for exact current helper operational safeguards",
+  "helperPath": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward/docs/releases/new-three-2026-10-03/check-and-seed.ts",
+  "helperSha256": "85e6acec34014cea205c53d1e3f477b50e2e62677eacf255aa909cfd82deed8a",
+  "probeReceipt": {
+    "name": "DRAFT-IMPORT-PRESERVATION-FINAL-MOCK-PROBES.json",
+    "sha256": "c7627bbc71a911a77577376c491f9ad3e0f5e2493ba3692e44e03a148b85f26f",
+    "passed": 43,
+    "total": 43
+  },
+  "retainedPriorReceipts": [
+    {
+      "name": "DRAFT-IMPORT-AUDIT.json",
+      "sha256": "e3b87be436a441115cebf06f918ede55fd5547d806ad0e1cf065a06d84c2f903"
+    },
+    {
+      "name": "DRAFT-IMPORT-MOCK-PROBES.json",
+      "sha256": "56c6060c04e68c08e7d0add95cfa6f6def5ff8267e3fefaff1faa9cef2f6b28f"
+    },
+    {
+      "name": "DRAFT-IMPORT-FINAL-MOCK-PROBES.json",
+      "sha256": "f6d389be1e55f5611ae2cec73f79c8b672a4d09109dc3b4ce29231da9cfbd234"
+    }
+  ],
+  "resolvedFindings": [
+    "StorySpec created_at/published_at/retired_at included in complete snapshots and preservation checks",
+    "Initial baseline written exclusively and never replaced by retry; inputs and row hashes checked",
+    "Unique exclusive attempt baseline with exact path/content SHA-256 in receipt",
+    "Fresh preflight compares all initial rows and complete unrelated catalog to initial snapshot before inserts",
+    "Postflight compares all original rows from both current attempt and first baseline"
+  ],
+  "writeScope": {
+    "selectedKeys": [
+      "franklin_b",
+      "slocum_j",
+      "somerville_m"
+    ],
+    "storyCount": 3,
+    "mode": "insert only absent rows, exact draft recovery otherwise",
+    "foreignKeyOrder": [
+      "figures",
+      "figure_stages",
+      "story_specs"
+    ],
+    "ignoreDuplicates": true,
+    "stageStatusOmitted": true,
+    "reviewMetadataPersisted": "empty input draft review only",
+    "publishedOrRetiredMetadata": null
+  },
+  "newInstalledStageGuard": "Allows no installed target or exactly one complete byte-equivalent structured stage; different content or duplicate installed stages fail.",
+  "remainingOperationalBoundaries": [
+    "Root is sole curated database writer; three table requests are separate transactions",
+    "Retry inputs must match immutable first-baseline candidate/stage SHA pins",
+    "Baseline hash self-consistency is not an external cryptographic signature; preserve filesystem evidence and external receipt hashes",
+    "Final independently reviewed authored inputs and live readback remain separate root verification steps",
+    "This pass is not story publication approval or matching evidence"
+  ],
+  "actualTopLevelHelperRuns": 0,
+  "actualCandidateReads": 0,
+  "actualEnvironmentFileReads": 0,
+  "actualDatabaseCalls": 0,
+  "actualAuthCalls": 0,
+  "actualProviderCalls": 0,
+  "sourceWrites": 0,
+  "gitMutations": 0,
+  "qualification": "Exact-source-derived mock execution with synthetic database/filesystem only. Original failed audit and intermediate repair receipt remain intact and source-bound. Root remains sole live writer; this report clears the two confirmed operational audit gaps for the exact helper hash only."
+}

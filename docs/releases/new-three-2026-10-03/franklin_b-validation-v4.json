@@ -1,0 +1,346 @@
+{
+  "schema": "new-three-franklin-draft-validation-v4",
+  "ok": true,
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "validatorSource": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward/lib/story-spec.ts",
+  "candidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+  "stageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+  "draft": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "words": 781,
+  "metrics": [
+    {
+      "role": "scene",
+      "words": 96,
+      "sentences": 11,
+      "mean": 8.727272727272727,
+      "maximumSentenceWords": 12,
+      "endingSentenceWords": 7
+    },
+    {
+      "role": "dark_moment",
+      "words": 120,
+      "sentences": 12,
+      "mean": 10,
+      "maximumSentenceWords": 16,
+      "endingSentenceWords": 6
+    },
+    {
+      "role": "response",
+      "words": 94,
+      "sentences": 9,
+      "mean": 10.444444444444445,
+      "maximumSentenceWords": 15,
+      "endingSentenceWords": 6
+    },
+    {
+      "role": "struggle",
+      "words": 137,
+      "sentences": 14,
+      "mean": 9.785714285714286,
+      "maximumSentenceWords": 13,
+      "endingSentenceWords": 10
+    },
+    {
+      "role": "turning_point",
+      "words": 134,
+      "sentences": 14,
+      "mean": 9.571428571428571,
+      "maximumSentenceWords": 13,
+      "endingSentenceWords": 5
+    },
+    {
+      "role": "became",
+      "words": 140,
+      "sentences": 14,
+      "mean": 10,
+      "maximumSentenceWords": 14,
+      "endingSentenceWords": 11
+    },
+    {
+      "role": "bridge",
+      "words": 60,
+      "sentences": 6,
+      "mean": 10,
+      "maximumSentenceWords": 21,
+      "endingSentenceWords": 6
+    }
+  ],
+  "stageAndSpecMatch": true,
+  "publicationAttempt": {
+    "valid": false,
+    "expectedMissingHumanApprovalErrors": [
+      "research, historical, tone, and review-date approvals are required",
+      "content profile must be reviewed before publish"
+    ]
+  },
+  "draftArtifact": {
+    "validation": {
+      "status": "validated",
+      "failureReasons": [],
+      "validatedAt": "2026-10-04T00:28:34.119Z"
+    },
+    "storedArtifactValid": true,
+    "passageCount": 23,
+    "providerCalls": 0,
+    "persisted": false,
+    "chunkMetrics": [
+      {
+        "role": "scene",
+        "paragraphLengths": [
+          226,
+          180,
+          86
+        ],
+        "chunks": [
+          {
+            "characters": 226,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He put his head out of the printing shop window. He was about twenty-one. A loud noise outside had drawn him away from his work. He wanted to see what was happening. The neighbors had come to their windows for the same reason."
+          },
+          {
+            "characters": 180,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "His employer was down in the street. The man looked up and saw him. Then he called out loudly for him to get back to work. His tone was angry, and there were words of reproach too."
+          },
+          {
+            "characters": 86,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "The neighbors could hear how he was being treated. His employer came up into the shop."
+          }
+        ]
+      },
+      {
+        "role": "dark_moment",
+        "paragraphLengths": [
+          227,
+          229,
+          179
+        ],
+        "chunks": [
+          {
+            "characters": 227,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "The quarrel continued inside the printing shop. The public scolding had made him angry. Having the neighbors hear it had made the words sting more. Now harsh words passed between him and his employer. They came from both sides."
+          },
+          {
+            "characters": 229,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He had harsh words for the other man too. His employer gave him notice that his job was ending. Their agreement required a quarter of a year before he had to leave. The man said he wished he did not have to give that much notice."
+          },
+          {
+            "characters": 179,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "This was the printing shop he had worked to bring out of confusion. It was also where he had helped the other workers learn how to do their jobs. His employer now wanted him gone."
+          }
+        ]
+      },
+      {
+        "role": "response",
+        "paragraphLengths": [
+          229,
+          208,
+          36
+        ],
+        "chunks": [
+          {
+            "characters": 229,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He told his employer he did not need to wait. He told his employer he was leaving that instant. He took his hat and walked out of the shop. Below, he saw another worker he knew. Some of his things were still in the printing shop."
+          },
+          {
+            "characters": 208,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He asked the worker to care for the things that were still in the shop. He also asked him to bring those things to the place where he was staying. The man he had asked was still working for the same employer."
+          },
+          {
+            "characters": 36,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "His belongings had been left behind."
+          }
+        ]
+      },
+      {
+        "role": "struggle",
+        "paragraphLengths": [
+          201,
+          230,
+          188,
+          131
+        ],
+        "chunks": [
+          {
+            "characters": 201,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "That evening, the worker came to his lodgings and they talked. He was considering going home. His companion proposed that they open a printing business together. He said he had no money to put into it."
+          },
+          {
+            "characters": 230,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "The other man said his father could supply the money. He agreed to the partnership and gave the father a list of equipment. The equipment was ordered, but he still needed work while it was coming. He tried the other printing shop."
+          },
+          {
+            "characters": 188,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "There was no job for him there. For a few days, he had no work. Then a civil message from his former employer asked him to return. His companion encouraged him to accept, and he went back."
+          },
+          {
+            "characters": 131,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "After a printing job away, he returned and their new equipment arrived. They left with their employer’s consent and rented a house."
+          }
+        ]
+      },
+      {
+        "role": "turning_point",
+        "paragraphLengths": [
+          195,
+          221,
+          176,
+          171
+        ],
+        "chunks": [
+          {
+            "characters": 195,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "An acquaintance brought a customer into the new printing shop. The acquaintance had met the customer in the street asking for a printer. They had barely finished putting their equipment in order."
+          },
+          {
+            "characters": 221,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He and his partner had rented this house together. They had taken in another family to share the cost. All their available cash had gone into the things the business needed. Now this customer was there with work for them."
+          },
+          {
+            "characters": 176,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "The man made a payment to the partners. It was the first money their new business brought in. The payment came just when they needed it. He felt great pleasure at receiving it."
+          },
+          {
+            "characters": 171,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He also felt grateful to the acquaintance who had brought the customer. The rented house had become a place where someone came for printing. Their first customer had paid."
+          }
+        ]
+      },
+      {
+        "role": "became",
+        "paragraphLengths": [
+          213,
+          223,
+          206,
+          93
+        ],
+        "chunks": [
+          {
+            "characters": 213,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "The new shop brought a difficult conversation at its door. A stranger asked whether he was the young man who had opened it. He said he was. The stranger said the business cost too much and the money would be lost."
+          },
+          {
+            "characters": 223,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He described troubles he believed were happening or still to come. The talk left the young printer feeling low. They shared the rented house with a family to help cover its cost. A friend found them part of a book to print."
+          },
+          {
+            "characters": 206,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "The pay was low, and they worked hard. He prepared a sheet each day while his partner printed it. Other small jobs put that work behind. One night, an accident scattered the printing material for two pages."
+          },
+          {
+            "characters": 93,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "He put them together again before going to bed. He had a shop, work, and a share of the rent."
+          }
+        ]
+      },
+      {
+        "role": "bridge",
+        "paragraphLengths": [
+          154,
+          76,
+          80
+        ],
+        "chunks": [
+          {
+            "characters": 232,
+            "paragraphs": 2,
+            "endsAtSentence": true,
+            "text": "His name was Benjamin Franklin.\nHe was a printer who helped draft the statement that announced the United States as a country independent of British rule.\n\nYour life is not theirs. But a piece of this story may still sit beside you."
+          },
+          {
+            "characters": 80,
+            "paragraphs": 1,
+            "endsAtSentence": true,
+            "text": "You do not have to know how it ends to keep going. You are allowed to need help."
+          }
+        ]
+      }
+    ]
+  },
+  "sourceFold": {
+    "laterLossProjected": true,
+    "laterLossStatus": "separately bounded biographical identity context outside the printing episode",
+    "rFoldLaterLifeFactIncluded": true,
+    "identityContext": {
+      "factId": "fact-name",
+      "statement": "The writer and narrator of the Autobiography is Benjamin Franklin. His memoir also records that one of his sons died at age four in 1736, years after this printing episode. This is later biographical context about the identified person, not an event within the 1727–1728 printing episode.",
+      "confidence": "probable",
+      "claimKind": "context",
+      "sourceRefs": [
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "Title and Part I salutation, His Autobiography; the first-person printing episode."
+        },
+        {
+          "sourceId": "source-memoir",
+          "scope": "bounded",
+          "locator": "Part III, paragraph beginning In 1736 I lost one of my sons, first sentence recording the death of his four-year-old son."
+        }
+      ]
+    }
+  },
+  "contentProfile": {
+    "intensity": "moderate",
+    "flags": [
+      "death_or_grief"
+    ],
+    "contentNote": "A worker receives a public reprimand and leaves his job after a quarrel. The source fold also records the death of a young son years after the printing episode."
+  },
+  "stageMetadata": {
+    "themes": [
+      "dismissed",
+      "self_invention",
+      "keep_going"
+    ],
+    "antiThemes": [],
+    "invalidThemes": [],
+    "controlledVocabularySource": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward/lib/themes.ts"
+  },
+  "publicationApproval": false,
+  "errors": []
+}

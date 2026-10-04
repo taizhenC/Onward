@@ -1,0 +1,31 @@
+{
+  "revision": 2,
+  "reason": "Root independent source/craft review requested literal R2 would removal from the dark-moment source predictions. No event, motive, chronology, evidence mapping or claim confidence changed.",
+  "checkedAt": "2026-10-04T00:23:32.771Z",
+  "originalSnapshot": "docs/research/new-three-2026-10-03/slocum_j-revision-1",
+  "before": {
+    "candidateSha256": "4d55548da956ebefcd2854f8effb6d48618331cf3a4f4fa409cfc2472b5485cd",
+    "stageSha256": "7ca5aed5baed4affa0f1c00e04b08f5e4c3fdaae0727e2dd194ca630110ac955",
+    "words": 777
+  },
+  "after": {
+    "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+    "stageSha256": "f0d660a60b240664d3644735d75ac514319ee2cdfa286338bcdf87093c896658",
+    "words": 774
+  },
+  "changes": [
+    {
+      "before": "Some feared that this was where his work would fail.",
+      "after": "Some feared failure at this stage of his work."
+    },
+    {
+      "before": "One passing man warned that the cotton would move out of the seam.",
+      "after": "One passing man warned about cotton moving out of the seam."
+    }
+  ],
+  "validation": true,
+  "stageProseParity": true,
+  "momentPassagesWouldFree": true,
+  "approval": "none; candidate review remains empty",
+  "databaseMutation": false
+}

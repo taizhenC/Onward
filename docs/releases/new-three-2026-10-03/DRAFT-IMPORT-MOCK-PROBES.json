@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "draft-import-source-derived-mock-probe-v1",
+  "recordedAt": "2026-10-04T00:21:08.727Z",
+  "helperSha256": "e72467a8d3d9127c20244ce5f2a9fd75c753f1322d046e4eb6c80f59025e6798",
+  "sourceMethod": "Exact database-path source extracted after loadEnvLocal, TypeScript transpiled, executed only against synthetic in-memory Supabase/filesystem stubs.",
+  "results": [
+    {
+      "case": "fresh-insert-only-FK-order",
+      "pass": true,
+      "mockedCalls": 3
+    },
+    {
+      "case": "exact-draft-retry",
+      "pass": true
+    },
+    {
+      "case": "changed-existing-figure",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "published-existing-stage",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "published-existing-spec",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "saved-existing-review",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unexpected-second-stage",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unexpected-second-spec",
+      "pass": true,
+      "rejectedBeforeMockWrites": true
+    },
+    {
+      "case": "unrelated-core-change-detected",
+      "pass": true
+    },
+    {
+      "case": "unrelated-lifecycle-change-detected",
+      "pass": false,
+      "error": null
+    },
+    {
+      "case": "initial-baseline-preserved-on-retry",
+      "pass": false,
+      "overwrittenBaselinePaths": [
+        "private-research/DB-BEFORE.json"
+      ],
+      "retryError": null
+    }
+  ],
+  "passed": 9,
+  "total": 11,
+  "actualApplicationNetworkCalls": 0,
+  "actualDatabaseCalls": 0,
+  "actualAuthCalls": 0,
+  "actualProviderCalls": 0,
+  "actualEnvironmentFileReads": 0,
+  "actualCandidateReads": 0,
+  "qualification": "The top-level importer and evolving authored candidates were not executed or read. This checks draft insertion/retry/preservation logic, not historical prose or live SDK behavior."
+}

@@ -1,0 +1,60 @@
+{
+  "completedAt": "2026-10-04T00:33:27.139Z",
+  "mode": "draft-only-insert",
+  "verifiedNewStoryCount": 3,
+  "beforeCounts": {
+    "figures": 60,
+    "stages": 60,
+    "specs": 61
+  },
+  "afterCounts": {
+    "figures": 63,
+    "stages": 63,
+    "specs": 64
+  },
+  "publishedStoriesBefore": 44,
+  "publishedStoriesAfter": 44,
+  "preexistingCatalogUnchanged": true,
+  "databaseReadbackMatchesInputs": true,
+  "reviewMetadataEmpty": true,
+  "beforeHashes": {
+    "figures": "d66a99438534ff10be8564a25471f249d66095a7ba17341bf6f0c4411eb82925",
+    "stages": "a05bdbb85e49d228d2f4635b529dbf12052f2402de546275b56e08438cd79179",
+    "specs": "27aec21a74f8e6492c91f713246fda9324ff46a60e717c9b1aca8b79966f39c5"
+  },
+  "initialBaseline": {
+    "path": "docs/research/new-three-2026-10-03/DB-BEFORE.json",
+    "sha256": "11a6d8ca49a34bc3e9dadce24a72aee253c035bc73a957d1f12d2461f49df7a2"
+  },
+  "attemptBaseline": {
+    "path": "docs/research/new-three-2026-10-03/DB-BEFORE-2026-10-04T00-33-26-335Z-fe635409-47f3-4088-a6a1-b2255f7df6fa.json",
+    "sha256": "11a6d8ca49a34bc3e9dadce24a72aee253c035bc73a957d1f12d2461f49df7a2"
+  },
+  "targets": [
+    {
+      "figureKey": "franklin_b",
+      "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+      "candidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+      "stageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+      "words": 781,
+      "status": "draft"
+    },
+    {
+      "figureKey": "slocum_j",
+      "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+      "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+      "stageSha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2",
+      "words": 774,
+      "status": "draft"
+    },
+    {
+      "figureKey": "somerville_m",
+      "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+      "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+      "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+      "words": 766,
+      "status": "draft"
+    }
+  ],
+  "approval": "No publication approval recorded or simulated metadata persisted"
+}

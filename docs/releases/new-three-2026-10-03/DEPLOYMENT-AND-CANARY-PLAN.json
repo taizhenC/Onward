@@ -1,0 +1,315 @@
+{
+  "schemaVersion": "new-three-deployment-and-canary-plan-v1",
+  "preparedAt": "2026-10-04T03:53:59.890Z",
+  "scope": "Read-only deployment-history and live-canary-path audit; plan only. No deploy, database query/write, provider call, new authentication, browser action, or canary execution by this agent.",
+  "ownerAuthorization": {
+    "reportedByRoot": true,
+    "userText": "good, I reiview it, lets merge that and publish to the production",
+    "scope": "Exactly the approved Franklin, Slocum and Somerville reading packet; PR148 and scoped three-story production publication. Root records the new owner exception and release authority; the earlier ten-story exception is not reused.",
+    "readingPacketSha256": "475c81587af5559164e9abc810127a213e8edd0527076d7bbf4a882ffde87e1b",
+    "savedHistoricalPinStillSays": "pending owner review",
+    "failedMatchingEvidencePreserved": true
+  },
+  "capabilities": {
+    "githubCli": {
+      "available": true,
+      "path": "C:/Program Files/GitHub CLI/gh.exe",
+      "readApisSuccessfullyUsed": true,
+      "repo": "taizhenC/Onward"
+    },
+    "githubConnectorToolsAvailable": true,
+    "vercelConnectorAvailable": false,
+    "vercelCliOnPath": false,
+    "vercelProjectMetadataFound": false,
+    "newCredentialsOrLoginRequiredForGitIntegration": false,
+    "workerRefreshMechanism": "Substantive postpublication receipt commit through checked GitHub PR/main; observed Vercel Git integration creates Production deployment. No direct cache-reset endpoint is available."
+  },
+  "historyObservation": {
+    "observedAt": "2026-10-04T03:53:59.890Z",
+    "mainSha": "405f82357351723da6000b9a169999f3c7975191",
+    "pr": {
+      "number": 148,
+      "url": "https://github.com/taizhenC/Onward/pull/148",
+      "state": "OPEN",
+      "headRefOid": "deccfeb06382510b10874121ea13ac407253ebcc",
+      "mergeCommit": null,
+      "checks": [
+        {
+          "name": "verify",
+          "workflow": "CI",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37166546390/job/111330510828"
+        },
+        {
+          "name": "detect-recipe-promotion",
+          "workflow": "Recipe Promotion Authority",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37166546415/job/111330511759"
+        },
+        {
+          "name": "attest-recipe-promotion",
+          "workflow": "Recipe Promotion Authority",
+          "status": "COMPLETED",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37166546415/job/111330535615"
+        },
+        {
+          "name": "recipe-promotion-gate",
+          "workflow": "Recipe Promotion Authority",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/taizhenC/Onward/actions/runs/37166546415/job/111330535188"
+        },
+        {
+          "name": "Vercel",
+          "workflow": null,
+          "status": "SUCCESS",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://vercel.com/taizhencs-projects/onward/a31q2sfdGoursE48VFQ9NoncTGNa"
+        },
+        {
+          "name": "Vercel Preview Comments",
+          "workflow": "",
+          "status": "COMPLETED",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://vercel.com/github"
+        }
+      ]
+    },
+    "currentSuccessfulProductionDeployment": {
+      "id": 6822273648,
+      "sha": "405f82357351723da6000b9a169999f3c7975191",
+      "environment": "Production",
+      "createdAt": "2026-10-03T02:38:14Z",
+      "latestStatus": "success",
+      "description": "Deployment has completed",
+      "environmentUrl": "https://onward-d6oq6vg70-taizhencs-projects.vercel.app",
+      "githubProductionEnvironmentFlag": false,
+      "proofLimit": "GitHub integration success for exact SHA and named Production environment, not direct Vercel READY/alias membership or actual onwardapp.me worker identity. The service's known-owned canary session and artifact must independently identify the postpublication deployed commit."
+    }
+  },
+  "historicalAudit": {
+    "sourcePins": [
+      {
+        "path": "docs/releases/new-stories-production-2026-10-02/DEPLOYMENT-PLAN.md",
+        "sha256": "729b34b11ab4625a79f2b608cc1c8bbfbd39ed7fbb15f9521400a590fc026f25"
+      },
+      {
+        "path": "docs/releases/new-stories-production-2026-10-02/LIVE-CANARY-PLAN.md",
+        "sha256": "b86df960fd6073237d75bc142d070335c7c195d05351b4a89e1571bee552a6cc"
+      },
+      {
+        "path": "docs/releases/new-stories-production-2026-10-02/LIVE-CANARY.ts",
+        "sha256": "1b57debc2a3cdd66cfdf3e84b9bf660e43f530d56483fbd29b1a7c879f1a5388"
+      },
+      {
+        "path": "docs/releases/new-stories-production-2026-10-02/WORKER-REFRESH-MERGE.json",
+        "sha256": "07f2cc92e3d4517076dc97774a360de40317471e6723f65c6e4b02fd06b2f4b9"
+      },
+      {
+        "path": "docs/releases/new-stories-production-2026-10-02/WORKER-REFRESH-MERGE.md",
+        "sha256": "d56e9f112ffc41294bd44ff6d39b4a82cfb112dd10ad245ed8d1dedb3f32118c"
+      },
+      {
+        "path": "docs/releases/new-stories-production-2026-10-02/LIVE-CANARY-RECEIPT.json",
+        "sha256": "9874050d6d8a4beff43f4ca64719135c3bd3f292e7b192cb560c0c9bf92694e0"
+      }
+    ],
+    "oldCanary": {
+      "ok": false,
+      "deployment": "6844a3825e50b29d18dfd12e285f451e1b9b5f7a",
+      "canonicalBeatsVerified": 7,
+      "successfulAcknowledgements": 23,
+      "artifactPassageCount": 23,
+      "cleanupFailure": "cleanup-normal-confirmation-page-failed",
+      "guestDeleted": true,
+      "ownedSessionRemoved": false
+    },
+    "oldReceiptReusableAsPass": false,
+    "oldSessionAbsenceMeaning": "ownedSessionRemoved:false means the old helper did not verify absence because confirmation failure short-circuited it; it is not evidence a session remained.",
+    "oldAuthAbsenceProven": false,
+    "oldHelperCannotBeRunForNewScope": "Hard-pinned to Blackwell, ten-publication receipt, old44count and consumed attempt/receipt paths; preserve it and prepare a separately reviewed three-story helper."
+  },
+  "newTargets": [
+    {
+      "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+      "candidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+      "stageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+    },
+    {
+      "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+      "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+      "stageSha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+    },
+    {
+      "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+      "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+      "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+    }
+  ],
+  "unchangedCoverageSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+  "deliveryPlan": [
+    {
+      "step": 1,
+      "action": "Root records exact three-story owner authorization, failure disclosure and release exception; prepares63library without changing first60, recipe selector, gold or matching code; requires passing checks for the final exact PR head."
+    },
+    {
+      "step": 2,
+      "action": "Root merges checked PR148 head normally and records resulting main SHA; wait for GitHub Vercel Production deployment success for that exact merged SHA. New specs stay drafts through this code-first deployment."
+    },
+    {
+      "step": 3,
+      "action": "Root executes audited scoped3StorySpecCASpublisher; verify47valid published specs, zero quarantine, all3exact published stage/spec pairs, final review/prose hashes, and prior44unchanged. This audit did not query the live catalog."
+    },
+    {
+      "step": 4,
+      "action": "Root commits substantive publication/readback receipts on a branch from just-deployedmain, checks and merges; Git integration deploys exact postpublication commit, refreshing worker caches. A failed/skipped deployment leaves refresh unresolved."
+    },
+    {
+      "step": 5,
+      "action": "Read GitHub deployment/status APIs for exact postpublication SHA; independently refresh production Auth-host proof from publicbundle without outputting keys, then run only root-coordinated canaries with expected deployed SHA."
+    }
+  ],
+  "productionProof": {
+    "requiredOrigin": "https://onwardapp.me",
+    "expectedSupabaseHostname": "mbcqkljfekkxlgittzal.supabase.co",
+    "deploymentEvidence": [
+      "Exact merged main SHA",
+      "GitHub Vercel deployment id whose sha exactly matches and environment is Production",
+      "Latest successful deployment status/environment_url",
+      "After publication, separately deployed postpublication commit",
+      "Known-owned session.match_recipe.deploymentVersion equals that commit",
+      "Known-owned artifact.recipe.match.deploymentVersion equals that commit on onwardapp.me",
+      "Unchanged approved recipe id/manifest hash and exact new published StorySpec canonical text"
+    ],
+    "insufficient": [
+      "Landing-page200",
+      "x-vercel-id request header",
+      "Vercel Preview check success",
+      "Local resetDbFigureCache()",
+      "New publication receipt alone",
+      "Old canary receipt"
+    ]
+  },
+  "canaryFixtures": {
+    "status": "Proposal only; not measured or execution-authorized for this agent.",
+    "preserveGoldAndRuntime": true,
+    "noForcedIdentityOrEligibilityOverride": true,
+    "noBodyFigureKeyOrStorySpecId": true,
+    "perFixtureMatchAttempts": 1,
+    "perFixtureGuestCreationAttempts": 1,
+    "totalMaximumAttempts": 3,
+    "maximumPassagesPerStory": 64,
+    "expectedChunkCountsFromFrozenMechanics": {
+      "franklin_b": 23,
+      "slocum_j": 23,
+      "somerville_m": 28
+    },
+    "fixtures": [
+      {
+        "fixtureId": "franklin-operational-1",
+        "kind": "Separate unmeasured operational fixture; not an eval/gold revision",
+        "age": 21,
+        "feeling": "I lost my job after an argument with my boss. I left angry, couldn't find another opening, and have to take work from the same boss while I try to start a small business with someone else's help.",
+        "expect": "franklin_b",
+        "basis": "Source-supported quarrel/notice, immediate departure, failed alternate search, return and dependent partnership.",
+        "requiresIndependentSourceReviewAndStaticSurvivalQualification": true,
+        "expectedSelectionProven": false
+      },
+      {
+        "fixtureId": "somerville-frozen-3",
+        "kind": "Unchanged frozen coverage case",
+        "caseIndexZeroBased": 3,
+        "age": 46,
+        "feeling": "i've studied this subject on my own for years, but now someone wants me to explain it for other people. i'm scared my background isn't enough. i said i'd try as long as it stays private until we know whether i've done a good enough job.",
+        "expect": "somerville_m",
+        "historical63PrefilterSurvived": true,
+        "production47SelectionProven": false
+      },
+      {
+        "fixtureId": "slocum-frozen-7",
+        "kind": "Unchanged frozen coverage case",
+        "caseIndexZeroBased": 7,
+        "age": 49,
+        "feeling": "i've done most of the work on a practical project, and now people watching say the next step is going to ruin it. i know what i planned to do, but their certainty makes me think about hiring someone to finish. it's hard to trust a method when people around me keep questioning it.",
+        "expect": "slocum_j",
+        "historical63PrefilterSurvived": true,
+        "production47SelectionProven": false
+      }
+    ],
+    "reachabilityQualification": "Five of nine frozen positives failed63prefilter; all three Franklin frozen cases were lost. Survivors are not proof of real reranker or actual published47catalog selection. There is no honest way to force a target through ordinary intake. Root may freeze/source-review a separate legitimate operational fixture, then qualify it without changing gold or routes; unexpected selection/clarification/provider failure ends that one attempt and triggers cleanup. No repeated tailoring or account rotation."
+  },
+  "canarySuccessContract": {
+    "coverage": "SSR/API normal reader and delivery; not interactive UI/visual layout unless separately coordinated.",
+    "attemptAndReceiptExclusive": true,
+    "immutablePerFixturePaths": true,
+    "prerequisites": [
+      "Exact3published receipts and prior44preservation",
+      "Successful postpublication deployment exactSHA",
+      "Freshproduction Authproject targetproof",
+      "Reviewed separately scoped helper and frozen operational fixtures",
+      "Root coordinated execution request"
+    ],
+    "authentication": [
+      "One fresh anonymous user with in-memorySSRcookies; existing owner's account never used",
+      "Disable automatic token refresh; constrain Auth endpoints and signup/read budgets; record attempts before network",
+      "Keep cookies/tokens/user/session/artifact ids transient and unprinted"
+    ],
+    "normalMatching": [
+      "POST/api/match with the frozen age/feeling only",
+      "No directprovider call, fixture forcing, manual session/artifact insert, selector/gold/keyword change or artificial boundaries",
+      "Expectedtarget/sessionownership/initialprogress strict; unexpected result ends attempt without matching retry"
+    ],
+    "reader": [
+      "Normal owned/story/session GET",
+      "Strict stored artifact and retention validation",
+      "Canonical seven roles and all published passages exact",
+      "Every actual chunk checked before POST/api/beat/ack with exact server-owned beat/chunk indexes",
+      "Attemptedrequests and successfulACK counts separate; hard64passagebound per story",
+      "Final owned progress beat7/chunk0 and exact immutable artifact",
+      "Second normal story GET verifies rendered afterword/source-record facts/locators/citations/links, bridge identity, review state and rationale",
+      "Exclude scripts/styles/Next flight JSON and report-form duplicate options from HTML proof"
+    ],
+    "cleanup": [
+      "finally confirms exact fresh anonymous owner",
+      "GET/account/delete and CSRF-bound POST/api/account-delete once using normal route, same-origin headers and understood acknowledgement",
+      "Preserve the response's authentic successcookie; GET/account-deleted once within120secondTTL, confirming normal rendered deletion message without fabrication",
+      "Independently read exact known session by sessionId+userId and exact known artifact by artifactId+sessionId+userId for absence, even if confirmation check fails",
+      "Independently read Authadmin.getUserById only for that exact transient known user; require404 or user_not_found/not_found, not generic transport/auth failure",
+      "No Authadmin delete, arbitrary user/session delete or userlisting; no another guest to hide a failure",
+      "Keep delivery/confirmation/sessionabsence/artifactabsence/Authabsence outcomes separate; overallPASS requires all",
+      "Signup response loss without known identity remains unresolved; normal lifecycle expiry does not become a successful cleanup claim"
+    ],
+    "sourceProjection": "Compare buildStoryTransparency of exact publishedspec and samefeeling/framing; preserve probable memories and later-life context disclosures."
+  },
+  "guardsDocumentation": {
+    "oldHelperGuardPaths": [
+      "LIVE-CANARY.ts:104–136 local fixture/candidate/publication/target pins",
+      "LIVE-CANARY.ts:219–267 exclusive attempt, endpoint caps and firstanonymoussignup",
+      "LIVE-CANARY.ts:268–321 ownedtarget/artifact,sevenbeats,allACKs,completedsourceHTML",
+      "LIVE-CANARY.ts:324–355 normalcleanup and reduced receipt"
+    ],
+    "currentRuntimePaths": [
+      "lib/figures-source-db.ts:published stage cache per process; no public reset",
+      "lib/story-recipe-runtime.ts:deploymentVersionFor uses ONWARD_DEPLOYMENT_VERSION or VERCEL_GIT_COMMIT_SHA",
+      "app/api/match/handler.ts:normal validatedintake and Auth boundary",
+      "app/api/account-delete/route.ts:authenticatedowner,CSRF,signedsuccesscookie",
+      "app/account-deleted/page.tsx:validreceipt and noactiveaccount required",
+      "lib/supabase/middleware.ts:successcookie consumed in response after firstrequest",
+      "lib/account-deletion-store-supabase.ts:exactuser404/missing-user reconciliation"
+    ]
+  },
+  "notExecuted": {
+    "deploy": true,
+    "newAuthentication": true,
+    "databaseRead": true,
+    "databaseWrite": true,
+    "provider": true,
+    "browser": true,
+    "canary": true,
+    "offlineHypothesisOrScoring": true
+  },
+  "nextOwnerOfExecution": "/root"
+}

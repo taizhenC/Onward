@@ -1,0 +1,162 @@
+{
+  "schema": "independent-somerville-draft-probe-v2",
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "candidateSha256": "1bb769481175e73392dadfc1a513845e5759121a60dd372fe96fadefc6c397c3",
+  "stageSha256": "f79ea5b1f359a5d88709412a467ad3b38ba3e68158163802206a6487b8dfd12b",
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "metrics": [
+    {
+      "role": "scene",
+      "words": 104,
+      "sentences": 11,
+      "mean": 9.454545454545455,
+      "max": 14,
+      "last": 12,
+      "stageMatches": true,
+      "evidenceCount": 11
+    },
+    {
+      "role": "dark_moment",
+      "words": 130,
+      "sentences": 13,
+      "mean": 10,
+      "max": 14,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 13
+    },
+    {
+      "role": "response",
+      "words": 93,
+      "sentences": 10,
+      "mean": 9.3,
+      "max": 14,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 10
+    },
+    {
+      "role": "struggle",
+      "words": 127,
+      "sentences": 13,
+      "mean": 9.76923076923077,
+      "max": 15,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 13
+    },
+    {
+      "role": "turning_point",
+      "words": 129,
+      "sentences": 15,
+      "mean": 8.6,
+      "max": 14,
+      "last": 4,
+      "stageMatches": true,
+      "evidenceCount": 15
+    },
+    {
+      "role": "became",
+      "words": 121,
+      "sentences": 12,
+      "mean": 10.083333333333334,
+      "max": 15,
+      "last": 8,
+      "stageMatches": true,
+      "evidenceCount": 12
+    },
+    {
+      "role": "bridge",
+      "words": 62,
+      "sentences": 6,
+      "mean": 10.333333333333334,
+      "max": 21,
+      "last": 6,
+      "stageMatches": true,
+      "evidenceCount": 6
+    }
+  ],
+  "totalWords": 766,
+  "chunkChecks": [
+    {
+      "role": "scene",
+      "chunkCount": 3,
+      "paragraphMaximum": 1,
+      "characterMaximum": 222,
+      "endsAtSentence": true
+    },
+    {
+      "role": "dark_moment",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 202,
+      "endsAtSentence": true
+    },
+    {
+      "role": "response",
+      "chunkCount": 4,
+      "paragraphMaximum": 1,
+      "characterMaximum": 215,
+      "endsAtSentence": true
+    },
+    {
+      "role": "struggle",
+      "chunkCount": 4,
+      "paragraphMaximum": 1,
+      "characterMaximum": 201,
+      "endsAtSentence": true
+    },
+    {
+      "role": "turning_point",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 197,
+      "endsAtSentence": true
+    },
+    {
+      "role": "became",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 207,
+      "endsAtSentence": true
+    },
+    {
+      "role": "bridge",
+      "chunkCount": 2,
+      "paragraphMaximum": 2,
+      "characterMaximum": 233,
+      "endsAtSentence": true
+    }
+  ],
+  "totalChunks": 28,
+  "validStoredArtifact": true,
+  "laterLossProjected": false,
+  "publicationApproval": false,
+  "providerCalls": 0,
+  "persisted": false,
+  "sourceCraftVerdict": "pass_with_recorded_recipe_limitations",
+  "resolvedHistoricalCorrections": [
+    "Post-February-1832 separate printing removed from narrative bounded to November 1831.",
+    "Later-loss locator corrected to Chapter XVI pp. 325-326 and described as unused authoring context."
+  ],
+  "primarySources": [
+    "https://www.gutenberg.org/files/27747/27747-h/27747-h.htm",
+    "https://www.gutenberg.org/files/67386/67386-h/67386-h.htm",
+    "https://library.some.ox.ac.uk/2025/06/06/mary-somerville-collections/"
+  ],
+  "remainingRecipeLimitations": [
+    {
+      "clause": "Rfold",
+      "finding": "Later-life loss is unused authoring context and absent from actual reader fold; this clause is not fulfilled by the retained atom."
+    },
+    {
+      "clause": "turning-point approximate word target",
+      "finding": "129 words is one below approximate 130-word guidance; no unsupported padding was added."
+    }
+  ],
+  "requiredHistoricalCorrections": []
+}

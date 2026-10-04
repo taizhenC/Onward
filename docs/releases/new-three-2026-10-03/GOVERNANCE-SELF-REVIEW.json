@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "new-three-governance-author-self-review-v1",
+  "reviewedAt": "2026-10-04T04:00:12.139Z",
+  "reviewer": "/root/new_three_library_audit",
+  "reviewType": "Author self-review; not an independent cross-review",
+  "sourceSha256": "56c368f525007170e129c574cec87283702a9f1a4059489f29a0d32c9a4abca6",
+  "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+  "verdict": "PASS_WITH_INDEPENDENCE_QUALIFICATION",
+  "findings": [],
+  "oldTenDeclarationsIdentical": [
+    "OWNER_AUTHORIZED_LIBRARY_RELEASE",
+    "validateOwnerLibraryAuthorization",
+    "runOwnerLibrarySelfChecks"
+  ],
+  "unchangedProtectedPaths": [
+    "config/story-recipes.json",
+    "evals/match.json",
+    "lib/matching.ts",
+    "lib/match-config.ts",
+    "lib/match-recipe-constants.ts",
+    "lib/llm-prompts.ts",
+    "lib/keyword-match.ts",
+    "scripts/trusted/recipe-promotion-attestor.mjs"
+  ],
+  "failureRetained": {
+    "real104TrustGatePassed": false,
+    "positiveCorrect": 96,
+    "positiveTotal": 101,
+    "wrongDefinitive": 3,
+    "supplementalPreflightPassed": false,
+    "supplementalProviderCalls": 0
+  },
+  "newProbes": {
+    "positiveControlPassBeforeAndAfter": true,
+    "negativeCount": 13,
+    "probes": [
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/releases/new-three-2026-10-03/READING-PACKET.md",
+        "rejected": true,
+        "message": "new-three READING-PACKET.md bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/releases/new-three-2026-10-03/INPUTS.json",
+        "rejected": true,
+        "message": "new-three INPUTS.json bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/releases/new-three-2026-10-03/DATABASE-RECEIPT.json",
+        "rejected": true,
+        "message": "new-three DATABASE-RECEIPT.json bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/research/new-three-2026-10-03/franklin_b-1727-1728-a-first-customer-v1.candidate.json",
+        "rejected": true,
+        "message": "new-three reviewed candidate bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/research/new-three-2026-10-03/franklin_b-1727-1728-a-first-customer-v1.stage.json",
+        "rejected": true,
+        "message": "new-three reviewed stage bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/research/new-three-2026-10-03/slocum_j-1892-1895-a-boat-in-the-field-v1.candidate.json",
+        "rejected": true,
+        "message": "new-three reviewed candidate bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/research/new-three-2026-10-03/slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+        "rejected": true,
+        "message": "new-three reviewed stage bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/research/new-three-2026-10-03/somerville_m-1827-1831-a-manuscript-in-secret-v1.candidate.json",
+        "rejected": true,
+        "message": "new-three reviewed candidate bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "docs/research/new-three-2026-10-03/somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+        "rejected": true,
+        "message": "new-three reviewed stage bytes changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "evals/new-three-12-2026-10-03.json",
+        "rejected": true,
+        "message": "new-three frozen supplementary cases changed"
+      },
+      {
+        "kind": "current-file byte drift",
+        "path": "evals/history/match-104-2026-07-02/keyword-rerank-figure-library-50-2026-07-02/ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247.json",
+        "rejected": true,
+        "message": "new-three failed evidence bytes changed"
+      },
+      {
+        "kind": "historical-source byte drift",
+        "path": "config/prompt-releases.json",
+        "rejected": true,
+        "message": "new-three owner decision changed historical matching input config/prompt-releases.json"
+      },
+      {
+        "kind": "historical-source byte drift",
+        "path": "lib/matching.ts",
+        "rejected": true,
+        "message": "new-three owner decision changed historical matching input lib/matching.ts"
+      }
+    ],
+    "method": "The actual new-three validator and actual hash/canonical helpers were extracted without top-level imports. Read-only filesystem/Git dependencies were shadowed in memory to return changed bytes for one input at a time; no real files were changed.",
+    "providerCalls": 0,
+    "dbCalls": 0,
+    "authCalls": 0,
+    "gitReadCalls": 174
+  },
+  "limitations": [
+    "The reviewer authored the governance implementation. Root is performing its independent final diff review separately.",
+    "Current operation source pins are enforced by the publication adapter and ordinary CI. The historical content authorization intentionally does not freeze future independently governed source changes.",
+    "These probes supplement the 30 built-in negative cases; they do not claim matching passed, deployment succeeded, or publication occurred."
+  ]
+}

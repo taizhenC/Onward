@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "new-three-library-integration-audit-v1",
+  "auditedAt": "2026-10-04T00:43:40.710Z",
+  "reviewer": "independent-agent-new-three-library-audit",
+  "scope": "Read-only committed-source comparison, literal AST extraction, frozen input byte pins, and supplied draft receipt comparison. No environment file, provider, DB, authentication, or matching measurement access.",
+  "baseCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "auditedCommit": "df19fecee5aafafd57a7f349380a294522c80b44",
+  "auditedTree": "5d1127d7a4a15a03bee18cfec2a42469b9ba8689",
+  "integrationVerdict": "PASS",
+  "releaseVerdict": "BLOCKED_EXPECTED_PENDING_EVIDENCE_AND_OWNER_REVIEW",
+  "checks": {
+    "originalStageCount": 60,
+    "proposedStageCount": 63,
+    "original60ObjectValuesIdentical": true,
+    "original60ObjectSourceTextIdentical": true,
+    "allPreviousDefinitionsByteIdentical": true,
+    "original60ExportOrderPreserved": true,
+    "newExportOrder": [
+      "franklin_b",
+      "slocum_j",
+      "somerville_m"
+    ],
+    "newThreeExactlyMatchFrozenStageInputs": true,
+    "candidateAndStageGitBlobSha256MatchInputPins": true,
+    "candidateAndStagePinsMatchDatabaseDraftReceipt": true,
+    "candidatesRemainDraftWithEmptyReview": true,
+    "original104DatasetUnchanged": true,
+    "original104CaseCount": 104,
+    "original104Sha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "registryOnlyAppendsSyntheticDataset": true,
+    "previousDatasetsPreserved": true,
+    "newDatasetVersion": "synthetic-new-three-12-2026-10-03",
+    "newDatasetSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+    "newDatasetCases": 12,
+    "missControlObjectsPreserved": 3,
+    "recipesSelectorPromotionsHistoryDecisionsPromptsScriptsMigrationsUntouched": true,
+    "releaseLineageUnchanged": true,
+    "latestRegisteredLibrarySha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+    "proposalLibrarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+    "installedProposalDoesNotMatchLatestRegisteredRelease": true,
+    "governanceCorrectlyBlocksProposal": true
+  },
+  "pins": [
+    {
+      "figureKey": "franklin_b",
+      "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+      "candidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+      "stageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+      "receiptStatus": "draft"
+    },
+    {
+      "figureKey": "slocum_j",
+      "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+      "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+      "stageSha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2",
+      "receiptStatus": "draft"
+    },
+    {
+      "figureKey": "somerville_m",
+      "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+      "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+      "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+      "receiptStatus": "draft"
+    }
+  ],
+  "ciQualification": {
+    "receipt": "docs/releases/new-three-2026-10-03/CI-2026-10-04T00-35-29-450Z.json",
+    "testedCommit": "6b9816b40405ad0875239453225827a244440b38",
+    "testedLibrarySha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+    "passedSteps": 67,
+    "appliesToAudited63Proposal": false
+  },
+  "findings": [],
+  "releaseBlockers": [
+    {
+      "code": "UNREGISTERED_LIBRARY",
+      "detail": "The proposal SHA differs from the unchanged newest release. scripts/check-recipe-governance.ts:149-152 rejects this mismatch before evidence authorization."
+    },
+    {
+      "code": "FRESH_REAL_GATE_REQUIRED",
+      "detail": "A later figure-library release requires fresh real reranker trust-gate evidence bound to this exact library and committed input tree. The first post-bootstrap owner exception is pinned to the prior ten-story library and cannot authorize this proposal."
+    },
+    {
+      "code": "OWNER_REVIEW_PENDING",
+      "detail": "Frozen INPUTS records owner review pending; all three candidate review objects remain empty. AI cross-review is not owner publication approval."
+    },
+    {
+      "code": "FINAL_CI_NOT_YET_BOUND",
+      "detail": "The 67 passing checks apply to 6b9816b with the prior 60-stage library. Run required checks on the final registered release head; do not reuse that receipt for this proposal."
+    }
+  ],
+  "limitations": [
+    "DB receipt pins were independently compared to committed source inputs; database live state was not reread.",
+    "The deterministic release mismatch was established from unchanged governance source and committed hashes; no matching measurements or governance execution occurred.",
+    "This audit verifies integration preservation, not independent case-label correctness or historical prose sourcing."
+  ]
+}

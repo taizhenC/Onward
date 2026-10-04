@@ -1,0 +1,33 @@
+{
+  "schema": "independent-somerville-source-label-final-v1",
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+  "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+  "previousCandidateSha256": "df5509f1d2a509dd3b4cabe56be9d3bf0dfebdec5a00134b16879004b951721c",
+  "sourceCraftVerdict": "pass",
+  "scope": "Global source locator role-label extension; prior source/prose and stage reviews preserved",
+  "sourceLabelIsOnlySemanticDelta": true,
+  "previousLocator": "Chapter I p. 8 (birth); Chapter XI pp. 161–172 (March 27, 1827 request, visit and conditional acceptance, interruptions, manuscript examination, initial undated review letter, February 23, 1830 letter, November 2, 1831 acknowledgment, reader limit); Chapter XVI pp. 325–326 (later loss, unused authoring context).",
+  "finalLocator": "Chapter I p. 8 (birth); Chapter XI pp. 161–172 (March 27, 1827 request, visit and conditional acceptance, interruptions, manuscript examination, initial undated review letter, February 23, 1830 letter, November 2, 1831 acknowledgment, reader limit); Chapter XVI pp. 325–326 (later loss, used outside-episode identity context in the source fold; the standalone authoring atom remains unused).",
+  "stageUnchanged": true,
+  "canonicalProseChanged": false,
+  "factsMappingsProfileReviewUnchanged": true,
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "stageAndSpecMatch": true,
+  "invalidThemeTags": [],
+  "words": 766,
+  "totalChunks": 28,
+  "validChunks": true,
+  "validStoredArtifact": true,
+  "laterLossProjected": true,
+  "standaloneLossUnprojected": true,
+  "composedSourceLocator": "Chapter I p. 8 (birth); Chapter XI pp. 161–172 (March 27, 1827 request, visit and conditional acceptance, interruptions, manuscript examination, initial undated review letter, February 23, 1830 letter, November 2, 1831 acknowledgment, reader limit); Chapter XVI pp. 325–326 (later loss, used outside-episode identity context in the source fold; the standalone authoring atom remains unused).",
+  "publicationApproval": false,
+  "providerCalls": 0,
+  "persisted": false,
+  "failures": []
+}

@@ -1,0 +1,359 @@
+{
+  "schemaVersion": "new-three-publisher-implementation-v1",
+  "capturedAt": "2026-10-04T04:12:27.671Z",
+  "status": "OFFLINE_IMPLEMENTATION_PASS_INDEPENDENT_REVIEW_PENDING",
+  "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+  "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+  "files": [
+    {
+      "path": "docs/releases/new-three-2026-10-03/owner-publication-authority.ts",
+      "sha256": "9a56ae3797327064e72456613df9ac120f5c4446a3e257cd7deb08b51af81144"
+    },
+    {
+      "path": "docs/releases/new-three-2026-10-03/publish-owner-approved.ts",
+      "sha256": "b8beb068c8f387cf92f49d4f893c33a839051eca2b09f65f72d70c92dc029482"
+    },
+    {
+      "path": "docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+      "sha256": "e6b6bcf93a082265e578427c3f75dd4050baeaf776b0071b3b2f826e5fbda6ba"
+    }
+  ],
+  "verification": {
+    "command": "node --import tsx docs/releases/new-three-2026-10-03/check-owner-publication.ts",
+    "exitCode": 0,
+    "typecheck": {
+      "command": "node node_modules/typescript/bin/tsc --noEmit --incremental false",
+      "exitCode": 0
+    },
+    "eslint": {
+      "command": "node node_modules/eslint/bin/eslint.js <three owned helpers> --max-warnings=0",
+      "exitCode": 0
+    },
+    "publisherSelfTest": {
+      "command": "node --import tsx docs/releases/new-three-2026-10-03/publish-owner-approved.ts --self-test",
+      "exitCode": 0
+    },
+    "offline": {
+      "ok": true,
+      "mode": "offline-new-three-owner-publication",
+      "fixtureScope": "synthetic catalog, exact frozen new-three documents; no production receipt or matching pass",
+      "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+      "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+      "checks": 66,
+      "negativeChecks": 54,
+      "environmentFilesRead": 0,
+      "networkAttempts": 0,
+      "databaseReads": 0,
+      "databaseMutations": 0,
+      "providerRequests": 0,
+      "receiptWrites": 0,
+      "results": [
+        {
+          "name": "three exact drafts / 63 figures / 63 stages / 64 specs / 44 valid",
+          "outcome": "PASS"
+        },
+        {
+          "name": "same single owner supplies exactly three review roles",
+          "outcome": "PASS"
+        },
+        {
+          "name": "exact review retry is allowed",
+          "outcome": "PASS"
+        },
+        {
+          "name": "all three exact published retries / 47 valid",
+          "outcome": "PASS"
+        },
+        {
+          "name": "interrupted two-publication retry preserves all other rows",
+          "outcome": "PASS"
+        },
+        {
+          "name": "wrong owner",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "wrong owner statement",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "wrong library",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "wrong target count",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "failed matching relabeled as pass",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "supplemental fail relabeled as pass",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "fictitious independent reviewer",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "wrong candidate pin",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "wrong stage pin",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "unapproved published document",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "canonical stage parity",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "episode/stage age parity",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "draft review tamper",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "draft nonnull publication time",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "draft nonnull retirement time",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "target created_at drift",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "target full document mutation",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "target core identity drift",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "target stage source mutation",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "target theme mutation",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "unrelated figure drift",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "unrelated stage drift",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "unrelated spec review drift",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "prior44 published_at drift",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "prior44 retired_at drift",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "unrelated extra row",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "unrelated missing row",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "published sibling would be retired by RPC",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "duplicate catalog identity",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "published row without stage publication",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "published timestamp predates selection",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "published wrong full review",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "xmin guard binds identity/status/lifecycle/version",
+          "outcome": "PASS"
+        },
+        {
+          "name": "one-row atomic review response",
+          "outcome": "PASS"
+        },
+        {
+          "name": "xmin zero-row concurrent update",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "CAS returns multiple rows",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "CAS returns changed content",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "CAS returns changed lifecycle",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "CAS row version did not advance",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "fresh version read is already changed",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "missing numeric xmin",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "identical immutable receipt is reusable",
+          "outcome": "PASS"
+        },
+        {
+          "name": "immutable receipt collision",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "published retry has pre-publication archive",
+          "outcome": "PASS"
+        },
+        {
+          "name": "published retry lacks pre-publication archive",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "real reviewDraft control flow uses fresh full row before mock CAS",
+          "outcome": "PASS"
+        },
+        {
+          "name": "changed fresh read blocks before any mock PATCH",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "successful normal verify CI with expected skipped attestation",
+          "outcome": "PASS"
+        },
+        {
+          "name": "CI tested another head",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "normal verify CI missing",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "normal verify CI failed",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "stale success conclusion on incomplete check",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "active authority check failed",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "required Vercel check omitted",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "unrelated skipped check",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "deployment another SHA",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "Preview deployment substituted",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "deployment not successful",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "deployment changed library",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "deployment old owner authority",
+          "outcome": "REJECTED_AS_REQUIRED"
+        },
+        {
+          "name": "published health parser rejects zero quarantines requirement",
+          "outcome": "PASS"
+        }
+      ]
+    }
+  },
+  "bounds": {
+    "modeDefault": "offline",
+    "preflight": "read-only",
+    "publisher": "exact3 draft-to-review xmin CAS then complete expected-document promote_story_spec_v2",
+    "readResponseBytes": 4194304,
+    "requestTimeoutMs": 15000,
+    "rows": {
+      "figures": 63,
+      "stages": 63,
+      "specs": 64
+    },
+    "publicationsBefore": 44,
+    "publicationsAfter": 47,
+    "immutableImportBaselineSha256": "11a6d8ca49a34bc3e9dadce24a72aee253c035bc73a957d1f12d2461f49df7a2"
+  },
+  "actualLiveOperations": {
+    "environmentFilesRead": 0,
+    "databaseReads": 0,
+    "databaseMutations": 0,
+    "providerRequests": 0,
+    "authMutations": 0
+  },
+  "qualification": [
+    "Offline catalog preservation fixtures are synthetic, and do not establish a production baseline or independent human editorial review. Exact approved candidate, stage, authority, reader packet and failed matching evidence byte pins are validated from source.",
+    "Actual production preflight/publication/verification and deployment are pending root execution.",
+    "The row-version CAS protects the target draft update from concurrent row changes. Whole-catalog preservation and the published-sibling exclusion are checked immediately before and after promotion; the existing RPC does not atomically lock the entire catalog. Root is the serialized editorial writer during publication.",
+    "The actual original104 matching gate remains FAILED and supplemental12 remains blocked before provider calls; owner authority is narrowly limited to this exact three-story content release."
+  ],
+  "transportQualification": {
+    "capturedAt": "2026-10-04T04:13:02.152Z",
+    "source": "root-operated bounded impossible-version PATCH",
+    "probeFile": "docs/releases/new-three-2026-10-03/REVIEW-CAS-ZERO-ROW-PROBE.json",
+    "probeSha256": "70e0872c95512da8212120f5f5029eb98d82f68dd87c7ba0d4fbf55ec57c8d64",
+    "observedAt": "2026-10-04T04:12:27.100Z",
+    "status": 200,
+    "contentRange": "*/0",
+    "returnedRows": 0,
+    "rowsChanged": 0,
+    "fullBeforeAfterRowAndXminIdentical": true,
+    "qualification": "Actual deployed zero-row response satisfies exact-count transport guard. One-row review publication remains pending. This subagent performed no live call."
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "schemaVersion": "new-three-production-canary-implementation-v1",
+  "preparedAt": "2026-10-04T04:08:41.000Z",
+  "status": "prepared-offline-only; root independent source review PASS; actual postpublication execution pending",
+  "productionOrigin": "https://onwardapp.me",
+  "expectedSupabaseHostname": "mbcqkljfekkxlgittzal.supabase.co",
+  "runtimeRoot": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward",
+  "operatorRoot": "D:/code_save/Onward",
+  "helperFiles": [
+    {
+      "file": "docs/research/new-three-2026-10-03/run-production-canary.ts",
+      "sha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2"
+    },
+    {
+      "file": "docs/research/new-three-2026-10-03/run-production-canary.mjs",
+      "sha256": "74dce433aefb45ef8fd46fc68c380c6e20d1725df48d065b0501633af4295d0b"
+    },
+    {
+      "file": "docs/research/new-three-2026-10-03/run-production-canary.typecheck.json",
+      "sha256": "edb04ad033be22a2a2ed9e6da5b8cc59352d1f2b9fdead49527cb9265da84698"
+    }
+  ],
+  "scope": {
+    "fixtureIndexZeroBased": 3,
+    "age": 46,
+    "expectedFigureKey": "somerville_m",
+    "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+    "maximumGuestCreationAttempts": 1,
+    "maximumMatchRequests": 1,
+    "maximumCanonicalBeats": 7,
+    "maximumChunkRequests": 64,
+    "maximumAcknowledgements": 64,
+    "maximumNormalStoryGets": 2,
+    "deliveryDeadlineMs": 180000,
+    "launcherTimeoutMs": 600000,
+    "unexpectedSelection": "Record actual public figure key, stop, perform normal guest cleanup and exact known absence reads, leave immutable failed receipt. No new input or retry."
+  },
+  "fixture": {
+    "path": "NEW-THREE-MATCH-CASES.json",
+    "sha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+    "feeling": "i've studied this subject on my own for years, but now someone wants me to explain it for other people. i'm scared my background isn't enough. i said i'd try as long as it stays private until we know whether i've done a good enough job."
+  },
+  "pins": {
+    "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+    "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+    "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+    "readingPacketSha256": "475c81587af5559164e9abc810127a213e8edd0527076d7bbf4a882ffde87e1b",
+    "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90"
+  },
+  "authorityManifestRequired": {
+    "schemaVersion": "new-three-production-canary-authority-v1",
+    "helperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2",
+    "fixtureIndex": 3,
+    "fixtureSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+    "ownerAuthorizationSha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+    "readingPacketSha256": "475c81587af5559164e9abc810127a213e8edd0527076d7bbf4a882ffde87e1b",
+    "publicationReceipt": {
+      "file": "PUBLICATION-RECEIPT.json",
+      "sha256": "REPLACE_WITH_ACTUAL_RECEIPT_SHA256"
+    },
+    "targetPublicationReceipt": {
+      "file": "PUBLISHED-somerville_m.json",
+      "sha256": "REPLACE_WITH_ACTUAL_TARGET_RECEIPT_SHA256"
+    },
+    "productionTargetProof": {
+      "file": "PRODUCTION-TARGET-PROOF.json",
+      "sha256": "REPLACE_WITH_ACTUAL_TARGET_PROOF_SHA256"
+    },
+    "deploymentProof": {
+      "file": "DEPLOYMENT-post-publication-refresh-REPLACE_WITH_M2.json",
+      "sha256": "REPLACE_WITH_ACTUAL_POSTPUBLICATION_PROOF_SHA256"
+    }
+  },
+  "authorityQualification": "This is a schema description containing non-executable placeholders, not a fabricated live authority or receipt. Root creates and hashes the actual manifest only after inspecting the actual immutable receipts.",
+  "localGuardsBeforeEnvironment": [
+    "Exact managed cwd and equal ROOT/managed helper bytes",
+    "Exact frozen 12-case bytes and unchanged index3 age/feeling/expect",
+    "Exact candidate, stage, reading and owner bytes; valid seven-role unreviewed draft",
+    "SHA-bound authority and every named leaf JSON dependency",
+    "Exact successful 47-publication receipt, zero quarantines, preserved previous44 and unrelated catalog, exact three target pins",
+    "Published Somerville full row with exact frozen prose/ledger plus publishable review/lifecycle; receipt target file and bytes match",
+    "Verified production bundle/local Supabase project identity",
+    "Exact post-publication-refresh merged40SHA Production success, proposed library, owner authorization, and source-head CI",
+    "Five mandatory successful named CI checks; only successful or skipped other checks"
+  ],
+  "deliveryAssertions": [
+    "One normal anonymous Auth signup, one unchanged adult intake POST; no forced match/fixture rewriting",
+    "Exact owned session target, age, stage and 0/0 progress; retain known artifact ID before target assertion for cleanup",
+    "Session and artifact match recipes name exact expected deployment, recipe and manifest; canonical composer with hybrid false",
+    "Strict v5 artifact integrity and exact published seven canonical beat texts and assembled chunks",
+    "Complete normal story SSR page; every actual chunk retrieved in order and ACKed through getNextStoryAdvance",
+    "Final exact owned progress7/0, same artifact/recipe; successful ACK count equals actual passage count",
+    "Completed normal SSR afterword and source-details rendered HTML contains bridge identity, rationale, facts/locators, citations/URLs, quotes and declared texture; scripts/styles/flight data cannot substitute"
+  ],
+  "cleanupAssertions": [
+    "Normal Auth getUser confirms the same anonymous owner before deletion",
+    "Normal /account/delete CSRF form and /api/account-delete acknowledgment; exact303 /account-deleted redirect",
+    "Normal confirmation page200 with rendered deletion heading; response cookie expiry/path modeled",
+    "Separate exact-known owned session absence, exact-known artifact absence, and exact Auth user GET absence always attempted after normal deletion/confirmation errors",
+    "No admin write/delete, Auth list, broad user/session query, manual purge or alternative cleanup path",
+    "A confirmation-page failure remains overall false even if independent absence checks pass; every reduced cleanup field/failure is recorded",
+    "Unconfirmed guest creation retains unresolved cleanup failure; exclusive immutable attempt marker prevents another guest"
+  ],
+  "networkBoundaries": {
+    "normalAppRoutes": [
+      "POST /api/match:1",
+      "GET /story/<fresh known session>:2",
+      "POST /api/beat:64",
+      "POST /api/beat/ack:64",
+      "GET /account/delete:1",
+      "POST /api/account-delete:1",
+      "GET /account-deleted:1"
+    ],
+    "exactProjectRoutes": [
+      "POST /auth/v1/signup:1",
+      "GET /auth/v1/user:1 during cleanup",
+      "GET /auth/v1/admin/users/<fresh confirmed user>:1 during cleanup",
+      "GET /rest/v1/sessions with exact fresh user/session filters:3",
+      "GET /rest/v1/story_artifacts with exact fresh user/session/artifact filters:2"
+    ],
+    "forbidden": "Any other hostname, protocol, app query, endpoint, mutation, duplicate signup/match, broad identity query, provider request from this helper or cleanup admin delete is rejected. Normal production /api/match may run its existing provider path; the helper does not call a model directly."
+  },
+  "offlineValidation": {
+    "ok": true,
+    "launcherSelfTestExitCode": 0,
+    "isolatedTypecheckExitCode": 0,
+    "negativeTests": 9,
+    "cleanupScenarios": 2,
+    "cookieChecks": 2,
+    "authAbsenceChecks": 4,
+    "environmentLoaded": false,
+    "networkRequests": 0,
+    "authMutations": 0,
+    "databaseMutations": 0,
+    "details": "Rendered-only source HTML guards, report-option/flight false evidence, altered/truncated chunk and premature completion rejection, strict CLI shape, exact404/known missing Auth semantics, cookie path/removal, confirmation failure still checks all3 known absences, deletion/first absence failure still checks later absences."
+  },
+  "output": {
+    "attempt": "PRODUCTION-CANARY-SOMERVILLE-ATTEMPT.json",
+    "receipt": "PRODUCTION-CANARY-SOMERVILLE-RECEIPT.json",
+    "writePolicy": "wx before first signup and immutable reduced final receipt; never overwrite an earlier attempt",
+    "privacy": "No cookies/tokens/raw errors/provider response/guest ID/session ID/artifact ID/HTML printed or persisted. Known private IDs remain memory-only. Launcher emits only reduced allowlisted status, otherwise redacts child diagnostics."
+  },
+  "invocation": {
+    "selfTest": "node D:/code_save/Onward/docs/research/new-three-2026-10-03/run-production-canary.mjs --self-test",
+    "isolatedTypecheck": "node node_modules/typescript/lib/tsc.js --project docs/research/new-three-2026-10-03/run-production-canary.typecheck.json --pretty false",
+    "liveTemplate": "node D:/code_save/Onward/docs/research/new-three-2026-10-03/run-production-canary.mjs --run --deployment=<exact M2 40-character SHA> --authority=CANARY-AUTHORITY.json --authority-sha=<exact actual manifest 64-character SHA>"
+  },
+  "independentReview": {
+    "file": "CANARY-CROSS-REVIEW.json",
+    "sha256": "d20f70cce169d45b049ea705cf65488d0497c9791597dabc2b1378960fdd4231",
+    "reviewer": "root-agent",
+    "observedAt": "2026-10-04T04:09:32.476Z",
+    "ok": true,
+    "findings": [],
+    "helperSha256": "74dc29e4a7c8510e5d0f0f03cf562f64499c3f3fe47b01c6f478cd04b41a8bb2"
+  },
+  "qualifications": [
+    "No live production canary has been executed by this preparation task. Root independent helper source review and actual offline self-test PASS are recorded in CANARY-CROSS-REVIEW.json; actual47 publication and exact postpublication deployment proof remain required.",
+    "Supersedes prior deployment plan execution examples: exactly one fixed Somerville case, no new Franklin fixture and no three-canary retry scheme.",
+    "Availability is established by separately audited actual47 published catalog including all3; one successful canary can establish only this fixed normal route example.",
+    "Real104 failed96/101 with3 wrong definitive; supplemental63-stage frozen memory preflight lost5/9 positive targets before provider execution. Those fixture losses do not prove Franklin universally unreachable in production’s47 published-stage catalog.",
+    "Old Blackwell receipt remains overallfalse from normal confirmation failure; its recorded partial delivery cannot be borrowed as a PASS.",
+    "Source review qualifications and late-memory probability remain unchanged. No candidate, stage, runtime, recipe, gold, case or matching threshold was edited."
+  ]
+}

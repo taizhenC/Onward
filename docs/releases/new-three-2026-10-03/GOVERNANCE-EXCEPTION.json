@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "new-three-owner-governance-completion-v1",
+  "completedAt": "2026-10-04T03:56:44.024Z",
+  "workspaceHeadAtVerification": "deccfeb06382510b10874121ea13ac407253ebcc",
+  "changedCodeFile": "scripts/check-recipe-governance.ts",
+  "changedCodeSha256": "56c368f525007170e129c574cec87283702a9f1a4059489f29a0d32c9a4abca6",
+  "authorization": {
+    "path": "docs/releases/new-three-2026-10-03/OWNER-AUTHORIZATION.json",
+    "sha256": "d1a594f62b55c01600071c9fc88f2f739d0ece077aededcb5e8a869bafbf7018",
+    "decisionId": "owner-publish-new-three-2026-10-04",
+    "ownerStatement": "good, I reiview it, lets merge that and publish to the production",
+    "authorizedAt": "2026-10-04T03:53:26.148Z"
+  },
+  "scope": {
+    "lineageIndexZeroBased": 2,
+    "librarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+    "supersedes": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+    "evidenceId": "ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247",
+    "evidenceSha256": "f6764d3a637ec1962851559c1772de99dd4b8193bb60dd237a66fdf2c87445eb",
+    "evidenceSourceCommit": "df19fecee5aafafd57a7f349380a294522c80b44",
+    "evidenceInputTreeSha256": "54c7d302ccd423f5bf617aa68f5b6fb4ad5262277340a9086841c997e37b41b7",
+    "recipeId": "keyword-rerank-figure-library-50-2026-07-02",
+    "recipeManifestSha256": "c2ced0eefa65351dc57a17f14dd76abf575745dafaac0d6d8699a95d5a21de52",
+    "readingPacketSha256": "475c81587af5559164e9abc810127a213e8edd0527076d7bbf4a882ffde87e1b",
+    "frozenInputsSha256": "76acc1d8363bcac48d46ca6eb2fad71bc04bf36f883ee0a1862735ccc9f0ccf0",
+    "draftImportReceiptSha256": "18e02ea53697778eeeaeb4afc336c1a97723eb51fdca487fcb76fcac4396c262",
+    "exactTargetCount": 3
+  },
+  "preservedTenStoryDeclarations": [
+    "OWNER_AUTHORIZED_LIBRARY_RELEASE",
+    "validateOwnerLibraryAuthorization",
+    "runOwnerLibrarySelfChecks"
+  ],
+  "oldTenGuardAndNineNegativeTestsUnchanged": true,
+  "normalPassingRealEvidencePathPreserved": true,
+  "sourceCommitAndInputTreeValidationPreserved": true,
+  "recipePromotionAuthorityUnchanged": true,
+  "trustedAttestorChangesNeeded": false,
+  "verification": [
+    {
+      "command": "npm run check-recipe-governance",
+      "exitCode": 0,
+      "newThreeNegativeCases": 30,
+      "priorTenNegativeCases": 9,
+      "output": "Recipe governance: PASS; three registered library releases; installed 1a33b7b45b48; real matching FAIL retained; supplemental prefilter blocked; security audit not exempted."
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exitCode": 0
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js scripts/check-recipe-governance.ts",
+      "exitCode": 0
+    },
+    {
+      "command": "git diff --check -- scripts/check-recipe-governance.ts",
+      "exitCode": 0
+    }
+  ],
+  "negativeChecks": [
+    "ten-story lineage slot",
+    "future lineage slot",
+    "another library",
+    "another predecessor",
+    "another decision pin",
+    "different release evidence",
+    "different evidence identity",
+    "another recipe",
+    "another manifest",
+    "altered rerank model",
+    "altered gold data",
+    "self-declared promotable evidence",
+    "altered rerank prompt with unchanged claimed manifest",
+    "stub provider",
+    "legacy evidence",
+    "another measured commit",
+    "another measured input tree",
+    "forged passing trust gate",
+    "hidden wrong definitive matches",
+    "altered decision bytes",
+    "another owner decision",
+    "changed historical selector",
+    "changed prompt source pin",
+    "another story target",
+    "changed reading packet",
+    "claimed supplemental provider success",
+    "promotion authority in owner decision",
+    "failed evidence on ordinary release path",
+    "old-ten authority for new-three release",
+    "owner content decision reused as recipe-promotion authority"
+  ],
+  "guardDetails": [
+    "Separate fixed new-three authorization hash and release/index pin; no generic owner approval mechanism.",
+    "Exact owner decision shape, text, source, source-tree pin, original failed evidence bytes/object/metrics, and immutable recipe manifest.",
+    "Hash-check exact reading packet, frozen inputs, original draft receipt, and three candidate/stage files against current files and the measured commit.",
+    "Bind exactly eight historical matching/prompt input pins and preserve all eleven true constraints.",
+    "Retain supplemental zero provider/rerank trials, failed preflight and lost indices 0, 1, 2, 4, 6.",
+    "Historical source pins remain historical; current publication adapters separately enforce the operation inputs."
+  ],
+  "matching": {
+    "trustGatePassed": false,
+    "positiveCorrect": 96,
+    "positiveTotal": 101,
+    "wrongDefinitive": 3,
+    "missDetected": 3,
+    "missTotal": 3
+  },
+  "limitations": [
+    "This completion verifies the governance guard and focused negative checks. It does not claim a passing matching gate, publication, deployment, or full final-head CI.",
+    "Mutated owner documents are rejected by their exact byte pin; prompt-content/version and manifest checks remain enforced through the existing pipeline.",
+    "No DB/provider/Auth calls, publication mutations, Git commits, or pushes were made."
+  ]
+}

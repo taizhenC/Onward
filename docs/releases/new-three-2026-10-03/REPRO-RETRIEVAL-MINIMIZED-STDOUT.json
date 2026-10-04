@@ -1,0 +1,250 @@
+{
+  "diagnosticOnly": true,
+  "caseSelection": 0,
+  "datasetVersion": "synthetic-new-three-12-2026-10-03",
+  "caseSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+  "frozenExisting60Sha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+  "original104GoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+  "proposedStages": [
+    {
+      "figureKey": "franklin_b",
+      "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+      "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+    },
+    {
+      "figureKey": "somerville_m",
+      "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+      "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+    },
+    {
+      "figureKey": "slocum_j",
+      "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+      "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+    }
+  ],
+  "fixtureStageCount": 63,
+  "runtime": {
+    "matchConfigVersion": "figure-library-50-2026-07-02",
+    "rerankTopK": 6,
+    "ageToleranceYears": 10,
+    "sourceSha256": {
+      "lib/matching.ts": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba",
+      "lib/figures.ts": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42",
+      "lib/keyword-match.ts": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e",
+      "lib/match-config.ts": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845",
+      "lib/story-recipe-runtime.ts": "1ad28a1b4d03888866d83ffd59548cc2606af925cfb01593fbec4899e4557050",
+      "config/story-recipes.json": "300a46f9190fdb16e2afc8f29e5b572664de7df2c518568204ac616ccb64b949"
+    }
+  },
+  "results": [
+    {
+      "caseIndexZeroBased": 0,
+      "age": 21,
+      "inputSha256": "a0c560db66e09c59efa654e5ce43e25a5c520d51e6e3369f9c30ca32344d5435",
+      "expect": "franklin_b",
+      "accept": [],
+      "requiredPositive": true,
+      "matchedThemeWeights": {},
+      "agePoolSize": 45,
+      "poolSize": 45,
+      "ageFallbackToAll": false,
+      "selected": [
+        "andersen",
+        "bly",
+        "carver",
+        "douglass",
+        "equiano",
+        "faraday"
+      ],
+      "scores": [
+        {
+          "rankOneBased": 1,
+          "figureKey": "andersen",
+          "stageId": "1822-1827-the-headmasters-school",
+          "themes": [
+            "bullied",
+            "worthlessness",
+            "keep_going"
+          ],
+          "ageDistance": 0,
+          "keywordScore": 0,
+          "agePenalty": 0,
+          "totalScore": 0,
+          "selected": true,
+          "acceptable": false
+        },
+        {
+          "rankOneBased": 2,
+          "figureKey": "bly",
+          "stageId": "1885-1887-orphan-girl-to-madhouse",
+          "themes": [
+            "dismissed",
+            "social_constraint",
+            "finding_voice"
+          ],
+          "ageDistance": 0,
+          "keywordScore": 0,
+          "agePenalty": 0,
+          "totalScore": 0,
+          "selected": true,
+          "acceptable": false
+        },
+        {
+          "rankOneBased": 3,
+          "figureKey": "carver",
+          "stageId": "1885-1891-turned-away-to-the-sod-house",
+          "themes": [
+            "dismissed",
+            "solitude",
+            "keep_going"
+          ],
+          "ageDistance": 0,
+          "keywordScore": 0,
+          "agePenalty": 0,
+          "totalScore": 0,
+          "selected": true,
+          "acceptable": false
+        },
+        {
+          "rankOneBased": 4,
+          "figureKey": "douglass",
+          "stageId": "1838-1841-nyc-to-nantucket",
+          "themes": [
+            "dispossession",
+            "self_invention",
+            "solitude"
+          ],
+          "ageDistance": 0,
+          "keywordScore": 0,
+          "agePenalty": 0,
+          "totalScore": 0,
+          "selected": true,
+          "acceptable": false
+        },
+        {
+          "rankOneBased": 5,
+          "figureKey": "equiano",
+          "stageId": "1766-the-money-and-the-release",
+          "themes": [
+            "dispossession",
+            "social_constraint",
+            "quiet_defiance",
+            "self_invention"
+          ],
+          "ageDistance": 0,
+          "keywordScore": 0,
+          "agePenalty": 0,
+          "totalScore": 0,
+          "selected": true,
+          "acceptable": false
+        },
+        {
+          "rankOneBased": 6,
+          "figureKey": "faraday",
+          "stageId": "1812-1815-bottle-washer-and-valet",
+          "themes": [
+            "social_constraint",
+            "dismissed",
+            "self_invention"
+          ],
+          "ageDistance": 0,
+          "keywordScore": 0,
+          "agePenalty": 0,
+          "totalScore": 0,
+          "selected": true,
+          "acceptable": false
+        },
+        {
+          "rankOneBased": 7,
+          "figureKey": "franklin_b",
+          "stageId": "1727-1728-a-first-customer",
+          "themes": [
+            "dismissed",
+            "self_invention",
+            "keep_going"
+          ],
+          "ageDistance": 0,
+          "keywordScore": 0,
+          "agePenalty": 0,
+          "totalScore": 0,
+          "selected": false,
+          "acceptable": true
+        }
+      ],
+      "acceptableExcludedByAge": [],
+      "expectedSurvives": false,
+      "missCalibrationMeasured": false
+    }
+  ],
+  "hypothesisProbes": {
+    "authorizedByRootAfterRedLoop": true,
+    "h1ZeroThemeSymptom": {
+      "matchedThemeWeights": {},
+      "targetKeywordScore": 0,
+      "observation": "ZERO_THEME_SIGNAL_CONFIRMED_NO_PHRASE_OR_ROUTE_CHANGE"
+    },
+    "h2AgeExclusion": {
+      "target": "franklin_b",
+      "ageDistance": 0,
+      "ageToleranceYears": 10,
+      "presentInAgePool": true,
+      "observation": "AGE_EXCLUSION_FALSIFIED_FOR_CASE0"
+    },
+    "h3TieOrdering": {
+      "minimalPool": [
+        "andersen",
+        "bly",
+        "carver",
+        "douglass",
+        "equiano",
+        "faraday",
+        "franklin_b"
+      ],
+      "minimalPoolSize": 7,
+      "minimalRankedKeys": [
+        "andersen",
+        "bly",
+        "carver",
+        "douglass",
+        "equiano",
+        "faraday",
+        "franklin_b"
+      ],
+      "allScoresZero": true,
+      "selectedBeforeRemoval": [
+        "andersen",
+        "bly",
+        "carver",
+        "douglass",
+        "equiano",
+        "faraday"
+      ],
+      "targetRankBeforeRemoval": 7,
+      "targetSurvivesBeforeRemoval": false,
+      "removedCompetitor": "andersen",
+      "reducedPoolSize": 6,
+      "selectedAfterRemoval": [
+        "bly",
+        "carver",
+        "douglass",
+        "equiano",
+        "faraday",
+        "franklin_b"
+      ],
+      "targetSurvivesAfterRemoval": true,
+      "observation": "ONE_COMPETITOR_REMOVAL_CHANGES_SURVIVAL_IN_ARTIFICIAL_POOL_ONLY"
+    },
+    "fixesTested": 0,
+    "productionChange": false,
+    "releasePass": false
+  },
+  "droppedRequiredPositiveIndexesZeroBased": [
+    0
+  ],
+  "verdict": "RED_EXPECTED_GOLD_DROPPED",
+  "networkAttempts": 0,
+  "providerCalls": 0,
+  "databaseCalls": 0,
+  "envFilesLoaded": 0,
+  "publicationAuthority": false
+}

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "independent-stage-metadata-extension-v1",
+  "reviewedAt": "2026-10-04T00:32:28.298Z",
+  "reviewer": "root-editorial-agent",
+  "figureKey": "slocum_j",
+  "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+  "stageSha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2",
+  "previousStageSha256": "f0d660a60b240664d3644735d75ac514319ee2cdfa286338bcdf87093c896658",
+  "changedFields": [
+    "themes"
+  ],
+  "verdict": "pass",
+  "themes": [
+    "self_invention",
+    "self_doubt",
+    "keep_going"
+  ],
+  "reasons": {
+    "self_invention": "Rebuilding a craft for his own use from an old hull is the source-supported transition; no invented identity realization.",
+    "self_doubt": "He gives thought to a professional during the first disputed sealing operation; the theme is a bounded editorial reading of that consideration.",
+    "keep_going": "He performs the previously planned second packing layer and completes the work; no claim of new resolve or guaranteed livelihood."
+  },
+  "earlierSourceReview": "CROSS-REVIEW-SLOCUM-FINAL.json",
+  "publicationApproval": false
+}

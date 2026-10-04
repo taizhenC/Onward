@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "new-three-command-receipt-v1",
+  "runId": "new-three-eval-104-2026-10-04T00-42-18-263Z-d43529ab-6bcf-41b4-bede-f0d0b65242f3",
+  "mode": "eval-104",
+  "completedAt": "2026-10-04T00:42:56.822Z",
+  "exitCode": 1,
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/eval-match.ts"
+  ],
+  "rawLog": "D:\\code_save\\Onward\\docs\\research\\new-three-2026-10-03\\eval-104-2026-10-04T00-42-18-263Z.log",
+  "secretValuesLoggedByWrapper": false,
+  "temporaryProcessOnlyTelemetryProbeSecret": false
+}

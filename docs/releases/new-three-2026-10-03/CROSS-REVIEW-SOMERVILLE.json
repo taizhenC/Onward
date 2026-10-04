@@ -1,0 +1,161 @@
+{
+  "schema": "independent-somerville-draft-probe-v1",
+  "sourceCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "candidateSha256": "b45c18acf9c572d0e41154d95b49ae774148db8e2028363d035a16528adf48c9",
+  "stageSha256": "987dd50b763f4bc917c5ca9a763e980cb51c46ddde20c575d5693c165e776c1b",
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "metrics": [
+    {
+      "role": "scene",
+      "words": 104,
+      "sentences": 11,
+      "mean": 9.454545454545455,
+      "max": 14,
+      "last": 12,
+      "stageMatches": true,
+      "evidenceCount": 11
+    },
+    {
+      "role": "dark_moment",
+      "words": 130,
+      "sentences": 13,
+      "mean": 10,
+      "max": 14,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 13
+    },
+    {
+      "role": "response",
+      "words": 94,
+      "sentences": 10,
+      "mean": 9.4,
+      "max": 14,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 10
+    },
+    {
+      "role": "struggle",
+      "words": 127,
+      "sentences": 13,
+      "mean": 9.76923076923077,
+      "max": 15,
+      "last": 9,
+      "stageMatches": true,
+      "evidenceCount": 13
+    },
+    {
+      "role": "turning_point",
+      "words": 129,
+      "sentences": 15,
+      "mean": 8.6,
+      "max": 14,
+      "last": 4,
+      "stageMatches": true,
+      "evidenceCount": 15
+    },
+    {
+      "role": "became",
+      "words": 123,
+      "sentences": 12,
+      "mean": 10.25,
+      "max": 15,
+      "last": 8,
+      "stageMatches": true,
+      "evidenceCount": 12
+    },
+    {
+      "role": "bridge",
+      "words": 62,
+      "sentences": 6,
+      "mean": 10.333333333333334,
+      "max": 21,
+      "last": 6,
+      "stageMatches": true,
+      "evidenceCount": 6
+    }
+  ],
+  "totalWords": 769,
+  "chunkChecks": [
+    {
+      "role": "scene",
+      "chunkCount": 3,
+      "paragraphMaximum": 1,
+      "characterMaximum": 222,
+      "endsAtSentence": true
+    },
+    {
+      "role": "dark_moment",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 202,
+      "endsAtSentence": true
+    },
+    {
+      "role": "response",
+      "chunkCount": 4,
+      "paragraphMaximum": 1,
+      "characterMaximum": 215,
+      "endsAtSentence": true
+    },
+    {
+      "role": "struggle",
+      "chunkCount": 4,
+      "paragraphMaximum": 1,
+      "characterMaximum": 201,
+      "endsAtSentence": true
+    },
+    {
+      "role": "turning_point",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 197,
+      "endsAtSentence": true
+    },
+    {
+      "role": "became",
+      "chunkCount": 5,
+      "paragraphMaximum": 1,
+      "characterMaximum": 205,
+      "endsAtSentence": true
+    },
+    {
+      "role": "bridge",
+      "chunkCount": 2,
+      "paragraphMaximum": 2,
+      "characterMaximum": 233,
+      "endsAtSentence": true
+    }
+  ],
+  "totalChunks": 28,
+  "validStoredArtifact": true,
+  "laterLossProjected": false,
+  "publicationApproval": false,
+  "providerCalls": 0,
+  "persisted": false,
+  "sourceCraftVerdict": "corrections_required",
+  "primarySources": [
+    "https://www.gutenberg.org/files/27747/27747-h/27747-h.htm",
+    "https://www.gutenberg.org/files/67386/67386-h/67386-h.htm",
+    "https://library.some.ox.ac.uk/2025/06/06/mary-somerville-collections/"
+  ],
+  "requiredCorrections": [
+    {
+      "remedy": "Remove or reframe the later action, or document a broader episode and revise ages.",
+      "id": "episode-bound",
+      "locator": "Personal Recollections, Chapter XI, pp. 171-172",
+      "finding": "The separate printing action in became follows the Peacock letter of February 14, 1832, whereas the episode ends November 2, 1831."
+    },
+    {
+      "remedy": "Correct the locator and all displayed-fold claims; report the Rfold limit honestly.",
+      "id": "later-loss-page-and-fold",
+      "locator": "Personal Recollections, Chapter XVI, pp. 325-326",
+      "finding": "The later husband-loss atom belongs to pp. 325-326, not p. 329, and is unused authoring context rather than an actual projected fold item."
+    }
+  ]
+}

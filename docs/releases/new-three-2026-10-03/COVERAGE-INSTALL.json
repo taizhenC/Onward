@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "new-three-coverage-install-v1",
+  "completedAt": "2026-10-04T00:39:53.994Z",
+  "datasetVersion": "synthetic-new-three-12-2026-10-03",
+  "datasetPath": "evals/new-three-12-2026-10-03.json",
+  "sha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+  "totalCases": 12,
+  "positiveCases": 9,
+  "unchangedMissControls": 3,
+  "original104Untouched": true,
+  "previousDatasetsPreserved": true,
+  "recipeSelectionOrManifestChanged": false,
+  "qualification": "Supplementary synthetic coverage; it cannot replace a failing original104 regression gate and is not promotion evidence."
+}

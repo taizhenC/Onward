@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "three-story-draft-import-independent-audit-v1",
+  "recordedAt": "2026-10-04T00:22:14.738Z",
+  "result": "BLOCK pending two preservation/evidence repairs",
+  "ok": false,
+  "helperPath": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward/docs/releases/new-three-2026-10-03/check-and-seed.ts",
+  "helperSha256": "e72467a8d3d9127c20244ce5f2a9fd75c753f1322d046e4eb6c80f59025e6798",
+  "previousHelperSha256": "28ec7bd217ac9e3f0c6215f44245e1ce5ba5872af5022c8500a6171a2cc7eb36",
+  "probedHelperSha256": "e72467a8d3d9127c20244ce5f2a9fd75c753f1322d046e4eb6c80f59025e6798",
+  "helperUnchangedSinceMockProbe": true,
+  "scope": {
+    "selectedFigureKeys": [
+      "franklin_b",
+      "slocum_j",
+      "somerville_m"
+    ],
+    "expectedStories": 3,
+    "operation": "insert absent curated draft records only",
+    "productionHost": "mbcqkljfekkxlgittzal.supabase.co",
+    "existingTargetUpdates": false,
+    "stageStatusWrites": false,
+    "publishRpcCalls": false,
+    "retirementCalls": false,
+    "persistedSimulatedReviews": false
+  },
+  "passingChecks": [
+    "Only zero args or exact single --write accepted",
+    "Exactly three candidate/stage pairs and selected figure keys required",
+    "Existing source-library keys rejected",
+    "Candidate status draft and empty saved review required",
+    "Completion document pins candidate/stage bytes and complete canonical text",
+    "Strict candidate parser and mechanical draft/publication simulation used without persisting simulated reviews",
+    "700-950 words, adult18-100 episode, sentence rhythm, dark<=180, real reading chunk bounds and replay checked",
+    "Only absent rows inserted using SDK ignoreDuplicates; installed SDK maps this to resolution=ignore-duplicates",
+    "Foreign-key order figures then stages then story_specs",
+    "Stage status omitted with defaultToNull=false; installed SDK requests missing=default, current migrations own default draft",
+    "Exact same target draft rows permitted on retry; conflicting or published targets rejected before writes",
+    "Whole selected business fields and unrelated catalog content compared after insert"
+  ],
+  "blockingFindings": [
+    {
+      "id": "lifecycle-readback",
+      "location": "snapshot story_specs select, currently line146",
+      "observed": "created_at, published_at and retired_at are absent from the snapshot; source-derived mock mutation to old created_at is not detected and success receipt is emitted.",
+      "repair": "Select all three lifecycle columns. Project business fields when comparing desired target documents, while comparing every complete preexisting row including lifecycle values. Require fresh target created_at and null published_at/retired_at."
+    },
+    {
+      "id": "retry-baseline-preservation",
+      "location": "DB-BEFORE.json write, currently line180",
+      "observed": "The same baseline filename is truncated on every --write retry. Source-derived two-run mock proves first baseline is replaced by the snapshot containing newly inserted drafts; final receipt has beforeHashes but no immutable baseline file/content pin.",
+      "repair": "Write a distinct exclusive baseline per attempt before any insert, preserve earlier baseline receipts, and bind successful receipt to the exact baseline filename/content SHA-256. Use exclusive creation so timestamp collisions fail before writes rather than overwrite."
+    }
+  ],
+  "executionBoundaries": {
+    "nontransactionalThreeTableInsert": true,
+    "partialFailureRecovery": "Existing exact drafts may be retried; partial insert errors do not trigger status updates, deletes or automatic rollback.",
+    "serializedOperatorRequired": true,
+    "concurrencyQualification": "Full unrelated-content comparisons detect concurrent changes after this attempt, but do not provide a cross-table transaction or prevent an independent operator from publishing/editing during the three writes. Root is the sole authorized curated DB writer for this batch.",
+    "liveInvocationPrecondition": "Stable independently cross-reviewed candidate/stage hashes copied by root, repaired helper rechecked, and no concurrent editorial writer."
+  },
+  "actualMockProbe": {
+    "receipt": "DRAFT-IMPORT-MOCK-PROBES.json",
+    "sha256": "56c6060c04e68c08e7d0add95cfa6f6def5ff8267e3fefaff1faa9cef2f6b28f",
+    "passed": 9,
+    "total": 11,
+    "failedCases": [
+      {
+        "case": "unrelated-lifecycle-change-detected",
+        "pass": false,
+        "error": null
+      },
+      {
+        "case": "initial-baseline-preserved-on-retry",
+        "pass": false,
+        "overwrittenBaselinePaths": [
+          "private-research/DB-BEFORE.json"
+        ],
+        "retryError": null
+      }
+    ]
+  },
+  "actualTopLevelImporterRuns": 0,
+  "actualCandidateReads": 0,
+  "actualEnvironmentFileReads": 0,
+  "actualDatabaseCalls": 0,
+  "actualAuthCalls": 0,
+  "actualProviderCalls": 0,
+  "sourceWrites": 0,
+  "gitMutations": 0,
+  "qualification": "Read-only code audit plus exact-source-derived synthetic in-memory write-path probes. This does not verify evolving prose, live production schema, actual Supabase responses, matching quality or publication approval. Root remains sole live database writer."
+}

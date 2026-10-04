@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "new-three-zero-row-review-cas-probe-v1",
+  "observedAt": "2026-10-04T04:12:27.100Z",
+  "projectHost": "mbcqkljfekkxlgittzal.supabase.co",
+  "target": "franklin_b:1727-1728-a-first-customer:v1",
+  "requestMethod": "PATCH",
+  "impossibleRowVersionGuard": "eq.0",
+  "status": 200,
+  "contentRange": "*/0",
+  "returnedRows": 0,
+  "fullBeforeAfterRowAndXminIdentical": true,
+  "rowsChanged": 0,
+  "providerRequests": 0,
+  "authMutations": 0,
+  "qualification": "Bounded impossible-version PATCH establishes deployed return=representation/count behavior without changing a row. A successful one-row review update remains a later owner-authorized publication operation."
+}

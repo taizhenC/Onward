@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "independent-story-cross-review-v1",
+  "reviewer": "root-editorial-agent",
+  "reviewKind": "Independent AI source and complete reading review; no human publication approval",
+  "reviewedAt": "2026-10-04T00:25:20.319Z",
+  "figureKey": "slocum_j",
+  "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+  "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+  "stageSha256": "f0d660a60b240664d3644735d75ac514319ee2cdfa286338bcdf87093c896658",
+  "sourceVerdict": "pass",
+  "craftVerdict": "pass_with_qualification",
+  "publicationApproval": false,
+  "openedSources": [
+    {
+      "url": "https://www.gutenberg.org/files/6317/6317-h/6317-h.htm",
+      "locations": "Chapter I: One midwinter day of 1892 through final intermittent-work paragraph; Chapter II first paragraph",
+      "kind": "1900 retrospective personal account; probable event confidence"
+    },
+    {
+      "url": "https://mvmuseum.org/fa_pdfs/RU%20336%20--Joshua%20Slocum.pdf",
+      "locations": "Historical Note, page 2",
+      "kind": "Institutional collection finding aid; birth and qualified unresolved disappearance only"
+    }
+  ],
+  "requiredRepairsResolved": [
+    {
+      "issue": "Two future-modal phrases violate moment wording rule",
+      "resolution": "Revision 2 uses source-faithful attributed fear and warning; only dark_moment prose changed",
+      "previousCandidateSha256": "4d55548da956ebefcd2854f8effb6d48618331cf3a4f4fa409cfc2472b5485cd"
+    }
+  ],
+  "sourceFindings": [
+    "Cotton never crawled is explicit in Chapter I; trial success is also explicit. No inferred technical success is inserted.",
+    "The oakum layer was planned from the first; response invents no changed method or new resolve.",
+    "The shipyard-entry condition and scarce commands are recorded. There is no claim he could not afford the fee or had no income.",
+    "The successful trial does not make the following fishing season successful; the unsuccessful fishing is explicit.",
+    "The memoir gives thirteen months of labor, without one exact launch or fishing year. Age 47-51 and the pre-April 24, 1895 end retain that uncertainty.",
+    "The museum departure-port discrepancy is excluded; no proved 1909 death date or disappearance cause is asserted."
+  ],
+  "craftQualification": "The low is practical public doubt and consideration of a professional, without attested despair. Struggle contains a failed path to shipyard work without the society payment plus cold and tedious construction; it invents no failed repair. This narrower source-supported form is retained for owner reading.",
+  "canonicalProseReadCompletely": true,
+  "stageParity": true,
+  "reviewRemainsEmpty": true
+}

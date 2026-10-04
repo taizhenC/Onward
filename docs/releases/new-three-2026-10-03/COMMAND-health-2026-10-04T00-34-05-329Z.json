@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "new-three-command-receipt-v1",
+  "runId": "new-three-health-2026-10-04T00-34-05-329Z-2718ea89-2204-4e6d-bb25-dd1d3ce96374",
+  "mode": "health",
+  "completedAt": "2026-10-04T00:34:05.736Z",
+  "exitCode": 1,
+  "command": [
+    "node",
+    "--import",
+    "tsx",
+    "scripts/check-db.ts"
+  ],
+  "rawLog": "D:\\code_save\\Onward\\docs\\research\\new-three-2026-10-03\\health-2026-10-04T00-34-05-329Z.log",
+  "secretValuesLoggedByWrapper": false
+}

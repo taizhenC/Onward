@@ -1,0 +1,3972 @@
+{
+  "schemaVersion": "new-three-deterministic-retrieval-diagnostic-v1",
+  "createdAt": "2026-10-04T00:54:04.158Z",
+  "reviewer": "/root/held_pr_audit",
+  "verdict": "RED_REPRODUCED_NOT_A_RELEASE_PASS",
+  "helper": {
+    "path": "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+    "workspace": "C:/Users/taich/.codex/worktrees/merge-all-prs/Onward/",
+    "sha256": "6dbd4fbeb42896754e773b6e0d1e4191e3ad3d1a132e10c857704ab83d84dc9e",
+    "sourceEditsFinal": true
+  },
+  "fixture": {
+    "original60FullRowsSha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+    "caseSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+    "original104GoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+    "proposedStagePins": [
+      {
+        "figureKey": "franklin_b",
+        "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+        "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+      },
+      {
+        "figureKey": "somerville_m",
+        "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+        "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+      },
+      {
+        "figureKey": "slocum_j",
+        "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+        "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+      }
+    ],
+    "overlayCount": 63,
+    "original60AndFrozenCasesUnmodified": true,
+    "existingSourceAllowedForms": "Original60, or unchanged60 plus each exact frozen proposed stage at most once.",
+    "rootReportedRestoredSourceCount": 60
+  },
+  "runs": [
+    {
+      "name": "all_before_restore",
+      "file": "REPRO-RETRIEVAL-ALL-STDOUT.json",
+      "args": [
+        "--case",
+        "all"
+      ],
+      "exitCode": 1,
+      "elapsedMs": 561,
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+        "--case",
+        "all"
+      ],
+      "stdoutSha256": "1827661577dadc644a13a6e0d995bdd7733c2fc6c11cd4d2b3c6c530b0d94700",
+      "stdout": {
+        "diagnosticOnly": true,
+        "caseSelection": "all",
+        "datasetVersion": "synthetic-new-three-12-2026-10-03",
+        "caseSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+        "frozenExisting60Sha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+        "original104GoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+        "proposedStages": [
+          {
+            "figureKey": "franklin_b",
+            "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+            "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+          },
+          {
+            "figureKey": "somerville_m",
+            "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+            "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+          },
+          {
+            "figureKey": "slocum_j",
+            "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+            "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+          }
+        ],
+        "fixtureStageCount": 63,
+        "runtime": {
+          "matchConfigVersion": "figure-library-50-2026-07-02",
+          "rerankTopK": 6,
+          "ageToleranceYears": 10,
+          "sourceSha256": {
+            "lib/matching.ts": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba",
+            "lib/figures.ts": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42",
+            "lib/keyword-match.ts": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e",
+            "lib/match-config.ts": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845",
+            "lib/story-recipe-runtime.ts": "1ad28a1b4d03888866d83ffd59548cc2606af925cfb01593fbec4899e4557050",
+            "config/story-recipes.json": "300a46f9190fdb16e2afc8f29e5b572664de7df2c518568204ac616ccb64b949"
+          }
+        },
+        "results": [
+          {
+            "caseIndexZeroBased": 0,
+            "age": 21,
+            "inputSha256": "a0c560db66e09c59efa654e5ce43e25a5c520d51e6e3369f9c30ca32344d5435",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "equiano",
+                "stageId": "1766-the-money-and-the-release",
+                "themes": [
+                  "dispossession",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "faraday",
+                "stageId": "1812-1815-bottle-washer-and-valet",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 7,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 1,
+            "age": 22,
+            "inputSha256": "b06ad34be2a48a648d7dc35c41c0aca0e74d3bc9127e9c5c58d712087129d9bf",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "anning",
+              "bly",
+              "carver",
+              "darwin",
+              "douglass"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "anning",
+                "stageId": "1823-1828-the-doubted-sea-dragon",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "darwin",
+                "stageId": "1831-the-refusal-and-the-letter",
+                "themes": [
+                  "social_constraint",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 8,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 2,
+            "age": 22,
+            "inputSha256": "d92d0fc15769e765314b27e13bb8a943debf5de6493aefdd22b95529a152af29",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "anning",
+              "bly",
+              "carver",
+              "darwin",
+              "douglass"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "anning",
+                "stageId": "1823-1828-the-doubted-sea-dragon",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "darwin",
+                "stageId": "1831-the-refusal-and-the-letter",
+                "themes": [
+                  "social_constraint",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 8,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 3,
+            "age": 46,
+            "inputSha256": "60a85f3cc71d1b8d028d71d856fbd382858e3c524671da54b76c7f0a8b09ebc1",
+            "expect": "somerville_m",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "graham",
+              "somerville_m",
+              "slocum_j",
+              "mcclintock"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "graham",
+                "stageId": "1963-1971-thrust-into-the-chair",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 1,
+                "keywordScore": 0,
+                "agePenalty": 0.1,
+                "totalScore": -0.1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 2,
+                "keywordScore": 0,
+                "agePenalty": 0.2,
+                "totalScore": -0.2,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 4,
+            "age": 48,
+            "inputSha256": "9d5d63c416ed5bac730f075c849a180ea682c5d302c3f95b5a0a1851a409841e",
+            "expect": "somerville_m",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {
+              "self_invention": 1
+            },
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "slocum_j",
+              "wang",
+              "allende",
+              "grant",
+              "christie"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 1,
+                "agePenalty": 0,
+                "totalScore": 1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 1,
+                "agePenalty": 0,
+                "totalScore": 1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "wang",
+                "stageId": "1987-1990-passed-over-to-the-pivot",
+                "themes": [
+                  "late_start",
+                  "self_invention",
+                  "public_failure"
+                ],
+                "ageDistance": 7,
+                "keywordScore": 1,
+                "agePenalty": 0.7000000000000001,
+                "totalScore": 0.29999999999999993,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "allende",
+                "stageId": "1975-1981-exile-to-the-letter",
+                "themes": [
+                  "exile",
+                  "self_invention",
+                  "finding_voice"
+                ],
+                "ageDistance": 8,
+                "keywordScore": 1,
+                "agePenalty": 0.8,
+                "totalScore": 0.19999999999999996,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "grant",
+                "stageId": "1858-1861-a-place-in-the-shop",
+                "themes": [
+                  "illness",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 9,
+                "keywordScore": 1,
+                "agePenalty": 0.9,
+                "totalScore": 0.09999999999999998,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "christie",
+                "stageId": "1926-1928-the-year-that-broke",
+                "themes": [
+                  "heartbreak",
+                  "grief",
+                  "self_invention"
+                ],
+                "ageDistance": 10,
+                "keywordScore": 1,
+                "agePenalty": 1,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 12,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 5,
+            "age": 50,
+            "inputSha256": "1aec6417210abe02c1ed77f9f2a7a30df2c0afd5d7319611ce01a3dfbb641ca3",
+            "expect": "somerville_m",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 14,
+            "poolSize": 14,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "lee",
+              "mcclintock",
+              "rustin",
+              "slocum_j",
+              "somerville_m"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "lee",
+                "stageId": "1929-1931-harvard-pivot",
+                "themes": [
+                  "late_start",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 6,
+            "age": 48,
+            "inputSha256": "c62684e910d19357170eabb55a9c944539601a4e40b282afc07eec017f287790",
+            "expect": "slocum_j",
+            "accept": [
+              "grant"
+            ],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "graham",
+              "mcclintock",
+              "rustin",
+              "seacole"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "graham",
+                "stageId": "1963-1971-thrust-into-the-chair",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "seacole",
+                "stageId": "1854-1855-refusal-to-sick-wharf",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 7,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              },
+              {
+                "rankOneBased": 14,
+                "figureKey": "grant",
+                "stageId": "1858-1861-a-place-in-the-shop",
+                "themes": [
+                  "illness",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 9,
+                "keywordScore": 0,
+                "agePenalty": 0.9,
+                "totalScore": -0.9,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 7,
+            "age": 49,
+            "inputSha256": "0c11d2dabdd38e1825c74e9484c5775bf24b2c737f6618a4aca096f55cb007d8",
+            "expect": "slocum_j",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 14,
+            "poolSize": 14,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "mcclintock",
+              "rustin",
+              "seacole",
+              "slocum_j"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "seacole",
+                "stageId": "1854-1855-refusal-to-sick-wharf",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 8,
+            "age": 50,
+            "inputSha256": "b2e2560e9f67b0ec4737421a6efe0631425a2d93ae83d8678f01277689d075ba",
+            "expect": "slocum_j",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 14,
+            "poolSize": 14,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "lee",
+              "mcclintock",
+              "rustin",
+              "slocum_j",
+              "somerville_m"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "lee",
+                "stageId": "1929-1931-harvard-pivot",
+                "themes": [
+                  "late_start",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 9,
+            "age": 22,
+            "inputSha256": "008b3a1057295cc1226aeb4e0850de697afe5e1d7cf7c3d4b58d45fa606e6844",
+            "expect": "miss",
+            "accept": [],
+            "requiredPositive": false,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "anning",
+              "bly",
+              "carver",
+              "darwin",
+              "douglass"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "anning",
+                "stageId": "1823-1828-the-doubted-sea-dragon",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "darwin",
+                "stageId": "1831-the-refusal-and-the-letter",
+                "themes": [
+                  "social_constraint",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": null,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 10,
+            "age": 30,
+            "inputSha256": "3e0b64194acfa2e972afb9af9e8d8e1697bf2243b5722e8367ccd83c124454e2",
+            "expect": "miss",
+            "accept": [],
+            "requiredPositive": false,
+            "matchedThemeWeights": {},
+            "agePoolSize": 43,
+            "poolSize": 43,
+            "ageFallbackToAll": false,
+            "selected": [
+              "banting",
+              "bronte_c",
+              "coltrane",
+              "hurston",
+              "muir",
+              "oconnor"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "banting",
+                "stageId": "1920-1922-empty-waiting-room",
+                "themes": [
+                  "worthlessness",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "bronte_c",
+                "stageId": "1846-1847-two-copies",
+                "themes": [
+                  "creative_dismissal",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "coltrane",
+                "stageId": "1957-fired-and-clean",
+                "themes": [
+                  "addiction",
+                  "shame",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "hurston",
+                "stageId": "1917-1921-sixteen-again",
+                "themes": [
+                  "self_invention",
+                  "late_start",
+                  "dispossession"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "muir",
+                "stageId": "1867-1868-the-darkened-room",
+                "themes": [
+                  "illness",
+                  "solitude",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "oconnor",
+                "stageId": "1950-1955-lupus-and-the-farm",
+                "themes": [
+                  "illness",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": null,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 11,
+            "age": 45,
+            "inputSha256": "f5bc734326450461a5f570a05c9575f06582f2e7b342b482c75b632be4422cc5",
+            "expect": "miss",
+            "accept": [],
+            "requiredPositive": false,
+            "matchedThemeWeights": {},
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "graham",
+              "somerville_m",
+              "slocum_j",
+              "mcclintock"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "graham",
+                "stageId": "1963-1971-thrust-into-the-chair",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 1,
+                "keywordScore": 0,
+                "agePenalty": 0.1,
+                "totalScore": -0.1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 2,
+                "keywordScore": 0,
+                "agePenalty": 0.2,
+                "totalScore": -0.2,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 3,
+                "keywordScore": 0,
+                "agePenalty": 0.30000000000000004,
+                "totalScore": -0.30000000000000004,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": null,
+            "missCalibrationMeasured": false
+          }
+        ],
+        "droppedRequiredPositiveIndexesZeroBased": [
+          0,
+          1,
+          2,
+          4,
+          6
+        ],
+        "verdict": "RED_EXPECTED_GOLD_DROPPED",
+        "networkAttempts": 0,
+        "providerCalls": 0,
+        "databaseCalls": 0,
+        "envFilesLoaded": 0,
+        "publicationAuthority": false
+      }
+    },
+    {
+      "name": "case0",
+      "file": "REPRO-RETRIEVAL-CASE0-STDOUT.json",
+      "args": [
+        "--case",
+        "0"
+      ],
+      "exitCode": 1,
+      "elapsedMs": 504,
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+        "--case",
+        "0"
+      ],
+      "stdoutSha256": "d6a7fa9caf8b104dd6561a7c17e5e21e33079ff7c08b3e235a7961541ad31f82",
+      "stdout": {
+        "diagnosticOnly": true,
+        "caseSelection": 0,
+        "datasetVersion": "synthetic-new-three-12-2026-10-03",
+        "caseSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+        "frozenExisting60Sha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+        "original104GoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+        "proposedStages": [
+          {
+            "figureKey": "franklin_b",
+            "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+            "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+          },
+          {
+            "figureKey": "somerville_m",
+            "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+            "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+          },
+          {
+            "figureKey": "slocum_j",
+            "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+            "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+          }
+        ],
+        "fixtureStageCount": 63,
+        "runtime": {
+          "matchConfigVersion": "figure-library-50-2026-07-02",
+          "rerankTopK": 6,
+          "ageToleranceYears": 10,
+          "sourceSha256": {
+            "lib/matching.ts": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba",
+            "lib/figures.ts": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42",
+            "lib/keyword-match.ts": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e",
+            "lib/match-config.ts": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845",
+            "lib/story-recipe-runtime.ts": "1ad28a1b4d03888866d83ffd59548cc2606af925cfb01593fbec4899e4557050",
+            "config/story-recipes.json": "300a46f9190fdb16e2afc8f29e5b572664de7df2c518568204ac616ccb64b949"
+          }
+        },
+        "results": [
+          {
+            "caseIndexZeroBased": 0,
+            "age": 21,
+            "inputSha256": "a0c560db66e09c59efa654e5ce43e25a5c520d51e6e3369f9c30ca32344d5435",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "equiano",
+                "stageId": "1766-the-money-and-the-release",
+                "themes": [
+                  "dispossession",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "faraday",
+                "stageId": "1812-1815-bottle-washer-and-valet",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 7,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          }
+        ],
+        "droppedRequiredPositiveIndexesZeroBased": [
+          0
+        ],
+        "verdict": "RED_EXPECTED_GOLD_DROPPED",
+        "networkAttempts": 0,
+        "providerCalls": 0,
+        "databaseCalls": 0,
+        "envFilesLoaded": 0,
+        "publicationAuthority": false
+      }
+    },
+    {
+      "name": "all_after_restored60",
+      "file": "REPRO-RETRIEVAL-RESTORED60-STDOUT.json",
+      "args": [
+        "--case",
+        "all"
+      ],
+      "exitCode": 1,
+      "elapsedMs": 588,
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+        "--case",
+        "all"
+      ],
+      "stdoutSha256": "1827661577dadc644a13a6e0d995bdd7733c2fc6c11cd4d2b3c6c530b0d94700",
+      "stdout": {
+        "diagnosticOnly": true,
+        "caseSelection": "all",
+        "datasetVersion": "synthetic-new-three-12-2026-10-03",
+        "caseSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+        "frozenExisting60Sha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+        "original104GoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+        "proposedStages": [
+          {
+            "figureKey": "franklin_b",
+            "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+            "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+          },
+          {
+            "figureKey": "somerville_m",
+            "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+            "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+          },
+          {
+            "figureKey": "slocum_j",
+            "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+            "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+          }
+        ],
+        "fixtureStageCount": 63,
+        "runtime": {
+          "matchConfigVersion": "figure-library-50-2026-07-02",
+          "rerankTopK": 6,
+          "ageToleranceYears": 10,
+          "sourceSha256": {
+            "lib/matching.ts": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba",
+            "lib/figures.ts": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42",
+            "lib/keyword-match.ts": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e",
+            "lib/match-config.ts": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845",
+            "lib/story-recipe-runtime.ts": "1ad28a1b4d03888866d83ffd59548cc2606af925cfb01593fbec4899e4557050",
+            "config/story-recipes.json": "300a46f9190fdb16e2afc8f29e5b572664de7df2c518568204ac616ccb64b949"
+          }
+        },
+        "results": [
+          {
+            "caseIndexZeroBased": 0,
+            "age": 21,
+            "inputSha256": "a0c560db66e09c59efa654e5ce43e25a5c520d51e6e3369f9c30ca32344d5435",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "equiano",
+                "stageId": "1766-the-money-and-the-release",
+                "themes": [
+                  "dispossession",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "faraday",
+                "stageId": "1812-1815-bottle-washer-and-valet",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 7,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 1,
+            "age": 22,
+            "inputSha256": "b06ad34be2a48a648d7dc35c41c0aca0e74d3bc9127e9c5c58d712087129d9bf",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "anning",
+              "bly",
+              "carver",
+              "darwin",
+              "douglass"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "anning",
+                "stageId": "1823-1828-the-doubted-sea-dragon",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "darwin",
+                "stageId": "1831-the-refusal-and-the-letter",
+                "themes": [
+                  "social_constraint",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 8,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 2,
+            "age": 22,
+            "inputSha256": "d92d0fc15769e765314b27e13bb8a943debf5de6493aefdd22b95529a152af29",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "anning",
+              "bly",
+              "carver",
+              "darwin",
+              "douglass"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "anning",
+                "stageId": "1823-1828-the-doubted-sea-dragon",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "darwin",
+                "stageId": "1831-the-refusal-and-the-letter",
+                "themes": [
+                  "social_constraint",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 8,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 3,
+            "age": 46,
+            "inputSha256": "60a85f3cc71d1b8d028d71d856fbd382858e3c524671da54b76c7f0a8b09ebc1",
+            "expect": "somerville_m",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "graham",
+              "somerville_m",
+              "slocum_j",
+              "mcclintock"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "graham",
+                "stageId": "1963-1971-thrust-into-the-chair",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 1,
+                "keywordScore": 0,
+                "agePenalty": 0.1,
+                "totalScore": -0.1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 2,
+                "keywordScore": 0,
+                "agePenalty": 0.2,
+                "totalScore": -0.2,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 4,
+            "age": 48,
+            "inputSha256": "9d5d63c416ed5bac730f075c849a180ea682c5d302c3f95b5a0a1851a409841e",
+            "expect": "somerville_m",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {
+              "self_invention": 1
+            },
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "slocum_j",
+              "wang",
+              "allende",
+              "grant",
+              "christie"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 1,
+                "agePenalty": 0,
+                "totalScore": 1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 1,
+                "agePenalty": 0,
+                "totalScore": 1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "wang",
+                "stageId": "1987-1990-passed-over-to-the-pivot",
+                "themes": [
+                  "late_start",
+                  "self_invention",
+                  "public_failure"
+                ],
+                "ageDistance": 7,
+                "keywordScore": 1,
+                "agePenalty": 0.7000000000000001,
+                "totalScore": 0.29999999999999993,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "allende",
+                "stageId": "1975-1981-exile-to-the-letter",
+                "themes": [
+                  "exile",
+                  "self_invention",
+                  "finding_voice"
+                ],
+                "ageDistance": 8,
+                "keywordScore": 1,
+                "agePenalty": 0.8,
+                "totalScore": 0.19999999999999996,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "grant",
+                "stageId": "1858-1861-a-place-in-the-shop",
+                "themes": [
+                  "illness",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 9,
+                "keywordScore": 1,
+                "agePenalty": 0.9,
+                "totalScore": 0.09999999999999998,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "christie",
+                "stageId": "1926-1928-the-year-that-broke",
+                "themes": [
+                  "heartbreak",
+                  "grief",
+                  "self_invention"
+                ],
+                "ageDistance": 10,
+                "keywordScore": 1,
+                "agePenalty": 1,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 12,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 5,
+            "age": 50,
+            "inputSha256": "1aec6417210abe02c1ed77f9f2a7a30df2c0afd5d7319611ce01a3dfbb641ca3",
+            "expect": "somerville_m",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 14,
+            "poolSize": 14,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "lee",
+              "mcclintock",
+              "rustin",
+              "slocum_j",
+              "somerville_m"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "lee",
+                "stageId": "1929-1931-harvard-pivot",
+                "themes": [
+                  "late_start",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 6,
+            "age": 48,
+            "inputSha256": "c62684e910d19357170eabb55a9c944539601a4e40b282afc07eec017f287790",
+            "expect": "slocum_j",
+            "accept": [
+              "grant"
+            ],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "graham",
+              "mcclintock",
+              "rustin",
+              "seacole"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "graham",
+                "stageId": "1963-1971-thrust-into-the-chair",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "seacole",
+                "stageId": "1854-1855-refusal-to-sick-wharf",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 7,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              },
+              {
+                "rankOneBased": 14,
+                "figureKey": "grant",
+                "stageId": "1858-1861-a-place-in-the-shop",
+                "themes": [
+                  "illness",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 9,
+                "keywordScore": 0,
+                "agePenalty": 0.9,
+                "totalScore": -0.9,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 7,
+            "age": 49,
+            "inputSha256": "0c11d2dabdd38e1825c74e9484c5775bf24b2c737f6618a4aca096f55cb007d8",
+            "expect": "slocum_j",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 14,
+            "poolSize": 14,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "mcclintock",
+              "rustin",
+              "seacole",
+              "slocum_j"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "seacole",
+                "stageId": "1854-1855-refusal-to-sick-wharf",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 8,
+            "age": 50,
+            "inputSha256": "b2e2560e9f67b0ec4737421a6efe0631425a2d93ae83d8678f01277689d075ba",
+            "expect": "slocum_j",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 14,
+            "poolSize": 14,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "lee",
+              "mcclintock",
+              "rustin",
+              "slocum_j",
+              "somerville_m"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "lee",
+                "stageId": "1929-1931-harvard-pivot",
+                "themes": [
+                  "late_start",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "rustin",
+                "stageId": "1963-the-man-in-the-back",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "quiet_defiance"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": true
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": true,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 9,
+            "age": 22,
+            "inputSha256": "008b3a1057295cc1226aeb4e0850de697afe5e1d7cf7c3d4b58d45fa606e6844",
+            "expect": "miss",
+            "accept": [],
+            "requiredPositive": false,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "anning",
+              "bly",
+              "carver",
+              "darwin",
+              "douglass"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "anning",
+                "stageId": "1823-1828-the-doubted-sea-dragon",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "darwin",
+                "stageId": "1831-the-refusal-and-the-letter",
+                "themes": [
+                  "social_constraint",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": null,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 10,
+            "age": 30,
+            "inputSha256": "3e0b64194acfa2e972afb9af9e8d8e1697bf2243b5722e8367ccd83c124454e2",
+            "expect": "miss",
+            "accept": [],
+            "requiredPositive": false,
+            "matchedThemeWeights": {},
+            "agePoolSize": 43,
+            "poolSize": 43,
+            "ageFallbackToAll": false,
+            "selected": [
+              "banting",
+              "bronte_c",
+              "coltrane",
+              "hurston",
+              "muir",
+              "oconnor"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "banting",
+                "stageId": "1920-1922-empty-waiting-room",
+                "themes": [
+                  "worthlessness",
+                  "dismissed",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "bronte_c",
+                "stageId": "1846-1847-two-copies",
+                "themes": [
+                  "creative_dismissal",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "coltrane",
+                "stageId": "1957-fired-and-clean",
+                "themes": [
+                  "addiction",
+                  "shame",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "hurston",
+                "stageId": "1917-1921-sixteen-again",
+                "themes": [
+                  "self_invention",
+                  "late_start",
+                  "dispossession"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "muir",
+                "stageId": "1867-1868-the-darkened-room",
+                "themes": [
+                  "illness",
+                  "solitude",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "oconnor",
+                "stageId": "1950-1955-lupus-and-the-farm",
+                "themes": [
+                  "illness",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": null,
+            "missCalibrationMeasured": false
+          },
+          {
+            "caseIndexZeroBased": 11,
+            "age": 45,
+            "inputSha256": "f5bc734326450461a5f570a05c9575f06582f2e7b342b482c75b632be4422cc5",
+            "expect": "miss",
+            "accept": [],
+            "requiredPositive": false,
+            "matchedThemeWeights": {},
+            "agePoolSize": 15,
+            "poolSize": 15,
+            "ageFallbackToAll": false,
+            "selected": [
+              "chandler",
+              "child",
+              "graham",
+              "somerville_m",
+              "slocum_j",
+              "mcclintock"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "chandler",
+                "stageId": "1932-1939-fired-to-the-first-novel",
+                "themes": [
+                  "late_start",
+                  "public_failure",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "child",
+                "stageId": "1946-1961-aimless-to-the-book",
+                "themes": [
+                  "late_start",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "graham",
+                "stageId": "1963-1971-thrust-into-the-chair",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "somerville_m",
+                "stageId": "1827-1831-a-manuscript-in-secret",
+                "themes": [
+                  "self_doubt",
+                  "social_constraint",
+                  "keep_going"
+                ],
+                "ageDistance": 1,
+                "keywordScore": 0,
+                "agePenalty": 0.1,
+                "totalScore": -0.1,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "slocum_j",
+                "stageId": "1892-1895-a-boat-in-the-field",
+                "themes": [
+                  "self_invention",
+                  "self_doubt",
+                  "keep_going"
+                ],
+                "ageDistance": 2,
+                "keywordScore": 0,
+                "agePenalty": 0.2,
+                "totalScore": -0.2,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "mcclintock",
+                "stageId": "1951-1960s-dismissed-and-right",
+                "themes": [
+                  "dismissed",
+                  "quiet_defiance",
+                  "keep_going"
+                ],
+                "ageDistance": 3,
+                "keywordScore": 0,
+                "agePenalty": 0.30000000000000004,
+                "totalScore": -0.30000000000000004,
+                "selected": true,
+                "acceptable": false
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": null,
+            "missCalibrationMeasured": false
+          }
+        ],
+        "droppedRequiredPositiveIndexesZeroBased": [
+          0,
+          1,
+          2,
+          4,
+          6
+        ],
+        "verdict": "RED_EXPECTED_GOLD_DROPPED",
+        "networkAttempts": 0,
+        "providerCalls": 0,
+        "databaseCalls": 0,
+        "envFilesLoaded": 0,
+        "publicationAuthority": false
+      }
+    },
+    {
+      "name": "authorized_minimization",
+      "file": "REPRO-RETRIEVAL-MINIMIZED-STDOUT.json",
+      "args": [
+        "--case",
+        "0",
+        "--minimize"
+      ],
+      "exitCode": 1,
+      "elapsedMs": 380,
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+        "--case",
+        "0",
+        "--minimize"
+      ],
+      "stdoutSha256": "f9379be2da4b13113c0245329259c908fd1329c395ad46c187ae7cfc11912149",
+      "stdout": {
+        "diagnosticOnly": true,
+        "caseSelection": 0,
+        "datasetVersion": "synthetic-new-three-12-2026-10-03",
+        "caseSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+        "frozenExisting60Sha256": "0d210d3393250d4860b8c5718c1bb9f9b713347656edc0b5e213a75f98c955f5",
+        "original104GoldSha256": "f87962a57990f65a8765afdcd141bbdd1c3b9f5a965d04f4810f1787d8aa2a1e",
+        "proposedStages": [
+          {
+            "figureKey": "franklin_b",
+            "file": "franklin_b-1727-1728-a-first-customer-v1.stage.json",
+            "sha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+          },
+          {
+            "figureKey": "somerville_m",
+            "file": "somerville_m-1827-1831-a-manuscript-in-secret-v1.stage.json",
+            "sha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+          },
+          {
+            "figureKey": "slocum_j",
+            "file": "slocum_j-1892-1895-a-boat-in-the-field-v1.stage.json",
+            "sha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+          }
+        ],
+        "fixtureStageCount": 63,
+        "runtime": {
+          "matchConfigVersion": "figure-library-50-2026-07-02",
+          "rerankTopK": 6,
+          "ageToleranceYears": 10,
+          "sourceSha256": {
+            "lib/matching.ts": "8ba563cf11d124caf6fe7d41a69e6335913ec02c2fd6e6c22e364b15836278ba",
+            "lib/figures.ts": "9501db49d0ac873148dcc9bcad190a8d99a431f7562bc059de3d75a72b319b42",
+            "lib/keyword-match.ts": "c0ec4c0643da2ba9912a78ce94c47c84fe1133bf307d70a54c6bddda64b1003e",
+            "lib/match-config.ts": "af9421c7476a1e2afdd80b75c996aab7d533160be2a5f60054186b5d54202845",
+            "lib/story-recipe-runtime.ts": "1ad28a1b4d03888866d83ffd59548cc2606af925cfb01593fbec4899e4557050",
+            "config/story-recipes.json": "300a46f9190fdb16e2afc8f29e5b572664de7df2c518568204ac616ccb64b949"
+          }
+        },
+        "results": [
+          {
+            "caseIndexZeroBased": 0,
+            "age": 21,
+            "inputSha256": "a0c560db66e09c59efa654e5ce43e25a5c520d51e6e3369f9c30ca32344d5435",
+            "expect": "franklin_b",
+            "accept": [],
+            "requiredPositive": true,
+            "matchedThemeWeights": {},
+            "agePoolSize": 45,
+            "poolSize": 45,
+            "ageFallbackToAll": false,
+            "selected": [
+              "andersen",
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday"
+            ],
+            "scores": [
+              {
+                "rankOneBased": 1,
+                "figureKey": "andersen",
+                "stageId": "1822-1827-the-headmasters-school",
+                "themes": [
+                  "bullied",
+                  "worthlessness",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 2,
+                "figureKey": "bly",
+                "stageId": "1885-1887-orphan-girl-to-madhouse",
+                "themes": [
+                  "dismissed",
+                  "social_constraint",
+                  "finding_voice"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 3,
+                "figureKey": "carver",
+                "stageId": "1885-1891-turned-away-to-the-sod-house",
+                "themes": [
+                  "dismissed",
+                  "solitude",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 4,
+                "figureKey": "douglass",
+                "stageId": "1838-1841-nyc-to-nantucket",
+                "themes": [
+                  "dispossession",
+                  "self_invention",
+                  "solitude"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 5,
+                "figureKey": "equiano",
+                "stageId": "1766-the-money-and-the-release",
+                "themes": [
+                  "dispossession",
+                  "social_constraint",
+                  "quiet_defiance",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 6,
+                "figureKey": "faraday",
+                "stageId": "1812-1815-bottle-washer-and-valet",
+                "themes": [
+                  "social_constraint",
+                  "dismissed",
+                  "self_invention"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": true,
+                "acceptable": false
+              },
+              {
+                "rankOneBased": 7,
+                "figureKey": "franklin_b",
+                "stageId": "1727-1728-a-first-customer",
+                "themes": [
+                  "dismissed",
+                  "self_invention",
+                  "keep_going"
+                ],
+                "ageDistance": 0,
+                "keywordScore": 0,
+                "agePenalty": 0,
+                "totalScore": 0,
+                "selected": false,
+                "acceptable": true
+              }
+            ],
+            "acceptableExcludedByAge": [],
+            "expectedSurvives": false,
+            "missCalibrationMeasured": false
+          }
+        ],
+        "hypothesisProbes": {
+          "authorizedByRootAfterRedLoop": true,
+          "h1ZeroThemeSymptom": {
+            "matchedThemeWeights": {},
+            "targetKeywordScore": 0,
+            "observation": "ZERO_THEME_SIGNAL_CONFIRMED_NO_PHRASE_OR_ROUTE_CHANGE"
+          },
+          "h2AgeExclusion": {
+            "target": "franklin_b",
+            "ageDistance": 0,
+            "ageToleranceYears": 10,
+            "presentInAgePool": true,
+            "observation": "AGE_EXCLUSION_FALSIFIED_FOR_CASE0"
+          },
+          "h3TieOrdering": {
+            "minimalPool": [
+              "andersen",
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday",
+              "franklin_b"
+            ],
+            "minimalPoolSize": 7,
+            "minimalRankedKeys": [
+              "andersen",
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday",
+              "franklin_b"
+            ],
+            "allScoresZero": true,
+            "selectedBeforeRemoval": [
+              "andersen",
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday"
+            ],
+            "targetRankBeforeRemoval": 7,
+            "targetSurvivesBeforeRemoval": false,
+            "removedCompetitor": "andersen",
+            "reducedPoolSize": 6,
+            "selectedAfterRemoval": [
+              "bly",
+              "carver",
+              "douglass",
+              "equiano",
+              "faraday",
+              "franklin_b"
+            ],
+            "targetSurvivesAfterRemoval": true,
+            "observation": "ONE_COMPETITOR_REMOVAL_CHANGES_SURVIVAL_IN_ARTIFICIAL_POOL_ONLY"
+          },
+          "fixesTested": 0,
+          "productionChange": false,
+          "releasePass": false
+        },
+        "droppedRequiredPositiveIndexesZeroBased": [
+          0
+        ],
+        "verdict": "RED_EXPECTED_GOLD_DROPPED",
+        "networkAttempts": 0,
+        "providerCalls": 0,
+        "databaseCalls": 0,
+        "envFilesLoaded": 0,
+        "publicationAuthority": false
+      }
+    }
+  ],
+  "determinism": {
+    "allCaseStdoutByteIdenticalBeforeAndAfterSourceRestore": true,
+    "case0SameWithinAllAndAlone": true,
+    "case0BaselineUnchangedInMinimizationRun": true,
+    "noRandomnessTimeOrProviderDependencyInHelperOutput": true
+  },
+  "rankedHypotheses": {
+    "authorization": "Root shared three ranked falsifiable predictions after the first minimized red command and before any bounded probe.",
+    "h1": {
+      "prediction": "Unrecognized intake wording leaves matched-theme weights and target keyword score at zero.",
+      "probe": "Record actual getMatchedThemeWeights and real keyword target score; no phrase or route changes.",
+      "result": {
+        "matchedThemeWeights": {},
+        "targetKeywordScore": 0,
+        "observation": "ZERO_THEME_SIGNAL_CONFIRMED_NO_PHRASE_OR_ROUTE_CHANGE"
+      },
+      "scope": "Zero signal confirmed for case0; no proposed mapping fix tested."
+    },
+    "h2": {
+      "prediction": "An age-boundary failure removes Franklin before scoring.",
+      "probe": "Use actual ageDistance and actual age-gated fixture presence.",
+      "result": {
+        "target": "franklin_b",
+        "ageDistance": 0,
+        "ageToleranceYears": 10,
+        "presentInAgePool": true,
+        "observation": "AGE_EXCLUSION_FALSIFIED_FOR_CASE0"
+      }
+    },
+    "h3": {
+      "prediction": "Equal-zero tie order puts Franklin seventh, and removal of one competitor admits it to six slots.",
+      "probe": "Run actual selectRerankPool over selected6+Franklin, then remove only Andersen.",
+      "result": {
+        "minimalPool": [
+          "andersen",
+          "bly",
+          "carver",
+          "douglass",
+          "equiano",
+          "faraday",
+          "franklin_b"
+        ],
+        "minimalPoolSize": 7,
+        "minimalRankedKeys": [
+          "andersen",
+          "bly",
+          "carver",
+          "douglass",
+          "equiano",
+          "faraday",
+          "franklin_b"
+        ],
+        "allScoresZero": true,
+        "selectedBeforeRemoval": [
+          "andersen",
+          "bly",
+          "carver",
+          "douglass",
+          "equiano",
+          "faraday"
+        ],
+        "targetRankBeforeRemoval": 7,
+        "targetSurvivesBeforeRemoval": false,
+        "removedCompetitor": "andersen",
+        "reducedPoolSize": 6,
+        "selectedAfterRemoval": [
+          "bly",
+          "carver",
+          "douglass",
+          "equiano",
+          "faraday",
+          "franklin_b"
+        ],
+        "targetSurvivesAfterRemoval": true,
+        "observation": "ONE_COMPETITOR_REMOVAL_CHANGES_SURVIVAL_IN_ARTIFICIAL_POOL_ONLY"
+      }
+    }
+  },
+  "validation": {
+    "scopedEslint": {
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+        "--max-warnings=0"
+      ],
+      "exitCode": 0
+    },
+    "typecheck": {
+      "command": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "exitCode": 0
+    },
+    "argumentGuardRuns": [
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+          "--case",
+          "12"
+        ],
+        "exitCode": 2,
+        "stdout": {
+          "diagnosticOnly": true,
+          "verdict": "INVALID_REPRO_INPUT_OR_RUNTIME",
+          "error": "Case index must be 0..11.",
+          "publicationAuthority": false
+        }
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+          "--case",
+          "-1"
+        ],
+        "exitCode": 2,
+        "stdout": {
+          "diagnosticOnly": true,
+          "verdict": "INVALID_REPRO_INPUT_OR_RUNTIME",
+          "error": "Case must be all or a zero-based integer 0..11.",
+          "publicationAuthority": false
+        }
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+          "--case",
+          "all",
+          "--minimize"
+        ],
+        "exitCode": 2,
+        "stdout": {
+          "diagnosticOnly": true,
+          "verdict": "INVALID_REPRO_INPUT_OR_RUNTIME",
+          "error": "The authorized minimization probe is limited to case0.",
+          "publicationAuthority": false
+        }
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "docs/releases/new-three-2026-10-03/repro-retrieval.ts",
+          "--case",
+          "0",
+          "--unexpected"
+        ],
+        "exitCode": 2,
+        "stdout": {
+          "diagnosticOnly": true,
+          "verdict": "INVALID_REPRO_INPUT_OR_RUNTIME",
+          "error": "Unknown diagnostic argument.",
+          "publicationAuthority": false
+        }
+      }
+    ],
+    "allArgumentGuardProbesPass": true,
+    "independentStaticReview": {
+      "reviewer": "/root/new_three_slocum",
+      "requiredBugs": [],
+      "summary": "Pinned whole original60 and exact3 overlay; age/fallback/accepted-alternative/semantic-miss rules match evaluator. Network guards precede actual imports. No env loader, provider/DB function, or writes invoked. Different overlay append order does not alter survival: pruned ties sort by figureKey/stageId; <=K retains all."
+    }
+  },
+  "scope": {
+    "matchingFunctionsUsed": [
+      "selectRerankPool",
+      "ageDistance",
+      "scoreAllByKeywordHybrid",
+      "getMatchedThemeWeights"
+    ],
+    "retrievalPath": "keyword prefilter only",
+    "rerankTopKUnchanged": 6,
+    "canonicalProseThemeRoutesRecipeGoldAndKChanges": 0,
+    "providerCalls": 0,
+    "databaseCalls": 0,
+    "envFilesLoaded": 0,
+    "networkAttempts": 0,
+    "fixesTested": 0,
+    "releasePass": false,
+    "publicationAuthority": false,
+    "missCalibrationMeasured": false,
+    "rootReportedOriginal104Gate": "FAIL; not recomputed or cleared by this supplemental retrieval diagnostic.",
+    "finalDisposition": "Supplemental12 provider run remains blocked by the reproduced prefilter failure. Artificial pool reduction is diagnostic only."
+  }
+}

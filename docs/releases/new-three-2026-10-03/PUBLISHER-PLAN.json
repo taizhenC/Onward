@@ -1,0 +1,258 @@
+{
+  "schemaVersion": "new-three-publisher-independent-plan-v1",
+  "preparedAt": "2026-10-04T03:53:58.596Z",
+  "reviewer": "/root/held_pr_audit",
+  "status": "PLAN_READY_IMPLEMENTATION_AUDIT_PENDING",
+  "scope": "Read-only planning of existing publisher/authority/verifier source and public frozen receipts; no new helper read before root handoff, no live action.",
+  "authorization": {
+    "source": "Parent reports explicit new user instruction after disclosed matching failures",
+    "ownerStatement": "good, I reiview it, lets merge that and publish to the production",
+    "targetScope": "Exactly this frozen three-story set; no prior ten-story decision expansion."
+  },
+  "pins": {
+    "approvedReadingPacket": {
+      "schemaVersion": "new-three-reading-packet-pin-v1",
+      "path": "docs/releases/new-three-2026-10-03/READING-PACKET.md",
+      "sha256": "475c81587af5559164e9abc810127a213e8edd0527076d7bbf4a882ffde87e1b",
+      "candidateHashes": [
+        {
+          "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+          "candidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+          "stageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7"
+        },
+        {
+          "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+          "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+          "stageSha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2"
+        },
+        {
+          "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+          "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+          "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9"
+        }
+      ],
+      "approval": "pending owner review"
+    },
+    "targets": [
+      {
+        "figureKey": "franklin_b",
+        "storySpecId": "franklin_b:1727-1728-a-first-customer:v1",
+        "candidateSha256": "bed180661652b7f0892baa9ae3b24f1af0027342dacc6901d3335c96d5dd7fc4",
+        "stageSha256": "1a88acec9580e2bdec22bd64e0a668e577658b9076bbda80899e0ff5104093d7",
+        "words": 781
+      },
+      {
+        "figureKey": "slocum_j",
+        "storySpecId": "slocum_j:1892-1895-a-boat-in-the-field:v1",
+        "candidateSha256": "a0a5c8a53c18fa97667ab1337f69a559c055c265a0ae5d4d003236c71ac778b1",
+        "stageSha256": "bae80966aee65afd5e00ee98c8888ae5e54da51645d737df1d89fb685854ecb2",
+        "words": 774
+      },
+      {
+        "figureKey": "somerville_m",
+        "storySpecId": "somerville_m:1827-1831-a-manuscript-in-secret:v1",
+        "candidateSha256": "3e13e429368a9d627d6b612593e2888fd1e20a41926873001310be6242cbb82d",
+        "stageSha256": "9da559979a7144482a8a46844e9593278b86f829490e9382745d36236ccbeda9",
+        "words": 766
+      }
+    ],
+    "source63Sha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+    "source60Sha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+    "immutableDraftImportBaseline": {
+      "path": "docs/research/new-three-2026-10-03/DB-BEFORE.json",
+      "sha256": "11a6d8ca49a34bc3e9dadce24a72aee253c035bc73a957d1f12d2461f49df7a2"
+    },
+    "failed104Evidence": {
+      "path": "C:\\Users\\taich\\.codex\\worktrees\\merge-all-prs\\Onward\\evals\\history\\match-104-2026-07-02\\keyword-rerank-figure-library-50-2026-07-02\\ev_554809052151d64dbd6b51975ab89b3d60cb425081a63e79b8cd1e6560710247.json",
+      "sha256": "f6764d3a637ec1962851559c1772de99dd4b8193bb60dd237a66fdf2c87445eb"
+    },
+    "failedSupplemental12CaseSha256": "acb9830130d99d362d81706ea88baa58a3116a77b892b11f408242277e29c189",
+    "primaryRecipeId": "keyword-rerank-figure-library-50-2026-07-02"
+  },
+  "catalogBounds": {
+    "before": {
+      "figures": 63,
+      "stages": 63,
+      "specs": 64,
+      "validPublishedSpecs": 44,
+      "publishedStages": 44
+    },
+    "after": {
+      "figures": 63,
+      "stages": 63,
+      "specs": 64,
+      "validPublishedSpecs": 47,
+      "publishedStages": 47,
+      "quarantinedPublishedRows": 0
+    },
+    "nonTargetsPreserved": {
+      "figures": 63,
+      "stages": 60,
+      "specs": 61,
+      "priorFullPublications": 44
+    }
+  },
+  "requirements": [
+    {
+      "id": "authority",
+      "requirement": "Create a separate exact-three owner decision using the new verbatim instruction and bind the reading packet, candidate/stage hashes, source63 hash, failed104 evidence and blocked12 attempt. Preserve actual failures; no general recipe promotion or inherited ten-story exception."
+    },
+    {
+      "id": "source",
+      "requirement": "Reinstall exact63 source hash1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90. Append only its scoped release decision; preserve original60 values/order, historical decisions and the immutable primary/rollback recipe selection, prompts, keyword routes, K, thresholds and gold inputs."
+    },
+    {
+      "id": "offline",
+      "requirement": "Validate all authority/input/schema/review/prose/stage pins before env loading or DB client construction. Unknown/duplicate/malformed CLI arguments reject. Offline mode performs no env, network, DB/Auth/provider work."
+    },
+    {
+      "id": "baseline",
+      "requirement": "Capture a fresh publication baseline in a new ignored private timestamp/UUID path with wx; initial63figures/63stages/64specs and44 valid publications. Pin path and bytes in immutable selection/start receipts. Original importer DB-BEFORE remains untouched at11a6d8ca49a34bc3e9dadce24a72aee253c035bc73a957d1f12d2461f49df7a2."
+    },
+    {
+      "id": "preservation",
+      "requirement": "Preserve all63 figure rows, all60 non-target stage rows and61 non-target full spec rows, including created_at/published_at/retired_at. Preserve prior44 full publications. Compare against fixed initial publish snapshot before and after each transition and across retries; reject extra/missing/drifted rows before writes."
+    },
+    {
+      "id": "targets",
+      "requirement": "Exactly Franklin/Slocum/Somerville v1 identifiers, versions and stage identities; exact frozen draft documents, empty reviews, null published_at/retired_at and valid stable creation timestamps. Initially no other published spec may share a target stage; recheck before RPC because existing promotion retires such siblings."
+    },
+    {
+      "id": "review",
+      "requirement": "One actual owner may occupy the schema research/historical/tone roles; record this truthfully and bind one fixed reviewedAt. Do not claim independent human review, measured matching success or prior approvals. Full-document atomic draft-to-review CAS must match complete draft JSON plus identity/version/schema/current draft status and lifecycle guards; exactly one row updated."
+    },
+    {
+      "id": "promotion",
+      "requirement": "Validate/read back the complete reviewed document and unchanged lifecycle, archive it immutably, then invoke existing promote_story_spec_v2 with the exact receipt-bound full review spec. Do not call legacy promotion, seeding/upsert, insert, delete, target-content rewrite or direct stage publication."
+    },
+    {
+      "id": "retry",
+      "requirement": "Retries retain selection/review time/input/source/evidence/baseline pins. Accept only exact draft, exact reviewed or exact published members of this targetset; published members require the precomputed complete expected published-spec hash, archived reviewed authority and unchanged lifecycle. Existing published receipts/readbacks must retain their full row/stage/hash pins. No generic status-only skip."
+    },
+    {
+      "id": "readback",
+      "requirement": "After each target and final completion, compare full published specs, canonical evidence/prose/review, full matching stages and allowed lifecycle changes. Only target review/status, server publication timestamp and target stage status may change. Expected counts remain63/63/64 with47 valid publications,47 matching published stages,0 quarantined rows; all61 unrelated specs/60 unrelated stages and63figures unchanged."
+    },
+    {
+      "id": "bounds",
+      "requirement": "Only bounded complete reads of figures/figure_stages/story_specs; strict production HTTPS host mbcqkljfekkxlgittzal.supabase.co. Require exact row counts/count headers or equivalent complete-response proof, deadline/byte caps, no raw credentials, no Auth/users/sessions/provider/embedding access and no broad retries."
+    },
+    {
+      "id": "deployment",
+      "requirement": "Bind passing normal CI to final updated PR148 source/head, merge and deploy exact63 source before publication. Record worker refresh, read-only health and live canary separately after root receives actual proof; publishing alone cannot establish deployed/cache-ready availability."
+    }
+  ],
+  "oldPatternFindings": [
+    {
+      "severity": "required-new-helper-strengthening",
+      "finding": "Old draft→review mutation is expressly a compact canonical/review guard, not full-document atomic CAS.",
+      "newRequirement": "Complete draft JSON equality CAS plus row/lifecycle predicates and exact readback."
+    },
+    {
+      "severity": "required-preflight-constraint",
+      "finding": "Existing SQL0023 promotion retires a published sibling for the same figure/stage before promoting its target.",
+      "newRequirement": "Reject any other published target-stage version and preserve all61 unrelated specs."
+    },
+    {
+      "severity": "scope-qualification",
+      "finding": "Existing promotion atomically binds reviewed JSON and locks its target/stage key; it does not compare the whole catalog or creation lifecycle fields.",
+      "newRequirement": "Keep serialized operator window and immediate full catalog/lifecycle readbacks; describe this boundary truthfully."
+    },
+    {
+      "severity": "must-preserve",
+      "finding": "Old ten-story authority includes historical matching/security exception receipts scoped to its exact source/input snapshot.",
+      "newRequirement": "Read only as a pattern; leave all files/decisions immutable. New owner exception records new3 matching failures and current normal CI truthfully."
+    }
+  ],
+  "plannedOfflineProbeGroups": [
+    {
+      "group": "authorized-positive",
+      "cases": [
+        "exact3 fresh drafts",
+        "exact partial draft/review/published recovery",
+        "exact fully published repeat with zero target writes"
+      ]
+    },
+    {
+      "group": "authority/input-negative",
+      "cases": [
+        "old ten-story authority reused",
+        "wrong/missing owner/reading/source/evidence pin",
+        "changed actual failure to PASS",
+        "wrong targetset or duplicate target",
+        "wrong primary recipe/threshold/K/gold",
+        "candidate canonical/source/fact/quote/texture drift",
+        "stage age/theme/facet/prose drift"
+      ]
+    },
+    {
+      "group": "catalog-preservation-negative",
+      "cases": [
+        "prior44 full publication or lifecycle drift",
+        "any unrelated draft/retired spec change",
+        "extra or missing row between attempts",
+        "figure metadata or unrelated stage change",
+        "original import baseline overwrite/tamper",
+        "publication baseline hash/content/pin tamper",
+        "published sibling of a target stage"
+      ]
+    },
+    {
+      "group": "CAS/retry-negative",
+      "cases": [
+        "draft changes after immediate read before CAS",
+        "draft lifecycle tamper",
+        "zero/multiple CAS rows returned",
+        "review body changed before RPC",
+        "published document/review/source hash mismatch",
+        "published timestamp absent/older than baseline",
+        "creation timestamp changed or retirement present",
+        "published state without release-bound review authority",
+        "existing receipt collision with different bytes"
+      ]
+    },
+    {
+      "group": "boundary",
+      "cases": [
+        "unknown/duplicate/malformed args",
+        "offline mode attempts env/network/DB",
+        "wrong production host",
+        "truncated/too-large/timeout catalog response",
+        "non-curated table or unapproved mutation",
+        "RPC success/readback crash recovery remains exact and no republish"
+      ]
+    }
+  ],
+  "oldPatternPins": [
+    {
+      "path": "docs/releases/new-stories-production-2026-10-02/publish-owner-approved.ts",
+      "sha256": "a312cfcc1a8fc19efd88c8fb8fa60ca9e9fcf2f221331e1abf8e6ae3edef9c85"
+    },
+    {
+      "path": "docs/releases/new-stories-production-2026-10-02/owner-publication-authority.ts",
+      "sha256": "68f845888d2bb730c9817ffe5ec91736e525e85dc66bb5dab5f13061f7ff7135"
+    },
+    {
+      "path": "docs/releases/new-stories-production-2026-10-02/verify-owner-publication.ts",
+      "sha256": "6b56a7f8a2ded08f6f8cecd8e4990313e135a20c3c7d178abf098889dad949a9"
+    }
+  ],
+  "limits": {
+    "runtimeHelpersExecuted": 0,
+    "databaseReads": 0,
+    "databaseWrites": 0,
+    "envOrCredentialReads": 0,
+    "authOrProviderOperations": 0,
+    "gitOrSourceMutations": 0,
+    "onlyWrittenFiles": [
+      "docs/releases/new-three-2026-10-03/PUBLISHER-PLAN.md",
+      "docs/releases/new-three-2026-10-03/PUBLISHER-PLAN.json"
+    ]
+  },
+  "pending": [
+    "Root handoff of final new publisher and authority helper SHAs",
+    "Independent source-derived offline mock audit of final helpers",
+    "Root-only fresh private preflight/live publication",
+    "Actual final PR CI/merge/deployment/worker-health/canary proof"
+  ]
+}

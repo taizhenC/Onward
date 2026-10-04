@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "new-three-library-restoration-v1",
+  "reason": "Failed real regression gate and blocked supplemental coverage; preserve the approved library on the final draft branch",
+  "originalApprovedCommit": "405f82357351723da6000b9a169999f3c7975191",
+  "approvedLibrarySha256": "bb27964f0d5347deba75b20bd33c59ecba4289a6a95f9618b891fefbda020061",
+  "proposalCommit": "df19fecee5aafafd57a7f349380a294522c80b44",
+  "proposedLibrarySha256": "1a33b7b45b48bc054f0eb0d1504bfd7ac312a07f41f678ff032acfa9e97eaa90",
+  "finalInstalledStageCount": 60,
+  "newDatabaseDraftCount": 3,
+  "priorPublishedCount": 44,
+  "frozenCandidateOrStageChanged": false,
+  "proposalCommitRetained": true,
+  "failedEvidenceRetained": true,
+  "releaseRegistryChanged": false,
+  "productionPublicationPerformed": false
+}
